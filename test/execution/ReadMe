@@ -1,0 +1,233 @@
+
+This package contains tests that test the different language constructs.
+
+"= N =" means the test is not done yet.
+
+TODO:
+. Remove T0059
+
+Test Index
+. Directives
+. . Import
+. . . T0060 = Automatically Imported Types # TODO: Complete
+. . Module
+. Modules
+. . Reflective Testing of the Module's Class
+. Annotation Definitions
+. . Reflective Testing of the Annotation's Class
+. Exception Definitions
+. . Reflective Testing of the Exception's Class
+. Enum Definitions
+. . Reflective Testing of the Enum's Class
+. . T0051 = Basic Enum
+. Design Definitions
+. . Reflective Testing of the Design's Class
+. Functions
+. . Reflective Testing of the Reflective Method Object
+. . Recursive Generator
+. . T0064 = Checked Exceptions
+. . Annotation Lists
+. . Parameter Lists
+. . T0063 = Return Types                   # TODO: Add array return-types to the test.
+. Statements
+. . If-Elif-Else
+. . . T0001 = Primitive Boolean Condition
+. . . T0002 = Boxed Boolean Condition
+. . . T0003 = N = Operand-Stack Leakage
+. . When
+. . .  = Primitive Boolean Condition
+. . .  = Boxed Boolean Condition
+. . .  = Operand-Stack Leakage
+. . While
+. . . T0007 = Primitive Boolean Condition
+. . . T0008 = N = Boxed Boolean Condition
+. . . T0009 = N = Operand-Stack Leakage
+. . . T0010 = Iterate Zero Times
+. . . T0011 = Iterate One Time
+. . . T0012 = Iterate Multiple Times
+. . Until
+. . . T0013 = Primitive Boolean Condition
+. . . T0014 = N = Boxed Boolean Condition
+. . . T0015 = N = Operand-Stack Leakage
+. . . T0016 = Iterate Zero Times
+. . . T0017 = Iterate One Time
+. . . T0018 = Iterate Multiple Times
+. . Do While
+. . . T0019 = N = Primitive Boolean Condition
+. . . T0020 = N = Boxed Boolean Condition
+. . . T0021 = N = Operand-Stack Leakage
+. . . T0022 = N = Iterate Zero Times
+. . . T0023 = N = Iterate One Time
+. . . T0024 = N = Iterate Multiple Times
+. . Do Until
+. . . T0025 = N = Primitive Boolean Condition
+. . . T0026 = N = Boxed Boolean Condition
+. . . T0027 = N = Operand-Stack Leakage
+. . . T0028 = N = Iterate Zero Times
+. . . T0029 = N = Iterate One Time
+. . . T0030 = N = Iterate Multiple Times
+. . Foreach
+. . . T0033 = N = Operand-Stack Leakage
+. . . T0034 = Iterate Zero Times
+. . . T0035 = Iterate One Time
+. . . T0036 = Iterate Multiple Times
+. . For
+. . . T0037 = Iterate Zero Times
+. . . T0038 = Iterate One Time
+. . . T0039 = Iterate Multiple Times
+. . . Primitive Boolean Condition
+. . . Boxed Boolean Condition
+. . Break
+. . . Within While-Loop
+. . . Within Until-Loop
+. . . Within Do-While-Loop
+. . . Within Do-Until-Loop
+. . . Within For-Loop
+. . . Within Foreach-Loop
+. . Continue
+. . . Within While-Loop
+. . . Within Until-Loop
+. . . Within Do-While-Loop
+. . . Within Do-Until-Loop
+. . . Within For-Loop
+. . . Within Foreach-Loop
+. . Redo
+. . . Within While-Loop
+. . . Within Until-Loop
+. . . Within Do-While-Loop
+. . . Within Do-Until-Loop
+. . . Within For-Loop
+. . . Within Foreach-Loop
+. . Var
+. . . T0076 = Different Types of Values
+. . Val
+. . . T0077 = Different Types of Values
+. . Let
+. . . T0075 = Different Types of Values
+. . . T0072 = Auto-Boxing
+. . . T0073 = Auto-Unboxing
+. . Try Catch
+. . . T0049 = Single Case - No Catch
+. . . T0050 = Single Case - Throw
+. . Throw
+. . . T0061 = Checked Exceptions
+. . . T0062 = Unchecked Exceptions
+. . Assert
+. . . No Message
+. . . With Message
+. . Nop
+. . Sequence
+. . Expression
+. . Setter
+. . Getter
+. . Method
+. . Return Void
+. . Return Value = T0053    # TODO: Add auto-boxing
+. . Recur
+. . . T0067 = Nullary Method
+. . . Unary Method
+. . . Multiple Parameter Method
+. . . Void Method
+. . . Non-Void method
+. . . Auto-Boxing of Arguments
+. . . Auto-Unboxing of Arguments
+. . Yield Void
+. . . Reentry Locations
+. . . Arguments
+. . . Restoration of Local Variables
+. . Yield Value
+. . . T0054 = Reentry Locations
+. . . T0069 = Arguments
+. . . T0068 = Restoration of Local Variables
+. . . T0070 = Auto-Boxing
+. . . T0071 = Auto-Unboxing
+. Expressions
+. . Funcall
+. . . T0052 = Single Argument
+. . . T0059 = Multiple Arguments
+. . Delegate
+. . . Checked Exceptions
+. . Dispatch
+. . . Resolution Order
+. . New
+. . . Different Types of Arguments
+. . . Resolution Order
+. . . Auto-Boxing
+. . . Auto-Unboxing
+. . Call Method
+. . . Different Types of Arguments
+. . . Resolution Order
+. . . Auto-Boxing
+. . . Auto-Unboxing
+. . . Covariant Return Types
+. . Call Static Method
+. . . Different Types of Arguments
+. . . Resolution Order
+. . . Auto-Boxing
+. . . Auto-Unboxing
+. . . Covariant Return Types - Hidden Methods????
+. . Set Field
+. . . Different Types of Values
+. . Get Field
+. . . Different Types of Values
+. . Set Static Field
+. . . Different Types of Values
+. . Get Static Field
+. . . Different Types of Values
+. . T0046 = Instance-Of
+. . Create
+. . . Special Method: objectDesign
+. . . Special Method: objectCopy (default)
+. . . Special Method: objectCopy (covariant)
+. . . Special Method: objectProperties
+. . . Special Method: objectMethods
+. . . Special Method: objectSetSetter
+. . . Special Method: objectGetSetter
+. . . Special Method: objectSetGetter
+. . . Special Method: objectGetGetter
+. . . Special Method: objectSetMethod
+. . . Special Method: objectGetMethod
+. . . Special Method: objectSetValue
+. . . Special Method: objectGetValue
+. . . Special Method: objectInner
+. . . Method Invocation
+. . . Getters
+. . . Setters
+. . . Equals
+. . . Hash-Code
+. . . To-String
+. . Ternary Conditional
+. . . Primitive Boolean Condition
+. . . Boxed Boolean Condition
+. . . Primitive Operands
+. . . Object Operands
+. . Progn
+. . . All Cases
+. . List
+. . . T0058 = All Cases
+. Operators
+. . T0040 = N = Unary Operators Generally
+. . T0041 = N = Binary Operators Generally
+. . T0043 = N = Null Coalescing Operator
+. . As
+. . . T0044 = Operand-Stack Leakage
+. . . Predefined Conversions
+. . . T0057 = Casts
+. . . Array Casts
+. . Is
+. . . Operand-Stack Leakage
+. . . Predefined Conversions
+. . . Casts
+. . . Array Casts
+. Datums
+. . Class Datums
+. . T0055 = Types of Datums
+. . T0056 = Values of Datums
+. . Strings
+. Standard Library
+. . F
+. . . T0074 = listRange
+
+
+
+

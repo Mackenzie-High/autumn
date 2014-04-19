@@ -1,0 +1,60 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    # Check first yield.
+    (Main::check (call Main::F01));
+
+    # Check second yield.
+    (Main::check (call Main::F01));
+
+    # Check third yield.
+    (Main::check (call Main::F01));
+
+    # Check return.
+    (Main::check (call Main::F01));
+
+    # Check return.
+    (Main::check (call Main::F01));
+}
+
+defun F01() : List
+{
+    val V01 = [100, 200, 300];
+    val V02 = (field Byte::MAX_VALUE);
+    val V03 = 0B;
+    val V04 = (field Short::MAX_VALUE);
+    val V05 = 0S;
+    val V06 = (field Integer::MAX_VALUE);
+    val V07 = 0;
+    val V08 = (field Long::MAX_VALUE);
+    val V09 = 0L;
+    val V10 = (field Float::MAX_VALUE);
+    val V11 = 0.0F;
+    val V12 = (field Double::MAX_VALUE);
+    val V13 = 0.0;
+
+    yield [V01, V02, V03, V04, V05, V06, V07, V08, V09, V10, V11, V12, V13];
+    yield [V01, V02, V03, V04, V05, V06, V07, V08, V09, V10, V11, V12, V13];
+    yield [V01, V02, V03, V04, V05, V06, V07, V08, V09, V10, V11, V12, V13];
+
+    return [V01, V02, V03, V04, V05, V06, V07, V08, V09, V10, V11, V12, V13];
+}
+
+defun check(state : List) : void
+{
+    assert (state.get 0)  == [100, 200, 300];
+    assert (state.get 1)  == (field Byte::MAX_VALUE);
+    assert (state.get 2)  == 0B;
+    assert (state.get 3)  == (field Short::MAX_VALUE);
+    assert (state.get 4)  == 0S;
+    assert (state.get 5)  == (field Integer::MAX_VALUE);
+    assert (state.get 6)  == 0;
+    assert (state.get 7)  == (field Long::MAX_VALUE);
+    assert (state.get 8)  == 0L;
+    assert (state.get 9)  == (field Float::MAX_VALUE);
+    assert (state.get 10) == 0.0F;
+    assert (state.get 11)  == (field Double::MAX_VALUE);
+    assert (state.get 12) == 0.0;
+}

@@ -1,0 +1,37 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    # Note: The loop is used to detect operand-stack leakage.
+
+    var i = 0;
+
+    while(i < 25000)
+    {
+        var value_Z = true;
+        var value_C = 77C;
+        var value_B = 17B;
+        var value_S = 17S;
+        var value_I = 17;
+        var value_J = 17L;
+        var value_F = 17.0F;
+        var value_D = 17.0;
+        var value_T = "Soi";
+
+        assert (value_Z as String) == "true";
+        assert (value_C as String) == "M";
+        assert (value_B as String) == "17";
+        assert (value_S as String) == "17";
+        assert (value_I as String) == "17";
+        assert (value_J as String) == "17";
+
+        assert ((value_F as int) as String) == "17";
+        assert ((value_D as int) as String) == "17";
+
+        assert (value_T as String) == "Soi";
+
+        let i = i + 1;
+    }
+}
+

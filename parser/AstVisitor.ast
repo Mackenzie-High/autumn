@@ -1,0 +1,2054 @@
+
+# TODO: 
+# 1. Anonymous Modules (Also, anonymous-modules with no functions should not generate bytecode.)
+# 2. Annotations can have enum-constants as arguments. 
+
+
+
+
+output "src/high/mackenzie/autumn/lang/compiler/parser/AstBuilder.java";
+
+package high.mackenzie.autumn.lang.compiler.parser;
+
+# Package Imports
+import autumn.lang.compiler;
+import autumn.lang.compiler.ast.literals;
+import autumn.lang.compiler.ast.commons;
+import autumn.lang.compiler.ast.nodes;
+
+# Class Imports
+import java.io.File;
+import high.mackenzie.snowflake.ITreeNode;
+import high.mackenzie.autumn.lang.compiler.parser.Utils;
+
+
+header "/media/disk/bin/ast_generator/example1/header.txt";
+
+doc This class is used to convert a parse-tree to an abstract-syntax-tree. 
+
+returns Module; 
+
+
+###################################################################################################
+# Modules
+###################################################################################################
+
+rule module
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createModule();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+
+  # Retrieve the newly created module.
+  module : IConstruct = call builder.pop();
+
+  # Push the module onto the visitor's stack, so that it will be returned. 
+  push(module);
+}
+
+###################################################################################################
+# Directives --> Module
+###################################################################################################
+
+rule module_directive
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createDirectiveModule();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+
+  # Merge the upper stack with the next lower stack.
+  call builder.popStack();
+}
+
+rule name_of_anonymous_module
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # The builder expects null on the stack.
+  call builder.pushNull();
+}
+
+###################################################################################################
+# Directives --> Import
+###################################################################################################
+
+rule import_directive
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createDirectiveImport();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+
+  # Merge the upper stack with the next lower stack.
+  call builder.popStack();
+}
+
+###################################################################################################
+# Annotations -> Annotation List
+###################################################################################################
+
+rule annotation_list
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createAnnotationList();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+
+  # Merge the upper stack with the next lower stack.
+  call builder.popStack();
+}
+
+###################################################################################################
+# Annotations -> Annotation 
+###################################################################################################
+
+rule annotation
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createAnnotation();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+
+  # Merge the upper stack with the next lower stack.
+  call builder.popStack();
+}
+
+###################################################################################################
+# Exceptions --> Definition
+###################################################################################################
+
+rule annotation_definition
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createDefinitionAnnotation();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+
+  # Merge the upper stack with the next lower stack.
+  call builder.popStack();
+}
+
+###################################################################################################
+# Exceptions --> Definition
+###################################################################################################
+
+rule exception_definition
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createDefinitionException();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+
+  # Merge the upper stack with the next lower stack.
+  call builder.popStack();
+}
+
+###################################################################################################
+# Enum --> Definition
+###################################################################################################
+
+rule enum_definition
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createDefinitionEnum();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+
+  # Merge the upper stack with the next lower stack.
+  call builder.popStack();
+}
+
+###################################################################################################
+# Enum --> Constant
+###################################################################################################
+
+rule enum_constant
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createDefinitionEnumConstant();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+
+  # Merge the upper stack with the next lower stack.
+  call builder.popStack();
+}
+
+###################################################################################################
+# Designs --> Definition
+###################################################################################################
+
+rule design_definition
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createDefinitionDesign();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+
+  # Merge the upper stack with the next lower stack.
+  call builder.popStack();
+}
+
+###################################################################################################
+# Designs --> Property
+###################################################################################################
+
+rule property
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createDefinitionDesignProperty();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+
+  # Merge the upper stack with the next lower stack.
+  call builder.popStack();
+}
+
+###################################################################################################
+# Designs --> Method
+###################################################################################################
+
+rule method
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createDefinitionDesignMethod();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+
+  # Merge the upper stack with the next lower stack.
+  call builder.popStack();
+}
+
+###################################################################################################
+# Functions --> Definition
+###################################################################################################
+
+rule function_definition
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createDefinitionFunction();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+
+  # Merge the upper stack with the next lower stack.
+  call builder.popStack();
+}
+
+###################################################################################################
+# Statements --> Sequence
+###################################################################################################
+
+rule sequence_statement
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createStatementSequence();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+
+  # Merge the upper stack with the next lower stack.
+  call builder.popStack();
+}
+
+###################################################################################################
+# Statements --> Expression
+###################################################################################################
+
+rule expression_statement
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createStatementExpression();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+
+  # Merge the upper stack with the next lower stack.
+  call builder.popStack();
+}
+
+###################################################################################################
+# Statements --> Nop
+###################################################################################################
+
+rule nop_statement
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createStatementNop();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+
+  # Merge the upper stack with the next lower stack.
+  call builder.popStack();
+}
+
+###################################################################################################
+# Statements --> If-Elif-Else
+###################################################################################################
+
+rule if_statement
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createStatementIf();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+
+  # Merge the upper stack with the next lower stack.
+  call builder.popStack();
+}
+
+###################################################################################################
+# Statements --> When
+###################################################################################################
+
+rule when_statement
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createStatementWhen();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+
+  # Merge the upper stack with the next lower stack.
+  call builder.popStack();
+}
+
+###################################################################################################
+# Statements --> Goto
+###################################################################################################
+
+rule goto_statement
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createStatementGoto();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+
+  # Merge the upper stack with the next lower stack.
+  call builder.popStack();
+}
+
+###################################################################################################
+# Statements --> Marker
+###################################################################################################
+
+rule marker_statement
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createStatementMarker();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+
+  # Merge the upper stack with the next lower stack.
+  call builder.popStack();
+}
+
+###################################################################################################
+# Statements --> Switch
+###################################################################################################
+
+rule switch_statement
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createStatementSwitch();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+
+  # Merge the upper stack with the next lower stack.
+  call builder.popStack();
+}
+
+###################################################################################################
+# Statements --> Exception Handling --> Assert
+###################################################################################################
+
+rule assert_statement
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createStatementAssert();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+
+  # Merge the upper stack with the next lower stack.
+  call builder.popStack();
+}
+
+rule assertion_echo_empty
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # The builder expects null, if the message is unspecified.
+  call builder.pushNull();
+}
+
+###################################################################################################
+# Statements --> Exception Handling --> Throw
+###################################################################################################
+
+rule throw_statement
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createStatementThrow();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+
+  # Merge the upper stack with the next lower stack.
+  call builder.popStack();
+}
+
+###################################################################################################
+# Statements --> Exception Handling --> Try Catch
+###################################################################################################
+
+rule try_catch_statement
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createStatementTryCatch();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+
+  # Merge the upper stack with the next lower stack.
+  call builder.popStack();
+}
+
+rule trycatch_handler
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createComponentExceptionHandler();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+
+  # Merge the upper stack with the next lower stack.
+  call builder.popStack();
+}
+
+###################################################################################################
+# Statements --> Looping --> Break
+###################################################################################################
+
+rule break_statement
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createStatementBreak();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+
+  # Merge the upper stack with the next lower stack.
+  call builder.popStack();
+}
+
+###################################################################################################
+# Statements --> Looping --> Continue
+###################################################################################################
+
+rule continue_statement
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createStatementContinue();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+
+  # Merge the upper stack with the next lower stack.
+  call builder.popStack();
+}
+
+###################################################################################################
+# Statements --> Looping --> Redo
+###################################################################################################
+
+rule redo_statement
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createStatementRedo();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+
+  # Merge the upper stack with the next lower stack.
+  call builder.popStack();
+}
+
+###################################################################################################
+# Statements --> Looping --> While
+###################################################################################################
+
+rule while_statement
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createStatementWhile();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+
+  # Merge the upper stack with the next lower stack.
+  call builder.popStack();
+}
+
+###################################################################################################
+# Statements --> Looping --> Until
+###################################################################################################
+
+rule until_statement
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createStatementUntil();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+
+  # Merge the upper stack with the next lower stack.
+  call builder.popStack();
+}
+
+###################################################################################################
+# Statements --> Looping --> Do Until
+###################################################################################################
+
+rule do_until_trigger
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createStatementDoUntil();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+
+  # Merge the upper stack with the next lower stack.
+  call builder.popStack();
+}
+
+###################################################################################################
+# Statements --> Looping --> Do While
+###################################################################################################
+
+rule do_while_trigger
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createStatementDoWhile();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+
+  # Merge the upper stack with the next lower stack.
+  call builder.popStack();
+}
+
+###################################################################################################
+# Statements --> Looping --> For
+###################################################################################################
+
+rule for_statement
+{ 
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createStatementFor();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+
+  # Merge the upper stack with the next lower stack.
+  call builder.popStack();
+}
+
+###################################################################################################
+# Statements --> Looping --> For Each
+###################################################################################################
+
+rule foreach_statement
+{ 
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createStatementForeach();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+
+  # Merge the upper stack with the next lower stack.
+  call builder.popStack();
+}
+
+###################################################################################################
+# Statements --> Variables --> Var
+###################################################################################################
+
+rule var_statement
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createStatementVar();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+
+  # Merge the upper stack with the next lower stack.
+  call builder.popStack();
+}
+
+###################################################################################################
+# Statements --> Variables --> Val
+###################################################################################################
+
+rule val_statement
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createStatementVal();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+
+  # Merge the upper stack with the next lower stack.
+  call builder.popStack();
+}
+
+###################################################################################################
+# Statements --> Variables --> Let
+###################################################################################################
+
+rule let_statement
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createStatementLet();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+
+  # Merge the upper stack with the next lower stack.
+  call builder.popStack();
+}
+
+###################################################################################################
+# Statements --> Returns --> Void
+###################################################################################################
+
+rule return_void_statement
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createStatementReturnVoid();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+
+  # Merge the upper stack with the next lower stack.
+  call builder.popStack();
+}
+
+###################################################################################################
+# Statements --> Returns --> Value
+###################################################################################################
+
+rule return_value_statement
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createStatementReturnValue();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+
+  # Merge the upper stack with the next lower stack.
+  call builder.popStack();
+}
+
+###################################################################################################
+# Statements --> Yields --> Void
+###################################################################################################
+
+rule yield_void_statement
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createStatementYieldVoid();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+
+  # Merge the upper stack with the next lower stack.
+  call builder.popStack();
+}
+
+###################################################################################################
+# Statements --> Yields --> Value
+###################################################################################################
+
+rule yield_value_statement
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createStatementYieldValue();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+
+  # Merge the upper stack with the next lower stack.
+  call builder.popStack();
+}
+
+###################################################################################################
+# Statements --> Returns --> Recur
+###################################################################################################
+
+rule recur_statement
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createStatementRecur();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+
+  # Merge the upper stack with the next lower stack.
+  call builder.popStack();
+}
+
+###################################################################################################
+# Statements --> Setter
+###################################################################################################
+
+rule setter_statement
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createStatementSetter();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+
+  # Merge the upper stack with the next lower stack.
+  call builder.popStack();
+}
+
+###################################################################################################
+# Statements --> Getter
+###################################################################################################
+
+rule getter_statement
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createStatementGetter();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+
+  # Merge the upper stack with the next lower stack.
+  call builder.popStack();
+}
+
+###################################################################################################
+# Statements --> Method
+###################################################################################################
+
+rule method_statement
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createStatementMethod();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+
+  # Merge the upper stack with the next lower stack.
+  call builder.popStack();
+}
+
+###################################################################################################
+# Expressions --> Datums --> Boolean
+###################################################################################################
+
+rule boolean_datum
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Extract the value from the parse-tree node. 
+  value : boolean = call Utils.extractBooleanValue($node);
+
+  # Create the AST node.
+  call builder.createDatum(value);
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+}
+
+###################################################################################################
+# Expressions --> Datums --> Char
+###################################################################################################
+
+rule char_datum
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Extract the value from the parse-tree node. 
+  value : CharLiteral = call Utils.extractCharValue($node);
+
+  # Create the AST node.
+  call builder.createDatum(value);
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+}
+
+###################################################################################################
+# Expressions --> Datums --> Byte
+###################################################################################################
+
+rule byte_datum
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Extract the value from the parse-tree node. 
+  value : ByteLiteral = call Utils.extractByteValue($node);
+
+  # Create the AST node.
+  call builder.createDatum(value);
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+}
+
+###################################################################################################
+# Expressions --> Datums --> Short
+###################################################################################################
+
+rule short_datum
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Extract the value from the parse-tree node. 
+  value : ShortLiteral = call Utils.extractShortValue($node);
+
+  # Create the AST node.
+  call builder.createDatum(value);
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+}
+
+###################################################################################################
+# Expressions --> Datums --> Int
+###################################################################################################
+
+rule int_datum
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Extract the value from the parse-tree node. 
+  value : IntLiteral = call Utils.extractIntValue($node);
+
+  # Create the AST node.
+  call builder.createDatum(value);
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+}
+
+###################################################################################################
+# Expressions --> Datums --> Long
+###################################################################################################
+
+rule long_datum
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Extract the value from the parse-tree node. 
+  value : LongLiteral = call Utils.extractLongValue($node);
+
+  # Create the AST node.
+  call builder.createDatum(value);
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+}
+
+###################################################################################################
+# Expressions --> Datums --> Float
+###################################################################################################
+
+rule float_datum
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Extract the value from the parse-tree node. 
+  value : FloatLiteral = call Utils.extractFloatValue($node);
+
+  # Create the AST node.
+  call builder.createDatum(value);
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+}
+
+###################################################################################################
+# Expressions --> Datums --> Double
+###################################################################################################
+
+rule double_datum
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Extract the value from the parse-tree node. 
+  value : DoubleLiteral = call Utils.extractDoubleValue($node);
+
+  # Create the AST node.
+  call builder.createDatum(value);
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+}
+
+###################################################################################################
+# Expressions --> Datums --> String
+###################################################################################################
+
+rule string_datum
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Extract the value from the parse-tree node. 
+  value : String = call Utils.getString();
+
+  # Create the AST node.
+  call builder.createDatum(value);
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+}
+
+###################################################################################################
+# Expressions --> Datums --> Variable
+###################################################################################################
+
+rule variable_datum
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createDatumVariable();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+}
+
+###################################################################################################
+# Expressions --> Datums --> Null
+###################################################################################################
+
+rule null_datum
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createDatumNull();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+}
+
+###################################################################################################
+# Expressions --> Datums --> Class
+###################################################################################################
+
+rule class_datum
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createDatumClass();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+}
+
+###################################################################################################
+# Expressions --> Operators --> Negate
+###################################################################################################
+
+rule negate_operation
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createOperationNegate();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+}
+
+###################################################################################################
+# Expressions --> Operators --> Not
+###################################################################################################
+
+rule not_operation
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createOperationNot();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+}
+
+###################################################################################################
+# Expressions --> Operators --> Divide
+###################################################################################################
+
+rule divide_operation
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createOperationDivide();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+}
+
+###################################################################################################
+# Expressions --> Operators --> Modulo
+###################################################################################################
+
+rule modulo_operation
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createOperationModulo();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+}
+
+###################################################################################################
+# Expressions --> Operators --> Multiply
+###################################################################################################
+
+rule multiply_operation
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createOperationMultiply();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+}
+
+###################################################################################################
+# Expressions --> Operators --> Add
+###################################################################################################
+
+rule add_operation
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createOperationAdd();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+}
+
+###################################################################################################
+# Expressions --> Operators --> Concat
+###################################################################################################
+
+rule concat_operation
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createOperationConcat();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+}
+
+###################################################################################################
+# Expressions --> Operators --> Subtract
+###################################################################################################
+
+rule subtract_operation
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createOperationSubtract();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+}
+
+###################################################################################################
+# Expressions --> Operators --> Identity Equality
+###################################################################################################
+
+rule identity_equals_operation
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createOperationIdentityEquals();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+}
+
+###################################################################################################
+# Expressions --> Operators --> Identity Inequality
+###################################################################################################
+
+rule identity_not_equals_operation
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createOperationIdentityNotEquals();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+}
+
+###################################################################################################
+# Expressions --> Operators --> Equality
+###################################################################################################
+
+rule equals_operation
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createOperationEquals();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+}
+
+###################################################################################################
+# Expressions --> Operators --> Inequality
+###################################################################################################
+
+rule not_equals_operation
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createOperationNotEquals();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+}
+
+###################################################################################################
+# Expressions --> Operators --> Less Than OR Equals
+###################################################################################################
+
+rule less_or_equals_operation
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createOperationLessThanOrEquals();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+}
+
+###################################################################################################
+# Expressions --> Operators --> Greater Than OR Equals
+###################################################################################################
+
+rule greater_or_equals_operation
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createOperationGreaterThanOrEquals();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+}
+
+###################################################################################################
+# Expressions --> Operators --> Less Than
+###################################################################################################
+
+rule less_operation
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createOperationLessThan();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+}
+
+###################################################################################################
+# Expressions --> Operators --> Greater Than
+###################################################################################################
+
+rule greater_operation
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createOperationGreaterThan();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+}
+
+###################################################################################################
+# Expressions --> Operators --> Logical-AND
+###################################################################################################
+
+rule and_operation
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createOperationAnd();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+}
+
+###################################################################################################
+# Expressions --> Operators --> Logical-OR
+###################################################################################################
+
+rule or_operation
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createOperationOr();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+}
+
+###################################################################################################
+# Expressions --> Operators --> Logical-XOR
+###################################################################################################
+
+rule xor_operation
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createOperationXor();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+}
+
+###################################################################################################
+# Expressions --> Operators --> Short-Circuit Logical-AND
+###################################################################################################
+
+rule short_circuit_and_operation
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createOperationShortCircuitAnd();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+}
+
+###################################################################################################
+# Expressions --> Operators --> Short-Circuit Logical-OR
+###################################################################################################
+
+rule short_circuit_or_operation
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createOperationShortCircuitOr();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+}
+
+###################################################################################################
+# Expressions --> Operators --> Null Coalescing
+###################################################################################################
+
+rule null_coalescing_operation
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createOperationNullCoalescing();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+}
+
+###################################################################################################
+# Expressions --> Operators --> As
+###################################################################################################
+
+rule as_operation
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createOperationAs();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+}
+
+###################################################################################################
+# Expressions --> Operators --> Null Coalescing
+###################################################################################################
+
+rule is_operation
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createOperationIs();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+}
+
+###################################################################################################
+# Expressions --> Dispatch
+###################################################################################################
+
+rule dispatch_expression
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createExpressionDispatch();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+
+  # Merge the upper stack with the next lower stack.
+  call builder.popStack();
+}
+
+###################################################################################################
+# Expressions --> Object Orientation --> New
+###################################################################################################
+
+rule new_expression
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createExpressionNew();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+
+  # Merge the upper stack with the next lower stack.
+  call builder.popStack();
+}
+
+###################################################################################################
+# Expressions --> Object Orientation --> Call Method
+###################################################################################################
+
+rule call_method_expression
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createExpressionCallMethod();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+
+  # Merge the upper stack with the next lower stack.
+  call builder.popStack();
+}
+
+###################################################################################################
+# Expressions --> Object Orientation --> Call Static Method
+###################################################################################################
+
+rule call_static_method_expression
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createExpressionCallStaticMethod();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+
+  # Merge the upper stack with the next lower stack.
+  call builder.popStack();
+}
+
+###################################################################################################
+# Expressions --> Object Orientation --> Set Field
+###################################################################################################
+
+rule set_field_expression
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createExpressionSetField();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+
+  # Merge the upper stack with the next lower stack.
+  call builder.popStack();
+}
+
+###################################################################################################
+# Expressions --> Object Orientation --> Set Static Field
+###################################################################################################
+
+rule set_static_expression
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createExpressionSetStaticField();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+
+  # Merge the upper stack with the next lower stack.
+  call builder.popStack();
+}
+
+###################################################################################################
+# Expressions --> Object Orientation --> Get Field
+###################################################################################################
+
+rule get_field_expression
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createExpressionGetField();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+
+  # Merge the upper stack with the next lower stack.
+  call builder.popStack();
+}
+
+###################################################################################################
+# Expressions --> Object Orientation --> Get Static Field
+###################################################################################################
+
+rule get_static_expression
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createExpressionGetStaticField();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+
+  # Merge the upper stack with the next lower stack.
+  call builder.popStack();
+}
+
+###################################################################################################
+# Expressions --> Object Orientation --> Instance Of
+###################################################################################################
+
+rule instanceof_expression
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createExpressionInstanceOf();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+
+  # Merge the upper stack with the next lower stack.
+  call builder.popStack();
+}
+
+###################################################################################################
+# Expressions --> Object Orientation --> Create
+###################################################################################################
+
+rule create_expression
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createExpressionCreate();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+
+  # Merge the upper stack with the next lower stack.
+  call builder.popStack();
+}
+
+###################################################################################################
+# Expressions --> List Literal
+###################################################################################################
+
+rule list_expression
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createExpressionList();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+
+  # Merge the upper stack with the next lower stack.
+  call builder.popStack();
+}
+
+###################################################################################################
+# Expressions --> Delegate
+###################################################################################################
+
+rule delegate_expression
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createExpressionDelegate();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+
+  # Merge the upper stack with the next lower stack.
+  call builder.popStack();
+}
+
+###################################################################################################
+# Expressions --> Delegate - Simplified
+###################################################################################################
+
+rule delegate_expression_simplified
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createExpressionDelegate();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+
+  # Merge the upper stack with the next lower stack.
+  call builder.popStack();
+}
+
+###################################################################################################
+# Expressions --> Funcall
+###################################################################################################
+
+rule funcall_expression
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createExpressionFuncall();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+
+  # Merge the upper stack with the next lower stack.
+  call builder.popStack();
+}
+
+###################################################################################################
+# Expressions --> Locals
+###################################################################################################
+
+rule locals_expression
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createExpressionLocals();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+
+  # Merge the upper stack with the next lower stack.
+  call builder.popStack();
+}
+
+###################################################################################################
+# Expressions --> Sequence
+###################################################################################################
+
+rule progn_expression
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createExpressionProgn();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+
+  # Merge the upper stack with the next lower stack.
+  call builder.popStack();
+}
+
+###################################################################################################
+# Expressions --> Ternary Conditional
+###################################################################################################
+
+rule ternary_conditional_expression
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createExpressionTernaryConditional();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+
+  # Merge the upper stack with the next lower stack.
+  call builder.popStack();
+}
+
+###################################################################################################
+# Components --> Conditional Case
+###################################################################################################
+
+rule conditional_case
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createComponentConditionalCase();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+
+  # Merge the upper stack with the next lower stack.
+  call builder.popStack();
+}
+
+###################################################################################################
+# Components --> Enum Case
+###################################################################################################
+
+rule enum_case
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createComponentEnumCase();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+
+  # Merge the upper stack with the next lower stack.
+  call builder.popStack();
+}
+
+###################################################################################################
+# Components --> Name
+###################################################################################################
+
+rule name_id
+{
+  # Create the AST node.
+  call Utils.createComponentName($node);
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+}
+
+###################################################################################################
+# Components --> Type Specifier
+###################################################################################################
+
+rule type
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call Utils.createComponentTypeSpecifier($node);
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+}
+
+rule type_namespace_explicit
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createComponentNamespace();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+
+  # Merge the upper stack with the next lower stack.
+  call builder.popStack();
+}
+
+rule type_namespace_implicit
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # The builder expects null on the stack.
+  call builder.pushNull();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+}
+
+###################################################################################################
+# Components --> Namespace
+###################################################################################################
+
+rule namespace_explicit
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createComponentNamespace();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+
+  # Merge the upper stack with the next lower stack.
+  call builder.popStack();
+}
+
+rule namespace_implicit
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # The builder expects null on the stack.
+  call builder.pushNull();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+}
+
+###################################################################################################
+# Components --> Variable
+###################################################################################################
+
+rule variable
+{
+  # Create the AST node.
+  call Utils.createComponentVariable($node);
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+}
+
+###################################################################################################
+# Components --> Label
+###################################################################################################
+
+rule label
+{
+  # Create the AST node.
+  call Utils.createComponentLabel($node);
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+}
+
+###################################################################################################
+# Components --> Formal Parameter List
+###################################################################################################
+
+rule formals
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createComponentFormalParameterList();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+
+  # Merge the upper stack with the next lower stack.
+  call builder.popStack();
+}
+
+###################################################################################################
+# Components --> Formal Parameter
+###################################################################################################
+
+rule parameter
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createComponentFormalParameter();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+
+  # Merge the upper stack with the next lower stack.
+  call builder.popStack();
+}
+
+###################################################################################################
+# Trigger --> Static Member Access --> Implicit
+###################################################################################################
+
+rule static_owner_implicit
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # The builder expects null on the stack.
+  call builder.pushNull();
+}
+
+###################################################################################################
+# Trigger --> Push Stack
+###################################################################################################
+
+rule PS
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.pushStack();  
+}
+
+###################################################################################################
+# Value --> String Value
+###################################################################################################
+
+rule string_value
+{
+  # Store the string for later use.
+  call Utils.storeStringValue($node);
+}
+

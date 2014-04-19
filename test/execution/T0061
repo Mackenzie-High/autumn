@@ -1,0 +1,25 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+
+    var x = 17;
+
+    try
+    {
+        throw (new Throwable);
+        let x = 21;
+    }
+    catch(e1 : RuntimeException)
+    {
+        assert false;
+    }
+    catch(e2 : Throwable)
+    {
+        assert x == 17;
+        return;
+    }
+
+    assert false echo "Execution should not reach this point";
+}

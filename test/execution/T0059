@@ -1,0 +1,78 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    var function = (a : boolean,
+                    b : boolean,
+                    c : boolean,
+                    d : char,
+                    e : byte,
+                    f : short,
+                    g : int,
+                    h : long,
+                    i : float,
+                    j : double,
+                    k : String) => ([a, b, c, d, e, f, g, h, i, j, k]);
+
+    var list = (Main::F function);
+
+    assert (list.size) == 11;
+
+    assert (list.get 0) == true;
+    assert (list.get 1) == false;
+    assert (list.get 2) == true;
+    assert (list.get 3) == 'M';
+    assert (list.get 4) == 13B;
+    assert (list.get 5) == 17S;
+    assert (list.get 6) == 21;
+    assert (list.get 7) == 23L;
+    assert ((list.get 8) as float) > 26.0F;
+    assert ((list.get 8) as float) < 28.0F;
+    assert ((list.get 9) as double) > 30.0;
+    assert ((list.get 9) as double) < 32.0;
+    assert (list.get 10) == "Mercury";
+
+    assert ((list.get 0).getClass)  == (class Boolean);
+    assert ((list.get 1).getClass)  == (class Boolean);
+    assert ((list.get 2).getClass)  == (class Boolean);
+    assert ((list.get 3).getClass)  == (class Character);
+    assert ((list.get 4).getClass)  == (class Byte);
+    assert ((list.get 5).getClass)  == (class Short);
+    assert ((list.get 6).getClass)  == (class Integer);
+    assert ((list.get 7).getClass)  == (class Long);
+    assert ((list.get 8).getClass)  == (class Float);
+    assert ((list.get 9).getClass)  == (class Double);
+    assert ((list.get 10).getClass) == (class String);
+}
+
+defun F(function : Functor) : List
+{
+    # The loop is used to detect for operand-stack leakage.
+
+    var result = [] as List;
+
+    var i = 0;
+
+    until(i == 25000)
+    {
+        let result = (funcall function,
+                              true,
+                              false,
+                              true,
+                              'M',
+                              13B,
+                              17S,
+                              21,
+                              23L,
+                              27.0F,
+                              31.0,
+                              "Mercury") as List;
+
+        let i = i + 1;
+    }
+
+    assert i == 25000;
+
+    return result;
+}

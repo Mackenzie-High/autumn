@@ -1,0 +1,23 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    // Variable X is a primitive int.
+    var X = 100;
+
+    // Variable N is a java.lang.Integer.
+    val N = 250 as Integer;
+
+    assert ((locals).typeOf "X") == (class int);
+    assert ((locals).typeOf "N") == (class Integer);
+
+    // Assign an Integer to a primitive int variable.
+    // This requires auto-unboxing.
+    let X = 250;
+
+    assert X == 250;
+
+    assert ((locals).typeOf "X") == (class int);
+    assert ((locals).typeOf "N") == (class Integer);
+}

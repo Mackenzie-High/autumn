@@ -1,0 +1,718 @@
+module * in program;
+module * in program.xoo;
+module * in program.xoo.moo;
+module * in program.xoo.moo.boo;
+module Main in program;
+module Main in program.xoo;
+module Main in program.xoo.moo;
+module Main in program.xoo.moo.boo;
+
+import List;
+import List[];
+import List[][];
+import List[][][];
+import java.util.Map;
+import java.util.Map[];
+import java.util.Map[][];
+import java.util.Map[][][];
+
+@Anno01A
+@Anno02A
+@Anno03A
+annotation Anno17;
+
+@Anno01B
+@Anno02B
+@Anno03B
+annotation Anno17;
+
+@Anno04A
+@Anno05A
+@Anno06A
+exception Goo extends Boo;
+
+@Anno04B
+@Anno05B
+@Anno06B
+exception Goo extends Boo;
+
+@Anno07
+@Anno08
+@Anno09
+enum Moo
+{
+    @Anno10
+    @Anno11
+    @Anno12
+    constant XOO;
+
+    @Anno13
+    @Anno14
+    @Anno15
+    constant YOO;
+
+    @Anno16
+    @Anno17
+    @Anno18
+    constant ZOO;
+}
+
+enum Moo
+{
+    constant AOO;
+
+    constant BOO;
+
+    constant XOO;
+}
+
+@Anno19
+@Anno20
+@Anno21
+struct Person : Creature & Employable & Taxable
+{
+    @Anno22
+    @Anno23
+    @Anno24
+    data name : String;
+
+    @Anno25
+    @Anno26
+    @Anno27
+    data age : int;
+}
+
+struct Employee
+{
+    data salary : int;
+}
+
+@Anno37
+@Anno38
+@Anno39
+defun main (args : String[]) : void
+{
+    val xoo = 'A';
+
+    val xoo = 'Z';
+
+    val xoo = 955C;
+
+    val xoo = 123B;
+
+    val xoo = 123S;
+
+    val xoo = 123;
+
+    val xoo = 123L;
+
+    val xoo = 123.456F;
+
+    val xoo = 123.456;
+
+    nop;
+
+    val xoo = -123B;
+
+    val xoo = -123S;
+
+    val xoo = -123;
+
+    val xoo = -123L;
+
+    val xoo = -123.456F;
+
+    val xoo = -123.456;
+
+    nop;
+
+    val xoo = 123.456e789F;
+
+    val xoo = 123.456e-789F;
+
+    val xoo = 123.456e789;
+
+    val xoo = 123.456e-789;
+
+    nop;
+
+    val xoo = '''''';
+
+    val xoo = '''1''';
+
+    val xoo = '''12''';
+
+    val xoo = '''123''';
+
+    val xoo = '''''';
+
+    val xoo = '''1''';
+
+    val xoo = '''12''';
+
+    val xoo = '''123''';
+
+    nop;
+
+    val xoo = true;
+
+    val xoo = false;
+
+    val xoo = null;
+
+    val xoo = (class String);
+
+    val xoo = moo;
+
+    nop;
+
+    ((1 + 2) + 3);
+
+    nop;
+
+    val xoo = (- moo);
+
+    val xoo = (- (- moo));
+
+    val xoo = (- (- (- moo)));
+
+    val xoo = (! moo);
+
+    val xoo = (! (! moo));
+
+    val xoo = (! (! (! moo)));
+
+    val xoo = (! (- (! (- (! (- moo))))));
+
+    val xoo = (- (! (- (! (- (! moo))))));
+
+    nop;
+
+    val xoo = ((((12 / 34) / 56) / 78) / 90);
+
+    val xoo = ((((12 % 34) % 56) % 78) % 90);
+
+    val xoo = ((((12 * 34) * 56) * 78) * 90);
+
+    val xoo = ((((12 + 34) + 56) + 78) + 90);
+
+    val xoo = ((((12 - 34) - 56) - 78) - 90);
+
+    val xoo = ((((12 .. 34) .. 56) .. 78) .. 90);
+
+    val xoo = ((((12 === 34) === 56) === 78) === 90);
+
+    val xoo = ((((12 !== 34) !== 56) !== 78) !== 90);
+
+    val xoo = ((((12 == 34) == 56) == 78) == 90);
+
+    val xoo = ((((12 != 34) != 56) != 78) != 90);
+
+    val xoo = ((((12 <= 34) <= 56) <= 78) <= 90);
+
+    val xoo = ((((12 >= 34) >= 56) >= 78) >= 90);
+
+    val xoo = ((((12 < 34) < 56) < 78) < 90);
+
+    val xoo = ((((12 > 34) > 56) > 78) > 90);
+
+    val xoo = ((((12 && 34) && 56) && 78) && 90);
+
+    val xoo = ((((12 || 34) || 56) || 78) || 90);
+
+    val xoo = ((((12 & 34) & 56) & 78) & 90);
+
+    val xoo = ((((12 | 34) | 56) | 78) | 90);
+
+    val xoo = ((((12 ^ 34) ^ 56) ^ 78) ^ 90);
+
+    val xoo = ((((12 ?? 34) ?? 56) ?? 78) ?? 90);
+
+    val xoo = (((12 as String) as String) as String);
+
+    val xoo = (((12 is String) is String) is String);
+
+    nop;
+
+    val xoo = ((12 / 34) + (56 / 78));
+
+    val xoo = ((12 % 34) + (56 % 78));
+
+    val xoo = ((12 * 34) + (56 * 78));
+
+    val xoo = ((12 / 34) - (56 / 78));
+
+    val xoo = ((12 % 34) - (56 % 78));
+
+    val xoo = ((12 * 34) - (56 * 78));
+
+    val xoo = ((12 - 34) === (56 - 78));
+
+    val xoo = ((12 - 34) !== (56 - 78));
+
+    val xoo = ((12 - 34) == (56 - 78));
+
+    val xoo = ((12 - 34) != (56 - 78));
+
+    val xoo = ((12 - 34) >= (56 - 78));
+
+    val xoo = ((12 - 34) <= (56 - 78));
+
+    val xoo = ((12 - 34) > (56 - 78));
+
+    val xoo = ((12 - 34) < (56 - 78));
+
+    val xoo = ((12 == 34) && (56 == 78));
+
+    val xoo = ((12 == 34) && (56 == 78));
+
+    val xoo = ((12 == 34) && (56 == 78));
+
+    val xoo = ((12 == 34) && (56 == 78));
+
+    val xoo = ((12 == 34) && (56 == 78));
+
+    val xoo = ((12 & 34) ?? (56 & 78));
+
+    val xoo = ((12 ?? 34) as String);
+
+    val xoo = ((12 ?? 34) as String);
+
+    nop;
+
+    var xoo = (((12 / 34) / 56) / 78);
+
+    var xoo = (((12 / 34) % 56) / 78);
+
+    var xoo = (((12 / 34) * 56) / 78);
+
+    var xoo = (((12 % 34) / 56) % 78);
+
+    var xoo = (((12 % 34) % 56) % 78);
+
+    var xoo = (((12 % 34) * 56) % 78);
+
+    var xoo = (((12 * 34) / 56) * 78);
+
+    var xoo = (((12 * 34) % 56) * 78);
+
+    var xoo = (((12 * 34) * 56) * 78);
+
+    var xoo = (((12 + 34) + 56) + 78);
+
+    var xoo = (((12 + 34) - 56) + 78);
+
+    var xoo = ((((((((1 === 2) !== 3) == 4) != 5) >= 6) <= 7) > 8) < 9);
+
+    var xoo = ((((((((1 < 2) > 3) <= 4) >= 5) != 6) == 7) !== 8) === 9);
+
+    var xoo = (((((1 && 2) || 3) & 4) | 5) ^ 6);
+
+    var xoo = (((((1 ^ 2) | 3) & 4) || 5) && 6);
+
+    var xoo = ((12 as String) is Object);
+
+    var xoo = ((12 is String) as Object);
+
+    nop;
+
+    val xoo = ((- (- (- moo))) - (- (- (- zoo))));
+
+    nop;
+
+    val xoo = [  ];
+
+    val xoo = [ 12 ];
+
+    val xoo = [ 12, 34 ];
+
+    val xoo = [ 12, 34, 56 ];
+
+    nop;
+
+    val xoo = () => Goo::moo;
+
+    val xoo = (aoo : int) => Goo::moo;
+
+    val xoo = (aoo : int, boo : int) => Goo::moo;
+
+    nop;
+
+    val xoo = (delegate Goo::moo);
+
+    nop;
+
+    val xoo = (funcall functor);
+
+    val xoo = (funcall functor, 12);
+
+    val xoo = (funcall functor, 12, 34);
+
+    val xoo = (funcall functor, 12, 34, 56);
+
+    nop;
+
+    val xoo = (new Goo);
+
+    val xoo = (new Goo 12);
+
+    val xoo = (new Goo 12, 34);
+
+    val xoo = (new Goo 12, 34, 56);
+
+    nop;
+
+    val xoo = (call Goo::boo);
+
+    val xoo = (call Goo::boo 12);
+
+    val xoo = (call Goo::boo 12, 34);
+
+    val xoo = (call Goo::boo 12, 34, 56);
+
+    nop;
+
+    val xoo = (call goo.boo);
+
+    val xoo = (call goo.boo 12);
+
+    val xoo = (call goo.boo 12, 34);
+
+    val xoo = (call goo.boo 12, 34, 56);
+
+    nop;
+
+    val xoo = (dispatch moo);
+
+    val xoo = (dispatch moo 12);
+
+    val xoo = (dispatch moo 12, 34);
+
+    val xoo = (dispatch moo 12, 34, 56);
+
+    nop;
+
+    val xoo = (field barn.moo = hay);
+
+    nop;
+
+    val xoo = (field barn.moo);
+
+    nop;
+
+    val xoo = (field Barn::moo = hay);
+
+    nop;
+
+    val xoo = (field Barn::moo);
+
+    nop;
+
+    val xoo = (instanceof (12 + 34) : String);
+
+    nop;
+
+    val xoo = (create String);
+
+    val xoo = (create String wraps (1 + 2));
+
+    nop;
+
+    val xoo = (if (12 == 34) then 56 else 78);
+
+    nop;
+
+    val xoo = (progn 12);
+
+    val xoo = (progn 12, 34);
+
+    val xoo = (progn 12, 34, 56);
+
+    nop;
+
+    if ((12 == 34))
+    {
+        nop;
+    }
+
+    nop;
+
+    if ((12 == 34))
+    {
+        nop;
+    }
+    elif ((12 == 56))
+    {
+        nop;
+    }
+    elif ((12 == 78))
+    {
+        nop;
+    }
+    else
+    {
+        nop;
+    }
+
+    nop;
+
+    if ((12 == 34))
+    {
+        nop;
+    }
+    else
+    {
+        nop;
+    }
+
+    nop;
+
+    break;
+
+    continue;
+
+    redo;
+
+    nop;
+
+    while ((12 == 34))
+    {
+        nop;
+    }
+
+    nop;
+
+    until ((12 == 34))
+    {
+        nop;
+    }
+
+    nop;
+
+    do
+    {
+        nop;
+    }
+    while ((12 == 34))
+
+    nop;
+
+    do
+    {
+        nop;
+    }
+    until ((12 == 34))
+
+    nop;
+
+    assert (12 + 34);
+
+    assert (12 + 34) echo (56 + 78);
+
+    nop;
+
+    throw (12 + 34);
+
+    nop;
+
+    var xoo = (12 + 34);
+
+    nop;
+
+    val xoo = (12 + 34);
+
+    nop;
+
+    let xoo = (12 + 34);
+
+    let xoo = (13 + 17);
+
+    nop;
+
+    setter goo.boo => Boo::moo;
+
+    nop;
+
+    getter goo.boo => Boo::moo;
+
+    nop;
+
+    method goo.boo(x : int, y : int) => Boo::moo;
+
+    nop;
+
+    return;
+
+    nop;
+
+    return (12 + 34);
+
+    nop;
+
+    yield;
+
+    nop;
+
+    yield (12 + 34);
+
+    nop;
+
+    recur;
+
+    recur 12;
+
+    recur 12, 34;
+
+    recur 12, 34, 56;
+
+    nop;
+
+    try
+    {
+        nop;
+    }
+    catch (xoo : Exception)
+    {
+        nop;
+    }
+    catch (moo : Throwable)
+    {
+        nop;
+    }
+
+    nop;
+
+    try
+    {
+        nop;
+    }
+    catch (xoo : Exception)
+    {
+        nop;
+    }
+
+    nop;
+
+    for (xoo = 100; (xoo < 500); (xoo + 2))
+    {
+        nop;
+    }
+
+    nop;
+
+    foreach (xoo : String in (12 + 34))
+    {
+        nop;
+    }
+
+    nop;
+
+    (dispatch $);
+
+    (dispatch _);
+
+    (dispatch A);
+
+    (dispatch Z);
+
+    (dispatch a);
+
+    (dispatch z);
+
+    (dispatch A0123456789$_ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz);
+
+    nop;
+
+    val $ = 0;
+
+    val _ = 0;
+
+    val A = 0;
+
+    val Z = 0;
+
+    val a = 0;
+
+    val z = 0;
+
+    val A0123456789$_ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz = 0;
+
+    nop;
+
+    goto Moo;
+
+    nop;
+
+    marker Moo;
+
+    nop;
+
+    when ((x == 5))
+    {
+        return 17;
+    }
+
+    nop;
+
+    switch (x)
+    {
+    }
+
+    nop;
+
+    switch (x)
+    {
+        case E0
+        {
+            nop;
+        }
+
+        case E1
+        {
+            nop;
+        }
+
+        case E2
+        {
+            nop;
+        }
+    }
+
+    nop;
+
+    switch (x)
+    {
+        case E0
+        {
+            nop;
+        }
+
+        case E1
+        {
+            nop;
+        }
+
+        case E2
+        {
+            nop;
+        }
+
+        default
+        {
+            nop;
+        }
+    }
+
+    nop;
+
+    val xoo = (locals);
+}
+
+defun main (aoo : int, boo : int, xoo : int, zoo : int) : void
+{
+    nop;
+}
+
+
+
+

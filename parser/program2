@@ -1,0 +1,17 @@
+
+defun main(args : String[]) : void
+{
+    (call F::println "Hello");
+
+    return;
+}
+
+defun foo() : int
+{
+
+}
+
+defun fum(xoo : int , yoo : long , zoo : String) : int [ ]
+{
+
+}

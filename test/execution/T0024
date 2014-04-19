@@ -1,0 +1,15 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    var x = (new LinkedList);
+
+    do
+    {
+        (call x.add 17);
+    }
+    while((call x.size) != 3)
+
+    assert x == [17, 17, 17];
+}

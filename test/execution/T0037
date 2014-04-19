@@ -1,0 +1,12 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    for(i = 0; i < 0; i + 1)
+    {
+        assert false;
+    }
+
+    assert i == 0;
+}

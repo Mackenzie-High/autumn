@@ -1,0 +1,7 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+
+}

@@ -1,0 +1,23 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    val Z = true;
+    val B = 13B;
+    val S = 17S;
+    val I = 21;
+    val J = 23L;
+    val F = 27.0F;
+    val D = 29.0;
+    val X = "Venus";
+
+    assert Z == true;
+    assert B == 13B;
+    assert S == 17S;
+    assert I == 21;
+    assert J == 23L;
+    assert F == 27.0F;
+    assert D == 29.0;
+    assert X == "Venus";
+}

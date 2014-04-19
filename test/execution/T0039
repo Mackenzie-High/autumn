@@ -1,0 +1,20 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    var x = 0;
+    var list = (new LinkedList);
+
+    for(i = 0; i < 10; i + 1)
+    {
+        let x = x + 17;
+
+        (list.add x);
+    }
+
+    assert i == 10;
+    assert x == 170;
+
+    assert (list.toString) == "[17, 34, 51, 68, 85, 102, 119, 136, 153, 170]";
+}

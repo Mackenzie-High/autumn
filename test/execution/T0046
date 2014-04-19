@@ -1,0 +1,21 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+  val x1 = "123";
+  val x2 = [];
+  val x3 = (new Object);
+
+  assert true == (instanceof x1 : String);
+  assert true == (instanceof x1 : CharSequence);
+  assert true == (instanceof x1 : Object);
+  assert false == (instanceof x1 : List);
+
+  assert true == (instanceof x2 : List);
+  assert false == (instanceof x2 : String);
+
+  assert true == (instanceof x3 : Object);
+  assert false == (instanceof x3 : String);
+  assert false == (instanceof x3 : List);
+}

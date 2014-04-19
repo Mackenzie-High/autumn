@@ -1,0 +1,15 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    assert (50 / 2) == 25;
+    assert (10 % 8) == 2;
+    assert (17 * 5) == 85;
+    assert (50 + 2) == 52;
+    assert (50 - 2) == 48;
+
+    assert (50 == 50) == true;
+    assert (50 == 70) == false;
+
+}

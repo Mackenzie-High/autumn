@@ -1,0 +1,30 @@
+module Main in execution;
+
+import execution.Helpers;
+
+@Start
+defun main (args : String[]) : void
+{
+    assert (call Main::F01) == 10;
+    assert (call Main::F01) == 20;
+    assert (call Main::F01) == 30;
+    assert (call Main::F01) == 40;
+    assert (call Main::F01) == 50;
+    assert (call Main::F01) == 60;
+    assert (call Main::F01) == 70;
+    assert (call Main::F01) == 70;
+    assert (call Main::F01) == 70;
+    assert (call Main::F01) == 70;
+    assert (call Main::F01) == 70;
+}
+
+defun F01() : int
+{
+    yield 10;
+    yield 20;
+    yield 30;
+    yield 40;
+    yield 50;
+    yield 60;
+    return 70;
+}

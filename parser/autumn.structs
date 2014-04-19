@@ -1,0 +1,1876 @@
+header "/media/disk/bin/struct_generator/example1/header.txt";
+
+folder "/media/disk/Code/NetBeansProjects/AutumnCompiler/src/autumn/lang/compiler/ast/nodes/";
+
+package autumn.lang.compiler.ast.nodes;
+
+import java.io.File;
+import autumn.lang.compiler.ast.literals.CharLiteral;
+import autumn.lang.compiler.ast.literals.ByteLiteral;
+import autumn.lang.compiler.ast.literals.ShortLiteral;
+import autumn.lang.compiler.ast.literals.IntLiteral;
+import autumn.lang.compiler.ast.literals.LongLiteral;
+import autumn.lang.compiler.ast.literals.FloatLiteral;
+import autumn.lang.compiler.ast.literals.DoubleLiteral;
+import autumn.lang.compiler.ast.commons.IConstruct;
+import autumn.lang.compiler.ast.commons.IAnnotated;
+import autumn.lang.compiler.ast.commons.IDirective;
+import autumn.lang.compiler.ast.commons.IExpression;
+import autumn.lang.compiler.ast.commons.IStatement;
+import autumn.lang.compiler.ast.commons.IUnaryOperation;
+import autumn.lang.compiler.ast.commons.IBinaryOperation;
+import autumn.lang.compiler.ast.commons.IConversionOperation;
+import autumn.lang.compiler.ast.commons.ConstructList;
+
+doc An instance of this interface is a visitor that can visit the nodes in an Autumn abstract-syntax-tree.
+visitor IAstVisitor;
+
+###################################################################################################
+# Module
+###################################################################################################
+
+doc An instance of this class is an AST node that represents a single module.
+struct Module
+  implement IConstruct;
+
+  doc These are the include-directives that are directly within this module.
+  data include_directives : ConstructList<IncludeDirective> = { new ConstructList() };
+
+  doc These are the use-directives that are directly within this module.
+  data use_directives : ConstructList<UseDirective> = { new ConstructList() };
+
+  doc These are the module-directives that are directly within this module.
+  data module_directives : ConstructList<ModuleDirective> = { new ConstructList() };
+
+  doc These are the import-directives that are directly within this module.
+  data import_directives : ConstructList<ImportDirective> = { new ConstructList() };
+
+  doc These are the annotations declared directly within this module. 
+  data annotations : ConstructList<AnnotationDefinition> = { new ConstructList() };
+
+  doc These are the exceptions declared directly within this module. 
+  data exceptions : ConstructList<ExceptionDefinition> = { new ConstructList() };
+
+  doc These are the enums declared directly within this module. 
+  data enums : ConstructList<EnumDefinition> = { new ConstructList() };
+
+  doc These are the designs declared directly within this module. 
+  data designs : ConstructList<DesignDefinition> = { new ConstructList() };
+
+  doc These are the functions declared directly within this module. 
+  data functions : ConstructList<FunctionDefinition> = { new ConstructList<FunctionDefinition>() };
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Directives --> Include
+###################################################################################################
+
+doc An instance of this class is an AST node that represents a directive that adds another source-file to the compilation-unit. 
+struct IncludeDirective
+  implement IDirective;
+
+  doc This is the path to the file to add to the compilation-unit.
+  data file : File;
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Directives --> Use
+###################################################################################################
+
+doc An instance of this class is an AST node that represents a directive that declares a dependency. 
+struct UseDirective
+  implement IDirective;
+
+  doc This is the path to the file that is the dependency.
+  data file : File;
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+
+###################################################################################################
+# Directives --> Module
+###################################################################################################
+
+doc An instance of this class is an AST node that represents a directive that names a module and specifies its enclosing namespace.
+struct ModuleDirective
+  implement IDirective;
+
+  doc These are the annotations applied directly to the module. 
+  data annotations : AnnotationList;
+
+  doc This is the name of the module itself, or null, if the module is anonymous.
+  data name : Name;
+
+  doc This is the enclosing namespace.
+  data namespace : Namespace;
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Directives --> Import
+###################################################################################################
+
+doc An instance of this class is an AST node that represents a directive that imports a type. 
+struct ImportDirective
+  implement IDirective;
+
+  doc This is the type that will be imported.
+  data type : TypeSpecifier;
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Annotations --> Annotation Usages
+###################################################################################################
+
+doc An instance of this class is an AST node that represents an the usage of an annotation.
+struct Annotation
+  implement IConstruct;
+  
+  doc This is the type of the instantiated annotation definition.
+  data type : TypeSpecifier;
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Annotations --> Annotation Usage List
+###################################################################################################
+
+doc An instance of this class is an AST node that represents a list of annotation-usages.
+struct AnnotationList
+  implement IConstruct;
+
+  doc These are the annotation-usages themselves. 
+  data annotations : ConstructList<Annotation>;
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Annotations --> Definition
+###################################################################################################
+
+doc An instance of this class is an AST node that represents the definition of an annotation.
+struct AnnotationDefinition
+  implement IAnnotated;
+
+  doc These are the annotations applied directly to the definition. 
+  data annotations : AnnotationList;
+
+  doc This is the simple name of the new type.
+  data name : Name;
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Exceptions --> Definition
+###################################################################################################
+
+doc An instance of this class is an AST node that represents the definition of an exception.
+struct ExceptionDefinition
+  implement IAnnotated;
+
+  doc These are the annotations applied directly to the definition. 
+  data annotations : AnnotationList;
+
+  doc This is the simple name of the new type.
+  data name : Name;
+
+  doc (optional) This is the direct superclass of the new type.
+  data superclass : TypeSpecifier;
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Enum --> Definition
+###################################################################################################
+
+doc An instance of this class is an AST node that represents the definition of an enumeration.
+struct EnumDefinition
+  implement IAnnotated;
+
+  doc These are the annotations applied directly to the definition. 
+  data annotations : AnnotationList;
+
+  doc This is the simple name of the new type.
+  data name : Name;
+
+  doc These are the constants in the enum.
+  data constants : ConstructList<EnumConstant> = { new ConstructList() }; 
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Enum --> Constant
+###################################################################################################
+
+doc An instance of this class is an AST node that represents a constant in an enumeration.
+struct EnumConstant
+  implement IAnnotated;
+
+  doc These are the annotations applied directly to the enum-constant. 
+  data annotations : AnnotationList;
+
+  doc This is the simple name of the new type.
+  data name : Name;
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Designs --> Definition
+###################################################################################################
+
+doc An instance of this class is an AST node that represents the definition of a design.
+struct DesignDefinition
+  implement IAnnotated;
+
+  doc These are the annotations applied directly to the definition. 
+  data annotations : AnnotationList = { new AnnotationList() };
+
+  doc This is the simple name of the new type.
+  data name : Name;
+
+  doc These are the direct superinterfaces of the new type.
+  data superinterfaces : ConstructList<TypeSpecifier> = { new ConstructList() };
+
+  doc These are the properties declared directly within this definition.
+  data properties : ConstructList<DesignProperty> = { new ConstructList<DesignProperty>() };
+
+  doc These are the methods declared directly within this definition.
+  data methods : ConstructList<DesignMethod> = { new ConstructList<DesignMethod>() };
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Designs --> Property
+###################################################################################################
+
+doc An instance of this class is an AST node that represents the declaration of a property within a design.
+struct DesignProperty
+  implement IAnnotated;
+
+  doc These are the annotations applied directly to the property. 
+  data annotations : AnnotationList = { new AnnotationList() };
+
+  doc This is the name of the property. 
+  data name : Name;
+
+  doc This is the type of the data that can be stored in the property at runtime.
+  data type : TypeSpecifier;
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Designs --> Method
+###################################################################################################
+
+doc An instance of this class is an AST node that represents the declaration of a method within a design.
+struct DesignMethod
+  implement IAnnotated;
+
+  doc These are the annotations applied directly to the declaration. 
+  data annotations : AnnotationList = { new AnnotationList() };
+
+  doc This is the name of the method.
+  data name : Name;
+
+  doc These are the formal parameters of the method. 
+  data parameters : FormalParameterList;
+
+  doc This is the type of value that the method can return, or the void type, if the method does not return a value. 
+  data return_type : TypeSpecifier;
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Functions
+###################################################################################################
+
+doc An instance of this class is an AST node that represents the definition of a function. 
+struct FunctionDefinition
+  implement IAnnotated;
+ 
+  doc These are the annotations applied directly to the definition. 
+  data annotations : AnnotationList = { new AnnotationList() };
+
+  doc This is the name of the function itself.
+  data name : Name;
+
+  doc These are the formal parameters of the function. 
+  data parameters : FormalParameterList;
+
+  doc This is the type of value that the function can return, or the void type, if the function does not return a value. 
+  data return_type : TypeSpecifier;
+
+  doc This is the statement that is executed whenever the function is invoked. 
+  data body : SequenceStatement = { new SequenceStatement() };
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Statements - If
+###################################################################################################
+
+doc An instance of this class is an AST node that represents an if-then-else style statement.
+struct IfStatement
+  implement IStatement;
+
+  doc This is the primary conditional case.
+  data main_case : ConditionalCase;
+
+  doc These are the secondary conditional cases.
+  data elif_cases : ConstructList<ConditionalCase> = { new ConstructList() };
+
+  doc (optional) This is the statement that is exected, if none of the conditional-cases can be executed.
+  data else_case : SequenceStatement = { null };
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Statements --> While
+###################################################################################################
+
+doc An instance of this class is an AST node that represents a while-loop style statement.
+struct WhileStatement
+  implement IStatement;
+
+  doc This is the condition that controls the loop.
+  data condition : IExpression;
+
+  doc This is the statement that is repeatedly executed.
+  data body : SequenceStatement = { new SequenceStatement() };
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Statements --> Until
+###################################################################################################
+
+doc An instance of this class is an AST node that represents a until-loop style statement.
+struct UntilStatement
+  implement IStatement;
+
+  doc This is the condition that controls the loop.
+  data condition : IExpression;
+
+  doc This is the statement that is repeatedly executed.
+  data body : SequenceStatement = { new SequenceStatement() };
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Statements --> Do-While
+###################################################################################################
+
+doc An instance of this class is an AST node that represents a do-while-loop style statement.
+struct DoWhileStatement
+  implement IStatement;
+
+  doc This is the condition that controls the loop.
+  data condition : IExpression;
+
+  doc This is the statement that is repeatedly executed.
+  data body : SequenceStatement = { new SequenceStatement() };
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Statements --> Do-Until
+###################################################################################################
+
+doc An instance of this class is an AST node that represents a do-until-loop style statement.
+struct DoUntilStatement
+  implement IStatement;
+
+  doc This is the condition that controls the loop.
+  data condition : IExpression;
+
+  doc This is the statement that is repeatedly executed.
+  data body : SequenceStatement = { new SequenceStatement() };
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Statements --> For
+###################################################################################################
+
+doc An instance of this class is an AST node that represents a for-loop style statement.
+struct ForStatement
+  implement IStatement;
+
+  doc This is the variable that is used to control the loop.
+  data variable : Variable;
+
+  doc This expression is used to initialize the control variable.
+  data initializer : IExpression;
+
+  doc This expression is used to control the termination of the loop.
+  data condition : IExpression;
+
+  doc This expression produces the next value for the control variable.
+  data next : IExpression;
+
+  doc This is the statement that is repeatedly executed.
+  data body : SequenceStatement = { new SequenceStatement() };
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Statements --> Foreach
+###################################################################################################
+
+doc An instance of this class is an AST node that represents a foreach-loop style statement.
+struct ForeachStatement
+  implement IStatement;
+
+  doc This is the variable that is used to control the loop.
+  data variable : Variable;
+
+  doc This is the type of the control variable.
+  data type : TypeSpecifier;
+
+  doc This expression produces the iterable object to iterate over.
+  data iterable : IExpression;
+
+  doc This is the statement that is repeatedly executed.
+  data body : SequenceStatement = { new SequenceStatement() };
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Statements --> Break
+###################################################################################################
+
+doc An instance of this class is an AST node that represents a break-statement.
+struct BreakStatement
+  implement IStatement;
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Statements --> Continue
+###################################################################################################
+
+doc An instance of this class is an AST node that represents a continue-statement.
+struct ContinueStatement
+  implement IStatement;
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end  
+
+###################################################################################################
+# Statements --> Redo
+###################################################################################################
+
+doc An instance of this class is an AST node that represents a redo-statement.
+struct RedoStatement
+  implement IStatement;
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end 
+
+###################################################################################################
+# Statements --> Var
+###################################################################################################
+
+doc An instance of this class is an AST node that represents the declaration of a stack-allocated mutable local variable.
+struct VarStatement
+  implement IStatement;
+
+  doc This is the variable that is being declared.
+  data variable : Variable;
+
+  doc This expression is used to initialize the variable and specify its type. 
+  data value : IExpression;
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Statements --> Val
+###################################################################################################
+
+doc An instance of this class is an AST node that represents the declaration of a stack-allocated write-once local variable.
+struct ValStatement
+  implement IStatement;
+
+  doc This is the variable that is being declared.
+  data variable : Variable;
+
+  doc This expression is used to initialize the variable and specify its type. 
+  data value : IExpression;
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Statements --> Let
+###################################################################################################
+
+doc An instance of this class is an AST node that represents a assignment statement.
+struct LetStatement
+  implement IStatement;
+
+  doc This is the variable that is being assigned a new value.
+  data variable : Variable;
+
+  doc This expression produces the value to assign to the variable.
+  data value : IExpression;
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Statements --> Setter
+###################################################################################################
+
+doc An instance of this class is an AST node that represents a statement that binds the implementation of a property's setter to an object.
+struct SetterStatement
+  implement IStatement;
+
+  doc This is the mutable variable that contains the object.
+  data owner : Variable;
+
+  doc This is the name of the property. 
+  data name : Name;
+
+  doc This expression produces the setter implementation.
+  data value : IExpression;
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Statements --> Getter
+###################################################################################################
+
+doc An instance of this class is an AST node that represents a statement that binds the implementation of a property's getter to an object.
+struct GetterStatement
+  implement IStatement;
+
+  doc This is the mutable variable that contains the object.
+  data owner : Variable;
+
+  doc This is the name of the property. 
+  data name : Name;
+
+  doc This expression produces the getter implementation.
+  data value : IExpression;
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Statements --> Method
+###################################################################################################
+
+doc An instance of this class is an AST node that represents a statement that binds the implementation of a method to an object.
+struct MethodStatement
+  implement IStatement;
+
+  doc This is the mutable variable that contains the object.
+  data owner : Variable;
+
+  doc This is the name of the method. 
+  data name : Name;
+
+  doc This expression produces the method implementation.
+  data value : IExpression;
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Statements --> Sequence
+###################################################################################################
+
+doc An instance of this class is an AST node that represents a sequence of statements.
+struct SequenceStatement
+  implement IStatement;
+ 
+  doc These are the statements in the sequence.
+  data elements : ConstructList<IStatement> = { new ConstructList<IStatement>() };
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Statements --> Expression
+###################################################################################################
+
+doc An instance of this class is an AST node that represents an expression being used as a statement.
+struct ExpressionStatement
+  implement IStatement;
+
+  doc This is the expression to evaluate. 
+  data expression : IExpression;
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Statements --> Nop
+###################################################################################################
+
+doc An instance of this class is an AST node that that represents a nop-statement.
+struct NopStatement
+  implement IStatement;
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Statements --> Try Catch
+###################################################################################################
+
+doc An instance of this class is an AST node that represents a try-catch statement.
+struct TryCatchStatement
+  implement IStatement;
+
+  doc This is the statement that may throw an exception. 
+  data body : SequenceStatement = { new SequenceStatement() };
+
+  doc If an exception is thrown, one of these handlers may catch the exception. 
+  data handlers : ConstructList<ExceptionHandler> = { new ConstructList() };
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Statements --> Try Catch --> Exception Handler
+###################################################################################################
+
+doc An instance of this class is an AST node that represents an exception handler within a try-catch statement.
+struct ExceptionHandler
+  implement IConstruct;
+
+  doc If an exception is caught, then this variable will be assigned the exception object.
+  data variable : Variable;
+
+  doc This is the type of exception that this exception handler catches.
+  data type : TypeSpecifier;
+
+  doc If an exception is caught, then this statement will be executed. 
+  data handler : SequenceStatement = { new SequenceStatement() };
+  
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Statements --> Throw
+###################################################################################################
+
+doc An instance of this class is an AST node that represents a throw statement.
+struct ThrowStatement
+  implement IStatement;
+
+  doc This expression produces the exception object to throw. 
+  data value : IExpression;
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Statements --> Assert
+###################################################################################################
+
+doc An instance of this class is an AST node that represents an assertion statement.
+struct AssertStatement
+  implement IStatement;
+
+  doc This expression produces the boolean value that determines whether an exception is thrown.
+  data condition : IExpression;
+
+  doc (optional) This expression produces a user readable error message.
+  data message : IExpression = { null };
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Statements --> Return Void
+###################################################################################################
+
+doc An instance of this class is an AST node that represents a return-void statement.
+struct ReturnVoidStatement
+  implement IStatement;
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Statements --> Return Value
+###################################################################################################
+
+doc An instance of this class is an AST node that represents a return-value statement.
+struct ReturnValueStatement
+  implement IStatement;
+
+  doc This expression produces the value to return. 
+  data value : IExpression;
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Statements --> Recur
+###################################################################################################
+
+doc An instance of this class is an AST node that represents an explicit direct tail-call.
+struct RecurStatement
+  implement IStatement;
+
+  doc These expressions produce the arguments to use in the tail-call.
+  data arguments : ConstructList<IExpression> = { new ConstructList(); };
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Statements --> Yield Void
+###################################################################################################
+
+doc An instance of this class is an AST node that represents a return-void statement.
+struct YieldVoidStatement
+  implement IStatement;
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Statements --> Yield Value
+###################################################################################################
+
+doc An instance of this class is an AST node that represents a return-value statement.
+struct YieldValueStatement
+  implement IStatement;
+
+  doc This expression produces the value to return. 
+  data value : IExpression;
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Expressions --> Datums --> Boolean
+###################################################################################################
+
+doc An instance of this class is an AST node that represents a boolean literal.
+struct BooleanDatum
+  implement IExpression;
+
+  doc This is the value that this datum represents.
+  data value : boolean;
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Expressions --> Datums --> Char
+###################################################################################################
+
+doc An instance of this class is an AST node that represents a char literal.
+struct CharDatum
+  implement IExpression;
+
+  doc This is the value that this datum represents.
+  data value : CharLiteral;
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Expressions --> Datums --> Byte
+###################################################################################################
+
+doc An instance of this class is an AST node that represents a byte literal.
+struct ByteDatum
+  implement IExpression;
+
+  doc This is the value that this datum represents.
+  data value : ByteLiteral;
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Expressions --> Datums --> Short
+###################################################################################################
+
+doc An instance of this class is an AST node that represents a short literal.
+struct ShortDatum
+  implement IExpression;
+
+  doc This is the value that this datum represents.
+  data value : ShortLiteral;
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Expressions --> Datums --> Int
+###################################################################################################
+
+doc An instance of this class is an AST node that represents a int literal.
+struct IntDatum
+  implement IExpression;
+
+  doc This is the value that this datum represents.
+  data value : IntLiteral;
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Expressions --> Datums --> Long
+###################################################################################################
+
+doc An instance of this class is an AST node that represents a long literal.
+struct LongDatum
+  implement IExpression;
+
+  doc This is the value that this datum represents.
+  data value : LongLiteral;
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Expressions --> Datums --> Float
+###################################################################################################
+
+doc An instance of this class is an AST node that represents a float literal.
+struct FloatDatum
+  implement IExpression;
+
+  doc This is the value that this datum represents.
+  data value : FloatLiteral;
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Expressions --> Datums --> Double
+###################################################################################################
+
+doc An instance of this class is an AST node that represents a double literal.
+struct DoubleDatum
+  implement IExpression;
+
+  doc This is the value that this datum represents.
+  data value : DoubleLiteral;
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Expressions --> Datums --> String
+###################################################################################################
+
+doc An instance of this class is an AST node that represents a java.lang.String literal.
+struct StringDatum
+  implement IExpression;
+
+  doc This is the value that this datum represents.
+  data value : String;
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Expressions --> Datums --> Null
+###################################################################################################
+
+doc An instance of this class is an AST node that represents a the null constant.
+struct NullDatum
+  implement IExpression;
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Expressions --> Datums --> Variable Usage
+###################################################################################################
+
+doc An instance of this class is an AST node that represents the usage of a variable.
+struct VariableDatum
+  implement IExpression;
+
+  doc This is the the variable itself.
+  data variable : Variable;
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Expressions --> Datums --> Class
+###################################################################################################
+
+doc An instance of this class is an AST node that represents a class literal.
+struct ClassDatum
+  implement IExpression;
+
+  doc This is the type whose <code>java.lang.Class</code> representation is represented by this datum. 
+  data type : TypeSpecifier;
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Expressions --> Progn
+###################################################################################################
+
+doc An instance of this class is an AST node that represents a sequence of expressions.
+struct PrognExpression
+  implement IExpression;
+
+  doc These are the expressions in the sequence. 
+  data elements : ConstructList<IExpression> = { new ConstructList() };
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Expressions --> Literal List
+###################################################################################################
+
+doc An instance of this class is an AST node that represents a literal linked-list data-structure.
+struct ListExpression
+  implement IExpression;
+
+  doc These are the expressions that produce the elements in the list. 
+  data elements : ConstructList<IExpression> = { new ConstructList() };
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Expressions --> Dispatch
+###################################################################################################
+
+doc An instance of this class is an AST node that represents the dispatch to a function.
+struct DispatchExpression
+  implement IExpression;
+
+  doc This is the name of the function to invoke.
+  data name : Name;
+
+  doc These are the arguments to pass to the method. 
+  data arguments : ConstructList<IExpression>;
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Expressions --> Call Static Method
+###################################################################################################
+
+doc An instance of this class is an AST node that represents the invocation of a static method.
+struct CallStaticMethodExpression
+  implement IExpression;
+
+  doc This is the type that declares the method to invoke.
+  data owner : TypeSpecifier;
+ 
+  doc This is the name of the method to invoke.
+  data name : Name;
+
+  doc These are the arguments to pass to the method. 
+  data arguments : ConstructList<IExpression>;
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Expressions --> Set Static Field
+###################################################################################################
+
+doc An instance of this class is an AST node that represents a static field assignment.
+struct SetStaticFieldExpression
+  implement IExpression;
+
+  doc This is the type that declares the field to set.
+  data owner : TypeSpecifier;
+ 
+  doc This is the name of the field to set.
+  data name : Name;
+
+  doc This expression produces the value to assign to the field.
+  data value : IExpression;
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Expressions --> Get Static Field
+###################################################################################################
+
+doc An instance of this class is an AST node that represents a static field retrieval. 
+struct GetStaticFieldExpression
+  implement IExpression;
+
+  doc This is the type that declares the field to set.
+  data owner : TypeSpecifier;
+ 
+  doc This is the name of the field to set.
+  data name : Name;
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Expressions --> New
+###################################################################################################
+
+doc An instance of this class is an AST node that represents an expression that instantiates a new object.
+struct NewExpression
+  implement IExpression;
+
+  doc This is the type of the class to instantiate.
+  data type : TypeSpecifier;
+
+  doc These expressions produces the arguments to pass to the constructor.
+  data arguments : ConstructList<IExpression> = { new ConstructList() };
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Expressions --> Create
+###################################################################################################
+
+doc An instance of this class is an AST node that represents an expression that creates a new object from a design or interface.
+struct CreateExpression
+  implement IExpression;
+
+  doc This is the type to instantiate.
+  data type : TypeSpecifier;
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Expressions --> Call Non-Static Method
+###################################################################################################
+
+doc An instance of this class is an AST node that represents the invocation of a non-static method.
+struct CallMethodExpression
+  implement IExpression;
+
+  doc This is the object that has the method to invoke. 
+  data owner : IExpression;
+ 
+  doc This is the name of the method to invoke.
+  data name : Name;
+
+  doc These are the arguments to pass to the method. 
+  data arguments : ConstructList<IExpression>;
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Expressions --> Set Non-Static Field
+###################################################################################################
+
+doc An instance of this class is an AST node that represents a field assignment.
+struct SetFieldExpression
+  implement IExpression;
+
+  doc This expression produces the object that has the field.
+  data owner : IExpression;
+ 
+  doc This is the name of the field to set.
+  data name : Name;
+
+  doc This expression produces the value to assign to the field.
+  data value : IExpression;
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Expressions --> Get Non-Static Field
+###################################################################################################
+
+doc An instance of this class is an AST node that represents a field retrieval.
+struct GetFieldExpression
+  implement IExpression;
+
+  doc This expression produces the object that has the field.
+  data owner : IExpression;
+ 
+  doc This is the name of the field to retrieve.
+  data name : Name;
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Expressions --> Instance Of
+###################################################################################################
+
+doc An instance of this class is an AST node that represents an instance-of test expression. 
+struct InstanceOfExpression
+  implement IExpression;
+
+  doc This is the value that may be an instance of the type.
+  data value : IExpression;
+
+  doc This is the type that the value may be an instance of.
+  data type : TypeSpecifier;
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Expressions --> Apply
+###################################################################################################
+
+doc An instance of this class is an AST node that represents an expression that applies an anonymous function to a list of arguments. 
+struct ApplyExpression
+  implement IExpression;
+
+  doc This expression produces the anonymous function to invoke. 
+  data function : IExpression;
+
+  doc This expression produces the list that contains the arguments to pass to the anonymous function.
+  data arguments : IExpression;
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Expressions --> Funcall
+###################################################################################################
+
+doc An instance of this class is an AST node that represents an expression that invokes an anonymous function.
+struct FuncallExpression
+  implement IExpression;
+
+  doc This expression produces the anonymous function to invoke. 
+  data functor : IExpression;
+
+  doc These expressions produce the arguments to pass to the anonymous function. 
+  data arguments : ConstructList<IExpression> = { new ConstructList() };
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Expressions --> Conditional
+###################################################################################################
+
+doc An instance of this class is an AST node that represents the ternary conditional expression.
+struct TernaryConditionalExpression
+  implement IExpression;
+
+  doc This expression's value indicates which  of the cases to evaluate.
+  data condition : IExpression;
+
+  doc This expression is evaluated, if the condition is true. 
+  data case_true : IExpression;
+
+  doc This expression is evaluated, if the condition is false. 
+  data case_false : IExpression; 
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Operators --> Lambda 
+###################################################################################################
+
+doc An instance of this class is an AST node that represents the definition of a lambda function.
+struct LambdaExpression
+  implement IExpression;
+
+  doc These are the formal parameters of the function.
+  data parameters : FormalParameterList;
+
+  doc This is the expression that is executed, when the lambda function is invoked. 
+  data body : IExpression;
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Operators --> Delegate
+###################################################################################################
+
+doc An instance of this class is an AST node that represents the creation of a delegate. 
+struct DelegateExpression
+  implement IExpression;
+
+  doc This is the type that owns the static method to invoke.
+  data owner : TypeSpecifier = { null };
+
+  doc This is the name of the static method to invoke. 
+  data method : Name = { null };
+
+  doc These formal parameters are used to distinguish between different overloads of a static method. 
+  data parameters : FormalParameterList;
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Operators --> Conversions --> As
+###################################################################################################
+
+doc An instance of this class is an AST node that represents an as-conversion expression.
+struct AsOperation
+  implement IConversionOperation;
+
+  doc This expression produces the value that will be converted. 
+  data value : IExpression;
+
+  doc This is the type to convert the value to.
+  data type : TypeSpecifier;
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Operators --> Conversions --> Is
+###################################################################################################
+
+doc An instance of this class is an AST node that represents an is-conversion expression.
+struct IsOperation
+  implement IConversionOperation;
+
+  doc This expression produces the value that will be converted. 
+  data value : IExpression;
+
+  doc This is the type to convert the value to.
+  data type : TypeSpecifier;
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Operators --> Negate
+###################################################################################################
+
+doc An instance of this class is an AST node that represents the negation operator.
+struct NegateOperation
+  implement IUnaryOperation;
+
+  doc This expression produces the operation's only operand.
+  data operand : IExpression;
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Operators --> Not
+###################################################################################################
+
+doc An instance of this class is an AST node that represents the logical-NOT operator.
+struct NotOperation
+  implement IUnaryOperation;
+
+  doc This expression produces the operation's only operand.
+  data operand : IExpression;
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Operators --> Divide
+###################################################################################################
+
+doc An instance of this class is an AST node that represents the division operator.
+struct DivideOperation
+  implement IBinaryOperation;
+
+  doc This expression produces the operation's left-operand.
+  data left_operand : IExpression;
+
+  doc This expression produces the operation's right-operand.
+  data right_operand : IExpression;
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Operators --> Modulo
+###################################################################################################
+
+doc An instance of this class is an AST node that represents the modulo operator.
+struct ModuloOperation
+  implement IBinaryOperation;
+
+  doc This expression produces the operation's left-operand.
+  data left_operand : IExpression;
+
+  doc This expression produces the operation's right-operand.
+  data right_operand : IExpression;
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Operators --> Multiply
+###################################################################################################
+
+doc An instance of this class is an AST node that represents the multiplication operator.
+struct MultiplyOperation
+  implement IBinaryOperation;
+
+  doc This expression produces the operation's left-operand.
+  data left_operand : IExpression;
+
+  doc This expression produces the operation's right-operand.
+  data right_operand : IExpression;
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Operators --> Add
+###################################################################################################
+
+doc An instance of this class is an AST node that represents the addition operator.
+struct AddOperation
+  implement IBinaryOperation;
+
+  doc This expression produces the operation's left-operand.
+  data left_operand : IExpression;
+
+  doc This expression produces the operation's right-operand.
+  data right_operand : IExpression;
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Operators --> Subtract
+###################################################################################################
+
+doc An instance of this class is an AST node that represents the subtraction operator.
+struct SubtractOperation
+  implement IBinaryOperation;
+
+  doc This expression produces the operation's left-operand.
+  data left_operand : IExpression;
+
+  doc This expression produces the operation's right-operand.
+  data right_operand : IExpression;
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Operators --> Less-Than
+###################################################################################################
+
+doc An instance of this class is an AST node that represents the less-than operator.
+struct LessThanOperation
+  implement IBinaryOperation;
+
+  doc This expression produces the operation's left-operand.
+  data left_operand : IExpression;
+
+  doc This expression produces the operation's right-operand.
+  data right_operand : IExpression;
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Operators --> Less-Than-Or-Equal
+###################################################################################################
+
+doc An instance of this class is an AST node that represents the less-than-or-equal operator.
+struct LessThanOrEqualsOperation
+  implement IBinaryOperation;
+
+  doc This expression produces the operation's left-operand.
+  data left_operand : IExpression;
+
+  doc This expression produces the operation's right-operand.
+  data right_operand : IExpression;
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Operators --> Greater-Than
+###################################################################################################
+
+doc An instance of this class is an AST node that represents the greater-than operator.
+struct GreaterThanOperation
+  implement IBinaryOperation;
+
+  doc This expression produces the operation's left-operand.
+  data left_operand : IExpression;
+
+  doc This expression produces the operation's right-operand.
+  data right_operand : IExpression;
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Operators --> Greater-Than-Or-Equal
+###################################################################################################
+
+doc An instance of this class is an AST node that represents the greater-than-or-equal operator.
+struct GreaterThanOrEqualsOperation
+  implement IBinaryOperation;
+
+  doc This expression produces the operation's left-operand.
+  data left_operand : IExpression;
+
+  doc This expression produces the operation's right-operand.
+  data right_operand : IExpression;
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Operators --> Equality
+###################################################################################################
+
+doc An instance of this class is an AST node that represents the equality operator.
+struct EqualsOperation
+  implement IBinaryOperation;
+
+  doc This expression produces the operation's left-operand.
+  data left_operand : IExpression;
+
+  doc This expression produces the operation's right-operand.
+  data right_operand : IExpression;
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Operators --> Inequality
+###################################################################################################
+
+doc An instance of this class is an AST node that represents the inequality operator.
+struct NotEqualsOperation
+  implement IBinaryOperation;
+
+  doc This expression produces the operation's left-operand.
+  data left_operand : IExpression;
+
+  doc This expression produces the operation's right-operand.
+  data right_operand : IExpression;
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Operators --> Identity-Equality
+###################################################################################################
+
+doc An instance of this class is an AST node that represents the identity-equality operator.
+struct IdentityEqualsOperation
+  implement IBinaryOperation;
+
+  doc This expression produces the operation's left-operand.
+  data left_operand : IExpression;
+
+  doc This expression produces the operation's right-operand.
+  data right_operand : IExpression;
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Operators --> Identity-Equality
+###################################################################################################
+
+doc An instance of this class is an AST node that represents the identity-inequality operator.
+struct IdentityNotEqualsOperation
+  implement IBinaryOperation;
+
+  doc This expression produces the operation's left-operand.
+  data left_operand : IExpression;
+
+  doc This expression produces the operation's right-operand.
+  data right_operand : IExpression;
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Operators --> Logical-AND
+###################################################################################################
+
+doc An instance of this class is an AST node that represents the logical-AND operator.
+struct AndOperation
+  implement IBinaryOperation;
+
+  doc This expression produces the operation's left-operand.
+  data left_operand : IExpression;
+
+  doc This expression produces the operation's right-operand.
+  data right_operand : IExpression;
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Operators --> Logical-OR
+###################################################################################################
+
+doc An instance of this class is an AST node that represents the logical-OR operator.
+struct OrOperation
+  implement IBinaryOperation;
+
+  doc This expression produces the operation's left-operand.
+  data left_operand : IExpression;
+
+  doc This expression produces the operation's right-operand.
+  data right_operand : IExpression;
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Operators --> Logical-XOR
+###################################################################################################
+
+doc An instance of this class is an AST node that represents the logical-xor operator.
+struct XorOperation
+  implement IBinaryOperation;
+
+  doc This expression produces the operation's left-operand.
+  data left_operand : IExpression;
+
+  doc This expression produces the operation's right-operand.
+  data right_operand : IExpression;
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Operators --> Short-Circuit Logical-AND
+###################################################################################################
+
+doc An instance of this class is an AST node that represents the short-circuit logical-AND operator.
+struct ShortCircuitAndOperation
+  implement IBinaryOperation;
+
+  doc This expression produces the operation's left-operand.
+  data left_operand : IExpression;
+
+  doc This expression produces the operation's right-operand.
+  data right_operand : IExpression;
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Operators --> Short-Circuit Logical-OR
+###################################################################################################
+
+doc An instance of this class is an AST node that represents the short-circuit logical-OR operator.
+struct ShortCircuitOrOperation
+  implement IBinaryOperation;
+
+  doc This expression produces the operation's left-operand.
+  data left_operand : IExpression;
+
+  doc This expression produces the operation's right-operand.
+  data right_operand : IExpression;
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Operators --> Null-Coalescing
+###################################################################################################
+
+doc An instance of this class is an AST node that represents the null-coalescing operator.
+struct NullCoalescingOperation
+  implement IBinaryOperation;
+
+  doc This expression produces the operation's left-operand.
+  data left_operand : IExpression;
+
+  doc This expression produces the operation's right-operand.
+  data right_operand : IExpression;
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Operators --> Concat
+###################################################################################################
+
+doc An instance of this class is an AST node that represents the concatentation operator.
+struct ConcatOperation
+  implement IBinaryOperation;
+
+  doc This expression produces the operation's left-operand.
+  data left_operand : IExpression;
+
+  doc This expression produces the operation's right-operand.
+  data right_operand : IExpression;
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+
+###################################################################################################
+# Components --> Variable
+###################################################################################################
+
+doc An instance of this class is an AST node that represents a local variable.
+struct Variable
+  implement IConstruct;
+
+  doc This is the name of the variable. The name must be a case-sensitive series of letters, underscores, and/or digits that does not start with a digit.
+  data name : String;
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Components --> Name
+###################################################################################################
+
+doc An instance of this class is an AST node that represents a simple name. A simple name must be a case-sensitive series of letters, underscores, and/or digits that does not start with a digit.
+struct Name
+  implement IConstruct;
+
+  doc This is the name as a string.
+  data name : String;
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Components --> Type Specifier
+###################################################################################################
+
+doc An instance of this class is an AST node that represents a type-declaration. 
+struct TypeSpecifier 
+  implement IConstruct;
+
+  doc This is the name of the package that contains the type, if explicitly specified. 
+  data namespace : Namespace;
+
+  doc This is the simple-name of the type.
+  data name : Name;
+
+  doc If the specified type is an array-type, then this is the non-zero positive number of dimensions in the array; otherwise, null.
+  data dimensions : Integer = { null };
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Components --> Namespace
+###################################################################################################
+
+doc An instance of this class is an AST node that represents the name of a package. 
+struct Namespace 
+  implement IConstruct;
+
+  doc These are the names that make up the name of the package.
+  data names : ConstructList<Name>;
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };  
+end
+
+###################################################################################################
+# Components --> Formal Parameter List
+###################################################################################################
+
+doc An instance of this class is an AST node that represents a list of formal-parameters.
+struct FormalParameterList
+  implement IConstruct;
+
+  doc These are the formal-parameters themselves.
+  data parameters : ConstructList<FormalParameter> = { new ConstructList() };
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Components --> Formal Parameter
+###################################################################################################
+
+doc An instance of this class is an AST node that represents the declararion of a formal-parameter.
+struct FormalParameter
+  implement IConstruct;
+
+  doc This is the variable that will store the value of the actual-parameter.
+  data variable : Variable;
+
+  doc This is the type of value that the formal-parameter can receive. 
+  data type : TypeSpecifier;
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Component - Conditional Case
+###################################################################################################
+
+doc An instance of this class is an AST node that represents a conditionally executed statement.
+struct ConditionalCase
+  implement IConstruct;
+
+  doc This expression produces the value that indicates whether the statement is executed. 
+  data condition : IExpression;
+
+  doc This is the statement that is conditionally executed.
+  data body : SequenceStatement;
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Components --> Source Location
+###################################################################################################
+
+doc An instance of this class stores the source-location information for an enclosing construct. 
+struct SourceLocation
+  
+  doc (optional) This is the path to the source-code file.
+  data file : File = { null };
+
+  doc (optional) This is the one-based index of the line within the source-file.
+  data line : Integer = { null };
+
+  doc (optional) This is the one-based index of the column within the line within the source-file.
+  data column : Integer = { null };
+
+  doc (optional) This is a place for things like IDEs to store additional location information. 
+  data additional_info : Object = { null };
+end
+

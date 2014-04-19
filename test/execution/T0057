@@ -1,0 +1,40 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    var object = (new Object);
+
+    assert (Main::F (object as Object)) == "O";
+
+    var exception = (new IllegalArgumentException);
+
+    let object = exception;
+
+    assert (Main::F (object as IllegalArgumentException)) == "I";
+    assert (Main::F (object as RuntimeException)) == "R";
+    assert (Main::F (object as Throwable)) == "T";
+    assert (Main::F (object as Object)) == "O";
+
+    assert (object as List) === null;
+}
+
+defun F(x : IllegalArgumentException) : String
+{
+    return "I";
+}
+
+defun F(x : RuntimeException) : String
+{
+    return "R";
+}
+
+defun F(x : Throwable) : String
+{
+    return "T";
+}
+
+defun F(x : Object) : String
+{
+    return "O";
+}

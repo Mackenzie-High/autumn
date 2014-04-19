@@ -1,0 +1,11 @@
+module Main in typechecks;
+
+@Start
+defun main (args : String[]) : void
+{
+    do
+    {
+        nop;
+    }
+    until(123)
+}

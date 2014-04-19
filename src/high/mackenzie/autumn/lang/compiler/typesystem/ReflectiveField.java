@@ -1,0 +1,137 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package high.mackenzie.autumn.lang.compiler.typesystem;
+
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Lists;
+import high.mackenzie.autumn.lang.compiler.typesystem.design.IAnnotation;
+import high.mackenzie.autumn.lang.compiler.typesystem.design.IDeclaredType;
+import high.mackenzie.autumn.lang.compiler.typesystem.design.IEnumConstant;
+import high.mackenzie.autumn.lang.compiler.typesystem.design.IField;
+import high.mackenzie.autumn.lang.compiler.typesystem.design.ITypeFactory;
+import high.mackenzie.autumn.lang.compiler.typesystem.design.IVariableType;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
+import java.util.Collection;
+import java.util.List;
+
+/**
+ *
+ * @author mackenzie
+ */
+public final class ReflectiveField
+        extends AbstractMember
+        implements IField,
+                   IEnumConstant
+{
+    protected final Field field;
+
+    public ReflectiveField(final ITypeFactory factory,
+                           final Field field)
+    {
+        super(factory);
+
+        this.field = field;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public IDeclaredType getOwner()
+    {
+        return (IDeclaredType) getTypeFactory().fromClass(field.getDeclaringClass());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Field getField()
+    {
+        return field;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Collection<IAnnotation> getAnnotations()
+    {
+        final List result = Lists.newLinkedList();
+
+        for (Annotation element : field.getDeclaredAnnotations())
+        {
+            final IAnnotation annotation = CustomAnnotation.fromAnnotation(getTypeFactory(), element);
+
+            result.add(annotation);
+        }
+
+        return ImmutableSet.copyOf(result);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int getModifiers()
+    {
+        return field.getModifiers();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getName()
+    {
+        return field.getName();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public IVariableType getType()
+    {
+        return (IVariableType) getTypeFactory().fromClass(field.getType());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isEnumConstant()
+    {
+        return field.isEnumConstant();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int getOrdinal()
+    {
+        final Object[] constants = field.getDeclaringClass().getEnumConstants();
+
+        int i = 0;
+
+        for (Object x : constants)
+        {
+            final Enum constant = (Enum) x;
+
+            if (constant.name().equals(this.getName()))
+            {
+                break;
+            }
+            else
+            {
+                ++i;
+            }
+        }
+
+        return i;
+    }
+}
