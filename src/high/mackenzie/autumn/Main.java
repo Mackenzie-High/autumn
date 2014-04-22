@@ -29,7 +29,14 @@ public final class Main
 
         final Visitor visitor = new Visitor();
 
-        visitor.visit(root);
+        if (root != null)
+        {
+            visitor.visit(root);
+        }
+        else
+        {
+            visitor.printHelp();
+        }
     }
 
     private static String concatArgs(String[] args)

@@ -10,7 +10,6 @@ import autumn.lang.compiler.ast.commons.IExpression;
 import autumn.lang.compiler.ast.commons.IUnaryOperation;
 import autumn.lang.compiler.ast.nodes.*;
 import com.google.common.collect.Lists;
-import high.mackenzie.autumn.lang.compiler.compilers.AbstractAstVisitor;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IDeclaredType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IExpressionType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IField;
@@ -446,6 +445,11 @@ public class ExpressionCodeGenerator
     @Override
     public void visit(LocalsExpression object)
     {
+        this.loadLocalsMap(object.getLocation());
+    }
+
+    protected void loadLocalsMap(final SourceLocation location)
+    {
         final String STRING = "Ljava/lang/String;";
         final String ITERABLE = "Ljava/lang/Iterable;";
 
@@ -460,9 +464,9 @@ public class ExpressionCodeGenerator
         code.add(new InsnNode(Opcodes.DUP));
 
         // Load the arguments to pass to the constructor.
-        code.add(new LdcInsnNode(object.getLocation().getFile().toString()));
-        code.add(new LdcInsnNode(object.getLocation().getLine()));
-        code.add(new LdcInsnNode(object.getLocation().getColumn()));
+        code.add(new LdcInsnNode(location.getFile().toString()));
+        code.add(new LdcInsnNode(location.getLine()));
+        code.add(new LdcInsnNode(location.getColumn()));
         loadLocals();
 
         // Invoke the constructor.
@@ -840,7 +844,7 @@ public class ExpressionCodeGenerator
     }
 
     protected final void convert(final IType type,
-                                final IExpression expression)
+                                 final IExpression expression)
     {
         final IType etype = program.symbols.expressions.get(expression);
 

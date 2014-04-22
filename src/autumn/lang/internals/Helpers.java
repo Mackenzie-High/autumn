@@ -1,9 +1,9 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package autumn.lang.internals;
 
+import autumn.lang.F;
+import autumn.lang.Functor;
+import autumn.lang.LocalsMap;
+import autumn.lang.Prototype;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import java.util.List;
@@ -62,5 +62,68 @@ public final class Helpers
         Preconditions.checkNotNull(iterable, "An iterable data-structure was expected.");
 
         return ImmutableList.copyOf(iterable);
+    }
+
+    /**
+     * This method is invoked by debug-statements in order to implement breakpoints.
+     *
+     * @param file is the file that contains the breakpoint.
+     * @param line is the line-number where the breakpoint is located.
+     * @param column is the column-number where the the breakpoint is located.
+     * @param locals describes the local variables in at the time the breakpoint was hit.
+     */
+    public static void debug(final String file,
+                             final int line,
+                             final int column,
+                             final LocalsMap locals)
+    {
+        System.out.println();
+        System.out.printf("Breakpoint Hit: line = %d, column = %d, file = %s\n", line, column, file);
+        locals.print();
+
+        F.readln();
+    }
+
+    /**
+     * This method is invoked by a setter-statement.
+     *
+     * @param owner is the object that contains the property.
+     * @param key is the name of the property.
+     * @param handler is the function object that will be the property's setter.
+     */
+    public static void setter(final Prototype owner,
+                              final String key,
+                              final Functor handler)
+    {
+        // TODO
+        System.out.println("setter called!");
+    }
+
+    /**
+     * This method is invoked by a getter-statement.
+     *
+     * @param owner is the object that contains the property.
+     * @param key is the name of the property.
+     * @param handler is the function object that will be the property's getter.
+     */
+    public static void getter(final Prototype owner,
+                              final String key,
+                              final Functor handler)
+    {
+        System.out.println("getter called!");
+    }
+
+    /**
+     * This method is invoked by a method-statement.
+     *
+     * @param owner is the object that contains the method.
+     * @param key is the name + descriptor of the method.
+     * @param handler is the function object that will be the method handler.
+     */
+    public static void method(final Prototype owner,
+                              final String key,
+                              final Functor handler)
+    {
+        System.out.println("method called!");
     }
 }

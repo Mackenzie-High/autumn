@@ -414,7 +414,19 @@ public final class StatementCodeGenerator
     @Override
     public void visit(DebugStatement object)
     {
-        // Pass
+        String owner;
+        String name;
+        String desc;
+
+        code.add(new LdcInsnNode(object.getLocation().getFile().toString()));
+        code.add(new LdcInsnNode(object.getLocation().getLine()));
+        code.add(new LdcInsnNode(object.getLocation().getColumn()));
+        super.loadLocalsMap(object.getLocation());
+
+        owner = Utils.internalName(program.typesystem.utils.HELPERS);
+        name = "debug";
+        desc = "(Ljava/lang/String;IILautumn/lang/LocalsMap;)V";
+        code.add(new MethodInsnNode(Opcodes.INVOKESTATIC, owner, name, desc));
     }
 
     @Override

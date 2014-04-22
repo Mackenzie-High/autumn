@@ -18,6 +18,7 @@ import high.mackenzie.autumn.lang.compiler.typesystem.design.IVariableType;
 import high.mackenzie.autumn.lang.compiler.utils.Design;
 import high.mackenzie.autumn.lang.compiler.utils.GetterList;
 import high.mackenzie.autumn.lang.compiler.utils.MethodList;
+import high.mackenzie.autumn.lang.compiler.utils.ProtoClass;
 import high.mackenzie.autumn.lang.compiler.utils.SetterList;
 import high.mackenzie.autumn.lang.compiler.utils.Utils;
 import java.io.Serializable;
@@ -45,6 +46,8 @@ import org.objectweb.asm.tree.VarInsnNode;
  */
 public final class ClassCompiler
 {
+    private final ProtoClass proto = new ProtoClass();
+
     private static int counter = 0;
 
     public final ProgramCompiler program;
@@ -142,6 +145,8 @@ public final class ClassCompiler
                 }
             }
         }
+
+        proto.print(System.out);
 
         /**
          * Assemble the bytecode into an array of bytes.
@@ -274,6 +279,8 @@ public final class ClassCompiler
         final FieldNode field = new FieldNode(modifiers, name, desc, null, null);
 
         clazz.fields.add(field);
+
+        proto.properties.add(proto.new Property(name, (IVariableType) getter.getReturnType(), true, true, true));
     }
 
     private void addGetter(final ClassNode clazz,

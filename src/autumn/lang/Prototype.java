@@ -1,9 +1,5 @@
 package autumn.lang;
 
-import autumn.lang.reflect.DesignObject;
-import autumn.lang.reflect.MethodKey;
-import autumn.lang.reflect.PropertyKey;
-
 /**
  * This interface is a supertype of all objects that are instantiated Autumn designs.
  *
@@ -24,11 +20,11 @@ public interface Prototype
     public Prototype objectCopy();
 
     /**
-     * This method returns an object that exposes the internal state of this object.
+     * This method retrieves the object that this object is composed of, if any.
      *
-     * @return an object that provides a view of this object's state.
+     * @return the inner object, or null, if there is no inner object.
      */
-    public DesignObject objectState();
+    public Object objectInner();
 
     /**
      * This method non-destructively sets the implementation of a setter method.
@@ -38,7 +34,7 @@ public interface Prototype
      * @return a copy of this object, with the new setter implementation in it.
      * @throws NoSuchMethodException if the setter to define cannot be determined.
      */
-    public Prototype objectSetSetter(PropertyKey key,
+    public Prototype objectSetSetter(String key,
                                      Functor handler);
 
     /**
@@ -49,7 +45,7 @@ public interface Prototype
      * @return a copy of this object, with the new getter implementation in it.
      * @throws NoSuchMethodException if the getter to define cannot be determined.
      */
-    public Prototype objectSetGetter(PropertyKey key,
+    public Prototype objectSetGetter(String key,
                                      Functor handler);
 
     /**
@@ -64,7 +60,7 @@ public interface Prototype
      * @return a copy of this object, with the new setter implementation in it.
      * @throws NoSuchMethodException if the method to define cannot be determined.
      */
-    public Prototype objectSetMethod(MethodKey key,
+    public Prototype objectSetMethod(String key,
                                      Functor handler);
 
     /**
@@ -79,7 +75,7 @@ public interface Prototype
      * @param name is the name of the property to get.
      * @return the aforedescribed value.
      */
-    public Object objectGetValue(final PropertyKey name);
+    public Object objectPropertyGetValue(final String name);
 
     /**
      * This method assigns the value of a property in this object.
@@ -94,6 +90,23 @@ public interface Prototype
      * @return this, if the property is mutable;
      * otherwise, return the copy of this object that was modified.
      */
-    public Prototype objectSetValue(final PropertyKey name,
-                                    final Object value);
+    public Prototype objectPropertySetValue(final String name,
+                                            final Object value);
+
+    /**
+     * This method determines whether a particular property has been assigned to.
+     *
+     * @param name is the name of the property that may be unset.
+     * @return true, iff the property has been assigned a value.
+     */
+    public boolean objectPropertyIsSet(final String name);
+
+    /**
+     * This method resets a property to its unset state.
+     *
+     * @param name is the name of the property to clear.
+     * @return this, if the property is mutable;
+     * otherwise, return the copy of this object that was modified.
+     */
+    public Prototype objectPropertyClear(final String name);
 }

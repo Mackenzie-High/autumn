@@ -87,7 +87,7 @@ public final class Visitor
         }
     }
 
-    private void printHelp()
+    public void printHelp()
     {
         if (help_printed)
         {

@@ -667,6 +667,10 @@ defun main (args : String[]) : void
     nop;
 
     val xoo = (locals);
+
+    nop;
+
+    debug;
 }
 
 defun main (aoo : int, boo : int, xoo : int, zoo : int) : void

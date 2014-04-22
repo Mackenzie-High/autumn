@@ -1,7 +1,7 @@
 package autumn.lang.internals;
 
 import autumn.lang.Functor;
-import autumn.lang.reflect.MethodKey;
+import java.util.Arrays;
 
 /**
  * An instance of this class stores the state that is shared between multiple prototype objects.
@@ -11,64 +11,63 @@ import autumn.lang.reflect.MethodKey;
  */
 public final class SharedState
 {
-    private ObjectLayout layout;
+    private final Functor[] setters;
 
-    private Functor[] setters;
+    private final Functor[] getters;
 
-    private Functor[] getters;
+    private final Functor[] methods;
 
-    private Functor[] methods;
-
-    public SharedState(final ObjectLayout layout)
+    public SharedState(final int properties,
+                       final int methods)
     {
-        this.layout = layout;
+        this.setters = new Functor[properties];
+        this.getters = new Functor[properties];
+        this.methods = new Functor[methods];
     }
 
-    public ObjectLayout layout()
+    private SharedState(final SharedState original)
     {
-        return layout;
-    }
-
-    public int findProperty(final String name)
-    {
-        return 0;
-    }
-
-    public int findMethod(final MethodKey key)
-    {
-        return 0;
+        this.getters = Arrays.copyOf(original.getters, original.getters.length);
+        this.setters = Arrays.copyOf(original.setters, original.setters.length);
+        this.methods = Arrays.copyOf(original.methods, original.methods.length);
     }
 
     public Functor getGetter(final int index)
     {
-        return null;
+        return getters[index];
     }
 
-    public Functor setGetter(final int index,
-                             final Functor handler)
+    public SharedState setGetter(final int index,
+                                 final Functor handler)
     {
-        return null;
+        final SharedState copy = new SharedState(this);
+        copy.getters[index] = handler;
+        return copy;
     }
 
     public Functor getSetter(final int index)
     {
-        return null;
+        return setters[index];
     }
 
-    public Functor setSetter(final int index,
-                             final Functor handler)
+    public SharedState setSetter(final int index,
+                                 final Functor handler)
     {
-        return null;
+        final SharedState copy = new SharedState(this);
+        copy.setters[index] = handler;
+        return copy;
     }
 
     public Functor getMethod(final int index)
     {
-        return null;
+        return methods[index];
     }
 
-    public Functor setMethod(final int index,
-                             final Functor handler)
+    public SharedState setMethod(final int index,
+                                 final Functor handler)
     {
-        return null;
+        final SharedState copy = new SharedState(this);
+        copy.methods[index] = handler;
+        return copy;
     }
 }

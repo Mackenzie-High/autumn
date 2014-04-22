@@ -565,6 +565,10 @@ defun main (args : String[]) : void
     nop;
 
     val xoo = ( locals ) ;
+
+    nop;
+
+    debug ;
 }
 
 
