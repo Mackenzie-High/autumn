@@ -1,7 +1,13 @@
 package autumn.lang.compiler;
 
 import autumn.lang.compiler.ast.commons.*;
-import autumn.lang.compiler.ast.literals.*;
+import autumn.lang.compiler.ast.literals.ByteLiteral;
+import autumn.lang.compiler.ast.literals.CharLiteral;
+import autumn.lang.compiler.ast.literals.DoubleLiteral;
+import autumn.lang.compiler.ast.literals.FloatLiteral;
+import autumn.lang.compiler.ast.literals.IntLiteral;
+import autumn.lang.compiler.ast.literals.LongLiteral;
+import autumn.lang.compiler.ast.literals.ShortLiteral;
 import autumn.lang.compiler.ast.nodes.*;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
@@ -254,7 +260,7 @@ public final class TreeBuilder
 
         final LinkedList<EnumDefinition> enum_definitions = Lists.newLinkedList();
 
-        final LinkedList<StructDefinition> struct_definitions = Lists.newLinkedList();
+        final LinkedList<DesignDefinition> design_definitions = Lists.newLinkedList();
 
         final LinkedList<FunctionDefinition> function_definitions = Lists.newLinkedList();
 
@@ -293,11 +299,11 @@ public final class TreeBuilder
 
                 enum_definitions.addFirst(definition);
             }
-            else if (member instanceof StructDefinition)
+            else if (member instanceof DesignDefinition)
             {
-                final StructDefinition definition = (StructDefinition) member;
+                final DesignDefinition definition = (DesignDefinition) member;
 
-                struct_definitions.addFirst(definition);
+                design_definitions.addFirst(definition);
             }
             else if (member instanceof FunctionDefinition)
             {
@@ -317,7 +323,7 @@ public final class TreeBuilder
         module = module.setAnnotations((new ConstructList()).addAll(annotation_definitions));
         module = module.setExceptions((new ConstructList()).addAll(exception_definitions));
         module = module.setEnums((new ConstructList()).addAll(enum_definitions));
-        module = module.setStructs((new ConstructList()).addAll(struct_definitions));
+        module = module.setDesigns((new ConstructList()).addAll(design_definitions));
         module = module.setFunctions((new ConstructList()).addAll(function_definitions));
 
         // Push the AST node onto the stack.
@@ -660,7 +666,7 @@ public final class TreeBuilder
     }
 
     /**
-     * This method creates a struct-definition.
+     * This method creates a design-definition.
      *
      * <p>
      * <b>Precondition of the Stack</b>
@@ -683,22 +689,23 @@ public final class TreeBuilder
      * <p>
      * <b>Postcondition of the Stack</b>
      * <ul>
-     * <li> result : StructDefinition </li>
+     * <li> result : DesignDefinition </li>
      * </ul>
      * </p>
      *
      * <p>
-     * Currently, a struct-member is always a property.
-     * However, in the future there may be other types of struct-members.
+     * A design-member may be either a design-method or design-property.
      * </p>
      */
-    public void createDefinitionStruct()
+    public void createDefinitionDesign()
     {
         Preconditions.checkState(stack.size() >= 2);
 
         // Get the pieces off of the stack.
 
-        final LinkedList<StructProperty> properties = Lists.newLinkedList();
+        final LinkedList<DesignProperty> properties = Lists.newLinkedList();
+
+        final LinkedList<DesignMethod> methods = Lists.newLinkedList();
 
         final LinkedList<TypeSpecifier> supers = Lists.newLinkedList();
 
@@ -710,28 +717,32 @@ public final class TreeBuilder
             {
                 supers.add(0, (TypeSpecifier) x);
             }
-            else if (x instanceof StructProperty)
+            else if (x instanceof DesignProperty)
             {
-                properties.add(0, (StructProperty) x);
+                properties.add(0, (DesignProperty) x);
+            }
+            else if (x instanceof DesignMethod)
+            {
+                methods.add(0, (DesignMethod) x);
             }
             else
             {
                 throw new ClassCastException();
             }
         }
-
         final Name name = (Name) stack.pop();
 
         final AnnotationList annotations = (AnnotationList) stack.pop();
 
         // Create the AST node.
-        StructDefinition node = new StructDefinition();
+        DesignDefinition node = new DesignDefinition();
 
         // Initialize the AST node.
         node = node.setAnnotations(annotations);
         node = node.setName(name);
         node = node.setSuperinterfaces((new ConstructList<TypeSpecifier>()).addAll(supers));
-        node = node.setProperties((new ConstructList<StructProperty>()).addAll(properties));
+        node = node.setProperties((new ConstructList<DesignProperty>()).addAll(properties));
+        node = node.setMethods((new ConstructList<DesignMethod>()).addAll(methods));
 
         // Push the AST node onto the stack.
         stack.push(node);
@@ -740,7 +751,7 @@ public final class TreeBuilder
     }
 
     /**
-     * This method creates a struct-property.
+     * This method creates a design-property.
      *
      * <p>
      * <b>Precondition of the Stack</b>
@@ -754,24 +765,67 @@ public final class TreeBuilder
      * <p>
      * <b>Postcondition of the Stack</b>
      * <ul>
-     * <li> result : StructProperty </li>
+     * <li> result : DesignProperty </li>
      * </ul>
      * </p>
      */
-    public void createDefinitionStructProperty()
+    public void createDefinitionDesignProperty()
     {
         Preconditions.checkState(stack.size() == 3);
 
         // Pop the pieces off of the stack.
-        final TypeSpecifier return_type = (TypeSpecifier) stack.pop();
+        final TypeSpecifier type = (TypeSpecifier) stack.pop();
         final Name name = (Name) stack.pop();
         final AnnotationList annotations = (AnnotationList) stack.pop();
 
         // Create the AST node.
-        StructProperty node = new StructProperty();
+        DesignProperty node = new DesignProperty();
         node = node.setAnnotations(annotations);
         node = node.setName(name);
-        node = node.setType(return_type);
+        node = node.setType(type);
+
+        // Push the AST node onto the stack.
+        stack.push(node);
+
+        assert stack.size() == 1;
+    }
+
+    /**
+     * This method creates a design-method.
+     *
+     * <p>
+     * <b>Precondition of the Stack</b>
+     * <ul>
+     * <li> returns : TypeSpecifier </li>
+     * <li> formals : FormalParameterList </li>
+     * <li> name : Name </li>
+     * <li> annotations : AnnotationList </li>
+     * </ul>
+     * </p>
+     *
+     * <p>
+     * <b>Postcondition of the Stack</b>
+     * <ul>
+     * <li> result : DesignMethod </li>
+     * </ul>
+     * </p>
+     */
+    public void createDefinitionDesignMethod()
+    {
+        Preconditions.checkState(stack.size() == 4);
+
+        // Pop the pieces off of the stack.
+        final TypeSpecifier returns = (TypeSpecifier) stack.pop();
+        final FormalParameterList formals = (FormalParameterList) stack.pop();
+        final Name name = (Name) stack.pop();
+        final AnnotationList annotations = (AnnotationList) stack.pop();
+
+        // Create the AST node.
+        DesignMethod node = new DesignMethod();
+        node = node.setAnnotations(annotations);
+        node = node.setName(name);
+        node = node.setParameters(formals);
+        node = node.setReturnType(returns);
 
         // Push the AST node onto the stack.
         stack.push(node);
@@ -976,73 +1030,6 @@ public final class TreeBuilder
         // Initialize the AST node.
         node = node.setBody((IStatement) stack.pop());
         node = node.setCondition((IExpression) stack.pop());
-
-        // Push the AST node onto the stack.
-        stack.push(node);
-
-        assert stack.size() == 1;
-    }
-
-    /**
-     * This method creates a switch-statement.
-     *
-     * <p>
-     * <b>Precondition of the Stack</b>
-     * <ul>
-     * <li> default-case : IStatement </li>
-     * <li> conditional-case[n] : EnumCase </li>
-     * <li> conditional-case[.] : EnumCase </li>
-     * <li> conditional-case[2] : EnumCase </li>
-     * <li> conditional-case[1] : EnumCase </li>
-     * <li> conditional-case[0] : EnumCase </li>
-     * <li> selector : IExpression </li>
-     * </ul>
-     * </p>
-     *
-     * <p>
-     * Note: The default-case is optional.
-     * </p>
-     *
-     * <p>
-     * <b>Postcondition of the Stack</b>
-     * <ul>
-     * <li> result : SwitchEnumStatement </li>
-     * </ul>
-     * </p>
-     */
-    public void createStatementSwitch()
-    {
-        Preconditions.checkState(stack.size() >= 1);
-
-        final LinkedList<EnumCase> list = Lists.newLinkedList();
-
-        // Pop the pieces of the switch-statement off of the operand-stack.
-
-        // Pop the default-case, if it was provided.
-        final IStatement default_case = (stack.peek() instanceof IStatement)
-                ? (IStatement) stack.pop()
-                : null;
-
-        Preconditions.checkState(stack.size() >= 1);
-
-        // Pop the conditional cases, if any were provided.
-        while (stack.size() > 1)
-        {
-            list.addFirst((EnumCase) stack.pop());
-        }
-
-        Preconditions.checkState(stack.size() == 1);
-
-        // Pop the selector expression.
-        final IExpression selector = (IExpression) stack.pop();
-
-        // Create the AST node.
-        SwitchStatement node = new SwitchStatement();
-
-        // Initialize the AST node.
-        node = node.setSelector(selector);
-        node = node.setConditionalCases(new ConstructList(list));
-        node = node.setDefaultCase((SequenceStatement) default_case);
 
         // Push the AST node onto the stack.
         stack.push(node);
@@ -3972,39 +3959,6 @@ public final class TreeBuilder
         ConditionalCase node = new ConditionalCase();
         node = node.setBody((SequenceStatement) stack.pop());
         node = node.setCondition((IExpression) stack.pop());
-
-        // Push the AST node onto the stack.
-        stack.push(node);
-
-        assert stack.size() == 1;
-    }
-
-    /**
-     * This method creates an enum-case.
-     *
-     * <p>
-     * <b>Precondition of the Stack</b>
-     * <ul>
-     * <li> body : SequenceStatement </li>
-     * <li> constant : Name </li>
-     * </ul>
-     * </p>
-     *
-     * <p>
-     * <b>Postcondition of the Stack</b>
-     * <ul>
-     * <li> result : EnumCase </li>
-     * </ul>
-     * </p>
-     */
-    public void createComponentEnumCase()
-    {
-        Preconditions.checkState(stack.size() == 2);
-
-        // Create the AST node.
-        EnumCase node = new EnumCase();
-        node = node.setBody((SequenceStatement) stack.pop());
-        node = node.setConstant((Name) stack.pop());
 
         // Push the AST node onto the stack.
         stack.push(node);

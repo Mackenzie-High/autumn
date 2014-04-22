@@ -196,7 +196,7 @@ public final class PrintingVisitor
         record(object);
 
         require(object, object.getAnnotations());
-        require(object, object.getStructs());
+        require(object, object.getDesigns());
         require(object, object.getEnums());
         require(object, object.getExceptions());
         require(object, object.getFunctions());
@@ -238,7 +238,7 @@ public final class PrintingVisitor
 
         p.addEmptyLine();
 
-        for (StructDefinition x : object.getStructs())
+        for (DesignDefinition x : object.getDesigns())
         {
             x.accept(this);
         }
@@ -382,7 +382,7 @@ public final class PrintingVisitor
     }
 
     @Override
-    public void visit(final StructDefinition object)
+    public void visit(final DesignDefinition object)
     {
         record(object);
         require(object, object.getAnnotations());
@@ -393,12 +393,12 @@ public final class PrintingVisitor
         object.getAnnotations().accept(this);
 
         p.addLine();
-        p.addText("struct ");
+        p.addText("design ");
         object.getName().accept(this);
 
         if (object.getSuperinterfaces().isEmpty() == false)
         {
-            p.addText(" : ");
+            p.addText(" extends ");
         }
 
         int count = 0;
@@ -417,7 +417,12 @@ public final class PrintingVisitor
 
         p.addOpeningBracket();
         {
-            for (StructProperty x : object.getProperties())
+            for (DesignProperty x : object.getProperties())
+            {
+                x.accept(this);
+            }
+
+            for (DesignMethod x : object.getMethods())
             {
                 x.accept(this);
             }
@@ -429,7 +434,7 @@ public final class PrintingVisitor
     }
 
     @Override
-    public void visit(final StructProperty object)
+    public void visit(final DesignProperty object)
     {
         record(object);
         require(object, object.getAnnotations());
@@ -443,6 +448,29 @@ public final class PrintingVisitor
         object.getName().accept(this);
         p.addText(" : ");
         object.getType().accept(this);
+        p.addText(";");
+
+        p.addEmptyLine();
+    }
+
+    @Override
+    public void visit(final DesignMethod object)
+    {
+        record(object);
+        require(object, object.getAnnotations());
+        require(object, object.getName());
+        require(object, object.getParameters());
+        require(object, object.getReturnType());
+
+        object.getAnnotations().accept(this);
+
+        p.addLine();
+        p.addText("method ");
+        object.getName().accept(this);
+        p.addText(" ");
+        object.getParameters().accept(this);
+        p.addText(" : ");
+        object.getReturnType().accept(this);
         p.addText(";");
 
         p.addEmptyLine();
@@ -514,40 +542,6 @@ public final class PrintingVisitor
         p.addText(")");
         p.addOpeningBracket();
         object.getBody().accept(this);
-        p.removeEmptyLines();
-        p.addClosingBracket();
-        p.addEmptyLine();
-    }
-
-    @Override
-    public void visit(final SwitchStatement object)
-    {
-        record(object);
-        require(object, object.getSelector());
-
-        p.addLine();
-        p.addText("switch (");
-        object.getSelector().accept(this);
-        p.addText(")");
-
-        p.addOpeningBracket();
-        {
-            for (EnumCase ec : object.getConditionalCases())
-            {
-                p.addLine();
-                ec.accept(this);
-                p.addEmptyLine();
-            }
-
-            if (object.getDefaultCase() != null)
-            {
-                p.addLine();
-                p.addText("default");
-                object.getDefaultCase().accept(this);
-            }
-
-            p.addEmptyLine();
-        }
         p.removeEmptyLines();
         p.addClosingBracket();
         p.addEmptyLine();
@@ -1623,18 +1617,6 @@ public final class PrintingVisitor
         p.addText("(");
         object.getCondition().accept(this);
         p.addText(")");
-        object.getBody().accept(this);
-    }
-
-    @Override
-    public void visit(final EnumCase object)
-    {
-        record(object);
-        require(object, object.getConstant());
-        require(object, object.getBody());
-
-        p.addText("case ");
-        object.getConstant().accept(this);
         object.getBody().accept(this);
     }
 

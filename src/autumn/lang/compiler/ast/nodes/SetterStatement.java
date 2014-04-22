@@ -52,13 +52,13 @@ import java.util.TreeSet;
  *     <tr> <td> <b>Property Name</b> </td> <td> <b>Property Description</b> </td> </tr>
  *     <tr> <td> <code>owner</code> </td> <td>This is the mutable variable that contains the object.</td> </tr>
  *     <tr> <td> <code>name</code> </td> <td>This is the name of the property.</td> </tr>
- *     <tr> <td> <code>module</code> </td> <td>This is the module that contains the handler method.</td> </tr>
- *     <tr> <td> <code>method</code> </td> <td>This is the name of the handler method.</td> </tr>
+ *     <tr> <td> <code>module</code> </td> <td>This is the type of the module that contains the implementation method.</td> </tr>
+ *     <tr> <td> <code>method</code> </td> <td>This is the name of the implementation method.</td> </tr>
  *     <tr> <td> <code>location</code> </td> <td>This is the source-location information regarding this construct.</td> </tr>
  * </table>
  * </p>
  * 
- * <p> This file was auto-generated on (Thu Apr 17 06:31:04 EDT 2014).</p>
+ * <p> This file was auto-generated on (Mon Apr 21 22:27:52 EDT 2014).</p>
  */
 @SuppressWarnings("unchecked")
 public final class SetterStatement extends Object implements IStatement

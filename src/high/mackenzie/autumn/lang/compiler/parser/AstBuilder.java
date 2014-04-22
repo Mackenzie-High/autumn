@@ -298,7 +298,7 @@ public final class AstBuilder extends AbstractVisitor
      * {inheritDoc} 
      */
     @Override
-    public void visit_struct_definition(final ITreeNode $node)
+    public void visit_design_definition(final ITreeNode $node)
     {
         final int $stack_size = $stack.size();
 
@@ -310,7 +310,7 @@ public final class AstBuilder extends AbstractVisitor
 
         final TreeBuilder builder = Utils.builder();
 
-        builder.createDefinitionStruct();
+        builder.createDefinitionDesign();
 
         Utils.setSourceLocation($node);
 
@@ -333,7 +333,30 @@ public final class AstBuilder extends AbstractVisitor
 
         final TreeBuilder builder = Utils.builder();
 
-        builder.createDefinitionStructProperty();
+        builder.createDefinitionDesignProperty();
+
+        Utils.setSourceLocation($node);
+
+        builder.popStack();
+    }
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_method(final ITreeNode $node)
+    {
+        final int $stack_size = $stack.size();
+
+        visitUnknown($node);
+
+        final int $change = $stack.size() - $stack_size;
+
+        assert $change >= 0;
+
+        final TreeBuilder builder = Utils.builder();
+
+        builder.createDefinitionDesignMethod();
 
         Utils.setSourceLocation($node);
 
@@ -518,29 +541,6 @@ public final class AstBuilder extends AbstractVisitor
         final TreeBuilder builder = Utils.builder();
 
         builder.createStatementMarker();
-
-        Utils.setSourceLocation($node);
-
-        builder.popStack();
-    }
-
-    /**
-     * {inheritDoc} 
-     */
-    @Override
-    public void visit_switch_statement(final ITreeNode $node)
-    {
-        final int $stack_size = $stack.size();
-
-        visitUnknown($node);
-
-        final int $change = $stack.size() - $stack_size;
-
-        assert $change >= 0;
-
-        final TreeBuilder builder = Utils.builder();
-
-        builder.createStatementSwitch();
 
         Utils.setSourceLocation($node);
 
@@ -2300,29 +2300,6 @@ public final class AstBuilder extends AbstractVisitor
         final TreeBuilder builder = Utils.builder();
 
         builder.createComponentConditionalCase();
-
-        Utils.setSourceLocation($node);
-
-        builder.popStack();
-    }
-
-    /**
-     * {inheritDoc} 
-     */
-    @Override
-    public void visit_enum_case(final ITreeNode $node)
-    {
-        final int $stack_size = $stack.size();
-
-        visitUnknown($node);
-
-        final int $change = $stack.size() - $stack_size;
-
-        assert $change >= 0;
-
-        final TreeBuilder builder = Utils.builder();
-
-        builder.createComponentEnumCase();
 
         Utils.setSourceLocation($node);
 

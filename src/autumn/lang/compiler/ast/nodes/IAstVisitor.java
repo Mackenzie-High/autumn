@@ -47,7 +47,7 @@ import java.util.TreeSet;
 /**
  * An instance of this interface is a visitor that can visit the nodes in an Autumn abstract-syntax-tree.
  * 
- * <p> This file was auto-generated on (Thu Apr 17 06:31:04 EDT 2014).</p>
+ * <p> This file was auto-generated on (Mon Apr 21 22:27:52 EDT 2014).</p>
  */
 public interface IAstVisitor
 {
@@ -115,18 +115,25 @@ public interface IAstVisitor
     public void visit(final EnumConstant object);
 
     /**
-     * This method visits an object of type <code>StructDefinition</code>.
+     * This method visits an object of type <code>DesignDefinition</code>.
      * 
      * @param object is the object to visit.
      */
-    public void visit(final StructDefinition object);
+    public void visit(final DesignDefinition object);
 
     /**
-     * This method visits an object of type <code>StructProperty</code>.
+     * This method visits an object of type <code>DesignProperty</code>.
      * 
      * @param object is the object to visit.
      */
-    public void visit(final StructProperty object);
+    public void visit(final DesignProperty object);
+
+    /**
+     * This method visits an object of type <code>DesignMethod</code>.
+     * 
+     * @param object is the object to visit.
+     */
+    public void visit(final DesignMethod object);
 
     /**
      * This method visits an object of type <code>FunctionDefinition</code>.
@@ -148,13 +155,6 @@ public interface IAstVisitor
      * @param object is the object to visit.
      */
     public void visit(final WhenStatement object);
-
-    /**
-     * This method visits an object of type <code>SwitchStatement</code>.
-     * 
-     * @param object is the object to visit.
-     */
-    public void visit(final SwitchStatement object);
 
     /**
      * This method visits an object of type <code>GotoStatement</code>.
@@ -771,13 +771,6 @@ public interface IAstVisitor
      * @param object is the object to visit.
      */
     public void visit(final ConditionalCase object);
-
-    /**
-     * This method visits an object of type <code>EnumCase</code>.
-     * 
-     * @param object is the object to visit.
-     */
-    public void visit(final EnumCase object);
 
     /**
      * This method visits an object of type <code>Label</code>.

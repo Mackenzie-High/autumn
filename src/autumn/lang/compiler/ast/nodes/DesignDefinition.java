@@ -45,28 +45,34 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 
 /**
- * An instance of this class is an AST node that represents the declaration of a property within a struct.
+ * An instance of this class is an AST node that represents the definition of a design.
  * 
  * <p> 
  * <table border="1">
  *     <tr> <td> <b>Property Name</b> </td> <td> <b>Property Description</b> </td> </tr>
- *     <tr> <td> <code>annotations</code> </td> <td>These are the annotations applied directly to the property.</td> </tr>
- *     <tr> <td> <code>name</code> </td> <td>This is the name of the property.</td> </tr>
- *     <tr> <td> <code>type</code> </td> <td>This is the type of the data that can be stored in the property at runtime.</td> </tr>
+ *     <tr> <td> <code>annotations</code> </td> <td>These are the annotations applied directly to the definition.</td> </tr>
+ *     <tr> <td> <code>name</code> </td> <td>This is the simple name of the new type.</td> </tr>
+ *     <tr> <td> <code>superinterfaces</code> </td> <td>These are the direct superinterfaces of the new type.</td> </tr>
+ *     <tr> <td> <code>properties</code> </td> <td>These are the properties declared directly within this definition.</td> </tr>
+ *     <tr> <td> <code>methods</code> </td> <td>These are the methods declared directly within this definition.</td> </tr>
  *     <tr> <td> <code>location</code> </td> <td>This is the source-location information regarding this construct.</td> </tr>
  * </table>
  * </p>
  * 
- * <p> This file was auto-generated on (Thu Apr 17 06:31:04 EDT 2014).</p>
+ * <p> This file was auto-generated on (Mon Apr 21 22:27:52 EDT 2014).</p>
  */
 @SuppressWarnings("unchecked")
-public final class StructProperty extends Object implements IAnnotated
+public final class DesignDefinition extends Object implements IAnnotated
 {
     private AnnotationList annotations = new AnnotationList();
 
     private Name name;
 
-    private TypeSpecifier type;
+    private ConstructList<TypeSpecifier> superinterfaces = new ConstructList();
+
+    private ConstructList<DesignProperty> properties = new ConstructList<DesignProperty>();
+
+    private ConstructList<DesignMethod> methods = new ConstructList<DesignMethod>();
 
     private SourceLocation location = new SourceLocation();
 
@@ -76,9 +82,9 @@ public final class StructProperty extends Object implements IAnnotated
      * @param value is the new value of property <code>annotations</code>.
      * @return a copy of this object with property <code>annotations</code> set to value.
      */
-    public StructProperty setAnnotations(final AnnotationList value)
+    public DesignDefinition setAnnotations(final AnnotationList value)
     {
-        final StructProperty result = this.copy();
+        final DesignDefinition result = this.copy();
         result.annotations = value;
         return result;
     }
@@ -100,9 +106,9 @@ public final class StructProperty extends Object implements IAnnotated
      * @param value is the new value of property <code>name</code>.
      * @return a copy of this object with property <code>name</code> set to value.
      */
-    public StructProperty setName(final Name value)
+    public DesignDefinition setName(final Name value)
     {
-        final StructProperty result = this.copy();
+        final DesignDefinition result = this.copy();
         result.name = value;
         return result;
     }
@@ -121,24 +127,72 @@ public final class StructProperty extends Object implements IAnnotated
     /**
      * Setter.
      * 
-     * @param value is the new value of property <code>type</code>.
-     * @return a copy of this object with property <code>type</code> set to value.
+     * @param value is the new value of property <code>superinterfaces</code>.
+     * @return a copy of this object with property <code>superinterfaces</code> set to value.
      */
-    public StructProperty setType(final TypeSpecifier value)
+    public DesignDefinition setSuperinterfaces(final ConstructList<TypeSpecifier> value)
     {
-        final StructProperty result = this.copy();
-        result.type = value;
+        final DesignDefinition result = this.copy();
+        result.superinterfaces = value;
         return result;
     }
 
     /**
      * Getter.
      * 
-     * @return the value of property <code>type</code>.
+     * @return the value of property <code>superinterfaces</code>.
      */
-    public TypeSpecifier getType()
+    public ConstructList<TypeSpecifier> getSuperinterfaces()
     {
-        final TypeSpecifier value = this.type;
+        final ConstructList<TypeSpecifier> value = this.superinterfaces;
+        return value;
+    }
+
+    /**
+     * Setter.
+     * 
+     * @param value is the new value of property <code>properties</code>.
+     * @return a copy of this object with property <code>properties</code> set to value.
+     */
+    public DesignDefinition setProperties(final ConstructList<DesignProperty> value)
+    {
+        final DesignDefinition result = this.copy();
+        result.properties = value;
+        return result;
+    }
+
+    /**
+     * Getter.
+     * 
+     * @return the value of property <code>properties</code>.
+     */
+    public ConstructList<DesignProperty> getProperties()
+    {
+        final ConstructList<DesignProperty> value = this.properties;
+        return value;
+    }
+
+    /**
+     * Setter.
+     * 
+     * @param value is the new value of property <code>methods</code>.
+     * @return a copy of this object with property <code>methods</code> set to value.
+     */
+    public DesignDefinition setMethods(final ConstructList<DesignMethod> value)
+    {
+        final DesignDefinition result = this.copy();
+        result.methods = value;
+        return result;
+    }
+
+    /**
+     * Getter.
+     * 
+     * @return the value of property <code>methods</code>.
+     */
+    public ConstructList<DesignMethod> getMethods()
+    {
+        final ConstructList<DesignMethod> value = this.methods;
         return value;
     }
 
@@ -148,9 +202,9 @@ public final class StructProperty extends Object implements IAnnotated
      * @param value is the new value of property <code>location</code>.
      * @return a copy of this object with property <code>location</code> set to value.
      */
-    public StructProperty setLocation(final SourceLocation value)
+    public DesignDefinition setLocation(final SourceLocation value)
     {
-        final StructProperty result = this.copy();
+        final DesignDefinition result = this.copy();
         result.location = value;
         return result;
     }
@@ -181,12 +235,14 @@ public final class StructProperty extends Object implements IAnnotated
      * 
      * @return a shallow copy of this object.
      */
-    public StructProperty copy()
+    public DesignDefinition copy()
     {
-        final StructProperty result = new StructProperty();
+        final DesignDefinition result = new DesignDefinition();
         result.annotations = this.annotations;
         result.name = this.name;
-        result.type = this.type;
+        result.superinterfaces = this.superinterfaces;
+        result.properties = this.properties;
+        result.methods = this.methods;
         result.location = this.location;
         return result;
     }
@@ -206,7 +262,9 @@ public final class StructProperty extends Object implements IAnnotated
         final Map<String, Object> map = new TreeMap<String, Object>();
         map.put("annotations", this.getAnnotations());
         map.put("name", this.getName());
-        map.put("type", this.getType());
+        map.put("superinterfaces", this.getSuperinterfaces());
+        map.put("properties", this.getProperties());
+        map.put("methods", this.getMethods());
         map.put("location", this.getLocation());
 
         return map;

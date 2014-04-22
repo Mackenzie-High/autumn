@@ -68,13 +68,19 @@ public class AbstractAstVisitor
     }
 
     @Override
-    public void visit(StructDefinition object)
+    public void visit(DesignDefinition object)
     {
         throw new UnsupportedOperationException("This should never happen.");
     }
 
     @Override
-    public void visit(StructProperty object)
+    public void visit(DesignProperty object)
+    {
+        throw new UnsupportedOperationException("This should never happen.");
+    }
+
+    @Override
+    public void visit(DesignMethod object)
     {
         throw new UnsupportedOperationException("This should never happen.");
     }
@@ -93,12 +99,6 @@ public class AbstractAstVisitor
 
     @Override
     public void visit(WhenStatement object)
-    {
-        throw new UnsupportedOperationException("This should never happen.");
-    }
-
-    @Override
-    public void visit(SwitchStatement object)
     {
         throw new UnsupportedOperationException("This should never happen.");
     }
@@ -627,12 +627,6 @@ public class AbstractAstVisitor
 
     @Override
     public void visit(ConditionalCase object)
-    {
-        throw new UnsupportedOperationException("This should never happen.");
-    }
-
-    @Override
-    public void visit(EnumCase object)
     {
         throw new UnsupportedOperationException("This should never happen.");
     }

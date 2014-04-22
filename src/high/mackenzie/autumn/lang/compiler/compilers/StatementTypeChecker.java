@@ -61,24 +61,6 @@ public final class StatementTypeChecker
     }
 
     @Override
-    public void visit(final SwitchStatement object)
-    {
-        object.getSelector().accept(this);
-
-        program.checker.requireEnum(program.symbols.expressions.get(object.getSelector()));
-
-        for (EnumCase ec : object.getConditionalCases())
-        {
-            ec.getBody().accept(this);
-        }
-
-        if (object.getDefaultCase() != null)
-        {
-            object.getDefaultCase().accept(this);
-        }
-    }
-
-    @Override
     public void visit(final GotoStatement object)
     {
         function.labels.defer(object);

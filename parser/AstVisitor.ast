@@ -422,25 +422,6 @@ rule marker_statement
 }
 
 ###################################################################################################
-# Statements --> Switch
-###################################################################################################
-
-rule switch_statement
-{
-  # Get the AST builder.
-  builder : TreeBuilder = call Utils.builder();
-
-  # Create the AST node.
-  call builder.createStatementSwitch();
-
-  # Set the source-location information.
-  call Utils.setSourceLocation($node);
-
-  # Merge the upper stack with the next lower stack.
-  call builder.popStack();
-}
-
-###################################################################################################
 # Statements --> Exception Handling --> Assert
 ###################################################################################################
 
@@ -1838,25 +1819,6 @@ rule conditional_case
 
   # Create the AST node.
   call builder.createComponentConditionalCase();
-
-  # Set the source-location information.
-  call Utils.setSourceLocation($node);
-
-  # Merge the upper stack with the next lower stack.
-  call builder.popStack();
-}
-
-###################################################################################################
-# Components --> Enum Case
-###################################################################################################
-
-rule enum_case
-{
-  # Get the AST builder.
-  builder : TreeBuilder = call Utils.builder();
-
-  # Create the AST node.
-  call builder.createComponentEnumCase();
 
   # Set the source-location information.
   call Utils.setSourceLocation($node);

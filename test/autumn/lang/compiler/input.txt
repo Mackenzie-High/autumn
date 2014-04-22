@@ -86,7 +86,7 @@ enum Moo
 @Anno19
 @Anno20
 @Anno21
-struct Person : Creature & Employable & Taxable
+design Person extends Creature & Employable & Taxable
 {
     @Anno22
     @Anno23
@@ -97,11 +97,23 @@ struct Person : Creature & Employable & Taxable
     @Anno26
     @Anno27
     data age : int ;
+
+    @Anno28
+    @Anno29
+    method move () : void ;
+
+    @Anno28
+    @Anno29
+    method speak (message : String) : void ;
+
+    @Anno28
+    @Anno29
+    method speak (message : String, count : int) : void ;
 }
 
 
 
-struct Employee
+design Employee
 {
     data salary : int ;
 }
@@ -549,31 +561,6 @@ defun main (args : String[]) : void
     nop;
 
     when ( x == 5 ) return 17 ;
-
-    nop;
-
-    switch ( x )
-    {
-    }
-
-    nop;
-
-    switch ( x )
-    {
-        case E0 { nop; }
-        case E1 { nop; }
-        case E2 { nop; }
-    }
-
-    nop;
-
-    switch ( x )
-    {
-        case E0 { nop; }
-        case E1 { nop; }
-        case E2 { nop; }
-        default { nop; }
-    }
 
     nop;
 

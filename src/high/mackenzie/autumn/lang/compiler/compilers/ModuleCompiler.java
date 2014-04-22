@@ -5,6 +5,7 @@ import autumn.lang.F;
 import autumn.lang.Functor;
 import autumn.lang.compiler.ClassFile;
 import autumn.lang.compiler.ast.nodes.AnnotationDefinition;
+import autumn.lang.compiler.ast.nodes.DesignDefinition;
 import autumn.lang.compiler.ast.nodes.EnumDefinition;
 import autumn.lang.compiler.ast.nodes.ExceptionDefinition;
 import autumn.lang.compiler.ast.nodes.FunctionDefinition;
@@ -12,7 +13,6 @@ import autumn.lang.compiler.ast.nodes.ImportDirective;
 import autumn.lang.compiler.ast.nodes.Module;
 import autumn.lang.compiler.ast.nodes.ModuleDirective;
 import autumn.lang.compiler.ast.nodes.Name;
-import autumn.lang.compiler.ast.nodes.StructDefinition;
 import autumn.lang.compiler.ast.nodes.TypeSpecifier;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
@@ -121,7 +121,8 @@ public final class ModuleCompiler
 
     public final List<EnumCompiler> enums = Lists.newLinkedList();
 
-//    public final List<DesignCompiler> designs = Lists.newLinkedList();
+    public final List<DesignCompiler> designs = Lists.newLinkedList();
+
     public final List<FunctionCompiler> functions = Lists.newLinkedList();
 
     public final List<FieldNode> yields = Lists.newLinkedList();
@@ -147,9 +148,9 @@ public final class ModuleCompiler
             enums.add(new EnumCompiler(this, x));
         }
 
-        for (StructDefinition x : node.getStructs())
+        for (DesignDefinition x : node.getDesigns())
         {
-//            designs.add(new DesignCompiler(this, x));
+            designs.add(new DesignCompiler(this, x));
         }
 
         for (FunctionDefinition x : node.getFunctions())

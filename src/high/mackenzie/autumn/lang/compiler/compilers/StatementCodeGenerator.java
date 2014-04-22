@@ -4,7 +4,6 @@ import autumn.lang.compiler.ast.commons.*;
 import autumn.lang.compiler.ast.nodes.*;
 import com.google.common.collect.Lists;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IDeclaredType;
-import high.mackenzie.autumn.lang.compiler.typesystem.design.IEnumType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IType;
 import high.mackenzie.autumn.lang.compiler.utils.Utils;
 import java.util.List;
@@ -17,7 +16,6 @@ import org.objectweb.asm.tree.JumpInsnNode;
 import org.objectweb.asm.tree.LabelNode;
 import org.objectweb.asm.tree.LdcInsnNode;
 import org.objectweb.asm.tree.MethodInsnNode;
-import org.objectweb.asm.tree.TableSwitchInsnNode;
 import org.objectweb.asm.tree.TryCatchBlockNode;
 import org.objectweb.asm.tree.TypeInsnNode;
 
@@ -83,19 +81,6 @@ public final class StatementCodeGenerator
         code.add(new JumpInsnNode(Utils.IF_FALSE, END));
         object.getBody().accept(this);
         code.add(END);
-    }
-
-    @Override
-    public void visit(SwitchStatement object)
-    {
-        final IEnumType type = (IEnumType) program.symbols.expressions.get(object.getSelector());
-
-        final int max = type.getEnumConstants().size();
-
-        final TableSwitchInsnNode table = new TableSwitchInsnNode(0, max, null);
-
-
-        // TODO
     }
 
     @Override

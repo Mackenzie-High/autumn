@@ -51,19 +51,19 @@ import java.util.TreeSet;
  * <table border="1">
  *     <tr> <td> <b>Property Name</b> </td> <td> <b>Property Description</b> </td> </tr>
  *     <tr> <td> <code>type</code> </td> <td>This is the type to instantiate.</td> </tr>
- *     <tr> <td> <code>wraps</code> </td> <td>(Optional) This expression produces the object that the newly created object will wrap.</td> </tr>
+ *     <tr> <td> <code>wraps</code> </td> <td>This expression produces the inner object.</td> </tr>
  *     <tr> <td> <code>location</code> </td> <td>This is the source-location information regarding this construct.</td> </tr>
  * </table>
  * </p>
  * 
- * <p> This file was auto-generated on (Thu Apr 17 06:31:04 EDT 2014).</p>
+ * <p> This file was auto-generated on (Mon Apr 21 22:27:52 EDT 2014).</p>
  */
 @SuppressWarnings("unchecked")
 public final class CreateExpression extends Object implements IExpression
 {
     private TypeSpecifier type;
 
-    private IExpression wraps = null;
+    private IExpression wraps;
 
     private SourceLocation location = new SourceLocation();
 

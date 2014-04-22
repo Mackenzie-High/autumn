@@ -45,100 +45,100 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 
 /**
- * An instance of this class is an AST node that represents a switch-statement over an enumerations.
+ * An instance of this class is an AST node that represents the declaration of a property within a design.
  * 
  * <p> 
  * <table border="1">
  *     <tr> <td> <b>Property Name</b> </td> <td> <b>Property Description</b> </td> </tr>
- *     <tr> <td> <code>selector</code> </td> <td>This expression produces the value that indicates which case will be executed.</td> </tr>
- *     <tr> <td> <code>conditional_cases</code> </td> <td>These cases are conditionally executed.</td> </tr>
- *     <tr> <td> <code>default_case</code> </td> <td>(Optional) This is the case that will be executed, if none of the other cases match.</td> </tr>
+ *     <tr> <td> <code>annotations</code> </td> <td>These are the annotations applied directly to the property.</td> </tr>
+ *     <tr> <td> <code>name</code> </td> <td>This is the name of the property.</td> </tr>
+ *     <tr> <td> <code>type</code> </td> <td>This is the type of the data that can be stored in the property at runtime.</td> </tr>
  *     <tr> <td> <code>location</code> </td> <td>This is the source-location information regarding this construct.</td> </tr>
  * </table>
  * </p>
  * 
- * <p> This file was auto-generated on (Thu Apr 17 06:31:04 EDT 2014).</p>
+ * <p> This file was auto-generated on (Mon Apr 21 22:27:52 EDT 2014).</p>
  */
 @SuppressWarnings("unchecked")
-public final class SwitchStatement extends Object implements IStatement
+public final class DesignProperty extends Object implements IAnnotated
 {
-    private IExpression selector;
+    private AnnotationList annotations = new AnnotationList();
 
-    private ConstructList<EnumCase> conditional_cases = new ConstructList();
+    private Name name;
 
-    private SequenceStatement default_case = new SequenceStatement();
+    private TypeSpecifier type;
 
     private SourceLocation location = new SourceLocation();
 
     /**
      * Setter.
      * 
-     * @param value is the new value of property <code>selector</code>.
-     * @return a copy of this object with property <code>selector</code> set to value.
+     * @param value is the new value of property <code>annotations</code>.
+     * @return a copy of this object with property <code>annotations</code> set to value.
      */
-    public SwitchStatement setSelector(final IExpression value)
+    public DesignProperty setAnnotations(final AnnotationList value)
     {
-        final SwitchStatement result = this.copy();
-        result.selector = value;
+        final DesignProperty result = this.copy();
+        result.annotations = value;
         return result;
     }
 
     /**
      * Getter.
      * 
-     * @return the value of property <code>selector</code>.
+     * @return the value of property <code>annotations</code>.
      */
-    public IExpression getSelector()
+    public AnnotationList getAnnotations()
     {
-        final IExpression value = this.selector;
+        final AnnotationList value = this.annotations;
         return value;
     }
 
     /**
      * Setter.
      * 
-     * @param value is the new value of property <code>conditional_cases</code>.
-     * @return a copy of this object with property <code>conditional_cases</code> set to value.
+     * @param value is the new value of property <code>name</code>.
+     * @return a copy of this object with property <code>name</code> set to value.
      */
-    public SwitchStatement setConditionalCases(final ConstructList<EnumCase> value)
+    public DesignProperty setName(final Name value)
     {
-        final SwitchStatement result = this.copy();
-        result.conditional_cases = value;
+        final DesignProperty result = this.copy();
+        result.name = value;
         return result;
     }
 
     /**
      * Getter.
      * 
-     * @return the value of property <code>conditional_cases</code>.
+     * @return the value of property <code>name</code>.
      */
-    public ConstructList<EnumCase> getConditionalCases()
+    public Name getName()
     {
-        final ConstructList<EnumCase> value = this.conditional_cases;
+        final Name value = this.name;
         return value;
     }
 
     /**
      * Setter.
      * 
-     * @param value is the new value of property <code>default_case</code>.
-     * @return a copy of this object with property <code>default_case</code> set to value.
+     * @param value is the new value of property <code>type</code>.
+     * @return a copy of this object with property <code>type</code> set to value.
      */
-    public SwitchStatement setDefaultCase(final SequenceStatement value)
+    public DesignProperty setType(final TypeSpecifier value)
     {
-        final SwitchStatement result = this.copy();
-        result.default_case = value;
+        final DesignProperty result = this.copy();
+        result.type = value;
         return result;
     }
 
     /**
      * Getter.
      * 
-     * @return the value of property <code>default_case</code>.
+     * @return the value of property <code>type</code>.
      */
-    public SequenceStatement getDefaultCase()
+    public TypeSpecifier getType()
     {
-        final SequenceStatement value = this.default_case;
+        final TypeSpecifier value = this.type;
         return value;
     }
 
@@ -148,9 +148,9 @@ public final class SwitchStatement extends Object implements IStatement
      * @param value is the new value of property <code>location</code>.
      * @return a copy of this object with property <code>location</code> set to value.
      */
-    public SwitchStatement setLocation(final SourceLocation value)
+    public DesignProperty setLocation(final SourceLocation value)
     {
-        final SwitchStatement result = this.copy();
+        final DesignProperty result = this.copy();
         result.location = value;
         return result;
     }
@@ -181,12 +181,12 @@ public final class SwitchStatement extends Object implements IStatement
      * 
      * @return a shallow copy of this object.
      */
-    public SwitchStatement copy()
+    public DesignProperty copy()
     {
-        final SwitchStatement result = new SwitchStatement();
-        result.selector = this.selector;
-        result.conditional_cases = this.conditional_cases;
-        result.default_case = this.default_case;
+        final DesignProperty result = new DesignProperty();
+        result.annotations = this.annotations;
+        result.name = this.name;
+        result.type = this.type;
         result.location = this.location;
         return result;
     }
@@ -204,9 +204,9 @@ public final class SwitchStatement extends Object implements IStatement
     public Map<String, Object> toMap()
     {
         final Map<String, Object> map = new TreeMap<String, Object>();
-        map.put("selector", this.getSelector());
-        map.put("conditional_cases", this.getConditionalCases());
-        map.put("default_case", this.getDefaultCase());
+        map.put("annotations", this.getAnnotations());
+        map.put("name", this.getName());
+        map.put("type", this.getType());
         map.put("location", this.getLocation());
 
         return map;

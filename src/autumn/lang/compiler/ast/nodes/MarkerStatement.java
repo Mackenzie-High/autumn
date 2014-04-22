@@ -50,12 +50,12 @@ import java.util.TreeSet;
  * <p> 
  * <table border="1">
  *     <tr> <td> <b>Property Name</b> </td> <td> <b>Property Description</b> </td> </tr>
- *     <tr> <td> <code>label</code> </td> <td>This label that a goto-statement will target.</td> </tr>
+ *     <tr> <td> <code>label</code> </td> <td>This label identifies the marked location.</td> </tr>
  *     <tr> <td> <code>location</code> </td> <td>This is the source-location information regarding this construct.</td> </tr>
  * </table>
  * </p>
  * 
- * <p> This file was auto-generated on (Thu Apr 17 06:31:04 EDT 2014).</p>
+ * <p> This file was auto-generated on (Mon Apr 21 22:27:52 EDT 2014).</p>
  */
 @SuppressWarnings("unchecked")
 public final class MarkerStatement extends Object implements IStatement

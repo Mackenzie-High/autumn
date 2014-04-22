@@ -22,6 +22,8 @@ import autumn.lang.compiler.ast.commons.IBinaryOperation;
 import autumn.lang.compiler.ast.commons.IConversionOperation;
 import autumn.lang.compiler.ast.commons.ConstructList;
 
+enable javize;
+
 doc An instance of this interface is a visitor that can visit the nodes in an Autumn abstract-syntax-tree.
 visitor IAstVisitor;
 
@@ -32,12 +34,6 @@ visitor IAstVisitor;
 doc An instance of this class is an AST node that represents a single module.
 struct Module
   implement IConstruct;
-
-  doc These are the include-directives that are directly within this module.
-  data include_directives : ConstructList<IncludeDirective> = { new ConstructList() };
-
-  doc These are the use-directives that are directly within this module.
-  data use_directives : ConstructList<UseDirective> = { new ConstructList() };
 
   doc These are the module-directives that are directly within this module.
   data module_directives : ConstructList<ModuleDirective> = { new ConstructList() };
@@ -63,37 +59,6 @@ struct Module
   doc This is the source-location information regarding this construct.
   data location : SourceLocation = { new SourceLocation() };
 end
-
-###################################################################################################
-# Directives --> Include
-###################################################################################################
-
-doc An instance of this class is an AST node that represents a directive that adds another source-file to the compilation-unit. 
-struct IncludeDirective
-  implement IDirective;
-
-  doc This is the path to the file to add to the compilation-unit.
-  data file : File;
-
-  doc This is the source-location information regarding this construct.
-  data location : SourceLocation = { new SourceLocation() };
-end
-
-###################################################################################################
-# Directives --> Use
-###################################################################################################
-
-doc An instance of this class is an AST node that represents a directive that declares a dependency. 
-struct UseDirective
-  implement IDirective;
-
-  doc This is the path to the file that is the dependency.
-  data file : File;
-
-  doc This is the source-location information regarding this construct.
-  data location : SourceLocation = { new SourceLocation() };
-end
-
 
 ###################################################################################################
 # Directives --> Module
@@ -360,6 +325,54 @@ struct IfStatement
 end
 
 ###################################################################################################
+# Statements - When
+###################################################################################################
+
+doc An instance of this class is an AST node that represents a when statement.
+struct WhenStatement
+  implement IStatement;
+
+  doc This condition controls the execution of the body. 
+  data condition : IExpression;
+
+  doc This is the statement that is conditionally executed. 
+  data body : IStatement;
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Statements - Goto
+###################################################################################################
+
+doc An instance of this class is an AST node that represents a goto-statement.
+struct GotoStatement
+  implement IStatement;
+
+  doc This label identifies the location that execution will be redirected to. 
+  data label : Label;
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Statements - Marker
+###################################################################################################
+
+doc An instance of this class is an AST node that represents a marker-statement.
+struct MarkerStatement
+  implement IStatement;
+
+  doc This label identifies the marked location. 
+  data label : Label;
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
 # Statements --> While
 ###################################################################################################
 
@@ -586,8 +599,11 @@ struct SetterStatement
   doc This is the name of the property. 
   data name : Name;
 
-  doc This expression produces the setter implementation.
-  data value : IExpression;
+  doc This is the type of the module that contains the implementation method. 
+  data module : TypeSpecifier;
+
+  doc This is the name of the implementation method. 
+  data method : Name;
 
   doc This is the source-location information regarding this construct.
   data location : SourceLocation = { new SourceLocation() };
@@ -607,8 +623,11 @@ struct GetterStatement
   doc This is the name of the property. 
   data name : Name;
 
-  doc This expression produces the getter implementation.
-  data value : IExpression;
+  doc This is the type of the module that contains the implementation method. 
+  data module : TypeSpecifier;
+
+  doc This is the name of the implementation method. 
+  data method : Name;
 
   doc This is the source-location information regarding this construct.
   data location : SourceLocation = { new SourceLocation() };
@@ -628,8 +647,14 @@ struct MethodStatement
   doc This is the name of the method. 
   data name : Name;
 
-  doc This expression produces the method implementation.
-  data value : IExpression;
+  doc These formal parameters indicate which overload of the method to select. 
+  data parameters : FormalParameterList;
+
+  doc This is the type of the module that contains the implementation method. 
+  data module : TypeSpecifier;
+
+  doc This is the name of the implementation method. 
+  data method : Name;
 
   doc This is the source-location information regarding this construct.
   data location : SourceLocation = { new SourceLocation() };
@@ -1132,6 +1157,9 @@ struct CreateExpression
   doc This is the type to instantiate.
   data type : TypeSpecifier;
 
+  doc This expression produces the inner object. 
+  data wraps : IExpression;
+
   doc This is the source-location information regarding this construct.
   data location : SourceLocation = { new SourceLocation() };
 end
@@ -1215,24 +1243,6 @@ struct InstanceOfExpression
 end
 
 ###################################################################################################
-# Expressions --> Apply
-###################################################################################################
-
-doc An instance of this class is an AST node that represents an expression that applies an anonymous function to a list of arguments. 
-struct ApplyExpression
-  implement IExpression;
-
-  doc This expression produces the anonymous function to invoke. 
-  data function : IExpression;
-
-  doc This expression produces the list that contains the arguments to pass to the anonymous function.
-  data arguments : IExpression;
-
-  doc This is the source-location information regarding this construct.
-  data location : SourceLocation = { new SourceLocation() };
-end
-
-###################################################################################################
 # Expressions --> Funcall
 ###################################################################################################
 
@@ -1272,24 +1282,6 @@ struct TernaryConditionalExpression
 end
 
 ###################################################################################################
-# Operators --> Lambda 
-###################################################################################################
-
-doc An instance of this class is an AST node that represents the definition of a lambda function.
-struct LambdaExpression
-  implement IExpression;
-
-  doc These are the formal parameters of the function.
-  data parameters : FormalParameterList;
-
-  doc This is the expression that is executed, when the lambda function is invoked. 
-  data body : IExpression;
-
-  doc This is the source-location information regarding this construct.
-  data location : SourceLocation = { new SourceLocation() };
-end
-
-###################################################################################################
 # Operators --> Delegate
 ###################################################################################################
 
@@ -1305,6 +1297,18 @@ struct DelegateExpression
 
   doc These formal parameters are used to distinguish between different overloads of a static method. 
   data parameters : FormalParameterList;
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Expressions --> Locals
+###################################################################################################
+
+doc An instance of this class is an AST node that represents a locals-expression. 
+struct LocalsExpression
+  implement IExpression;
 
   doc This is the source-location information regarding this construct.
   data location : SourceLocation = { new SourceLocation() };
@@ -1849,6 +1853,21 @@ struct ConditionalCase
 
   doc This is the statement that is conditionally executed.
   data body : SequenceStatement;
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Component - Label
+###################################################################################################
+
+doc An instance of this class is an AST node that represents a label.
+struct Label
+  implement IStatement;
+
+  doc This is the name of the label.
+  data name : String;
 
   doc This is the source-location information regarding this construct.
   data location : SourceLocation = { new SourceLocation() };

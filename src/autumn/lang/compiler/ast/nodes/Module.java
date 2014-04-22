@@ -55,13 +55,13 @@ import java.util.TreeSet;
  *     <tr> <td> <code>annotations</code> </td> <td>These are the annotations declared directly within this module.</td> </tr>
  *     <tr> <td> <code>exceptions</code> </td> <td>These are the exceptions declared directly within this module.</td> </tr>
  *     <tr> <td> <code>enums</code> </td> <td>These are the enums declared directly within this module.</td> </tr>
- *     <tr> <td> <code>structs</code> </td> <td>These are the designs declared directly within this module.</td> </tr>
+ *     <tr> <td> <code>designs</code> </td> <td>These are the designs declared directly within this module.</td> </tr>
  *     <tr> <td> <code>functions</code> </td> <td>These are the functions declared directly within this module.</td> </tr>
  *     <tr> <td> <code>location</code> </td> <td>This is the source-location information regarding this construct.</td> </tr>
  * </table>
  * </p>
  * 
- * <p> This file was auto-generated on (Thu Apr 17 06:31:04 EDT 2014).</p>
+ * <p> This file was auto-generated on (Mon Apr 21 22:27:52 EDT 2014).</p>
  */
 @SuppressWarnings("unchecked")
 public final class Module extends Object implements IConstruct
@@ -76,7 +76,7 @@ public final class Module extends Object implements IConstruct
 
     private ConstructList<EnumDefinition> enums = new ConstructList();
 
-    private ConstructList<StructDefinition> structs = new ConstructList();
+    private ConstructList<DesignDefinition> designs = new ConstructList();
 
     private ConstructList<FunctionDefinition> functions = new ConstructList<FunctionDefinition>();
 
@@ -205,24 +205,24 @@ public final class Module extends Object implements IConstruct
     /**
      * Setter.
      * 
-     * @param value is the new value of property <code>structs</code>.
-     * @return a copy of this object with property <code>structs</code> set to value.
+     * @param value is the new value of property <code>designs</code>.
+     * @return a copy of this object with property <code>designs</code> set to value.
      */
-    public Module setStructs(final ConstructList<StructDefinition> value)
+    public Module setDesigns(final ConstructList<DesignDefinition> value)
     {
         final Module result = this.copy();
-        result.structs = value;
+        result.designs = value;
         return result;
     }
 
     /**
      * Getter.
      * 
-     * @return the value of property <code>structs</code>.
+     * @return the value of property <code>designs</code>.
      */
-    public ConstructList<StructDefinition> getStructs()
+    public ConstructList<DesignDefinition> getDesigns()
     {
-        final ConstructList<StructDefinition> value = this.structs;
+        final ConstructList<DesignDefinition> value = this.designs;
         return value;
     }
 
@@ -297,7 +297,7 @@ public final class Module extends Object implements IConstruct
         result.annotations = this.annotations;
         result.exceptions = this.exceptions;
         result.enums = this.enums;
-        result.structs = this.structs;
+        result.designs = this.designs;
         result.functions = this.functions;
         result.location = this.location;
         return result;
@@ -321,7 +321,7 @@ public final class Module extends Object implements IConstruct
         map.put("annotations", this.getAnnotations());
         map.put("exceptions", this.getExceptions());
         map.put("enums", this.getEnums());
-        map.put("structs", this.getStructs());
+        map.put("designs", this.getDesigns());
         map.put("functions", this.getFunctions());
         map.put("location", this.getLocation());
 

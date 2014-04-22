@@ -45,20 +45,20 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 
 /**
- * An instance of this class is an AST node that represents a local label.
+ * An instance of this class is an AST node that represents a label.
  * 
  * <p> 
  * <table border="1">
  *     <tr> <td> <b>Property Name</b> </td> <td> <b>Property Description</b> </td> </tr>
- *     <tr> <td> <code>name</code> </td> <td>This is the name of the label. The name must be a case-sensitive series of letters, underscores, and/or digits that does not start with a digit.</td> </tr>
+ *     <tr> <td> <code>name</code> </td> <td>This is the name of the label.</td> </tr>
  *     <tr> <td> <code>location</code> </td> <td>This is the source-location information regarding this construct.</td> </tr>
  * </table>
  * </p>
  * 
- * <p> This file was auto-generated on (Thu Apr 17 06:31:04 EDT 2014).</p>
+ * <p> This file was auto-generated on (Mon Apr 21 22:27:52 EDT 2014).</p>
  */
 @SuppressWarnings("unchecked")
-public final class Label extends Object implements IConstruct
+public final class Label extends Object implements IStatement
 {
     private String name;
 
