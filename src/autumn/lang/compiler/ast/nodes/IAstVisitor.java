@@ -47,7 +47,7 @@ import java.util.TreeSet;
 /**
  * An instance of this interface is a visitor that can visit the nodes in an Autumn abstract-syntax-tree.
  * 
- * <p> This file was auto-generated on (Mon Apr 21 22:27:52 EDT 2014).</p>
+ * <p> This file was auto-generated on (Mon Apr 21 23:40:55 EDT 2014).</p>
  */
 public interface IAstVisitor
 {
@@ -295,6 +295,13 @@ public interface IAstVisitor
      * @param object is the object to visit.
      */
     public void visit(final NopStatement object);
+
+    /**
+     * This method visits an object of type <code>DebugStatement</code>.
+     * 
+     * @param object is the object to visit.
+     */
+    public void visit(final DebugStatement object);
 
     /**
      * This method visits an object of type <code>TryCatchStatement</code>.

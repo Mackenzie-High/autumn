@@ -938,6 +938,29 @@ public final class AstBuilder extends AbstractVisitor
      * {inheritDoc} 
      */
     @Override
+    public void visit_debug_statement(final ITreeNode $node)
+    {
+        final int $stack_size = $stack.size();
+
+        visitUnknown($node);
+
+        final int $change = $stack.size() - $stack_size;
+
+        assert $change >= 0;
+
+        final TreeBuilder builder = Utils.builder();
+
+        builder.createStatementDebug();
+
+        Utils.setSourceLocation($node);
+
+        builder.popStack();
+    }
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
     public void visit_return_void_statement(final ITreeNode $node)
     {
         final int $stack_size = $stack.size();

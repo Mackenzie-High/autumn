@@ -224,6 +224,12 @@ public class AbstractAstVisitor
     }
 
     @Override
+    public void visit(DebugStatement object)
+    {
+        throw new UnsupportedOperationException("This should never happen.");
+    }
+
+    @Override
     public void visit(TryCatchStatement object)
     {
         throw new UnsupportedOperationException("This should never happen.");

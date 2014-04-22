@@ -285,6 +285,12 @@ public final class StatementTypeChecker
     }
 
     @Override
+    public void visit(DebugStatement object)
+    {
+        // Pass
+    }
+
+    @Override
     public void visit(TryCatchStatement object)
     {
         object.getBody().accept(this);

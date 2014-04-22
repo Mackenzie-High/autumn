@@ -731,6 +731,25 @@ rule let_statement
 }
 
 ###################################################################################################
+# Statements --> Debug
+###################################################################################################
+
+rule debug_statement
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createStatementDebug();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+
+  # Merge the upper stack with the next lower stack.
+  call builder.popStack();
+}
+
+###################################################################################################
 # Statements --> Returns --> Void
 ###################################################################################################
 

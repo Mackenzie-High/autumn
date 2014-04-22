@@ -45,7 +45,7 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 
 /**
- * An instance of this class is an AST node that represents a the null constant.
+ * An instance of this class is an AST node that that represents a debug-statement.
  * 
  * <p> 
  * <table border="1">
@@ -57,7 +57,7 @@ import java.util.TreeSet;
  * <p> This file was auto-generated on (Mon Apr 21 23:40:55 EDT 2014).</p>
  */
 @SuppressWarnings("unchecked")
-public final class NullDatum extends Object implements IExpression
+public final class DebugStatement extends Object implements IStatement
 {
     private SourceLocation location = new SourceLocation();
 
@@ -67,9 +67,9 @@ public final class NullDatum extends Object implements IExpression
      * @param value is the new value of property <code>location</code>.
      * @return a copy of this object with property <code>location</code> set to value.
      */
-    public NullDatum setLocation(final SourceLocation value)
+    public DebugStatement setLocation(final SourceLocation value)
     {
-        final NullDatum result = this.copy();
+        final DebugStatement result = this.copy();
         result.location = value;
         return result;
     }
@@ -100,9 +100,9 @@ public final class NullDatum extends Object implements IExpression
      * 
      * @return a shallow copy of this object.
      */
-    public NullDatum copy()
+    public DebugStatement copy()
     {
-        final NullDatum result = new NullDatum();
+        final DebugStatement result = new DebugStatement();
         result.location = this.location;
         return result;
     }

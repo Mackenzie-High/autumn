@@ -1714,7 +1714,7 @@ public final class TreeBuilder
     }
 
     /**
-     * This method creates a creates-statement.
+     * This method creates a nop-statement.
      *
      * <p>
      * <b>Postcondition of the Stack</b>
@@ -1729,6 +1729,29 @@ public final class TreeBuilder
 
         // Create the AST node.
         final NopStatement node = new NopStatement();
+
+        // Push the AST node onto the stack.
+        stack.push(node);
+
+        assert stack.size() == 1;
+    }
+
+    /**
+     * This method creates a debug-statement.
+     *
+     * <p>
+     * <b>Postcondition of the Stack</b>
+     * <ul>
+     * <li> result : DebugStatement </li>
+     * </ul>
+     * </p>
+     */
+    public void createStatementDebug()
+    {
+        Preconditions.checkState(stack.isEmpty());
+
+        // Create the AST node.
+        final DebugStatement node = new DebugStatement();
 
         // Push the AST node onto the stack.
         stack.push(node);

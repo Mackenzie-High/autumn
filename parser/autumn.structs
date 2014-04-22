@@ -703,6 +703,18 @@ struct NopStatement
 end
 
 ###################################################################################################
+# Statements --> Debug
+###################################################################################################
+
+doc An instance of this class is an AST node that that represents a debug-statement.
+struct DebugStatement
+  implement IStatement;
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
 # Statements --> Try Catch
 ###################################################################################################
 

@@ -412,6 +412,12 @@ public final class StatementCodeGenerator
     }
 
     @Override
+    public void visit(DebugStatement object)
+    {
+        // Pass
+    }
+
+    @Override
     public void visit(TryCatchStatement object)
     {
         final List<ExceptionHandler> handlers = program.symbols.handlers.get(object);
