@@ -1714,29 +1714,10 @@ rule list_expression
 }
 
 ###################################################################################################
-# Expressions --> Delegate
-###################################################################################################
-
-rule delegate_expression
-{
-  # Get the AST builder.
-  builder : TreeBuilder = call Utils.builder();
-
-  # Create the AST node.
-  call builder.createExpressionDelegate();
-
-  # Set the source-location information.
-  call Utils.setSourceLocation($node);
-
-  # Merge the upper stack with the next lower stack.
-  call builder.popStack();
-}
-
-###################################################################################################
 # Expressions --> Delegate - Simplified
 ###################################################################################################
 
-rule delegate_expression_simplified
+rule delegate_expression
 {
   # Get the AST builder.
   builder : TreeBuilder = call Utils.builder();

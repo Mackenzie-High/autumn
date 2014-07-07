@@ -57,7 +57,7 @@ import java.util.TreeSet;
  * </table>
  * </p>
  * 
- * <p> This file was auto-generated on (Mon Apr 21 23:40:55 EDT 2014).</p>
+ * <p> This file was auto-generated on (Thu Jul 03 09:32:55 EDT 2014).</p>
  */
 @SuppressWarnings("unchecked")
 public final class CallStaticMethodExpression extends Object implements IExpression
@@ -164,6 +164,25 @@ public final class CallStaticMethodExpression extends Object implements IExpress
     {
         final SourceLocation value = this.location;
         return value;
+    }
+
+    /**
+     * This method creates a new instance of this class.
+     * 
+     * @param owner is the value for property <code>owner</code>.
+     * @param name is the value for property <code>name</code>.
+     * @param arguments is the value for property <code>arguments</code>.
+     * @param location is the value for property <code>location</code>.
+     * @return a new instance of this class.
+     */
+    public static CallStaticMethodExpression create(TypeSpecifier owner, Name name, ConstructList<IExpression> arguments, SourceLocation location)
+    {
+        CallStaticMethodExpression object = new CallStaticMethodExpression();
+        object = object.setOwner(owner);
+        object = object.setName(name);
+        object = object.setArguments(arguments);
+        object = object.setLocation(location);
+        return object;
     }
 
     /**

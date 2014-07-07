@@ -279,12 +279,6 @@ defun main (args : String[]) : void
 
     nop;
 
-    val xoo = ( ) => Goo :: moo ;
-    val xoo = ( aoo : int ) => Goo :: moo ;
-    val xoo = ( aoo : int, boo : int ) => Goo :: moo ;
-
-    nop;
-
     val xoo = ( delegate Goo :: moo ) ;
 
     nop;
@@ -345,7 +339,6 @@ defun main (args : String[]) : void
     nop;
 
     val xoo = ( create String ) ;
-    val xoo = ( create String wraps 1 + 2 ) ;
 
     nop;
 
@@ -463,7 +456,7 @@ defun main (args : String[]) : void
 
     nop;
 
-    method goo . boo ( x : int, y : int ) => Boo :: moo ;
+    method goo . boo => Boo :: moo ;
 
     nop;
 

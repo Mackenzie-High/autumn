@@ -647,9 +647,6 @@ struct MethodStatement
   doc This is the name of the method. 
   data name : Name;
 
-  doc These formal parameters indicate which overload of the method to select. 
-  data parameters : FormalParameterList;
-
   doc This is the type of the module that contains the implementation method. 
   data module : TypeSpecifier;
 
@@ -1169,9 +1166,6 @@ struct CreateExpression
   doc This is the type to instantiate.
   data type : TypeSpecifier;
 
-  doc This expression produces the inner object. 
-  data wraps : IExpression;
-
   doc This is the source-location information regarding this construct.
   data location : SourceLocation = { new SourceLocation() };
 end
@@ -1306,9 +1300,6 @@ struct DelegateExpression
 
   doc This is the name of the static method to invoke. 
   data method : Name = { null };
-
-  doc These formal parameters are used to distinguish between different overloads of a static method. 
-  data parameters : FormalParameterList;
 
   doc This is the source-location information regarding this construct.
   data location : SourceLocation = { new SourceLocation() };

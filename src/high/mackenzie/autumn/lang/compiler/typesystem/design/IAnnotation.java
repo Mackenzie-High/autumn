@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package high.mackenzie.autumn.lang.compiler.typesystem.design;
 
 import java.lang.annotation.Annotation;
@@ -17,7 +13,7 @@ public interface IAnnotation
      * This method tries to return the annotation related to this type.
      *
      * @return the annotation representation of this type, if an annotation backs this
-     *         object; otherwise, return null.
+     * object; otherwise, return null.
      */
     public Annotation toAnnotation();
 
@@ -31,7 +27,7 @@ public interface IAnnotation
      * </p>
      *
      * @return the annotation-definition of the underlying annotation, or null, if no such
-     *         object can be found.
+     * object can be found.
      */
     public IAnnotationType getAnnotationType();
 }

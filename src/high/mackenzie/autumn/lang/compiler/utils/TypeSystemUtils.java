@@ -1,23 +1,20 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package high.mackenzie.autumn.lang.compiler.utils;
 
 import autumn.lang.Delegate;
 import autumn.lang.Functor;
 import autumn.lang.Local;
 import autumn.lang.LocalsMap;
+import autumn.lang.Module;
 import autumn.lang.annotations.Start;
 import autumn.lang.compiler.ast.nodes.Name;
 import autumn.lang.compiler.ast.nodes.TypeSpecifier;
-import autumn.lang.exceptions.InfiniteForLoopException;
 import autumn.lang.internals.AbstractDelegate;
-import autumn.lang.internals.AbstractLambda;
+import autumn.lang.internals.AbstractModule;
 import autumn.lang.internals.ArgumentStack;
 import autumn.lang.internals.AsConversions;
 import autumn.lang.internals.Helpers;
 import autumn.lang.internals.IsConversions;
+import autumn.lang.internals.ModuleDelegate;
 import autumn.lang.internals.Operators;
 import autumn.lang.internals.YieldState;
 import com.google.common.base.Preconditions;
@@ -125,11 +122,13 @@ public final class TypeSystemUtils
 
     public final IInterfaceType FUNCTOR;
 
+    public final IClassType MODULE;
+
+    public final IClassType MODULE_DELEGATE;
+
+    public final IClassType ABSTRACT_MODULE;
+
     public final IClassType ABSTRACT_DELEGATE;
-
-    public final IClassType ABSTRACT_LAMBDA;
-
-    public final IClassType INFINITE_FOR_LOOP_EXCEPTION;
 
     public final IClassType HELPERS;
 
@@ -196,11 +195,13 @@ public final class TypeSystemUtils
 
         this.FUNCTOR = (IInterfaceType) factory.fromClass(Functor.class);
 
+        this.MODULE = (IClassType) factory.fromClass(Module.class);
+
+        this.MODULE_DELEGATE = (IClassType) factory.fromClass(ModuleDelegate.class);
+
+        this.ABSTRACT_MODULE = (IClassType) factory.fromClass(AbstractModule.class);
+
         this.ABSTRACT_DELEGATE = (IClassType) factory.fromClass(AbstractDelegate.class);
-
-        this.ABSTRACT_LAMBDA = (IClassType) factory.fromClass(AbstractLambda.class);
-
-        this.INFINITE_FOR_LOOP_EXCEPTION = (IClassType) factory.fromClass(InfiniteForLoopException.class);
 
         this.HELPERS = (IClassType) factory.fromClass(Helpers.class);
 

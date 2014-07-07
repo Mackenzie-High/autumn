@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package autumn.lang.compiler.errors;
 
 /**
@@ -16,6 +12,10 @@ package autumn.lang.compiler.errors;
 public enum ErrorCode
 {
     /**
+     * Meaning: Something completely unexpected happened.
+     */
+    UNKNOWN_ERROR,
+    /**
      * Meaning: Parsing failed.
      */
     SYNTAX_ERROR,
@@ -23,6 +23,10 @@ public enum ErrorCode
      * Meaning: No accessible overload of the operator will accept the arguments' type(s).
      */
     NO_SUCH_OPERATOR_OVERLOAD,
+    /**
+     * Meaning: No accessible overload of the constructor will accept the arguments' type(s).
+     */
+    NO_SUCH_CTOR_OVERLOAD,
     /**
      * Meaning: No accessible overload of the method will accept the arguments' type(s).
      */
@@ -82,7 +86,7 @@ public enum ErrorCode
     /**
      * Meaning: A primitive-type or a reference-type was expected.
      */
-    EXPECTED_PRIMITIVE_OR_REFERENCE,
+    EXPECTED_NON_VOID,
     /**
      * Meaning: A reference-type was expected.
      */
@@ -112,33 +116,53 @@ public enum ErrorCode
      */
     EXPECTED_ITERABLE,
     /**
+     * Meaning: A functor (i.e. autumn.lang.Functor) was expected.
+     */
+    EXPECTED_FUNCTOR,
+    /**
+     * Meaning: A tuple (i.e. autumn.lang.Tuple) was expected.
+     */
+    EXPECTED_TUPLE,
+    /**
+     * Meaning: A design-type (i.e. autumn.lang.Design) was expected. // TODO: right?
+     */
+    EXPECTED_DESIGN,
+    /**
      * Meaning: The static-type of an expression was void were it is not allowed.
      */
     EXPECTED_NON_VOID_EXPRESSION,
     /**
+     * Meaning: The null-type was found somewhere that it is forbidden to be.
+     */
+    EXPECTED_NON_NULL,
+    /**
+     * Meaning: A variable must be mutable in a particular circumstance.
+     */
+    EXPECTED_MUTABLE_VARIABLLE,
+    /**
      * Meaning: The variable was already previously declared elsewhere.
      */
-    DUPLICATE_DECLARATION_OF_VARIABLE,
+    DUPLICATE_VARIABLE,
     /**
      * Meaning: The label was already previously declared elsewhere.
      */
-    DUPLICATE_DECLARATION_OF_LABEL,
+    DUPLICATE_LABEL,
     /**
      * Meaning: The method was already declared elsewhere.
      */
-    DUPLICATE_DECLARATION_OF_METHOD,
+    DUPLICATE_METHOD,
     /**
      * Meaning: The property was already declared elsewhere.
      */
-    DUPLICATE_DECLARATION_OF_PROPERTY,
+    DUPLICATE_PROPERTY,
     /**
      * Meaning: The function was already declared elsewhere.
      */
-    DUPLICATE_DECLARATION_OF_FUNCTION,
+    DUPLICATE_FUNCTION,
     /**
      * Meaning: The type was already declared elsewhere.
      */
-    DUPLICATE_DECLARATION_OF_TYPE,
+    DUPLICATE_TYPE,
     /**
      * Meaning: The exception handler catches an the exact type as another exception handler.
      */
@@ -147,6 +171,18 @@ public enum ErrorCode
      * Meaning: A superinterface was specified more than once.
      */
     DUPLICATE_SUPERINTERFACE,
+    /**
+     * Meaning: A module contains more than one module-directive.
+     */
+    DUPLICATE_MODULE_DIRECTIVE,
+    /**
+     * Meaning: An enum-definition contains multiple enum-constants with the same name.
+     */
+    DUPLICATE_CONSTANT,
+    /**
+     * Meaning: An annotation can only appear once in a single annotation-list.
+     */
+    DUPLICATE_ANNOTATION,
     /**
      * Meaning: A construct is used in a context that it is forbidden.
      */
@@ -167,7 +203,7 @@ public enum ErrorCode
      * Meaning: An override method's return-type is not a subtype of the the return-type of
      * the method that is overridden.
      */
-    RETURN_TYPE_IS_NOT_COVARIANT,
+    COVARIANCE_VIOLATION,
     /**
      * Meaning: A method is attempting to override another method that is declared 'final'.
      */
@@ -177,9 +213,29 @@ public enum ErrorCode
      */
     OVERLY_EXPOSED_TYPE,
     /**
+     * Meaning: A type does not have adequate access privileges.
+     */
+    INACCESSIBLE_TYPE,
+    /**
+     * Meaning: A constructor does not have adequate access privileges.
+     */
+    INACCESSIBLE_CTOR,
+    /**
+     * Meaning: A field does not have adequate access privileges.
+     */
+    INACCESSIBLE_FIELD,
+    /**
+     * Meaning: A method does not have adequate access privileges.
+     */
+    INACCESSIBLE_METHOD,
+    /**
      * Meaning: An expression produces a value of an unexpected static-type.
      */
     WRONG_TYPE,
+    /**
+     * Meaning: An incorrect number of arguments was given to in an invocation.
+     */
+    BAD_ARGUMENT_COUNT,
     /**
      * Meaning: A break-statement is located outside of a loop construct.
      */
@@ -192,4 +248,25 @@ public enum ErrorCode
      * Meaning: A break-statement is located outside of a loop construct.
      */
     REDO_OUTSIDE_OF_LOOP,
+    /**
+     * Meaning: The declaration of a method conflicts with the declaration of a property.
+     */
+    METHOD_CONFLICTS_WITH_PROPERTY,
+    /**
+     * Meaning: A compilation-unit contains more than one function with the
+     * <code>@Start</code> annotation applied to them.
+     */
+    TOO_MANY_STARTS,
+    /**
+     * Meaning: Given two operands X and Y, either X must be a subtype of Y or vice versa.
+     */
+    INCOMPATIBLE_OPERANDS,
+    /**
+     * Meaning: The compiler determined that an instanceof will never result in true.
+     */
+    NON_VIABLE_INSTANCEOF,
+    /**
+     * Meaning: A set of selected method overloads do not share their return-types.
+     */
+    UNEQUAL_RETURN_TYPES,
 }

@@ -1,15 +1,11 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package autumn.lang;
 
 import java.util.List;
 
 /**
- * An instance of this interface is a functor that has typed formal-parameters.
+ * An instance of this interface is a functor that has typed formal-parameters and a return-type.
  *
- * @author mackenzie
+ * @author Mackenzie High
  */
 public interface TypedFunctor
         extends Functor

@@ -38,7 +38,7 @@ import java.util.Stack;
  * Some methods herein denote the bottom element on the primary-stack as ".....".
  * This means that the method only manipulates the topmost element(s) on the stack.
  * The elements below the manipulated elements will not be popped, relocated, etc.
- * On the other hand, methods some methods do not denote the bottom element as ".....".
+ * On the other hand, some methods do not denote the bottom element as ".....".
  * These methods may manipulate the entire primary-stack.
  * </p>
  *
@@ -1680,7 +1680,6 @@ public final class TreeBuilder
      * <ul>
      * <li> name : Name </li>
      * <li> module : TypeSpecifier </li>
-     * <li> parameters : FormalParameterList </li>
      * <li> name : Name </li>
      * <li> owner : Variable </li>
      * </ul>
@@ -1695,7 +1694,7 @@ public final class TreeBuilder
      */
     public void createStatementMethod()
     {
-        Preconditions.checkState(stack.size() == 5);
+        Preconditions.checkState(stack.size() == 4);
 
         // Create the AST node.
         MethodStatement node = new MethodStatement();
@@ -1703,7 +1702,6 @@ public final class TreeBuilder
         // Initialize the AST node.
         node = node.setMethod((Name) stack.pop());
         node = node.setModule((TypeSpecifier) stack.pop());
-        node = node.setParameters((FormalParameterList) stack.pop());
         node = node.setName((Name) stack.pop());
         node = node.setOwner((Variable) stack.pop());
 
@@ -3057,13 +3055,8 @@ public final class TreeBuilder
      * <p>
      * <b>Precondition of the Stack</b>
      * <ul>
-     * <li> wraps : IExpression </li>
      * <li> type : TypeSpecifier </li>
      * </ul>
-     * </p>
-     *
-     * <p>
-     * Note: The wraps part is optional.
      * </p>
      *
      * <p>
@@ -3081,11 +3074,6 @@ public final class TreeBuilder
         CreateExpression node = new CreateExpression();
 
         // Initialize the AST node.
-
-        if (stack.size() == 2)
-        {
-            node = node.setWraps((IExpression) stack.pop());
-        }
 
         node = node.setType((TypeSpecifier) stack.pop());
 
@@ -3144,12 +3132,7 @@ public final class TreeBuilder
      * <ul>
      * <li> name : Name </li>
      * <li> owner : TypeSpecifier </li>
-     * <li> formals : FormalParameterList </li>
      * </ul>
-     * </p>
-     *
-     * <p>
-     * Note: The formals are optional.
      * </p>
      *
      * <p>
@@ -3170,11 +3153,6 @@ public final class TreeBuilder
 
         node = node.setMethod((Name) stack.pop());
         node = node.setOwner((TypeSpecifier) stack.pop());
-
-        if (stack.isEmpty() == false)
-        {
-            node = node.setParameters((FormalParameterList) stack.pop());
-        }
 
         // Push the AST node onto the stack.
         stack.push(node);

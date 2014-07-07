@@ -57,7 +57,7 @@ import java.util.TreeSet;
  * </table>
  * </p>
  * 
- * <p> This file was auto-generated on (Mon Apr 21 23:40:55 EDT 2014).</p>
+ * <p> This file was auto-generated on (Thu Jul 03 09:32:55 EDT 2014).</p>
  */
 @SuppressWarnings("unchecked")
 public final class TypeSpecifier extends Object implements IConstruct
@@ -164,6 +164,25 @@ public final class TypeSpecifier extends Object implements IConstruct
     {
         final SourceLocation value = this.location;
         return value;
+    }
+
+    /**
+     * This method creates a new instance of this class.
+     * 
+     * @param namespace is the value for property <code>namespace</code>.
+     * @param name is the value for property <code>name</code>.
+     * @param dimensions is the value for property <code>dimensions</code>.
+     * @param location is the value for property <code>location</code>.
+     * @return a new instance of this class.
+     */
+    public static TypeSpecifier create(Namespace namespace, Name name, Integer dimensions, SourceLocation location)
+    {
+        TypeSpecifier object = new TypeSpecifier();
+        object = object.setNamespace(namespace);
+        object = object.setName(name);
+        object = object.setDimensions(dimensions);
+        object = object.setLocation(location);
+        return object;
     }
 
     /**

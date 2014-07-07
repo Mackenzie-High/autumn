@@ -57,7 +57,7 @@ import java.util.TreeSet;
  * </table>
  * </p>
  * 
- * <p> This file was auto-generated on (Mon Apr 21 23:40:55 EDT 2014).</p>
+ * <p> This file was auto-generated on (Thu Jul 03 09:32:55 EDT 2014).</p>
  */
 @SuppressWarnings("unchecked")
 public final class IfStatement extends Object implements IStatement
@@ -164,6 +164,25 @@ public final class IfStatement extends Object implements IStatement
     {
         final SourceLocation value = this.location;
         return value;
+    }
+
+    /**
+     * This method creates a new instance of this class.
+     * 
+     * @param main_case is the value for property <code>main_case</code>.
+     * @param elif_cases is the value for property <code>elif_cases</code>.
+     * @param else_case is the value for property <code>else_case</code>.
+     * @param location is the value for property <code>location</code>.
+     * @return a new instance of this class.
+     */
+    public static IfStatement create(ConditionalCase main_case, ConstructList<ConditionalCase> elif_cases, SequenceStatement else_case, SourceLocation location)
+    {
+        IfStatement object = new IfStatement();
+        object = object.setMainCase(main_case);
+        object = object.setElifCases(elif_cases);
+        object = object.setElseCase(else_case);
+        object = object.setLocation(location);
+        return object;
     }
 
     /**

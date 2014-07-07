@@ -7,7 +7,7 @@ import high.mackenzie.snowflake.ITreeNodeVisitor;
 /**
  * This class was auto-generated using the Snowflake parser-generator.
  *
- * <p>Generated On: Mon Apr 21 23:29:31 EDT 2014</p>
+ * <p>Generated On: Thu Jul 03 09:32:39 EDT 2014</p>
  */
 public abstract class AbstractVisitor implements ITreeNodeVisitor
 {
@@ -23,7 +23,6 @@ public abstract class AbstractVisitor implements ITreeNodeVisitor
         if("module".equals(name)) { visit_module(node); }
         else if("module_members".equals(name)) { visit_module_members(node); }
         else if("module_member".equals(name)) { visit_module_member(node); }
-        else if("use_directive".equals(name)) { visit_use_directive(node); }
         else if("include_directive".equals(name)) { visit_include_directive(node); }
         else if("module_directive".equals(name)) { visit_module_directive(node); }
         else if("module_name".equals(name)) { visit_module_name(node); }
@@ -181,7 +180,6 @@ public abstract class AbstractVisitor implements ITreeNodeVisitor
         else if("variable_datum".equals(name)) { visit_variable_datum(node); }
         else if("funcall_expression".equals(name)) { visit_funcall_expression(node); }
         else if("delegate_expression".equals(name)) { visit_delegate_expression(node); }
-        else if("delegate_expression_simplified".equals(name)) { visit_delegate_expression_simplified(node); }
         else if("locals_expression".equals(name)) { visit_locals_expression(node); }
         else if("ternary_conditional_expression".equals(name)) { visit_ternary_conditional_expression(node); }
         else if("list_expression".equals(name)) { visit_list_expression(node); }
@@ -196,8 +194,6 @@ public abstract class AbstractVisitor implements ITreeNodeVisitor
         else if("set_static_expression".equals(name)) { visit_set_static_expression(node); }
         else if("instanceof_expression".equals(name)) { visit_instanceof_expression(node); }
         else if("create_expression".equals(name)) { visit_create_expression(node); }
-        else if("wraps_opt".equals(name)) { visit_wraps_opt(node); }
-        else if("wraps".equals(name)) { visit_wraps(node); }
         else if("filepath".equals(name)) { visit_filepath(node); }
         else if("namespace".equals(name)) { visit_namespace(node); }
         else if("namespace_explicit".equals(name)) { visit_namespace_explicit(node); }
@@ -822,16 +818,6 @@ public abstract class AbstractVisitor implements ITreeNodeVisitor
      * This method visits a parse-tree node created by rule "delegate_expression".
      */
     protected void visit_delegate_expression(ITreeNode node)
-    {
-        // You should *not* place your code right here. 
-        // Instead, you should override this method via a subclass.
-        visitUnknown(node); // Default Behavior
-    }
-
-    /**
-     * This method visits a parse-tree node created by rule "delegate_expression_simplified".
-     */
-    protected void visit_delegate_expression_simplified(ITreeNode node)
     {
         // You should *not* place your code right here. 
         // Instead, you should override this method via a subclass.
@@ -2609,16 +2595,6 @@ public abstract class AbstractVisitor implements ITreeNodeVisitor
     }
 
     /**
-     * This method visits a parse-tree node created by rule "use_directive".
-     */
-    protected void visit_use_directive(ITreeNode node)
-    {
-        // You should *not* place your code right here. 
-        // Instead, you should override this method via a subclass.
-        visitUnknown(node); // Default Behavior
-    }
-
-    /**
      * This method visits a parse-tree node created by rule "val_statement".
      */
     protected void visit_val_statement(ITreeNode node)
@@ -2672,26 +2648,6 @@ public abstract class AbstractVisitor implements ITreeNodeVisitor
      * This method visits a parse-tree node created by rule "while_statement".
      */
     protected void visit_while_statement(ITreeNode node)
-    {
-        // You should *not* place your code right here. 
-        // Instead, you should override this method via a subclass.
-        visitUnknown(node); // Default Behavior
-    }
-
-    /**
-     * This method visits a parse-tree node created by rule "wraps".
-     */
-    protected void visit_wraps(ITreeNode node)
-    {
-        // You should *not* place your code right here. 
-        // Instead, you should override this method via a subclass.
-        visitUnknown(node); // Default Behavior
-    }
-
-    /**
-     * This method visits a parse-tree node created by rule "wraps_opt".
-     */
-    protected void visit_wraps_opt(ITreeNode node)
     {
         // You should *not* place your code right here. 
         // Instead, you should override this method via a subclass.

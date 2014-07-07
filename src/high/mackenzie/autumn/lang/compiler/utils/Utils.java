@@ -8,6 +8,7 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import high.mackenzie.autumn.lang.compiler.compilers.ProgramCompiler;
+import high.mackenzie.autumn.lang.compiler.typesystem.design.IClassType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IDeclaredType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IExpressionType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IPrimitiveType;
@@ -15,6 +16,7 @@ import high.mackenzie.autumn.lang.compiler.typesystem.design.IReferenceType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IReturnType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IVariableType;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -22,6 +24,7 @@ import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.FieldInsnNode;
+import org.objectweb.asm.tree.InsnList;
 import org.objectweb.asm.tree.InsnNode;
 import org.objectweb.asm.tree.LdcInsnNode;
 import org.objectweb.asm.tree.MethodInsnNode;
@@ -417,14 +420,24 @@ public final class Utils
     }
 
     /**
-     * This method determines whether a word is a keyword in the Java language.
+     * This method retrieves the set of words that are reserved in the Java programming language.
+     *
+     * @return the immutable set of reserved words.
+     */
+    public static Set<String> keywords()
+    {
+        return Collections.unmodifiableSet(KEYWORDS);
+    }
+
+    /**
+     * This method determines whether a word is a keyword in the Java programming language.
      *
      * @param word is the word that may be a keyword.
      * @return true, iff the word is a reserved keyword.
      */
     public static boolean isKeyword(final String word)
     {
-        return KEYWORDS.contains(word);
+        return keywords().contains(word);
     }
 
     /**
@@ -586,8 +599,60 @@ public final class Utils
         // If the type is a reference-type, then downcast the value.
         if (type.isReferenceType())
         {
-            final String cast = Utils.internalName((IDeclaredType) type);
+            final String cast = Utils.internalName((IReferenceType) type);
             code.add(new TypeInsnNode(Opcodes.CHECKCAST, cast));
         }
+    }
+
+    /**
+     * This method appends a list of instructions onto another list of instructions.
+     *
+     * @param out is the list that will have elements added to it.
+     * @param addendum are the elements to add to the other list.
+     */
+    public static void appendToInsnList(final InsnList out,
+                                        final Iterable<AbstractInsnNode> addendum)
+    {
+        for (AbstractInsnNode node : addendum)
+        {
+            out.add(node);
+        }
+    }
+
+    /**
+     * This method generates the bytecode needed to load a delegate onto the operand-stack.
+     *
+     * @param code is the list of bytecode instructions to append the generated code onto.
+     * @param module is the type of the module that contains the delegated function.
+     * @param method is the name of the delegated function.
+     */
+    public static void loadDelegate(final List<AbstractInsnNode> code,
+                                    final IClassType module,
+                                    final String method)
+    {
+        String owner;
+        String name;
+        String desc;
+
+        /**
+         * Load the an instance of the module onto the operand-stack.
+         */
+        owner = Utils.internalName(module);
+        name = "instance";
+        desc = "()Lautumn/lang/Module;";
+        code.add(new MethodInsnNode(Opcodes.INVOKESTATIC, owner, name, desc));
+
+        /**
+         * Load the name of the delegated method onto the operand-stack.
+         */
+        code.add(new LdcInsnNode(method));
+
+        /**
+         * Invoke the helper utility method that resolves the delegate.
+         */
+        owner = "Lautumn/lang/internals/Helpers;";
+        name = "delegate";
+        desc = "(Lautumn/lang/Module;Ljava/lang/String;)Lautumn/lang/Delegate;";
+        code.add(new MethodInsnNode(Opcodes.INVOKESTATIC, owner, name, desc));
     }
 }

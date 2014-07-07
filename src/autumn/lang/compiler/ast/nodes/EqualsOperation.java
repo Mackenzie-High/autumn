@@ -56,7 +56,7 @@ import java.util.TreeSet;
  * </table>
  * </p>
  * 
- * <p> This file was auto-generated on (Mon Apr 21 23:40:55 EDT 2014).</p>
+ * <p> This file was auto-generated on (Thu Jul 03 09:32:55 EDT 2014).</p>
  */
 @SuppressWarnings("unchecked")
 public final class EqualsOperation extends Object implements IBinaryOperation
@@ -137,6 +137,23 @@ public final class EqualsOperation extends Object implements IBinaryOperation
     {
         final SourceLocation value = this.location;
         return value;
+    }
+
+    /**
+     * This method creates a new instance of this class.
+     * 
+     * @param left_operand is the value for property <code>left_operand</code>.
+     * @param right_operand is the value for property <code>right_operand</code>.
+     * @param location is the value for property <code>location</code>.
+     * @return a new instance of this class.
+     */
+    public static EqualsOperation create(IExpression left_operand, IExpression right_operand, SourceLocation location)
+    {
+        EqualsOperation object = new EqualsOperation();
+        object = object.setLeftOperand(left_operand);
+        object = object.setRightOperand(right_operand);
+        object = object.setLocation(location);
+        return object;
     }
 
     /**

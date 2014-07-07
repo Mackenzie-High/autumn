@@ -1,8 +1,10 @@
 package autumn.lang.internals;
 
+import autumn.lang.Delegate;
 import autumn.lang.F;
 import autumn.lang.Functor;
 import autumn.lang.LocalsMap;
+import autumn.lang.Module;
 import autumn.lang.Prototype;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
@@ -125,5 +127,27 @@ public final class Helpers
                               final Functor handler)
     {
         System.out.println("method called!");
+    }
+
+    /**
+     * This method searches for a particular function's delegate in a module.
+     *
+     * @param module is the module that provides the delegate.
+     * @param method is the name of the delegated method.
+     * @return the delegate that refers to the named method.
+     * @throws IllegalStateException if the module does not contain a method with the given name.
+     */
+    public static Delegate delegate(final Module module,
+                                    final String method)
+    {
+        for (Delegate d : module.moduleFunctions())
+        {
+            if (method.equals(d.name()))
+            {
+                return d;
+            }
+        }
+
+        throw new IllegalStateException(); // TODO: is this right?
     }
 }

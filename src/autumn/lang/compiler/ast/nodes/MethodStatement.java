@@ -52,14 +52,13 @@ import java.util.TreeSet;
  *     <tr> <td> <b>Property Name</b> </td> <td> <b>Property Description</b> </td> </tr>
  *     <tr> <td> <code>owner</code> </td> <td>This is the mutable variable that contains the object.</td> </tr>
  *     <tr> <td> <code>name</code> </td> <td>This is the name of the method.</td> </tr>
- *     <tr> <td> <code>parameters</code> </td> <td>These formal parameters indicate which overload of the method to select.</td> </tr>
  *     <tr> <td> <code>module</code> </td> <td>This is the type of the module that contains the implementation method.</td> </tr>
  *     <tr> <td> <code>method</code> </td> <td>This is the name of the implementation method.</td> </tr>
  *     <tr> <td> <code>location</code> </td> <td>This is the source-location information regarding this construct.</td> </tr>
  * </table>
  * </p>
  * 
- * <p> This file was auto-generated on (Mon Apr 21 23:40:55 EDT 2014).</p>
+ * <p> This file was auto-generated on (Thu Jul 03 09:32:55 EDT 2014).</p>
  */
 @SuppressWarnings("unchecked")
 public final class MethodStatement extends Object implements IStatement
@@ -67,8 +66,6 @@ public final class MethodStatement extends Object implements IStatement
     private Variable owner;
 
     private Name name;
-
-    private FormalParameterList parameters;
 
     private TypeSpecifier module;
 
@@ -121,30 +118,6 @@ public final class MethodStatement extends Object implements IStatement
     public Name getName()
     {
         final Name value = this.name;
-        return value;
-    }
-
-    /**
-     * Setter.
-     * 
-     * @param value is the new value of property <code>parameters</code>.
-     * @return a copy of this object with property <code>parameters</code> set to value.
-     */
-    public MethodStatement setParameters(final FormalParameterList value)
-    {
-        final MethodStatement result = this.copy();
-        result.parameters = value;
-        return result;
-    }
-
-    /**
-     * Getter.
-     * 
-     * @return the value of property <code>parameters</code>.
-     */
-    public FormalParameterList getParameters()
-    {
-        final FormalParameterList value = this.parameters;
         return value;
     }
 
@@ -221,6 +194,27 @@ public final class MethodStatement extends Object implements IStatement
     }
 
     /**
+     * This method creates a new instance of this class.
+     * 
+     * @param owner is the value for property <code>owner</code>.
+     * @param name is the value for property <code>name</code>.
+     * @param module is the value for property <code>module</code>.
+     * @param method is the value for property <code>method</code>.
+     * @param location is the value for property <code>location</code>.
+     * @return a new instance of this class.
+     */
+    public static MethodStatement create(Variable owner, Name name, TypeSpecifier module, Name method, SourceLocation location)
+    {
+        MethodStatement object = new MethodStatement();
+        object = object.setOwner(owner);
+        object = object.setName(name);
+        object = object.setModule(module);
+        object = object.setMethod(method);
+        object = object.setLocation(location);
+        return object;
+    }
+
+    /**
      * This method welcomes a visitor that wants to visit this object.
      * 
      * @param visitor is the visitor that is visiting this object.
@@ -240,7 +234,6 @@ public final class MethodStatement extends Object implements IStatement
         final MethodStatement result = new MethodStatement();
         result.owner = this.owner;
         result.name = this.name;
-        result.parameters = this.parameters;
         result.module = this.module;
         result.method = this.method;
         result.location = this.location;
@@ -262,7 +255,6 @@ public final class MethodStatement extends Object implements IStatement
         final Map<String, Object> map = new TreeMap<String, Object>();
         map.put("owner", this.getOwner());
         map.put("name", this.getName());
-        map.put("parameters", this.getParameters());
         map.put("module", this.getModule());
         map.put("method", this.getMethod());
         map.put("location", this.getLocation());

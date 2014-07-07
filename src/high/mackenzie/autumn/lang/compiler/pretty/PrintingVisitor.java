@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package high.mackenzie.autumn.lang.compiler.pretty;
 
 import autumn.lang.compiler.ast.commons.ConstructList;
@@ -830,7 +826,6 @@ public final class PrintingVisitor
         object.getOwner().accept(this);
         p.addText(".");
         object.getName().accept(this);
-        object.getParameters().accept(this);
         p.addText(" => ");
         printStaticMemberAccess(object.getModule(), object.getMethod());
         p.addText(";");
@@ -1237,12 +1232,6 @@ public final class PrintingVisitor
 
         object.getType().accept(this);
 
-        if (object.getWraps() != null)
-        {
-            p.addText(" wraps ");
-            object.getWraps().accept(this);
-        }
-
         p.addText(")");
     }
 
@@ -1340,18 +1329,9 @@ public final class PrintingVisitor
         require(object, object.getOwner());
         require(object, object.getMethod());
 
-        if (object.getParameters() == null)
-        {
-            p.addText("(delegate ");
-            printStaticMemberAccess(object.getOwner(), object.getMethod());
-            p.addText(")");
-        }
-        else
-        {
-            object.getParameters().accept(this);
-            p.addText(" => ");
-            printStaticMemberAccess(object.getOwner(), object.getMethod());
-        }
+        p.addText("(delegate ");
+        printStaticMemberAccess(object.getOwner(), object.getMethod());
+        p.addText(")");
     }
 
     @Override

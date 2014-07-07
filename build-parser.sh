@@ -1,5 +1,7 @@
 # ~/bin/bash
 
+# Remember to use the Snowflake GUI to "Generate Parser" before running this script, if changes were made to the grammar. 
+
 cd "parser"
 
 #########################################################################################

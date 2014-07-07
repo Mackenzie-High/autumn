@@ -1,67 +1,78 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package autumn.lang.internals;
 
 import autumn.lang.Delegate;
 import com.google.common.base.Objects;
-import com.google.common.base.Preconditions;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
 
 /**
- * TODO: Delegates may call methods that return void!!!
+ * This class provides a partial implementation of the Delegate interface.
  *
- *
- * @author mackenzie
+ * @author Mackenzie High
  */
 public abstract class AbstractDelegate
         extends AbstractFunctor
         implements Delegate
 {
+    private Method cache;
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Method method()
     {
-        final Method method = null;
-
-        for (Method m : owner().getDeclaredMethods())
+        // This result of this method is memoized in order in order to improve performance.
+        if (cache != null)
         {
-            if (isMatchingMethod(m))
-            {
-                return m;
-            }
+            return cache;
         }
 
+        final Method method = null;
+
+        /**
+         * Delegates always refer to public static methods.
+         * Simply find a static method with a matching name and parameter list.
+         */
         for (Method m : owner().getMethods())
         {
             if (isMatchingMethod(m))
             {
-                return m;
+                return cache = m;
             }
         }
 
-        Preconditions.checkState(method != null);
-
-        return method;
+        throw new RuntimeException("This should never happen.");
     }
 
+    /**
+     * This method determines whether this delegate's name and parameters match those of a method.
+     *
+     * @param method is the possibly matching method.
+     * @return true, iff this delegate matches the method.
+     */
     private boolean isMatchingMethod(final Method method)
     {
+        // Does the name match?
         if (!Objects.equal(method.getName(), this.name()))
         {
             return false;
         }
 
+        // Does the parameter-list match?
         if (!Objects.equal(this.parameterTypes(), Arrays.asList(method.getParameterTypes())))
         {
             return false;
         }
 
+        // The name and the parameter-list both match.
         return true;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString()
     {

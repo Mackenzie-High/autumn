@@ -1,14 +1,9 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package high.mackenzie.autumn.lang.compiler.compilers;
 
 import autumn.lang.compiler.ast.commons.IConstruct;
 import autumn.lang.compiler.ast.commons.IExpression;
 import autumn.lang.compiler.ast.commons.IStatement;
 import autumn.lang.compiler.ast.nodes.CreateExpression;
-import autumn.lang.compiler.ast.nodes.DelegateExpression;
 import autumn.lang.compiler.ast.nodes.DispatchExpression;
 import autumn.lang.compiler.ast.nodes.ExceptionHandler;
 import autumn.lang.compiler.ast.nodes.TryCatchStatement;
@@ -52,8 +47,6 @@ public final class SymbolTable
     public final Map<DispatchExpression, List<IMethod>> dispatches = Maps.newIdentityHashMap();
 
     public final Map<IStatement, LabelNode> yields = Maps.newIdentityHashMap();
-
-    public final Map<DelegateExpression, DelegateCompiler> delegates = Maps.newIdentityHashMap();
 
     public final Map<CreateExpression, ClassCompiler> creators = Maps.newIdentityHashMap();
 

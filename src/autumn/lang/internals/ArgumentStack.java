@@ -1,19 +1,40 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package autumn.lang.internals;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
+ * Instances of this class are used to send arguments into functors and send result back therefrom.
  *
- * @author mackenzie
+ * <p>
+ * <b>Warning:</b> The API of this class shall not be changed, because the methods
+ * herein are invoked directly from bytecode. As a result, any revision could break
+ * backwards compatibility. That being said, the internal implementation of this class
+ * may be enhanced in the future in order to further optimize it.
+ * </p>
+ *
+ * <p>
+ * The code in this class is among the most frequently accessed code in a running Autumn program.
+ * </p>
+ *
+ * <p>
+ * There will be one instance of this class for every thread in an Autumn program.
+ * The instance is usually referred to simply as the "argument-stack".
+ * The argument-stack should not be confused with the bytecode level operand-stack.
+ * The two stacks perform similar purposes; however, they are distinct entities.
+ * </p>
+ *
+ * @author Mackenzie High
  */
 public final class ArgumentStack
 {
+    /**
+     * Instances of this class are used to store arguments on the argument-stack.
+     */
     private static final class Argument
     {
+        /**
+         * This is the type of value that is currently stored herein.
+         */
         public Class type;
 
         public boolean value_Z;
@@ -33,42 +54,76 @@ public final class ArgumentStack
         public double value_D;
 
         public Object value_O;
-
-        public void reset()
-        {
-            this.value_Z = false;
-            this.value_C = 0;
-            this.value_B = 0;
-            this.value_S = 0;
-            this.value_I = 0;
-            this.value_J = 0;
-            this.value_F = 0;
-            this.value_D = 0;
-            this.value_O = null;
-            this.type = null;
-        }
     }
 
+    /**
+     * This thread-local variable stores the argument-stack associated with this thread.
+     */
     private static final ThreadLocal<ArgumentStack> thread_stack = new ThreadLocal<ArgumentStack>();
 
-    private final ArrayList<Argument> stack = new ArrayList<Argument>(64);
+    /**
+     * This array stores the arguments that are currently on the argument-stack.
+     * Note: The size of this array is not the same thing as the size of the argument-stack itself.
+     */
+    private Argument[] stack;
 
+    /**
+     * This is the size of the argument-stack itself.
+     * In other words, this is the number of arguments that are currently on the argument-stack.
+     */
     private int size = 0;
 
-    public ArgumentStack()
+    /**
+     * Sole Constructor.
+     */
+    ArgumentStack()
     {
-        for (int i = 0; i < 64; i++)
+        /**
+         * Initially, the stack will have room for sixty-four elements.
+         * In reality, no thread should need a larger stack than this.
+         */
+        final int INITIAL_SIZE = 64;
+
+        // Allocate the stack itself.
+        stack = new Argument[INITIAL_SIZE];
+
+        // Allocate the objects that store the arguemnts.
+        for (int i = 0; i < INITIAL_SIZE; i++)
         {
-            stack.add(new Argument());
+            stack[i] = new Argument();
         }
     }
 
+    /**
+     * This method allocate space for at least one more argument.
+     */
+    private void increaseSize()
+    {
+        if (stack.length == size)
+        {
+            stack = Arrays.copyOf(stack, size + 64);
+        }
+
+        stack[size] = new Argument();
+    }
+
+    /**
+     * This method retrieves the argument-stack that is associated with the current thread.
+     *
+     * <p>
+     * The returned argument-stack will be empty.
+     * </p>
+     *
+     * @return the argument-stack of the current thread.
+     */
     public static ArgumentStack getThreadStack()
     {
         final ArgumentStack stk = thread_stack.get();
 
         if (stk != null)
         {
+            stk.clear();
+
             return stk;
         }
         else
@@ -81,146 +136,288 @@ public final class ArgumentStack
         }
     }
 
-    public void clear()
+    /**
+     * This method removes all arguments from the argument-stack.
+     */
+    public final void clear()
     {
-        while (size > 0)
+        // Remove references to objects.
+        // Otherwise, a memory leak could result.
+        for (int i = 0; i < size; i++)
         {
-            stack.get(size).reset();
+            stack[i].value_O = null;
         }
+
+        size = 0;
     }
 
-    public int size()
+    /**
+     * This method retrieves the size of the argument-stack.
+     *
+     * @return the number of arguments currently on the argument-stack.
+     */
+    public final int size()
     {
         return size;
     }
 
-    public boolean isEmpty()
+    /**
+     * This method determines whether the argument-stack is empty.
+     *
+     * @return true, iff the size of this stack is zero.
+     */
+    public final boolean isEmpty()
     {
         return size == 0;
     }
 
-    private void checkSize()
+    /**
+     * This method pushes an argument onto the argument-stack.
+     *
+     * @param value is the argument to push onto the stack.
+     */
+    public final void push(final boolean value)
     {
-        if (size == stack.size())
+        /**
+         * Ensure that there is enough space on the argument-stack for one more element.
+         */
+        if (size == stack.length)
         {
-            stack.add(new Argument());
+            increaseSize();
         }
-    }
 
-    public void push(final boolean value)
-    {
-        checkSize();
-
-        final Argument x = stack.get(size++);
-
+        /**
+         * Push the value onto the argument-stack.
+         */
+        final Argument x = stack[size++];
         x.type = boolean.class;
-
         x.value_Z = value;
     }
 
-    public void push(final char value)
+    /**
+     * This method pushes an argument onto the argument-stack.
+     *
+     * @param value is the argument to push onto the stack.
+     */
+    public final void push(final char value)
     {
-        checkSize();
+        /**
+         * Ensure that there is enough space on the argument-stack for one more element.
+         */
+        if (size == stack.length)
+        {
+            increaseSize();
+        }
 
-        final Argument x = stack.get(size++);
-
+        /**
+         * Push the value onto the argument-stack.
+         */
+        final Argument x = stack[size++];
         x.type = char.class;
-
         x.value_C = value;
     }
 
-    public void push(final byte value)
+    /**
+     * This method pushes an argument onto the argument-stack.
+     *
+     * @param value is the argument to push onto the stack.
+     */
+    public final void push(final byte value)
     {
-        checkSize();
+        /**
+         * Ensure that there is enough space on the argument-stack for one more element.
+         */
+        if (size == stack.length)
+        {
+            increaseSize();
+        }
 
-        final Argument x = stack.get(size++);
-
+        /**
+         * Push the value onto the argument-stack.
+         */
+        final Argument x = stack[size++];
         x.type = byte.class;
-
         x.value_B = value;
     }
 
-    public void push(final short value)
+    /**
+     * This method pushes an argument onto the argument-stack.
+     *
+     * @param value is the argument to push onto the stack.
+     */
+    public final void push(final short value)
     {
-        checkSize();
+        /**
+         * Ensure that there is enough space on the argument-stack for one more element.
+         */
+        if (size == stack.length)
+        {
+            increaseSize();
+        }
 
-        final Argument x = stack.get(size++);
-
+        /**
+         * Push the value onto the argument-stack.
+         */
+        final Argument x = stack[size++];
         x.type = short.class;
-
         x.value_S = value;
     }
 
-    public void push(final int value)
+    /**
+     * This method pushes an argument onto the argument-stack.
+     *
+     * @param value is the argument to push onto the stack.
+     */
+    public final void push(final int value)
     {
-        checkSize();
+        /**
+         * Ensure that there is enough space on the argument-stack for one more element.
+         */
+        if (size == stack.length)
+        {
+            increaseSize();
+        }
 
-        final Argument x = stack.get(size++);
-
+        /**
+         * Push the value onto the argument-stack.
+         */
+        final Argument x = stack[size++];
         x.type = int.class;
-
         x.value_I = value;
     }
 
-    public void push(final long value)
+    /**
+     * This method pushes an argument onto the argument-stack.
+     *
+     * @param value is the argument to push onto the stack.
+     */
+    public final void push(final long value)
     {
-        checkSize();
+        /**
+         * Ensure that there is enough space on the argument-stack for one more element.
+         */
+        if (size == stack.length)
+        {
+            increaseSize();
+        }
 
-        final Argument x = stack.get(size++);
-
+        /**
+         * Push the value onto the argument-stack.
+         */
+        final Argument x = stack[size++];
         x.type = long.class;
-
         x.value_J = value;
     }
 
-    public void push(final float value)
+    /**
+     * This method pushes an argument onto the argument-stack.
+     *
+     * @param value is the argument to push onto the stack.
+     */
+    public final void push(final float value)
     {
-        checkSize();
+        /**
+         * Ensure that there is enough space on the argument-stack for one more element.
+         */
+        if (size == stack.length)
+        {
+            increaseSize();
+        }
 
-        final Argument x = stack.get(size++);
-
+        /**
+         * Push the value onto the argument-stack.
+         */
+        final Argument x = stack[size++];
         x.type = float.class;
-
         x.value_F = value;
     }
 
-    public void push(final double value)
+    /**
+     * This method pushes an argument onto the argument-stack.
+     *
+     * @param value is the argument to push onto the stack.
+     */
+    public final void push(final double value)
     {
-        checkSize();
+        /**
+         * Ensure that there is enough space on the argument-stack for one more element.
+         */
+        if (size == stack.length)
+        {
+            increaseSize();
+        }
 
-        final Argument x = stack.get(size++);
-
+        /**
+         * Push the value onto the argument-stack.
+         */
+        final Argument x = stack[size++];
         x.type = double.class;
-
         x.value_D = value;
     }
 
-    public void push(final Object value)
+    /**
+     * This method pushes an argument onto the argument-stack.
+     *
+     * @param value is the argument to push onto the stack.
+     */
+    public final void push(final Object value)
     {
-        checkSize();
+        /**
+         * Ensure that there is enough space on the argument-stack for one more element.
+         */
+        if (size == stack.length)
+        {
+            increaseSize();
+        }
 
-        final Argument x = stack.get(size++);
-
+        /**
+         * Push the value onto the argument-stack.
+         */
+        final Argument x = stack[size++];
         x.type = Object.class;
-
         x.value_O = value;
     }
 
-    public void pop()
+    /**
+     * This method removes the topmost element from the argument-stack.
+     *
+     * @throws IllegalStateException if the argument-stack is already empty.
+     */
+    public final void pop()
     {
-        checkSize();
+        if (size == 0)
+        {
+            throw new IllegalStateException("The argument-stack is empty.");
+        }
 
         --size;
     }
 
+    /**
+     * This method creates a special exception object.
+     *
+     * @return the new exception.
+     */
     private RuntimeException wrongType()
     {
-        return new RuntimeException();
+        return new IllegalStateException("The argument cannot be returned due to its type.");
     }
 
-    public boolean getZ(final int index)
+    /**
+     * This method retrieves an argument that is at a specific location on the argument-stack.
+     *
+     * <p>
+     * The argument will be unboxed, if necessary.
+     * </p>
+     *
+     * @param index is the zero-based index of the argument as measured from the stack's base.
+     * @return the argument.
+     * @throws IndexOutOfBoundsException if the index is invalid.
+     * @throws IllegalStateException if the value cannot be returned due to its type.
+     */
+    public final boolean getZ(final int index)
     {
-        final Argument x = stack.get(index);
+        final Argument x = stack[index];
 
         if (x.type == boolean.class)
         {
@@ -236,9 +433,21 @@ public final class ArgumentStack
         }
     }
 
-    public char getC(final int index)
+    /**
+     * This method retrieves an argument that is at a specific location on the argument-stack.
+     *
+     * <p>
+     * The argument will be unboxed, if necessary.
+     * </p>
+     *
+     * @param index is the zero-based index of the argument as measured from the stack's base.
+     * @return the argument.
+     * @throws IndexOutOfBoundsException if the index is invalid.
+     * @throws IllegalStateException if the value cannot be returned due to its type.
+     */
+    public final char getC(final int index)
     {
-        final Argument x = stack.get(index);
+        final Argument x = stack[index];
 
         if (x.type == char.class)
         {
@@ -254,9 +463,21 @@ public final class ArgumentStack
         }
     }
 
-    public byte getB(final int index)
+    /**
+     * This method retrieves an argument that is at a specific location on the argument-stack.
+     *
+     * <p>
+     * The argument will be unboxed, if necessary.
+     * </p>
+     *
+     * @param index is the zero-based index of the argument as measured from the stack's base.
+     * @return the argument.
+     * @throws IndexOutOfBoundsException if the index is invalid.
+     * @throws IllegalStateException if the value cannot be returned due to its type.
+     */
+    public final byte getB(final int index)
     {
-        final Argument x = stack.get(index);
+        final Argument x = stack[index];
 
         if (x.type == byte.class)
         {
@@ -272,9 +493,21 @@ public final class ArgumentStack
         }
     }
 
-    public short getS(final int index)
+    /**
+     * This method retrieves an argument that is at a specific location on the argument-stack.
+     *
+     * <p>
+     * The argument will be unboxed, if necessary.
+     * </p>
+     *
+     * @param index is the zero-based index of the argument as measured from the stack's base.
+     * @return the argument.
+     * @throws IndexOutOfBoundsException if the index is invalid.
+     * @throws IllegalStateException if the value cannot be returned due to its type.
+     */
+    public final short getS(final int index)
     {
-        final Argument x = stack.get(index);
+        final Argument x = stack[index];
 
         if (x.type == short.class)
         {
@@ -290,9 +523,21 @@ public final class ArgumentStack
         }
     }
 
-    public int getI(final int index)
+    /**
+     * This method retrieves an argument that is at a specific location on the argument-stack.
+     *
+     * <p>
+     * The argument will be unboxed, if necessary.
+     * </p>
+     *
+     * @param index is the zero-based index of the argument as measured from the stack's base.
+     * @return the argument.
+     * @throws IndexOutOfBoundsException if the index is invalid.
+     * @throws IllegalStateException if the value cannot be returned due to its type.
+     */
+    public final int getI(final int index)
     {
-        final Argument x = stack.get(index);
+        final Argument x = stack[index];
 
         if (x.type == int.class)
         {
@@ -308,9 +553,21 @@ public final class ArgumentStack
         }
     }
 
-    public long getJ(final int index)
+    /**
+     * This method retrieves an argument that is at a specific location on the argument-stack.
+     *
+     * <p>
+     * The argument will be unboxed, if necessary.
+     * </p>
+     *
+     * @param index is the zero-based index of the argument as measured from the stack's base.
+     * @return the argument.
+     * @throws IndexOutOfBoundsException if the index is invalid.
+     * @throws IllegalStateException if the value cannot be returned due to its type.
+     */
+    public final long getJ(final int index)
     {
-        final Argument x = stack.get(index);
+        final Argument x = stack[index];
 
         if (x.type == long.class)
         {
@@ -326,9 +583,21 @@ public final class ArgumentStack
         }
     }
 
-    public float getF(final int index)
+    /**
+     * This method retrieves an argument that is at a specific location on the argument-stack.
+     *
+     * <p>
+     * The argument will be unboxed, if necessary.
+     * </p>
+     *
+     * @param index is the zero-based index of the argument as measured from the stack's base.
+     * @return the argument.
+     * @throws IndexOutOfBoundsException if the index is invalid.
+     * @throws IllegalStateException if the value cannot be returned due to its type.
+     */
+    public final float getF(final int index)
     {
-        final Argument x = stack.get(index);
+        final Argument x = stack[index];
 
         if (x.type == float.class)
         {
@@ -344,9 +613,21 @@ public final class ArgumentStack
         }
     }
 
-    public double getD(final int index)
+    /**
+     * This method retrieves an argument that is at a specific location on the argument-stack.
+     *
+     * <p>
+     * The argument will be unboxed, if necessary.
+     * </p>
+     *
+     * @param index is the zero-based index of the argument as measured from the stack's base.
+     * @return the argument.
+     * @throws IndexOutOfBoundsException if the index is invalid.
+     * @throws IllegalStateException if the value cannot be returned due to its type.
+     */
+    public final double getD(final int index)
     {
-        final Argument x = stack.get(index);
+        final Argument x = stack[index];
 
         if (x.type == double.class)
         {
@@ -362,9 +643,21 @@ public final class ArgumentStack
         }
     }
 
-    public Object getO(final int index)
+    /**
+     * This method retrieves an argument that is at a specific location on the argument-stack.
+     *
+     * <p>
+     * The argument will be boxed, if necessary.
+     * </p>
+     *
+     * @param index is the zero-based index of the argument as measured from the stack's base.
+     * @return the argument.
+     * @throws IndexOutOfBoundsException if the index is invalid.
+     * @throws IllegalStateException if the value cannot be returned due to its type.
+     */
+    public final Object getO(final int index)
     {
-        final Argument x = stack.get(index);
+        final Argument x = stack[index];
 
         if (x.type == boolean.class)
         {
@@ -408,52 +701,161 @@ public final class ArgumentStack
         }
     }
 
-    public boolean peekZ()
+    /**
+     * This method retrieves the argument that is on the top of the argument-stack.
+     *
+     * <p>
+     * The argument will be unboxed, if necessary.
+     * </p>
+     *
+     * @return the argument.
+     * @throws IndexOutOfBoundsException if the stack is empty.
+     * @throws IllegalStateException if the value cannot be returned due to its type.
+     */
+    public final boolean peekZ()
     {
         return getZ(size - 1);
     }
 
-    public char peekC()
+    /**
+     * This method retrieves the argument that is on the top of the argument-stack.
+     *
+     * <p>
+     * The argument will be unboxed, if necessary.
+     * </p>
+     *
+     * @return the argument.
+     * @throws IndexOutOfBoundsException if the stack is empty.
+     * @throws IllegalStateException if the value cannot be returned due to its type.
+     */
+    public final char peekC()
     {
         return getC(size - 1);
     }
 
-    public byte peekB()
+    /**
+     * This method retrieves the argument that is on the top of the argument-stack.
+     *
+     * <p>
+     * The argument will be unboxed, if necessary.
+     * </p>
+     *
+     * @return the argument.
+     * @throws IndexOutOfBoundsException if the stack is empty.
+     * @throws IllegalStateException if the value cannot be returned due to its type.
+     */
+    public final byte peekB()
     {
         return getB(size - 1);
     }
 
-    public short peekS()
+    /**
+     * This method retrieves the argument that is on the top of the argument-stack.
+     *
+     * <p>
+     * The argument will be unboxed, if necessary.
+     * </p>
+     *
+     * @return the argument.
+     * @throws IndexOutOfBoundsException if the stack is empty.
+     * @throws IllegalStateException if the value cannot be returned due to its type.
+     */
+    public final short peekS()
     {
         return getS(size - 1);
     }
 
-    public int peekI()
+    /**
+     * This method retrieves the argument that is on the top of the argument-stack.
+     *
+     * <p>
+     * The argument will be unboxed, if necessary.
+     * </p>
+     *
+     * @return the argument.
+     * @throws IndexOutOfBoundsException if the stack is empty.
+     * @throws IllegalStateException if the value cannot be returned due to its type.
+     */
+    public final int peekI()
     {
         return getI(size - 1);
     }
 
-    public long peekJ()
+    /**
+     * This method retrieves the argument that is on the top of the argument-stack.
+     *
+     * <p>
+     * The argument will be unboxed, if necessary.
+     * </p>
+     *
+     * @return the argument.
+     * @throws IndexOutOfBoundsException if the stack is empty.
+     * @throws IllegalStateException if the value cannot be returned due to its type.
+     */
+    public final long peekJ()
     {
         return getJ(size - 1);
     }
 
-    public float peekF()
+    /**
+     * This method retrieves the argument that is on the top of the argument-stack.
+     *
+     * <p>
+     * The argument will be unboxed, if necessary.
+     * </p>
+     *
+     * @return the argument.
+     * @throws IndexOutOfBoundsException if the stack is empty.
+     * @throws IllegalStateException if the value cannot be returned due to its type.
+     */
+    public final float peekF()
     {
         return getF(size - 1);
     }
 
-    public double peekD()
+    /**
+     * This method retrieves the argument that is on the top of the argument-stack.
+     *
+     * <p>
+     * The argument will be unboxed, if necessary.
+     * </p>
+     *
+     * @return the argument.
+     * @throws IndexOutOfBoundsException if the stack is empty.
+     * @throws IllegalStateException if the value cannot be returned due to its type.
+     */
+    public final double peekD()
     {
         return getD(size - 1);
     }
 
-    public Object peekO()
+    /**
+     * This method retrieves the argument that is on the top of the argument-stack.
+     *
+     * <p>
+     * The argument will be boxed, if necessary.
+     * </p>
+     *
+     * @return the argument.
+     * @throws IndexOutOfBoundsException if the stack is empty.
+     * @throws IllegalStateException if the value cannot be returned due to its type.
+     */
+    public final Object peekO()
     {
         return getO(size - 1);
     }
 
-    public Object popO()
+    /**
+     * This method retrieves and removes the argument that is on the top of the argument-stack.
+     *
+     * <p>
+     * The argument will be boxed, if necessary.
+     * </p>
+     *
+     * @return the argument.
+     * @throws IndexOutOfBoundsException if the stack is empty.
+     */
+    public final Object popO()
     {
         final Object value = peekO();
 

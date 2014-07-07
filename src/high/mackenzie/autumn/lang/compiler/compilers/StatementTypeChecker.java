@@ -242,18 +242,19 @@ public final class StatementTypeChecker
     @Override
     public void visit(SetterStatement object)
     {
+        object.getOwner().accept(this);
     }
 
     @Override
     public void visit(GetterStatement object)
     {
-        throw new UnsupportedOperationException("This should never happen!");
+        object.getOwner().accept(this);
     }
 
     @Override
     public void visit(MethodStatement object)
     {
-        throw new UnsupportedOperationException("This should never happen!");
+        object.getOwner().accept(this);
     }
 
     @Override

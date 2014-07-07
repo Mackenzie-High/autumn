@@ -59,7 +59,7 @@ import java.util.TreeSet;
  * </table>
  * </p>
  * 
- * <p> This file was auto-generated on (Mon Apr 21 23:40:55 EDT 2014).</p>
+ * <p> This file was auto-generated on (Thu Jul 03 09:32:55 EDT 2014).</p>
  */
 @SuppressWarnings("unchecked")
 public final class FunctionDefinition extends Object implements IAnnotated
@@ -218,6 +218,29 @@ public final class FunctionDefinition extends Object implements IAnnotated
     {
         final SourceLocation value = this.location;
         return value;
+    }
+
+    /**
+     * This method creates a new instance of this class.
+     * 
+     * @param annotations is the value for property <code>annotations</code>.
+     * @param name is the value for property <code>name</code>.
+     * @param parameters is the value for property <code>parameters</code>.
+     * @param return_type is the value for property <code>return_type</code>.
+     * @param body is the value for property <code>body</code>.
+     * @param location is the value for property <code>location</code>.
+     * @return a new instance of this class.
+     */
+    public static FunctionDefinition create(AnnotationList annotations, Name name, FormalParameterList parameters, TypeSpecifier return_type, SequenceStatement body, SourceLocation location)
+    {
+        FunctionDefinition object = new FunctionDefinition();
+        object = object.setAnnotations(annotations);
+        object = object.setName(name);
+        object = object.setParameters(parameters);
+        object = object.setReturnType(return_type);
+        object = object.setBody(body);
+        object = object.setLocation(location);
+        return object;
     }
 
     /**

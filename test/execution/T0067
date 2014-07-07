@@ -49,7 +49,7 @@ defun F02 () : int
 
     val size = (list.size);
 
-    when (size == 123456) return size;
+    when (size == 123456) then return size;
 
     (list.add size);
 

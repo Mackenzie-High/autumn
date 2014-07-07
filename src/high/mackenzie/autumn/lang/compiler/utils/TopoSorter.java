@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package high.mackenzie.autumn.lang.compiler.utils;
 
 import com.google.common.base.Preconditions;
@@ -21,7 +17,7 @@ public abstract class TopoSorter<T>
     /**
      * Given two elements, this function determines whether the left one is less than the right one.
      *
-     * @param left  is the elements that may be less than the right element.
+     * @param left is the elements that may be less than the right element.
      * @param right is the right element itself.
      * @return true, iff left is less-than right.
      */
@@ -57,6 +53,10 @@ public abstract class TopoSorter<T>
      */
     public void add(final T element)
     {
+        // Note: This algorithm is currently an O(N^2) in the worst case.
+        // The inputs are usually small enough to make this acceptable.
+        // However, this algorithm *could* be rewritten at a later date.
+
         final ListIterator<T> iter = elements.listIterator();
 
         while (iter.hasNext())

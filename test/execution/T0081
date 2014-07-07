@@ -1,0 +1,14 @@
+module Main in execution;
+
+exception Boo extends RuntimeException;
+exception Moo extends RuntimeException;
+
+@Start
+defun main (args : String[]) : void
+{
+    val m = (Main::instance);
+
+    val exceptions = (call m.moduleExceptionDefinitions);
+
+    assert [(class Boo), (class Moo)] == exceptions;
+}

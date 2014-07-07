@@ -29,11 +29,7 @@ public final class AsConversions
      */
     public static boolean convertToPrimitiveBoolean(final char value)
     {
-        return 'Y' == value
-               || 'y' == value
-               || 'T' == value
-               || 't' == value
-               || '1' == value;
+        return value != 0;
     }
 
     /**
@@ -2116,7 +2112,7 @@ public final class AsConversions
      *
      * @param value is the value to convert.
      */
-    public static Character convertToBoxedCharacter(final boolean value)
+    public static Character convertToBoxedChar(final boolean value)
     {
         return (char) (value ? 1 : 0);
     }
@@ -2126,7 +2122,7 @@ public final class AsConversions
      *
      * @param value is the value to convert.
      */
-    public static Character convertToBoxedCharacter(final char value)
+    public static Character convertToBoxedChar(final char value)
     {
         return (Character) value;
     }
@@ -2136,7 +2132,7 @@ public final class AsConversions
      *
      * @param value is the value to convert.
      */
-    public static Character convertToBoxedCharacter(final byte value)
+    public static Character convertToBoxedChar(final byte value)
     {
         return (char) value;
     }
@@ -2146,7 +2142,7 @@ public final class AsConversions
      *
      * @param value is the value to convert.
      */
-    public static Character convertToBoxedCharacter(final short value)
+    public static Character convertToBoxedChar(final short value)
     {
         return (char) value;
     }
@@ -2156,7 +2152,7 @@ public final class AsConversions
      *
      * @param value is the value to convert.
      */
-    public static Character convertToBoxedCharacter(final int value)
+    public static Character convertToBoxedChar(final int value)
     {
         return (char) value;
     }
@@ -2166,7 +2162,7 @@ public final class AsConversions
      *
      * @param value is the value to convert.
      */
-    public static Character convertToBoxedCharacter(final long value)
+    public static Character convertToBoxedChar(final long value)
     {
         return (char) value;
     }
@@ -2176,7 +2172,7 @@ public final class AsConversions
      *
      * @param value is the value to convert.
      */
-    public static Character convertToBoxedCharacter(final float value)
+    public static Character convertToBoxedChar(final float value)
     {
         return (char) value;
     }
@@ -2186,7 +2182,7 @@ public final class AsConversions
      *
      * @param value is the value to convert.
      */
-    public static Character convertToBoxedCharacter(final double value)
+    public static Character convertToBoxedChar(final double value)
     {
         return (char) value;
     }
@@ -2200,9 +2196,9 @@ public final class AsConversions
      *
      * @param value is the value to convert.
      */
-    public static Character convertToBoxedCharacter(final Boolean value)
+    public static Character convertToBoxedChar(final Boolean value)
     {
-        return (value == null) ? 0 : convertToBoxedCharacter((boolean) value);
+        return (value == null) ? 0 : convertToBoxedChar((boolean) value);
     }
 
     /**
@@ -2214,9 +2210,9 @@ public final class AsConversions
      *
      * @param value is the value to convert.
      */
-    public static Character convertToBoxedCharacter(final Character value)
+    public static Character convertToBoxedChar(final Character value)
     {
-        return (value == null) ? 0 : convertToBoxedCharacter((char) value);
+        return (value == null) ? 0 : convertToBoxedChar((char) value);
     }
 
     /**
@@ -2228,9 +2224,9 @@ public final class AsConversions
      *
      * @param value is the value to convert.
      */
-    public static Character convertToBoxedCharacter(final Byte value)
+    public static Character convertToBoxedChar(final Byte value)
     {
-        return (value == null) ? 0 : convertToBoxedCharacter((byte) value);
+        return (value == null) ? 0 : convertToBoxedChar((byte) value);
     }
 
     /**
@@ -2242,9 +2238,9 @@ public final class AsConversions
      *
      * @param value is the value to convert.
      */
-    public static Character convertToBoxedCharacter(final Short value)
+    public static Character convertToBoxedChar(final Short value)
     {
-        return (value == null) ? 0 : convertToBoxedCharacter((short) value);
+        return (value == null) ? 0 : convertToBoxedChar((short) value);
     }
 
     /**
@@ -2256,9 +2252,9 @@ public final class AsConversions
      *
      * @param value is the value to convert.
      */
-    public static Character convertToBoxedCharacter(final Integer value)
+    public static Character convertToBoxedChar(final Integer value)
     {
-        return (value == null) ? 0 : convertToBoxedCharacter((int) value);
+        return (value == null) ? 0 : convertToBoxedChar((int) value);
     }
 
     /**
@@ -2270,9 +2266,9 @@ public final class AsConversions
      *
      * @param value is the value to convert.
      */
-    public static Character convertToBoxedCharacter(final Long value)
+    public static Character convertToBoxedChar(final Long value)
     {
-        return (value == null) ? 0 : convertToBoxedCharacter((long) value);
+        return (value == null) ? 0 : convertToBoxedChar((long) value);
     }
 
     /**
@@ -2284,9 +2280,9 @@ public final class AsConversions
      *
      * @param value is the value to convert.
      */
-    public static Character convertToBoxedCharacter(final Float value)
+    public static Character convertToBoxedChar(final Float value)
     {
-        return (value == null) ? 0 : convertToBoxedCharacter((float) value);
+        return (value == null) ? 0 : convertToBoxedChar((float) value);
     }
 
     /**
@@ -2298,9 +2294,9 @@ public final class AsConversions
      *
      * @param value is the value to convert.
      */
-    public static Character convertToBoxedCharacter(final Double value)
+    public static Character convertToBoxedChar(final Double value)
     {
-        return (value == null) ? 0 : convertToBoxedCharacter((double) value);
+        return (value == null) ? 0 : convertToBoxedChar((double) value);
     }
 
     /**
@@ -2312,7 +2308,7 @@ public final class AsConversions
      *
      * @param value is the value to convert.
      */
-    public static Character convertToBoxedCharacter(final BigInteger value)
+    public static Character convertToBoxedChar(final BigInteger value)
     {
         return (value == null) ? 0 : (char) value.longValue();
     }
@@ -2326,7 +2322,7 @@ public final class AsConversions
      *
      * @param value is the value to convert.
      */
-    public static Character convertToBoxedCharacter(final BigDecimal value)
+    public static Character convertToBoxedChar(final BigDecimal value)
     {
         return (value == null) ? 0 : (char) value.longValue();
     }
@@ -2342,7 +2338,7 @@ public final class AsConversions
      *
      * @param value is the value to convert.
      */
-    public static Character convertToBoxedCharacter(final String value)
+    public static Character convertToBoxedChar(final String value)
     {
         if (value == null)
         {
@@ -2373,7 +2369,7 @@ public final class AsConversions
      *
      * @param value is the value to convert.
      */
-    public static Character convertToBoxedCharacter(final Object value)
+    public static Character convertToBoxedChar(final Object value)
     {
         return (value == null) || (value instanceof Character == false) ? 0 : (Character) value;
     }

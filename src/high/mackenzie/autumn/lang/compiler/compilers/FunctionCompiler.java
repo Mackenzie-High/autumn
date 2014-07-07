@@ -41,26 +41,64 @@ import org.objectweb.asm.tree.TypeInsnNode;
 public final class FunctionCompiler
         implements ICompiler
 {
+    /**
+     * This object represents the program that contains the function.
+     *
+     * More specifically, this is the compiler that is compiling the program.
+     */
     public final ProgramCompiler program;
 
+    /**
+     * This object represents the module that contains the function.
+     *
+     * More specifically, this is the compiler that is compiling the module.
+     */
     public final ModuleCompiler module;
 
+    /**
+     * This is the Abstract-Syntax-Tree representation of the function.
+     */
     public final FunctionDefinition node;
 
+    /**
+     * This is the bytecode representation of the function.
+     */
     public final MethodNode method = new MethodNode();
 
+    /**
+     * These are the bytecode declarations of the try-catch blocks in the function.
+     */
     public final List<TryCatchBlockNode> trycatches = Lists.newLinkedList();
 
+    /**
+     * These are the bytecode instructions that constitute the body of the function.
+     */
     public final List<AbstractInsnNode> instructions = Lists.newLinkedList();
 
+    /**
+     * This is the type-system representation of the function.
+     */
     public final CustomMethod type;
 
+    /**
+     * This object manages the allocation of local variables in the function.
+     */
     public final VariableScope scope;
 
+    /**
+     * This object simplifies the generation of bytecode that manipulates local variables.
+     */
     public final VariableManipulator vars;
 
+    /**
+     * This object manages the allocation of user-visible labels in the function.
+     */
     public final LabelScope labels;
 
+    /**
+     * This is field-node represents the field that stores the state of the function
+     * between invocations. Thus, if this field is non-null, the function is a generator function.
+     */
     private FieldNode yield_field = null;
 
     /**
@@ -209,6 +247,16 @@ public final class FunctionCompiler
         method.tryCatchBlocks = ImmutableList.copyOf(trycatches);
     }
 
+    /**
+     * This method generates the bytecode that handles reentry into a generator function.
+     *
+     * <p>
+     * When a generator function is entered, it is necessary to jump to the location
+     * where the function last yielded from. As a result, the beginning of the function's
+     * bytecode must contain a jump-table that redirects execution. This method generates
+     * that jump-table.
+     * </p>
+     */
     private void addReentryTable()
     {
         // TODO: Maybe we should move the restoration code to the method.
@@ -253,6 +301,16 @@ public final class FunctionCompiler
         instructions.add(END);
     }
 
+    /**
+     * This method generates the bytecode that restores the state of a generator function.
+     *
+     * <p>
+     * When a generator function yields, the function stores the state of its local variables
+     * in a special object that is referenced by a special field. Later, when a generator
+     * function is reentered, it is necessary to restore the state of the function's locals.
+     * This method generates the bytecode that performs the restoration.
+     * </p>
+     */
     private void addRestorationCode()
     {
         String owner;
@@ -326,6 +384,20 @@ public final class FunctionCompiler
         instructions.add(END);
     }
 
+    /**
+     * This method generates the default method termination bytecode.
+     *
+     * <p>
+     * If a function does not contain a return statement, then execution may reach the end
+     * of the function during an invocation. The JVM requires that this special case be handled.
+     * Thus, it is necessary to generate bytecode to handle this special situation.
+     * </p>
+     *
+     * <p>
+     * Per the specification, a function will simply return, if the return-type is void.
+     * On the other hand, the function will raise an exception, if the return-type is non-void.
+     * </p>
+     */
     private void addDefaultMethodTermination()
     {
         if (isReturnTypeVoid())
@@ -334,10 +406,10 @@ public final class FunctionCompiler
         }
         else
         {
-            method.instructions.add(new TypeInsnNode(Opcodes.NEW, "autumn/lang/exceptions/UnexpectedInvocationTermination"));
+            method.instructions.add(new TypeInsnNode(Opcodes.NEW, "autumn/lang/exceptions/UnexpectedTerminationException"));
             method.instructions.add(new InsnNode(Opcodes.DUP));
             method.instructions.add(new MethodInsnNode(Opcodes.INVOKESPECIAL,
-                                                       "autumn/lang/exceptions/UnexpectedInvocationTermination",
+                                                       "autumn/lang/exceptions/UnexpectedTerminationException",
                                                        "<init>",
                                                        "()V"));
             method.instructions.add(new InsnNode(Opcodes.ATHROW));
@@ -391,6 +463,11 @@ public final class FunctionCompiler
         return false;
     }
 
+    /**
+     * This function generates the field used to store the state of a generator function.
+     *
+     * @return the field that stores the function's state between invocations.
+     */
     public FieldNode yieldField()
     {
         if (yield_field == null)

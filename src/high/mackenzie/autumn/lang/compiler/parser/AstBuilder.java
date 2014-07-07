@@ -2195,29 +2195,6 @@ public final class AstBuilder extends AbstractVisitor
      * {inheritDoc} 
      */
     @Override
-    public void visit_delegate_expression_simplified(final ITreeNode $node)
-    {
-        final int $stack_size = $stack.size();
-
-        visitUnknown($node);
-
-        final int $change = $stack.size() - $stack_size;
-
-        assert $change >= 0;
-
-        final TreeBuilder builder = Utils.builder();
-
-        builder.createExpressionDelegate();
-
-        Utils.setSourceLocation($node);
-
-        builder.popStack();
-    }
-
-    /**
-     * {inheritDoc} 
-     */
-    @Override
     public void visit_funcall_expression(final ITreeNode $node)
     {
         final int $stack_size = $stack.size();

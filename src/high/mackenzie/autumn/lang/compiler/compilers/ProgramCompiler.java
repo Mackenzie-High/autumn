@@ -8,6 +8,7 @@ import autumn.lang.compiler.ClassFile;
 import autumn.lang.compiler.CompiledProgram;
 import autumn.lang.compiler.ast.nodes.Module;
 import autumn.lang.compiler.errors.IErrorReporter;
+import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.google.common.io.Files;
@@ -42,9 +43,18 @@ public final class ProgramCompiler
      */
     private final Set<File> failed_includes = Sets.newTreeSet();
 
-    public ProgramCompiler(final IErrorReporter reporter,
-                           final List<Module> mules)
+    /**
+     * Sole Constructor.
+     *
+     * @param reporter is used to report errors.
+     * @param mules are the modules that will be compiled.
+     */
+    private ProgramCompiler(final IErrorReporter reporter,
+                            final List<Module> mules)
     {
+        Preconditions.checkNotNull(reporter);
+        Preconditions.checkNotNull(mules);
+
         this.reporter = reporter;
 
         this.typesystem = new TypeSystem(this);
@@ -79,18 +89,13 @@ public final class ProgramCompiler
      *
      * @return a jar-able representation of the program.
      */
-    public CompiledProgram build()
+    private CompiledProgram build()
     {
         final List<ClassFile> classes = Lists.newLinkedList();
 
         for (ModuleCompiler m : modules)
         {
             classes.addAll(m.build());
-        }
-
-        for (DelegateCompiler x : symbols.delegates.values())
-        {
-            classes.add(x.build());
         }
 
         for (ClassCompiler x : symbols.creators.values())
@@ -221,6 +226,13 @@ public final class ProgramCompiler
         }
     }
 
+    /**
+     * This method compiles a program to its bytecode representation.
+     *
+     * @param input are the modules in the program that will be compiled.
+     * @param reporter is used to report errors.
+     * @return the bytecode representation of the compiled program.
+     */
     public static CompiledProgram compile(final List<Module> input,
                                           final IErrorReporter reporter)
     {

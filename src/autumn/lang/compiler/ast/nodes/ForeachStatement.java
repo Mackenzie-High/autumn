@@ -58,7 +58,7 @@ import java.util.TreeSet;
  * </table>
  * </p>
  * 
- * <p> This file was auto-generated on (Mon Apr 21 23:40:55 EDT 2014).</p>
+ * <p> This file was auto-generated on (Thu Jul 03 09:32:55 EDT 2014).</p>
  */
 @SuppressWarnings("unchecked")
 public final class ForeachStatement extends Object implements IStatement
@@ -191,6 +191,27 @@ public final class ForeachStatement extends Object implements IStatement
     {
         final SourceLocation value = this.location;
         return value;
+    }
+
+    /**
+     * This method creates a new instance of this class.
+     * 
+     * @param variable is the value for property <code>variable</code>.
+     * @param type is the value for property <code>type</code>.
+     * @param iterable is the value for property <code>iterable</code>.
+     * @param body is the value for property <code>body</code>.
+     * @param location is the value for property <code>location</code>.
+     * @return a new instance of this class.
+     */
+    public static ForeachStatement create(Variable variable, TypeSpecifier type, IExpression iterable, SequenceStatement body, SourceLocation location)
+    {
+        ForeachStatement object = new ForeachStatement();
+        object = object.setVariable(variable);
+        object = object.setType(type);
+        object = object.setIterable(iterable);
+        object = object.setBody(body);
+        object = object.setLocation(location);
+        return object;
     }
 
     /**

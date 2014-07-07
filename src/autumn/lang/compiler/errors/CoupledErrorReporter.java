@@ -1,15 +1,11 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package autumn.lang.compiler.errors;
 
 import com.google.common.base.Preconditions;
 import java.io.File;
 
 /**
- * An instance of this class is an error-reporter that routes causes two other error-reporters
- * to report errors. In short, this type of error reporter facilitates the creation of a
+ * An instance of this class is an error-reporter that routes reports through two other
+ * error-reporters. In short, this type of error reporter facilitates the creation of a
  * team of error reporters.
  *
  * @author Mackenzie High
@@ -33,11 +29,21 @@ public class CoupledErrorReporter
         this.reporter2 = reporter2;
     }
 
+    /**
+     * This method retrieves the first error-reporter.
+     *
+     * @return the first error-reporter.
+     */
     public IErrorReporter reporter1()
     {
         return reporter1;
     }
 
+    /**
+     * This method retrieves the second error-reporter.
+     *
+     * @return the second error-reporter.
+     */
     public IErrorReporter reporter2()
     {
         return reporter2;

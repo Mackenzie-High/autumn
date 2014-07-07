@@ -57,7 +57,7 @@ import java.util.TreeSet;
  * </table>
  * </p>
  * 
- * <p> This file was auto-generated on (Mon Apr 21 23:40:55 EDT 2014).</p>
+ * <p> This file was auto-generated on (Thu Jul 03 09:32:55 EDT 2014).</p>
  */
 @SuppressWarnings("unchecked")
 public final class TernaryConditionalExpression extends Object implements IExpression
@@ -164,6 +164,25 @@ public final class TernaryConditionalExpression extends Object implements IExpre
     {
         final SourceLocation value = this.location;
         return value;
+    }
+
+    /**
+     * This method creates a new instance of this class.
+     * 
+     * @param condition is the value for property <code>condition</code>.
+     * @param case_true is the value for property <code>case_true</code>.
+     * @param case_false is the value for property <code>case_false</code>.
+     * @param location is the value for property <code>location</code>.
+     * @return a new instance of this class.
+     */
+    public static TernaryConditionalExpression create(IExpression condition, IExpression case_true, IExpression case_false, SourceLocation location)
+    {
+        TernaryConditionalExpression object = new TernaryConditionalExpression();
+        object = object.setCondition(condition);
+        object = object.setCaseTrue(case_true);
+        object = object.setCaseFalse(case_false);
+        object = object.setLocation(location);
+        return object;
     }
 
     /**

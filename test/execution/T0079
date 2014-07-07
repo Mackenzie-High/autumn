@@ -1,0 +1,50 @@
+module Main in execution;
+
+defun F01() : int
+{
+    return 17;
+}
+
+defun F02(x : int) : int
+{
+    return 10 * x;
+}
+
+defun F03(x : int, y : int) : int
+{
+    return x / y;
+}
+
+defun F04(x : String, y : String) : String
+{
+    return x .. y;
+}
+
+defun F04(x : int, y : int) : void
+{
+    assert x == 13;
+    assert y == 17;
+}
+
+@Start
+defun main (args : String[]) : void
+{
+    val m = (Main::instance);
+
+    val delegates = (call m.moduleFunctions);
+
+    val delegate1 = (delegates.get 0) as Delegate;
+    assert (funcall delegate1) == 17;
+
+    val delegate2 = (delegates.get 1) as Delegate;
+    assert (funcall delegate2, 3) == 30;
+
+    val delegate3 = (delegates.get 2) as Delegate;
+    assert (funcall delegate3, 8, 2) == 4;
+
+    val delegate4 = (delegates.get 3) as Delegate;
+    assert (funcall delegate4, "Hello ", "World") == "Hello World";
+
+    val delegate5 = (delegates.get 4) as Delegate;
+    assert (funcall delegate5, 13, 17) == null;
+}

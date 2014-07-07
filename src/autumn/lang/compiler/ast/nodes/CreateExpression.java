@@ -51,19 +51,16 @@ import java.util.TreeSet;
  * <table border="1">
  *     <tr> <td> <b>Property Name</b> </td> <td> <b>Property Description</b> </td> </tr>
  *     <tr> <td> <code>type</code> </td> <td>This is the type to instantiate.</td> </tr>
- *     <tr> <td> <code>wraps</code> </td> <td>This expression produces the inner object.</td> </tr>
  *     <tr> <td> <code>location</code> </td> <td>This is the source-location information regarding this construct.</td> </tr>
  * </table>
  * </p>
  * 
- * <p> This file was auto-generated on (Mon Apr 21 23:40:55 EDT 2014).</p>
+ * <p> This file was auto-generated on (Thu Jul 03 09:32:55 EDT 2014).</p>
  */
 @SuppressWarnings("unchecked")
 public final class CreateExpression extends Object implements IExpression
 {
     private TypeSpecifier type;
-
-    private IExpression wraps;
 
     private SourceLocation location = new SourceLocation();
 
@@ -94,30 +91,6 @@ public final class CreateExpression extends Object implements IExpression
     /**
      * Setter.
      * 
-     * @param value is the new value of property <code>wraps</code>.
-     * @return a copy of this object with property <code>wraps</code> set to value.
-     */
-    public CreateExpression setWraps(final IExpression value)
-    {
-        final CreateExpression result = this.copy();
-        result.wraps = value;
-        return result;
-    }
-
-    /**
-     * Getter.
-     * 
-     * @return the value of property <code>wraps</code>.
-     */
-    public IExpression getWraps()
-    {
-        final IExpression value = this.wraps;
-        return value;
-    }
-
-    /**
-     * Setter.
-     * 
      * @param value is the new value of property <code>location</code>.
      * @return a copy of this object with property <code>location</code> set to value.
      */
@@ -140,6 +113,21 @@ public final class CreateExpression extends Object implements IExpression
     }
 
     /**
+     * This method creates a new instance of this class.
+     * 
+     * @param type is the value for property <code>type</code>.
+     * @param location is the value for property <code>location</code>.
+     * @return a new instance of this class.
+     */
+    public static CreateExpression create(TypeSpecifier type, SourceLocation location)
+    {
+        CreateExpression object = new CreateExpression();
+        object = object.setType(type);
+        object = object.setLocation(location);
+        return object;
+    }
+
+    /**
      * This method welcomes a visitor that wants to visit this object.
      * 
      * @param visitor is the visitor that is visiting this object.
@@ -158,7 +146,6 @@ public final class CreateExpression extends Object implements IExpression
     {
         final CreateExpression result = new CreateExpression();
         result.type = this.type;
-        result.wraps = this.wraps;
         result.location = this.location;
         return result;
     }
@@ -177,7 +164,6 @@ public final class CreateExpression extends Object implements IExpression
     {
         final Map<String, Object> map = new TreeMap<String, Object>();
         map.put("type", this.getType());
-        map.put("wraps", this.getWraps());
         map.put("location", this.getLocation());
 
         return map;

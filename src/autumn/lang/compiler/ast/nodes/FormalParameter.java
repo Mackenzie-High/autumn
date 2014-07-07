@@ -56,7 +56,7 @@ import java.util.TreeSet;
  * </table>
  * </p>
  * 
- * <p> This file was auto-generated on (Mon Apr 21 23:40:55 EDT 2014).</p>
+ * <p> This file was auto-generated on (Thu Jul 03 09:32:55 EDT 2014).</p>
  */
 @SuppressWarnings("unchecked")
 public final class FormalParameter extends Object implements IConstruct
@@ -137,6 +137,23 @@ public final class FormalParameter extends Object implements IConstruct
     {
         final SourceLocation value = this.location;
         return value;
+    }
+
+    /**
+     * This method creates a new instance of this class.
+     * 
+     * @param variable is the value for property <code>variable</code>.
+     * @param type is the value for property <code>type</code>.
+     * @param location is the value for property <code>location</code>.
+     * @return a new instance of this class.
+     */
+    public static FormalParameter create(Variable variable, TypeSpecifier type, SourceLocation location)
+    {
+        FormalParameter object = new FormalParameter();
+        object = object.setVariable(variable);
+        object = object.setType(type);
+        object = object.setLocation(location);
+        return object;
     }
 
     /**

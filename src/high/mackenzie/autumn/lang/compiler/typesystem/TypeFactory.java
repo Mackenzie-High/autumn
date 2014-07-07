@@ -1,9 +1,8 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package high.mackenzie.autumn.lang.compiler.typesystem;
 
+import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Maps;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IArrayType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IClassType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IElementType;
@@ -13,15 +12,14 @@ import high.mackenzie.autumn.lang.compiler.typesystem.design.IPrimitiveType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.ITypeFactory;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IVoidType;
-import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Maps;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
 /**
+ * An instance of this class is a concrete implementation of the ITypeFactory interface.
  *
- * @author mackenzie
+ * @author Mackenzie High
  */
 public final class TypeFactory
         implements ITypeFactory
@@ -52,11 +50,23 @@ public final class TypeFactory
 
     private final ClassLoader class_loader;
 
+    /**
+     * Constructor.
+     *
+     * <p>
+     * The new factory will use the bootstrap class-loader to resolve previously loaded classes.
+     * </p>
+     */
     public TypeFactory()
     {
         this(String.class.getClassLoader());
     }
 
+    /**
+     * Constructor.
+     *
+     * @param class_loader is the class-loader that will be used to resolve loaded classes.
+     */
     public TypeFactory(final ClassLoader class_loader)
     {
         this.class_loader = class_loader == null
@@ -232,8 +242,20 @@ public final class TypeFactory
         return result;
     }
 
+    /**
+     * This method extracts the element-type from an array-type.
+     *
+     * <p>
+     * Example: int[][][] returns int
+     * </p>
+     *
+     * @param array is the array-type.
+     * @return the type of the elements in an array of the array-type.
+     */
     private Class getElementType(final Class array)
     {
+        assert array.isArray();
+
         Class p = array;
 
         while (p.getComponentType() != null)
@@ -244,8 +266,16 @@ public final class TypeFactory
         return p;
     }
 
+    /**
+     * This method counts the number of dimensions in an array-type.
+     *
+     * @param array is the array-type.
+     * @return the number of dimensions in the array-type.
+     */
     private int getDimensions(final Class array)
     {
+        assert array.isArray();
+
         int dimensions = 0;
 
         Class p = array;
@@ -266,17 +296,32 @@ public final class TypeFactory
     @Override
     public IType findType(String descriptor)
     {
+        Preconditions.checkNotNull(descriptor);
+
+        /**
+         * If object that represents the type was already created, then simply return it.
+         */
         if (names_to_types.containsKey(descriptor))
         {
             return names_to_types.get(descriptor);
         }
 
+        /**
+         * Since the object that represents the type was not already created,
+         * there are only two possibilities left. First, entity that the type represents
+         * may already have been loaded into the class-loader, but its types has not been
+         * encountered here before. Second, the the type simply does not exist.
+         */
         try
         {
+            // Get the name of the type as it appears in source-code.
             final String name = descriptor.substring(1).replace(";", "").replace("/", ".");
 
+            // If there is a class object for the aforesaid name,
+            // then the type exists but has not been encountered here before.
             final Class clazz = Class.forName(name, true, class_loader);
 
+            // Create an object that represents the type that is described by the class object.
             return fromClass(clazz);
         }
         catch (ClassNotFoundException ex)
@@ -284,6 +329,9 @@ public final class TypeFactory
             /* Do Nothing */
         }
 
+        /**
+         * This type-factory does not know of any type associated with the given descriptor.
+         */
         return null;
     }
 
@@ -296,8 +344,17 @@ public final class TypeFactory
         return ImmutableSet.copyOf(names_to_types.values());
     }
 
+    /**
+     * This method declares a new annotation-type.
+     *
+     * @param descriptor is the type-descriptor of the new type.
+     * @return the object that represents the new type.
+     */
     public CustomDeclaredType newAnnotationType(final String descriptor)
     {
+        Preconditions.checkNotNull(descriptor);
+        Preconditions.checkState(!names_to_types.containsKey(descriptor));
+
         final CustomDeclaredType result = CustomDeclaredType.newAnnotationType(this,
                                                                                descriptor);
 
@@ -306,8 +363,17 @@ public final class TypeFactory
         return result;
     }
 
+    /**
+     * This method declares a new class-type.
+     *
+     * @param descriptor is the type-descriptor of the new type.
+     * @return the object that represents the new type.
+     */
     public CustomDeclaredType newClassType(final String descriptor)
     {
+        Preconditions.checkNotNull(descriptor);
+        Preconditions.checkState(!names_to_types.containsKey(descriptor));
+
         final CustomDeclaredType result = CustomDeclaredType.newClassType(this, descriptor);
 
         names_to_types.put(descriptor, result);
@@ -315,8 +381,17 @@ public final class TypeFactory
         return result;
     }
 
+    /**
+     * This method declares a new enum-type.
+     *
+     * @param descriptor is the type-descriptor of the new type.
+     * @return the object that represents the new type.
+     */
     public CustomDeclaredType newEnumType(final String descriptor)
     {
+        Preconditions.checkNotNull(descriptor);
+        Preconditions.checkState(!names_to_types.containsKey(descriptor));
+
         final CustomDeclaredType result = CustomDeclaredType.newEnumType(this, descriptor);
 
         names_to_types.put(descriptor, result);
@@ -324,8 +399,17 @@ public final class TypeFactory
         return result;
     }
 
+    /**
+     * This method declares a new interface-type.
+     *
+     * @param descriptor is the type-descriptor of the new type.
+     * @return the object that represents the new type.
+     */
     public CustomDeclaredType newInterfaceType(final String descriptor)
     {
+        Preconditions.checkNotNull(descriptor);
+        Preconditions.checkState(!names_to_types.containsKey(descriptor));
+
         final CustomDeclaredType result = CustomDeclaredType.newInterfaceType(this,
                                                                               descriptor);
 

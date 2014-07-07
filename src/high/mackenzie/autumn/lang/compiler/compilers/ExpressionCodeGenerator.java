@@ -172,6 +172,7 @@ public class ExpressionCodeGenerator
 
         final CollectionCompiler<IExpression> cmp = new CollectionCompiler<IExpression>()
         {
+            @Override
             public void compile(final IExpression element)
             {
                 final IType element_type = program.symbols.expressions.get(element);
@@ -181,6 +182,7 @@ public class ExpressionCodeGenerator
                 autoboxToObject(element_type);
             }
 
+            @Override
             public List code()
             {
                 return THIS.code;
@@ -383,6 +385,14 @@ public class ExpressionCodeGenerator
                                     "getThreadStack",
                                     "()Lautumn/lang/internals/ArgumentStack;"));
 
+        // Duplicate the reference to the argument-stack.
+        code.add(new InsnNode(Opcodes.DUP));
+
+        // Ensure that the argument-stack is clear.
+        code.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL,
+                                    "autumn/lang/internals/ArgumentStack",
+                                    "clear",
+                                    "()V"));
 
         // Push the arguments onto the argument-stack.
         for (IExpression arg : object.getArguments())
@@ -437,9 +447,9 @@ public class ExpressionCodeGenerator
     @Override
     public void visit(DelegateExpression object)
     {
-        final DelegateCompiler delegate = program.symbols.delegates.get(object);
-
-        delegate.load(code);
+//        final DelegateCompiler delegate = program.symbols.delegates.get(object);
+//
+//        delegate.load(code);
     }
 
     @Override
@@ -585,9 +595,6 @@ public class ExpressionCodeGenerator
 
         if (conversion.cast)
         {
-            final LabelNode ELSE = new LabelNode();
-            final LabelNode END = new LabelNode();
-
             // Evaluate the expression that produces the value to convert.
             object.getValue().accept(this);
 

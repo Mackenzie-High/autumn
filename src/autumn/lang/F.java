@@ -1,9 +1,7 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package autumn.lang;
 
+import autumn.lang.Functor;
+import autumn.lang.LocalsMap;
 import autumn.lang.exceptions.CheckedException;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Iterators;
@@ -15,16 +13,23 @@ import java.io.InputStream;
 import java.io.PrintStream;
 import java.lang.reflect.Array;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.NavigableMap;
+import java.util.NavigableSet;
 import java.util.Scanner;
+import java.util.Set;
+import java.util.TreeMap;
+import java.util.TreeSet;
 
 /**
  * This class provides commonly used static utility methods.
@@ -33,6 +38,92 @@ import java.util.Scanner;
  */
 public final class F
 {
+    /**
+     * This method creates an immutable copy of a given mutable set data-structure.
+     *
+     * @param <T> is the type of the elements in the data-structure.
+     * @param mutable is the mutable data-structure.
+     * @return an immutable copy of the mutable data-structure.
+     */
+    public static <T> Set<T> immutable(final Set<? extends T> mutable)
+    {
+        Preconditions.checkNotNull(mutable);
+
+        return Collections.unmodifiableSet(new HashSet<T>(mutable));
+    }
+
+    /**
+     * This method creates an immutable copy of a given mutable set data-structure.
+     *
+     * @param <T> is the type of the elements in the data-structure.
+     * @param mutable is the mutable data-structure.
+     * @return an immutable copy of the mutable data-structure.
+     */
+    public static <T> Set<T> immutable(final NavigableSet<? extends T> mutable)
+    {
+        Preconditions.checkNotNull(mutable);
+
+        return Collections.unmodifiableSet(new TreeSet<T>(mutable));
+    }
+
+    /**
+     * This method creates an immutable copy of a given mutable list data-structure.
+     *
+     * @param <T> is the type of the elements in the data-structure.
+     * @param mutable is the mutable data-structure.
+     * @return an immutable copy of the mutable data-structure.
+     */
+    public static <T> List<T> immutable(final List<? extends T> mutable)
+    {
+        Preconditions.checkNotNull(mutable);
+
+        return Collections.unmodifiableList(new ArrayList<T>(mutable));
+    }
+
+    /**
+     * This method creates an immutable copy of a given mutable collection data-structure.
+     *
+     * @param <T> is the type of the elements in the data-structure.
+     * @param mutable is the mutable data-structure.
+     * @return an immutable copy of the mutable data-structure.
+     */
+    public static <T> Collection<T> immutable(final Collection<? extends T> mutable)
+    {
+        Preconditions.checkNotNull(mutable);
+
+        return Collections.unmodifiableCollection(new ArrayList<T>(mutable));
+    }
+
+    /**
+     * This method creates an immutable copy of a given mutable map data-structure.
+     *
+     * @param <K> is the type of the keys in the map.
+     * @param <V> is the type of the values in the map.
+     * @param mutable is the mutable data-structure.
+     * @return an immutable copy of the mutable data-structure.
+     */
+    public static <K, V> Map<K, V> immutable(final Map<? extends K, ? extends V> mutable)
+    {
+        Preconditions.checkNotNull(mutable);
+
+        return Collections.unmodifiableMap(new HashMap<K, V>(mutable));
+    }
+
+    /**
+     * This method creates an immutable copy of a given mutable map data-structure.
+     *
+     * @param <K> is the type of the keys in the map.
+     * @param <V> is the type of the values in the map.
+     * @param mutable is the mutable data-structure.
+     * @return an immutable copy of the mutable data-structure.
+     */
+    public static <K, V> Map<K, V> immutable(final NavigableMap<? extends K, ? extends V> mutable)
+    {
+        Preconditions.checkNotNull(mutable);
+
+        return Collections.unmodifiableMap(new TreeMap<K, V>(mutable));
+    }
+
     public static List asList(final boolean[] array)
     {
         return Arrays.asList(array);
@@ -214,6 +305,11 @@ public final class F
         System.out.println(value);
     }
 
+    public static void println()
+    {
+        System.out.println();
+    }
+
     public static void printerr(final Object value)
     {
         System.err.print(value);
@@ -222,6 +318,15 @@ public final class F
     public static void printerrln(final Object value)
     {
         System.err.println(value);
+    }
+
+    public static void printf(final String format,
+                              final Iterable<Object> args)
+    {
+        Preconditions.checkNotNull(format);
+        Preconditions.checkNotNull(args);
+
+        System.out.printf(format, Lists.newLinkedList(args).toArray());
     }
 
     public static String readln()

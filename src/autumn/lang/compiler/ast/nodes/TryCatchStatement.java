@@ -56,7 +56,7 @@ import java.util.TreeSet;
  * </table>
  * </p>
  * 
- * <p> This file was auto-generated on (Mon Apr 21 23:40:55 EDT 2014).</p>
+ * <p> This file was auto-generated on (Thu Jul 03 09:32:55 EDT 2014).</p>
  */
 @SuppressWarnings("unchecked")
 public final class TryCatchStatement extends Object implements IStatement
@@ -137,6 +137,23 @@ public final class TryCatchStatement extends Object implements IStatement
     {
         final SourceLocation value = this.location;
         return value;
+    }
+
+    /**
+     * This method creates a new instance of this class.
+     * 
+     * @param body is the value for property <code>body</code>.
+     * @param handlers is the value for property <code>handlers</code>.
+     * @param location is the value for property <code>location</code>.
+     * @return a new instance of this class.
+     */
+    public static TryCatchStatement create(SequenceStatement body, ConstructList<ExceptionHandler> handlers, SourceLocation location)
+    {
+        TryCatchStatement object = new TryCatchStatement();
+        object = object.setBody(body);
+        object = object.setHandlers(handlers);
+        object = object.setLocation(location);
+        return object;
     }
 
     /**

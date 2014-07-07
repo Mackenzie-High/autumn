@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package autumn.lang;
 
 import autumn.lang.internals.ArgumentStack;
@@ -19,6 +15,7 @@ public interface Functor
      *
      * <p>
      * The argument stack will be cleared and then the result will be pushed onto it.
+     * If the functor does not return a value, then the stack will remain empty.
      * </p>
      *
      * @param stack is a stack containing the arguments being passed to this functor.

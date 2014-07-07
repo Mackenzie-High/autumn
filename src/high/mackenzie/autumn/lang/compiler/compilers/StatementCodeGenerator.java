@@ -3,6 +3,7 @@ package high.mackenzie.autumn.lang.compiler.compilers;
 import autumn.lang.compiler.ast.commons.*;
 import autumn.lang.compiler.ast.nodes.*;
 import com.google.common.collect.Lists;
+import high.mackenzie.autumn.lang.compiler.typesystem.design.IClassType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IDeclaredType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IType;
 import high.mackenzie.autumn.lang.compiler.utils.Utils;
@@ -371,19 +372,100 @@ public final class StatementCodeGenerator
     @Override
     public void visit(SetterStatement object)
     {
-        throw new UnsupportedOperationException("Not supported yet.");
+        String owner;
+        String name;
+        String desc;
+
+        final IClassType mtype = (IClassType) function.module.resolveType(object.getModule());
+
+        /**
+         * Load the owner object onto the operand-stack.
+         */
+        object.getOwner().accept(this);
+
+        /**
+         * Load the name of the method, whose handler is being assigned, onto the operand-stack.
+         */
+        code.add(new LdcInsnNode(object.getName().getName()));
+
+        /**
+         * Load the delegate onto the operand-stack.
+         */
+        Utils.loadDelegate(code, mtype, object.getMethod().getName());
+
+        /**
+         * Use a helper static utility method to finish the assignment.
+         */
+        owner = Utils.internalName(program.typesystem.utils.HELPERS);
+        name = "setter";
+        desc = "(Lautumn/lang/Prototype;Ljava/lang/String;Lautumn/lang/Delegate;)V";
+        code.add(new MethodInsnNode(Opcodes.INVOKESTATIC, owner, name, desc));
     }
 
     @Override
     public void visit(GetterStatement object)
     {
-        throw new UnsupportedOperationException("Not supported yet.");
+        String owner;
+        String name;
+        String desc;
+
+        final IClassType mtype = (IClassType) function.module.resolveType(object.getModule());
+
+        /**
+         * Load the owner object onto the operand-stack.
+         */
+        object.getOwner().accept(this);
+
+        /**
+         * Load the name of the method, whose handler is being assigned, onto the operand-stack.
+         */
+        code.add(new LdcInsnNode(object.getName().getName()));
+
+        /**
+         * Load the delegate onto the operand-stack.
+         */
+        Utils.loadDelegate(code, mtype, object.getMethod().getName());
+
+        /**
+         * Use a helper static utility method to finish the assignment.
+         */
+        owner = Utils.internalName(program.typesystem.utils.HELPERS);
+        name = "getter";
+        desc = "(Lautumn/lang/Prototype;Ljava/lang/String;Lautumn/lang/Delegate;)V";
+        code.add(new MethodInsnNode(Opcodes.INVOKESTATIC, owner, name, desc));
     }
 
     @Override
     public void visit(MethodStatement object)
     {
-        throw new UnsupportedOperationException("Not supported yet.");
+        String owner;
+        String name;
+        String desc;
+
+        final IClassType mtype = (IClassType) function.module.resolveType(object.getModule());
+
+        /**
+         * Load the owner object onto the operand-stack.
+         */
+        object.getOwner().accept(this);
+
+        /**
+         * Load the name of the method, whose handler is being assigned, onto the operand-stack.
+         */
+        code.add(new LdcInsnNode(object.getName().getName()));
+
+        /**
+         * Load the delegate onto the operand-stack.
+         */
+        Utils.loadDelegate(code, mtype, object.getMethod().getName());
+
+        /**
+         * Use a helper static utility method to finish the assignment.
+         */
+        owner = Utils.internalName(program.typesystem.utils.HELPERS);
+        name = "method";
+        desc = "(Lautumn/lang/Prototype;Ljava/lang/String;Lautumn/lang/Delegate;)V";
+        code.add(new MethodInsnNode(Opcodes.INVOKESTATIC, owner, name, desc));
     }
 
     @Override

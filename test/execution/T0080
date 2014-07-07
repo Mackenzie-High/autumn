@@ -1,0 +1,23 @@
+module Main in execution;
+
+enum Pets
+{
+    constant Lucky;
+    constant Chicky;
+}
+
+enum Cities
+{
+    constant Paris;
+    constant London;
+}
+
+@Start
+defun main (args : String[]) : void
+{
+    val m = (Main::instance);
+
+    val enums = (call m.moduleEnumDefinitions);
+
+    assert [(class Pets), (class Cities)] == enums;
+}

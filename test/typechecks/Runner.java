@@ -44,15 +44,15 @@ public final class Runner
         test("T0008", EXPECTED_CONDITION);
         test("T0009", EXPECTED_STRING);
         test("T0010", EXPECTED_THROWABLE);
-        test("T0011", DUPLICATE_DECLARATION_OF_VARIABLE);
+        test("T0011", DUPLICATE_VARIABLE);
         test("T0012", EXPECTED_THROWABLE);
         test("T0013", DUPLICATE_EXCEPTION_HANDLER);
         test("T0014", NO_SUCH_TYPE);
-        test("T0015", DUPLICATE_DECLARATION_OF_VARIABLE);
-        test("T0016", DUPLICATE_DECLARATION_OF_VARIABLE);
+        test("T0015", DUPLICATE_VARIABLE);
+        test("T0016", DUPLICATE_VARIABLE);
         test("T0017", NO_SUCH_VARIABLE);
         test("T0019", EXPECTED_CONDITION);
-        test("T0020", DUPLICATE_DECLARATION_OF_LABEL);
+        test("T0020", DUPLICATE_LABEL);
         test("T0021", NO_SUCH_LABEL);
 
         System.out.println("Number of Failed Tests: " + failed_count);

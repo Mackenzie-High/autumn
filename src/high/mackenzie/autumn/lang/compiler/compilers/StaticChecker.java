@@ -364,7 +364,7 @@ public final class StaticChecker
             return;
         }
 
-        final ErrorCode ERROR_CODE = ErrorCode.DUPLICATE_DECLARATION_OF_VARIABLE;
+        final ErrorCode ERROR_CODE = ErrorCode.DUPLICATE_VARIABLE;
 
         final String MESSAGE = "A variable was declared more than once in the same scope.";
 
@@ -451,7 +451,7 @@ public final class StaticChecker
 
     public void reportDuplicateLabel(final Label label)
     {
-        final ErrorCode ERROR_CODE = ErrorCode.DUPLICATE_DECLARATION_OF_LABEL;
+        final ErrorCode ERROR_CODE = ErrorCode.DUPLICATE_LABEL;
 
         final String MESSAGE = "A label was declared more than once in the same scope.";
 

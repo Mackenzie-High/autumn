@@ -57,7 +57,7 @@ import java.util.TreeSet;
  * </table>
  * </p>
  * 
- * <p> This file was auto-generated on (Mon Apr 21 23:40:55 EDT 2014).</p>
+ * <p> This file was auto-generated on (Thu Jul 03 09:32:55 EDT 2014).</p>
  */
 @SuppressWarnings("unchecked")
 public final class SetStaticFieldExpression extends Object implements IExpression
@@ -164,6 +164,25 @@ public final class SetStaticFieldExpression extends Object implements IExpressio
     {
         final SourceLocation value = this.location;
         return value;
+    }
+
+    /**
+     * This method creates a new instance of this class.
+     * 
+     * @param owner is the value for property <code>owner</code>.
+     * @param name is the value for property <code>name</code>.
+     * @param value is the value for property <code>value</code>.
+     * @param location is the value for property <code>location</code>.
+     * @return a new instance of this class.
+     */
+    public static SetStaticFieldExpression create(TypeSpecifier owner, Name name, IExpression value, SourceLocation location)
+    {
+        SetStaticFieldExpression object = new SetStaticFieldExpression();
+        object = object.setOwner(owner);
+        object = object.setName(name);
+        object = object.setValue(value);
+        object = object.setLocation(location);
+        return object;
     }
 
     /**

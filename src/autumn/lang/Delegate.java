@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package autumn.lang;
 
 import java.lang.reflect.Method;
@@ -11,7 +7,7 @@ import java.util.List;
  * An instance of this interface is a delegate.
  *
  * <p>
- * A delegate is a functor that simply invokes a static method.
+ * A delegate is a functor that simply invokes a function.
  * </p>
  *
  * @author Mackenzie High
@@ -19,6 +15,13 @@ import java.util.List;
 public interface Delegate
         extends TypedFunctor
 {
+    /**
+     * This method retrieves the module that contains the delegated function.
+     *
+     * @return the module that contains the function that this delegate refers to.
+     */
+    public Module module();
+
     /**
      * This method retrieves the type that owns the method that is invoked by this delegate.
      *
@@ -48,7 +51,11 @@ public interface Delegate
     public List<Class> parameterTypes();
 
     /**
-     * This method retrieves reflection of the method that is invoked by this delegate.
+     * This method retrieves the reflection of the method that is invoked by this delegate.
+     *
+     * <p>
+     * Remember: functions are really just static methods in a class.
+     * </p>
      *
      * @return the reflective view of the underlying method.
      */

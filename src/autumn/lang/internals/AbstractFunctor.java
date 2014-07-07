@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package autumn.lang.internals;
 
 import autumn.lang.Functor;
@@ -28,9 +24,6 @@ public abstract class AbstractFunctor
         // Get the stack that is used by this thread.
         final ArgumentStack stack = ArgumentStack.getThreadStack();
 
-        // Reset the stack in case the previous caller did not clear all of its arguments.
-        stack.clear();
-
         // Push all the arguments onto the stack.
         for (Object argument : arguments)
         {
@@ -41,10 +34,16 @@ public abstract class AbstractFunctor
         invoke(stack);
 
         // Retrieve and pop the result.
-        final Object result = stack.peekO();
-        stack.pop();
-
-        return result;
+        if (stack.isEmpty())
+        {
+            return null;
+        }
+        else
+        {
+            final Object result = stack.peekO();
+            stack.pop();
+            return result;
+        }
     }
 
     /**
@@ -59,9 +58,6 @@ public abstract class AbstractFunctor
         // Get the stack that is used by this thread.
         final ArgumentStack stack = ArgumentStack.getThreadStack();
 
-        // Reset the stack in case the previous caller did not clear all of its arguments.
-        stack.clear();
-
         // Push all the arguments onto the stack.
         for (Object argument : arguments)
         {
@@ -72,9 +68,15 @@ public abstract class AbstractFunctor
         invoke(stack);
 
         // Retrieve and pop the result.
-        final Object result = stack.peekO();
-        stack.pop();
-
-        return result;
+        if (stack.isEmpty())
+        {
+            return null;
+        }
+        else
+        {
+            final Object result = stack.peekO();
+            stack.pop();
+            return result;
+        }
     }
 }

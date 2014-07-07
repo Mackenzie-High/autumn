@@ -57,7 +57,7 @@ import java.util.TreeSet;
  * </table>
  * </p>
  * 
- * <p> This file was auto-generated on (Mon Apr 21 23:40:55 EDT 2014).</p>
+ * <p> This file was auto-generated on (Thu Jul 03 09:32:55 EDT 2014).</p>
  */
 @SuppressWarnings("unchecked")
 public final class SourceLocation extends Object 
@@ -164,6 +164,25 @@ public final class SourceLocation extends Object
     {
         final Object value = this.additional_info;
         return value;
+    }
+
+    /**
+     * This method creates a new instance of this class.
+     * 
+     * @param file is the value for property <code>file</code>.
+     * @param line is the value for property <code>line</code>.
+     * @param column is the value for property <code>column</code>.
+     * @param additional_info is the value for property <code>additional_info</code>.
+     * @return a new instance of this class.
+     */
+    public static SourceLocation create(File file, Integer line, Integer column, Object additional_info)
+    {
+        SourceLocation object = new SourceLocation();
+        object = object.setFile(file);
+        object = object.setLine(line);
+        object = object.setColumn(column);
+        object = object.setAdditionalInfo(additional_info);
+        return object;
     }
 
     /**

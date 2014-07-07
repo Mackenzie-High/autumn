@@ -55,7 +55,7 @@ import java.util.TreeSet;
  * </table>
  * </p>
  * 
- * <p> This file was auto-generated on (Mon Apr 21 23:40:55 EDT 2014).</p>
+ * <p> This file was auto-generated on (Thu Jul 03 09:32:55 EDT 2014).</p>
  */
 @SuppressWarnings("unchecked")
 public final class Label extends Object implements IStatement
@@ -110,6 +110,21 @@ public final class Label extends Object implements IStatement
     {
         final SourceLocation value = this.location;
         return value;
+    }
+
+    /**
+     * This method creates a new instance of this class.
+     * 
+     * @param name is the value for property <code>name</code>.
+     * @param location is the value for property <code>location</code>.
+     * @return a new instance of this class.
+     */
+    public static Label create(String name, SourceLocation location)
+    {
+        Label object = new Label();
+        object = object.setName(name);
+        object = object.setLocation(location);
+        return object;
     }
 
     /**

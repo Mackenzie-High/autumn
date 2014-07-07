@@ -59,7 +59,7 @@ import java.util.TreeSet;
  * </table>
  * </p>
  * 
- * <p> This file was auto-generated on (Mon Apr 21 23:40:55 EDT 2014).</p>
+ * <p> This file was auto-generated on (Thu Jul 03 09:32:55 EDT 2014).</p>
  */
 @SuppressWarnings("unchecked")
 public final class ForStatement extends Object implements IStatement
@@ -218,6 +218,29 @@ public final class ForStatement extends Object implements IStatement
     {
         final SourceLocation value = this.location;
         return value;
+    }
+
+    /**
+     * This method creates a new instance of this class.
+     * 
+     * @param variable is the value for property <code>variable</code>.
+     * @param initializer is the value for property <code>initializer</code>.
+     * @param condition is the value for property <code>condition</code>.
+     * @param next is the value for property <code>next</code>.
+     * @param body is the value for property <code>body</code>.
+     * @param location is the value for property <code>location</code>.
+     * @return a new instance of this class.
+     */
+    public static ForStatement create(Variable variable, IExpression initializer, IExpression condition, IExpression next, SequenceStatement body, SourceLocation location)
+    {
+        ForStatement object = new ForStatement();
+        object = object.setVariable(variable);
+        object = object.setInitializer(initializer);
+        object = object.setCondition(condition);
+        object = object.setNext(next);
+        object = object.setBody(body);
+        object = object.setLocation(location);
+        return object;
     }
 
     /**

@@ -9,7 +9,7 @@ defun main (args : String[]) : void
 
   let x = x + 1;
 
-  when (x == 17) goto Bottom;
+  when (x == 17) then goto Bottom;
 
   goto Top;
 

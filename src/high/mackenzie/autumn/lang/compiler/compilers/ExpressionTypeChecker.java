@@ -389,11 +389,11 @@ public class ExpressionTypeChecker
     @Override
     public void visit(DelegateExpression object)
     {
-        final DelegateCompiler delegate = new DelegateCompiler(module, object);
-
-        program.symbols.delegates.put(object, delegate);
-
-        infer(object, program.typesystem.utils.DELEGATE);
+//        final DelegateCompiler delegate = new DelegateCompiler(module, object);
+//
+//        program.symbols.delegates.put(object, delegate);
+//
+//        infer(object, program.typesystem.utils.DELEGATE);
     }
 
     @Override

@@ -21,5 +21,15 @@
                 <id>jar</id>
             </reference>
         </references>
+        <spellchecker-wordlist xmlns="http://www.netbeans.org/ns/spellchecker-wordlist/1">
+            <word>ArgumentStack</word>
+            <word>moduleAnnotationDefinitions</word>
+            <word>moduleDesignDefinitions</word>
+            <word>moduleExceptionDefinitions</word>
+            <word>moduleFunctions</word>
+            <word>moduleInvokeFunction</word>
+            <word>parameterTypes</word>
+            <word>returnType</word>
+        </spellchecker-wordlist>
     </configuration>
 </project>

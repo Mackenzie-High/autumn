@@ -3,7 +3,7 @@ package autumn.lang.internals;
 import autumn.lang.Prototype;
 
 /**
- * This is the direct superclass of design based objects.
+ * This is the direct superclass of prototype based objects.
  *
  * @author Mackenzie High
  */

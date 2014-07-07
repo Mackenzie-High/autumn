@@ -61,7 +61,7 @@ import java.util.TreeSet;
  * </table>
  * </p>
  * 
- * <p> This file was auto-generated on (Mon Apr 21 23:40:55 EDT 2014).</p>
+ * <p> This file was auto-generated on (Thu Jul 03 09:32:54 EDT 2014).</p>
  */
 @SuppressWarnings("unchecked")
 public final class Module extends Object implements IConstruct
@@ -272,6 +272,33 @@ public final class Module extends Object implements IConstruct
     {
         final SourceLocation value = this.location;
         return value;
+    }
+
+    /**
+     * This method creates a new instance of this class.
+     * 
+     * @param module_directives is the value for property <code>module_directives</code>.
+     * @param import_directives is the value for property <code>import_directives</code>.
+     * @param annotations is the value for property <code>annotations</code>.
+     * @param exceptions is the value for property <code>exceptions</code>.
+     * @param enums is the value for property <code>enums</code>.
+     * @param designs is the value for property <code>designs</code>.
+     * @param functions is the value for property <code>functions</code>.
+     * @param location is the value for property <code>location</code>.
+     * @return a new instance of this class.
+     */
+    public static Module create(ConstructList<ModuleDirective> module_directives, ConstructList<ImportDirective> import_directives, ConstructList<AnnotationDefinition> annotations, ConstructList<ExceptionDefinition> exceptions, ConstructList<EnumDefinition> enums, ConstructList<DesignDefinition> designs, ConstructList<FunctionDefinition> functions, SourceLocation location)
+    {
+        Module object = new Module();
+        object = object.setModuleDirectives(module_directives);
+        object = object.setImportDirectives(import_directives);
+        object = object.setAnnotations(annotations);
+        object = object.setExceptions(exceptions);
+        object = object.setEnums(enums);
+        object = object.setDesigns(designs);
+        object = object.setFunctions(functions);
+        object = object.setLocation(location);
+        return object;
     }
 
     /**

@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package high.mackenzie.autumn.lang.compiler.compilers;
 
 import autumn.lang.Prototype;
@@ -146,7 +142,7 @@ public final class ClassCompiler
             }
         }
 
-        proto.print(System.out);
+//        proto.print(System.out);
 
         /**
          * Assemble the bytecode into an array of bytes.

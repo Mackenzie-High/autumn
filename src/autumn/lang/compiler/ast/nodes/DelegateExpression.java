@@ -52,12 +52,11 @@ import java.util.TreeSet;
  *     <tr> <td> <b>Property Name</b> </td> <td> <b>Property Description</b> </td> </tr>
  *     <tr> <td> <code>owner</code> </td> <td>This is the type that owns the static method to invoke.</td> </tr>
  *     <tr> <td> <code>method</code> </td> <td>This is the name of the static method to invoke.</td> </tr>
- *     <tr> <td> <code>parameters</code> </td> <td>These formal parameters are used to distinguish between different overloads of a static method.</td> </tr>
  *     <tr> <td> <code>location</code> </td> <td>This is the source-location information regarding this construct.</td> </tr>
  * </table>
  * </p>
  * 
- * <p> This file was auto-generated on (Mon Apr 21 23:40:55 EDT 2014).</p>
+ * <p> This file was auto-generated on (Thu Jul 03 09:32:55 EDT 2014).</p>
  */
 @SuppressWarnings("unchecked")
 public final class DelegateExpression extends Object implements IExpression
@@ -65,8 +64,6 @@ public final class DelegateExpression extends Object implements IExpression
     private TypeSpecifier owner = null;
 
     private Name method = null;
-
-    private FormalParameterList parameters;
 
     private SourceLocation location = new SourceLocation();
 
@@ -121,30 +118,6 @@ public final class DelegateExpression extends Object implements IExpression
     /**
      * Setter.
      * 
-     * @param value is the new value of property <code>parameters</code>.
-     * @return a copy of this object with property <code>parameters</code> set to value.
-     */
-    public DelegateExpression setParameters(final FormalParameterList value)
-    {
-        final DelegateExpression result = this.copy();
-        result.parameters = value;
-        return result;
-    }
-
-    /**
-     * Getter.
-     * 
-     * @return the value of property <code>parameters</code>.
-     */
-    public FormalParameterList getParameters()
-    {
-        final FormalParameterList value = this.parameters;
-        return value;
-    }
-
-    /**
-     * Setter.
-     * 
      * @param value is the new value of property <code>location</code>.
      * @return a copy of this object with property <code>location</code> set to value.
      */
@@ -167,6 +140,23 @@ public final class DelegateExpression extends Object implements IExpression
     }
 
     /**
+     * This method creates a new instance of this class.
+     * 
+     * @param owner is the value for property <code>owner</code>.
+     * @param method is the value for property <code>method</code>.
+     * @param location is the value for property <code>location</code>.
+     * @return a new instance of this class.
+     */
+    public static DelegateExpression create(TypeSpecifier owner, Name method, SourceLocation location)
+    {
+        DelegateExpression object = new DelegateExpression();
+        object = object.setOwner(owner);
+        object = object.setMethod(method);
+        object = object.setLocation(location);
+        return object;
+    }
+
+    /**
      * This method welcomes a visitor that wants to visit this object.
      * 
      * @param visitor is the visitor that is visiting this object.
@@ -186,7 +176,6 @@ public final class DelegateExpression extends Object implements IExpression
         final DelegateExpression result = new DelegateExpression();
         result.owner = this.owner;
         result.method = this.method;
-        result.parameters = this.parameters;
         result.location = this.location;
         return result;
     }
@@ -206,7 +195,6 @@ public final class DelegateExpression extends Object implements IExpression
         final Map<String, Object> map = new TreeMap<String, Object>();
         map.put("owner", this.getOwner());
         map.put("method", this.getMethod());
-        map.put("parameters", this.getParameters());
         map.put("location", this.getLocation());
 
         return map;

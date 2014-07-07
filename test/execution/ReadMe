@@ -13,6 +13,16 @@ Test Index
 . . Module
 . Modules
 . . Reflective Testing of the Module's Class
+. . Special Methods
+. . . instance()
+. . . moduleAnnotationDefinitions()
+. . . T0081 = moduleExceptionDefinitions()
+. . . T0080 = moduleEnumDefinitions()
+. . . moduleDesignDefinitions()
+. . . moduleInvokeFunction(int, ArgumentStack)
+. . Delegates
+. . . T0078 = Metadata
+. . . T0079 = Invocation
 . Annotation Definitions
 . . Reflective Testing of the Annotation's Class
 . Exception Definitions
@@ -215,7 +225,7 @@ Test Index
 . . . T0057 = Casts
 . . . Array Casts
 . . Is
-. . . Operand-Stack Leakage
+. . . T0082 = Operand-Stack Leakage
 . . . Predefined Conversions
 . . . Casts
 . . . Array Casts

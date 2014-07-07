@@ -3,15 +3,15 @@ module Main in execution;
 @Start
 defun main (args : String[]) : void
 {
-  assert (Main::fum 100) == 21;
-  assert (Main::fum 200) == 13;
-  assert (Main::fum 300) == 17;
-  assert (Main::fum 400) == 21;
+    assert (Main::fum 100) == 21;
+    assert (Main::fum 200) == 13;
+    assert (Main::fum 300) == 17;
+    assert (Main::fum 400) == 21;
 }
 
 defun fum(x : int) : int
 {
-  when (x == 200) return 13;
-  when (x == 300) return 17;
-  return 21;
+    when (x == 200) then return 13;
+    when (x == 300) then return 17;
+    return 21;
 }

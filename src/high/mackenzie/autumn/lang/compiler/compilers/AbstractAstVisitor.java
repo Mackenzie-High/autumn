@@ -1,14 +1,11 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package high.mackenzie.autumn.lang.compiler.compilers;
 
 import autumn.lang.compiler.ast.nodes.*;
 
 /**
+ * This class provides a partial implementation of the IAstVisitor interface.
  *
- * @author mackenzie
+ * @author Mackenzie High
  */
 public class AbstractAstVisitor
         implements IAstVisitor
@@ -446,7 +443,7 @@ public class AbstractAstVisitor
     }
 
     @Override
-    public void visit(final LocalsExpression object)
+    public void visit(LocalsExpression object)
     {
         throw new UnsupportedOperationException("This should never happen.");
     }

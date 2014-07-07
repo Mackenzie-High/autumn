@@ -1,5 +1,6 @@
 
 Notes:
+. Should the methods in the Module interface be renamed?
 . The util framework will be added in a later release version.
 . Class names that start with AutumnSynthetic are reserved for the compiler.
 . Variables cannot be used before they are declared.
@@ -7,10 +8,36 @@ Notes:
   because creating those methods is simplier in autumn anyway and the autogeneration
   introduces too much of complexity.
 
+
+Plan:
+. Release #1:
+. . Basic constructs completed - most statements & operators & datums & most expressions
+. . Functions
+. . Exception Definitions
+. . Annotation Definitions
+. . Annotations
+. . Enum Definitions
+. . Mutable Abstract Syntax Tree
+. Release #2:
+. . Tuple Definitions
+. Release #3:
+. . Design Definitions
+. . Setter & Getter & Method Statements
+. . Create Expressions
+. Release #4:
+. . Dispatch Expressions
+. Release #5
+. . Standard Library
+. Release #6
+. . Debugger
+. Release #7
+. . Documentation
+
+
+
 TODO:
 . Remember to check that newlines are handled correctly on Windows, etc.
 . Should Parsing Failed errors be reported using ErrorReport objects?
-. Remove Use Directives
 . Fix class datum syntax. The datum should always be in parentheses.
 . An identifier should never actually conflict with a keyword.
 . Add a "wraps" clause to create expressions.
@@ -20,7 +47,7 @@ TODO:
 . Should AST nodes use identity equals.
 . Improve ConstructList.
 . What happens, if no module directive is given.
-. Remove the include-directives. ????
+. Remove the include-directives. ????u
 . Remove the use-directives.
 . Finish the command-line processor.
 . Can val statements be used inside of a loop? If so, what happens?
@@ -35,9 +62,7 @@ TODO:
 
 
 TODO Add:
-. goto + marker statements?
 . switch statement?
-. when statements?
 . doc comments
 
 What is Done:
