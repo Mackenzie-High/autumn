@@ -1,14 +1,13 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package high.mackenzie.autumn.lang.compiler.compilers;
+
+import high.mackenzie.autumn.resources.Finished;
 
 /**
  * An instance of this interface controls the compilation of part of an Autumn program.
  *
  * @author Mackenzie High
  */
+@Finished("2014/07/12")
 public interface ICompiler
 {
     /**

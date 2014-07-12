@@ -1,19 +1,21 @@
 package autumn.lang.compiler.ast.literals;
 
 import com.google.common.base.Preconditions;
+import high.mackenzie.autumn.resources.Finished;
 
 /**
  * Instances of this class represent numeric literals in Autumn source-code.
  *
  * @author Mackenzie High
  */
+@Finished("2014/07/12")
 public abstract class AbstractNumericLiteral<T>
 {
     /**
      * This method converts this literal to its numeric equivalent.
      *
      * @return the numeric representation of this literal,
-     *         or null, if a lossless conversion is not possible.
+     * or null, if a lossless conversion is not possible.
      */
     public abstract T value();
 
@@ -34,7 +36,7 @@ public abstract class AbstractNumericLiteral<T>
      * Sole Constructor.
      *
      * @param source is this literal as it appeared in the source-code.
-     * @throws NullPointerException     if source is null.
+     * @throws NullPointerException if source is null.
      * @throws IllegalArgumentException if source.length() equals zero.
      */
     public AbstractNumericLiteral(final String source)

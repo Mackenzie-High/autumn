@@ -1,9 +1,6 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package high.mackenzie.autumn.lang.compiler.typesystem;
 
+import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IAnnotation;
@@ -12,15 +9,18 @@ import high.mackenzie.autumn.lang.compiler.typesystem.design.IEnumConstant;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IField;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.ITypeFactory;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IVariableType;
+import high.mackenzie.autumn.resources.Finished;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.List;
 
 /**
+ * An instance of this class represents a field.
  *
- * @author mackenzie
+ * @author Mackenzie High
  */
+@Finished("2014/07/12")
 public final class ReflectiveField
         extends AbstractMember
         implements IField,
@@ -28,10 +28,18 @@ public final class ReflectiveField
 {
     protected final Field field;
 
+    /**
+     * Sole Constructor.
+     *
+     * @param factory is the type-factory that is used to access types.
+     * @param field is the field that this new object will represent.
+     */
     public ReflectiveField(final ITypeFactory factory,
                            final Field field)
     {
         super(factory);
+
+        Preconditions.checkNotNull(field);
 
         this.field = field;
     }

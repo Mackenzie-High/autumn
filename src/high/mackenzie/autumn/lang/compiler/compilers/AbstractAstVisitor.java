@@ -1,12 +1,14 @@
 package high.mackenzie.autumn.lang.compiler.compilers;
 
 import autumn.lang.compiler.ast.nodes.*;
+import high.mackenzie.autumn.resources.Finished;
 
 /**
  * This class provides a partial implementation of the IAstVisitor interface.
  *
  * @author Mackenzie High
  */
+@Finished("2014/07/12")
 public class AbstractAstVisitor
         implements IAstVisitor
 {

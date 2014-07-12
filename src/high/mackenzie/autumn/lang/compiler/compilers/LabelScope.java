@@ -5,6 +5,7 @@ import autumn.lang.compiler.ast.nodes.MarkerStatement;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import high.mackenzie.autumn.resources.Finished;
 import java.util.List;
 import java.util.Map;
 import org.objectweb.asm.tree.LabelNode;
@@ -14,14 +15,27 @@ import org.objectweb.asm.tree.LabelNode;
  *
  * @author Mackenzie High
  */
+@Finished("2014/07/12")
 public final class LabelScope
 {
+    /**
+     * This is essentially the program that is being compiled.
+     */
     private final ProgramCompiler program;
 
+    /**
+     * This map maps the name of a label to its bytecode representation.
+     */
     private final Map<String, LabelNode> labels = Maps.newTreeMap();
 
+    /**
+     * These are the goto-statements in this scope.
+     */
     private final List<GotoStatement> jumps = Lists.newLinkedList();
 
+    /**
+     * These are the marker-statements in this scope.
+     */
     private final List<MarkerStatement> markers = Lists.newLinkedList();
 
     /**

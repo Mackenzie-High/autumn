@@ -1,11 +1,14 @@
 package autumn.lang.compiler.ast.literals;
 
+import high.mackenzie.autumn.resources.Finished;
+
 /**
  * An instance of this class represents a
  * <code>byte</code> literal.
  *
  * @author Mackenzie High
  */
+@Finished("2014/07/12")
 public final class ByteLiteral
         extends AbstractNumericLiteral<Byte>
 {

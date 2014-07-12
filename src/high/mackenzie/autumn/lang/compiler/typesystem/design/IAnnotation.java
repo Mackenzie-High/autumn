@@ -1,5 +1,6 @@
 package high.mackenzie.autumn.lang.compiler.typesystem.design;
 
+import high.mackenzie.autumn.resources.Finished;
 import java.lang.annotation.Annotation;
 
 /**
@@ -7,6 +8,7 @@ import java.lang.annotation.Annotation;
  *
  * @author Mackenzie High
  */
+@Finished("2014/07/12")
 public interface IAnnotation
 {
     /**

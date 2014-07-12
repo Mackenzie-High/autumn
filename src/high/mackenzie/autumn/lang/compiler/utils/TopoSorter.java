@@ -55,7 +55,7 @@ public abstract class TopoSorter<T>
     {
         // Note: This algorithm is currently an O(N^2) in the worst case.
         // The inputs are usually small enough to make this acceptable.
-        // However, this algorithm *could* be rewritten at a later date.
+        // However, this algorithm could be rewritten at a later date.
 
         final ListIterator<T> iter = elements.listIterator();
 

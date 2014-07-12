@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package high.mackenzie.autumn.lang.compiler.compilers;
 
 import autumn.lang.compiler.ClassFile;
@@ -64,23 +60,6 @@ public final class ProgramCompiler
         for (Module m : mules)
         {
             this.modules.add(new ModuleCompiler(this, m));
-        }
-
-        this.executeIncludeDirectives(mules);
-    }
-
-    /**
-     * This method controls the execution of the include-directives in the program.
-     *
-     * @param mules are the modules that were initially given to the compiler.
-     */
-    private void executeIncludeDirectives(final List<Module> mules)
-    {
-        final Set<File> visited = Sets.newTreeSet();
-
-        for (Module m : mules)
-        {
-            visited.add(m.getLocation().getFile());
         }
     }
 

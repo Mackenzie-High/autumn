@@ -1,29 +1,33 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package high.mackenzie.autumn.lang.compiler.typesystem;
 
-import high.mackenzie.autumn.lang.compiler.typesystem.design.IAnnotation;
-import high.mackenzie.autumn.lang.compiler.typesystem.design.IDeclaredType;
+import com.google.common.base.Preconditions;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IMember;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.ITypeFactory;
-import java.util.Collection;
+import high.mackenzie.autumn.resources.Finished;
 
 /**
+ * This method provides a partial implementation of the IMember interface.
  *
- * @author mackenzie
+ * @author Mackenzie High
  */
-public abstract class AbstractMember implements IMember
+@Finished("2014/07/12")
+public abstract class AbstractMember
+        implements IMember
 {
-
     private final ITypeFactory factory;
-    
+
+    /**
+     * Sole Constructor.
+     *
+     * @param factory type-factory that is used to access types. 
+     */
     public AbstractMember(final ITypeFactory factory)
     {
         this.factory = factory;
+
+        Preconditions.checkNotNull(factory);
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -31,5 +35,4 @@ public abstract class AbstractMember implements IMember
     {
         return factory;
     }
-    
 }

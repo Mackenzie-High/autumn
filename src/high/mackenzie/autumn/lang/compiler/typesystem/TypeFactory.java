@@ -4,16 +4,14 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Maps;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IArrayType;
-import high.mackenzie.autumn.lang.compiler.typesystem.design.IClassType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IElementType;
-import high.mackenzie.autumn.lang.compiler.typesystem.design.IInterfaceType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.INullType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IPrimitiveType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.ITypeFactory;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IVoidType;
+import high.mackenzie.autumn.resources.Finished;
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -21,6 +19,7 @@ import java.util.Map;
  *
  * @author Mackenzie High
  */
+@Finished("2014/07/12")
 public final class TypeFactory
         implements ITypeFactory
 {
@@ -192,6 +191,9 @@ public final class TypeFactory
     public IArrayType getArrayType(final IElementType element,
                                    final int dimensions)
     {
+        Preconditions.checkNotNull(element);
+        Preconditions.checkArgument(dimensions >= 1);
+
         return new ArrayType(this, element, dimensions, null);
     }
 
@@ -294,7 +296,7 @@ public final class TypeFactory
      * {@inheritDoc}
      */
     @Override
-    public IType findType(String descriptor)
+    public IType findType(final String descriptor)
     {
         Preconditions.checkNotNull(descriptor);
 
@@ -416,34 +418,5 @@ public final class TypeFactory
         names_to_types.put(descriptor, result);
 
         return result;
-    }
-
-    public static void main(String[] args)
-    {
-        final TypeFactory f = new TypeFactory(null);
-
-        final IClassType string = (IClassType) f.fromClass(String.class);
-        final IClassType object = (IClassType) f.fromClass(Object.class);
-        final IInterfaceType list = (IInterfaceType) f.fromClass(List.class);
-        final IInterfaceType collection = (IInterfaceType) f.fromClass(Collection.class);
-        final IArrayType string_array = (IArrayType) f.fromClass(String[].class);
-
-        System.out.println(string == f.fromClass(String.class));
-        System.out.println(string.getDescriptor());
-        System.out.println(string.getNamespace());
-        System.out.println(string.getSuperclass().getDescriptor());
-        System.out.println(string.isSubtypeOf(object));
-        System.out.println(object.isSubtypeOf(string));
-        System.out.println(object.isSubtypeOf(list));
-        System.out.println(list.isSubtypeOf(object));
-        System.out.println(collection.isSubtypeOf(list));
-        System.out.println(list.isSubtypeOf(collection));
-        System.out.println(collection.isSubtypeOf(collection));
-
-        System.out.println("Types:");
-        for (IType t : f.getTypes())
-        {
-            System.out.println("    " + t.getDescriptor());
-        }
     }
 }

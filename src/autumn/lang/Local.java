@@ -1,6 +1,7 @@
 package autumn.lang;
 
 import com.google.common.base.Preconditions;
+import high.mackenzie.autumn.resources.Finished;
 import java.util.Objects;
 
 /**
@@ -8,6 +9,7 @@ import java.util.Objects;
  *
  * @author Mackenzie High
  */
+@Finished("2014/07/12")
 public final class Local
 {
     /**

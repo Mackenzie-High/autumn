@@ -36,19 +36,34 @@ public final class SymbolTable
      */
     public final Map<TypeSpecifier, String> specifiers = Maps.newIdentityHashMap();
 
+    /**
+     * This map maps an expression that manipulates a field to the manipulated field.
+     */
     public final Map<IExpression, IField> fields = Maps.newIdentityHashMap();
 
+    /**
+     * This map maps an expression that invokes an invokable to the invoked invokable.
+     */
     public final Map<IExpression, IInvokableMember> calls = Maps.newIdentityHashMap();
 
+    /**
+     * This map maps an expression that performs a conversion to a description of the conversion.
+     */
     public final Map<IExpression, Conversion> conversions = Maps.newIdentityHashMap();
 
     public final Map<TryCatchStatement, List<ExceptionHandler>> handlers = Maps.newIdentityHashMap();
 
     public final Map<DispatchExpression, List<IMethod>> dispatches = Maps.newIdentityHashMap();
 
+    /**
+     * This map maps a statement that uses a label to the bytecode representation of the label.
+     */
     public final Map<IStatement, LabelNode> yields = Maps.newIdentityHashMap();
 
     public final Map<CreateExpression, ClassCompiler> creators = Maps.newIdentityHashMap();
 
+    /**
+     * This map maps an exception-type to the compiler that compiles the exception's class.
+     */
     public final Map<IClassType, ExceptionCompiler> exceptions = Maps.newIdentityHashMap();
 }

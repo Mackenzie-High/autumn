@@ -1,9 +1,6 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package high.mackenzie.autumn.lang.compiler.typesystem;
 
+import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
@@ -17,6 +14,7 @@ import high.mackenzie.autumn.lang.compiler.typesystem.design.IInterfaceType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IMethod;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.ITypeFactory;
+import high.mackenzie.autumn.resources.Finished;
 import java.lang.reflect.Modifier;
 import java.util.Collection;
 import java.util.Collections;
@@ -24,17 +22,28 @@ import java.util.List;
 import java.util.Set;
 
 /**
+ * This class provides a partial implementation of the IDeclaredType interface.
  *
- * @author mackenzie
+ * @author Mackenzie High
  */
+@Finished("2014/07/12")
 public abstract class AbstractDeclaredType
         extends AbstractType
         implements IDeclaredType
 {
+    /**
+     * Sole Constructor.
+     *
+     * @param factory type-factory that is used to access types. 
+     * @param descriptor is the type-descriptor of the new type.
+     */
     public AbstractDeclaredType(final ITypeFactory factory,
                                 final String descriptor)
     {
         super(factory, descriptor);
+
+        Preconditions.checkNotNull(factory);
+        Preconditions.checkNotNull(descriptor);
     }
 
     /**
@@ -151,6 +160,8 @@ public abstract class AbstractDeclaredType
     @Override
     public boolean isSubtypeOf(final IType target)
     {
+        Preconditions.checkNotNull(target);
+
         if (this.equals(target))
         {
             return true; // Because, target is this.
@@ -214,36 +225,54 @@ public abstract class AbstractDeclaredType
         return getDescriptor();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isNullType()
     {
         return false;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isVoidType()
     {
         return false;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isPrimitiveType()
     {
         return false;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isReferenceType()
     {
         return true;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isArrayType()
     {
         return false;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isDeclaredType()
     {

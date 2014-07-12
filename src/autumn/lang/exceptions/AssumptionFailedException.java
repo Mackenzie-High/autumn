@@ -1,6 +1,7 @@
 package autumn.lang.exceptions;
 
 import com.google.common.base.Preconditions;
+import high.mackenzie.autumn.resources.Finished;
 import java.io.File;
 
 /**
@@ -8,6 +9,7 @@ import java.io.File;
  *
  * @author Mackenzie High
  */
+@Finished("2014/07/12")
 public class AssumptionFailedException
         extends RuntimeException
 {

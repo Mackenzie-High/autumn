@@ -1,12 +1,7 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package high.mackenzie.autumn.lang.compiler.typesystem;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IAnnotation;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IAnnotationType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IClassType;
@@ -16,14 +11,17 @@ import high.mackenzie.autumn.lang.compiler.typesystem.design.IField;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IInterfaceType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IMethod;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.ITypeFactory;
+import high.mackenzie.autumn.resources.Finished;
 import java.util.Collection;
 import java.util.List;
 
 /**
+ * An instance of this class represents a declared type.
  *
- * @author mackenzie
+ * @author Mackenzie High
  */
-public class CustomDeclaredType
+@Finished("2014/07/12")
+public final class CustomDeclaredType
         extends AbstractDeclaredType
         implements IAnnotationType,
                    IClassType,
@@ -40,49 +38,84 @@ public class CustomDeclaredType
 
     private final SpecificType specific_type;
 
-    private List<IAnnotation> annotations = Lists.newLinkedList();
+    private ImmutableList<IAnnotation> annotations = ImmutableList.of();
 
     private int modifiers = 0;
 
     private IClassType superclass;
 
-    private List<IInterfaceType> superinterfaces = Lists.newLinkedList();
+    private ImmutableList<IInterfaceType> superinterfaces = ImmutableList.of();
 
-    private List<IField> fields = Lists.newLinkedList();
+    private ImmutableList<IField> fields = ImmutableList.of();
 
-    private List<IConstructor> constructors = Lists.newLinkedList();
+    private ImmutableList<IConstructor> constructors = ImmutableList.of();
 
-    private List<IMethod> methods = Lists.newLinkedList();
+    private ImmutableList<IMethod> methods = ImmutableList.of();
 
+    /**
+     * This method creates a new annotation-type.
+     *
+     * @param factory type-factory that is used to access types.
+     * @param descriptor is the type-descriptor of the new type.
+     * @return a new annotation-type.
+     */
     static CustomDeclaredType newAnnotationType(final ITypeFactory factory,
                                                 final String descriptor)
     {
         return new CustomDeclaredType(factory, SpecificType.ANNOTATION_TYPE, descriptor);
     }
 
+    /**
+     * This method creates a new class-type.
+     *
+     * @param factory type-factory that is used to access types.
+     * @param descriptor is the type-descriptor of the new type.
+     * @return a new class-type.
+     */
     static CustomDeclaredType newClassType(final ITypeFactory factory,
                                            final String descriptor)
     {
         return new CustomDeclaredType(factory, SpecificType.CLASS_TYPE, descriptor);
     }
 
+    /**
+     * This method creates a new enum-type.
+     *
+     * @param factory type-factory that is used to access types.
+     * @param descriptor is the type-descriptor of the new type.
+     * @return a new enum-type.
+     */
     static CustomDeclaredType newEnumType(final ITypeFactory factory,
                                           final String descriptor)
     {
         return new CustomDeclaredType(factory, SpecificType.ENUM_TYPE, descriptor);
     }
 
+    /**
+     * This method creates a new interface-type.
+     *
+     * @param factory type-factory that is used to access types.
+     * @param descriptor is the type-descriptor of the new type.
+     * @return a new interface-type.
+     */
     static CustomDeclaredType newInterfaceType(final ITypeFactory factory,
                                                final String descriptor)
     {
         return new CustomDeclaredType(factory, SpecificType.INTERFACE_TYPE, descriptor);
     }
 
+    /**
+     * Sole Constructor.
+     *
+     * @param factory is the type-factory that is used to access types.
+     * @param specific_type is the type of type being created.
+     * @param descriptor of the new type.
+     */
     private CustomDeclaredType(final ITypeFactory factory,
                                final SpecificType specific_type,
-                               final String name)
+                               final String descriptor)
     {
-        super(factory, name);
+        super(factory, descriptor);
 
         this.specific_type = specific_type;
     }
@@ -213,7 +246,7 @@ public class CustomDeclaredType
      */
     public void setAnnotations(final List<IAnnotation> annotations)
     {
-        this.annotations = annotations;
+        this.annotations = ImmutableList.copyOf(annotations);
     }
 
     /**
@@ -223,7 +256,7 @@ public class CustomDeclaredType
      */
     public void setConstructors(final List<IConstructor> constructors)
     {
-        this.constructors = constructors;
+        this.constructors = ImmutableList.copyOf(constructors);
     }
 
     /**
@@ -233,7 +266,7 @@ public class CustomDeclaredType
      */
     public void setFields(final List<IField> fields)
     {
-        this.fields = fields;
+        this.fields = ImmutableList.copyOf(fields);
     }
 
     /**
@@ -243,7 +276,7 @@ public class CustomDeclaredType
      */
     public void setMethods(final List<IMethod> methods)
     {
-        this.methods = methods;
+        this.methods = ImmutableList.copyOf(methods);
     }
 
     /**
@@ -275,39 +308,57 @@ public class CustomDeclaredType
      */
     public void setSuperinterfaces(final List<IInterfaceType> superinterfaces)
     {
-        this.superinterfaces = superinterfaces;
+        this.superinterfaces = ImmutableList.copyOf(superinterfaces);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isPrimitiveType()
     {
         return false;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isReferenceType()
     {
         return true;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isNullType()
     {
         return false;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isVoidType()
     {
         return false;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isArrayType()
     {
         return false;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isDeclaredType()
     {

@@ -1,35 +1,42 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package high.mackenzie.autumn.lang.compiler.typesystem;
 
+import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IClassType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IFormalParameter;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IInvokableMember;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IReturnType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.ITypeFactory;
+import high.mackenzie.autumn.resources.Finished;
 import java.util.Collection;
 import java.util.List;
 
 /**
+ * This class provides a partial implementation of the IInvokableMember interface.
  *
- * @author mackenzie
+ * @author Mackenzie High
  */
-public class AbstractCustomInvokableMember
+@Finished("2014/07/12")
+public abstract class AbstractCustomInvokableMember
         extends AbstractCustomMember
         implements IInvokableMember
 {
-    private List<IFormalParameter> parameters;
+    private ImmutableList<IFormalParameter> parameters = ImmutableList.of();
 
     private IReturnType return_type;
 
-    private Collection<IClassType> throws_clause;
+    private Collection<IClassType> throws_clause = ImmutableList.of();
 
+    /**
+     * Sole Constructor.
+     *
+     * @param factory type-factory that is used to access types.
+     */
     public AbstractCustomInvokableMember(final ITypeFactory factory)
     {
         super(factory);
+
+        Preconditions.checkNotNull(factory);
     }
 
     /**
@@ -66,7 +73,7 @@ public class AbstractCustomInvokableMember
      */
     public void setParameters(final List<IFormalParameter> parameters)
     {
-        this.parameters = parameters;
+        this.parameters = ImmutableList.copyOf(parameters);
     }
 
     /**
@@ -86,7 +93,7 @@ public class AbstractCustomInvokableMember
      */
     public void setThrowsClause(final Collection<IClassType> throws_clause)
     {
-        this.throws_clause = throws_clause;
+        this.throws_clause = ImmutableList.copyOf(throws_clause);
     }
 
     /**

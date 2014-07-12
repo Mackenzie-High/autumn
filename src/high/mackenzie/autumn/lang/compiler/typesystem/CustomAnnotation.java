@@ -1,8 +1,10 @@
 package high.mackenzie.autumn.lang.compiler.typesystem;
 
+import com.google.common.base.Preconditions;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IAnnotation;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IAnnotationType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.ITypeFactory;
+import high.mackenzie.autumn.resources.Finished;
 import java.lang.annotation.Annotation;
 
 /**
@@ -16,6 +18,7 @@ import java.lang.annotation.Annotation;
  *
  * @author Mackenzie High
  */
+@Finished("2014/07/12")
 public final class CustomAnnotation
         implements IAnnotation
 {
@@ -33,17 +36,24 @@ public final class CustomAnnotation
     public CustomAnnotation(final Annotation annotation,
                             final IAnnotationType definition)
     {
-        this.annotation = annotation;
+        Preconditions.checkNotNull(definition);
 
+        this.annotation = annotation;
         this.definition = definition;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IAnnotationType getAnnotationType()
     {
         return definition;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Annotation toAnnotation()
     {
@@ -51,14 +61,18 @@ public final class CustomAnnotation
     }
 
     /**
+     * This method creates a new IAnnotation from an actual annotation.
      *
-     *
-     * @param annotation
-     * @return
+     * @param factory type-factory that is used to access types. 
+     * @param annotation is the actual annotation.
+     * @return the type-system representation of the annotation.
      */
-    public static final IAnnotation fromAnnotation(final ITypeFactory factory,
-                                                   final Annotation annotation)
+    public static IAnnotation fromAnnotation(final ITypeFactory factory,
+                                             final Annotation annotation)
     {
+        Preconditions.checkNotNull(factory);
+        Preconditions.checkNotNull(annotation);
+
         final Class clazz = annotation.annotationType();
 
         final IAnnotationType type = (IAnnotationType) factory.fromClass(clazz);

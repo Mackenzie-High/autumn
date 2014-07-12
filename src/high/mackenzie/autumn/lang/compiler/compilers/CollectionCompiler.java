@@ -1,5 +1,6 @@
 package high.mackenzie.autumn.lang.compiler.compilers;
 
+import high.mackenzie.autumn.resources.Finished;
 import java.util.LinkedList;
 import java.util.List;
 import org.objectweb.asm.Opcodes;
@@ -14,6 +15,7 @@ import org.objectweb.asm.tree.TypeInsnNode;
  *
  * @author Mackenzie High
  */
+@Finished("2014/07/12")
 public abstract class CollectionCompiler<T>
 {
     /**

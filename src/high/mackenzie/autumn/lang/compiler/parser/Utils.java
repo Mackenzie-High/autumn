@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package high.mackenzie.autumn.lang.compiler.parser;
 
 import autumn.lang.compiler.TreeBuilder;
@@ -13,6 +9,7 @@ import autumn.lang.compiler.ast.literals.IntLiteral;
 import autumn.lang.compiler.ast.literals.LongLiteral;
 import autumn.lang.compiler.ast.literals.ShortLiteral;
 import autumn.lang.compiler.ast.nodes.Name;
+import high.mackenzie.autumn.resources.Finished;
 import high.mackenzie.snowflake.ITreeNode;
 import high.mackenzie.snowflake.LinesAndColumns;
 import high.mackenzie.snowflake.NewlineStyles;
@@ -21,7 +18,7 @@ import java.io.File;
 
 /**
  * This class is used by the parser to help facilitate the building of an abstract-syntax-tree.
- * This class is provides aids helps connect the parser to the tree-builder.
+ * This class helps connect the parser to the tree-builder.
  * Specifically, this class provides a location to store state and place utility methods.
  *
  * <p>
@@ -30,6 +27,7 @@ import java.io.File;
  *
  * @author Mackenzie High
  */
+@Finished("2014/07/12")
 public final class Utils
 {
     /**

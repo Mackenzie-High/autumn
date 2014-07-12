@@ -1,9 +1,6 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package high.mackenzie.autumn.lang.compiler.typesystem;
 
+import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
@@ -14,25 +11,36 @@ import high.mackenzie.autumn.lang.compiler.typesystem.design.IDeclaredType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IFormalParameter;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IReturnType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.ITypeFactory;
+import high.mackenzie.autumn.resources.Finished;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.util.Collection;
 import java.util.List;
 
 /**
+ * An instance of this class represents a previously compiled constructor.
  *
- * @author mackenzie
+ * @author Mackenzie High
  */
+@Finished("2014/07/12")
 public class ReflectiveConstructor
         extends AbstractInvokableMember
         implements IConstructor
 {
     private final Constructor constructor;
 
+    /**
+     * Sole Constructor.
+     *
+     * @param factory is the type-factory that is used to access the types.
+     * @param constructor is the constructor that this object will represent.
+     */
     public ReflectiveConstructor(final ITypeFactory factory,
                                  final Constructor constructor)
     {
         super(factory);
+
+        Preconditions.checkNotNull(constructor);
 
         this.constructor = constructor;
     }

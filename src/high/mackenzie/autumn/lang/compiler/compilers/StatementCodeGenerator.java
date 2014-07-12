@@ -221,7 +221,7 @@ public final class StatementCodeGenerator
         final LabelNode TOP = new LabelNode();
 
         object.getInitializer().accept(this);
-        vars.store(object.getVariable().getName(), true);
+        vars.store(object.getVariable().getName());
 
         code.add(TOP);
         compileCondition(object.getCondition());
@@ -237,7 +237,7 @@ public final class StatementCodeGenerator
             code.add(CONTINUE);
 
             object.getNext().accept(this);
-            vars.store(object.getVariable().getName(), true);
+            vars.store(object.getVariable().getName());
 
             break_labels.pop();
             continue_labels.pop();
@@ -286,7 +286,7 @@ public final class StatementCodeGenerator
         code.add(new TypeInsnNode(Opcodes.CHECKCAST, Utils.internalName(type)));
 
         // Assign the value to the variable.
-        function.vars.store(object.getVariable().getName(), true);
+        function.vars.store(object.getVariable().getName());
 
         // Execute the body of the loop.
         code.add(REDO);
@@ -339,7 +339,7 @@ public final class StatementCodeGenerator
 
         object.getValue().accept(this);
 
-        vars.store(name, true);
+        vars.store(name);
     }
 
     @Override
@@ -349,7 +349,7 @@ public final class StatementCodeGenerator
 
         object.getValue().accept(this);
 
-        vars.store(name, true);
+        vars.store(name);
     }
 
     @Override
@@ -366,7 +366,7 @@ public final class StatementCodeGenerator
         convert(type_of_variable, object.getValue());
 
         // Assign the value to the variable.
-        vars.store(object.getVariable().getName(), false);
+        vars.store(object.getVariable().getName());
     }
 
     @Override
@@ -589,7 +589,7 @@ public final class StatementCodeGenerator
         code.add(CATCHER);
 
         // Store the exception object in the appropriate variable.
-        vars.store(variable, true);
+        vars.store(variable);
 
         // Execute the exception handling code.
         handler.getHandler().accept(this);
@@ -696,7 +696,7 @@ public final class StatementCodeGenerator
             // TODO: autoboxing?
 
             // Store the value of the argument in the appropriate local-variable.
-            function.vars.store(parameter, true);
+            function.vars.store(parameter);
         }
 
         // Goto the start of the function.

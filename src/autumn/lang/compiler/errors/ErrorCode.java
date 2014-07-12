@@ -78,23 +78,23 @@ public enum ErrorCode
     /**
      * Meaning: An interface-type was expected.
      */
-    EXPECTED_INTERFACE,
+    EXPECTED_INTERFACE_TYPE,
     /**
      * Meaning: An enum-type was expected.
      */
-    EXPECTED_ENUM,
+    EXPECTED_ENUM_TYPE,
     /**
      * Meaning: A primitive-type or a reference-type was expected.
      */
-    EXPECTED_NON_VOID,
+    VALUE_REQUIRED,
     /**
      * Meaning: A reference-type was expected.
      */
-    EXPECTED_REFERENCE,
+    EXPECTED_REFERENCE_TYPE,
     /**
      * Meaning: A primitive-type was expected.
      */
-    EXPECTED_PRIMITIVE,
+    EXPECTED_PRIMITIVE_TYPE,
     /**
      * Meaning: A primitive boolean or a java.lang.Boolean was expected.
      */
@@ -127,6 +127,10 @@ public enum ErrorCode
      * Meaning: A design-type (i.e. autumn.lang.Design) was expected. // TODO: right?
      */
     EXPECTED_DESIGN,
+    /**
+     * Meaning: A module-type (i.e. autumn.lang.Module) was expected. // TODO: right?
+     */
+    EXPECTED_MODULE,
     /**
      * Meaning: The static-type of an expression was void were it is not allowed.
      */

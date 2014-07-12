@@ -11,9 +11,8 @@ import autumn.lang.compiler.ast.nodes.TypeSpecifier;
 import autumn.lang.internals.AbstractDelegate;
 import autumn.lang.internals.AbstractModule;
 import autumn.lang.internals.ArgumentStack;
-import autumn.lang.internals.AsConversions;
+import autumn.lang.internals.Conversions;
 import autumn.lang.internals.Helpers;
-import autumn.lang.internals.IsConversions;
 import autumn.lang.internals.ModuleDelegate;
 import autumn.lang.internals.Operators;
 import autumn.lang.internals.YieldState;
@@ -136,9 +135,7 @@ public final class TypeSystemUtils
 
     public final IClassType ARGUMENT_STACK;
 
-    public final IClassType AS_CONVERSIONS;
-
-    public final IClassType IS_CONVERSIONS;
+    public final IClassType CONVERSIONS;
 
     public final IClassType OPERATORS;
 
@@ -211,8 +208,7 @@ public final class TypeSystemUtils
 
         this.START = (IAnnotationType) factory.fromClass(Start.class);
 
-        this.AS_CONVERSIONS = (IClassType) factory.fromClass(AsConversions.class);
-        this.IS_CONVERSIONS = (IClassType) factory.fromClass(IsConversions.class);
+        this.CONVERSIONS = (IClassType) factory.fromClass(Conversions.class);
 
         this.OPERATORS = (IClassType) factory.fromClass(Operators.class);
 

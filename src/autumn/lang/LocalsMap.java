@@ -2,6 +2,7 @@ package autumn.lang;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
+import high.mackenzie.autumn.resources.Finished;
 import java.io.PrintStream;
 import java.util.Collection;
 import java.util.List;
@@ -15,6 +16,7 @@ import java.util.List;
  *
  * @author Mackenzie High
  */
+@Finished("2014/07/12")
 public final class LocalsMap
 {
     /**
@@ -59,26 +61,52 @@ public final class LocalsMap
         this.locals = ImmutableList.copyOf(locals);
     }
 
+    /**
+     * This method retrieves the path to the file that contains the caller local-expression.
+     *
+     * @return the path to the source code file.
+     */
     public String file()
     {
         return file;
     }
 
+    /**
+     * This method retrieves the line-number of the caller locals-expression.
+     *
+     * @return the aforedescribed line-number.
+     */
     public int line()
     {
         return line;
     }
 
+    /**
+     * This method retrieves the column-number of the caller locals-expression.
+     *
+     * @return the aforedescribed column-number.
+     */
     public int column()
     {
         return column;
     }
 
+    /**
+     * This method retrieves the objects that represent the local variables..
+     *
+     * @return the descriptions of the local variables.
+     */
     public Collection<Local> locals()
     {
         return locals;
     }
 
+    /**
+     * This method retrieves the object representation of a named local variable.
+     *
+     * @param name is the name of the local variable.
+     * @return an object representation of the variable; or null, if the variable does not exist.
+     */
     public Local get(final String name)
     {
         Preconditions.checkNotNull(name);
@@ -94,11 +122,19 @@ public final class LocalsMap
         return null;
     }
 
+    /**
+     * This method prints this object to standard-out.
+     */
     public void print()
     {
         print(System.out);
     }
 
+    /**
+     * This method prints this object to a given print-stream.
+     *
+     * @param out is the given print-stream.
+     */
     public void print(final PrintStream out)
     {
         out.println("Locals");
@@ -113,6 +149,12 @@ public final class LocalsMap
         }
     }
 
+    /**
+     * This method retrieves the static-type of a variable that is described herein.
+     *
+     * @param variable is the name of the variable.
+     * @return the static-type of the variable; or null, if the variable does not exist.
+     */
     public Class typeOf(final String variable)
     {
         final Local local = get(variable);

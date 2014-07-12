@@ -581,7 +581,7 @@ public class ExpressionCodeGenerator
             object.getValue().accept(this);
 
             // Invoke the conversion method.
-            final String owner = Utils.internalName(program.typesystem.utils.AS_CONVERSIONS);
+            final String owner = Utils.internalName(program.typesystem.utils.CONVERSIONS);
             final String name = conversion.name;
             final String desc = "(" + conversion.value.getDescriptor() + ")" + conversion.type.getDescriptor();
             code.add(new MethodInsnNode(Opcodes.INVOKESTATIC, owner, name, desc));
@@ -607,7 +607,7 @@ public class ExpressionCodeGenerator
             object.getValue().accept(this);
 
             // Invoke the conversion method.
-            final String owner = Utils.internalName(program.typesystem.utils.IS_CONVERSIONS);
+            final String owner = Utils.internalName(program.typesystem.utils.CONVERSIONS);
             final String name = conversion.name;
             final String desc = "(" + conversion.value.getDescriptor() + ")" + conversion.type.getDescriptor();
             code.add(new MethodInsnNode(Opcodes.INVOKESTATIC, owner, name, desc));

@@ -1,20 +1,20 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package high.mackenzie.autumn.lang.compiler.typesystem;
 
+import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IPrimitiveType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.ITypeFactory;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Maps;
+import high.mackenzie.autumn.resources.Finished;
 import java.util.Map;
 
 /**
+ * An instance of this class is a primitive-type.
  *
- * @author mackenzie
+ * @author Mackenzie High
  */
+@Finished("2014/07/12")
 public final class PrimitiveType
         extends AbstractType
         implements IPrimitiveType
@@ -39,10 +39,19 @@ public final class PrimitiveType
 
     private final Class<?> clazz;
 
+    /**
+     * Sole Constructor.
+     *
+     * @param factory is the type-factory that is used to access types.
+     * @param clazz is the class object representation of the primitive-type.
+     */
     public PrimitiveType(final ITypeFactory factory,
                          final Class<?> clazz)
     {
         super(factory, descriptors.get(clazz));
+
+        Preconditions.checkNotNull(clazz);
+        Preconditions.checkArgument(clazz.isPrimitive());
 
         this.clazz = clazz;
     }
@@ -134,27 +143,41 @@ public final class PrimitiveType
     @Override
     public boolean isSubtypeOf(IType target)
     {
+        Preconditions.checkNotNull(target);
+
         return this.equals(target);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isPrimitiveType()
     {
         return true;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isReferenceType()
     {
         return false;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isNullType()
     {
         return false;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isVoidType()
     {

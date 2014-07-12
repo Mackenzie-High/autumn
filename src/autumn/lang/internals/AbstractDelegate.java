@@ -2,6 +2,7 @@ package autumn.lang.internals;
 
 import autumn.lang.Delegate;
 import com.google.common.base.Objects;
+import high.mackenzie.autumn.resources.Finished;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
@@ -11,6 +12,7 @@ import java.util.Arrays;
  *
  * @author Mackenzie High
  */
+@Finished("2014/07/12")
 public abstract class AbstractDelegate
         extends AbstractFunctor
         implements Delegate
@@ -28,8 +30,6 @@ public abstract class AbstractDelegate
         {
             return cache;
         }
-
-        final Method method = null;
 
         /**
          * Delegates always refer to public static methods.

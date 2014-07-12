@@ -16,6 +16,7 @@ import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import high.mackenzie.autumn.resources.Finished;
 import java.util.List;
 import java.util.Set;
 
@@ -41,6 +42,7 @@ import java.util.Set;
  *
  * @author Mackenzie High
  */
+@Finished("2014/07/12")
 public final class PrintingVisitor
         implements IAstVisitor
 {
@@ -535,7 +537,7 @@ public final class PrintingVisitor
         p.addLine();
         p.addText("when (");
         object.getCondition().accept(this);
-        p.addText(")");
+        p.addText(") then");
         p.addOpeningBracket();
         object.getBody().accept(this);
         p.removeEmptyLines();

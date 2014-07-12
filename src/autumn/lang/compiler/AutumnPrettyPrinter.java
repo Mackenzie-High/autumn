@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package autumn.lang.compiler;
 
 import autumn.lang.compiler.ast.commons.IConstruct;
@@ -11,6 +7,7 @@ import autumn.lang.compiler.exceptions.UnprintableNodeException;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import high.mackenzie.autumn.lang.compiler.pretty.PrintingVisitor;
+import high.mackenzie.autumn.resources.Finished;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
@@ -25,6 +22,7 @@ import java.util.List;
  *
  * @author Mackenzie High
  */
+@Finished("2014/07/12")
 public final class AutumnPrettyPrinter
 {
     private final PrintStream out;

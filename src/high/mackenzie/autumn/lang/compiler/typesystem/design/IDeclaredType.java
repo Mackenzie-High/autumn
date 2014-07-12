@@ -1,9 +1,6 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package high.mackenzie.autumn.lang.compiler.typesystem.design;
 
+import high.mackenzie.autumn.resources.Finished;
 import java.util.Collection;
 import java.util.List;
 
@@ -12,11 +9,11 @@ import java.util.List;
  *
  * @author Mackenzie High
  */
+@Finished("2014/07/12")
 public interface IDeclaredType
         extends IElementType,
                 IReferenceType,
-                IAnnotatable,
-                IExpressionType
+                IAnnotatable
 {
     /**
      * This method determines whether this type is already compiled.
@@ -86,7 +83,7 @@ public interface IDeclaredType
      * </p>
      *
      * @return an immutable list containing all the superclasses of this type,
-     *         or an empty immutable list, if no superclasses are present.
+     * or an empty immutable list, if no superclasses are present.
      */
     public List<IClassType> getAllSuperclasses();
 
@@ -94,7 +91,7 @@ public interface IDeclaredType
      * This method returns the direct superinterfaces of this type.
      *
      * @return an immutable collection containing the direct superinterfaces of this type,
-     *         or an empty immutable collection, if no superinterfaces are present.
+     * or an empty immutable collection, if no superinterfaces are present.
      */
     public Collection<IInterfaceType> getSuperinterfaces();
 
@@ -102,7 +99,7 @@ public interface IDeclaredType
      * This method returns all the superinterfaces of this type.
      *
      * @return an immutable collection containing all the superinterfaces of this type,
-     *         or an empty immutable collection, if no superinterfaces are present.
+     * or an empty immutable collection, if no superinterfaces are present.
      */
     public Collection<IInterfaceType> getAllSuperinterfaces();
 
@@ -114,7 +111,7 @@ public interface IDeclaredType
      * </p>
      *
      * @return an immutable collection containing the directly declared fields in this type,
-     *         or an empty immutable collection, if no fields are present.
+     * or an empty immutable collection, if no fields are present.
      */
     public Collection<IField> getFields();
 
@@ -122,7 +119,7 @@ public interface IDeclaredType
      * This method returns the constructors that this type directly declares.
      *
      * @return an immutable collection containing the constructors that this type directly declares,
-     *         or an empty immutable collection, if no constructors are present.
+     * or an empty immutable collection, if no constructors are present.
      */
     public Collection<IConstructor> getConstructors();
 
@@ -130,7 +127,7 @@ public interface IDeclaredType
      * This method returns the methods that this type directly declares.
      *
      * @return an immutable collection containing the directly declared methods in this type,
-     *         or an empty immutable collection, if no methods are present.
+     * or an empty immutable collection, if no methods are present.
      */
     public Collection<IMethod> getMethods();
 

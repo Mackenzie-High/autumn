@@ -553,7 +553,7 @@ defun main (args : String[]) : void
 
     nop;
 
-    when ( x == 5 ) return 17 ;
+    when ( x == 5 ) then return 17 ;
 
     nop;
 

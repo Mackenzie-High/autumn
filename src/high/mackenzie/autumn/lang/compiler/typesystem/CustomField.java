@@ -1,19 +1,19 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package high.mackenzie.autumn.lang.compiler.typesystem;
 
+import com.google.common.base.Preconditions;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IEnumConstant;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IField;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.ITypeFactory;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IVariableType;
+import high.mackenzie.autumn.resources.Finished;
 import java.lang.reflect.Field;
 
 /**
+ * An instance of this class represents a field.
  *
- * @author mackenzie
+ * @author Mackenzie High
  */
+@Finished("2014/07/12")
 public final class CustomField
         extends AbstractCustomMember
         implements IField,
@@ -23,6 +23,11 @@ public final class CustomField
 
     private IVariableType type;
 
+    /**
+     * Sole Constructor.
+     *
+     * @param factory is the type-factory that is used to access types.
+     */
     public CustomField(final ITypeFactory factory)
     {
         super(factory);
@@ -35,6 +40,8 @@ public final class CustomField
      */
     public void setType(final IVariableType type)
     {
+        Preconditions.checkNotNull(type);
+
         this.type = type;
     }
 

@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package high.mackenzie.autumn.lang.compiler.typesystem;
 
 import com.google.common.collect.ImmutableSet;
@@ -15,6 +11,7 @@ import high.mackenzie.autumn.lang.compiler.typesystem.design.IField;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IInterfaceType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IMethod;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.ITypeFactory;
+import high.mackenzie.autumn.resources.Finished;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -30,6 +27,7 @@ import org.objectweb.asm.Type;
  *
  * @author Mackenzie High
  */
+@Finished("2014/07/12")
 public class ReflectiveDeclaredType
         extends AbstractDeclaredType
         implements IAnnotationType,
@@ -39,6 +37,12 @@ public class ReflectiveDeclaredType
 {
     protected final Class clazz;
 
+    /**
+     * Sole Constructor.
+     *
+     * @param factory is the type-factory that is used to access types.
+     * @param clazz is the class object representation of the new type.
+     */
     public ReflectiveDeclaredType(final ITypeFactory factory,
                                   final Class clazz)
     {

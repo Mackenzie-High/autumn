@@ -368,7 +368,7 @@ public final class FunctionCompiler
             Utils.peekArgument(program, instructions, var_type);
 
             // Pop the variable's value off of the stack and place it into the variable.
-            vars.store(variable, true);
+            vars.store(variable);
 
             // Duplicate the reference to the storage-stack.
             instructions.add(new InsnNode(Opcodes.DUP));

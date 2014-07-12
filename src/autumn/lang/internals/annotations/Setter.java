@@ -1,9 +1,6 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package autumn.lang.internals.annotations;
 
+import high.mackenzie.autumn.resources.Finished;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
@@ -12,7 +9,9 @@ import java.lang.annotation.RetentionPolicy;
  *
  * @author Mackenzie High
  */
+@Finished("2014/07/12")
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Setter
 {
+    // Pass
 }

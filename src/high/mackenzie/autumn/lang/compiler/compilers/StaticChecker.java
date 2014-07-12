@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package high.mackenzie.autumn.lang.compiler.compilers;
 
 import autumn.lang.compiler.ast.commons.IConstruct;
@@ -26,7 +22,7 @@ import high.mackenzie.autumn.lang.compiler.utils.Utils;
 import java.util.List;
 
 /**
- * An instance of this class provides methods which check for an report static type errors.
+ * An instance of this class provides methods which check for and report static type errors.
  *
  * @author Mackenzie High
  */

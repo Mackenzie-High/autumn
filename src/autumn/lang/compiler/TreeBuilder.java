@@ -11,6 +11,7 @@ import autumn.lang.compiler.ast.literals.ShortLiteral;
 import autumn.lang.compiler.ast.nodes.*;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
+import high.mackenzie.autumn.resources.Finished;
 import java.io.File;
 import java.util.LinkedList;
 import java.util.Stack;
@@ -44,6 +45,7 @@ import java.util.Stack;
  *
  * @author Mackenzie High
  */
+@Finished("2014/07/12")
 public final class TreeBuilder
 {
     private Stack<IConstruct> stack = new Stack<IConstruct>();

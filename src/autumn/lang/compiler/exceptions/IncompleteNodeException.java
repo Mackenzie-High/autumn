@@ -2,6 +2,7 @@ package autumn.lang.compiler.exceptions;
 
 import autumn.lang.compiler.ast.commons.IConstruct;
 import com.google.common.base.Preconditions;
+import high.mackenzie.autumn.resources.Finished;
 
 /**
  * This type of exception indicates that an Abstract Syntax Tree node contains a part that is null,
@@ -10,6 +11,7 @@ import com.google.common.base.Preconditions;
  *
  * @author Mackenzie High
  */
+@Finished("2014/07/12")
 public class IncompleteNodeException
         extends RuntimeException
 {

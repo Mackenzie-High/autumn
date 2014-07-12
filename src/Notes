@@ -18,6 +18,7 @@ Plan:
 . . Annotations
 . . Enum Definitions
 . . Mutable Abstract Syntax Tree
+. . Verify that throwing an exception in a generator does not cause problems!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 . Release #2:
 . . Tuple Definitions
 . Release #3:
@@ -31,7 +32,7 @@ Plan:
 . Release #6
 . . Debugger
 . Release #7
-. . Documentation
+. . Documenter
 
 
 

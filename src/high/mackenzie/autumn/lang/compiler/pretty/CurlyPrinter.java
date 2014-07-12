@@ -3,6 +3,7 @@ package high.mackenzie.autumn.lang.compiler.pretty;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
+import high.mackenzie.autumn.resources.Finished;
 import java.util.LinkedList;
 
 /**
@@ -10,6 +11,7 @@ import java.util.LinkedList;
  *
  * @author Mackenzie High
  */
+@Finished("2014/07/12")
 final class CurlyPrinter
 {
     private static enum LineTypes

@@ -6,6 +6,7 @@ import autumn.lang.compiler.errors.IErrorReporter;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import high.mackenzie.autumn.lang.compiler.compilers.ProgramCompiler;
+import high.mackenzie.autumn.resources.Finished;
 import java.util.List;
 
 /**
@@ -13,6 +14,7 @@ import java.util.List;
  *
  * @author Mackenzie High
  */
+@Finished("2014/07/12")
 public final class AutumnCompiler
 {
     private final IErrorReporter reporter;

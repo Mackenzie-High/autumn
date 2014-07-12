@@ -1,12 +1,9 @@
 package autumn.lang;
 
-import autumn.lang.Functor;
-import autumn.lang.LocalsMap;
 import autumn.lang.exceptions.CheckedException;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
-import high.mackenzie.autumn.lang.Slice;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.InputStream;
@@ -207,15 +204,6 @@ public final class F
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    //                                 Assert
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    public static void require(final boolean condition)
-    {
-    }
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////////////
     //                                 Standard I/O
     ////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -353,62 +341,6 @@ public final class F
         return input;
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    //                                 Comprehension
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    public static Collection<Object> comprehend(final Collection<Object> data_structure,
-                                                final Functor expression,
-                                                final Iterable<Object> iterable)
-    {
-//        return comprehend(data_structure,
-//                          expression,
-//                          iterable,
-//                          CallableUtils.constant(true),
-//                          CallableUtils.constant(true));
-        return null;
-    }
-
-    public static Collection<Object> comprehend(final Collection<Object> data_structure,
-                                                final Functor expression,
-                                                final Iterable<Object> iterable,
-                                                final Functor selection,
-                                                final Functor termination)
-    {
-//        for (Object element : iterable)
-//        {
-//            if ((boolean) (Boolean) selection.funcall(element))
-//            {
-//                data_structure.add(expression.funcall(element));
-//            }
-//
-//            if (!(boolean) (Boolean) termination.funcall(element))
-//            {
-//                break;
-//            }
-//        }
-
-        return data_structure;
-    }
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    //                                 Generator
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-//    public static Generator<Object, Object> generate(final Functor expression,
-//                                                     final Iterable<Object> iterable)
-//    {
-//        return null;
-//    }
-//
-//    public static Generator<Object, Object> generate(final Functor expression,
-//                                                     final Iterable<Object> iterable,
-//                                                     final Functor termination)
-//    {
-//        return null;
-//    }
     ////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////
     //                                 Range
@@ -801,66 +733,133 @@ public final class F
         };
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    //                                 Len
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////////////
+    /**
+     * This method returns the length of an array.
+     *
+     * @param array is the array itself.
+     * @return the length of the array.
+     */
     public static int len(final boolean[] array)
     {
         return array.length;
     }
 
+    /**
+     * This method returns the length of an array.
+     *
+     * @param array is the array itself.
+     * @return the length of the array.
+     */
     public static int len(final char[] array)
     {
         return array.length;
     }
 
+    /**
+     * This method returns the length of an array.
+     *
+     * @param array is the array itself.
+     * @return the length of the array.
+     */
     public static int len(final byte[] array)
     {
         return array.length;
     }
 
+    /**
+     * This method returns the length of an array.
+     *
+     * @param array is the array itself.
+     * @return the length of the array.
+     */
     public static int len(final short[] array)
     {
         return array.length;
     }
 
+    /**
+     * This method returns the length of an array.
+     *
+     * @param array is the array itself.
+     * @return the length of the array.
+     */
     public static int len(final int[] array)
     {
         return array.length;
     }
 
+    /**
+     * This method returns the length of an array.
+     *
+     * @param array is the array itself.
+     * @return the length of the array.
+     */
     public static int len(final long[] array)
     {
         return array.length;
     }
 
+    /**
+     * This method returns the length of an array.
+     *
+     * @param array is the array itself.
+     * @return the length of the array.
+     */
     public static int len(final float[] array)
     {
         return array.length;
     }
 
+    /**
+     * This method returns the length of an array.
+     *
+     * @param array is the array itself.
+     * @return the length of the array.
+     */
     public static int len(final double[] array)
     {
         return array.length;
     }
 
+    /**
+     * This method returns the length of an array.
+     *
+     * @param array is the array itself.
+     * @return the length of the array.
+     */
     public static int len(final Object[] array)
     {
         return array.length;
     }
 
+    /**
+     * This method returns the length of a collection.
+     *
+     * @param collection is the collection itself.
+     * @return the length of the collection.
+     */
     public static int len(final Collection collection)
     {
         return collection.size();
     }
 
+    /**
+     * This method returns the size of a map.
+     *
+     * @param map is the map itself.
+     * @return the size of the map.
+     */
     public static int len(final Map map)
     {
         return map.size();
     }
 
+    /**
+     * This method returns the length of an string.
+     *
+     * @param string is the string itself.
+     * @return the length of the string.
+     */
     public static int len(final String string)
     {
         return string.length();
@@ -1063,41 +1062,6 @@ public final class F
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    //                                 Slice
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    public List slice(final List list,
-                      final int start,
-                      final int end,
-                      final int step)
-    {
-        return new Slice(list, start, end, step);
-    }
-
-    public List slice(final List list,
-                      final int start,
-                      final int end)
-    {
-        return slice(list, start, end, 1);
-    }
-
-    public String slice(final String string,
-                        final int start,
-                        final int end,
-                        final int step)
-    {
-        return string.substring(start, end);
-    }
-
-    public NavigableMap slice(final NavigableMap map,
-                              final Object start,
-                              final Object end)
-    {
-        return map.subMap(start, true, end, false);
-    }
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////////////
     //                                 Left
     ////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1241,26 +1205,6 @@ public final class F
                                          final Charset charset)
     {
         return null;
-    }
-
-    public static void debug(final LocalsMap locals)
-    {
-        // TODO: This is a temporary implementation.
-
-        locals.print();
-
-        System.out.println("Press enter to continue...");
-        final Scanner stdin = new Scanner(System.in);
-        stdin.nextLine();
-    }
-
-    public static void debug(final LocalsMap locals,
-                             final boolean condition)
-    {
-        if (condition)
-        {
-            debug(locals);
-        }
     }
 
     public static Functor compose(final List functors)

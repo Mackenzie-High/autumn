@@ -1,31 +1,26 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package high.mackenzie.autumn.lang.compiler.typesystem;
 
-import high.mackenzie.autumn.lang.compiler.typesystem.design.IAnnotation;
-import high.mackenzie.autumn.lang.compiler.typesystem.design.IClassType;
-import high.mackenzie.autumn.lang.compiler.typesystem.design.IDeclaredType;
-import high.mackenzie.autumn.lang.compiler.typesystem.design.IFormalParameter;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IMethod;
-import high.mackenzie.autumn.lang.compiler.typesystem.design.IReturnType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.ITypeFactory;
 import java.lang.reflect.Method;
-import java.util.Collection;
-import java.util.List;
 
 /**
+ * An instance of this class represents a method.
  *
- * @author mackenzie
+ * @author Mackenzie High
  */
 public final class CustomMethod
         extends AbstractCustomInvokableMember
         implements IMethod
 {
-
     private final boolean annotation_method;
 
+    /**
+     * Sole Constructor.
+     *
+     * @param factory is the type-factory that is used to access types.
+     * @param annotation_method is true, iff this object will represent an annotation method.
+     */
     public CustomMethod(final ITypeFactory factory,
                         final boolean annotation_method)
     {

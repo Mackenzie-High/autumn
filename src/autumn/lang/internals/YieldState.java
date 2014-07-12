@@ -1,12 +1,14 @@
 package autumn.lang.internals;
 
 import com.google.common.base.Preconditions;
+import high.mackenzie.autumn.resources.Finished;
 
 /**
  * An instance of this class stores the state of a generator function between invocations.
  *
  * @author Mackenzie High
  */
+@Finished("2014/07/12")
 public final class YieldState
 {
     /**

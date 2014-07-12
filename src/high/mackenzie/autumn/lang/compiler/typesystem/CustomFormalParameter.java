@@ -1,25 +1,24 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package high.mackenzie.autumn.lang.compiler.typesystem;
 
+import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableList;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IAnnotation;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IFormalParameter;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IVariableType;
-import com.google.common.collect.ImmutableList;
+import high.mackenzie.autumn.resources.Finished;
 import java.util.Collection;
 import java.util.List;
 
 /**
+ * An instance of this class represents a formal-parameter.
  *
- * @author mackenzie
+ * @author Mackenzie High
  */
+@Finished("2014/07/12")
 public final class CustomFormalParameter
         implements IFormalParameter
 {
-
-    private List<IAnnotation> annotations;
+    private ImmutableList<IAnnotation> annotations = ImmutableList.of();
 
     private IVariableType type;
 
@@ -48,7 +47,7 @@ public final class CustomFormalParameter
      */
     public void setAnnotations(final List<IAnnotation> annotations)
     {
-        this.annotations = annotations;
+        this.annotations = ImmutableList.copyOf(annotations);
     }
 
     /**
@@ -58,6 +57,8 @@ public final class CustomFormalParameter
      */
     public void setType(IVariableType type)
     {
+        Preconditions.checkNotNull(type);
+
         this.type = type;
     }
 }

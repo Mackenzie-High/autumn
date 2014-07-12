@@ -1,17 +1,16 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package high.mackenzie.autumn.lang.compiler.typesystem.design;
+
+import high.mackenzie.autumn.resources.Finished;
 
 /**
  * An instance of this interface is the type of an array.
  *
  * @author Mackenzie High
  */
+@Finished("2014/07/12")
 public interface IArrayType
         extends IReferenceType,
-                IExpressionType
+                IVariableType
 {
     /**
      * This method returns the type of the elements that are in an array of this type.

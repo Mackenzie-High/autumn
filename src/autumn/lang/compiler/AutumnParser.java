@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package autumn.lang.compiler;
 
 import autumn.lang.compiler.ast.nodes.Module;
@@ -56,6 +52,7 @@ public final class AutumnParser
 
         // Callers should not be using multiple threads to invoke this parser.
         // However, this will provide some extra safety, just in case.
+        // Some of the code that is used to create an AST is not thread-safe.
         synchronized (AutumnParser.class)
         {
             // The source file will be attached to each AST node.

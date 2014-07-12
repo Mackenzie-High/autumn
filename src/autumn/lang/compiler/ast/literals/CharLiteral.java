@@ -1,5 +1,6 @@
 package autumn.lang.compiler.ast.literals;
 
+import high.mackenzie.autumn.resources.Finished;
 import java.math.BigInteger;
 
 /**
@@ -8,6 +9,7 @@ import java.math.BigInteger;
  *
  * @author Mackenzie High
  */
+@Finished("2014/07/12")
 public final class CharLiteral
         extends AbstractNumericLiteral<Character>
 {

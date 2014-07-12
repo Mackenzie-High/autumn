@@ -4,6 +4,7 @@ import autumn.lang.compiler.TreeBuilder;
 import autumn.lang.compiler.ast.commons.IExpression;
 import autumn.lang.compiler.ast.nodes.Name;
 import autumn.lang.compiler.ast.nodes.TypeSpecifier;
+import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IClassType;
@@ -23,14 +24,30 @@ import java.util.List;
 public abstract class AbstractTypeChecker
         extends AbstractAstVisitor
 {
+    /**
+     * This is the compiler that is responsible for compiling the enclosing program.
+     */
     protected final ProgramCompiler program;
 
+    /**
+     * This is the compiler that is responsible for compiling the enclosing module.
+     */
     protected final ModuleCompiler module;
 
+    /**
+     * This is the compiler that is responsible for compiling the enclosing function.
+     */
     protected final FunctionCompiler function;
 
+    /**
+     * Sole Constructor.
+     *
+     * @param function is the compiler that is responsible for compiling the enclosing function.
+     */
     protected AbstractTypeChecker(final FunctionCompiler function)
     {
+        Preconditions.checkNotNull(function);
+
         this.program = function.module.program;
         this.module = function.module;
         this.function = function;

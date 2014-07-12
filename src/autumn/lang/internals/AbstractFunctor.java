@@ -2,6 +2,7 @@ package autumn.lang.internals;
 
 import autumn.lang.Functor;
 import com.google.common.base.Preconditions;
+import high.mackenzie.autumn.resources.Finished;
 import java.util.List;
 
 /**
@@ -9,6 +10,7 @@ import java.util.List;
  *
  * @author Mackenzie High
  */
+@Finished("2014/07/12")
 public abstract class AbstractFunctor
         implements Functor
 {
