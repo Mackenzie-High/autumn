@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package high.mackenzie.autumn.lang.compiler.compilers;
 
 import autumn.lang.compiler.ClassFile;
@@ -131,7 +127,7 @@ public final class ExceptionCompiler
         /**
          * Ensure that this exception is not a duplicate type-declaration.
          */
-        if (program.typesystem.getTypeFactory().findType(descriptor) != null)
+        if (program.typesystem.typefactory().findType(descriptor) != null)
         {
             // TODO: error
             System.out.println("Duplicate Type: " + descriptor);
@@ -140,7 +136,7 @@ public final class ExceptionCompiler
         /**
          * Declare the exception.
          */
-        this.type = program.typesystem.getTypeFactory().newClassType(descriptor);
+        this.type = program.typesystem.typefactory().newClassType(descriptor);
 
         /**
          * Publicize this exception, so that it will be possible to infer constructors.

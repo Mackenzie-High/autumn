@@ -45,6 +45,7 @@ public final class ErrorReport
     {
         Preconditions.checkNotNull(node);
         Preconditions.checkNotNull(code);
+        Preconditions.checkNotNull(message);
 
         this.node = node;
         this.code = code;

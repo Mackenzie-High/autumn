@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package high.mackenzie.autumn.lang.compiler.compilers;
 
 import autumn.lang.compiler.ast.commons.ConstructList;
@@ -9,6 +5,7 @@ import autumn.lang.compiler.ast.commons.IBinaryOperation;
 import autumn.lang.compiler.ast.commons.IExpression;
 import autumn.lang.compiler.ast.commons.IUnaryOperation;
 import autumn.lang.compiler.ast.nodes.*;
+import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IDeclaredType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IExpressionType;
@@ -41,28 +38,213 @@ import org.objectweb.asm.tree.TypeInsnNode;
 public class ExpressionCodeGenerator
         extends AbstractAstVisitor
 {
+    /**
+     * Basically, this is the program that is being compiled.
+     */
     protected final ProgramCompiler program;
 
+    /**
+     * Basically, this is the module that contains the expressions compiled by this object.
+     */
     protected final ModuleCompiler module;
 
+    /**
+     * This is the type-system in use by the compiler.
+     */
     protected final TypeSystem types;
 
+    /**
+     * This is the scope any variables that occur in expressions compiled by this object.
+     */
     protected final VariableScope scope;
 
+    /**
+     * This object simplifies the manipulation of variables.
+     */
     protected final VariableManipulator vars;
 
+    /**
+     * This is the list of instructions being generated.
+     * The whole purpose of this ExpressionCodeGenerator is to add instructions to this list.
+     */
     protected final List<AbstractInsnNode> code;
 
+    /**
+     * Sole Constructor.
+     *
+     * @param module is the module being compiled.
+     * @param vars is the enclosing scope.
+     * @param code is the list of bytecode instructions being generated.
+     */
     public ExpressionCodeGenerator(final ModuleCompiler module,
                                    final VariableManipulator vars,
                                    final List<AbstractInsnNode> code)
     {
+        Preconditions.checkNotNull(module);
+        Preconditions.checkNotNull(vars);
+        Preconditions.checkNotNull(code);
+
         this.program = module.program;
         this.module = module;
         this.types = program.typesystem;
         this.vars = vars;
         this.scope = vars.scope();
         this.code = code;
+    }
+
+    /**
+     * This method generalizes the compilation of a unary operator.
+     *
+     * @param operation is the operation to compile.
+     */
+    protected void compileUnaryOperator(final IUnaryOperation operation)
+    {
+        Preconditions.checkNotNull(operation);
+
+        final IMethod method = (IMethod) program.symbols.calls.get(operation);
+
+        ConstructList<IExpression> operands = new ConstructList<IExpression>();
+        operands = operands.add(operation.getOperand());
+
+        compileStaticMethodCall(method, operands);
+    }
+
+    /**
+     * This method generalizes the compilation of a binary operator.
+     *
+     * @param operation is the operation to compile.
+     */
+    protected void compileBinaryOperator(final IBinaryOperation operation)
+    {
+        Preconditions.checkNotNull(operation);
+
+        // During type-checking a method was selected that implements the operation.
+        // The method is a static utility method in the standard-library Operators class.
+        final IMethod method = (IMethod) program.symbols.calls.get(operation);
+
+        // Get the types of the operands.
+        final IExpression left = operation.getLeftOperand();
+        final IExpression right = operation.getRightOperand();
+
+        // Generate an invocation of the static utility method.
+        // The optimizer may optimize out the invocation later.
+        compileStaticMethodCall(method, Lists.newArrayList(left, right));
+    }
+
+    /**
+     * This method generalizes the compilation of a static method invocation.
+     *
+     * @param method is the method being invoked.
+     * @param arguments are the expressions that produce the arguments.
+     */
+    protected void compileStaticMethodCall(final IMethod method,
+                                           final Iterable<IExpression> arguments)
+    {
+        Preconditions.checkNotNull(method);
+        Preconditions.checkNotNull(arguments);
+
+        // Convert the iterable to a list.
+        final List<IExpression> args = Lists.newArrayList(arguments);
+
+        /**
+         * Generate the bytecode for each argument.
+         */
+        for (int i = 0; i < args.size(); i++)
+        {
+            final IType parameter = method.getFormalParameters().get(i).getType();
+            final IType argument = program.symbols.expressions.get(args.get(i));
+
+            // Generate the argument's bytecode.
+            args.get(i).accept(this);
+
+            // Generate code to box/unbox the argument, if needed.
+            code.addAll(types.utils.assign(argument, parameter));
+        }
+
+        /**
+         * Generate the method invocation itself.
+         */
+        code.add(new MethodInsnNode(Opcodes.INVOKESTATIC,
+                                    Utils.internalName(method.getOwner()),
+                                    method.getName(),
+                                    method.getDescriptor()));
+    }
+
+    /**
+     * This method generates the bytecode necessary to box a value.
+     *
+     * <p>
+     * This method effectively does nothing, if no boxing is required.
+     * </p>
+     *
+     * @param type is the type of the topmost value on the operand-stack.
+     */
+    protected final void autoboxToObject(final IType type)
+    {
+        Preconditions.checkNotNull(type);
+
+        // Generate the code to box the value.
+        // If no boxing is required, then this variable will be assigned null.
+        List<AbstractInsnNode> boxing = types.utils.box(type, types.utils.OBJECT);
+
+        boxing = boxing == null ? Lists.<AbstractInsnNode>newArrayList() : boxing;
+
+        assert boxing != null;
+
+        code.addAll(boxing);
+    }
+
+    /**
+     * This method generalizes the compilation of a condition expression.
+     *
+     * <p>
+     * The condition will be evaluated, and automatically boxed or unboxed when necessary.
+     * </p>
+     *
+     * @param condition is the expression that is really a condition.
+     */
+    protected final void compileCondition(final IExpression condition)
+    {
+        Preconditions.checkNotNull(condition);
+
+        // Retrieve the type of the expression.
+        final IType type = program.symbols.expressions.get(condition);
+
+        // Compile the expression itself.
+        condition.accept(this);
+
+        // If the expression evaluates to a boxed-boolean rather than a primitive-boolean,
+        // then it is necessary to unbox the value.
+        if (type.equals(program.typesystem.utils.BOXED_BOOLEAN))
+        {
+            final IType input = program.typesystem.utils.BOXED_BOOLEAN;
+
+            final IType output = program.typesystem.utils.PRIMITIVE_BOOLEAN;
+
+            code.addAll(program.typesystem.utils.unbox(input, output));
+        }
+    }
+
+    /**
+     * This method generates bytecode that converts an expression's value to another type.
+     *
+     * <p>
+     * The generated bytecode expects that the expression's value is the topmost value
+     * on the operand-stack.
+     * </p>
+     *
+     * @param type is the type to which the value will be converted.
+     * @param expression is the expression whose value is being converted.
+     */
+    protected final void convert(final IType type,
+                                 final IExpression expression)
+    {
+        Preconditions.checkNotNull(type);
+        Preconditions.checkNotNull(expression);
+
+        final IType etype = program.symbols.expressions.get(expression);
+
+        code.addAll(program.typesystem.utils.assign(etype, type));
     }
 
     @Override
@@ -166,8 +348,6 @@ public class ExpressionCodeGenerator
     @Override
     public void visit(ListExpression object)
     {
-        // First, generate a java.util.LinkedList.
-
         final ExpressionCodeGenerator THIS = this;
 
         final CollectionCompiler<IExpression> cmp = new CollectionCompiler<IExpression>()
@@ -191,12 +371,6 @@ public class ExpressionCodeGenerator
 
         // Create list.
         cmp.compile(object.getElements());
-
-        // Second, convert the java.util.LinkedList into an immutable-list.
-        code.add(new MethodInsnNode(Opcodes.INVOKESTATIC,
-                                    Utils.internalName(program.typesystem.utils.HELPERS),
-                                    "newImmutableList",
-                                    "(Ljava/lang/Iterable;)Ljava/util/List;"));
     }
 
     @Override
@@ -599,7 +773,7 @@ public class ExpressionCodeGenerator
             object.getValue().accept(this);
 
             // Perform the checked cast.
-            code.add(new TypeInsnNode(Opcodes.CHECKCAST, Utils.internalName((IDeclaredType) conversion.type)));
+            code.add(new TypeInsnNode(Opcodes.CHECKCAST, Utils.internalName((IReferenceType) conversion.type)));
         }
         else
         {
@@ -729,8 +903,25 @@ public class ExpressionCodeGenerator
     }
 
     @Override
+    public void visit(ImpliesOperation object)
+    {
+        compileBinaryOperator(object);
+    }
+
+    @Override
     public void visit(ShortCircuitAndOperation object)
     {
+        // Generated Bytecode:
+        //
+        // <left-operand>
+        // IF_FALSE @ELSE
+        // <right-operand>
+        // GOTO @END
+        // @ELSE
+        // LDC false
+        // @END
+        ///////////////////////////////
+
         final LabelNode ELSE = new LabelNode();
         final LabelNode END = new LabelNode();
 
@@ -751,6 +942,17 @@ public class ExpressionCodeGenerator
     @Override
     public void visit(ShortCircuitOrOperation object)
     {
+        // Generated Bytecode:
+        //
+        // <left-operand>
+        // IF_TRUE @ELSE
+        // <right-operand>
+        // GOTO @END
+        // @ELSE
+        // LDC true
+        // @END
+        ///////////////////////////////
+
         final LabelNode ELSE = new LabelNode();
         final LabelNode END = new LabelNode();
 
@@ -771,90 +973,28 @@ public class ExpressionCodeGenerator
     @Override
     public void visit(NullCoalescingOperation object)
     {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+        // Generated Bytecode:
+        //
+        // <left-operand>
+        // DUP
+        // IF_NON_NULL @END
+        // POP
+        // <right-operand>
+        // @END
+        ///////////////////////////////
 
-    protected void compileUnaryOperator(final IUnaryOperation operation)
-    {
-        final IMethod method = (IMethod) program.symbols.calls.get(operation);
+        final LabelNode END = new LabelNode();
 
-        ConstructList<IExpression> operands = new ConstructList<IExpression>();
-        operands = operands.add(operation.getOperand());
+        object.getLeftOperand().accept(this);
 
-        compileStaticMethodCall(method, operands);
-    }
+        code.add(new InsnNode(Opcodes.DUP));
 
-    protected void compileBinaryOperator(final IBinaryOperation operation)
-    {
-        final IMethod method = (IMethod) program.symbols.calls.get(operation);
-
-        final IExpression left = operation.getLeftOperand();
-
-        final IExpression right = operation.getRightOperand();
-
-        ConstructList<IExpression> operands = new ConstructList<IExpression>();
-        operands = operands.add(left);
-        operands = operands.add(right);
-
-        compileStaticMethodCall(method, operands);
-    }
-
-    protected void compileStaticMethodCall(final IMethod method,
-                                           final ConstructList<IExpression> arguments)
-    {
-        final List<IExpression> args = arguments.asMutableList();
-
-        for (int i = 0; i < arguments.size(); i++)
+        code.add(new JumpInsnNode(Opcodes.IFNONNULL, END));
         {
-            final IType parameter = method.getFormalParameters().get(i).getType();
-            final IType argument = program.symbols.expressions.get(args.get(i));
+            code.add(new InsnNode(Opcodes.POP));
 
-            // Generate the argument's bytecode.
-            args.get(i).accept(this);
-
-            // Generate code to box/unbox the argument, if needed.
-            code.addAll(types.utils.assign(argument, parameter));
+            object.getRightOperand().accept(this);
         }
-
-        code.add(new MethodInsnNode(Opcodes.INVOKESTATIC,
-                                    method.getOwner().getDescriptor().substring(1).replace(";", ""),
-                                    method.getName(),
-                                    method.getDescriptor()));
-    }
-
-    protected final void autoboxToObject(final IType type)
-    {
-        List<AbstractInsnNode> boxing = types.utils.box(type, types.utils.OBJECT);
-
-        boxing = boxing == null ? Lists.<AbstractInsnNode>newArrayList() : boxing;
-
-        code.addAll(boxing);
-    }
-
-    protected final void compileCondition(final IExpression condition)
-    {
-        final IType type = program.symbols.expressions.get(condition);
-
-        // Compile the expression itself.
-        condition.accept(this);
-
-        // If the expression evaluates to a boxed-boolean rather than a primitive-boolean,
-        // then it is necessary to unbox the value.
-        if (type.equals(program.typesystem.utils.BOXED_BOOLEAN))
-        {
-            final IType input = program.typesystem.utils.BOXED_BOOLEAN;
-
-            final IType output = program.typesystem.utils.PRIMITIVE_BOOLEAN;
-
-            code.addAll(program.typesystem.utils.unbox(input, output));
-        }
-    }
-
-    protected final void convert(final IType type,
-                                 final IExpression expression)
-    {
-        final IType etype = program.symbols.expressions.get(expression);
-
-        code.addAll(program.typesystem.utils.assign(etype, type));
+        code.add(END);
     }
 }

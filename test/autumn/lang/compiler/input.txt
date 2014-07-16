@@ -214,6 +214,7 @@ defun main (args : String[]) : void
     val xoo = 12 & 34 & 56 & 78 & 90 ;
     val xoo = 12 | 34 | 56 | 78 | 90 ;
     val xoo = 12 ^ 34 ^ 56 ^ 78 ^ 90 ;
+    val xoo = 12 -> 34 -> 56 -> 78 -> 90 ;
     val xoo = 12 ?? 34 ?? 56 ?? 78 ?? 90 ;
     val xoo = 12 as String as String as String ;
     val xoo = 12 is String is String is String ;
@@ -262,6 +263,7 @@ defun main (args : String[]) : void
     var xoo = 1 < 2 > 3 <= 4 >= 5 != 6 == 7 !== 8 === 9;
     var xoo = 1 && 2 || 3 & 4 | 5 ^ 6;
     var xoo = 1 ^ 2 | 3 & 4 || 5 && 6;
+    var xoo = 1 ^ 2 | 3 & 4 || 5 -> 6;
     var xoo = 12 as String is Object;
     var xoo = 12 is String as Object;
 
@@ -430,6 +432,11 @@ defun main (args : String[]) : void
 
     nop;
 
+    assume 12 + 34 ;
+    assume 12 + 34 echo 56 + 78 ;
+
+    nop;
+
     throw 12 + 34 ;
 
     nop;
@@ -562,6 +569,13 @@ defun main (args : String[]) : void
     nop;
 
     debug ;
+
+    nop ;
+
+    forever
+    {
+        nop;
+    }
 }
 
 

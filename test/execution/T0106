@@ -1,0 +1,11 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    var object = (new Object);
+
+    // An as-conversion returns a default value, when the cast is impossible at runtime.
+    // However, the conversion must be theoretically possible at compile-time.
+    assert (object as List) === null;
+}

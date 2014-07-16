@@ -3,13 +3,23 @@ module Main in execution;
 @Start
 defun main (args : String[]) : void
 {
-    assert (50 / 2) == 25;
-    assert (10 % 8) == 2;
-    assert (17 * 5) == 85;
-    assert (50 + 2) == 52;
-    assert (50 - 2) == 48;
+    assert (50B / 2B) == 25B;
 
-    assert (50 == 50) == true;
-    assert (50 == 70) == false;
+    assert (50S / 2S) == 25S;
 
+    assert (50  / 2)  == 25;
+
+    assert (50L / 2L) == 25L;
+
+    assert (50.0F / 2.0F) == 25.0F;
+
+    assert (50.0 / 2.0) == 25.0;
+
+    assert ((F::big 50) / (F::big 2)) == (F::big 25);
+
+    assert (((F::big 50.0) / (F::big 2.0)).intValue) == 25;
+
+    // assert ((null is BigInteger) / (null is BigInteger)) == (F::big 0);
+
+    // assert ((null is BigDecimal) / (null is BigDecimal)) == (field BigDecimal::ZERO);
 }

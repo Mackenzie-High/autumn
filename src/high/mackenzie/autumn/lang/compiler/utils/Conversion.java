@@ -5,14 +5,14 @@ import high.mackenzie.autumn.lang.compiler.typesystem.design.IDeclaredType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IExpressionType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IPrimitiveType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IReturnType;
+import high.mackenzie.autumn.resources.Finished;
 
 /**
  * An instance of this class describes either an as-conversion or an is-conversion.
  *
- *
- *
  * @author Mackenzie High
  */
+@Finished("2014/07/12")
 public final class Conversion
 {
     /**

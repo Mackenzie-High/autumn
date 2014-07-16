@@ -1,0 +1,25 @@
+module * in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    assert (50B + 2B) == 52B;
+
+    assert (50S + 2S) == 52S;
+
+    assert (50  + 2)  == 52;
+
+    assert (50L + 2L) == 52L;
+
+    assert (50.0F + 2.0F) == 52.0F;
+
+    assert (50.0 + 2.0) == 52.0;
+
+    assert ((F::big 50) + (F::big 2)) == (F::big 52);
+
+    assert (((F::big 50.0) + (F::big 2.0)).intValue) == 52;
+
+    assert ((null is BigInteger) + (null is BigInteger)) == (F::big 0);
+
+    assert ((null is BigDecimal) + (null is BigDecimal)) == (field BigDecimal::ZERO);
+}

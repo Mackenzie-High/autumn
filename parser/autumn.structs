@@ -373,6 +373,21 @@ struct MarkerStatement
 end
 
 ###################################################################################################
+# Statements --> Forever
+###################################################################################################
+
+doc An instance of this class is an AST node that represents a infinite-loop statement.
+struct ForeverStatement
+  implement IStatement;
+
+  doc This is the statement that is repeatedly executed.
+  data body : SequenceStatement = { new SequenceStatement() };
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
 # Statements --> While
 ###################################################################################################
 
@@ -771,6 +786,24 @@ end
 
 doc An instance of this class is an AST node that represents an assertion statement.
 struct AssertStatement
+  implement IStatement;
+
+  doc This expression produces the boolean value that determines whether an exception is thrown.
+  data condition : IExpression;
+
+  doc (optional) This expression produces a user readable error message.
+  data message : IExpression = { null };
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Statements --> Assume
+###################################################################################################
+
+doc An instance of this class is an AST node that represents an assumption statement.
+struct AssumeStatement
   implement IStatement;
 
   doc This expression produces the boolean value that determines whether an exception is thrown.
@@ -1659,6 +1692,24 @@ end
 
 doc An instance of this class is an AST node that represents the logical-xor operator.
 struct XorOperation
+  implement IBinaryOperation;
+
+  doc This expression produces the operation's left-operand.
+  data left_operand : IExpression;
+
+  doc This expression produces the operation's right-operand.
+  data right_operand : IExpression;
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Operators --> Logical-IMPLIES
+###################################################################################################
+
+doc An instance of this class is an AST node that represents the logical-implication operator.
+struct ImpliesOperation
   implement IBinaryOperation;
 
   doc This expression produces the operation's left-operand.

@@ -47,7 +47,7 @@ import java.util.TreeSet;
 /**
  * An instance of this interface is a visitor that can visit the nodes in an Autumn abstract-syntax-tree.
  * 
- * <p> This file was auto-generated on (Thu Jul 03 09:32:55 EDT 2014).</p>
+ * <p> This file was auto-generated on (Mon Jul 14 10:23:51 EDT 2014).</p>
  */
 public interface IAstVisitor
 {
@@ -169,6 +169,13 @@ public interface IAstVisitor
      * @param object is the object to visit.
      */
     public void visit(final MarkerStatement object);
+
+    /**
+     * This method visits an object of type <code>ForeverStatement</code>.
+     * 
+     * @param object is the object to visit.
+     */
+    public void visit(final ForeverStatement object);
 
     /**
      * This method visits an object of type <code>WhileStatement</code>.
@@ -330,6 +337,13 @@ public interface IAstVisitor
      * @param object is the object to visit.
      */
     public void visit(final AssertStatement object);
+
+    /**
+     * This method visits an object of type <code>AssumeStatement</code>.
+     * 
+     * @param object is the object to visit.
+     */
+    public void visit(final AssumeStatement object);
 
     /**
      * This method visits an object of type <code>ReturnVoidStatement</code>.
@@ -701,6 +715,13 @@ public interface IAstVisitor
      * @param object is the object to visit.
      */
     public void visit(final XorOperation object);
+
+    /**
+     * This method visits an object of type <code>ImpliesOperation</code>.
+     * 
+     * @param object is the object to visit.
+     */
+    public void visit(final ImpliesOperation object);
 
     /**
      * This method visits an object of type <code>ShortCircuitAndOperation</code>.

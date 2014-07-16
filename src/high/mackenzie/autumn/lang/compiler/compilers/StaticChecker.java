@@ -1,11 +1,15 @@
 package high.mackenzie.autumn.lang.compiler.compilers;
 
+import autumn.lang.compiler.ast.commons.IBinaryOperation;
 import autumn.lang.compiler.ast.commons.IConstruct;
 import autumn.lang.compiler.ast.commons.IExpression;
 import autumn.lang.compiler.ast.commons.IStatement;
+import autumn.lang.compiler.ast.commons.IUnaryOperation;
+import autumn.lang.compiler.ast.nodes.AsOperation;
 import autumn.lang.compiler.ast.nodes.BreakStatement;
 import autumn.lang.compiler.ast.nodes.ContinueStatement;
 import autumn.lang.compiler.ast.nodes.ExceptionHandler;
+import autumn.lang.compiler.ast.nodes.IsOperation;
 import autumn.lang.compiler.ast.nodes.Label;
 import autumn.lang.compiler.ast.nodes.RedoStatement;
 import autumn.lang.compiler.ast.nodes.TypeSpecifier;
@@ -51,6 +55,12 @@ public final class StaticChecker
         this.reporter = program.reporter;
     }
 
+    /**
+     * This method is invoked in order to actually issue an error report.
+     *
+     * @param report is the error report to issue.
+     * @throws TypeUsageCheckFailed always.
+     */
     private void report(final ErrorReport report)
     {
         reporter.reportFailedCheck(report);
@@ -183,9 +193,9 @@ public final class StaticChecker
             return;
         }
 
-        final ErrorCode ERROR_CODE = ErrorCode.EXPECTED_NON_VOID_EXPRESSION;
+        final ErrorCode ERROR_CODE = ErrorCode.VALUE_REQUIRED;
 
-        final String MESSAGE = "Void was found were it is not allowed.";
+        final String MESSAGE = "The type of an expression is void when it is forbidden to be.";
 
         final ErrorReport report = new ErrorReport(expression, ERROR_CODE, MESSAGE);
 
@@ -202,6 +212,32 @@ public final class StaticChecker
      */
     public void requireNonNull(final IExpression expression)
     {
+    }
+
+    /**
+     * This method ensures that the static-type of an expression is a reference-type.
+     *
+     * @param expression is the expression that must be a reference-type.
+     */
+    public void requireReferenceType(final IExpression expression)
+    {
+        final IExpressionType actual = program.symbols.expressions.get(expression);
+
+        if (actual.isReferenceType())
+        {
+            return;
+        }
+
+        final ErrorCode ERROR_CODE = ErrorCode.EXPECTED_REFERENCE_TYPE;
+
+        final String MESSAGE = "The type of a particular expression must be a reference-type.";
+
+        final ErrorReport report = new ErrorReport(expression, ERROR_CODE, MESSAGE);
+
+        /**
+         * Issue the error-report to the user.
+         */
+        report(report);
     }
 
     public void requireString(final IExpression expression)
@@ -287,14 +323,38 @@ public final class StaticChecker
         report(report);
     }
 
-    public void reportNoSuchAsConversion(final IExpression value,
+    public void reportNoSuchAsConversion(final AsOperation conversion,
                                          final IReturnType type)
     {
+        final IExpressionType actual = program.symbols.expressions.get(conversion.getValue());
+
+        final ErrorCode ERROR_CODE = ErrorCode.IMPOSSIBLE_CONVERSION;
+
+        final String MESSAGE = "An as-conversion is not possible.";
+
+        final ErrorReport report = new ErrorReport(conversion, ERROR_CODE, MESSAGE);
+
+        /**
+         * Issue the error-report to the user.
+         */
+        report(report);
     }
 
-    public void reportNoSuchIsConversion(final IExpression value,
+    public void reportNoSuchIsConversion(final IsOperation conversion,
                                          final IReturnType type)
     {
+        final IExpressionType actual = program.symbols.expressions.get(conversion.getValue());
+
+        final ErrorCode ERROR_CODE = ErrorCode.IMPOSSIBLE_CONVERSION;
+
+        final String MESSAGE = "An is-conversion is not possible.";
+
+        final ErrorReport report = new ErrorReport(conversion, ERROR_CODE, MESSAGE);
+
+        /**
+         * Issue the error-report to the user.
+         */
+        report(report);
     }
 
     public void reportNoSuchField(final IReturnType owner,
@@ -470,6 +530,52 @@ public final class StaticChecker
         final ErrorReport report = new ErrorReport(label, ERROR_CODE, MESSAGE);
 
         report.addDetail("Label", label.getName());
+
+        /**
+         * Issue the error-report to the user.
+         */
+        report(report);
+    }
+
+    /**
+     * This method reports that a unary operator cannot be applied to its operand.
+     *
+     * @param operation is the unary operation itself.
+     */
+    public void reportNoSuchUnaryOperator(final IUnaryOperation operation,
+                                          final IExpressionType operand)
+    {
+        final ErrorCode ERROR_CODE = ErrorCode.NO_SUCH_UNARY_OPERATOR;
+
+        final String MESSAGE = "A unary operator cannot be applied to the given operand type.";
+
+        final ErrorReport report = new ErrorReport(operation, ERROR_CODE, MESSAGE);
+
+        report.addDetail("operand.type", Utils.sourceName(operand));
+
+        /**
+         * Issue the error-report to the user.
+         */
+        report(report);
+    }
+
+    /**
+     * This method reports that a binary operator cannot be applied to its operands.
+     *
+     * @param operation is the binary operation itself.
+     */
+    public void reportNoSuchBinaryOperator(final IBinaryOperation operation,
+                                           final IExpressionType left,
+                                           final IExpressionType right)
+    {
+        final ErrorCode ERROR_CODE = ErrorCode.NO_SUCH_BINARY_OPERATOR;
+
+        final String MESSAGE = "A binary operator cannot be applied to the given operand types.";
+
+        final ErrorReport report = new ErrorReport(operation, ERROR_CODE, MESSAGE);
+
+        report.addDetail("left.type  ", Utils.sourceName(left));
+        report.addDetail("right.type ", Utils.sourceName(right));
 
         /**
          * Issue the error-report to the user.

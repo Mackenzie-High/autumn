@@ -30,6 +30,9 @@ Test Index
 . Enum Definitions
 . . Reflective Testing of the Enum's Class
 . . T0051 = Basic Enum
+. Tuple Definitions
+. . Reflective Testing of the Tuple's Class
+. . Use Cases
 . Design Definitions
 . . Reflective Testing of the Design's Class
 . Functions
@@ -125,6 +128,9 @@ Test Index
 . . Assert
 . . . No Message
 . . . With Message
+. . Assume
+. . . No Message
+. . . With Message
 . . Nop
 . . Sequence
 . . Expression
@@ -186,26 +192,6 @@ Test Index
 . . . Different Types of Values
 . . T0046 = Instance-Of
 . . Create
-. . . Special Method: objectDesign
-. . . Special Method: objectCopy (default)
-. . . Special Method: objectCopy (covariant)
-. . . Special Method: objectProperties
-. . . Special Method: objectMethods
-. . . Special Method: objectSetSetter
-. . . Special Method: objectGetSetter
-. . . Special Method: objectSetGetter
-. . . Special Method: objectGetGetter
-. . . Special Method: objectSetMethod
-. . . Special Method: objectGetMethod
-. . . Special Method: objectSetValue
-. . . Special Method: objectGetValue
-. . . Special Method: objectInner
-. . . Method Invocation
-. . . Getters
-. . . Setters
-. . . Equals
-. . . Hash-Code
-. . . To-String
 . . Ternary Conditional
 . . . Primitive Boolean Condition
 . . . Boxed Boolean Condition
@@ -216,19 +202,40 @@ Test Index
 . . List
 . . . T0058 = All Cases
 . Operators
-. . T0040 = N = Unary Operators Generally
-. . T0041 = N = Binary Operators Generally
-. . T0043 = N = Null Coalescing Operator
+. . T0100 = Operator Unboxing
+. . T0099 = Negate Operator
+. . T0040 = Not Operator
+. . T0041 = Division Operator
+. . T0083 = Modulo Operator
+. . T0084 = Multiply Operator
+. . T0085 = Add Operator
+. . T0086 = Subtract Operator
+. . T0101 = Concat Operator
+. . T0087 = Equality Operator
+. . T0088 = Inequality Operator
+. . T0089 = Greater Operator
+. . T0090 = Less Operator
+. . T0091 = Greater-Equals Operator
+. . T0092 = Less-Equals Operator
+. . T0093 = AND Operator
+. . T0094 = OR Operator
+. . T0095 = XOR Operator
+. . T0096 = Implies Operator
+. . T0097 = Short-Circuit AND Operator
+. . T0098 = Short-Circuit OR Operator
+. . T0043 = Null Coalescing Operator
 . . As
 . . . T0044 = Operand-Stack Leakage
-. . . Predefined Conversions
+. . . T0102 = Predefined Conversions
 . . . T0057 = Casts
-. . . Array Casts
+. . . T0105 = Array Casts
+. . . T0106 = Failed Cast
 . . Is
 . . . T0082 = Operand-Stack Leakage
-. . . Predefined Conversions
-. . . Casts
-. . . Array Casts
+. . . T0103 = Predefined Conversions
+. . . T0104 = Casts
+. . . T0108 = Array Casts
+. . . T0107 = Failed Cast
 . Datums
 . . Class Datums
 . . T0055 = Types of Datums

@@ -124,7 +124,7 @@ public final class FunctionCompiler
         this.module = module;
         this.node = node;
 
-        this.type = new CustomMethod(module.program.typesystem.getTypeFactory(), false);
+        this.type = new CustomMethod(module.program.typesystem.typefactory(), false);
         this.scope = new VariableScope(null, 0);
         this.vars = new VariableManipulator(scope, this.instructions);
         this.labels = new LabelScope(program);

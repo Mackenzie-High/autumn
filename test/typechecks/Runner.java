@@ -54,6 +54,16 @@ public final class Runner
         test("T0019", EXPECTED_CONDITION);
         test("T0020", DUPLICATE_LABEL);
         test("T0021", NO_SUCH_LABEL);
+        test("T0022", NO_SUCH_BINARY_OPERATOR);
+        test("T0023", NO_SUCH_UNARY_OPERATOR);
+        test("T0024", EXPECTED_REFERENCE_TYPE);
+        test("T0025", EXPECTED_REFERENCE_TYPE);
+        test("T0026", EXPECTED_REFERENCE_TYPE);
+        test("T0027", NO_SUCH_BINARY_OPERATOR);
+        test("T0028", EXPECTED_CONDITION);
+        test("T0029", EXPECTED_CONDITION);
+        test("T0030", EXPECTED_CONDITION);
+        test("T0031", EXPECTED_CONDITION);
 
         System.out.println("Number of Failed Tests: " + failed_count);
     }
@@ -71,7 +81,7 @@ public final class Runner
         {
             if (singleTest(test, errors) == FAILED)
             {
-                System.out.println("Test Failed: " + test);
+                System.out.println("Test Failed: " + test + "!!!!!");
                 ++failed_count;
                 return;
             }

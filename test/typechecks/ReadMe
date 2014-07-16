@@ -54,7 +54,6 @@ Test Index
 . . . T0021 = Undeclared Label
 . . Marker
 . . . T0020 = Duplicate Label
-. . Switch
 . . While
 . . . T0003 = Expected Condition
 . . Until
@@ -149,13 +148,21 @@ Test Index
 . . . Expected Non-Void Elements
 . Operators
 . . Unary Operators Generally
-. . . No Such Method
+. . . T0023 = No Such Method
 . . Binary Operators Generally
-. . . No Such Method
-. . Short Circuit Operators Generally
-. . . Expected Condition
+. . . T0022 = No Such Method
+. . . Identity Operations Generally
+. . . . T0024 = Operands cannot be Primitives
+. . . . T0025 = Operands cannot be Void
+. . Short Circuit AND Operator
+. . . T0028 = Expected Condition - Left Operand
+. . . T0029 = Expected Condition - Right Operand
+. . Short Circuit OR Operator
+. . . T0030 = Expected Condition - Left Operand
+. . . T0031 = Expected Condition - Right Operand
 . . Null Coalescing Operator
-. . . Expected Reference-Type
+. . . T0026 = Expected Reference-Type
+. . . T0027 = Neither operand type is wider than the other.
 . . As
 . . Is
 . Datums

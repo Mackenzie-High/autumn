@@ -56,7 +56,7 @@ import java.util.TreeSet;
  * </table>
  * </p>
  * 
- * <p> This file was auto-generated on (Thu Jul 03 09:32:55 EDT 2014).</p>
+ * <p> This file was auto-generated on (Mon Jul 14 10:23:51 EDT 2014).</p>
  */
 @SuppressWarnings("unchecked")
 public final class XorOperation extends Object implements IBinaryOperation

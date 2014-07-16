@@ -122,6 +122,7 @@ public final class ModuleCompiler
         importClass(Throwable.class);
         importClass(Exception.class);
         importClass(RuntimeException.class);
+        importClass(ClassCastException.class);
         importClass(IllegalArgumentException.class);
         importClass(IllegalStateException.class);
 
@@ -262,7 +263,7 @@ public final class ModuleCompiler
             clazz.methods = ImmutableList.copyOf(methods);
             clazz.sourceFile = String.valueOf(node.getLocation().getFile());
 
-            assert clazz.superName.equals("java/lang/Object");
+            assert clazz.superName.equals("autumn/lang/internals/AbstractModule");
             assert clazz.access == Opcodes.ACC_PUBLIC + Opcodes.ACC_FINAL;
         }
 
@@ -822,7 +823,7 @@ public final class ModuleCompiler
 
         final String module_descriptor = processModuleDirective(directive);
 
-        this.type = program.typesystem.getTypeFactory().newClassType(module_descriptor);
+        this.type = program.typesystem.typefactory().newClassType(module_descriptor);
 
         for (ICompiler x : compilers())
         {
@@ -923,8 +924,8 @@ public final class ModuleCompiler
         imports.put(name.substring(name.lastIndexOf('.') + 1),
                     Utils.sourceName(type));
 
-        // The module name "Me" is used to generically refer to the current module.
-        imports.put("Me", Utils.sourceName(type));
+        // The module name "My" is used to generically refer to the current module.
+        imports.put("My", Utils.sourceName(type));
 
         /**
          * Execute all the import directives.

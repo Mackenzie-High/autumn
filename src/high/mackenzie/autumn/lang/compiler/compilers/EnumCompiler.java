@@ -68,8 +68,8 @@ public final class EnumCompiler
         this.module = module;
         this.node = node;
 
-        this.method_values = new CustomMethod(program.typesystem.getTypeFactory(), false);
-        this.method_valueof = new CustomMethod(program.typesystem.getTypeFactory(), false);
+        this.method_values = new CustomMethod(program.typesystem.typefactory(), false);
+        this.method_valueof = new CustomMethod(program.typesystem.typefactory(), false);
     }
 
     /**
@@ -152,7 +152,7 @@ public final class EnumCompiler
         /**
          * Ensure that this enum is not a duplicate type-declaration.
          */
-        if (program.typesystem.getTypeFactory().findType(descriptor) != null)
+        if (program.typesystem.typefactory().findType(descriptor) != null)
         {
             // TODO: error
             System.out.println("Duplicate Type: " + descriptor);
@@ -161,7 +161,7 @@ public final class EnumCompiler
         /**
          * Declare the enum.
          */
-        this.type = program.typesystem.getTypeFactory().newEnumType(descriptor);
+        this.type = program.typesystem.typefactory().newEnumType(descriptor);
     }
 
     /**
@@ -179,7 +179,7 @@ public final class EnumCompiler
 
             for (EnumConstant ec : node.getConstants())
             {
-                final CustomField field = new CustomField(program.typesystem.getTypeFactory());
+                final CustomField field = new CustomField(program.typesystem.typefactory());
                 {
                     field.setOwner(type);
                     field.setModifiers(Opcodes.ACC_PUBLIC
@@ -202,7 +202,7 @@ public final class EnumCompiler
         method_values.setModifiers(Opcodes.ACC_PUBLIC + Opcodes.ACC_STATIC + Opcodes.ACC_FINAL);
         method_values.setName("values");
         method_values.setParameters(ImmutableList.<IFormalParameter>of());
-        method_values.setReturnType(program.typesystem.getTypeFactory().getArrayType(type, 1));
+        method_values.setReturnType(program.typesystem.typefactory().getArrayType(type, 1));
 
         /**
          * Initialize the type-system representation of the valueOf(String) method.

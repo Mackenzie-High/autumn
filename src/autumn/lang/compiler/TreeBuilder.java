@@ -1040,6 +1040,39 @@ public final class TreeBuilder
     }
 
     /**
+     * This method creates a forever-loop statement.
+     *
+     * <p>
+     * <b>Precondition of the Stack</b>
+     * <ul>
+     * <li> body : SequenceStatement </li>
+     * </ul>
+     * </p>
+     *
+     * <p>
+     * <b>Postcondition of the Stack</b>
+     * <ul>
+     * <li> result : ForeverStatement </li>
+     * </ul>
+     * </p>
+     */
+    public void createStatementForever()
+    {
+        Preconditions.checkState(stack.size() == 1);
+
+        // Create the AST node.
+        ForeverStatement node = new ForeverStatement();
+
+        // Initialize the AST node.
+        node = node.setBody((SequenceStatement) stack.pop());
+
+        // Push the AST node onto the stack.
+        stack.push(node);
+
+        assert stack.size() == 1;
+    }
+
+    /**
      * This method creates a do-while-loop statement.
      *
      * <p>
@@ -1372,6 +1405,45 @@ public final class TreeBuilder
     }
 
     /**
+     * This method creates an assume-statement.
+     *
+     * <p>
+     * <b>Precondition of the Stack</b>
+     * <ul>
+     * <li> message : IExpression </li>
+     * <li> condition : IExpression </li>
+     * </ul>
+     * </p>
+     *
+     * <p>
+     * Note: The message must be null, if the message is unspecified.
+     * </p>
+     *
+     * <p>
+     * <b>Postcondition of the Stack</b>
+     * <ul>
+     * <li> result : AssumeStatement </li>
+     * </ul>
+     * </p>
+     */
+    public void createStatementAssume()
+    {
+        Preconditions.checkState(stack.size() == 2);
+
+        // Create the AST node.
+        AssumeStatement node = new AssumeStatement();
+
+        // Initialize the AST node.
+        node = node.setMessage((IExpression) stack.pop());
+        node = node.setCondition((IExpression) stack.pop());
+
+        // Push the AST node onto the stack.
+        stack.push(node);
+
+        assert stack.size() == 1;
+    }
+
+    /**
      * This method creates a throw-statement.
      *
      * <p>
@@ -1384,7 +1456,7 @@ public final class TreeBuilder
      * <p>
      * <b>Postcondition of the Stack</b>
      * <ul>
-     * <li> result : AssertStatement </li>
+     * <li> result : ThrowStatement </li>
      * </ul>
      * </p>
      */
@@ -2205,6 +2277,31 @@ public final class TreeBuilder
     public void createOperationXor()
     {
         createBinaryOperation(new XorOperation());
+    }
+
+    /**
+     * This method creates an IMPLIES-operation.
+     *
+     * <p>
+     * <b>Precondition of the Stack</b>
+     * <ul>
+     * <li> right-operand : IExpression </li>
+     * <li> left-operand : IExpression </li>
+     * <li> ..... </li>
+     * </ul>
+     * </p>
+     *
+     * <p>
+     * <b>Postcondition of the Stack</b>
+     * <ul>
+     * <li> result : ImpliesOperation </li>
+     * <li> ..... </li>
+     * </ul>
+     * </p>
+     */
+    public void createOperationImplies()
+    {
+        createBinaryOperation(new ImpliesOperation());
     }
 
     /**

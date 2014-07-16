@@ -238,6 +238,8 @@ defun main (args : String[]) : void
 
     val xoo = ((((12 ^ 34) ^ 56) ^ 78) ^ 90);
 
+    val xoo = ((((12 -> 34) -> 56) -> 78) -> 90);
+
     val xoo = ((((12 ?? 34) ?? 56) ?? 78) ?? 90);
 
     val xoo = (((12 as String) as String) as String);
@@ -321,6 +323,8 @@ defun main (args : String[]) : void
     var xoo = (((((1 && 2) || 3) & 4) | 5) ^ 6);
 
     var xoo = (((((1 ^ 2) | 3) & 4) || 5) && 6);
+
+    var xoo = (((((1 ^ 2) | 3) & 4) || 5) -> 6);
 
     var xoo = ((12 as String) is Object);
 
@@ -513,6 +517,12 @@ defun main (args : String[]) : void
 
     nop;
 
+    assume (12 + 34);
+
+    assume (12 + 34) echo (56 + 78);
+
+    nop;
+
     throw (12 + 34);
 
     nop;
@@ -661,6 +671,13 @@ defun main (args : String[]) : void
     nop;
 
     debug;
+
+    nop;
+
+    forever
+    {
+        nop;
+    }
 }
 
 defun main (aoo : int, boo : int, xoo : int, zoo : int) : void

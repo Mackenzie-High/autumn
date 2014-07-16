@@ -57,6 +57,7 @@ public final class StatementTypeChecker
     public void visit(final WhenStatement object)
     {
         condition(object.getCondition());
+
         object.getBody().accept(this);
     }
 
@@ -75,10 +76,19 @@ public final class StatementTypeChecker
     @Override
     public void visit(ConditionalCase object)
     {
-        object.getCondition().accept(this);
-        object.getBody().accept(this);
+        condition(object.getCondition());
 
-        program.checker.checkCondition(object.getCondition());
+        object.getBody().accept(this);
+    }
+
+    @Override
+    public void visit(ForeverStatement object)
+    {
+        ++loop_nesting_level;
+        {
+            object.getBody().accept(this);
+        }
+        --loop_nesting_level;
     }
 
     @Override
@@ -361,6 +371,22 @@ public final class StatementTypeChecker
 
     @Override
     public void visit(AssertStatement object)
+    {
+        object.getCondition().accept(this);
+
+        // The condition must produce a some sort of boolean.
+        condition(object.getCondition());
+
+        // The message, if present, must produce a string.
+        if (object.getMessage() != null)
+        {
+            object.getMessage().accept(this);
+            program.checker.requireString(object.getMessage());
+        }
+    }
+
+    @Override
+    public void visit(AssumeStatement object)
     {
         object.getCondition().accept(this);
 

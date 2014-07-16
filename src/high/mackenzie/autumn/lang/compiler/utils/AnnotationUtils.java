@@ -2,6 +2,7 @@ package high.mackenzie.autumn.lang.compiler.utils;
 
 import autumn.lang.compiler.ast.nodes.Annotation;
 import autumn.lang.compiler.ast.nodes.AnnotationList;
+import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import high.mackenzie.autumn.lang.compiler.compilers.ModuleCompiler;
@@ -13,15 +14,23 @@ import java.util.List;
 import org.objectweb.asm.tree.AnnotationNode;
 
 /**
+ * An instance of this class provides generalized methods for processing annotations.
  *
- * @author mackenzie
+ * @author Mackenzie High
  */
 public final class AnnotationUtils
 {
     private final ModuleCompiler module;
 
+    /**
+     * Sole Constructor.
+     *
+     * @param module is essentially the module that contains the annotations manipulated herein.
+     */
     public AnnotationUtils(final ModuleCompiler module)
     {
+        Preconditions.checkNotNull(module);
+
         this.module = module;
     }
 
@@ -37,6 +46,8 @@ public final class AnnotationUtils
      */
     public AnnotationNode compileAnnotation(final Annotation annotation)
     {
+        Preconditions.checkNotNull(annotation);
+
         final IAnnotation type = this.typeOf(annotation);
 
         final String descriptor = type.getAnnotationType().getDescriptor();
@@ -60,6 +71,8 @@ public final class AnnotationUtils
      */
     public List<AnnotationNode> compileAnnotationList(final AnnotationList annotations)
     {
+        Preconditions.checkNotNull(annotations);
+
         final List<AnnotationNode> result = Lists.newLinkedList();
 
         for (Annotation anno : annotations.getAnnotations())
@@ -82,6 +95,8 @@ public final class AnnotationUtils
      */
     public List<IAnnotation> typesOf(final AnnotationList annotations)
     {
+        Preconditions.checkNotNull(annotations);
+
         final List<IAnnotation> result = Lists.newLinkedList();
 
         for (Annotation anno : annotations.getAnnotations())
@@ -103,6 +118,8 @@ public final class AnnotationUtils
      */
     public IAnnotation typeOf(final Annotation annotation)
     {
+        Preconditions.checkNotNull(annotation);
+
         final IType type = module.resolveType(annotation.getType());
 
         if (type == null || type instanceof IAnnotationType == false)

@@ -6,13 +6,11 @@ import autumn.lang.compiler.ast.nodes.Module;
 import autumn.lang.compiler.errors.IErrorReporter;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 import com.google.common.io.Files;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IMethod;
 import high.mackenzie.autumn.lang.compiler.utils.Utils;
 import java.io.File;
 import java.util.List;
-import java.util.Set;
 
 /**
  * An instance of this class controls the compilation of an entire program.
@@ -33,11 +31,6 @@ public final class ProgramCompiler
     public final List<File> dependencies = Lists.newLinkedList();
 
     private final List<ModuleCompiler> modules = Lists.newLinkedList();
-
-    /**
-     * Execution of include-directives failed for these files, if any.
-     */
-    private final Set<File> failed_includes = Sets.newTreeSet();
 
     /**
      * Sole Constructor.
@@ -210,50 +203,60 @@ public final class ProgramCompiler
      *
      * @param input are the modules in the program that will be compiled.
      * @param reporter is used to report errors.
-     * @return the bytecode representation of the compiled program.
+     * @return the bytecode representation of the compiled program;
+     * or null, if compilation fails.
      */
     public static CompiledProgram compile(final List<Module> input,
                                           final IErrorReporter reporter)
     {
-        final ProgramCompiler compiler = new ProgramCompiler(reporter, input);
 
-        compiler.performTypeDeclaration();
-
-        if (reporter.errorCount() > 0)
+        try
         {
-            return null;
+            final ProgramCompiler compiler = new ProgramCompiler(reporter, input);
+
+            compiler.performTypeDeclaration();
+
+            if (reporter.errorCount() > 0)
+            {
+                return null;
+            }
+
+            compiler.performTypeInitialization();
+
+            if (reporter.errorCount() > 0)
+            {
+                return null;
+            }
+
+            compiler.performTypeStructureChecking();
+
+            if (reporter.errorCount() > 0)
+            {
+                return null;
+            }
+
+            compiler.performTypeUsageChecking();
+
+            if (reporter.errorCount() > 0)
+            {
+                return null;
+            }
+
+            compiler.performCodeGeneration();
+
+            if (reporter.errorCount() > 0)
+            {
+                return null;
+            }
+
+            final CompiledProgram program = compiler.build();
+
+            return program;
         }
-
-        compiler.performTypeInitialization();
-
-        if (reporter.errorCount() > 0)
+        catch (RuntimeException ex)
         {
-            return null;
+            throw ex;
+            //return null;
         }
-
-        compiler.performTypeStructureChecking();
-
-        if (reporter.errorCount() > 0)
-        {
-            return null;
-        }
-
-        compiler.performTypeUsageChecking();
-
-        if (reporter.errorCount() > 0)
-        {
-            return null;
-        }
-
-        compiler.performCodeGeneration();
-
-        if (reporter.errorCount() > 0)
-        {
-            return null;
-        }
-
-        final CompiledProgram program = compiler.build();
-
-        return program;
     }
 }

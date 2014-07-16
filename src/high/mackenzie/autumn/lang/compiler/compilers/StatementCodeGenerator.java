@@ -131,6 +131,30 @@ public final class StatementCodeGenerator
     }
 
     @Override
+    public void visit(ForeverStatement object)
+    {
+        final LabelNode BREAK = new LabelNode();
+        final LabelNode CONTINUE = new LabelNode();
+        final LabelNode REDO = new LabelNode();
+
+        code.add(CONTINUE);
+        code.add(REDO);
+        {
+            break_labels.push(BREAK);
+            continue_labels.push(CONTINUE);
+            redo_labels.push(REDO);
+
+            object.getBody().accept(this);
+
+            break_labels.pop();
+            continue_labels.pop();
+            redo_labels.pop();
+        }
+        code.add(new JumpInsnNode(Opcodes.GOTO, CONTINUE));
+        code.add(BREAK);
+    }
+
+    @Override
     public void visit(UntilStatement object)
     {
         final LabelNode BREAK = new LabelNode();
@@ -606,6 +630,48 @@ public final class StatementCodeGenerator
     @Override
     public void visit(AssertStatement object)
     {
+        final String descriptor;
+
+        final LabelNode END = new LabelNode();
+
+        compileCondition(object.getCondition());
+
+        code.add(new JumpInsnNode(Utils.IF_TRUE, END));
+
+        code.add(new TypeInsnNode(Opcodes.NEW, "autumn/lang/exceptions/AssertionFailedException"));
+
+        code.add(new InsnNode(Opcodes.DUP));
+
+        code.add(new LdcInsnNode(object.getLocation().getFile().toString()));
+
+        code.add(new LdcInsnNode(object.getLocation().getLine()));
+
+        if (object.getMessage() == null)
+        {
+            descriptor = "(Ljava/lang/String;I)V";
+        }
+        else
+        {
+            descriptor = "(Ljava/lang/String;ILjava/lang/String;)V";
+
+            object.getMessage().accept(this);
+        }
+
+        code.add(new MethodInsnNode(Opcodes.INVOKESPECIAL,
+                                    "autumn/lang/exceptions/AssertionFailedException",
+                                    "<init>",
+                                    descriptor));
+
+        code.add(new InsnNode(Opcodes.ATHROW));
+
+        code.add(END);
+    }
+
+    @Override
+    public void visit(AssumeStatement object)
+    {
+        // TODO: These need to be disablable.
+
         final String descriptor;
 
         final LabelNode END = new LabelNode();

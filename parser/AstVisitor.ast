@@ -450,6 +450,34 @@ rule assertion_echo_empty
 }
 
 ###################################################################################################
+# Statements --> Exception Handling --> Assume
+###################################################################################################
+
+rule assume_statement
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createStatementAssume();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+
+  # Merge the upper stack with the next lower stack.
+  call builder.popStack();
+}
+
+rule assumption_echo_empty
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # The builder expects null, if the message is unspecified.
+  call builder.pushNull();
+}
+
+###################################################################################################
 # Statements --> Exception Handling --> Throw
 ###################################################################################################
 
@@ -570,6 +598,25 @@ rule while_statement
 
   # Create the AST node.
   call builder.createStatementWhile();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+
+  # Merge the upper stack with the next lower stack.
+  call builder.popStack();
+}
+
+###################################################################################################
+# Statements --> Looping --> Forever
+###################################################################################################
+
+rule forever_statement
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createStatementForever();
 
   # Set the source-location information.
   call Utils.setSourceLocation($node);
@@ -1419,6 +1466,22 @@ rule xor_operation
 
   # Create the AST node.
   call builder.createOperationXor();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+}
+
+###################################################################################################
+# Expressions --> Operators --> Logical-IMPLIES
+###################################################################################################
+
+rule implies_operation
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createOperationImplies();
 
   # Set the source-location information.
   call Utils.setSourceLocation($node);

@@ -572,6 +572,20 @@ public final class PrintingVisitor
     }
 
     @Override
+    public void visit(final ForeverStatement object)
+    {
+        record(object);
+        require(object, object.getBody());
+
+        p.addLine();
+        p.addText("forever");
+
+        object.getBody().accept(this);
+
+        p.addEmptyLine();
+    }
+
+    @Override
     public void visit(final WhileStatement object)
     {
         record(object);
@@ -939,6 +953,24 @@ public final class PrintingVisitor
 
         p.addLine();
         p.addText("assert ");
+        object.getCondition().accept(this);
+        if (object.getMessage() != null)
+        {
+            p.addText(" echo ");
+            object.getMessage().accept(this);
+        }
+        p.addText(";");
+        p.addEmptyLine();
+    }
+
+    @Override
+    public void visit(final AssumeStatement object)
+    {
+        record(object);
+        require(object, object.getCondition());
+
+        p.addLine();
+        p.addText("assume ");
         object.getCondition().accept(this);
         if (object.getMessage() != null)
         {
@@ -1462,6 +1494,12 @@ public final class PrintingVisitor
     public void visit(final XorOperation object)
     {
         visitBinaryOperation("^", object);
+    }
+
+    @Override
+    public void visit(final ImpliesOperation object)
+    {
+        visitBinaryOperation("->", object);
     }
 
     @Override

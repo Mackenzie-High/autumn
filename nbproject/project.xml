@@ -23,13 +23,18 @@
         </references>
         <spellchecker-wordlist xmlns="http://www.netbeans.org/ns/spellchecker-wordlist/1">
             <word>ArgumentStack</word>
+            <word>BigInteger</word>
+            <word>incrementAndGet</word>
+            <word>intValue</word>
             <word>moduleAnnotationDefinitions</word>
             <word>moduleDesignDefinitions</word>
             <word>moduleExceptionDefinitions</word>
             <word>moduleFunctions</word>
             <word>moduleInvokeFunction</word>
+            <word>newArray</word>
             <word>parameterTypes</word>
             <word>returnType</word>
+            <word>valueOf</word>
         </spellchecker-wordlist>
     </configuration>
 </project>

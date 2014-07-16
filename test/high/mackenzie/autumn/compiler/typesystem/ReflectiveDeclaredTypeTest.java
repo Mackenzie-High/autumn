@@ -4,43 +4,35 @@
  */
 package high.mackenzie.autumn.compiler.typesystem;
 
-import high.mackenzie.autumn.lang.compiler.typesystem.ReflectiveField;
-import high.mackenzie.autumn.lang.compiler.typesystem.ReflectiveConstructor;
-import high.mackenzie.autumn.lang.compiler.typesystem.TypeFactory;
-import high.mackenzie.autumn.lang.compiler.typesystem.ReflectiveMethod;
-import high.mackenzie.autumn.lang.compiler.typesystem.design.IAnnotatable;
-import high.mackenzie.autumn.lang.compiler.typesystem.design.IAnnotation;
-import high.mackenzie.autumn.lang.compiler.typesystem.design.IDeclaredType;
-import java.net.URL;
-import java.io.IOException;
-import java.util.zip.ZipEntry;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.util.zip.ZipInputStream;
-import java.util.List;
-import java.util.ArrayList;
-import java.lang.annotation.Annotation;
-import high.mackenzie.autumn.lang.compiler.typesystem.design.IFormalParameter;
-import high.mackenzie.autumn.lang.compiler.typesystem.design.IMethod;
-import java.lang.reflect.Method;
-import high.mackenzie.autumn.lang.compiler.typesystem.design.IConstructor;
-import java.lang.reflect.Constructor;
-import high.mackenzie.autumn.lang.compiler.typesystem.design.IField;
-import java.lang.reflect.Field;
-import java.util.LinkedList;
-import high.mackenzie.autumn.lang.compiler.typesystem.design.IClassType;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.google.common.io.Resources;
 import com.google.common.reflect.Reflection;
+import high.mackenzie.autumn.lang.compiler.typesystem.ReflectiveConstructor;
+import high.mackenzie.autumn.lang.compiler.typesystem.ReflectiveField;
+import high.mackenzie.autumn.lang.compiler.typesystem.ReflectiveMethod;
+import high.mackenzie.autumn.lang.compiler.typesystem.TypeFactory;
+import high.mackenzie.autumn.lang.compiler.typesystem.design.IAnnotatable;
+import high.mackenzie.autumn.lang.compiler.typesystem.design.IAnnotation;
+import high.mackenzie.autumn.lang.compiler.typesystem.design.IConstructor;
+import high.mackenzie.autumn.lang.compiler.typesystem.design.IDeclaredType;
+import high.mackenzie.autumn.lang.compiler.typesystem.design.IField;
+import high.mackenzie.autumn.lang.compiler.typesystem.design.IFormalParameter;
+import high.mackenzie.autumn.lang.compiler.typesystem.design.IMethod;
 import high.mackenzie.snowflake.Utils;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
+import static org.junit.Assert.*;
 import org.junit.Test;
 import org.objectweb.asm.Type;
-import static org.junit.Assert.*;
 
 /**
  *
@@ -139,8 +131,8 @@ public class ReflectiveDeclaredTypeTest
 
         // Check Superclass
         final Class superclass = clazz.getSuperclass() == null
-                                 ? Object.class
-                                 : clazz.getSuperclass();
+                ? Object.class
+                : clazz.getSuperclass();
 
         assertEquals(Type.getDescriptor(superclass),
                      type.getSuperclass().getDescriptor());
@@ -231,7 +223,7 @@ public class ReflectiveDeclaredTypeTest
         assertEquals(reflective.getModifiers(), ctor.getModifiers());
 
         // Check Name
-        assertEquals(reflective.getName(), ctor.getName());
+        assertEquals("<init>", ctor.getName());
 
         // Check Parameters
         for (int i = 0; i < reflective.getParameterTypes().length; i++)

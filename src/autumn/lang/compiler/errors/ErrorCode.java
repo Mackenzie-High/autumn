@@ -20,9 +20,13 @@ public enum ErrorCode
      */
     SYNTAX_ERROR,
     /**
-     * Meaning: No accessible overload of the operator will accept the arguments' type(s).
+     * Meaning: No accessible overload of the unary operator will accept the operand type.
      */
-    NO_SUCH_OPERATOR_OVERLOAD,
+    NO_SUCH_UNARY_OPERATOR,
+    /**
+     * Meaning: No accessible overload of the binary operator will accept the operand types.
+     */
+    NO_SUCH_BINARY_OPERATOR,
     /**
      * Meaning: No accessible overload of the constructor will accept the arguments' type(s).
      */
@@ -273,4 +277,8 @@ public enum ErrorCode
      * Meaning: A set of selected method overloads do not share their return-types.
      */
     UNEQUAL_RETURN_TYPES,
+    /**
+     * Meaning: A input value cannot be converted to an output type due to its type.
+     */
+    IMPOSSIBLE_CONVERSION,
 }

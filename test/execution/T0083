@@ -1,0 +1,25 @@
+module * in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    assert (55B % 4B) == 3B;
+
+    assert (55S % 4S) == 3S;
+
+    assert (55  % 4)  == 3;
+
+    assert (55L % 4L) == 3L;
+
+    assert (55.0F % 4.0F) == 3.0F;
+
+    assert (55.0 % 4.0) == 3.0;
+
+    assert ((F::big 55) % (F::big 4)) == (F::big 3);
+
+    assert (((F::big 55.0) % (F::big 4.0)).intValue) == 3;
+
+    // assert ((null is BigInteger) % (null is BigInteger)) == (F::big 0);
+
+    // assert ((null is BigDecimal) % (null is BigDecimal)) == (field BigDecimal::ZERO);
+}

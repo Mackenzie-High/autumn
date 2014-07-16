@@ -99,7 +99,7 @@ public class DesignCompiler
         /**
          * Ensure that this design is not a duplicate type-declaration.
          */
-        if (program.typesystem.getTypeFactory().findType(descriptor) != null)
+        if (program.typesystem.typefactory().findType(descriptor) != null)
         {
             // TODO: error
             System.out.println("Duplicate Type: " + descriptor);
@@ -108,7 +108,7 @@ public class DesignCompiler
         /**
          * Declare the design.
          */
-        this.type = program.typesystem.getTypeFactory().newInterfaceType(descriptor);
+        this.type = program.typesystem.typefactory().newInterfaceType(descriptor);
     }
 
     /**

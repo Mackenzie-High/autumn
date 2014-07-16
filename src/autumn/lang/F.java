@@ -9,6 +9,8 @@ import java.io.File;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.lang.reflect.Array;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -196,6 +198,13 @@ public final class F
         }
     }
 
+    /**
+     * This method create a new single-dimensional array.
+     *
+     * @param element is the type of elements in the new array.
+     * @param size is the size of the new array.
+     * @return the new array.
+     */
     public static Object newArray(final Class element,
                                   final int size)
     {
@@ -1237,5 +1246,49 @@ public final class F
         final Thread thread = new Thread(runnable);
 
         return thread;
+    }
+
+    /**
+     * This method creates a new BigInteger from an int value.
+     *
+     * @param value is the value of the new BigInteger.
+     * @return the aforedescribed BigInteger.
+     */
+    public static BigInteger big(final int value)
+    {
+        return BigInteger.valueOf(value);
+    }
+
+    /**
+     * This method creates a new BigInteger from a long value.
+     *
+     * @param value is the value of the new BigInteger.
+     * @return the aforedescribed BigInteger.
+     */
+    public static BigInteger big(final long value)
+    {
+        return BigInteger.valueOf(value);
+    }
+
+    /**
+     * This method creates a new BigDecimal from a float value.
+     *
+     * @param value is the value of the new BigDecimal.
+     * @return the aforedescribed BigDecimal.
+     */
+    public static BigDecimal big(final float value)
+    {
+        return BigDecimal.valueOf(value);
+    }
+
+    /**
+     * This method creates a new BigDecimal from a double value.
+     *
+     * @param value is the value of the new BigDecimal.
+     * @return the aforedescribed BigDecimal.
+     */
+    public static BigDecimal big(final double value)
+    {
+        return BigDecimal.valueOf(value);
     }
 }

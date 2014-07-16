@@ -1,0 +1,8 @@
+module Main in typechecks;
+
+@Start
+defun main (args : String[]) : void
+{
+    // No overload of the '&' operator takes an int and a string as operands.
+    2 & "X";
+}

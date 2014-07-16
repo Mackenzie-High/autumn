@@ -143,8 +143,15 @@ public final class TypeSystemUtils
 
     public final IClassType LOCAL;
 
+    /**
+     * Sole Constructor.
+     *
+     * @param factory is the type-factory being used by the compiler.
+     */
     public TypeSystemUtils(final ITypeFactory factory)
     {
+        Preconditions.checkNotNull(factory);
+
         this.factory = factory;
 
         this.PRIMITIVE_BOOLEAN = factory.getBoolean();
@@ -276,6 +283,15 @@ public final class TypeSystemUtils
      * <tr> <td><code>float</code></td> <td><code>java.lang.Number</code></td></tr>
      * <tr> <td><code>double</code></td> <td><code>java.lang.Number</code></td></tr>
      *
+     * <tr> <td><code>boolean</code></td> <td><code>java.lang.Comparable</code></td></tr>
+     * <tr> <td><code>char</code></td> <td><code>java.lang.Comparable</code></td></tr>
+     * <tr> <td><code>byte</code></td> <td><code>java.lang.Comparable</code></td></tr>
+     * <tr> <td><code>short</code></td> <td><code>java.lang.Comparable</code></td></tr>
+     * <tr> <td><code>int</code></td> <td><code>java.lang.Comparable</code></td></tr>
+     * <tr> <td><code>long</code></td> <td><code>java.lang.Comparable</code></td></tr>
+     * <tr> <td><code>float</code></td> <td><code>java.lang.Comparable</code></td></tr>
+     * <tr> <td><code>double</code></td> <td><code>java.lang.Comparable</code></td></tr>
+     *
      * <tr> <td><code>boolean</code></td> <td><code>java.lang.Object</code></td></tr>
      * <tr> <td><code>char</code></td> <td><code>java.lang.Object</code></td></tr>
      * <tr> <td><code>byte</code></td> <td><code>java.lang.Object</code></td></tr>
@@ -301,62 +317,62 @@ public final class TypeSystemUtils
 
         final boolean is_number = output.equals(NUMBER);
 
-        final boolean is_base = is_number || is_object;
+        final boolean is_comparable = output.equals(factory.fromClass(Comparable.class));
 
-        if (input.equals(PRIMITIVE_BOOLEAN) && (output.equals(BOXED_BOOLEAN) || is_object))
+        if (input.equals(PRIMITIVE_BOOLEAN) && (output.equals(BOXED_BOOLEAN) || is_object || is_comparable))
         {
             result.add(new MethodInsnNode(Opcodes.INVOKESTATIC,
-                                          "java/lang/Boolean",
-                                          "valueOf",
+                                          Utils.internalName(CONVERSIONS),
+                                          "box",
                                           "(Z)Ljava/lang/Boolean;"));
         }
-        else if (input.equals(PRIMITIVE_CHAR) && (output.equals(BOXED_CHAR) || is_object))
+        else if (input.equals(PRIMITIVE_CHAR) && (output.equals(BOXED_CHAR) || is_object || is_comparable))
         {
             result.add(new MethodInsnNode(Opcodes.INVOKESTATIC,
-                                          "java/lang/Character",
-                                          "valueOf",
+                                          Utils.internalName(CONVERSIONS),
+                                          "box",
                                           "(C)Ljava/lang/Character;"));
         }
-        else if (input.equals(PRIMITIVE_BYTE) && (output.equals(BOXED_BYTE) || is_base))
+        else if (input.equals(PRIMITIVE_BYTE) && (output.equals(BOXED_BYTE) || is_object || is_number || is_comparable))
         {
             result.add(new MethodInsnNode(Opcodes.INVOKESTATIC,
-                                          "java/lang/Byte",
-                                          "valueOf",
+                                          Utils.internalName(CONVERSIONS),
+                                          "box",
                                           "(B)Ljava/lang/Byte;"));
         }
-        else if (input.equals(PRIMITIVE_SHORT) && (output.equals(BOXED_SHORT) || is_base))
+        else if (input.equals(PRIMITIVE_SHORT) && (output.equals(BOXED_SHORT) || is_object || is_number || is_comparable))
         {
             result.add(new MethodInsnNode(Opcodes.INVOKESTATIC,
-                                          "java/lang/Short",
-                                          "valueOf",
+                                          Utils.internalName(CONVERSIONS),
+                                          "box",
                                           "(S)Ljava/lang/Short;"));
         }
-        else if (input.equals(PRIMITIVE_INT) && (output.equals(BOXED_INT) || is_base))
+        else if (input.equals(PRIMITIVE_INT) && (output.equals(BOXED_INT) || is_object || is_number || is_comparable))
         {
             result.add(new MethodInsnNode(Opcodes.INVOKESTATIC,
-                                          "java/lang/Integer",
-                                          "valueOf",
+                                          Utils.internalName(CONVERSIONS),
+                                          "box",
                                           "(I)Ljava/lang/Integer;"));
         }
-        else if (input.equals(PRIMITIVE_LONG) && (output.equals(BOXED_LONG) || is_base))
+        else if (input.equals(PRIMITIVE_LONG) && (output.equals(BOXED_LONG) || is_object || is_number || is_comparable))
         {
             result.add(new MethodInsnNode(Opcodes.INVOKESTATIC,
-                                          "java/lang/Long",
-                                          "valueOf",
+                                          Utils.internalName(CONVERSIONS),
+                                          "box",
                                           "(J)Ljava/lang/Long;"));
         }
-        else if (input.equals(PRIMITIVE_FLOAT) && (output.equals(BOXED_FLOAT) || is_base))
+        else if (input.equals(PRIMITIVE_FLOAT) && (output.equals(BOXED_FLOAT) || is_object || is_number || is_comparable))
         {
             result.add(new MethodInsnNode(Opcodes.INVOKESTATIC,
-                                          "java/lang/Float",
-                                          "valueOf",
+                                          Utils.internalName(CONVERSIONS),
+                                          "box",
                                           "(F)Ljava/lang/Float;"));
         }
-        else if (input.equals(PRIMITIVE_DOUBLE) && (output.equals(BOXED_DOUBLE) || is_base))
+        else if (input.equals(PRIMITIVE_DOUBLE) && (output.equals(BOXED_DOUBLE) || is_object || is_number || is_comparable))
         {
             result.add(new MethodInsnNode(Opcodes.INVOKESTATIC,
-                                          "java/lang/Double",
-                                          "valueOf",
+                                          Utils.internalName(CONVERSIONS),
+                                          "box",
                                           "(D)Ljava/lang/Double;"));
         }
 
@@ -395,63 +411,61 @@ public final class TypeSystemUtils
 
         final boolean is_number = output.equals(NUMBER);
 
-        final boolean is_base = is_number || is_object;
-
         if (output.equals(PRIMITIVE_BOOLEAN) && input.equals(BOXED_BOOLEAN))
         {
-            result.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL,
-                                          "java/lang/Boolean",
-                                          "booleanValue",
-                                          "()Z"));
+            result.add(new MethodInsnNode(Opcodes.INVOKESTATIC,
+                                          Utils.internalName(CONVERSIONS),
+                                          "unbox",
+                                          "(Ljava/lang/Boolean;)Z"));
         }
         else if (output.equals(PRIMITIVE_CHAR) && input.equals(BOXED_CHAR))
         {
-            result.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL,
-                                          "java/lang/Character",
-                                          "charValue",
-                                          "()C"));
+            result.add(new MethodInsnNode(Opcodes.INVOKESTATIC,
+                                          Utils.internalName(CONVERSIONS),
+                                          "unbox",
+                                          "(Ljava/lang/Character;)C"));
         }
         else if (output.equals(PRIMITIVE_BYTE) && input.equals(BOXED_BYTE))
         {
-            result.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL,
-                                          "java/lang/Byte",
-                                          "byteValue",
-                                          "()B"));
+            result.add(new MethodInsnNode(Opcodes.INVOKESTATIC,
+                                          Utils.internalName(CONVERSIONS),
+                                          "unbox",
+                                          "(Ljava/lang/Byte;)B"));
         }
         else if (output.equals(PRIMITIVE_SHORT) && input.equals(BOXED_SHORT))
         {
-            result.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL,
-                                          "java/lang/Short",
-                                          "shortValue",
-                                          "()S"));
+            result.add(new MethodInsnNode(Opcodes.INVOKESTATIC,
+                                          Utils.internalName(CONVERSIONS),
+                                          "unbox",
+                                          "(Ljava/lang/Short;)S"));
         }
         else if (output.equals(PRIMITIVE_INT) && input.equals(BOXED_INT))
         {
-            result.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL,
-                                          "java/lang/Integer",
-                                          "intValue",
-                                          "()I"));
+            result.add(new MethodInsnNode(Opcodes.INVOKESTATIC,
+                                          Utils.internalName(CONVERSIONS),
+                                          "unbox",
+                                          "(Ljava/lang/Integer;)I"));
         }
         else if (output.equals(PRIMITIVE_LONG) && input.equals(BOXED_LONG))
         {
-            result.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL,
-                                          "java/lang/Long",
-                                          "longValue",
-                                          "()J"));
+            result.add(new MethodInsnNode(Opcodes.INVOKESTATIC,
+                                          Utils.internalName(CONVERSIONS),
+                                          "unbox",
+                                          "(Ljava/lang/Long;)J"));
         }
         else if (output.equals(PRIMITIVE_FLOAT) && input.equals(BOXED_FLOAT))
         {
-            result.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL,
-                                          "java/lang/Float",
-                                          "floatValue",
-                                          "()F"));
+            result.add(new MethodInsnNode(Opcodes.INVOKESTATIC,
+                                          Utils.internalName(CONVERSIONS),
+                                          "unbox",
+                                          "(Ljava/lang/Float;)F"));
         }
         else if (output.equals(PRIMITIVE_DOUBLE) && input.equals(BOXED_DOUBLE))
         {
-            result.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL,
-                                          "java/lang/Double",
-                                          "doubleValue",
-                                          "()D"));
+            result.add(new MethodInsnNode(Opcodes.INVOKESTATIC,
+                                          Utils.internalName(CONVERSIONS),
+                                          "unbox",
+                                          "(Ljava/lang/Double;)D"));
         }
 
         return result.isEmpty() ? null : result;
@@ -635,12 +649,22 @@ NEXT_METHOD:
         return result;
     }
 
-    public boolean isAccessible(final IDeclaredType usage_site,
+    /**
+     * This method determines whether a given constructor, method, or field is accessible.
+     *
+     * @param user is the place where the member is being used from.
+     * @param member is the member being used.
+     * @return true, iff the member is accessible.
+     */
+    public boolean isAccessible(final IDeclaredType user,
                                 final IMember member)
     {
+        Preconditions.checkNotNull(user);
+        Preconditions.checkNotNull(member);
+
         // Case: A member of an inaccessible type is not accessible.
 
-        if (isAccessible(usage_site, member.getOwner()) == false)
+        if (isAccessible(user, member.getOwner()) == false)
         {
             return false;
         }
@@ -655,12 +679,19 @@ NEXT_METHOD:
         // Case: A member, with package-access, of an accessible type is only accessible
         //        from within the same package.
 
-        final String namespace1 = usage_site.getNamespace();
+        final String namespace1 = user.getNamespace();
         final String namespace2 = member.getOwner().getNamespace();
 
         return namespace1.equals(namespace2);
     }
 
+    /**
+     * This method determines whether a given type is accessible.
+     *
+     * @param usage_site is the place where the type is being used from.
+     * @param used is the type being used.
+     * @return true, iff the type being used is accessible.
+     */
     public boolean isAccessible(final IDeclaredType usage_site,
                                 final IDeclaredType used)
     {
@@ -690,28 +721,64 @@ NEXT_METHOD:
         return namespace1.equals(namespace2);
     }
 
+    /**
+     * This method resolves a non-static field.
+     *
+     * @param user is the site where the field is being accessed.
+     * @param owner is the type that contains the field.
+     * @param name is the name of the field.
+     * @return the resolved field; or null, if no such field could be found.
+     */
     public IField resolveField(final IDeclaredType user,
                                final IDeclaredType owner,
                                final String name)
     {
+        Preconditions.checkNotNull(user);
+        Preconditions.checkNotNull(owner);
+        Preconditions.checkNotNull(name);
+
         final List<IField> result = select(user, owner.getFields(), false, name);
 
         return (result.isEmpty() ? null : result.get(0));
     }
 
+    /**
+     * This method resolves a static field.
+     *
+     * @param user is the site where the field is being accessed.
+     * @param owner is the type that contains the field.
+     * @param name is the name of the field.
+     * @return the resolved field; or null, if no such field could be found.
+     */
     public IField resolveStaticField(final IDeclaredType user,
                                      final IDeclaredType owner,
                                      final String name)
     {
+        Preconditions.checkNotNull(user);
+        Preconditions.checkNotNull(owner);
+        Preconditions.checkNotNull(name);
+
         final List<IField> result = select(user, owner.getFields(), true, name);
 
         return (result.isEmpty() ? null : result.get(0));
     }
 
+    /**
+     * This method resolves a constructor.
+     *
+     * @param user is the site where the constructor is being invoked.
+     * @param owner is the type that contains the constructor.
+     * @param arguments are the types of the arguments being passed to the constructor.
+     * @return the resolved constructor; or null, if no such constructor could be found.
+     */
     public List<IConstructor> resolveCtors(final IDeclaredType user,
                                            final IDeclaredType owner,
                                            final List<IType> arguments)
     {
+        Preconditions.checkNotNull(user);
+        Preconditions.checkNotNull(owner);
+        Preconditions.checkNotNull(arguments);
+
         final List<IConstructor> selected = select(user,
                                                    owner.getConstructors(),
                                                    false,
@@ -724,11 +791,25 @@ NEXT_METHOD:
         return sorted;
     }
 
+    /**
+     * This method resolves a non-static method.
+     *
+     * @param user is the site where the method is being invoked.
+     * @param owner is the type that contains the method.
+     * @param name is the name of the method.
+     * @param arguments are the types of the arguments being passed to the method.
+     * @return the resolved method; or null, if no such method could be found.
+     */
     public List<IMethod> resolveMethods(final IDeclaredType user,
                                         final IDeclaredType owner,
                                         final String name,
                                         final List<IType> arguments)
     {
+        Preconditions.checkNotNull(user);
+        Preconditions.checkNotNull(owner);
+        Preconditions.checkNotNull(name);
+        Preconditions.checkNotNull(arguments);
+
         final List<IMethod> selected = select(user,
                                               owner.getAllVisibleMethods(),
                                               false,
@@ -741,11 +822,25 @@ NEXT_METHOD:
         return sorted;
     }
 
+    /**
+     * This method resolves a static method.
+     *
+     * @param user is the site where the method is being invoked.
+     * @param owner is the type that contains the method.
+     * @param name is the name of the method.
+     * @param arguments are the types of the arguments being passed to the method.
+     * @return the resolved method; or null, if no such method could be found.
+     */
     public List<IMethod> resolveStaticMethods(final IDeclaredType user,
                                               final IDeclaredType owner,
                                               final String name,
                                               final List<IType> arguments)
     {
+        Preconditions.checkNotNull(user);
+        Preconditions.checkNotNull(owner);
+        Preconditions.checkNotNull(name);
+        Preconditions.checkNotNull(arguments);
+
         final List<IMethod> selected = select(user,
                                               owner.getAllVisibleMethods(),
                                               true,
@@ -769,6 +864,8 @@ NEXT_METHOD:
     public IReturnType findType(final String typename,
                                 final Integer dimensions)
     {
+        Preconditions.checkNotNull(typename);
+
         final IReturnType element;
 
         // Primitive Types
@@ -847,6 +944,8 @@ NEXT_METHOD:
      */
     public String extractTypeName(final TypeSpecifier specifier)
     {
+        Preconditions.checkNotNull(specifier);
+
         final StringBuilder result = new StringBuilder();
 
         if (specifier.getNamespace() != null)
@@ -862,16 +961,38 @@ NEXT_METHOD:
         return result.toString();
     }
 
+    /**
+     * This method determines whether a type is a subtype of another type.
+     *
+     * @param instance is the possible subtype.
+     * @param supertype is the possible supertype.
+     * @return true, iff the instance is a subtype of the supertype.
+     */
     public boolean isSubtypeOf(final IType instance,
                                final Class supertype)
     {
+        Preconditions.checkNotNull(instance);
+        Preconditions.checkNotNull(supertype);
+
         final IType target = factory.fromClass(supertype);
 
         return target != null && instance.isSubtypeOf(target);
     }
 
+    /**
+     * This method sorts a group of types.
+     *
+     * <p>
+     * The returned list will be sorted from most specific to most abstract.
+     * </p>
+     *
+     * @param types are the types to sort.
+     * @return a sorted immutable list containing the types.
+     */
     public <T extends IType> List<T> sort(final Iterable<T> types)
     {
+        Preconditions.checkNotNull(types);
+
         final TopoSorter<T> sorter = new TopoSorter<T>()
         {
             @Override
@@ -896,9 +1017,12 @@ NEXT_METHOD:
      * @param right is second of the two types.
      * @return the widest of the two types, or null, if the two types are incompatible.
      */
-    public IType widestType(final IType left,
-                            final IType right)
+    public <T extends IType> T widestType(final T left,
+                                          final T right)
     {
+        Preconditions.checkNotNull(left);
+        Preconditions.checkNotNull(right);
+
         final boolean test1 = left.isSubtypeOf(right);
         final boolean test2 = right.isSubtypeOf(left);
 
@@ -926,6 +1050,9 @@ NEXT_METHOD:
     public static IAnnotation findAnnotation(final IAnnotatable annotatable,
                                              final String descriptor)
     {
+        Preconditions.checkNotNull(annotatable);
+        Preconditions.checkNotNull(descriptor);
+
         for (IAnnotation x : annotatable.getAnnotations())
         {
             if (descriptor.equals(x.getAnnotationType().getDescriptor()))
@@ -960,6 +1087,9 @@ NEXT_METHOD:
     public static boolean isAnnotationPresent(final IAnnotatable annotatable,
                                               final Class clazz)
     {
+        Preconditions.checkNotNull(annotatable);
+        Preconditions.checkNotNull(clazz);
+
         final String descriptor = Type.getDescriptor(clazz);
 
         return findAnnotation(annotatable, descriptor) != null;
@@ -975,6 +1105,9 @@ NEXT_METHOD:
     public static int countAnnotations(final Iterable<? extends IAnnotatable> annotatables,
                                        final Class annotation)
     {
+        Preconditions.checkNotNull(annotatables);
+        Preconditions.checkNotNull(annotation);
+
         int count = 0;
 
         for (IAnnotatable annotatable : annotatables)
@@ -986,5 +1119,32 @@ NEXT_METHOD:
         }
 
         return count;
+    }
+
+    /**
+     * This method searches through a list for a specific method or constructor.
+     *
+     * @param list is a list of methods and/or constructors.
+     * @param name is the name of the element to find.
+     * @param descriptor is the descriptor of the element to find.
+     * @return the found element; or null, if no such element exists.
+     */
+    public static <T extends IInvokableMember> T find(final Iterable<? extends T> list,
+                                                      final String name,
+                                                      final String descriptor)
+    {
+        Preconditions.checkNotNull(list);
+        Preconditions.checkNotNull(name);
+        Preconditions.checkNotNull(descriptor);
+
+        for (T element : list)
+        {
+            if (element.getName().equals(name) && element.getDescriptor().equals(descriptor))
+            {
+                return element;
+            }
+        }
+
+        return null;
     }
 }

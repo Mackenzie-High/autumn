@@ -1,30 +1,40 @@
 package autumn.lang.internals;
 
 import com.google.common.base.Objects;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 
 /**
  * This class provides static method in order to implement Autumn's operators.
  *
- * <p> <b>Note:</b> Invocations of these methods should be optimized out by Autumn compilers. </p>
+ * <p>
+ * <b>Note:</b> Invocations of these methods should be optimized out by Autumn compilers.
+ * </p>
  *
  * @author mackenzie
  */
 public class Operators
 {
     /**
-     * Concatenation Operation
+     * This method prevents null pointer exceptions.
      *
-     * @param left is the left-operand.
-     * @param right is the right-operand.
-     * @return the left-operand and the right-operand concatenated together.
+     * @param value is the value that may be null.
+     * @return zero; or the value itself, if the value is non-null.
      */
-    public static String concat(final CharSequence left,
-                                final CharSequence right)
+    private static BigInteger operand(final BigInteger value)
     {
-        final StringBuilder result = new StringBuilder();
-        result.append(left);
-        result.append(right);
-        return result.toString();
+        return value == null ? BigInteger.ZERO : value;
+    }
+
+    /**
+     * This method prevents null pointer exceptions.
+     *
+     * @param value is the value that may be null.
+     * @return zero; or the value itself, if the value is non-null.
+     */
+    private static BigDecimal operand(final BigDecimal value)
+    {
+        return value == null ? BigDecimal.ZERO : value;
     }
 
     /**
@@ -34,24 +44,8 @@ public class Operators
      * @param right is the right-operand.
      * @return the left-operand and the right-operand concatenated together.
      */
-    public static String concat(final char left,
-                                final CharSequence right)
-    {
-        final StringBuilder result = new StringBuilder();
-        result.append(left);
-        result.append(right);
-        return result.toString();
-    }
-
-    /**
-     * Concatenation Operation
-     *
-     * @param left is the left-operand.
-     * @param right is the right-operand.
-     * @return the left-operand and the right-operand concatenated together.
-     */
-    public static String concat(final CharSequence left,
-                                final char right)
+    public static String concat(final Object left,
+                                final Object right)
     {
         final StringBuilder result = new StringBuilder();
         result.append(left);
@@ -123,6 +117,28 @@ public class Operators
     public static double negate(final double operand)
     {
         return (double) -operand;
+    }
+
+    /**
+     * Negation Operation
+     *
+     * @param operand is the operand.
+     * @return <code>- operand</code>
+     */
+    public static BigInteger negate(final BigInteger operand)
+    {
+        return operand(operand).negate();
+    }
+
+    /**
+     * Negation Operation
+     *
+     * @param operand is the operand.
+     * @return <code>- operand</code>
+     */
+    public static BigDecimal negate(final BigDecimal operand)
+    {
+        return operand(operand).negate();
     }
 
     /**
@@ -217,6 +233,32 @@ public class Operators
     }
 
     /**
+     * Division Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return <code>left / right</code>
+     */
+    public static BigInteger divide(final BigInteger left,
+                                    final BigInteger right)
+    {
+        return operand(left).divide(operand(right));
+    }
+
+    /**
+     * Division Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return <code>left / right</code>
+     */
+    public static BigDecimal divide(final BigDecimal left,
+                                    final BigDecimal right)
+    {
+        return operand(left).divide(operand(right));
+    }
+
+    /**
      * Modulo Operation
      *
      * @param left is the left-operand.
@@ -292,6 +334,32 @@ public class Operators
                                final float right)
     {
         return left % right;
+    }
+
+    /**
+     * Modulo Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return <code>left % right</code>
+     */
+    public static BigInteger modulo(final BigInteger left,
+                                    final BigInteger right)
+    {
+        return operand(left).remainder(operand(right));
+    }
+
+    /**
+     * Modulo Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return <code>left % right</code>
+     */
+    public static BigDecimal modulo(final BigDecimal left,
+                                    final BigDecimal right)
+    {
+        return operand(left).remainder(operand(right));
     }
 
     /**
@@ -399,6 +467,32 @@ public class Operators
     }
 
     /**
+     * Multiply Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return <code>left * right</code>
+     */
+    public static BigInteger multiply(final BigInteger left,
+                                      final BigInteger right)
+    {
+        return operand(left).multiply(operand(right));
+    }
+
+    /**
+     * Multiply Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return <code>left * right</code>
+     */
+    public static BigDecimal multiply(final BigDecimal left,
+                                      final BigDecimal right)
+    {
+        return operand(left).multiply(operand(right));
+    }
+
+    /**
      * Add Operation
      *
      * @param left is the left-operand.
@@ -490,6 +584,32 @@ public class Operators
     }
 
     /**
+     * Add Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return <code>left + right</code>
+     */
+    public static BigInteger add(final BigInteger left,
+                                 final BigInteger right)
+    {
+        return operand(left).add(operand(right));
+    }
+
+    /**
+     * Add Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return <code>left + right</code>
+     */
+    public static BigDecimal add(final BigDecimal left,
+                                 final BigDecimal right)
+    {
+        return operand(left).add(operand(right));
+    }
+
+    /**
      * Subtract Operation
      *
      * @param left is the left-operand.
@@ -578,6 +698,32 @@ public class Operators
                                   final double right)
     {
         return left - right;
+    }
+
+    /**
+     * Subtract Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return <code>left - right</code>
+     */
+    public static BigInteger subtract(final BigInteger left,
+                                      final BigInteger right)
+    {
+        return operand(left).subtract(operand(right));
+    }
+
+    /**
+     * Subtract Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return <code>left - right</code>
+     */
+    public static BigDecimal subtract(final BigDecimal left,
+                                      final BigDecimal right)
+    {
+        return operand(left).subtract(operand(right));
     }
 
     /**
@@ -821,6 +967,19 @@ public class Operators
      * @param right is the right-operand.
      * @return <code>left &lt; right</code>
      */
+    public static boolean lessThan(final boolean left,
+                                   final boolean right)
+    {
+        return !left && right;
+    }
+
+    /**
+     * Less-Than Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return <code>left &lt; right</code>
+     */
     public static boolean lessThan(final char left,
                                    final char right)
     {
@@ -915,7 +1074,35 @@ public class Operators
     public static boolean lessThan(final Comparable left,
                                    final Comparable right)
     {
-        return left.compareTo(right) < 0;
+        if (left != null && right != null)
+        {
+            return left.compareTo(right) < 0;
+        }
+        else if (left != null && right == null)
+        {
+            return false;
+        }
+        else if (left == null && right != null)
+        {
+            return true;
+        }
+        else // both null
+        {
+            return false;
+        }
+    }
+
+    /**
+     * Less-Than-OR-Equals Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return <code>left &lt;= right</code>
+     */
+    public static boolean lessThanOrEquals(final boolean left,
+                                           final boolean right)
+    {
+        return lessThan(left, right) || equals(left, right);
     }
 
     /**
@@ -1019,7 +1206,35 @@ public class Operators
     public static boolean lessThanOrEquals(final Comparable left,
                                            final Comparable right)
     {
-        return left.compareTo(right) <= 0;
+        if (left != null && right != null)
+        {
+            return left.compareTo(right) <= 0;
+        }
+        else if (left != null && right == null)
+        {
+            return false;
+        }
+        else if (left == null && right != null)
+        {
+            return true;
+        }
+        else
+        {
+            return true;
+        }
+    }
+
+    /**
+     * Greater-Than Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return <code>left &gt; right</code>
+     */
+    public static boolean greaterThan(final boolean left,
+                                      final boolean right)
+    {
+        return left && !right;
     }
 
     /**
@@ -1123,7 +1338,35 @@ public class Operators
     public static boolean greaterThan(final Comparable left,
                                       final Comparable right)
     {
-        return left.compareTo(right) > 0;
+        if (left != null && right != null)
+        {
+            return left.compareTo(right) > 0;
+        }
+        else if (left != null && right == null)
+        {
+            return true;
+        }
+        else if (left == null && right != null)
+        {
+            return false;
+        }
+        else // both null
+        {
+            return false;
+        }
+    }
+
+    /**
+     * Greater-Than-OR-Equals Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return <code>left &gt;= right</code>
+     */
+    public static boolean greaterThanOrEquals(final boolean left,
+                                              final boolean right)
+    {
+        return greaterThan(left, right) || equals(left, right);
     }
 
     /**
@@ -1227,7 +1470,22 @@ public class Operators
     public static boolean greaterThanOrEquals(final Comparable left,
                                               final Comparable right)
     {
-        return left.compareTo(right) >= 0;
+        if (left != null && right != null)
+        {
+            return left.compareTo(right) >= 0;
+        }
+        else if (left != null && right == null)
+        {
+            return true;
+        }
+        else if (left == null && right != null)
+        {
+            return false;
+        }
+        else // both null
+        {
+            return true;
+        }
     }
 
     /**
@@ -1304,5 +1562,18 @@ public class Operators
                               final boolean right)
     {
         return left ^ right;
+    }
+
+    /**
+     * Logical-IMPLIES Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return <code>left -&gt; right</code>
+     */
+    public static boolean implies(final boolean left,
+                                  final boolean right)
+    {
+        return !left || right;
     }
 }

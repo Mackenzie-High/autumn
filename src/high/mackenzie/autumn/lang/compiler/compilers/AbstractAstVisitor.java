@@ -115,6 +115,12 @@ public class AbstractAstVisitor
     }
 
     @Override
+    public void visit(ForeverStatement object)
+    {
+        throw new UnsupportedOperationException("This should never happen.");
+    }
+
+    @Override
     public void visit(WhileStatement object)
     {
         throw new UnsupportedOperationException("This should never happen.");
@@ -248,6 +254,12 @@ public class AbstractAstVisitor
 
     @Override
     public void visit(AssertStatement object)
+    {
+        throw new UnsupportedOperationException("This should never happen.");
+    }
+
+    @Override
+    public void visit(AssumeStatement object)
     {
         throw new UnsupportedOperationException("This should never happen.");
     }
@@ -566,6 +578,12 @@ public class AbstractAstVisitor
 
     @Override
     public void visit(XorOperation object)
+    {
+        throw new UnsupportedOperationException("This should never happen.");
+    }
+
+    @Override
+    public void visit(ImpliesOperation object)
     {
         throw new UnsupportedOperationException("This should never happen.");
     }

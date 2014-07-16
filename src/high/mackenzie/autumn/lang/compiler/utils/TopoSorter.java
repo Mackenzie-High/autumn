@@ -3,6 +3,7 @@ package high.mackenzie.autumn.lang.compiler.utils;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
+import high.mackenzie.autumn.resources.Finished;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
@@ -12,6 +13,7 @@ import java.util.ListIterator;
  *
  * @author Mackenzie High
  */
+@Finished("2014/07/12")
 public abstract class TopoSorter<T>
 {
     /**

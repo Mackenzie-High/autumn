@@ -1,0 +1,25 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    assert (- - 3B) == 3B;
+
+    assert (- - 3S) == 3S;
+
+    assert (- - 3) == 3;
+
+    assert (- - 3L) == 3L;
+
+    assert (- - 3.0F) == 3.0F;
+
+    assert (- - 3.0) == 3.0;
+
+    assert (- - (F::big 3)) == (F::big 3);
+
+    assert (- - (F::big 3.0)) == (F::big 3.0);
+
+    assert (- - (null is BigInteger)) == (F::big 0);
+
+    assert (- - (null is BigDecimal)) == (field BigDecimal::ZERO);
+}

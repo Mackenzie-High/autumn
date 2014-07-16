@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package high.mackenzie.autumn.lang.compiler.compilers;
 
 import autumn.lang.compiler.ast.commons.IExpression;
@@ -19,6 +15,7 @@ import high.mackenzie.autumn.lang.compiler.typesystem.design.IReturnType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IVariableType;
 import high.mackenzie.autumn.lang.compiler.utils.Conversion;
+import high.mackenzie.autumn.lang.compiler.utils.TypeSystemUtils;
 import java.util.List;
 
 /**
@@ -29,14 +26,49 @@ import java.util.List;
 public class ExpressionTypeChecker
         extends AbstractTypeChecker
 {
+    /**
+     * This field refers to the standard library method that implements identity-equality.
+     */
+    private final IMethod IDENTITY_EQUALITY;
+
+    /**
+     * This field refers to the standard library method that implements identity-inequality.
+     */
+    private final IMethod IDENTITY_INEQUALITY;
+
+    /**
+     * This is the scope of variables in the enclosing function.
+     */
     protected final VariableScope scope;
 
+    /**
+     * Sole Constructor.
+     *
+     * @param function is the function being compiled.
+     * @param scope is the scope of the function being compiled.
+     */
     public ExpressionTypeChecker(final FunctionCompiler function,
                                  final VariableScope scope)
     {
         super(function);
 
+        Preconditions.checkNotNull(function);
+        Preconditions.checkNotNull(scope);
+
         this.scope = scope;
+
+        // The Operators class in the standard library proivdes the operator implementations.
+        final IDeclaredType OPERATORS = program.typesystem.utils.OPERATORS;
+
+        // Find the method that implements identity equality.
+        this.IDENTITY_EQUALITY = TypeSystemUtils.find(OPERATORS.getMethods(),
+                                                      "identityEquals",
+                                                      "(Ljava/lang/Object;Ljava/lang/Object;)Z");
+
+        // Find the method that implements identity inequality.
+        this.IDENTITY_INEQUALITY = TypeSystemUtils.find(OPERATORS.getMethods(),
+                                                        "identityNotEquals",
+                                                        "(Ljava/lang/Object;Ljava/lang/Object;)Z");
     }
 
     @Override
@@ -415,6 +447,11 @@ public class ExpressionTypeChecker
 
         final Conversion conversion = Conversion.findConversion(program.typesystem, input, output);
 
+        if (conversion == null)
+        {
+            program.checker.reportNoSuchAsConversion(object, output);
+        }
+
         program.symbols.conversions.put(object, conversion);
 
         infer(object, output);
@@ -431,6 +468,11 @@ public class ExpressionTypeChecker
 
         final Conversion conversion = Conversion.findConversion(program.typesystem, input, output);
 
+        if (conversion == null)
+        {
+            program.checker.reportNoSuchIsConversion(object, output);
+        }
+
         program.symbols.conversions.put(object, conversion);
 
         infer(object, output);
@@ -439,144 +481,269 @@ public class ExpressionTypeChecker
     @Override
     public void visit(NegateOperation object)
     {
-        unaryOperation(object, "negate", object.getOperand());
+        // Visit the operand and perform type-checking.
+        unaryOperation(object,
+                       "negate",
+                       object.getOperand());
     }
 
     @Override
     public void visit(NotOperation object)
     {
-        unaryOperation(object, "not", object.getOperand());
+        // Visit the operand and perform type-checking.
+        unaryOperation(object,
+                       "not",
+                       object.getOperand());
     }
 
     @Override
     public void visit(DivideOperation object)
     {
-        binaryOperation(object, "divide", object.getLeftOperand(), object.getRightOperand());
+        // Visit the operands and perform type-checking.
+        binaryOperation(object,
+                        "divide",
+                        object.getLeftOperand(),
+                        object.getRightOperand());
     }
 
     @Override
     public void visit(ModuloOperation object)
     {
-        binaryOperation(object, "modulo", object.getLeftOperand(), object.getRightOperand());
+        // Visit the operands and perform type-checking.
+        binaryOperation(object,
+                        "modulo",
+                        object.getLeftOperand(),
+                        object.getRightOperand());
     }
 
     @Override
     public void visit(MultiplyOperation object)
     {
-        binaryOperation(object, "multiply", object.getLeftOperand(), object.getRightOperand());
+        // Visit the operands and perform type-checking.
+        binaryOperation(object,
+                        "multiply",
+                        object.getLeftOperand(),
+                        object.getRightOperand());
     }
 
     @Override
     public void visit(AddOperation object)
     {
-        binaryOperation(object, "add", object.getLeftOperand(), object.getRightOperand());
+        // Visit the operands and perform type-checking.
+        binaryOperation(object,
+                        "add",
+                        object.getLeftOperand(),
+                        object.getRightOperand());
     }
 
     @Override
     public void visit(SubtractOperation object)
     {
-        binaryOperation(object, "subtract", object.getLeftOperand(), object.getRightOperand());
+        // Visit the operands and perform type-checking.
+        binaryOperation(object,
+                        "subtract",
+                        object.getLeftOperand(),
+                        object.getRightOperand());
     }
 
     @Override
     public void visit(ConcatOperation object)
     {
-        binaryOperation(object, "concat", object.getLeftOperand(), object.getRightOperand());
+        // Visit the operands and perform type-checking.
+        binaryOperation(object,
+                        "concat",
+                        object.getLeftOperand(),
+                        object.getRightOperand());
     }
 
     @Override
     public void visit(LessThanOperation object)
     {
-        binaryOperation(object, "lessThan", object.getLeftOperand(), object.getRightOperand());
+        // Visit the operands and perform type-checking.
+        binaryOperation(object,
+                        "lessThan",
+                        object.getLeftOperand(),
+                        object.getRightOperand());
     }
 
     @Override
     public void visit(LessThanOrEqualsOperation object)
     {
-        binaryOperation(object, "lessThanOrEquals", object.getLeftOperand(), object.getRightOperand());
+        // Visit the operands and perform type-checking.
+        binaryOperation(object,
+                        "lessThanOrEquals",
+                        object.getLeftOperand(),
+                        object.getRightOperand());
     }
 
     @Override
     public void visit(GreaterThanOperation object)
     {
-        binaryOperation(object, "greaterThan", object.getLeftOperand(), object.getRightOperand());
+        // Visit the operands and perform type-checking.
+        binaryOperation(object,
+                        "greaterThan",
+                        object.getLeftOperand(),
+                        object.getRightOperand());
     }
 
     @Override
     public void visit(GreaterThanOrEqualsOperation object)
     {
-        binaryOperation(object, "greaterThanOrEquals", object.getLeftOperand(), object.getRightOperand());
+        // Visit the operands and perform type-checking.
+        binaryOperation(object,
+                        "greaterThanOrEquals",
+                        object.getLeftOperand(),
+                        object.getRightOperand());
     }
 
     @Override
     public void visit(EqualsOperation object)
     {
-        binaryOperation(object, "equals", object.getLeftOperand(), object.getRightOperand());
+        // Visit the operands and perform type-checking.
+        binaryOperation(object,
+                        "equals",
+                        object.getLeftOperand(),
+                        object.getRightOperand());
     }
 
     @Override
     public void visit(NotEqualsOperation object)
     {
-        binaryOperation(object, "notEquals", object.getLeftOperand(), object.getRightOperand());
+        // Visit the operands and perform type-checking.
+        binaryOperation(object,
+                        "notEquals",
+                        object.getLeftOperand(),
+                        object.getRightOperand());
     }
 
     @Override
     public void visit(IdentityEqualsOperation object)
     {
-        binaryOperation(object, "identityEquals", object.getLeftOperand(), object.getRightOperand());
+        // Visit the operands.
+        object.getLeftOperand().accept(this);
+        object.getRightOperand().accept(this);
+
+        // Perform type-checking.
+        program.checker.requireReferenceType(object.getLeftOperand());
+        program.checker.requireReferenceType(object.getRightOperand());
+
+        // This type of operator always returns boolean.
+        infer(object, program.typesystem.utils.PRIMITIVE_BOOLEAN);
+
+        // Remember the method that is needed to implement this operator.
+        program.symbols.calls.put(object, IDENTITY_EQUALITY);
     }
 
     @Override
     public void visit(IdentityNotEqualsOperation object)
     {
-        binaryOperation(object, "identityNotEquals", object.getLeftOperand(), object.getRightOperand());
+        // Visit the operands.
+        object.getLeftOperand().accept(this);
+        object.getRightOperand().accept(this);
+
+        // Perform type-checking.
+        program.checker.requireReferenceType(object.getLeftOperand());
+        program.checker.requireReferenceType(object.getRightOperand());
+
+        // This type of operator always returns boolean.
+        infer(object, program.typesystem.utils.PRIMITIVE_BOOLEAN);
+
+        // Remember the method that is needed to implement this operator.
+        program.symbols.calls.put(object, IDENTITY_INEQUALITY);
     }
 
     @Override
     public void visit(AndOperation object)
     {
-        binaryOperation(object, "and", object.getLeftOperand(), object.getRightOperand());
+        // Visit the operands and perform type-checking.
+        binaryOperation(object, "and",
+                        object.getLeftOperand(),
+                        object.getRightOperand());
     }
 
     @Override
     public void visit(OrOperation object)
     {
-        binaryOperation(object, "or", object.getLeftOperand(), object.getRightOperand());
+        // Visit the operands and perform type-checking.
+        binaryOperation(object,
+                        "or",
+                        object.getLeftOperand(),
+                        object.getRightOperand());
     }
 
     @Override
     public void visit(XorOperation object)
     {
-        binaryOperation(object, "xor", object.getLeftOperand(), object.getRightOperand());
+        // Visit the operands and perform type-checking.
+        binaryOperation(object,
+                        "xor",
+                        object.getLeftOperand(),
+                        object.getRightOperand());
+    }
+
+    @Override
+    public void visit(ImpliesOperation object)
+    {
+        // Visit the operands and perform type-checking.
+        binaryOperation(object,
+                        "implies",
+                        object.getLeftOperand(),
+                        object.getRightOperand());
     }
 
     @Override
     public void visit(ShortCircuitAndOperation object)
     {
+        // Visit and type-check the operands.
         condition(object.getLeftOperand());
         condition(object.getRightOperand());
+
+        // This type of operator always returns a boolean value.
         infer(object, program.typesystem.utils.PRIMITIVE_BOOLEAN);
     }
 
     @Override
     public void visit(ShortCircuitOrOperation object)
     {
+        // Visit and type-check the operands.
         condition(object.getLeftOperand());
         condition(object.getRightOperand());
+
+        // This type of operator always returns a boolean value.
         infer(object, program.typesystem.utils.PRIMITIVE_BOOLEAN);
     }
 
     @Override
     public void visit(NullCoalescingOperation object)
     {
+        // Visit the operands.
         object.getLeftOperand().accept(this);
         object.getRightOperand().accept(this);
 
+        // Retrieve the types of the operands.
         final IExpressionType left = program.symbols.expressions.get(object.getLeftOperand());
+        final IExpressionType right = program.symbols.expressions.get(object.getRightOperand());
 
-        // The right-operand must be a subtype of the left-operand.
-        program.checker.expectSubtype(object.getRightOperand(), left);
+        // Noth operands must be references.
+        program.checker.requireReferenceType(object.getLeftOperand());
+        program.checker.requireReferenceType(object.getRightOperand());
 
+        // The type of one of the operands should be wider than the other.
+        // For example:
+        //     (String ?? Object) ==> Object is Wider
+        //     (Object ?? String) ==> Object is Wider
+        // Error Case Example:
+        //     (Integer ?? Long) ==> Neither operand is wider than the other.
+        // In the error case, this variable will be assigned null.
+        final IExpressionType widest = program.typesystem.utils.widestType(left, right);
+
+        // If neither operand is wider, then issue an error.
+        if (widest == null)
+        {
+            program.checker.reportNoSuchBinaryOperator(object, left, right);
+        }
+
+        // A null-coalescing operator returns the widest of its operand types.
         infer(object, left);
     }
 }

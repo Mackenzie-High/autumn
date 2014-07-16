@@ -36,16 +36,16 @@ defun main (args : String[]) : void
         # Values of Different Types
         let value = [true, 10C, 20B, 30S, 40, 50L, 60.0F, 70.0, "Venus", false];
         assert (value.size) == 10;
-        assert (value.get 0) == (true as Object);
-        assert (value.get 1) == (10C as Object);
-        assert (value.get 2) == (20B as Object);
-        assert (value.get 3) == (30S as Object);
-        assert (value.get 4) == (40  as Object);
-        assert (value.get 5) == (50L as Object);
-        assert (value.get 6) == (60.0F as Object);
-        assert (value.get 7) == (70.0  as Object);
+        assert (value.get 0) == (true as Boolean);
+        assert (value.get 1) == (10C as Character);
+        assert (value.get 2) == (20B as Byte);
+        assert (value.get 3) == (30S as Short);
+        assert (value.get 4) == (40  as Integer);
+        assert (value.get 5) == (50L as Long);
+        assert (value.get 6) == (60.0F as Float);
+        assert (value.get 7) == (70.0  as Double);
         assert (value.get 8) == "Venus";
-        assert (value.get 9) == (false as Object);
+        assert (value.get 9) == (false as Boolean);
 
         # Lists must be immutable.
         try
