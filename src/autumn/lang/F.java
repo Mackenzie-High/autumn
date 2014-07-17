@@ -4,6 +4,8 @@ import autumn.lang.exceptions.CheckedException;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.InputStream;
@@ -11,9 +13,10 @@ import java.io.PrintStream;
 import java.lang.reflect.Array;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.net.URL;
 import java.nio.charset.Charset;
+import java.util.AbstractList;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -21,6 +24,7 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.NavigableMap;
@@ -33,10 +37,168 @@ import java.util.TreeSet;
 /**
  * This class provides commonly used static utility methods.
  *
+ * <p>
+ * This class has a single letter name, because it will be used very frequently.
+ * As a result, the shorter name saves Autumn programmers some typing.
+ * </p>
+ *
  * @author Mackenzie High
  */
 public final class F
 {
+    /**
+     * Sole Constructor.
+     */
+    private F()
+    {
+        // Pass, because this is merely a static utility class.
+    }
+
+    /**
+     * This method creates a new linked-list.
+     *
+     * @param <T> is the type the elements in the new list.
+     * @return a new linked-list data-structure.
+     */
+    public static <T> LinkedList<T> newLinkedList()
+    {
+        return Lists.newLinkedList();
+    }
+
+    /**
+     * This method creates a new linked-list that is a copy of an iterable.
+     *
+     * @param <T> is the type the elements in the new list.
+     * @param iterable is the iterable to copy.
+     * @return a new linked-list data-structure.
+     */
+    public static <T> LinkedList<T> newLinkedList(final Iterable<T> iterable)
+    {
+        Preconditions.checkNotNull(iterable);
+
+        return Lists.newLinkedList(iterable);
+    }
+
+    /**
+     * This method creates a new array-list.
+     *
+     * @param <T> is the type the elements in the new list.
+     * @return a new array-list data-structure.
+     */
+    public static <T> ArrayList<T> newArrayList()
+    {
+        return Lists.newArrayList();
+    }
+
+    /**
+     * This method creates a new array-list that is a copy of an iterable.
+     *
+     * @param <T> is the type the elements in the new list.
+     * @param iterable is the iterable to copy.
+     * @return a new array-list data-structure.
+     */
+    public static <T> ArrayList<T> newArrayList(final Iterable<T> iterable)
+    {
+        return Lists.newArrayList(iterable);
+    }
+
+    /**
+     * This method creates a new hash-set.
+     *
+     * @param <T> is the type the elements in the new set.
+     * @return a new hash-set data-structure.
+     */
+    public static <T> HashSet<T> newHashSet()
+    {
+        return Sets.newHashSet();
+    }
+
+    /**
+     * This method creates a new hash-set that is a copy of an iterable.
+     *
+     * @param <T> is the type the elements in the new set.
+     * @param iterable is the iterable to copy.
+     * @return a new hash-set data-structure.
+     */
+    public static <T> HashSet<T> newHashSet(final Iterable<T> iterable)
+    {
+        Preconditions.checkNotNull(iterable);
+
+        return Sets.newHashSet(iterable);
+    }
+
+    /**
+     * This method creates a new tree-set.
+     *
+     * @param <T> is the type the elements in the new set.
+     * @return a new tree-set data-structure.
+     */
+    public static <T extends Comparable> TreeSet<T> newTreeSet()
+    {
+        return new TreeSet<T>();
+    }
+
+    /**
+     * This method creates a new tree-set that is a copy of an iterable.
+     *
+     * @param <T> is the type the elements in the new set.
+     * @param iterable is the iterable to copy.
+     * @return a new tree-set data-structure.
+     */
+    public static <T extends Comparable> TreeSet<T> newTreeSet(final Iterable<T> iterable)
+    {
+        Preconditions.checkNotNull(iterable);
+
+        return Sets.newTreeSet(iterable);
+    }
+
+    /**
+     * This method creates a new filter.
+     *
+     * @param <T> is the type of the elements in the filter.
+     * @return a new bloom-filter data-structure.
+     */
+    public static <T> Set<T> newFilter()
+    {
+        return null; // TODO
+    }
+
+    /**
+     * This method creates a new filter.
+     *
+     * @param <T> is the type of the elements in the filter.
+     * @param size is the number of buckets in the new bloom-filter.
+     * @return a new filter data-structure.
+     */
+    public static <T> Set<T> newFilter(final int size)
+    {
+        return null; // TODO
+    }
+
+    /**
+     * This method creates a new hash-map.
+     *
+     * @param <K> is the type the keys in the new map.
+     * @param <V> is the type of the values in the new map.
+     * @return a new hash-map data-structure.
+     */
+    public static <K, V> HashMap<K, V> newHashMap()
+    {
+        return Maps.newHashMap();
+    }
+
+    /**
+     * This method creates a new tree-map.
+     *
+     * @param <K> is the type the keys in the new map.
+     * @param <V> is the type of the values in the new map.
+     * @return a new tree-map data-structure.
+     */
+    public static <K extends Comparable, V> TreeMap<K, V> newTreeMap()
+    {
+        return Maps.newTreeMap();
+    }
+
     /**
      * This method creates an immutable copy of a given mutable set data-structure.
      *
@@ -123,49 +285,382 @@ public final class F
         return Collections.unmodifiableMap(new TreeMap<K, V>(mutable));
     }
 
-    public static List asList(final boolean[] array)
+    /**
+     * This method creates creates a list view of an array.
+     *
+     * <p>
+     * Elements in the underlying array can be set via the set(int, Boolean)
+     * method of the new view.
+     * </p>
+     *
+     * @param array is the array that will back the list.
+     * @return the new array backed list.
+     */
+    public static List<Boolean> asList(final boolean[] array)
     {
-        return Arrays.asList(array);
+        Preconditions.checkNotNull(array);
+
+        return new AbstractList<Boolean>()
+        {
+            @Override
+            public Boolean get(int index)
+            {
+                return array[index];
+            }
+
+            @Override
+            public Boolean set(final int index,
+                               final Boolean value)
+            {
+                final Boolean last = get(index);
+
+                array[index] = value;
+
+                return last;
+            }
+
+            @Override
+            public int size()
+            {
+                return array.length;
+            }
+        };
     }
 
-    public static List asList(final char[] array)
+    /**
+     * This method creates creates a list view of an array.
+     *
+     * <p>
+     * Elements in the underlying array can be set via the set(int, Character)
+     * method of the new view.
+     * </p>
+     *
+     * @param array is the array that will back the list.
+     * @return the new array backed list.
+     */
+    public static List<Character> asList(final char[] array)
     {
-        return Arrays.asList(array);
+        Preconditions.checkNotNull(array);
+
+        return new AbstractList<Character>()
+        {
+            @Override
+            public Character get(int index)
+            {
+                return array[index];
+            }
+
+            @Override
+            public Character set(final int index,
+                                 final Character value)
+            {
+                final Character last = get(index);
+
+                array[index] = value;
+
+                return last;
+            }
+
+            @Override
+            public int size()
+            {
+                return array.length;
+            }
+        };
     }
 
-    public static List asList(final byte[] array)
+    /**
+     * This method creates creates a list view of an array.
+     *
+     * <p>
+     * Elements in the underlying array can be set via the set(int, Byte)
+     * method of the new view.
+     * </p>
+     *
+     * @param array is the array that will back the list.
+     * @return the new array backed list.
+     */
+    public static List<Byte> asList(final byte[] array)
     {
-        return Arrays.asList(array);
+        Preconditions.checkNotNull(array);
+
+        return new AbstractList<Byte>()
+        {
+            @Override
+            public Byte get(int index)
+            {
+                return array[index];
+            }
+
+            @Override
+            public Byte set(final int index,
+                            final Byte value)
+            {
+                final Byte last = get(index);
+
+                array[index] = value;
+
+                return last;
+            }
+
+            @Override
+            public int size()
+            {
+                return array.length;
+            }
+        };
     }
 
-    public static List asList(final short[] array)
+    /**
+     * This method creates creates a list view of an array.
+     *
+     * <p>
+     * Elements in the underlying array can be set via the set(int, Short)
+     * method of the new view.
+     * </p>
+     *
+     * @param array is the array that will back the list.
+     * @return the new array backed list.
+     */
+    public static List<Short> asList(final short[] array)
     {
-        return Arrays.asList(array);
+        Preconditions.checkNotNull(array);
+
+        return new AbstractList<Short>()
+        {
+            @Override
+            public Short get(int index)
+            {
+                return array[index];
+            }
+
+            @Override
+            public Short set(final int index,
+                             final Short value)
+            {
+                final Short last = get(index);
+
+                array[index] = value;
+
+                return last;
+            }
+
+            @Override
+            public int size()
+            {
+                return array.length;
+            }
+        };
     }
 
-    public static List asList(final int[] array)
+    /**
+     * This method creates creates a list view of an array.
+     *
+     * <p>
+     * Elements in the underlying array can be set via the set(int, Integer)
+     * method of the new view.
+     * </p>
+     *
+     * @param array is the array that will back the list.
+     * @return the new array backed list.
+     */
+    public static List<Integer> asList(final int[] array)
     {
-        return Arrays.asList(array);
+        Preconditions.checkNotNull(array);
+
+        return new AbstractList<Integer>()
+        {
+            @Override
+            public Integer get(int index)
+            {
+                return array[index];
+            }
+
+            @Override
+            public Integer set(final int index,
+                               final Integer value)
+            {
+                final Integer last = get(index);
+
+                array[index] = value;
+
+                return last;
+            }
+
+            @Override
+            public int size()
+            {
+                return array.length;
+            }
+        };
     }
 
-    public static List asList(final long[] array)
+    /**
+     * This method creates creates a list view of an array.
+     *
+     * <p>
+     * Elements in the underlying array can be set via the set(int, Long)
+     * method of the new view.
+     * </p>
+     *
+     * @param array is the array that will back the list.
+     * @return the new array backed list.
+     */
+    public static List<Long> asList(final long[] array)
     {
-        return Arrays.asList(array);
+        Preconditions.checkNotNull(array);
+
+        return new AbstractList<Long>()
+        {
+            @Override
+            public Long get(int index)
+            {
+                return array[index];
+            }
+
+            @Override
+            public Long set(final int index,
+                            final Long value)
+            {
+                final Long last = get(index);
+
+                array[index] = value;
+
+                return last;
+            }
+
+            @Override
+            public int size()
+            {
+                return array.length;
+            }
+        };
     }
 
-    public static List asList(final float[] array)
+    /**
+     * This method creates creates a list view of an array.
+     *
+     * <p>
+     * Elements in the underlying array can be set via the set(int, Float)
+     * method of the new view.
+     * </p>
+     *
+     * @param array is the array that will back the list.
+     * @return the new array backed list.
+     */
+    public static List<Float> asList(final float[] array)
     {
-        return Arrays.asList(array);
+        Preconditions.checkNotNull(array);
+
+        return new AbstractList<Float>()
+        {
+            @Override
+            public Float get(int index)
+            {
+                return array[index];
+            }
+
+            @Override
+            public Float set(final int index,
+                             final Float value)
+            {
+                final Float last = get(index);
+
+                array[index] = value;
+
+                return last;
+            }
+
+            @Override
+            public int size()
+            {
+                return array.length;
+            }
+        };
     }
 
-    public static List asList(final double[] array)
+    /**
+     * This method creates creates a list view of an array.
+     *
+     * <p>
+     * Elements in the underlying array can be set via the set(int, Double)
+     * method of the new view.
+     * </p>
+     *
+     * @param array is the array that will back the list.
+     * @return the new array backed list.
+     */
+    public static List<Double> asList(final double[] array)
     {
-        return Arrays.asList(array);
+        Preconditions.checkNotNull(array);
+
+        return new AbstractList<Double>()
+        {
+            @Override
+            public Double get(int index)
+            {
+                return array[index];
+            }
+
+            @Override
+            public Double set(final int index,
+                              final Double value)
+            {
+                final Double last = get(index);
+
+                array[index] = value;
+
+                return last;
+            }
+
+            @Override
+            public int size()
+            {
+                return array.length;
+            }
+        };
     }
 
-    public static List asList(final Object[] array)
+    /**
+     * This method creates creates a list view of an array.
+     *
+     * <p>
+     * Elements in the underlying array can be set via the set(int, T)
+     * method of the new view.
+     * </p>
+     *
+     * @param array is the array that will back the list.
+     * @return the new array backed list.
+     */
+    public static <T> List<T> asList(final T[] array)
     {
-        return Arrays.asList(array);
+        Preconditions.checkNotNull(array);
+
+        return new AbstractList<T>()
+        {
+            @Override
+            public T get(int index)
+            {
+                return array[index];
+            }
+
+            @Override
+            public T set(final int index,
+                         final T value)
+            {
+                final T last = get(index);
+
+                array[index] = value;
+
+                return last;
+            }
+
+            @Override
+            public int size()
+            {
+                return array.length;
+            }
+        };
     }
 
     public static Object safeInvoke(final Functor function,
@@ -945,13 +1440,13 @@ public final class F
         return string.charAt(index);
     }
 
-    public static Object get(final List<Object> list,
+    public static Object get(final List list,
                              final int index)
     {
         return list.get(index);
     }
 
-    public static Object get(final Map<Object, Object> map,
+    public static Object get(final Map map,
                              final Object key)
     {
         return map.get(key);
@@ -1069,24 +1564,26 @@ public final class F
         return map;
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    //                                 Left
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    public static Object left(final List list)
+    /**
+     * This method retrieves the first element of a list.
+     *
+     * @param list is the list that contains the element to retrieve.
+     * @return the first element in the list.
+     */
+    public static <T> T first(final List<T> list)
     {
-        return null;
+        return list.get(0);
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    //                                 Right
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    public static Object right(final List list)
+    /**
+     * This method retrieves the last element of a list.
+     *
+     * @param list is the list that contains the element to retrieve.
+     * @return the last element in the list.
+     */
+    public static <T> T last(final List<T> list)
     {
-        return null;
+        return list.get(list.size() - 1);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1104,78 +1601,136 @@ public final class F
         return 0;
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    //                                 Map
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    public static List map(final Iterable iterable,
-                           final Functor function)
+    /**
+     * This method applies a functor to each element of an iterable and collects the results.
+     *
+     * @param iterable is the iterable that provides input for the functor.
+     * @param function is the functor(Object) : Object that processes the input.
+     * @return a list containing the output of the functor.
+     * @throws Throwable in order to allow exceptions to propagate from the functor.
+     */
+    public static List<Object> map(final Iterable iterable,
+                                   final Functor function)
+            throws Throwable
     {
-        return null;
+        Preconditions.checkNotNull(iterable);
+        Preconditions.checkNotNull(function);
+
+        final List<Object> output = Lists.newLinkedList();
+
+        for (Object element : iterable)
+        {
+            output.add(function.apply(element));
+        }
+
+        return output;
     }
 
-    public static List map(final Iterable iterable,
-                           final Functor function,
-                           final Object argument)
+    /**
+     * This method selects the elements from an iterable for which a given functor returns true.
+     *
+     * @param iterable is the iterable that provides input for the functor.
+     * @param function is the functor(Object) : boolean that selects the elements.
+     * @return a list containing the selected elements.
+     * @throws Throwable in order to allow exceptions to propagate from the functor.
+     */
+    public static List<Object> filter(final Iterable iterable,
+                                      final Functor function)
+            throws Throwable
     {
-        return null;
+        Preconditions.checkNotNull(iterable);
+        Preconditions.checkNotNull(function);
+
+        final List<Object> output = Lists.newLinkedList();
+
+        for (Object element : iterable)
+        {
+            if (Boolean.TRUE.equals(function.apply(element)))
+            {
+                output.add(element);
+            }
+        }
+
+        return output;
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    //                                 Filter
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////
     //                                 Reduce
     ////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    //                                 Max
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    public static Comparable max(final Iterable<? extends Comparable> iterable)
+    /**
+     * This method creates a sorted list from an unsorted iterable.
+     *
+     * <p>
+     * If an in-place sort is preferred, consider using method
+     * <code>sort(List)</code> in class
+     * <code>java.util.Collections</code>.
+     * </p>
+     *
+     * @param iterable provides the elements for the new sorted list.
+     * @return a sorted list that contains the elements of the given input iterable.
+     */
+    public static <T extends Comparable> List<T> sorted(final Iterable<T> iterable)
     {
-        return null;
+        Preconditions.checkNotNull(iterable);
+
+        final ArrayList<T> result = Lists.newArrayList(iterable);
+
+        Collections.sort(result);
+
+        return result;
     }
 
-    public static Comparable max(final Iterator<? extends Comparable> iterable)
+    /**
+     * This method creates a sorted list from an unsorted iterable.
+     *
+     * <p>
+     * If an in-place sort is preferred, consider using method
+     * <code>sort(List)</code> in class
+     * <code>java.util.Collections</code>.
+     * </p>
+     *
+     * @param iterable provides the elements for the new sorted list.
+     * @param comparator is a function object that can compare elements of the iterable.
+     * @return a sorted list that contains the elements of the given input iterable.
+     */
+    public static <T> List<T> sorted(final Iterable<T> iterable,
+                                     final Comparator<T> comparator)
     {
-        return null;
+        Preconditions.checkNotNull(iterable);
+
+        final ArrayList<T> result = Lists.newArrayList(iterable);
+
+        Collections.sort(result, comparator);
+
+        return result;
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    //                                 Min
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    public static Comparable min(final Iterable<? extends Comparable> iterable)
+    /**
+     * This method creates a list that contains the elements from an iterable in reverse order.
+     *
+     * <p>
+     * If an reverse operation is preferred, consider using method
+     * <code>reverse(List)</code> in class
+     * <code>java.util.Collections</code>.
+     * </p>
+     *
+     * @param iterable provides the elements for the new list.
+     * @return a list that contains the elements of the given input iterable in reverse.
+     */
+    public <T> List<T> reversed(final Iterable<T> iterable)
     {
-        return null;
-    }
+        Preconditions.checkNotNull(iterable);
 
-    public static Comparable min(final Iterator<? extends Comparable> iterable)
-    {
-        return null;
-    }
+        final LinkedList<T> result = Lists.newLinkedList();
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    //                                 Sort
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    public static List sort(final Iterable<? extends Comparable> collection)
-    {
-        return null;
-    }
+        for (T element : iterable)
+        {
+            result.addFirst(element);
+        }
 
-    public static List sort(final Iterable collection,
-                            final Comparator comparator)
-    {
-        return null;
+        return result;
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1183,6 +1738,11 @@ public final class F
     //                                 File I/O
     ////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////
+    public static BufferedInputStream open(final URL path)
+    {
+        return null;
+    }
+
     public static BufferedInputStream open(final File path)
     {
         return null;
@@ -1205,12 +1765,12 @@ public final class F
     {
     }
 
-    public static List<String> readLines(final File file)
+    public static List<String> readLines(final InputStream input)
     {
-        return readLines(file, Charset.defaultCharset());
+        return null;
     }
 
-    public static List<String> readLines(final File file,
+    public static List<String> readLines(final InputStream input,
                                          final Charset charset)
     {
         return null;
@@ -1249,17 +1809,6 @@ public final class F
     }
 
     /**
-     * This method creates a new BigInteger from an int value.
-     *
-     * @param value is the value of the new BigInteger.
-     * @return the aforedescribed BigInteger.
-     */
-    public static BigInteger big(final int value)
-    {
-        return BigInteger.valueOf(value);
-    }
-
-    /**
      * This method creates a new BigInteger from a long value.
      *
      * @param value is the value of the new BigInteger.
@@ -1268,17 +1817,6 @@ public final class F
     public static BigInteger big(final long value)
     {
         return BigInteger.valueOf(value);
-    }
-
-    /**
-     * This method creates a new BigDecimal from a float value.
-     *
-     * @param value is the value of the new BigDecimal.
-     * @return the aforedescribed BigDecimal.
-     */
-    public static BigDecimal big(final float value)
-    {
-        return BigDecimal.valueOf(value);
     }
 
     /**
