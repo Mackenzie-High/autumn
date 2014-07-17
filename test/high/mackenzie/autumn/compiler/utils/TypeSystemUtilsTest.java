@@ -4,12 +4,14 @@
  */
 package high.mackenzie.autumn.compiler.utils;
 
-import high.mackenzie.autumn.lang.compiler.utils.TypeSystemUtils;
+import autumn.lang.internals.Conversions;
+import com.sun.xml.internal.ws.org.objectweb.asm.Opcodes;
+import high.mackenzie.autumn.lang.compiler.typesystem.TypeFactory;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IInterfaceType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IInvokableMember;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IMethod;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.ITypeFactory;
-import high.mackenzie.autumn.lang.compiler.typesystem.TypeFactory;
+import high.mackenzie.autumn.lang.compiler.utils.TypeSystemUtils;
 import java.util.Collection;
 import java.util.List;
 import static org.junit.Assert.*;
@@ -47,7 +49,13 @@ public class TypeSystemUtilsTest
 
         public void method2(int x);
 
+        public void method3(byte x);
+
+        public void method3(short x);
+
         public void method3(int x);
+
+        public void method3(long x);
 
         public void method3(String x);
 
@@ -107,8 +115,8 @@ public class TypeSystemUtilsTest
         code = utils.assign(utils.PRIMITIVE_BOOLEAN, utils.BOXED_BOOLEAN);
         assertFalse(code == null);
         assertEquals(1, code.size());
-        assertEquals(Type.getInternalName(Boolean.class), ((MethodInsnNode) code.get(0)).owner);
-        assertEquals("valueOf", ((MethodInsnNode) code.get(0)).name);
+        assertEquals(Type.getInternalName(Conversions.class), ((MethodInsnNode) code.get(0)).owner);
+        assertEquals("box", ((MethodInsnNode) code.get(0)).name);
         assertEquals("(Z)Ljava/lang/Boolean;", ((MethodInsnNode) code.get(0)).desc);
 
         // Case #4: Auto-Unboxing
@@ -116,11 +124,54 @@ public class TypeSystemUtilsTest
         code = utils.assign(utils.BOXED_BOOLEAN, utils.PRIMITIVE_BOOLEAN);
         assertFalse(code == null);
         assertEquals(1, code.size());
-        assertEquals(Type.getInternalName(Boolean.class), ((MethodInsnNode) code.get(0)).owner);
-        assertEquals("booleanValue", ((MethodInsnNode) code.get(0)).name);
-        assertEquals("()Z", ((MethodInsnNode) code.get(0)).desc);
+        assertEquals(Type.getInternalName(Conversions.class), ((MethodInsnNode) code.get(0)).owner);
+        assertEquals("unbox", ((MethodInsnNode) code.get(0)).name);
+        assertEquals("(Ljava/lang/Boolean;)Z", ((MethodInsnNode) code.get(0)).desc);
 
-        // Case #5: Assignment Failed.
+        // Case #5: Primitive-To-Primitive Coercion
+
+        code = utils.assign(utils.PRIMITIVE_CHAR, utils.PRIMITIVE_INT);
+        assertFalse(code == null);
+        assertEquals(0, code.size());
+
+        code = utils.assign(utils.PRIMITIVE_CHAR, utils.PRIMITIVE_LONG);
+        assertFalse(code == null);
+        assertEquals(1, code.size());
+        assertEquals(Opcodes.I2L, code.get(0).getOpcode());
+
+        code = utils.assign(utils.PRIMITIVE_BYTE, utils.PRIMITIVE_SHORT);
+        assertFalse(code == null);
+        assertEquals(0, code.size());
+
+        code = utils.assign(utils.PRIMITIVE_BYTE, utils.PRIMITIVE_INT);
+        assertFalse(code == null);
+        assertEquals(0, code.size());
+
+        code = utils.assign(utils.PRIMITIVE_BYTE, utils.PRIMITIVE_LONG);
+        assertFalse(code == null);
+        assertEquals(1, code.size());
+        assertEquals(Opcodes.I2L, code.get(0).getOpcode());
+
+        code = utils.assign(utils.PRIMITIVE_SHORT, utils.PRIMITIVE_INT);
+        assertFalse(code == null);
+        assertEquals(0, code.size());
+
+        code = utils.assign(utils.PRIMITIVE_SHORT, utils.PRIMITIVE_LONG);
+        assertFalse(code == null);
+        assertEquals(1, code.size());
+        assertEquals(Opcodes.I2L, code.get(0).getOpcode());
+
+        code = utils.assign(utils.PRIMITIVE_INT, utils.PRIMITIVE_LONG);
+        assertFalse(code == null);
+        assertEquals(1, code.size());
+        assertEquals(Opcodes.I2L, code.get(0).getOpcode());
+
+        code = utils.assign(utils.PRIMITIVE_FLOAT, utils.PRIMITIVE_DOUBLE);
+        assertFalse(code == null);
+        assertEquals(1, code.size());
+        assertEquals(Opcodes.F2D, code.get(0).getOpcode());
+
+        // Case #6: Assignment Failed.
 
         code = utils.assign(utils.OBJECT, utils.NUMBER);
         assertTrue(code == null);
@@ -154,57 +205,57 @@ public class TypeSystemUtilsTest
         code = utils.box(utils.PRIMITIVE_BOOLEAN, utils.BOXED_BOOLEAN);
         assertFalse(code == null);
         assertEquals(1, code.size());
-        assertEquals(Type.getInternalName(Boolean.class), ((MethodInsnNode) code.get(0)).owner);
-        assertEquals("valueOf", ((MethodInsnNode) code.get(0)).name);
+        assertEquals(Type.getInternalName(Conversions.class), ((MethodInsnNode) code.get(0)).owner);
+        assertEquals("box", ((MethodInsnNode) code.get(0)).name);
         assertEquals("(Z)Ljava/lang/Boolean;", ((MethodInsnNode) code.get(0)).desc);
 
         code = utils.box(utils.PRIMITIVE_CHAR, utils.BOXED_CHAR);
         assertFalse(code == null);
         assertEquals(1, code.size());
-        assertEquals(Type.getInternalName(Character.class), ((MethodInsnNode) code.get(0)).owner);
-        assertEquals("valueOf", ((MethodInsnNode) code.get(0)).name);
+        assertEquals(Type.getInternalName(Conversions.class), ((MethodInsnNode) code.get(0)).owner);
+        assertEquals("box", ((MethodInsnNode) code.get(0)).name);
         assertEquals("(C)Ljava/lang/Character;", ((MethodInsnNode) code.get(0)).desc);
 
         code = utils.box(utils.PRIMITIVE_BYTE, utils.BOXED_BYTE);
         assertFalse(code == null);
         assertEquals(1, code.size());
-        assertEquals(Type.getInternalName(Byte.class), ((MethodInsnNode) code.get(0)).owner);
-        assertEquals("valueOf", ((MethodInsnNode) code.get(0)).name);
+        assertEquals(Type.getInternalName(Conversions.class), ((MethodInsnNode) code.get(0)).owner);
+        assertEquals("box", ((MethodInsnNode) code.get(0)).name);
         assertEquals("(B)Ljava/lang/Byte;", ((MethodInsnNode) code.get(0)).desc);
 
         code = utils.box(utils.PRIMITIVE_SHORT, utils.BOXED_SHORT);
         assertFalse(code == null);
         assertEquals(1, code.size());
-        assertEquals(Type.getInternalName(Short.class), ((MethodInsnNode) code.get(0)).owner);
-        assertEquals("valueOf", ((MethodInsnNode) code.get(0)).name);
+        assertEquals(Type.getInternalName(Conversions.class), ((MethodInsnNode) code.get(0)).owner);
+        assertEquals("box", ((MethodInsnNode) code.get(0)).name);
         assertEquals("(S)Ljava/lang/Short;", ((MethodInsnNode) code.get(0)).desc);
 
         code = utils.box(utils.PRIMITIVE_INT, utils.BOXED_INT);
         assertFalse(code == null);
         assertEquals(1, code.size());
-        assertEquals(Type.getInternalName(Integer.class), ((MethodInsnNode) code.get(0)).owner);
-        assertEquals("valueOf", ((MethodInsnNode) code.get(0)).name);
+        assertEquals(Type.getInternalName(Conversions.class), ((MethodInsnNode) code.get(0)).owner);
+        assertEquals("box", ((MethodInsnNode) code.get(0)).name);
         assertEquals("(I)Ljava/lang/Integer;", ((MethodInsnNode) code.get(0)).desc);
 
         code = utils.box(utils.PRIMITIVE_LONG, utils.BOXED_LONG);
         assertFalse(code == null);
         assertEquals(1, code.size());
-        assertEquals(Type.getInternalName(Long.class), ((MethodInsnNode) code.get(0)).owner);
-        assertEquals("valueOf", ((MethodInsnNode) code.get(0)).name);
+        assertEquals(Type.getInternalName(Conversions.class), ((MethodInsnNode) code.get(0)).owner);
+        assertEquals("box", ((MethodInsnNode) code.get(0)).name);
         assertEquals("(J)Ljava/lang/Long;", ((MethodInsnNode) code.get(0)).desc);
 
         code = utils.box(utils.PRIMITIVE_FLOAT, utils.BOXED_FLOAT);
         assertFalse(code == null);
         assertEquals(1, code.size());
-        assertEquals(Type.getInternalName(Float.class), ((MethodInsnNode) code.get(0)).owner);
-        assertEquals("valueOf", ((MethodInsnNode) code.get(0)).name);
+        assertEquals(Type.getInternalName(Conversions.class), ((MethodInsnNode) code.get(0)).owner);
+        assertEquals("box", ((MethodInsnNode) code.get(0)).name);
         assertEquals("(F)Ljava/lang/Float;", ((MethodInsnNode) code.get(0)).desc);
 
         code = utils.box(utils.PRIMITIVE_DOUBLE, utils.BOXED_DOUBLE);
         assertFalse(code == null);
         assertEquals(1, code.size());
-        assertEquals(Type.getInternalName(Double.class), ((MethodInsnNode) code.get(0)).owner);
-        assertEquals("valueOf", ((MethodInsnNode) code.get(0)).name);
+        assertEquals(Type.getInternalName(Conversions.class), ((MethodInsnNode) code.get(0)).owner);
+        assertEquals("box", ((MethodInsnNode) code.get(0)).name);
         assertEquals("(D)Ljava/lang/Double;", ((MethodInsnNode) code.get(0)).desc);
 
         // Case #2: Primitive-Type to type <code>java.lang.Number</code>
@@ -212,101 +263,159 @@ public class TypeSystemUtilsTest
         code = utils.box(utils.PRIMITIVE_BYTE, utils.NUMBER);
         assertFalse(code == null);
         assertEquals(1, code.size());
-        assertEquals(Type.getInternalName(Byte.class), ((MethodInsnNode) code.get(0)).owner);
-        assertEquals("valueOf", ((MethodInsnNode) code.get(0)).name);
+        assertEquals(Type.getInternalName(Conversions.class), ((MethodInsnNode) code.get(0)).owner);
+        assertEquals("box", ((MethodInsnNode) code.get(0)).name);
         assertEquals("(B)Ljava/lang/Byte;", ((MethodInsnNode) code.get(0)).desc);
 
         code = utils.box(utils.PRIMITIVE_SHORT, utils.NUMBER);
         assertFalse(code == null);
         assertEquals(1, code.size());
-        assertEquals(Type.getInternalName(Short.class), ((MethodInsnNode) code.get(0)).owner);
-        assertEquals("valueOf", ((MethodInsnNode) code.get(0)).name);
+        assertEquals(Type.getInternalName(Conversions.class), ((MethodInsnNode) code.get(0)).owner);
+        assertEquals("box", ((MethodInsnNode) code.get(0)).name);
         assertEquals("(S)Ljava/lang/Short;", ((MethodInsnNode) code.get(0)).desc);
 
         code = utils.box(utils.PRIMITIVE_INT, utils.NUMBER);
         assertFalse(code == null);
         assertEquals(1, code.size());
-        assertEquals(Type.getInternalName(Integer.class), ((MethodInsnNode) code.get(0)).owner);
-        assertEquals("valueOf", ((MethodInsnNode) code.get(0)).name);
+        assertEquals(Type.getInternalName(Conversions.class), ((MethodInsnNode) code.get(0)).owner);
+        assertEquals("box", ((MethodInsnNode) code.get(0)).name);
         assertEquals("(I)Ljava/lang/Integer;", ((MethodInsnNode) code.get(0)).desc);
 
         code = utils.box(utils.PRIMITIVE_LONG, utils.NUMBER);
         assertFalse(code == null);
         assertEquals(1, code.size());
-        assertEquals(Type.getInternalName(Long.class), ((MethodInsnNode) code.get(0)).owner);
-        assertEquals("valueOf", ((MethodInsnNode) code.get(0)).name);
+        assertEquals(Type.getInternalName(Conversions.class), ((MethodInsnNode) code.get(0)).owner);
+        assertEquals("box", ((MethodInsnNode) code.get(0)).name);
         assertEquals("(J)Ljava/lang/Long;", ((MethodInsnNode) code.get(0)).desc);
 
         code = utils.box(utils.PRIMITIVE_FLOAT, utils.NUMBER);
         assertFalse(code == null);
         assertEquals(1, code.size());
-        assertEquals(Type.getInternalName(Float.class), ((MethodInsnNode) code.get(0)).owner);
-        assertEquals("valueOf", ((MethodInsnNode) code.get(0)).name);
+        assertEquals(Type.getInternalName(Conversions.class), ((MethodInsnNode) code.get(0)).owner);
+        assertEquals("box", ((MethodInsnNode) code.get(0)).name);
         assertEquals("(F)Ljava/lang/Float;", ((MethodInsnNode) code.get(0)).desc);
 
         code = utils.box(utils.PRIMITIVE_DOUBLE, utils.NUMBER);
         assertFalse(code == null);
         assertEquals(1, code.size());
-        assertEquals(Type.getInternalName(Double.class), ((MethodInsnNode) code.get(0)).owner);
-        assertEquals("valueOf", ((MethodInsnNode) code.get(0)).name);
+        assertEquals(Type.getInternalName(Conversions.class), ((MethodInsnNode) code.get(0)).owner);
+        assertEquals("box", ((MethodInsnNode) code.get(0)).name);
         assertEquals("(D)Ljava/lang/Double;", ((MethodInsnNode) code.get(0)).desc);
 
-        // Case #3: Primitive-Type to type <code>java.lang.Object</code>
+        // Case #3: Primitive-Type to type <code>java.lang.Comparable</code>
+
+        code = utils.box(utils.PRIMITIVE_BOOLEAN, utils.COMPARABLE);
+        assertFalse(code == null);
+        assertEquals(1, code.size());
+        assertEquals(Type.getInternalName(Conversions.class), ((MethodInsnNode) code.get(0)).owner);
+        assertEquals("box", ((MethodInsnNode) code.get(0)).name);
+        assertEquals("(Z)Ljava/lang/Boolean;", ((MethodInsnNode) code.get(0)).desc);
+
+        code = utils.box(utils.PRIMITIVE_CHAR, utils.COMPARABLE);
+        assertFalse(code == null);
+        assertEquals(1, code.size());
+        assertEquals(Type.getInternalName(Conversions.class), ((MethodInsnNode) code.get(0)).owner);
+        assertEquals("box", ((MethodInsnNode) code.get(0)).name);
+        assertEquals("(C)Ljava/lang/Character;", ((MethodInsnNode) code.get(0)).desc);
+
+        code = utils.box(utils.PRIMITIVE_BYTE, utils.COMPARABLE);
+        assertFalse(code == null);
+        assertEquals(1, code.size());
+        assertEquals(Type.getInternalName(Conversions.class), ((MethodInsnNode) code.get(0)).owner);
+        assertEquals("box", ((MethodInsnNode) code.get(0)).name);
+        assertEquals("(B)Ljava/lang/Byte;", ((MethodInsnNode) code.get(0)).desc);
+
+        code = utils.box(utils.PRIMITIVE_SHORT, utils.COMPARABLE);
+        assertFalse(code == null);
+        assertEquals(1, code.size());
+        assertEquals(Type.getInternalName(Conversions.class), ((MethodInsnNode) code.get(0)).owner);
+        assertEquals("box", ((MethodInsnNode) code.get(0)).name);
+        assertEquals("(S)Ljava/lang/Short;", ((MethodInsnNode) code.get(0)).desc);
+
+        code = utils.box(utils.PRIMITIVE_INT, utils.COMPARABLE);
+        assertFalse(code == null);
+        assertEquals(1, code.size());
+        assertEquals(Type.getInternalName(Conversions.class), ((MethodInsnNode) code.get(0)).owner);
+        assertEquals("box", ((MethodInsnNode) code.get(0)).name);
+        assertEquals("(I)Ljava/lang/Integer;", ((MethodInsnNode) code.get(0)).desc);
+
+        code = utils.box(utils.PRIMITIVE_LONG, utils.COMPARABLE);
+        assertFalse(code == null);
+        assertEquals(1, code.size());
+        assertEquals(Type.getInternalName(Conversions.class), ((MethodInsnNode) code.get(0)).owner);
+        assertEquals("box", ((MethodInsnNode) code.get(0)).name);
+        assertEquals("(J)Ljava/lang/Long;", ((MethodInsnNode) code.get(0)).desc);
+
+        code = utils.box(utils.PRIMITIVE_FLOAT, utils.COMPARABLE);
+        assertFalse(code == null);
+        assertEquals(1, code.size());
+        assertEquals(Type.getInternalName(Conversions.class), ((MethodInsnNode) code.get(0)).owner);
+        assertEquals("box", ((MethodInsnNode) code.get(0)).name);
+        assertEquals("(F)Ljava/lang/Float;", ((MethodInsnNode) code.get(0)).desc);
+
+        code = utils.box(utils.PRIMITIVE_DOUBLE, utils.COMPARABLE);
+        assertFalse(code == null);
+        assertEquals(1, code.size());
+        assertEquals(Type.getInternalName(Conversions.class), ((MethodInsnNode) code.get(0)).owner);
+        assertEquals("box", ((MethodInsnNode) code.get(0)).name);
+        assertEquals("(D)Ljava/lang/Double;", ((MethodInsnNode) code.get(0)).desc);
+
+        // Case #4: Primitive-Type to type <code>java.lang.Object</code>
 
         code = utils.box(utils.PRIMITIVE_BOOLEAN, utils.OBJECT);
         assertFalse(code == null);
         assertEquals(1, code.size());
-        assertEquals(Type.getInternalName(Boolean.class), ((MethodInsnNode) code.get(0)).owner);
-        assertEquals("valueOf", ((MethodInsnNode) code.get(0)).name);
+        assertEquals(Type.getInternalName(Conversions.class), ((MethodInsnNode) code.get(0)).owner);
+        assertEquals("box", ((MethodInsnNode) code.get(0)).name);
         assertEquals("(Z)Ljava/lang/Boolean;", ((MethodInsnNode) code.get(0)).desc);
 
         code = utils.box(utils.PRIMITIVE_CHAR, utils.OBJECT);
         assertFalse(code == null);
         assertEquals(1, code.size());
-        assertEquals(Type.getInternalName(Character.class), ((MethodInsnNode) code.get(0)).owner);
-        assertEquals("valueOf", ((MethodInsnNode) code.get(0)).name);
+        assertEquals(Type.getInternalName(Conversions.class), ((MethodInsnNode) code.get(0)).owner);
+        assertEquals("box", ((MethodInsnNode) code.get(0)).name);
         assertEquals("(C)Ljava/lang/Character;", ((MethodInsnNode) code.get(0)).desc);
 
         code = utils.box(utils.PRIMITIVE_BYTE, utils.OBJECT);
         assertFalse(code == null);
         assertEquals(1, code.size());
-        assertEquals(Type.getInternalName(Byte.class), ((MethodInsnNode) code.get(0)).owner);
-        assertEquals("valueOf", ((MethodInsnNode) code.get(0)).name);
+        assertEquals(Type.getInternalName(Conversions.class), ((MethodInsnNode) code.get(0)).owner);
+        assertEquals("box", ((MethodInsnNode) code.get(0)).name);
         assertEquals("(B)Ljava/lang/Byte;", ((MethodInsnNode) code.get(0)).desc);
 
         code = utils.box(utils.PRIMITIVE_SHORT, utils.OBJECT);
         assertFalse(code == null);
         assertEquals(1, code.size());
-        assertEquals(Type.getInternalName(Short.class), ((MethodInsnNode) code.get(0)).owner);
-        assertEquals("valueOf", ((MethodInsnNode) code.get(0)).name);
+        assertEquals(Type.getInternalName(Conversions.class), ((MethodInsnNode) code.get(0)).owner);
+        assertEquals("box", ((MethodInsnNode) code.get(0)).name);
         assertEquals("(S)Ljava/lang/Short;", ((MethodInsnNode) code.get(0)).desc);
 
         code = utils.box(utils.PRIMITIVE_INT, utils.OBJECT);
         assertFalse(code == null);
         assertEquals(1, code.size());
-        assertEquals(Type.getInternalName(Integer.class), ((MethodInsnNode) code.get(0)).owner);
-        assertEquals("valueOf", ((MethodInsnNode) code.get(0)).name);
+        assertEquals(Type.getInternalName(Conversions.class), ((MethodInsnNode) code.get(0)).owner);
+        assertEquals("box", ((MethodInsnNode) code.get(0)).name);
         assertEquals("(I)Ljava/lang/Integer;", ((MethodInsnNode) code.get(0)).desc);
 
         code = utils.box(utils.PRIMITIVE_LONG, utils.OBJECT);
         assertFalse(code == null);
         assertEquals(1, code.size());
-        assertEquals(Type.getInternalName(Long.class), ((MethodInsnNode) code.get(0)).owner);
-        assertEquals("valueOf", ((MethodInsnNode) code.get(0)).name);
+        assertEquals(Type.getInternalName(Conversions.class), ((MethodInsnNode) code.get(0)).owner);
+        assertEquals("box", ((MethodInsnNode) code.get(0)).name);
         assertEquals("(J)Ljava/lang/Long;", ((MethodInsnNode) code.get(0)).desc);
 
         code = utils.box(utils.PRIMITIVE_FLOAT, utils.OBJECT);
         assertFalse(code == null);
         assertEquals(1, code.size());
-        assertEquals(Type.getInternalName(Float.class), ((MethodInsnNode) code.get(0)).owner);
-        assertEquals("valueOf", ((MethodInsnNode) code.get(0)).name);
+        assertEquals(Type.getInternalName(Conversions.class), ((MethodInsnNode) code.get(0)).owner);
+        assertEquals("box", ((MethodInsnNode) code.get(0)).name);
         assertEquals("(F)Ljava/lang/Float;", ((MethodInsnNode) code.get(0)).desc);
 
         code = utils.box(utils.PRIMITIVE_DOUBLE, utils.OBJECT);
         assertFalse(code == null);
         assertEquals(1, code.size());
-        assertEquals(Type.getInternalName(Double.class), ((MethodInsnNode) code.get(0)).owner);
-        assertEquals("valueOf", ((MethodInsnNode) code.get(0)).name);
+        assertEquals(Type.getInternalName(Conversions.class), ((MethodInsnNode) code.get(0)).owner);
+        assertEquals("box", ((MethodInsnNode) code.get(0)).name);
         assertEquals("(D)Ljava/lang/Double;", ((MethodInsnNode) code.get(0)).desc);
 
         // Case #4: Auto-Boxing Not-Applicable
@@ -343,58 +452,58 @@ public class TypeSystemUtilsTest
         code = utils.unbox(utils.BOXED_BOOLEAN, utils.PRIMITIVE_BOOLEAN);
         assertFalse(code == null);
         assertEquals(1, code.size());
-        assertEquals(Type.getInternalName(Boolean.class), ((MethodInsnNode) code.get(0)).owner);
-        assertEquals("booleanValue", ((MethodInsnNode) code.get(0)).name);
-        assertEquals("()Z", ((MethodInsnNode) code.get(0)).desc);
+        assertEquals(Type.getInternalName(Conversions.class), ((MethodInsnNode) code.get(0)).owner);
+        assertEquals("unbox", ((MethodInsnNode) code.get(0)).name);
+        assertEquals("(Ljava/lang/Boolean;)Z", ((MethodInsnNode) code.get(0)).desc);
 
         code = utils.unbox(utils.BOXED_CHAR, utils.PRIMITIVE_CHAR);
         assertFalse(code == null);
         assertEquals(1, code.size());
-        assertEquals(Type.getInternalName(Character.class), ((MethodInsnNode) code.get(0)).owner);
-        assertEquals("charValue", ((MethodInsnNode) code.get(0)).name);
-        assertEquals("()C", ((MethodInsnNode) code.get(0)).desc);
+        assertEquals(Type.getInternalName(Conversions.class), ((MethodInsnNode) code.get(0)).owner);
+        assertEquals("unbox", ((MethodInsnNode) code.get(0)).name);
+        assertEquals("(Ljava/lang/Character;)C", ((MethodInsnNode) code.get(0)).desc);
 
         code = utils.unbox(utils.BOXED_BYTE, utils.PRIMITIVE_BYTE);
         assertFalse(code == null);
         assertEquals(1, code.size());
-        assertEquals(Type.getInternalName(Byte.class), ((MethodInsnNode) code.get(0)).owner);
-        assertEquals("byteValue", ((MethodInsnNode) code.get(0)).name);
-        assertEquals("()B", ((MethodInsnNode) code.get(0)).desc);
+        assertEquals(Type.getInternalName(Conversions.class), ((MethodInsnNode) code.get(0)).owner);
+        assertEquals("unbox", ((MethodInsnNode) code.get(0)).name);
+        assertEquals("(Ljava/lang/Byte;)B", ((MethodInsnNode) code.get(0)).desc);
 
         code = utils.unbox(utils.BOXED_SHORT, utils.PRIMITIVE_SHORT);
         assertFalse(code == null);
         assertEquals(1, code.size());
-        assertEquals(Type.getInternalName(Short.class), ((MethodInsnNode) code.get(0)).owner);
-        assertEquals("shortValue", ((MethodInsnNode) code.get(0)).name);
-        assertEquals("()S", ((MethodInsnNode) code.get(0)).desc);
+        assertEquals(Type.getInternalName(Conversions.class), ((MethodInsnNode) code.get(0)).owner);
+        assertEquals("unbox", ((MethodInsnNode) code.get(0)).name);
+        assertEquals("(Ljava/lang/Short;)S", ((MethodInsnNode) code.get(0)).desc);
 
         code = utils.unbox(utils.BOXED_INT, utils.PRIMITIVE_INT);
         assertFalse(code == null);
         assertEquals(1, code.size());
-        assertEquals(Type.getInternalName(Integer.class), ((MethodInsnNode) code.get(0)).owner);
-        assertEquals("intValue", ((MethodInsnNode) code.get(0)).name);
-        assertEquals("()I", ((MethodInsnNode) code.get(0)).desc);
+        assertEquals(Type.getInternalName(Conversions.class), ((MethodInsnNode) code.get(0)).owner);
+        assertEquals("unbox", ((MethodInsnNode) code.get(0)).name);
+        assertEquals("(Ljava/lang/Integer;)I", ((MethodInsnNode) code.get(0)).desc);
 
         code = utils.unbox(utils.BOXED_LONG, utils.PRIMITIVE_LONG);
         assertFalse(code == null);
         assertEquals(1, code.size());
-        assertEquals(Type.getInternalName(Long.class), ((MethodInsnNode) code.get(0)).owner);
-        assertEquals("longValue", ((MethodInsnNode) code.get(0)).name);
-        assertEquals("()J", ((MethodInsnNode) code.get(0)).desc);
+        assertEquals(Type.getInternalName(Conversions.class), ((MethodInsnNode) code.get(0)).owner);
+        assertEquals("unbox", ((MethodInsnNode) code.get(0)).name);
+        assertEquals("(Ljava/lang/Long;)J", ((MethodInsnNode) code.get(0)).desc);
 
         code = utils.unbox(utils.BOXED_FLOAT, utils.PRIMITIVE_FLOAT);
         assertFalse(code == null);
         assertEquals(1, code.size());
-        assertEquals(Type.getInternalName(Float.class), ((MethodInsnNode) code.get(0)).owner);
-        assertEquals("floatValue", ((MethodInsnNode) code.get(0)).name);
-        assertEquals("()F", ((MethodInsnNode) code.get(0)).desc);
+        assertEquals(Type.getInternalName(Conversions.class), ((MethodInsnNode) code.get(0)).owner);
+        assertEquals("unbox", ((MethodInsnNode) code.get(0)).name);
+        assertEquals("(Ljava/lang/Float;)F", ((MethodInsnNode) code.get(0)).desc);
 
         code = utils.unbox(utils.BOXED_DOUBLE, utils.PRIMITIVE_DOUBLE);
         assertFalse(code == null);
         assertEquals(1, code.size());
-        assertEquals(Type.getInternalName(Double.class), ((MethodInsnNode) code.get(0)).owner);
-        assertEquals("doubleValue", ((MethodInsnNode) code.get(0)).name);
-        assertEquals("()D", ((MethodInsnNode) code.get(0)).desc);
+        assertEquals(Type.getInternalName(Conversions.class), ((MethodInsnNode) code.get(0)).owner);
+        assertEquals("unbox", ((MethodInsnNode) code.get(0)).name);
+        assertEquals("(Ljava/lang/Double;)D", ((MethodInsnNode) code.get(0)).desc);
 
         // Case #2: Auto-Unboxing Not-Applicable
 
@@ -485,6 +594,26 @@ public class TypeSystemUtilsTest
                     FACE3,
                     "method3(Ljava/lang/Integer;)V");
 
+        // Case: parameters, more specific primitive-types come first
+
+        comesBefore(sorted,
+                    FACE3,
+                    "method3(B)V",
+                    FACE3,
+                    "method3(S)V");
+
+        comesBefore(sorted,
+                    FACE3,
+                    "method3(S)V",
+                    FACE3,
+                    "method3(I)V");
+
+        comesBefore(sorted,
+                    FACE3,
+                    "method3(I)V",
+                    FACE3,
+                    "method3(L)V");
+
         // Case: parameters, more specific
 
         comesBefore(sorted,
@@ -526,10 +655,10 @@ public class TypeSystemUtilsTest
      * This method ensures that a particular invokable member precedes another specific
      * invokable member in a given list of invokable members.
      *
-     * @param members    is the list that contains the invokable members.
-     * @param owner1     is the descriptor of the type that declares the first invokable member.
+     * @param members is the list that contains the invokable members.
+     * @param owner1 is the descriptor of the type that declares the first invokable member.
      * @param signature1 is the name and descriptor of the first invokable member.
-     * @param owner2     is the descriptor of the type that declares the second invokable member.
+     * @param owner2 is the descriptor of the type that declares the second invokable member.
      * @param signature2 is the name and descriptor of the second invokable member.
      */
     private void comesBefore(final List<? extends IInvokableMember> members,
@@ -555,35 +684,5 @@ public class TypeSystemUtilsTest
                 fail();
             }
         }
-    }
-
-    /**
-     * Test: 20130821135121807566
-     *
-     * <p>
-     * Method:
-     * <code>checkArgs(List, List)</code>
-     * </p>
-     *
-     * <p>
-     * Case: Test Everything
-     * </p>
-     */
-    @Test
-    public void test20130821135121807566()
-    {
-        System.out.println("Test: 20130821135121807566");
-
-        final TypeFactory factory = new TypeFactory();
-
-        final TypeSystemUtils utils = new TypeSystemUtils(factory);
-
-        final IInterfaceType type = (IInterfaceType) factory.fromClass(TestInterface1.class);
-
-        final Collection<IMethod> methods = type.getAllVisibleMethods();
-
-        final String FACE1 = Type.getDescriptor(TestInterface1.class);
-
-        fail();
     }
 }

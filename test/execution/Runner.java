@@ -31,6 +31,7 @@ public final class Runner
     {
         failed_count = 0;
 
+        test("T0109");
         test("T0108");
         test("T0107");
         test("T0106");

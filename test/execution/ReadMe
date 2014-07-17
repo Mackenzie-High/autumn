@@ -203,6 +203,7 @@ Test Index
 . . . T0058 = All Cases
 . Operators
 . . T0100 = Operator Unboxing
+. . T0109 = Operator Primitive-To-Primitive Coercion
 . . T0099 = Negate Operator
 . . T0040 = Not Operator
 . . T0041 = Division Operator
@@ -244,6 +245,7 @@ Test Index
 . Standard Library
 . . F
 . . . T0074 = listRange
+
 
 
 

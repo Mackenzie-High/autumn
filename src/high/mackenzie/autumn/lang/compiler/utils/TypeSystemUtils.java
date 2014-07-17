@@ -44,10 +44,12 @@ import java.lang.reflect.Modifier;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.AbstractInsnNode;
+import org.objectweb.asm.tree.InsnNode;
 import org.objectweb.asm.tree.MethodInsnNode;
 
 /**
@@ -100,6 +102,8 @@ public final class TypeSystemUtils
     public final IClassType BIG_DECIMAL;
 
     public final IClassType OBJECT;
+
+    public final IClassType COMPARABLE;
 
     public final IClassType NUMBER;
 
@@ -181,6 +185,8 @@ public final class TypeSystemUtils
 
         this.OBJECT = (IClassType) factory.fromClass(Object.class);
 
+        this.COMPARABLE = (IClassType) factory.fromClass(Comparable.class);
+
         this.NUMBER = (IClassType) factory.fromClass(Number.class);
 
         this.THROWABLE = (IClassType) factory.fromClass(Throwable.class);
@@ -228,7 +234,7 @@ public final class TypeSystemUtils
      * This method determines whether a value of a type X can be converted to a value of a type Y,
      * as is done during method invocations and variable assignments. Specifically, an assignment
      * conversion is either a boxing conversion, an unboxing conversion, an identity conversion,
-     * or an upcast.
+     * an upcast, or a primitive coercion.
      *
      * @param input is the type of value that will be converted.
      * @param output is the type to convert the input value to.
@@ -238,11 +244,68 @@ public final class TypeSystemUtils
     public List<AbstractInsnNode> assign(final IType input,
                                          final IType output)
     {
+        // Primitive Type Coercions:
+        //   char  ==> int
+        //   char  ==> long
+        //   byte  ==> short
+        //   byte  ==> int
+        //   byte  ==> long
+        //   short ==> int
+        //   short ==> long
+        //   int   ==> long
+        //   float ==> double
+
+        /**
+         * Case: Primitive-To-Primitive Coercions
+         */
+        if (input.equals(PRIMITIVE_CHAR) && output.equals(PRIMITIVE_INT))
+        {
+            return Lists.newLinkedList();
+        }
+        else if (input.equals(PRIMITIVE_CHAR) && output.equals(PRIMITIVE_LONG))
+        {
+            return Collections.<AbstractInsnNode>singletonList(new InsnNode(Opcodes.I2L));
+        }
+        else if (input.equals(PRIMITIVE_BYTE) && output.equals(PRIMITIVE_SHORT))
+        {
+            return Lists.newLinkedList();
+        }
+        else if (input.equals(PRIMITIVE_BYTE) && output.equals(PRIMITIVE_INT))
+        {
+            return Lists.newLinkedList();
+        }
+        else if (input.equals(PRIMITIVE_BYTE) && output.equals(PRIMITIVE_LONG))
+        {
+            return Collections.<AbstractInsnNode>singletonList(new InsnNode(Opcodes.I2L));
+        }
+        else if (input.equals(PRIMITIVE_SHORT) && output.equals(PRIMITIVE_INT))
+        {
+            return Lists.newLinkedList();
+        }
+        else if (input.equals(PRIMITIVE_SHORT) && output.equals(PRIMITIVE_LONG))
+        {
+            return Collections.<AbstractInsnNode>singletonList(new InsnNode(Opcodes.I2L));
+        }
+        else if (input.equals(PRIMITIVE_INT) && output.equals(PRIMITIVE_LONG))
+        {
+            return Collections.<AbstractInsnNode>singletonList(new InsnNode(Opcodes.I2L));
+        }
+        else if (input.equals(PRIMITIVE_FLOAT) && output.equals(PRIMITIVE_DOUBLE))
+        {
+            return Collections.<AbstractInsnNode>singletonList(new InsnNode(Opcodes.F2D));
+        }
+
+        /**
+         * Case: The input is a subtype of the output.
+         */
         if (input.isSubtypeOf(output))
         {
             return Lists.newLinkedList();
         }
 
+        /**
+         * Case: Boxing
+         */
         final List<AbstractInsnNode> box_code = box(input, output);
 
         if (box_code != null)
@@ -250,6 +313,9 @@ public final class TypeSystemUtils
             return box_code;
         }
 
+        /**
+         * Case: Unboxing
+         */
         final List<AbstractInsnNode> unbox_code = unbox(input, output);
 
         if (unbox_code != null)
@@ -257,6 +323,9 @@ public final class TypeSystemUtils
             return unbox_code;
         }
 
+        /**
+         * Case: Invalid Assignment
+         */
         return null;
     }
 
@@ -510,6 +579,9 @@ public final class TypeSystemUtils
     {
         final boolean LESS = true;
 
+        /**
+         * Name Comparison
+         */
         if (left.getName().compareTo(right.getName()) < 0)
         {
             return LESS;
@@ -524,6 +596,9 @@ public final class TypeSystemUtils
         final List<IFormalParameter> left_params = left.getFormalParameters();
         final List<IFormalParameter> right_params = right.getFormalParameters();
 
+        /**
+         * Parameter Count Comparison
+         */
         if (left_params.size() < right_params.size())
         {
             return LESS;
@@ -535,6 +610,9 @@ public final class TypeSystemUtils
 
         assert left_params.size() == right_params.size();
 
+        /**
+         * Owner Comparison
+         */
         final boolean is_proper_subtype = (!left.getOwner().equals(right.getOwner()))
                                           && left.getOwner().isSubtypeOf(right.getOwner());
 
@@ -543,14 +621,17 @@ public final class TypeSystemUtils
             return LESS;
         }
 
+        /**
+         * Parameter Comparison
+         */
         for (int i = 0; i < left_params.size(); i++)
         {
             final IVariableType left_param = left_params.get(i).getType();
             final IVariableType right_param = right_params.get(i).getType();
 
-            final boolean subtype = left_param.isSubtypeOf(right_param);
+            final boolean assignable = assign(left_param, right_param) != null;
 
-            if (subtype)
+            if (assignable)
             {
                 return LESS;
             }
@@ -560,6 +641,9 @@ public final class TypeSystemUtils
             }
         }
 
+        /**
+         * Return Type Comparison
+         */
         final boolean more_specific_return = !left.getReturnType().equals(right.getReturnType())
                                              && left.getReturnType().isSubtypeOf(right.getReturnType());
 

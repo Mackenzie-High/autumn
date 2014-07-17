@@ -415,6 +415,7 @@ public final class ArgumentStack
      * @param index is the zero-based index of the argument as measured from the stack's base.
      * @return the argument.
      * @throws IndexOutOfBoundsException if the index is invalid.
+     * @throws ClassCastException if unboxing fails.
      * @throws IllegalStateException if the value cannot be returned due to its type.
      */
     public final boolean getZ(final int index)
@@ -445,6 +446,7 @@ public final class ArgumentStack
      * @param index is the zero-based index of the argument as measured from the stack's base.
      * @return the argument.
      * @throws IndexOutOfBoundsException if the index is invalid.
+     * @throws ClassCastException if unboxing fails.
      * @throws IllegalStateException if the value cannot be returned due to its type.
      */
     public final char getC(final int index)
@@ -475,6 +477,7 @@ public final class ArgumentStack
      * @param index is the zero-based index of the argument as measured from the stack's base.
      * @return the argument.
      * @throws IndexOutOfBoundsException if the index is invalid.
+     * @throws ClassCastException if unboxing fails.
      * @throws IllegalStateException if the value cannot be returned due to its type.
      */
     public final byte getB(final int index)
@@ -499,12 +502,13 @@ public final class ArgumentStack
      * This method retrieves an argument that is at a specific location on the argument-stack.
      *
      * <p>
-     * The argument will be unboxed, if necessary.
+     * The argument will be unboxed or coerced, if necessary.
      * </p>
      *
      * @param index is the zero-based index of the argument as measured from the stack's base.
      * @return the argument.
      * @throws IndexOutOfBoundsException if the index is invalid.
+     * @throws ClassCastException if unboxing fails.
      * @throws IllegalStateException if the value cannot be returned due to its type.
      */
     public final short getS(final int index)
@@ -514,6 +518,10 @@ public final class ArgumentStack
         if (x.type == short.class)
         {
             return x.value_S;
+        }
+        else if (x.type == byte.class)
+        {
+            return x.value_B;
         }
         else if (x.type == Object.class)
         {
@@ -529,12 +537,13 @@ public final class ArgumentStack
      * This method retrieves an argument that is at a specific location on the argument-stack.
      *
      * <p>
-     * The argument will be unboxed, if necessary.
+     * The argument will be unboxed or coerced, if necessary.
      * </p>
      *
      * @param index is the zero-based index of the argument as measured from the stack's base.
      * @return the argument.
      * @throws IndexOutOfBoundsException if the index is invalid.
+     * @throws ClassCastException if unboxing fails.
      * @throws IllegalStateException if the value cannot be returned due to its type.
      */
     public final int getI(final int index)
@@ -544,6 +553,18 @@ public final class ArgumentStack
         if (x.type == int.class)
         {
             return x.value_I;
+        }
+        else if (x.type == char.class)
+        {
+            return x.value_C;
+        }
+        else if (x.type == byte.class)
+        {
+            return x.value_B;
+        }
+        else if (x.type == short.class)
+        {
+            return x.value_S;
         }
         else if (x.type == Object.class)
         {
@@ -559,12 +580,13 @@ public final class ArgumentStack
      * This method retrieves an argument that is at a specific location on the argument-stack.
      *
      * <p>
-     * The argument will be unboxed, if necessary.
+     * The argument will be unboxed or coerced, if necessary.
      * </p>
      *
      * @param index is the zero-based index of the argument as measured from the stack's base.
      * @return the argument.
      * @throws IndexOutOfBoundsException if the index is invalid.
+     * @throws ClassCastException if unboxing fails.
      * @throws IllegalStateException if the value cannot be returned due to its type.
      */
     public final long getJ(final int index)
@@ -574,6 +596,22 @@ public final class ArgumentStack
         if (x.type == long.class)
         {
             return x.value_J;
+        }
+        else if (x.type == char.class)
+        {
+            return x.value_C;
+        }
+        else if (x.type == byte.class)
+        {
+            return x.value_B;
+        }
+        else if (x.type == short.class)
+        {
+            return x.value_S;
+        }
+        else if (x.type == int.class)
+        {
+            return x.value_I;
         }
         else if (x.type == Object.class)
         {
@@ -595,6 +633,7 @@ public final class ArgumentStack
      * @param index is the zero-based index of the argument as measured from the stack's base.
      * @return the argument.
      * @throws IndexOutOfBoundsException if the index is invalid.
+     * @throws ClassCastException if unboxing fails.
      * @throws IllegalStateException if the value cannot be returned due to its type.
      */
     public final float getF(final int index)
@@ -619,12 +658,13 @@ public final class ArgumentStack
      * This method retrieves an argument that is at a specific location on the argument-stack.
      *
      * <p>
-     * The argument will be unboxed, if necessary.
+     * The argument will be unboxed or coerced, if necessary.
      * </p>
      *
      * @param index is the zero-based index of the argument as measured from the stack's base.
      * @return the argument.
      * @throws IndexOutOfBoundsException if the index is invalid.
+     * @throws ClassCastException if unboxing fails.
      * @throws IllegalStateException if the value cannot be returned due to its type.
      */
     public final double getD(final int index)
@@ -634,6 +674,10 @@ public final class ArgumentStack
         if (x.type == double.class)
         {
             return x.value_D;
+        }
+        else if (x.type == float.class)
+        {
+            return x.value_F;
         }
         else if (x.type == Object.class)
         {
@@ -712,6 +756,7 @@ public final class ArgumentStack
      *
      * @return the argument.
      * @throws IndexOutOfBoundsException if the stack is empty.
+     * @throws ClassCastException if unboxing fails.
      * @throws IllegalStateException if the value cannot be returned due to its type.
      */
     public final boolean peekZ()
@@ -728,6 +773,7 @@ public final class ArgumentStack
      *
      * @return the argument.
      * @throws IndexOutOfBoundsException if the stack is empty.
+     * @throws ClassCastException if unboxing fails.
      * @throws IllegalStateException if the value cannot be returned due to its type.
      */
     public final char peekC()
@@ -744,6 +790,7 @@ public final class ArgumentStack
      *
      * @return the argument.
      * @throws IndexOutOfBoundsException if the stack is empty.
+     * @throws ClassCastException if unboxing fails.
      * @throws IllegalStateException if the value cannot be returned due to its type.
      */
     public final byte peekB()
@@ -760,6 +807,7 @@ public final class ArgumentStack
      *
      * @return the argument.
      * @throws IndexOutOfBoundsException if the stack is empty.
+     * @throws ClassCastException if unboxing fails.
      * @throws IllegalStateException if the value cannot be returned due to its type.
      */
     public final short peekS()
@@ -776,6 +824,7 @@ public final class ArgumentStack
      *
      * @return the argument.
      * @throws IndexOutOfBoundsException if the stack is empty.
+     * @throws ClassCastException if unboxing fails.
      * @throws IllegalStateException if the value cannot be returned due to its type.
      */
     public final int peekI()
@@ -792,6 +841,7 @@ public final class ArgumentStack
      *
      * @return the argument.
      * @throws IndexOutOfBoundsException if the stack is empty.
+     * @throws ClassCastException if unboxing fails.
      * @throws IllegalStateException if the value cannot be returned due to its type.
      */
     public final long peekJ()
@@ -808,6 +858,7 @@ public final class ArgumentStack
      *
      * @return the argument.
      * @throws IndexOutOfBoundsException if the stack is empty.
+     * @throws ClassCastException if unboxing fails.
      * @throws IllegalStateException if the value cannot be returned due to its type.
      */
     public final float peekF()
@@ -824,6 +875,7 @@ public final class ArgumentStack
      *
      * @return the argument.
      * @throws IndexOutOfBoundsException if the stack is empty.
+     * @throws ClassCastException if unboxing fails.
      * @throws IllegalStateException if the value cannot be returned due to its type.
      */
     public final double peekD()
