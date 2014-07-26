@@ -23,6 +23,7 @@ import autumn.lang.compiler.ast.commons.IBinaryOperation;
 import autumn.lang.compiler.ast.commons.IConstruct;
 import autumn.lang.compiler.ast.commons.IConversionOperation;
 import autumn.lang.compiler.ast.commons.IDirective;
+import autumn.lang.compiler.ast.commons.IDocumented;
 import autumn.lang.compiler.ast.commons.IExpression;
 import autumn.lang.compiler.ast.commons.IStatement;
 import autumn.lang.compiler.ast.commons.IUnaryOperation;
@@ -45,24 +46,51 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 
 /**
- * An instance of this class is an AST node that represents a java.lang.String literal.
+ * An instance of this class is an AST node that represents a string literal.
  * 
  * <p> 
  * <table border="1">
  *     <tr> <td> <b>Property Name</b> </td> <td> <b>Property Description</b> </td> </tr>
+ *     <tr> <td> <code>verbatim</code> </td> <td>This flag is true, if the string does not contain escape sequences.</td> </tr>
  *     <tr> <td> <code>value</code> </td> <td>This is the value that this datum represents.</td> </tr>
  *     <tr> <td> <code>location</code> </td> <td>This is the source-location information regarding this construct.</td> </tr>
  * </table>
  * </p>
  * 
- * <p> This file was auto-generated on (Mon Jul 14 10:23:51 EDT 2014).</p>
+ * <p> This file was auto-generated on (Thu Jul 24 16:15:35 EDT 2014).</p>
  */
 @SuppressWarnings("unchecked")
 public final class StringDatum extends Object implements IExpression
 {
+    private boolean verbatim = false;
+
     private String value;
 
     private SourceLocation location = new SourceLocation();
+
+    /**
+     * Setter.
+     * 
+     * @param value is the new value of property <code>verbatim</code>.
+     * @return a copy of this object with property <code>verbatim</code> set to value.
+     */
+    public StringDatum setVerbatim(final boolean value)
+    {
+        final StringDatum result = this.copy();
+        result.verbatim = value;
+        return result;
+    }
+
+    /**
+     * Getter.
+     * 
+     * @return the value of property <code>verbatim</code>.
+     */
+    public boolean getVerbatim()
+    {
+        final boolean value = this.verbatim;
+        return value;
+    }
 
     /**
      * Setter.
@@ -115,13 +143,15 @@ public final class StringDatum extends Object implements IExpression
     /**
      * This method creates a new instance of this class.
      * 
+     * @param verbatim is the value for property <code>verbatim</code>.
      * @param value is the value for property <code>value</code>.
      * @param location is the value for property <code>location</code>.
      * @return a new instance of this class.
      */
-    public static StringDatum create(String value, SourceLocation location)
+    public static StringDatum create(boolean verbatim, String value, SourceLocation location)
     {
         StringDatum object = new StringDatum();
+        object = object.setVerbatim(verbatim);
         object = object.setValue(value);
         object = object.setLocation(location);
         return object;
@@ -145,6 +175,7 @@ public final class StringDatum extends Object implements IExpression
     public StringDatum copy()
     {
         final StringDatum result = new StringDatum();
+        result.verbatim = this.verbatim;
         result.value = this.value;
         result.location = this.location;
         return result;
@@ -163,6 +194,7 @@ public final class StringDatum extends Object implements IExpression
     public Map<String, Object> toMap()
     {
         final Map<String, Object> map = new TreeMap<String, Object>();
+        map.put("verbatim", this.getVerbatim());
         map.put("value", this.getValue());
         map.put("location", this.getLocation());
 

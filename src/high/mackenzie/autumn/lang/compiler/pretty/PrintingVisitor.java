@@ -193,13 +193,14 @@ public final class PrintingVisitor
     {
         record(object);
 
+        require(object, object.getImportDirectives());
+        require(object, object.getModuleDirectives());
         require(object, object.getAnnotations());
         require(object, object.getDesigns());
         require(object, object.getEnums());
         require(object, object.getExceptions());
+        require(object, object.getExceptions());
         require(object, object.getFunctions());
-        require(object, object.getImportDirectives());
-        require(object, object.getModuleDirectives());
 
         for (ModuleDirective x : object.getModuleDirectives())
         {
@@ -223,6 +224,20 @@ public final class PrintingVisitor
         p.addEmptyLine();
 
         for (ExceptionDefinition x : object.getExceptions())
+        {
+            x.accept(this);
+        }
+
+        p.addEmptyLine();
+
+        for (TupleDefinition x : object.getTuples())
+        {
+            x.accept(this);
+        }
+
+        p.addEmptyLine();
+
+        for (FunctorDefinition x : object.getFunctors())
         {
             x.accept(this);
         }
@@ -256,8 +271,13 @@ public final class PrintingVisitor
     {
         record(object);
 
+        require(object, object.getComment());
         require(object, object.getAnnotations());
         require(object, object.getNamespace());
+
+        object.getComment().accept(this);
+
+        object.getAnnotations().accept(this);
 
         p.addLine();
         p.addText("module ");
@@ -301,8 +321,11 @@ public final class PrintingVisitor
     public void visit(final AnnotationDefinition object)
     {
         record(object);
+        require(object, object.getComment());
         require(object, object.getAnnotations());
         require(object, object.getName());
+
+        object.getComment().accept(this);
 
         object.getAnnotations().accept(this);
 
@@ -318,9 +341,12 @@ public final class PrintingVisitor
     public void visit(final ExceptionDefinition object)
     {
         record(object);
+        require(object, object.getComment());
         require(object, object.getAnnotations());
         require(object, object.getName());
         require(object, object.getSuperclass());
+
+        object.getComment().accept(this);
 
         object.getAnnotations().accept(this);
 
@@ -335,12 +361,64 @@ public final class PrintingVisitor
     }
 
     @Override
+    public void visit(final TupleDefinition object)
+    {
+        record(object);
+        require(object, object.getComment());
+        require(object, object.getAnnotations());
+        require(object, object.getName());
+        require(object, object.getElements());
+
+        object.getComment().accept(this);
+
+        object.getAnnotations().accept(this);
+
+        p.addLine();
+        p.addText("tuple ");
+        object.getName().accept(this);
+        p.addText(" ");
+        object.getElements().accept(this);
+        p.addText(";");
+
+        p.addEmptyLine();
+    }
+
+    @Override
+    public void visit(final FunctorDefinition object)
+    {
+        record(object);
+        require(object, object.getComment());
+        require(object, object.getAnnotations());
+        require(object, object.getName());
+        require(object, object.getParameters());
+        require(object, object.getReturnType());
+
+        object.getComment().accept(this);
+
+        object.getAnnotations().accept(this);
+
+        p.addLine();
+        p.addText("functor ");
+        object.getName().accept(this);
+        p.addText(" ");
+        object.getParameters().accept(this);
+        p.addText(" : ");
+        object.getReturnType().accept(this);
+        p.addText(";");
+
+        p.addEmptyLine();
+    }
+
+    @Override
     public void visit(final EnumDefinition object)
     {
         record(object);
+        require(object, object.getComment());
         require(object, object.getAnnotations());
         require(object, object.getName());
         require(object, object.getConstants());
+
+        object.getComment().accept(this);
 
         object.getAnnotations().accept(this);
 
@@ -366,8 +444,11 @@ public final class PrintingVisitor
     public void visit(final EnumConstant object)
     {
         record(object);
+        require(object, object.getComment());
         require(object, object.getAnnotations());
         require(object, object.getName());
+
+        object.getComment().accept(this);
 
         object.getAnnotations().accept(this);
 
@@ -383,10 +464,13 @@ public final class PrintingVisitor
     public void visit(final DesignDefinition object)
     {
         record(object);
+        require(object, object.getComment());
         require(object, object.getAnnotations());
         require(object, object.getName());
         require(object, object.getSuperinterfaces());
         require(object, object.getProperties());
+
+        object.getComment().accept(this);
 
         object.getAnnotations().accept(this);
 
@@ -435,9 +519,12 @@ public final class PrintingVisitor
     public void visit(final DesignProperty object)
     {
         record(object);
+        require(object, object.getComment());
         require(object, object.getAnnotations());
         require(object, object.getName());
         require(object, object.getType());
+
+        object.getComment().accept(this);
 
         object.getAnnotations().accept(this);
 
@@ -455,10 +542,13 @@ public final class PrintingVisitor
     public void visit(final DesignMethod object)
     {
         record(object);
+        require(object, object.getComment());
         require(object, object.getAnnotations());
         require(object, object.getName());
         require(object, object.getParameters());
         require(object, object.getReturnType());
+
+        object.getComment().accept(this);
 
         object.getAnnotations().accept(this);
 
@@ -478,11 +568,14 @@ public final class PrintingVisitor
     public void visit(final FunctionDefinition object)
     {
         record(object);
+        require(object, object.getComment());
         require(object, object.getAnnotations());
         require(object, object.getName());
         require(object, object.getParameters());
         require(object, object.getReturnType());
         require(object, object.getBody());
+
+        object.getComment().accept(this);
 
         object.getAnnotations().accept(this);
 
@@ -789,6 +882,43 @@ public final class PrintingVisitor
     }
 
     @Override
+    public void visit(final LambdaStatement object)
+    {
+        record(object);
+        require(object, object.getVariable());
+        require(object, object.getType());
+        require(object, object.getBody());
+
+        p.addLine();
+        p.addText("lambda ");
+        object.getVariable().accept(this);
+        p.addText(" : ");
+        object.getType().accept(this);
+        object.getBody().accept(this);
+        p.addEmptyLine();
+    }
+
+    @Override
+    public void visit(final DelegateStatement object)
+    {
+        record(object);
+        require(object, object.getVariable());
+        require(object, object.getType());
+        require(object, object.getOwner());
+        require(object, object.getMethod());
+
+        p.addLine();
+        p.addText("delegate ");
+        object.getVariable().accept(this);
+        p.addText(" : ");
+        object.getType().accept(this);
+        p.addText(" => ");
+        printStaticMemberAccess(object.getOwner(), object.getMethod());
+        p.addText(";");
+        p.addEmptyLine();
+    }
+
+    @Override
     public void visit(final SetterStatement object)
     {
         record(object);
@@ -1013,7 +1143,7 @@ public final class PrintingVisitor
         p.addLine();
         p.addText("recur");
         printIf(" ", !object.getArguments().isEmpty());
-        printArguments("", object.getArguments(), ";");
+        printList("", object.getArguments(), ", ", ";");
         p.addEmptyLine();
         p.addEmptyLine();
     }
@@ -1048,7 +1178,7 @@ public final class PrintingVisitor
         require(object, object.getElements());
         require(object, object.getElements().isEmpty() == false);
 
-        printArguments("(progn ", object.getElements(), ")");
+        printList("(progn ", object.getElements(), ", ", ")");
     }
 
     @Override
@@ -1145,6 +1275,7 @@ public final class PrintingVisitor
         require(object, object.getValue() != null);
         reportUnprintableNode(object, object.getValue().contains("'''") == false);
 
+        p.addText(object.getVerbatim() ? "@" : "");
         p.addText("'''");
         p.addText(object.getValue());
         p.addText("'''");
@@ -1184,7 +1315,7 @@ public final class PrintingVisitor
         record(object);
         require(object, object.getElements());
 
-        printArguments("[ ", object.getElements(), " ]");
+        printList("[ ", object.getElements(), ", ", " ]");
     }
 
     @Override
@@ -1197,7 +1328,7 @@ public final class PrintingVisitor
         p.addText("(dispatch ");
         object.getName().accept(this);
         printIf(" ", !object.getArguments().isEmpty());
-        printArguments("", object.getArguments(), "");
+        printList("", object.getArguments(), ", ", "");
         p.addText(")");
     }
 
@@ -1211,7 +1342,7 @@ public final class PrintingVisitor
         p.addText("(call ");
         printStaticMemberAccess(object.getOwner(), object.getName());
         printIf(" ", !object.getArguments().isEmpty());
-        printArguments("", object.getArguments(), "");
+        printList("", object.getArguments(), ", ", "");
         p.addText(")");
     }
 
@@ -1252,7 +1383,7 @@ public final class PrintingVisitor
         p.addText("(new ");
         object.getType().accept(this);
         printIf(" ", !object.getArguments().isEmpty());
-        printArguments("", object.getArguments(), "");
+        printList("", object.getArguments(), ", ", "");
         p.addText(")");
     }
 
@@ -1280,7 +1411,7 @@ public final class PrintingVisitor
         p.addText("(call ");
         printInstanceMemberAccess(object.getOwner(), object.getName());
         printIf(" ", !object.getArguments().isEmpty());
-        printArguments("", object.getArguments(), "");
+        printList("", object.getArguments(), ", ", "");
         p.addText(")");
     }
 
@@ -1326,20 +1457,6 @@ public final class PrintingVisitor
     }
 
     @Override
-    public void visit(final FuncallExpression object)
-    {
-        record(object);
-        require(object, object.getFunctor());
-        require(object, object.getArguments());
-
-        p.addText("(funcall ");
-        object.getFunctor().accept(this);
-        printIf(", ", !object.getArguments().isEmpty());
-        printArguments("", object.getArguments(), "");
-        p.addText(")");
-    }
-
-    @Override
     public void visit(final TernaryConditionalExpression object)
     {
         record(object);
@@ -1353,18 +1470,6 @@ public final class PrintingVisitor
         object.getCaseTrue().accept(this);
         p.addText(" else ");
         object.getCaseFalse().accept(this);
-        p.addText(")");
-    }
-
-    @Override
-    public void visit(final DelegateExpression object)
-    {
-        record(object);
-        require(object, object.getOwner());
-        require(object, object.getMethod());
-
-        p.addText("(delegate ");
-        printStaticMemberAccess(object.getOwner(), object.getMethod());
         p.addText(")");
     }
 
@@ -1534,6 +1639,28 @@ public final class PrintingVisitor
         reportUnprintableNode(object, object.getName().matches(ID_REGEX));
 
         p.addText(object.getName());
+    }
+
+    @Override
+    public void visit(final DocComment object)
+    {
+        record(object);
+        require(object, object.getLines());
+
+        for (DocCommentLine line : object.getLines())
+        {
+            line.accept(this);
+        }
+    }
+
+    @Override
+    public void visit(final DocCommentLine object)
+    {
+        record(object);
+
+        p.addLine();
+        p.addText("'' ");
+        p.addText(object.getText() == null ? "" : object.getText());
     }
 
     @Override
@@ -1764,15 +1891,17 @@ public final class PrintingVisitor
     }
 
     /**
-     * This method prints a list of argument expressions.
+     * This method prints a list of constructs.
      *
      * @param prefix is a string to print immediately before the arguments.
-     * @param arguments are the argument expressions, if any.
+     * @param arguments are the arguments to print.
+     * @param separator is used to separate the arguments.
      * @param suffix is a string to print immediately after the arguments.
      */
-    private void printArguments(final String prefix,
-                                final ConstructList<IExpression> arguments,
-                                final String suffix)
+    private void printList(final String prefix,
+                           final ConstructList<? extends IConstruct> arguments,
+                           final String separator,
+                           final String suffix)
     {
         assert prefix != null;
         assert arguments != null;
@@ -1782,7 +1911,7 @@ public final class PrintingVisitor
         {
             int count = 0;
 
-            for (IExpression arg : arguments)
+            for (IConstruct arg : arguments)
             {
                 assert arg != null;
 
@@ -1792,7 +1921,7 @@ public final class PrintingVisitor
 
                 if (count < arguments.size())
                 {
-                    p.addText(", ");
+                    p.addText(separator);
                 }
             }
         }

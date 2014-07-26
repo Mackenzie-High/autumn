@@ -72,67 +72,67 @@ public class ExpressionTypeChecker
     }
 
     @Override
-    public void visit(BooleanDatum object)
+    public void visit(final BooleanDatum object)
     {
         infer(object, program.typesystem.utils.PRIMITIVE_BOOLEAN);
     }
 
     @Override
-    public void visit(CharDatum object)
+    public void visit(final CharDatum object)
     {
         infer(object, program.typesystem.utils.PRIMITIVE_CHAR);
     }
 
     @Override
-    public void visit(ByteDatum object)
+    public void visit(final ByteDatum object)
     {
         infer(object, program.typesystem.utils.PRIMITIVE_BYTE);
     }
 
     @Override
-    public void visit(ShortDatum object)
+    public void visit(final ShortDatum object)
     {
         infer(object, program.typesystem.utils.PRIMITIVE_SHORT);
     }
 
     @Override
-    public void visit(IntDatum object)
+    public void visit(final IntDatum object)
     {
         infer(object, program.typesystem.utils.PRIMITIVE_INT);
     }
 
     @Override
-    public void visit(LongDatum object)
+    public void visit(final LongDatum object)
     {
         infer(object, program.typesystem.utils.PRIMITIVE_LONG);
     }
 
     @Override
-    public void visit(FloatDatum object)
+    public void visit(final FloatDatum object)
     {
         infer(object, program.typesystem.utils.PRIMITIVE_FLOAT);
     }
 
     @Override
-    public void visit(DoubleDatum object)
+    public void visit(final DoubleDatum object)
     {
         infer(object, program.typesystem.utils.PRIMITIVE_DOUBLE);
     }
 
     @Override
-    public void visit(StringDatum object)
+    public void visit(final StringDatum object)
     {
         infer(object, program.typesystem.utils.STRING);
     }
 
     @Override
-    public void visit(NullDatum object)
+    public void visit(final NullDatum object)
     {
         infer(object, program.typesystem.utils.NULL);
     }
 
     @Override
-    public void visit(VariableDatum object)
+    public void visit(final VariableDatum object)
     {
         // The variable must have already been declared.
         program.checker.checkDeclared(scope, object.getVariable());
@@ -146,7 +146,7 @@ public class ExpressionTypeChecker
     }
 
     @Override
-    public void visit(ClassDatum object)
+    public void visit(final ClassDatum object)
     {
         final IReturnType type = module.resolveType(object.getType());
 
@@ -159,7 +159,7 @@ public class ExpressionTypeChecker
     }
 
     @Override
-    public void visit(PrognExpression object)
+    public void visit(final PrognExpression object)
     {
         IExpression last = null;
 
@@ -181,17 +181,20 @@ public class ExpressionTypeChecker
     }
 
     @Override
-    public void visit(ListExpression object)
+    public void visit(final ListExpression object)
     {
+        // Visit the elements.
         object.getElements().accept(this);
 
+        // A list-expression returns type java.util.List.
         infer(object, program.typesystem.utils.LIST);
 
+        // Type-check the elements.
         program.checker.requireArguments(object.getElements());
     }
 
     @Override
-    public void visit(DispatchExpression object)
+    public void visit(final DispatchExpression object)
     {
         final List<IType> args = Lists.newLinkedList();
 
@@ -217,7 +220,7 @@ public class ExpressionTypeChecker
     }
 
     @Override
-    public void visit(CallStaticMethodExpression object)
+    public void visit(final CallStaticMethodExpression object)
     {
         callStaticMethod(object,
                          object.getOwner(),
@@ -226,7 +229,7 @@ public class ExpressionTypeChecker
     }
 
     @Override
-    public void visit(SetStaticFieldExpression object)
+    public void visit(final SetStaticFieldExpression object)
     {
         object.getValue().accept(this);
 
@@ -236,7 +239,7 @@ public class ExpressionTypeChecker
     }
 
     @Override
-    public void visit(GetStaticFieldExpression object)
+    public void visit(final GetStaticFieldExpression object)
     {
         final IField field = findStaticField(object, object.getOwner(), object.getName().getName());
 
@@ -250,7 +253,7 @@ public class ExpressionTypeChecker
     }
 
     @Override
-    public void visit(NewExpression object)
+    public void visit(final NewExpression object)
     {
         final List<IType> args = Lists.newLinkedList();
 
@@ -283,7 +286,7 @@ public class ExpressionTypeChecker
     }
 
     @Override
-    public void visit(CreateExpression object)
+    public void visit(final CreateExpression object)
     {
         final IExpressionType type = module.resolveType(object.getType());
 
@@ -312,7 +315,7 @@ public class ExpressionTypeChecker
     }
 
     @Override
-    public void visit(CallMethodExpression object)
+    public void visit(final CallMethodExpression object)
     {
         object.getOwner().accept(this);
 
@@ -348,7 +351,7 @@ public class ExpressionTypeChecker
     }
 
     @Override
-    public void visit(SetFieldExpression object)
+    public void visit(final SetFieldExpression object)
     {
         object.getOwner().accept(this);
         object.getValue().accept(this);
@@ -359,7 +362,7 @@ public class ExpressionTypeChecker
     }
 
     @Override
-    public void visit(GetFieldExpression object)
+    public void visit(final GetFieldExpression object)
     {
         object.getOwner().accept(this);
 
@@ -375,7 +378,7 @@ public class ExpressionTypeChecker
     }
 
     @Override
-    public void visit(InstanceOfExpression object)
+    public void visit(final InstanceOfExpression object)
     {
         object.getValue().accept(this);
 
@@ -391,19 +394,7 @@ public class ExpressionTypeChecker
     }
 
     @Override
-    public void visit(FuncallExpression object)
-    {
-        object.getFunctor().accept(this);
-        object.getArguments().accept(this);
-
-        infer(object, program.typesystem.utils.OBJECT);
-
-        program.checker.expectSubtype(object.getFunctor(), program.typesystem.utils.FUNCTOR);
-        program.checker.requireArguments(object.getArguments());
-    }
-
-    @Override
-    public void visit(TernaryConditionalExpression object)
+    public void visit(final TernaryConditionalExpression object)
     {
         object.getCondition().accept(this);
         object.getCaseTrue().accept(this);
@@ -419,17 +410,7 @@ public class ExpressionTypeChecker
     }
 
     @Override
-    public void visit(DelegateExpression object)
-    {
-//        final DelegateCompiler delegate = new DelegateCompiler(module, object);
-//
-//        program.symbols.delegates.put(object, delegate);
-//
-//        infer(object, program.typesystem.utils.DELEGATE);
-    }
-
-    @Override
-    public void visit(LocalsExpression object)
+    public void visit(final LocalsExpression object)
     {
         final IExpressionType returns = program.typesystem.utils.LOCALS_MAP;
 
@@ -437,49 +418,71 @@ public class ExpressionTypeChecker
     }
 
     @Override
-    public void visit(AsOperation object)
+    public void visit(final AsOperation object)
     {
+        // Visit the operand.
         object.getValue().accept(this);
 
+        // Get the type of the operand.
         final IExpressionType input = program.symbols.expressions.get(object.getValue());
 
+        // Get the output type.
         final IReturnType output = module.resolveType(object.getType());
 
+        // Obtain a description of the conversion being performed.
+        // This will be null, if the conversion is impossible.
         final Conversion conversion = Conversion.findConversion(program.typesystem, input, output);
 
+        /**
+         * If the conversion is impossible, issue an error.
+         */
         if (conversion == null)
         {
+            // This call will throw an exception.
             program.checker.reportNoSuchAsConversion(object, output);
         }
 
+        // Remember the conversion, because the code-generator will need it.
         program.symbols.conversions.put(object, conversion);
 
+        // A conversion operation returns the return-type of the operation.
         infer(object, output);
     }
 
     @Override
-    public void visit(IsOperation object)
+    public void visit(final IsOperation object)
     {
+        // Visit the operand.
         object.getValue().accept(this);
 
+        // Get the type of the operand.
         final IExpressionType input = program.symbols.expressions.get(object.getValue());
 
+        // Get the output type.
         final IReturnType output = module.resolveType(object.getType());
 
+        // Obtain a description of the conversion being performed.
+        // This will be null, if the conversion is impossible.
         final Conversion conversion = Conversion.findConversion(program.typesystem, input, output);
 
+        /**
+         * If the conversion is impossible, issue an error.
+         */
         if (conversion == null)
         {
+            // This call will throw an exception.
             program.checker.reportNoSuchIsConversion(object, output);
         }
 
+        // Remember the conversion, because the code-generator will need it.
         program.symbols.conversions.put(object, conversion);
 
+        // A conversion operation returns the return-type of the operation.
         infer(object, output);
     }
 
     @Override
-    public void visit(NegateOperation object)
+    public void visit(final NegateOperation object)
     {
         // Visit the operand and perform type-checking.
         unaryOperation(object,
@@ -488,7 +491,7 @@ public class ExpressionTypeChecker
     }
 
     @Override
-    public void visit(NotOperation object)
+    public void visit(final NotOperation object)
     {
         // Visit the operand and perform type-checking.
         unaryOperation(object,
@@ -497,7 +500,7 @@ public class ExpressionTypeChecker
     }
 
     @Override
-    public void visit(DivideOperation object)
+    public void visit(final DivideOperation object)
     {
         // Visit the operands and perform type-checking.
         binaryOperation(object,
@@ -507,7 +510,7 @@ public class ExpressionTypeChecker
     }
 
     @Override
-    public void visit(ModuloOperation object)
+    public void visit(final ModuloOperation object)
     {
         // Visit the operands and perform type-checking.
         binaryOperation(object,
@@ -517,7 +520,7 @@ public class ExpressionTypeChecker
     }
 
     @Override
-    public void visit(MultiplyOperation object)
+    public void visit(final MultiplyOperation object)
     {
         // Visit the operands and perform type-checking.
         binaryOperation(object,
@@ -527,7 +530,7 @@ public class ExpressionTypeChecker
     }
 
     @Override
-    public void visit(AddOperation object)
+    public void visit(final AddOperation object)
     {
         // Visit the operands and perform type-checking.
         binaryOperation(object,
@@ -537,7 +540,7 @@ public class ExpressionTypeChecker
     }
 
     @Override
-    public void visit(SubtractOperation object)
+    public void visit(final SubtractOperation object)
     {
         // Visit the operands and perform type-checking.
         binaryOperation(object,
@@ -547,7 +550,7 @@ public class ExpressionTypeChecker
     }
 
     @Override
-    public void visit(ConcatOperation object)
+    public void visit(final ConcatOperation object)
     {
         // Visit the operands and perform type-checking.
         binaryOperation(object,
@@ -557,7 +560,7 @@ public class ExpressionTypeChecker
     }
 
     @Override
-    public void visit(LessThanOperation object)
+    public void visit(final LessThanOperation object)
     {
         // Visit the operands and perform type-checking.
         binaryOperation(object,
@@ -567,7 +570,7 @@ public class ExpressionTypeChecker
     }
 
     @Override
-    public void visit(LessThanOrEqualsOperation object)
+    public void visit(final LessThanOrEqualsOperation object)
     {
         // Visit the operands and perform type-checking.
         binaryOperation(object,
@@ -577,7 +580,7 @@ public class ExpressionTypeChecker
     }
 
     @Override
-    public void visit(GreaterThanOperation object)
+    public void visit(final GreaterThanOperation object)
     {
         // Visit the operands and perform type-checking.
         binaryOperation(object,
@@ -587,7 +590,7 @@ public class ExpressionTypeChecker
     }
 
     @Override
-    public void visit(GreaterThanOrEqualsOperation object)
+    public void visit(final GreaterThanOrEqualsOperation object)
     {
         // Visit the operands and perform type-checking.
         binaryOperation(object,
@@ -597,7 +600,7 @@ public class ExpressionTypeChecker
     }
 
     @Override
-    public void visit(EqualsOperation object)
+    public void visit(final EqualsOperation object)
     {
         // Visit the operands and perform type-checking.
         binaryOperation(object,
@@ -607,7 +610,7 @@ public class ExpressionTypeChecker
     }
 
     @Override
-    public void visit(NotEqualsOperation object)
+    public void visit(final NotEqualsOperation object)
     {
         // Visit the operands and perform type-checking.
         binaryOperation(object,
@@ -617,7 +620,7 @@ public class ExpressionTypeChecker
     }
 
     @Override
-    public void visit(IdentityEqualsOperation object)
+    public void visit(final IdentityEqualsOperation object)
     {
         // Visit the operands.
         object.getLeftOperand().accept(this);
@@ -635,7 +638,7 @@ public class ExpressionTypeChecker
     }
 
     @Override
-    public void visit(IdentityNotEqualsOperation object)
+    public void visit(final IdentityNotEqualsOperation object)
     {
         // Visit the operands.
         object.getLeftOperand().accept(this);
@@ -653,7 +656,7 @@ public class ExpressionTypeChecker
     }
 
     @Override
-    public void visit(AndOperation object)
+    public void visit(final AndOperation object)
     {
         // Visit the operands and perform type-checking.
         binaryOperation(object, "and",
@@ -662,7 +665,7 @@ public class ExpressionTypeChecker
     }
 
     @Override
-    public void visit(OrOperation object)
+    public void visit(final OrOperation object)
     {
         // Visit the operands and perform type-checking.
         binaryOperation(object,
@@ -672,7 +675,7 @@ public class ExpressionTypeChecker
     }
 
     @Override
-    public void visit(XorOperation object)
+    public void visit(final XorOperation object)
     {
         // Visit the operands and perform type-checking.
         binaryOperation(object,
@@ -682,7 +685,7 @@ public class ExpressionTypeChecker
     }
 
     @Override
-    public void visit(ImpliesOperation object)
+    public void visit(final ImpliesOperation object)
     {
         // Visit the operands and perform type-checking.
         binaryOperation(object,
@@ -692,7 +695,7 @@ public class ExpressionTypeChecker
     }
 
     @Override
-    public void visit(ShortCircuitAndOperation object)
+    public void visit(final ShortCircuitAndOperation object)
     {
         // Visit and type-check the operands.
         condition(object.getLeftOperand());
@@ -703,7 +706,7 @@ public class ExpressionTypeChecker
     }
 
     @Override
-    public void visit(ShortCircuitOrOperation object)
+    public void visit(final ShortCircuitOrOperation object)
     {
         // Visit and type-check the operands.
         condition(object.getLeftOperand());
@@ -714,7 +717,7 @@ public class ExpressionTypeChecker
     }
 
     @Override
-    public void visit(NullCoalescingOperation object)
+    public void visit(final NullCoalescingOperation object)
     {
         // Visit the operands.
         object.getLeftOperand().accept(this);

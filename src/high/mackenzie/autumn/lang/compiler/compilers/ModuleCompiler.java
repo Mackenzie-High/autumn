@@ -1,24 +1,27 @@
 package high.mackenzie.autumn.lang.compiler.compilers;
 
 import autumn.lang.Delegate;
-import autumn.lang.F;
+import autumn.util.F;
 import autumn.lang.Functor;
 import autumn.lang.compiler.ClassFile;
 import autumn.lang.compiler.ast.nodes.DesignDefinition;
 import autumn.lang.compiler.ast.nodes.EnumDefinition;
 import autumn.lang.compiler.ast.nodes.ExceptionDefinition;
+import autumn.lang.compiler.ast.nodes.FormalParameter;
 import autumn.lang.compiler.ast.nodes.FunctionDefinition;
 import autumn.lang.compiler.ast.nodes.ImportDirective;
 import autumn.lang.compiler.ast.nodes.Module;
 import autumn.lang.compiler.ast.nodes.ModuleDirective;
 import autumn.lang.compiler.ast.nodes.Name;
+import autumn.lang.compiler.ast.nodes.TupleDefinition;
 import autumn.lang.compiler.ast.nodes.TypeSpecifier;
-import autumn.lang.util.ProtoMap;
+import autumn.util.proto.ProtoMap;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import high.mackenzie.autumn.lang.compiler.typesystem.CustomDeclaredType;
+import high.mackenzie.autumn.lang.compiler.typesystem.CustomFormalParameter;
 import high.mackenzie.autumn.lang.compiler.typesystem.CustomMethod;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IExpressionType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IFormalParameter;
@@ -43,10 +46,10 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.FieldInsnNode;
 import org.objectweb.asm.tree.FieldNode;
+import org.objectweb.asm.tree.InsnList;
 import org.objectweb.asm.tree.InsnNode;
 import org.objectweb.asm.tree.LabelNode;
 import org.objectweb.asm.tree.LdcInsnNode;
@@ -112,10 +115,11 @@ public final class ModuleCompiler
         importClass(Long.class);
         importClass(Float.class);
         importClass(Double.class);
-        importClass(String.class);
-        importClass(StringBuilder.class);
         importClass(BigInteger.class);
         importClass(BigDecimal.class);
+        importClass(String.class);
+        importClass(CharSequence.class);
+        importClass(StringBuilder.class);
 
         importClass(Class.class);
 
@@ -144,6 +148,8 @@ public final class ModuleCompiler
     }
 
     public final List<ExceptionCompiler> exceptions = Lists.newLinkedList();
+
+    public final List<TupleCompiler> tuples = Lists.newLinkedList();
 
     public final List<EnumCompiler> enums = Lists.newLinkedList();
 
@@ -185,6 +191,11 @@ public final class ModuleCompiler
             exceptions.add(new ExceptionCompiler(this, x));
         }
 
+        for (TupleDefinition x : node.getTuples())
+        {
+            tuples.add(new TupleCompiler(this, x));
+        }
+
         for (EnumDefinition x : node.getEnums())
         {
             enums.add(new EnumCompiler(this, x));
@@ -208,6 +219,11 @@ public final class ModuleCompiler
         final Set<ClassFile> classes = Sets.newHashSet();
 
         for (ExceptionCompiler x : exceptions)
+        {
+            classes.add(x.build());
+        }
+
+        for (TupleCompiler x : tuples)
         {
             classes.add(x.build());
         }
@@ -241,7 +257,7 @@ public final class ModuleCompiler
 
         for (FunctionCompiler x : functions)
         {
-            methods.add(x.method);
+            methods.add(x.build());
         }
 
         final String module_internal_name = Utils.internalName(type);
@@ -453,7 +469,7 @@ public final class ModuleCompiler
         String name;
         String desc;
 
-        final List<AbstractInsnNode> code = Lists.newLinkedList();
+        final InsnList code = new InsnList();
 
         // This object can create a list containing the types of the function's parameters.
         final CollectionCompiler<IFormalParameter> params = new CollectionCompiler<IFormalParameter>()
@@ -465,7 +481,7 @@ public final class ModuleCompiler
             }
 
             @Override
-            public List code()
+            public InsnList code()
             {
                 return code;
             }
@@ -519,8 +535,7 @@ public final class ModuleCompiler
         // Now, an initialized ModuleDelegate object is on top of the operand-stack.
 
         // Add the code to the method.
-        // This is only needed due to a quirk in the ObjectWeb ASM API.
-        Utils.appendToInsnList(m.instructions, code);
+        m.instructions.add(code);
     }
 
     /**
@@ -573,7 +588,7 @@ public final class ModuleCompiler
         m.desc = "(ILautumn/lang/internals/ArgumentStack;)V";
         m.exceptions = ImmutableList.of("java/lang/Throwable");
 
-        final List<AbstractInsnNode> code = Lists.newLinkedList();
+        final InsnList code = new InsnList();
 
         final LabelNode[] cases = new LabelNode[functions.size()];
 
@@ -654,7 +669,7 @@ public final class ModuleCompiler
         code.add(default_case);
         code.add(new InsnNode(Opcodes.RETURN));
 
-        Utils.appendToInsnList(m.instructions, code);
+        m.instructions.add(code);
 
 
         return m;
@@ -674,7 +689,7 @@ public final class ModuleCompiler
         m.desc = "()Ljava/util/List;";
         m.exceptions = ImmutableList.of();
 
-        final List<AbstractInsnNode> code = Lists.newLinkedList();
+        final InsnList code = new InsnList();
 
         /**
          * This class is used to generate a list of Class object.
@@ -688,7 +703,7 @@ public final class ModuleCompiler
             }
 
             @Override
-            public List<AbstractInsnNode> code()
+            public InsnList code()
             {
                 return code;
             }
@@ -707,7 +722,7 @@ public final class ModuleCompiler
         code.add(new InsnNode(Opcodes.ARETURN));
 
         // Emit the generated instructions.
-        Utils.appendToInsnList(m.instructions, code);
+        m.instructions.add(code);
 
         return m;
     }
@@ -726,7 +741,7 @@ public final class ModuleCompiler
         m.desc = "()Ljava/util/List;";
         m.exceptions = ImmutableList.of();
 
-        final List<AbstractInsnNode> code = Lists.newLinkedList();
+        final InsnList code = new InsnList();
 
         /**
          * This class is used to generate a list of Class object.
@@ -740,7 +755,7 @@ public final class ModuleCompiler
             }
 
             @Override
-            public List<AbstractInsnNode> code()
+            public InsnList code()
             {
                 return code;
             }
@@ -759,7 +774,7 @@ public final class ModuleCompiler
         code.add(new InsnNode(Opcodes.ARETURN));
 
         // Emit the generated instructions.
-        Utils.appendToInsnList(m.instructions, code);
+        m.instructions.add(code);
 
         return m;
     }
@@ -1006,6 +1021,7 @@ public final class ModuleCompiler
         final Set<ICompiler> result = Sets.newHashSet();
 
         result.addAll(exceptions);
+        result.addAll(tuples);
         result.addAll(enums);
         result.addAll(designs);
         result.addAll(functions);
@@ -1016,5 +1032,32 @@ public final class ModuleCompiler
     private void importClass(final Class type)
     {
         imports.put(type.getSimpleName(), type.getName());
+    }
+
+    /**
+     * This method converts a list of AST nodes that represent formal parameters
+     * to their type-system based representation.
+     *
+     * @param parameters are the formal parameters as represented by AST nodes.
+     * @return the formal parameters as represented in the type-system.
+     */
+    public List<IFormalParameter> formals(final Iterable<FormalParameter> parameters)
+    {
+        final List<IFormalParameter> formals = Lists.newArrayList();
+
+        for (FormalParameter param : parameters)
+        {
+            // This method will issue an error-message, if the type does not exist, etc.
+            final IVariableType param_type = resolveVariableType(param.getType());
+
+            // Create the type-system representation of the formal parameter.
+            final CustomFormalParameter formal = new CustomFormalParameter();
+            formal.setAnnotations(new LinkedList());
+            formal.setType(param_type);
+
+            formals.add(formal);
+        }
+
+        return formals;
     }
 }

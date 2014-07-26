@@ -232,13 +232,12 @@ public final class TreeBuilder
      * A module-member is one of:
      * <ul>
      * <li> ModuleDirective </li>
-     * <li> IncludeDirective </li>
-     * <li> UseDirective </li>
      * <li> ImportDirective </li>
      * <li> AnnotationDefinition </li>
      * <li> ExceptionDefinition </li>
+     * <li> TupleDefinition </li>
+     * <li> FunctorDefinition </li>
      * <li> EnumDefinition </li>
-     * <li> StructDefinition </li>
      * <li> FunctionDefinition </li>
      * </ul>
      * </p>
@@ -259,6 +258,10 @@ public final class TreeBuilder
         final LinkedList<AnnotationDefinition> annotation_definitions = Lists.newLinkedList();
 
         final LinkedList<ExceptionDefinition> exception_definitions = Lists.newLinkedList();
+
+        final LinkedList<TupleDefinition> tuple_definitions = Lists.newLinkedList();
+
+        final LinkedList<FunctorDefinition> functor_definitions = Lists.newLinkedList();
 
         final LinkedList<EnumDefinition> enum_definitions = Lists.newLinkedList();
 
@@ -295,6 +298,18 @@ public final class TreeBuilder
 
                 exception_definitions.addFirst(definition);
             }
+            else if (member instanceof TupleDefinition)
+            {
+                final TupleDefinition definition = (TupleDefinition) member;
+
+                tuple_definitions.addFirst(definition);
+            }
+            else if (member instanceof FunctorDefinition)
+            {
+                final FunctorDefinition definition = (FunctorDefinition) member;
+
+                functor_definitions.addFirst(definition);
+            }
             else if (member instanceof EnumDefinition)
             {
                 final EnumDefinition definition = (EnumDefinition) member;
@@ -324,86 +339,14 @@ public final class TreeBuilder
 
         module = module.setAnnotations((new ConstructList()).addAll(annotation_definitions));
         module = module.setExceptions((new ConstructList()).addAll(exception_definitions));
+        module = module.setTuples((new ConstructList()).addAll(tuple_definitions));
+        module = module.setFunctors((new ConstructList()).addAll(functor_definitions));
         module = module.setEnums((new ConstructList()).addAll(enum_definitions));
         module = module.setDesigns((new ConstructList()).addAll(design_definitions));
         module = module.setFunctions((new ConstructList()).addAll(function_definitions));
 
         // Push the AST node onto the stack.
         stack.push(module);
-
-        assert stack.size() == 1;
-    }
-
-    /**
-     * This method creates an annotation-usage.
-     *
-     * <p>
-     * <b>Precondition of the Stack</b>
-     * <ul>
-     * <li> annotation-type : TypeSpecifier </li></li>
-     * </ul>
-     * </p>
-     *
-     * <p>
-     * <b>Postcondition of the Stack</b>
-     * <ul>
-     * <li> result : Annotation </li>
-     * </ul>
-     * </p>
-     */
-    public void createAnnotation()
-    {
-        Preconditions.checkState(stack.size() == 1);
-
-        // Pop the pieces off of the stack.
-        final TypeSpecifier type = (TypeSpecifier) stack.pop();
-
-        // Create the AST node.
-        Annotation node = new Annotation();
-        node = node.setType(type);
-
-        // Push the AST node onto the stack.
-        stack.push(node);
-
-        assert stack.size() == 1;
-    }
-
-    /**
-     * This method creates an annotation-list.
-     *
-     * <p>
-     * <b>Precondition of the Stack</b>
-     * <ul>
-     * <li> annotation[n] : Annotation </li></li>
-     * <li> annotation[2] : Annotation </li></li>
-     * <li> annotation[1] : Annotation </li></li>
-     * <li> annotation[0] : Annotation </li></li>
-     * </ul>
-     * </p>
-     *
-     * <p>
-     * <b>Postcondition of the Stack</b>
-     * <ul>
-     * <li> result : AnnotationList </li>
-     * </ul>
-     * </p>
-     */
-    public void createAnnotationList()
-    {
-        // Create the list itself.
-        final LinkedList<Annotation> list = new LinkedList<Annotation>();
-
-        while (stack.isEmpty() == false)
-        {
-            list.add(0, (Annotation) stack.pop());
-        }
-
-        // Create the AST node.
-        AnnotationList node = new AnnotationList();
-        node = node.setAnnotations((new ConstructList<Annotation>()).addAll(list));
-
-        // Push the AST node onto the stack.
-        stack.push(node);
 
         assert stack.size() == 1;
     }
@@ -417,11 +360,12 @@ public final class TreeBuilder
      * <li> namespace : Namespace </li>
      * <li> name : Name </li>
      * <li> annotations : AnnotationList </li>
+     * <li> comment : DocComment </li>
      * </ul>
      * </p>
      *
      * <p>
-     * Note: The name must be null, if the module is anonymous.
+     * The name must be null, if the module is anonymous.
      * </p>
      *
      * <p>
@@ -433,20 +377,19 @@ public final class TreeBuilder
      */
     public void createDirectiveModule()
     {
-        Preconditions.checkState(stack.size() == 3);
+        Preconditions.checkState(stack.size() == 4);
 
         // Get the pieces off of the stack.
         final Namespace namespace = (Namespace) stack.pop();
         final Name name = (Name) stack.pop();
         final AnnotationList annotations = (AnnotationList) stack.pop();
-
-        Preconditions.checkNotNull(annotations);
-        Preconditions.checkNotNull(namespace);
+        final DocComment comment = (DocComment) stack.pop();
 
         // Create the AST node.
         ModuleDirective node = new ModuleDirective();
 
         // Initialize the AST node.
+        node = node.setComment(comment);
         node = node.setAnnotations(annotations);
         node = node.setName(name);
         node = node.setNamespace(namespace);
@@ -501,6 +444,7 @@ public final class TreeBuilder
      * <ul>
      * <li> name : Name </li>
      * <li> annotations : AnnotationList </li>
+     * <li> comment : DocComment </li>
      * </ul>
      * </p>
      *
@@ -513,16 +457,18 @@ public final class TreeBuilder
      */
     public void createDefinitionAnnotation()
     {
-        Preconditions.checkState(stack.size() == 2);
+        Preconditions.checkState(stack.size() == 3);
 
         // Get the pieces off of the stack.
         final Name name = (Name) stack.pop();
         final AnnotationList annotations = (AnnotationList) stack.pop();
+        final DocComment comment = (DocComment) stack.pop();
 
         // Create the AST node.
         AnnotationDefinition node = new AnnotationDefinition();
 
         // Initialize the AST node.
+        node = node.setComment(comment);
         node = node.setAnnotations(annotations);
         node = node.setName(name);
 
@@ -541,6 +487,7 @@ public final class TreeBuilder
      * <li> superclass : TypeSpecifier </li>
      * <li> name : Name </li>
      * <li> annotations : AnnotationList </li>
+     * <li> comment : DocComment </li>
      * </ul>
      * </p>
      *
@@ -553,20 +500,115 @@ public final class TreeBuilder
      */
     public void createDefinitionException()
     {
-        Preconditions.checkState(stack.size() == 3);
+        Preconditions.checkState(stack.size() == 4);
 
         // Get the pieces off of the stack.
         final TypeSpecifier superclass = (TypeSpecifier) stack.pop();
         final Name name = (Name) stack.pop();
         final AnnotationList annotations = (AnnotationList) stack.pop();
+        final DocComment comment = (DocComment) stack.pop();
 
         // Create the AST node.
         ExceptionDefinition node = new ExceptionDefinition();
 
         // Initialize the AST node.
+        node = node.setComment(comment);
         node = node.setAnnotations(annotations);
         node = node.setName(name);
         node = node.setSuperclass(superclass);
+
+        // Push the AST node onto the stack.
+        stack.push(node);
+
+        assert stack.size() == 1;
+    }
+
+    /**
+     * This method creates an tuple-definition.
+     *
+     * <p>
+     * <b>Precondition of the Stack</b>
+     * <ul>
+     * <li> elements : FormalParameterList </li>
+     * <li> name : Name </li>
+     * <li> annotations : AnnotationList </li>
+     * <li> comment : DocComment </li>
+     * </ul>
+     * </p>
+     *
+     * <p>
+     * <b>Postcondition of the Stack</b>
+     * <ul>
+     * <li> result : TupleDefinition </li>
+     * </ul>
+     * </p>
+     */
+    public void createDefinitionTuple()
+    {
+        Preconditions.checkState(stack.size() == 4);
+
+        // Get the pieces off of the stack.
+        final FormalParameterList elements = (FormalParameterList) stack.pop();
+        final Name name = (Name) stack.pop();
+        final AnnotationList annotations = (AnnotationList) stack.pop();
+        final DocComment comment = (DocComment) stack.pop();
+
+        // Create the AST node.
+        TupleDefinition node = new TupleDefinition();
+
+        // Initialize the AST node.
+        node = node.setComment(comment);
+        node = node.setAnnotations(annotations);
+        node = node.setName(name);
+        node = node.setElements(elements);
+
+        // Push the AST node onto the stack.
+        stack.push(node);
+
+        assert stack.size() == 1;
+    }
+
+    /**
+     * This method creates an functor-definition.
+     *
+     * <p>
+     * <b>Precondition of the Stack</b>
+     * <ul>
+     * <li> return-type : TypeSpecifier </li>
+     * <li> parameters : FormalParameterList </li>
+     * <li> name : Name </li>
+     * <li> annotations : AnnotationList </li>
+     * <li> comment : DocComment </li>
+     * </ul>
+     * </p>
+     *
+     * <p>
+     * <b>Postcondition of the Stack</b>
+     * <ul>
+     * <li> result : FunctorDefinition </li>
+     * </ul>
+     * </p>
+     */
+    public void createDefinitionFunctor()
+    {
+        Preconditions.checkState(stack.size() == 5);
+
+        // Get the pieces off of the stack.
+        final TypeSpecifier returns = (TypeSpecifier) stack.pop();
+        final FormalParameterList parameters = (FormalParameterList) stack.pop();
+        final Name name = (Name) stack.pop();
+        final AnnotationList annotations = (AnnotationList) stack.pop();
+        final DocComment comment = (DocComment) stack.pop();
+
+        // Create the AST node.
+        FunctorDefinition node = new FunctorDefinition();
+
+        // Initialize the AST node.
+        node = node.setComment(comment);
+        node = node.setAnnotations(annotations);
+        node = node.setName(name);
+        node = node.setParameters(parameters);
+        node = node.setReturnType(returns);
 
         // Push the AST node onto the stack.
         stack.push(node);
@@ -586,6 +628,7 @@ public final class TreeBuilder
      * <li> constant[0] : EnumConstant </li>
      * <li> name : Name </li>
      * <li> annotations : AnnotationList </li>
+     * <li> comment : DocComment </li>
      * </ul>
      * </p>
      *
@@ -598,13 +641,13 @@ public final class TreeBuilder
      */
     public void createDefinitionEnum()
     {
-        Preconditions.checkState(stack.size() >= 2);
+        Preconditions.checkState(stack.size() >= 3);
 
         // Get the pieces off of the stack.
 
         final LinkedList<EnumConstant> constants = Lists.newLinkedList();
 
-        while (stack.size() > 2)
+        while (stack.size() > 3)
         {
             constants.add(0, (EnumConstant) stack.pop());
         }
@@ -613,10 +656,13 @@ public final class TreeBuilder
 
         final AnnotationList annotations = (AnnotationList) stack.pop();
 
+        final DocComment comment = (DocComment) stack.pop();
+
         // Create the AST node.
         EnumDefinition node = new EnumDefinition();
 
         // Initialize the AST node.
+        node = node.setComment(comment);
         node = node.setAnnotations(annotations);
         node = node.setName(name);
         node = node.setConstants((new ConstructList<EnumConstant>()).addAll(constants));
@@ -635,6 +681,7 @@ public final class TreeBuilder
      * <ul>
      * <li> name : Name </li>
      * <li> annotations : AnnotationList </li>
+     * <li> comment : DocComment </li>
      * </ul>
      * </p>
      *
@@ -647,16 +694,18 @@ public final class TreeBuilder
      */
     public void createDefinitionEnumConstant()
     {
-        Preconditions.checkState(stack.size() == 2);
+        Preconditions.checkState(stack.size() == 3);
 
         // Get the pieces off of the stack.
         final Name name = (Name) stack.pop();
         final AnnotationList annotations = (AnnotationList) stack.pop();
+        final DocComment comment = (DocComment) stack.pop();
 
         // Create the AST node.
         EnumConstant node = new EnumConstant();
 
         // Initialize the AST node.
+        node = node.setComment(comment);
         node = node.setAnnotations(annotations);
         node = node.setName(name);
 
@@ -685,6 +734,7 @@ public final class TreeBuilder
      * <li> supertype[0] : TypeSpecifier </li>
      * <li> name : Name </li>
      * <li> annotations : AnnotationList </li>
+     * <li> comment : DocComment </li>
      * </ul>
      * </p>
      *
@@ -701,7 +751,7 @@ public final class TreeBuilder
      */
     public void createDefinitionDesign()
     {
-        Preconditions.checkState(stack.size() >= 2);
+        Preconditions.checkState(stack.size() >= 3);
 
         // Get the pieces off of the stack.
 
@@ -711,7 +761,7 @@ public final class TreeBuilder
 
         final LinkedList<TypeSpecifier> supers = Lists.newLinkedList();
 
-        while (stack.size() > 2)
+        while (stack.size() > 3)
         {
             final IConstruct x = stack.pop();
 
@@ -736,10 +786,13 @@ public final class TreeBuilder
 
         final AnnotationList annotations = (AnnotationList) stack.pop();
 
+        final DocComment comment = (DocComment) stack.pop();
+
         // Create the AST node.
         DesignDefinition node = new DesignDefinition();
 
         // Initialize the AST node.
+        node = node.setComment(comment);
         node = node.setAnnotations(annotations);
         node = node.setName(name);
         node = node.setSuperinterfaces((new ConstructList<TypeSpecifier>()).addAll(supers));
@@ -761,6 +814,7 @@ public final class TreeBuilder
      * <li> type : TypeSpecifier </li>
      * <li> name : Name </li>
      * <li> annotations : AnnotationList </li>
+     * <li> comment : DocComment </li>
      * </ul>
      * </p>
      *
@@ -773,15 +827,17 @@ public final class TreeBuilder
      */
     public void createDefinitionDesignProperty()
     {
-        Preconditions.checkState(stack.size() == 3);
+        Preconditions.checkState(stack.size() == 4);
 
         // Pop the pieces off of the stack.
         final TypeSpecifier type = (TypeSpecifier) stack.pop();
         final Name name = (Name) stack.pop();
         final AnnotationList annotations = (AnnotationList) stack.pop();
+        final DocComment comment = (DocComment) stack.pop();
 
         // Create the AST node.
         DesignProperty node = new DesignProperty();
+        node = node.setComment(comment);
         node = node.setAnnotations(annotations);
         node = node.setName(name);
         node = node.setType(type);
@@ -802,6 +858,7 @@ public final class TreeBuilder
      * <li> formals : FormalParameterList </li>
      * <li> name : Name </li>
      * <li> annotations : AnnotationList </li>
+     * <li> comment : DocComment </li>
      * </ul>
      * </p>
      *
@@ -814,16 +871,18 @@ public final class TreeBuilder
      */
     public void createDefinitionDesignMethod()
     {
-        Preconditions.checkState(stack.size() == 4);
+        Preconditions.checkState(stack.size() == 5);
 
         // Pop the pieces off of the stack.
         final TypeSpecifier returns = (TypeSpecifier) stack.pop();
         final FormalParameterList formals = (FormalParameterList) stack.pop();
         final Name name = (Name) stack.pop();
         final AnnotationList annotations = (AnnotationList) stack.pop();
+        final DocComment comment = (DocComment) stack.pop();
 
         // Create the AST node.
         DesignMethod node = new DesignMethod();
+        node = node.setComment(comment);
         node = node.setAnnotations(annotations);
         node = node.setName(name);
         node = node.setParameters(formals);
@@ -846,6 +905,7 @@ public final class TreeBuilder
      * <li> parameters : FormalParameterList </li>
      * <li> name : Name </li>
      * <li> annotations : AnnotationList </li>
+     * <li> comment : DocComment </li>
      * </ul>
      * </p>
      *
@@ -858,7 +918,7 @@ public final class TreeBuilder
      */
     public void createDefinitionFunction()
     {
-        Preconditions.checkState(stack.size() == 5);
+        Preconditions.checkState(stack.size() == 6);
 
         // Pop the pieces off of the stack.
         final SequenceStatement body = (SequenceStatement) stack.pop();
@@ -866,9 +926,11 @@ public final class TreeBuilder
         final FormalParameterList parameters = (FormalParameterList) stack.pop();
         final Name name = (Name) stack.pop();
         final AnnotationList annotations = (AnnotationList) stack.pop();
+        final DocComment comment = (DocComment) stack.pop();
 
         // Create the AST node.
         FunctionDefinition function = new FunctionDefinition();
+        function = function.setComment(comment);
         function = function.setAnnotations(annotations);
         function = function.setName(name);
         function = function.setParameters(parameters);
@@ -2703,44 +2765,6 @@ public final class TreeBuilder
     }
 
     /**
-     * This method creates a funcall-expression.
-     *
-     * <p>
-     * <b>Precondition of the Stack</b>
-     * <ul>
-     * <li> argument[n] : IExpression </li>
-     * <li> argument[2] : IExpression </li>
-     * <li> argument[1] : IExpression </li>
-     * <li> argument[0] : IExpression </li>
-     * <li> functor : IExpression </li>
-     * </ul>
-     * </p>
-     *
-     * <p>
-     * <b>Postcondition of the Stack</b>
-     * <ul>
-     * <li> result : FuncallExpression </li>
-     * </ul>
-     * </p>
-     */
-    public void createExpressionFuncall()
-    {
-        Preconditions.checkState(stack.size() >= 1);
-
-        // Create the AST node.
-        FuncallExpression node = new FuncallExpression();
-
-        // Initialize the AST node.
-        node = node.setArguments(popExpressions(stack.size() - 1));
-        node = node.setFunctor((IExpression) stack.pop());
-
-        // Push the AST node onto the stack.
-        stack.push(node);
-
-        assert stack.size() == 1;
-    }
-
-    /**
      * This method creates a dispatch-expression.
      *
      * <p>
@@ -3224,34 +3248,92 @@ public final class TreeBuilder
     }
 
     /**
-     * This method creates a delegate-expression.
+     * This method creates a lambda-statement.
      *
      * <p>
      * <b>Precondition of the Stack</b>
      * <ul>
-     * <li> name : Name </li>
-     * <li> owner : TypeSpecifier </li>
+     * <li> body : SequenceStatement </li>
+     * <li> type : TypeSpecifier </li>
+     * <li> parameter[n] : Variable </li>
+     * <li> parameter[.] : Variable </li>
+     * <li> parameter[2] : Variable </li>
+     * <li> parameter[1] : Variable </li>
+     * <li> parameter[0] : Variable </li>
+     * <li> variable : Variable </li>
      * </ul>
      * </p>
      *
      * <p>
      * <b>Postcondition of the Stack</b>
      * <ul>
-     * <li> result : DelegateExpression </li>
+     * <li> result : LambdaStatement </li>
      * </ul>
      * </p>
      */
-    public void createExpressionDelegate()
+    public void createStatementLambda()
     {
-        Preconditions.checkState(stack.size() == 2 || stack.size() == 3);
+        Preconditions.checkState(stack.size() >= 3);
+
+        // Get the pieces off of the stack.
+        final SequenceStatement body = (SequenceStatement) stack.pop();
+        final TypeSpecifier type = (TypeSpecifier) stack.pop();
+        final LinkedList<Variable> parameters = Lists.newLinkedList();
+
+        while (stack.size() > 1)
+        {
+            parameters.addFirst((Variable) stack.pop());
+        }
+
+        final Variable variable = (Variable) stack.pop();
 
         // Create the AST node.
-        DelegateExpression node = new DelegateExpression();
+        LambdaStatement node = new LambdaStatement();
 
         // Initialize the AST node.
+        node = node.setVariable(variable);
+        node = node.setParameters(new ConstructList(parameters));
+        node = node.setType(type);
+        node = node.setBody(body);
 
+        // Push the AST node onto the stack.
+        stack.push(node);
+
+        assert stack.size() == 1;
+    }
+
+    /**
+     * This method creates a delegate-statement.
+     *
+     * <p>
+     * <b>Precondition of the Stack</b>
+     * <ul>
+     * <li> name : Name </li>
+     * <li> owner : TypeSpecifier </li>
+     * <li> type : TypeSpecifier </li>
+     * <li> variable : Variable </li>
+     * </ul>
+     * </p>
+     *
+     * <p>
+     * <b>Postcondition of the Stack</b>
+     * <ul>
+     * <li> result : DelegateStatement </li>
+     * </ul>
+     * </p>
+     */
+    public void createStatementDelegate()
+    {
+        Preconditions.checkState(stack.size() == 4);
+
+        // Create the AST node.
+        DelegateStatement node = new DelegateStatement();
+
+        // Initialize the AST node.
         node = node.setMethod((Name) stack.pop());
         node = node.setOwner((TypeSpecifier) stack.pop());
+        node = node.setType((TypeSpecifier) stack.pop());
+        node = node.setVariable((Variable) stack.pop());
 
         // Push the AST node onto the stack.
         stack.push(node);
@@ -3595,9 +3677,11 @@ public final class TreeBuilder
      * </ul>
      * </p>
      *
+     * @param verbatim is false, if the string may contain escape sequences.
      * @param value is the value that the new datum represents.
      */
-    public void createDatum(final String value)
+    public void createDatum(final boolean verbatim,
+                            final String value)
     {
         final int original_size = stack.size();
         {
@@ -3605,6 +3689,7 @@ public final class TreeBuilder
             StringDatum datum = new StringDatum();
 
             // Initialize the AST node.
+            datum = datum.setVerbatim(verbatim);
             datum = datum.setValue(value);
 
             // Push the AST node onto the stack.
@@ -3720,6 +3805,168 @@ public final class TreeBuilder
             stack.push(datum);
         }
         assert stack.size() == (original_size - 1 + 1);
+    }
+
+    /**
+     * This method creates a doc-comment.
+     *
+     * <p>
+     * <b>Precondition of the Stack</b>
+     * <ul>
+     * <li> line[n] : DocCommentLine </li>
+     * <li> line[2] : DocCommentLine </li>
+     * <li> line[1] : DocCommentLine </li>
+     * <li> line[0] : DocCommentLine </li>
+     * <li> ..... </li>
+     * </ul>
+     * </p>
+     *
+     * <p>
+     * There may be zero or more lines.
+     * </p>
+     *
+     * <p>
+     * <b>Postcondition of the Stack</b>
+     * <ul>
+     * <li> result : DocComment </li>
+     * <li> ..... </li>
+     * </ul>
+     * </p>
+     */
+    public void createComponentDocComment()
+    {
+        // Get the pieces off of the stack.
+        final LinkedList<DocCommentLine> lines = Lists.newLinkedList();
+
+        while (!stack.isEmpty() && stack.peek() instanceof DocCommentLine)
+        {
+            lines.addFirst((DocCommentLine) stack.pop());
+        }
+
+        // Create the AST node.
+        DocComment node = new DocComment();
+
+        // Initialize the AST node.
+        node = node.setLines(new ConstructList(lines));
+
+        // Push the AST node onto the stack.
+        stack.push(node);
+
+        assert stack.size() == 1;
+    }
+
+    /**
+     * This method creates a doc-comment-line.
+     *
+     * <p>
+     * <b>Precondition of the Stack</b>
+     * <ul>
+     * <li> ..... </li>
+     * </ul>
+     * </p>
+     *
+     * <p>
+     * There may be zero or more lines.
+     * </p>
+     *
+     * <p>
+     * <b>Postcondition of the Stack</b>
+     * <ul>
+     * <li> result : DocCommentLine </li>
+     * <li> ..... </li>
+     * </ul>
+     * </p>
+     *
+     * @param text is the comment line itself.
+     */
+    public void createComponentDocCommentLine(final String text)
+    {
+        final int original_size = stack.size();
+        {
+            // Create the AST node.
+            DocCommentLine node = new DocCommentLine();
+
+            // Initialize the AST node.
+            node = node.setText(text);
+
+            // Push the AST node onto the stack.
+            stack.push(node);
+        }
+        assert stack.size() == (original_size + 1);
+    }
+
+    /**
+     * This method creates an annotation-usage.
+     *
+     * <p>
+     * <b>Precondition of the Stack</b>
+     * <ul>
+     * <li> annotation-type : TypeSpecifier </li></li>
+     * </ul>
+     * </p>
+     *
+     * <p>
+     * <b>Postcondition of the Stack</b>
+     * <ul>
+     * <li> result : Annotation </li>
+     * </ul>
+     * </p>
+     */
+    public void createComponentAnnotation()
+    {
+        Preconditions.checkState(stack.size() == 1);
+
+        // Pop the pieces off of the stack.
+        final TypeSpecifier type = (TypeSpecifier) stack.pop();
+
+        // Create the AST node.
+        Annotation node = new Annotation();
+        node = node.setType(type);
+
+        // Push the AST node onto the stack.
+        stack.push(node);
+
+        assert stack.size() == 1;
+    }
+
+    /**
+     * This method creates an annotation-list.
+     *
+     * <p>
+     * <b>Precondition of the Stack</b>
+     * <ul>
+     * <li> annotation[n] : Annotation </li></li>
+     * <li> annotation[2] : Annotation </li></li>
+     * <li> annotation[1] : Annotation </li></li>
+     * <li> annotation[0] : Annotation </li></li>
+     * </ul>
+     * </p>
+     *
+     * <p>
+     * <b>Postcondition of the Stack</b>
+     * <ul>
+     * <li> result : AnnotationList </li>
+     * </ul>
+     * </p>
+     */
+    public void createComponentAnnotationList()
+    {
+        // Create the list itself.
+        final LinkedList<Annotation> list = new LinkedList<Annotation>();
+
+        while (stack.isEmpty() == false)
+        {
+            list.add(0, (Annotation) stack.pop());
+        }
+
+        // Create the AST node.
+        AnnotationList node = new AnnotationList();
+        node = node.setAnnotations((new ConstructList<Annotation>()).addAll(list));
+
+        // Push the AST node onto the stack.
+        stack.push(node);
+
+        assert stack.size() == 1;
     }
 
     /**

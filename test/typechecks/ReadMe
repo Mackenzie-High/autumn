@@ -100,6 +100,7 @@ Test Index
 . . . T0008 = Expected Condition
 . . . T0009 = Expected String
 . . Sequence
+. . . T0037 = Reporting of Multiple Errors
 . . Expression
 . . Setter
 . . . No Such Variable
@@ -118,9 +119,6 @@ Test Index
 . . Yield Value
 . . . Wrong Type
 . Expressions
-. . Funcall
-. . . Expected Callable
-. . . Expected Non-Void Argument
 . . Delegate
 . . . Owner - No Such Type
 . . . Owner - Inaccessible Type
@@ -145,15 +143,18 @@ Test Index
 . . Progn
 . . . Expected Non-Void Last Element
 . . List
-. . . Expected Non-Void Elements
+. . . T0036 = Expected Non-Void Elements
 . Operators
 . . Unary Operators Generally
 . . . T0023 = No Such Method
 . . Binary Operators Generally
 . . . T0022 = No Such Method
-. . . Identity Operations Generally
-. . . . T0024 = Operands cannot be Primitives
-. . . . T0025 = Operands cannot be Void
+. . . Identity Equality Operation
+. . . . T0024 = Expected Reference Type - Left Operand
+. . . . T0025 = Expected Reference Type - Right Operand
+. . . Identity Inequality Operation
+. . . . T0032 = Expected Reference Type - Left Operand
+. . . . T0033 = Expected Reference Type - Right Operand
 . . Short Circuit AND Operator
 . . . T0028 = Expected Condition - Left Operand
 . . . T0029 = Expected Condition - Right Operand
@@ -164,7 +165,9 @@ Test Index
 . . . T0026 = Expected Reference-Type
 . . . T0027 = Neither operand type is wider than the other.
 . . As
+. . . T0034 = Impossible Conversion
 . . Is
+. . . T0035 = Impossible Conversion
 . Datums
 . . Boolean
 . . Char

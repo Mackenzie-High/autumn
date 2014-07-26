@@ -1,3 +1,9 @@
+'' This is a doc-comment 1.
+'' This is a doc-comment 2.
+'' This is a doc-comment 3.
+@Anno1
+@Anno2
+@Anno3
 module * in program;
 module * in program.xoo;
 module * in program.xoo.moo;
@@ -16,6 +22,7 @@ import java.util.Map[];
 import java.util.Map[][];
 import java.util.Map[][][];
 
+'' This is a doc-comment.
 @Anno01A
 @Anno02A
 @Anno03A
@@ -26,6 +33,7 @@ annotation Anno17;
 @Anno03B
 annotation Anno17;
 
+'' This is a doc-comment.
 @Anno04A
 @Anno05A
 @Anno06A
@@ -36,6 +44,49 @@ exception Goo extends Boo;
 @Anno06B
 exception Goo extends Boo;
 
+'' This is a doc-comment.
+@Anno07
+@Anno08
+@Anno09
+tuple Person ();
+
+@Anno07
+@Anno08
+@Anno09
+tuple Person (name : String);
+
+@Anno07
+@Anno08
+@Anno09
+tuple Person (name : String, age : int);
+
+@Anno07
+@Anno08
+@Anno09
+tuple Person (name : String, age : int, income : long);
+
+'' This is a doc-comment.
+@Anno07
+@Anno08
+@Anno09
+functor Function0 () : boolean;
+
+@Anno07
+@Anno08
+@Anno09
+functor Function1 (x : byte) : boolean;
+
+@Anno07
+@Anno08
+@Anno09
+functor Function2 (x : byte, y : short) : boolean;
+
+@Anno07
+@Anno08
+@Anno09
+functor Function3 (x : byte, y : short, z : int) : boolean;
+
+'' This is a doc-comment.
 @Anno07
 @Anno08
 @Anno09
@@ -46,6 +97,7 @@ enum Moo
     @Anno12
     constant XOO;
 
+    '' This is a doc-comment.
     @Anno13
     @Anno14
     @Anno15
@@ -66,11 +118,13 @@ enum Moo
     constant XOO;
 }
 
+'' This is a doc-comment.
 @Anno19
 @Anno20
 @Anno21
 design Person extends Creature & Employable & Taxable
 {
+    '' This is a doc-comment.
     @Anno22
     @Anno23
     @Anno24
@@ -81,6 +135,7 @@ design Person extends Creature & Employable & Taxable
     @Anno27
     data age : int;
 
+    '' This is a doc-comment.
     @Anno28
     @Anno29
     method move () : void;
@@ -99,6 +154,7 @@ design Employee
     data salary : int;
 }
 
+'' This is a doc-comment.
 @Anno37
 @Anno38
 @Anno39
@@ -163,6 +219,24 @@ defun main (args : String[]) : void
     val xoo = '''12''';
 
     val xoo = '''123''';
+
+    nop;
+
+    val xoo = @'''''';
+
+    val xoo = @'''4''';
+
+    val xoo = @'''45''';
+
+    val xoo = @'''456''';
+
+    val xoo = @'''''';
+
+    val xoo = @'''4''';
+
+    val xoo = @'''45''';
+
+    val xoo = @'''456''';
 
     nop;
 
@@ -343,20 +417,6 @@ defun main (args : String[]) : void
     val xoo = [ 12, 34 ];
 
     val xoo = [ 12, 34, 56 ];
-
-    nop;
-
-    val xoo = (delegate Goo::moo);
-
-    nop;
-
-    val xoo = (funcall functor);
-
-    val xoo = (funcall functor, 12);
-
-    val xoo = (funcall functor, 12, 34);
-
-    val xoo = (funcall functor, 12, 34, 56);
 
     nop;
 
@@ -677,6 +737,17 @@ defun main (args : String[]) : void
     forever
     {
         nop;
+    }
+
+    nop;
+
+    delegate p : Predicate => Main::moo;
+
+    nop;
+
+    lambda p : Predicate
+    {
+        return (1 + 2);
     }
 }
 

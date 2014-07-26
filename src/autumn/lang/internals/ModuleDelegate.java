@@ -12,7 +12,7 @@ import java.util.List;
  * @author Mackenzie High
  */
 @Finished("2014/07/12")
-public class ModuleDelegate
+public final class ModuleDelegate
         extends AbstractDelegate
 {
     /**
@@ -121,7 +121,7 @@ public class ModuleDelegate
      * {@inheritDoc}
      */
     @Override
-    public void invoke(ArgumentStack stack)
+    public void apply(ArgumentStack stack)
             throws Throwable
     {
         owner.moduleInvokeFunction(index, stack);

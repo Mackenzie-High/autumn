@@ -19,12 +19,10 @@ import high.mackenzie.autumn.lang.compiler.utils.SetterList;
 import high.mackenzie.autumn.lang.compiler.utils.Utils;
 import java.io.Serializable;
 import java.lang.reflect.Method;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.FieldInsnNode;
 import org.objectweb.asm.tree.FieldNode;
@@ -326,7 +324,7 @@ public final class ClassCompiler
         m.desc = method.getDescriptor();
         m.exceptions = ImmutableList.of(); // TODO: change
 
-        m.instructions.add(Utils.selectLdcDefault(method.getReturnType()));
+        m.instructions.add(Utils.ldcDefault(method.getReturnType()));
         m.instructions.add(Utils.selectReturnInsn(method.getReturnType()));
 
         clazz.methods.add(m);
@@ -536,7 +534,7 @@ public final class ClassCompiler
         clazz.fields.add(field);
     }
 
-    public void load(final List<AbstractInsnNode> code)
+    public void load(final InsnList code)
     {
         code.add(new TypeInsnNode(Opcodes.NEW, name()));
         code.add(new InsnNode(Opcodes.DUP));

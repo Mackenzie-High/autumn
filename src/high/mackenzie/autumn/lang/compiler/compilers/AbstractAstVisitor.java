@@ -55,6 +55,18 @@ public class AbstractAstVisitor
     }
 
     @Override
+    public void visit(TupleDefinition object)
+    {
+        throw new UnsupportedOperationException("This should never happen.");
+    }
+
+    @Override
+    public void visit(FunctorDefinition object)
+    {
+        throw new UnsupportedOperationException("This should never happen.");
+    }
+
+    @Override
     public void visit(EnumDefinition object)
     {
         throw new UnsupportedOperationException("This should never happen.");
@@ -188,6 +200,18 @@ public class AbstractAstVisitor
 
     @Override
     public void visit(LetStatement object)
+    {
+        throw new UnsupportedOperationException("This should never happen.");
+    }
+
+    @Override
+    public void visit(LambdaStatement object)
+    {
+        throw new UnsupportedOperationException("This should never happen.");
+    }
+
+    @Override
+    public void visit(DelegateStatement object)
     {
         throw new UnsupportedOperationException("This should never happen.");
     }
@@ -439,19 +463,7 @@ public class AbstractAstVisitor
     }
 
     @Override
-    public void visit(FuncallExpression object)
-    {
-        throw new UnsupportedOperationException("This should never happen.");
-    }
-
-    @Override
     public void visit(TernaryConditionalExpression object)
-    {
-        throw new UnsupportedOperationException("This should never happen.");
-    }
-
-    @Override
-    public void visit(DelegateExpression object)
     {
         throw new UnsupportedOperationException("This should never happen.");
     }
@@ -614,6 +626,18 @@ public class AbstractAstVisitor
 
     @Override
     public void visit(Variable object)
+    {
+        throw new UnsupportedOperationException("This should never happen.");
+    }
+
+    @Override
+    public void visit(DocComment object)
+    {
+        throw new UnsupportedOperationException("This should never happen.");
+    }
+
+    @Override
+    public void visit(DocCommentLine object)
     {
         throw new UnsupportedOperationException("This should never happen.");
     }

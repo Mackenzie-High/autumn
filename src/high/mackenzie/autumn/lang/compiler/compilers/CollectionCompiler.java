@@ -2,10 +2,9 @@ package high.mackenzie.autumn.lang.compiler.compilers;
 
 import high.mackenzie.autumn.resources.Finished;
 import java.util.LinkedList;
-import java.util.List;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
-import org.objectweb.asm.tree.AbstractInsnNode;
+import org.objectweb.asm.tree.InsnList;
 import org.objectweb.asm.tree.InsnNode;
 import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.TypeInsnNode;
@@ -33,7 +32,7 @@ public abstract class CollectionCompiler<T>
      *
      * @return the aforedescribed list.
      */
-    public abstract List<AbstractInsnNode> code();
+    public abstract InsnList code();
 
     /**
      * This method returns the class representation of the collection type.

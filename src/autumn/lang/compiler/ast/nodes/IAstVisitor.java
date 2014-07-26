@@ -23,6 +23,7 @@ import autumn.lang.compiler.ast.commons.IBinaryOperation;
 import autumn.lang.compiler.ast.commons.IConstruct;
 import autumn.lang.compiler.ast.commons.IConversionOperation;
 import autumn.lang.compiler.ast.commons.IDirective;
+import autumn.lang.compiler.ast.commons.IDocumented;
 import autumn.lang.compiler.ast.commons.IExpression;
 import autumn.lang.compiler.ast.commons.IStatement;
 import autumn.lang.compiler.ast.commons.IUnaryOperation;
@@ -47,7 +48,7 @@ import java.util.TreeSet;
 /**
  * An instance of this interface is a visitor that can visit the nodes in an Autumn abstract-syntax-tree.
  * 
- * <p> This file was auto-generated on (Mon Jul 14 10:23:51 EDT 2014).</p>
+ * <p> This file was auto-generated on (Thu Jul 24 16:15:35 EDT 2014).</p>
  */
 public interface IAstVisitor
 {
@@ -73,20 +74,6 @@ public interface IAstVisitor
     public void visit(final ImportDirective object);
 
     /**
-     * This method visits an object of type <code>Annotation</code>.
-     * 
-     * @param object is the object to visit.
-     */
-    public void visit(final Annotation object);
-
-    /**
-     * This method visits an object of type <code>AnnotationList</code>.
-     * 
-     * @param object is the object to visit.
-     */
-    public void visit(final AnnotationList object);
-
-    /**
      * This method visits an object of type <code>AnnotationDefinition</code>.
      * 
      * @param object is the object to visit.
@@ -99,6 +86,20 @@ public interface IAstVisitor
      * @param object is the object to visit.
      */
     public void visit(final ExceptionDefinition object);
+
+    /**
+     * This method visits an object of type <code>TupleDefinition</code>.
+     * 
+     * @param object is the object to visit.
+     */
+    public void visit(final TupleDefinition object);
+
+    /**
+     * This method visits an object of type <code>FunctorDefinition</code>.
+     * 
+     * @param object is the object to visit.
+     */
+    public void visit(final FunctorDefinition object);
 
     /**
      * This method visits an object of type <code>EnumDefinition</code>.
@@ -260,6 +261,20 @@ public interface IAstVisitor
      * @param object is the object to visit.
      */
     public void visit(final LetStatement object);
+
+    /**
+     * This method visits an object of type <code>LambdaStatement</code>.
+     * 
+     * @param object is the object to visit.
+     */
+    public void visit(final LambdaStatement object);
+
+    /**
+     * This method visits an object of type <code>DelegateStatement</code>.
+     * 
+     * @param object is the object to visit.
+     */
+    public void visit(final DelegateStatement object);
 
     /**
      * This method visits an object of type <code>SetterStatement</code>.
@@ -549,25 +564,11 @@ public interface IAstVisitor
     public void visit(final InstanceOfExpression object);
 
     /**
-     * This method visits an object of type <code>FuncallExpression</code>.
-     * 
-     * @param object is the object to visit.
-     */
-    public void visit(final FuncallExpression object);
-
-    /**
      * This method visits an object of type <code>TernaryConditionalExpression</code>.
      * 
      * @param object is the object to visit.
      */
     public void visit(final TernaryConditionalExpression object);
-
-    /**
-     * This method visits an object of type <code>DelegateExpression</code>.
-     * 
-     * @param object is the object to visit.
-     */
-    public void visit(final DelegateExpression object);
 
     /**
      * This method visits an object of type <code>LocalsExpression</code>.
@@ -750,6 +751,34 @@ public interface IAstVisitor
      * @param object is the object to visit.
      */
     public void visit(final ConcatOperation object);
+
+    /**
+     * This method visits an object of type <code>DocComment</code>.
+     * 
+     * @param object is the object to visit.
+     */
+    public void visit(final DocComment object);
+
+    /**
+     * This method visits an object of type <code>DocCommentLine</code>.
+     * 
+     * @param object is the object to visit.
+     */
+    public void visit(final DocCommentLine object);
+
+    /**
+     * This method visits an object of type <code>Annotation</code>.
+     * 
+     * @param object is the object to visit.
+     */
+    public void visit(final Annotation object);
+
+    /**
+     * This method visits an object of type <code>AnnotationList</code>.
+     * 
+     * @param object is the object to visit.
+     */
+    public void visit(final AnnotationList object);
 
     /**
      * This method visits an object of type <code>Variable</code>.

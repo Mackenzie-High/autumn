@@ -14,6 +14,7 @@ import autumn.lang.compiler.ast.literals.FloatLiteral;
 import autumn.lang.compiler.ast.literals.DoubleLiteral;
 import autumn.lang.compiler.ast.commons.IConstruct;
 import autumn.lang.compiler.ast.commons.IAnnotated;
+import autumn.lang.compiler.ast.commons.IDocumented;
 import autumn.lang.compiler.ast.commons.IDirective;
 import autumn.lang.compiler.ast.commons.IExpression;
 import autumn.lang.compiler.ast.commons.IStatement;
@@ -47,6 +48,12 @@ struct Module
   doc These are the exceptions declared directly within this module. 
   data exceptions : ConstructList<ExceptionDefinition> = { new ConstructList() };
 
+  doc These are the tuples declared directly within this module. 
+  data tuples : ConstructList<TupleDefinition> = { new ConstructList() };
+
+  doc These are the functors declared directly within this module. 
+  data functors : ConstructList<FunctorDefinition> = { new ConstructList() };
+
   doc These are the enums declared directly within this module. 
   data enums : ConstructList<EnumDefinition> = { new ConstructList() };
 
@@ -54,7 +61,7 @@ struct Module
   data designs : ConstructList<DesignDefinition> = { new ConstructList() };
 
   doc These are the functions declared directly within this module. 
-  data functions : ConstructList<FunctionDefinition> = { new ConstructList<FunctionDefinition>() };
+  data functions : ConstructList<FunctionDefinition> = { new ConstructList() };
 
   doc This is the source-location information regarding this construct.
   data location : SourceLocation = { new SourceLocation() };
@@ -67,9 +74,13 @@ end
 doc An instance of this class is an AST node that represents a directive that names a module and specifies its enclosing namespace.
 struct ModuleDirective
   implement IDirective;
+  implement IDocumented;
+
+  doc This is the doc-comment applied directly to the module.
+  data comment : DocComment = { new DocComment() };
 
   doc These are the annotations applied directly to the module. 
-  data annotations : AnnotationList;
+  data annotations : AnnotationList = { new AnnotationList() };
 
   doc This is the name of the module itself, or null, if the module is anonymous.
   data name : Name;
@@ -97,45 +108,19 @@ struct ImportDirective
 end
 
 ###################################################################################################
-# Annotations --> Annotation Usages
-###################################################################################################
-
-doc An instance of this class is an AST node that represents an the usage of an annotation.
-struct Annotation
-  implement IConstruct;
-  
-  doc This is the type of the instantiated annotation definition.
-  data type : TypeSpecifier;
-
-  doc This is the source-location information regarding this construct.
-  data location : SourceLocation = { new SourceLocation() };
-end
-
-###################################################################################################
-# Annotations --> Annotation Usage List
-###################################################################################################
-
-doc An instance of this class is an AST node that represents a list of annotation-usages.
-struct AnnotationList
-  implement IConstruct;
-
-  doc These are the annotation-usages themselves. 
-  data annotations : ConstructList<Annotation>;
-
-  doc This is the source-location information regarding this construct.
-  data location : SourceLocation = { new SourceLocation() };
-end
-
-###################################################################################################
 # Annotations --> Definition
 ###################################################################################################
 
-doc An instance of this class is an AST node that represents the definition of an annotation.
+doc An instance of this class is an AST node that represents the definition of an annotation-type.
 struct AnnotationDefinition
   implement IAnnotated;
+  implement IDocumented;
+
+  doc This is the doc-comment applied directly to the definition.
+  data comment : DocComment = { new DocComment() };
 
   doc These are the annotations applied directly to the definition. 
-  data annotations : AnnotationList;
+  data annotations : AnnotationList = { new AnnotationList() };
 
   doc This is the simple name of the new type.
   data name : Name;
@@ -148,12 +133,16 @@ end
 # Exceptions --> Definition
 ###################################################################################################
 
-doc An instance of this class is an AST node that represents the definition of an exception.
+doc An instance of this class is an AST node that represents the definition of an exception-type.
 struct ExceptionDefinition
   implement IAnnotated;
+  implement IDocumented;
+
+  doc This is the doc-comment applied directly to the definition.
+  data comment : DocComment = { new DocComment() };
 
   doc These are the annotations applied directly to the definition. 
-  data annotations : AnnotationList;
+  data annotations : AnnotationList = { new AnnotationList() };
 
   doc This is the simple name of the new type.
   data name : Name;
@@ -166,15 +155,72 @@ struct ExceptionDefinition
 end
 
 ###################################################################################################
+# Tuples --> Definition
+###################################################################################################
+
+doc An instance of this class is an AST node that represents the definition of an tuple-type.
+struct TupleDefinition
+  implement IAnnotated;
+  implement IDocumented;
+
+  doc This is the doc-comment applied directly to the definition.
+  data comment : DocComment = { new DocComment() };
+
+  doc These are the annotations applied directly to the definition. 
+  data annotations : AnnotationList = { new AnnotationList() };
+
+  doc This is the simple name of the new type.
+  data name : Name;
+
+  doc These are the formal-parameters of the tuple constructor. 
+  data elements : FormalParameterList;
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Functor --> Definition
+###################################################################################################
+
+doc An instance of this class is an AST node that represents the definition of a functor-type.
+struct FunctorDefinition
+  implement IAnnotated;
+  implement IDocumented;
+
+  doc This is the doc-comment applied directly to the definition.
+  data comment : DocComment = { new DocComment() };
+
+  doc These are the annotations applied directly to the definition. 
+  data annotations : AnnotationList = { new AnnotationList() };
+
+  doc This is the simple name of the new type.
+  data name : Name;
+
+  doc These are the formal-parameters of the functor. 
+  data parameters : FormalParameterList;
+
+  doc This is the return-type of the functor. 
+  data return_type : TypeSpecifier;
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
 # Enum --> Definition
 ###################################################################################################
 
-doc An instance of this class is an AST node that represents the definition of an enumeration.
+doc An instance of this class is an AST node that represents the definition of an enum-type.
 struct EnumDefinition
   implement IAnnotated;
+  implement IDocumented;
+
+  doc This is the doc-comment applied directly to the definition.
+  data comment : DocComment = { new DocComment() };
 
   doc These are the annotations applied directly to the definition. 
-  data annotations : AnnotationList;
+  data annotations : AnnotationList = { new AnnotationList() };
 
   doc This is the simple name of the new type.
   data name : Name;
@@ -193,9 +239,13 @@ end
 doc An instance of this class is an AST node that represents a constant in an enumeration.
 struct EnumConstant
   implement IAnnotated;
+  implement IDocumented;
+
+  doc This is the doc-comment applied directly to the enum-constant.
+  data comment : DocComment = { new DocComment() };
 
   doc These are the annotations applied directly to the enum-constant. 
-  data annotations : AnnotationList;
+  data annotations : AnnotationList = { new AnnotationList() };
 
   doc This is the simple name of the new type.
   data name : Name;
@@ -208,9 +258,13 @@ end
 # Designs --> Definition
 ###################################################################################################
 
-doc An instance of this class is an AST node that represents the definition of a design.
+doc An instance of this class is an AST node that represents the definition of a design-type.
 struct DesignDefinition
   implement IAnnotated;
+  implement IDocumented;
+
+  doc This is the doc-comment applied directly to the definition.
+  data comment : DocComment = { new DocComment() };
 
   doc These are the annotations applied directly to the definition. 
   data annotations : AnnotationList = { new AnnotationList() };
@@ -238,6 +292,10 @@ end
 doc An instance of this class is an AST node that represents the declaration of a property within a design.
 struct DesignProperty
   implement IAnnotated;
+  implement IDocumented;
+
+  doc This is the doc-comment applied directly to the property.
+  data comment : DocComment = { new DocComment() };
 
   doc These are the annotations applied directly to the property. 
   data annotations : AnnotationList = { new AnnotationList() };
@@ -259,6 +317,10 @@ end
 doc An instance of this class is an AST node that represents the declaration of a method within a design.
 struct DesignMethod
   implement IAnnotated;
+  implement IDocumented;
+
+  doc This is the doc-comment applied directly to the method.
+  data comment : DocComment = { new DocComment() };
 
   doc These are the annotations applied directly to the declaration. 
   data annotations : AnnotationList = { new AnnotationList() };
@@ -283,7 +345,11 @@ end
 doc An instance of this class is an AST node that represents the definition of a function. 
 struct FunctionDefinition
   implement IAnnotated;
+  implement IDocumented;
  
+  doc This is the doc-comment applied directly to the definition.
+  data comment : DocComment = { new DocComment() };
+
   doc These are the annotations applied directly to the definition. 
   data annotations : AnnotationList = { new AnnotationList() };
 
@@ -595,6 +661,51 @@ struct LetStatement
 
   doc This expression produces the value to assign to the variable.
   data value : IExpression;
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Statements --> Lambda
+###################################################################################################
+
+doc An instance of this class is an AST node that represents the definition of an anonymous function.
+struct LambdaStatement
+  implement IStatement;
+
+  doc This is the variable that the new lambda will be assigned to. 
+  data variable : Variable;
+
+  doc This is the type of the new lambda.
+  data type : TypeSpecifier;
+
+  doc This is the statement that is evaluated whenever the anonymous function is invoked. 
+  data body : SequenceStatement = { new SequenceStatement() };
+  
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Statements --> Delegate
+###################################################################################################
+
+doc An instance of this class is an AST node that represents the creation of a delegate. 
+struct DelegateStatement
+  implement IStatement;
+
+  doc This is the variable that the new delegate will be assigned to. 
+  data variable : Variable;
+
+  doc This is the type of the new delegate.
+  data type : TypeSpecifier;
+
+  doc This is the type that owns the static method to invoke.
+  data owner : TypeSpecifier = { null };
+
+  doc This is the name of the static method to invoke. 
+  data method : Name = { null };
 
   doc This is the source-location information regarding this construct.
   data location : SourceLocation = { new SourceLocation() };
@@ -1009,9 +1120,12 @@ end
 # Expressions --> Datums --> String
 ###################################################################################################
 
-doc An instance of this class is an AST node that represents a java.lang.String literal.
+doc An instance of this class is an AST node that represents a string literal.
 struct StringDatum
   implement IExpression;
+
+  doc This flag is true, if the string does not contain escape sequences.
+  data verbatim : boolean = { false };
 
   doc This is the value that this datum represents.
   data value : String;
@@ -1282,24 +1396,6 @@ struct InstanceOfExpression
 end
 
 ###################################################################################################
-# Expressions --> Funcall
-###################################################################################################
-
-doc An instance of this class is an AST node that represents an expression that invokes an anonymous function.
-struct FuncallExpression
-  implement IExpression;
-
-  doc This expression produces the anonymous function to invoke. 
-  data functor : IExpression;
-
-  doc These expressions produce the arguments to pass to the anonymous function. 
-  data arguments : ConstructList<IExpression> = { new ConstructList() };
-
-  doc This is the source-location information regarding this construct.
-  data location : SourceLocation = { new SourceLocation() };
-end
-
-###################################################################################################
 # Expressions --> Conditional
 ###################################################################################################
 
@@ -1315,24 +1411,6 @@ struct TernaryConditionalExpression
 
   doc This expression is evaluated, if the condition is false. 
   data case_false : IExpression; 
-
-  doc This is the source-location information regarding this construct.
-  data location : SourceLocation = { new SourceLocation() };
-end
-
-###################################################################################################
-# Operators --> Delegate
-###################################################################################################
-
-doc An instance of this class is an AST node that represents the creation of a delegate. 
-struct DelegateExpression
-  implement IExpression;
-
-  doc This is the type that owns the static method to invoke.
-  data owner : TypeSpecifier = { null };
-
-  doc This is the name of the static method to invoke. 
-  data method : Name = { null };
 
   doc This is the source-location information regarding this construct.
   data location : SourceLocation = { new SourceLocation() };
@@ -1794,6 +1872,68 @@ struct ConcatOperation
   data location : SourceLocation = { new SourceLocation() };
 end
 
+
+
+###################################################################################################
+# Components --> Doc Comment
+###################################################################################################
+
+doc An instance of this class is an AST node that represents a doc-comment. 
+struct DocComment
+  implement IConstruct;
+
+  doc These are the individual lines that make up the comment. 
+  data lines : ConstructList<DocCommentLine> = { new ConstructList() };
+  
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Components --> Doc Comment Line
+###################################################################################################
+
+doc An instance of this class is an AST node that represents a single line within a doc-comment. 
+struct DocCommentLine
+  implement IConstruct;
+
+  doc This si the actual text of the comment line. 
+  data text : String;
+  
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+
+###################################################################################################
+# Components --> Annotations --> Annotation Usages
+###################################################################################################
+
+doc An instance of this class is an AST node that represents an the usage of an annotation.
+struct Annotation
+  implement IConstruct;
+  
+  doc This is the type of the instantiated annotation definition.
+  data type : TypeSpecifier;
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Components --> Annotations --> Annotation Usage List
+###################################################################################################
+
+doc An instance of this class is an AST node that represents a list of annotation-usages.
+struct AnnotationList
+  implement IConstruct;
+
+  doc These are the annotation-usages themselves. 
+  data annotations : ConstructList<Annotation> = { new ConstructList() };
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
 
 ###################################################################################################
 # Components --> Variable

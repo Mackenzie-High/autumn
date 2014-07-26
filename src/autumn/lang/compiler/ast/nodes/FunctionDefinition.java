@@ -23,6 +23,7 @@ import autumn.lang.compiler.ast.commons.IBinaryOperation;
 import autumn.lang.compiler.ast.commons.IConstruct;
 import autumn.lang.compiler.ast.commons.IConversionOperation;
 import autumn.lang.compiler.ast.commons.IDirective;
+import autumn.lang.compiler.ast.commons.IDocumented;
 import autumn.lang.compiler.ast.commons.IExpression;
 import autumn.lang.compiler.ast.commons.IStatement;
 import autumn.lang.compiler.ast.commons.IUnaryOperation;
@@ -50,6 +51,7 @@ import java.util.TreeSet;
  * <p> 
  * <table border="1">
  *     <tr> <td> <b>Property Name</b> </td> <td> <b>Property Description</b> </td> </tr>
+ *     <tr> <td> <code>comment</code> </td> <td>This is the doc-comment applied directly to the definition.</td> </tr>
  *     <tr> <td> <code>annotations</code> </td> <td>These are the annotations applied directly to the definition.</td> </tr>
  *     <tr> <td> <code>name</code> </td> <td>This is the name of the function itself.</td> </tr>
  *     <tr> <td> <code>parameters</code> </td> <td>These are the formal parameters of the function.</td> </tr>
@@ -59,11 +61,13 @@ import java.util.TreeSet;
  * </table>
  * </p>
  * 
- * <p> This file was auto-generated on (Mon Jul 14 10:23:51 EDT 2014).</p>
+ * <p> This file was auto-generated on (Thu Jul 24 16:15:35 EDT 2014).</p>
  */
 @SuppressWarnings("unchecked")
-public final class FunctionDefinition extends Object implements IAnnotated
+public final class FunctionDefinition extends Object implements IAnnotated, IDocumented
 {
+    private DocComment comment = new DocComment();
+
     private AnnotationList annotations = new AnnotationList();
 
     private Name name;
@@ -75,6 +79,30 @@ public final class FunctionDefinition extends Object implements IAnnotated
     private SequenceStatement body = new SequenceStatement();
 
     private SourceLocation location = new SourceLocation();
+
+    /**
+     * Setter.
+     * 
+     * @param value is the new value of property <code>comment</code>.
+     * @return a copy of this object with property <code>comment</code> set to value.
+     */
+    public FunctionDefinition setComment(final DocComment value)
+    {
+        final FunctionDefinition result = this.copy();
+        result.comment = value;
+        return result;
+    }
+
+    /**
+     * Getter.
+     * 
+     * @return the value of property <code>comment</code>.
+     */
+    public DocComment getComment()
+    {
+        final DocComment value = this.comment;
+        return value;
+    }
 
     /**
      * Setter.
@@ -223,6 +251,7 @@ public final class FunctionDefinition extends Object implements IAnnotated
     /**
      * This method creates a new instance of this class.
      * 
+     * @param comment is the value for property <code>comment</code>.
      * @param annotations is the value for property <code>annotations</code>.
      * @param name is the value for property <code>name</code>.
      * @param parameters is the value for property <code>parameters</code>.
@@ -231,9 +260,10 @@ public final class FunctionDefinition extends Object implements IAnnotated
      * @param location is the value for property <code>location</code>.
      * @return a new instance of this class.
      */
-    public static FunctionDefinition create(AnnotationList annotations, Name name, FormalParameterList parameters, TypeSpecifier return_type, SequenceStatement body, SourceLocation location)
+    public static FunctionDefinition create(DocComment comment, AnnotationList annotations, Name name, FormalParameterList parameters, TypeSpecifier return_type, SequenceStatement body, SourceLocation location)
     {
         FunctionDefinition object = new FunctionDefinition();
+        object = object.setComment(comment);
         object = object.setAnnotations(annotations);
         object = object.setName(name);
         object = object.setParameters(parameters);
@@ -261,6 +291,7 @@ public final class FunctionDefinition extends Object implements IAnnotated
     public FunctionDefinition copy()
     {
         final FunctionDefinition result = new FunctionDefinition();
+        result.comment = this.comment;
         result.annotations = this.annotations;
         result.name = this.name;
         result.parameters = this.parameters;
@@ -283,6 +314,7 @@ public final class FunctionDefinition extends Object implements IAnnotated
     public Map<String, Object> toMap()
     {
         final Map<String, Object> map = new TreeMap<String, Object>();
+        map.put("comment", this.getComment());
         map.put("annotations", this.getAnnotations());
         map.put("name", this.getName());
         map.put("parameters", this.getParameters());

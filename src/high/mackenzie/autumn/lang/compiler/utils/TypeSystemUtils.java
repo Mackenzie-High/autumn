@@ -5,11 +5,13 @@ import autumn.lang.Functor;
 import autumn.lang.Local;
 import autumn.lang.LocalsMap;
 import autumn.lang.Module;
+import autumn.lang.Tuple;
 import autumn.lang.annotations.Start;
 import autumn.lang.compiler.ast.nodes.Name;
 import autumn.lang.compiler.ast.nodes.TypeSpecifier;
 import autumn.lang.internals.AbstractDelegate;
 import autumn.lang.internals.AbstractModule;
+import autumn.lang.internals.AbstractTuple;
 import autumn.lang.internals.ArgumentStack;
 import autumn.lang.internals.Conversions;
 import autumn.lang.internals.Helpers;
@@ -44,11 +46,10 @@ import java.lang.reflect.Modifier;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
-import org.objectweb.asm.tree.AbstractInsnNode;
+import org.objectweb.asm.tree.InsnList;
 import org.objectweb.asm.tree.InsnNode;
 import org.objectweb.asm.tree.MethodInsnNode;
 
@@ -117,21 +118,25 @@ public final class TypeSystemUtils
 
     public final IAnnotationType START;
 
-    public final IClassType LIST;
+    public final IInterfaceType TUPLE;
 
-    public final IClassType ITERABLE;
+    public final IInterfaceType LIST;
+
+    public final IInterfaceType ITERABLE;
 
     public final IInterfaceType DELEGATE;
 
     public final IInterfaceType FUNCTOR;
 
-    public final IClassType MODULE;
+    public final IInterfaceType MODULE;
 
     public final IClassType MODULE_DELEGATE;
 
     public final IClassType ABSTRACT_MODULE;
 
     public final IClassType ABSTRACT_DELEGATE;
+
+    public final IClassType ABSTRACT_TUPLE;
 
     public final IClassType HELPERS;
 
@@ -197,17 +202,21 @@ public final class TypeSystemUtils
 
         this.STRING = (IClassType) factory.fromClass(String.class);
 
-        this.LIST = (IClassType) factory.fromClass(List.class);
+        this.TUPLE = (IInterfaceType) factory.fromClass(Tuple.class);
 
-        this.ITERABLE = (IClassType) factory.fromClass(Iterable.class);
+        this.LIST = (IInterfaceType) factory.fromClass(List.class);
+
+        this.ITERABLE = (IInterfaceType) factory.fromClass(Iterable.class);
 
         this.DELEGATE = (IInterfaceType) factory.fromClass(Delegate.class);
 
         this.FUNCTOR = (IInterfaceType) factory.fromClass(Functor.class);
 
-        this.MODULE = (IClassType) factory.fromClass(Module.class);
+        this.MODULE = (IInterfaceType) factory.fromClass(Module.class);
 
         this.MODULE_DELEGATE = (IClassType) factory.fromClass(ModuleDelegate.class);
+
+        this.ABSTRACT_TUPLE = (IClassType) factory.fromClass(AbstractTuple.class);
 
         this.ABSTRACT_MODULE = (IClassType) factory.fromClass(AbstractModule.class);
 
@@ -241,8 +250,8 @@ public final class TypeSystemUtils
      * @return the bytecode that performs the actual conversion,
      * or null, if no such conversion is possible.
      */
-    public List<AbstractInsnNode> assign(final IType input,
-                                         final IType output)
+    public InsnList assign(final IType input,
+                           final IType output)
     {
         // Primitive Type Coercions:
         //   char  ==> int
@@ -260,39 +269,49 @@ public final class TypeSystemUtils
          */
         if (input.equals(PRIMITIVE_CHAR) && output.equals(PRIMITIVE_INT))
         {
-            return Lists.newLinkedList();
+            return new InsnList();
         }
         else if (input.equals(PRIMITIVE_CHAR) && output.equals(PRIMITIVE_LONG))
         {
-            return Collections.<AbstractInsnNode>singletonList(new InsnNode(Opcodes.I2L));
+            final InsnList result = new InsnList();
+            result.add(new InsnNode(Opcodes.I2L));
+            return result;
         }
         else if (input.equals(PRIMITIVE_BYTE) && output.equals(PRIMITIVE_SHORT))
         {
-            return Lists.newLinkedList();
+            return new InsnList();
         }
         else if (input.equals(PRIMITIVE_BYTE) && output.equals(PRIMITIVE_INT))
         {
-            return Lists.newLinkedList();
+            return new InsnList();
         }
         else if (input.equals(PRIMITIVE_BYTE) && output.equals(PRIMITIVE_LONG))
         {
-            return Collections.<AbstractInsnNode>singletonList(new InsnNode(Opcodes.I2L));
+            final InsnList result = new InsnList();
+            result.add(new InsnNode(Opcodes.I2L));
+            return result;
         }
         else if (input.equals(PRIMITIVE_SHORT) && output.equals(PRIMITIVE_INT))
         {
-            return Lists.newLinkedList();
+            return new InsnList();
         }
         else if (input.equals(PRIMITIVE_SHORT) && output.equals(PRIMITIVE_LONG))
         {
-            return Collections.<AbstractInsnNode>singletonList(new InsnNode(Opcodes.I2L));
+            final InsnList result = new InsnList();
+            result.add(new InsnNode(Opcodes.I2L));
+            return result;
         }
         else if (input.equals(PRIMITIVE_INT) && output.equals(PRIMITIVE_LONG))
         {
-            return Collections.<AbstractInsnNode>singletonList(new InsnNode(Opcodes.I2L));
+            final InsnList result = new InsnList();
+            result.add(new InsnNode(Opcodes.I2L));
+            return result;
         }
         else if (input.equals(PRIMITIVE_FLOAT) && output.equals(PRIMITIVE_DOUBLE))
         {
-            return Collections.<AbstractInsnNode>singletonList(new InsnNode(Opcodes.F2D));
+            final InsnList result = new InsnList();
+            result.add(new InsnNode(Opcodes.F2D));
+            return result;
         }
 
         /**
@@ -300,13 +319,13 @@ public final class TypeSystemUtils
          */
         if (input.isSubtypeOf(output))
         {
-            return Lists.newLinkedList();
+            return new InsnList();
         }
 
         /**
          * Case: Boxing
          */
-        final List<AbstractInsnNode> box_code = box(input, output);
+        final InsnList box_code = box(input, output);
 
         if (box_code != null)
         {
@@ -316,7 +335,7 @@ public final class TypeSystemUtils
         /**
          * Case: Unboxing
          */
-        final List<AbstractInsnNode> unbox_code = unbox(input, output);
+        final InsnList unbox_code = unbox(input, output);
 
         if (unbox_code != null)
         {
@@ -377,10 +396,10 @@ public final class TypeSystemUtils
      * @return the bytecode that performs the actual conversion,
      * or null, if no such conversion is possible.
      */
-    public List<AbstractInsnNode> box(final IType input,
-                                      final IType output)
+    public InsnList box(final IType input,
+                        final IType output)
     {
-        final List<AbstractInsnNode> result = Lists.newLinkedList();
+        final InsnList result = new InsnList();
 
         final boolean is_object = output.equals(OBJECT);
 
@@ -445,7 +464,7 @@ public final class TypeSystemUtils
                                           "(D)Ljava/lang/Double;"));
         }
 
-        return result.isEmpty() ? null : result;
+        return result.size() == 0 ? null : result;
     }
 
     /**
@@ -471,10 +490,10 @@ public final class TypeSystemUtils
      * @return the bytecode that performs the actual conversion,
      * or null, if no such conversion is possible.
      */
-    public List<AbstractInsnNode> unbox(final IType input,
-                                        final IType output)
+    public InsnList unbox(final IType input,
+                          final IType output)
     {
-        final List<AbstractInsnNode> result = Lists.newLinkedList();
+        final InsnList result = new InsnList();
 
         final boolean is_object = output.equals(OBJECT);
 
@@ -537,7 +556,7 @@ public final class TypeSystemUtils
                                           "(Ljava/lang/Double;)D"));
         }
 
-        return result.isEmpty() ? null : result;
+        return result.size() == 0 ? null : result;
     }
 
     /**
@@ -577,6 +596,7 @@ public final class TypeSystemUtils
     final boolean compare(final IInvokableMember left,
                           final IInvokableMember right)
     {
+        // Here "less" is synonymous with "more-specific".
         final boolean LESS = true;
 
         /**
@@ -631,12 +651,23 @@ public final class TypeSystemUtils
 
             final boolean assignable = assign(left_param, right_param) != null;
 
-            if (assignable)
+            if (left_param.equals(right_param))
             {
+                // Pass, because a type is not more specific than itself.
+            }
+            else if (left_param.isSubtypeOf(right_param))
+            {
+                // A subtype is more specific than its supertype.
                 return LESS;
             }
             else if (left_param.isPrimitiveType() && !right_param.isPrimitiveType())
             {
+                // A primitive-type is more specific than a reference-type.
+                return LESS;
+            }
+            else if (assignable && left_param.isPrimitiveType() && right_param.isPrimitiveType())
+            {
+                // Some primitive-types are more specific than other primitive-types.
                 return LESS;
             }
         }
@@ -1221,6 +1252,10 @@ NEXT_METHOD:
         Preconditions.checkNotNull(name);
         Preconditions.checkNotNull(descriptor);
 
+        Preconditions.checkNotNull(list);
+        Preconditions.checkNotNull(name);
+        Preconditions.checkNotNull(descriptor);
+
         for (T element : list)
         {
             if (element.getName().equals(name) && element.getDescriptor().equals(descriptor))
@@ -1230,5 +1265,28 @@ NEXT_METHOD:
         }
 
         return null;
+    }
+
+    /**
+     * This method generates the bytecode necessary to box a value.
+     *
+     * <p>
+     * This method effectively does nothing, if no boxing is required.
+     * </p>
+     *
+     * @param type is the type of the topmost value on the operand-stack.
+     */
+    public void autoboxToObject(final InsnList code,
+                                final IType type)
+    {
+        Preconditions.checkNotNull(type);
+
+        // Generate the code to box the value.
+        // If no boxing is required, then this variable will be assigned null.
+        InsnList boxing = box(type, OBJECT);
+
+        boxing = boxing == null ? new InsnList() : boxing;
+
+        code.add(boxing);
     }
 }

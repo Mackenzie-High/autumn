@@ -1,9 +1,8 @@
 package high.mackenzie.autumn.lang.compiler.optimizer;
 
 import com.google.common.collect.Maps;
-import java.util.List;
 import java.util.Map;
-import org.objectweb.asm.tree.AbstractInsnNode;
+import org.objectweb.asm.tree.InsnList;
 
 /**
  * An instance of this class can replace invocations of certain special methods with faster code.
@@ -12,5 +11,5 @@ import org.objectweb.asm.tree.AbstractInsnNode;
  */
 public final class SpecialMethodInliner
 {
-    private final Map<String, List<AbstractInsnNode>> optim = Maps.newTreeMap();
+    private final Map<String, InsnList> optim = Maps.newTreeMap();
 }

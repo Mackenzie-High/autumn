@@ -1,4 +1,4 @@
-package autumn.lang.util;
+package autumn.util.ds;
 
 import autumn.lang.Functor;
 import com.google.common.collect.Lists;

@@ -35,10 +35,12 @@ public final class StatementTypeChecker
     }
 
     @Override
-    public void visit(IfStatement object)
+    public void visit(final IfStatement object)
     {
+        // Visit the conditional case that is always present.
         object.getMainCase().accept(this);
 
+        // Visit the elif-cases, if there are any elif-clauses present.
         if (object.getElifCases() != null)
         {
             for (ConditionalCase x : object.getElifCases())
@@ -47,6 +49,7 @@ public final class StatementTypeChecker
             }
         }
 
+        // Visit the else-clause, if there is an else-clause present.
         if (object.getElseCase() != null)
         {
             object.getElseCase().accept(this);
@@ -56,33 +59,41 @@ public final class StatementTypeChecker
     @Override
     public void visit(final WhenStatement object)
     {
+        // Visit and type-check the condition.
         condition(object.getCondition());
 
+        // Visit the body.
         object.getBody().accept(this);
     }
 
     @Override
     public void visit(final GotoStatement object)
     {
+        // The type-checking of goto-statements will be done later.
+        // This prevents the need for another compiler-pass.
         function.labels.defer(object);
     }
 
     @Override
     public void visit(final MarkerStatement object)
     {
+        // The type-checking of marker-statements will be done later.
+        // This prevents the need for another compiler-pass.
         function.labels.defer(object);
     }
 
     @Override
-    public void visit(ConditionalCase object)
+    public void visit(final ConditionalCase object)
     {
+        // Visit and type-check the condition.
         condition(object.getCondition());
 
+        // Visit the body.
         object.getBody().accept(this);
     }
 
     @Override
-    public void visit(ForeverStatement object)
+    public void visit(final ForeverStatement object)
     {
         ++loop_nesting_level;
         {
@@ -92,19 +103,7 @@ public final class StatementTypeChecker
     }
 
     @Override
-    public void visit(WhileStatement object)
-    {
-        condition(object.getCondition());
-
-        ++loop_nesting_level;
-        {
-            object.getBody().accept(this);
-        }
-        --loop_nesting_level;
-    }
-
-    @Override
-    public void visit(UntilStatement object)
+    public void visit(final WhileStatement object)
     {
         condition(object.getCondition());
 
@@ -116,7 +115,7 @@ public final class StatementTypeChecker
     }
 
     @Override
-    public void visit(DoWhileStatement object)
+    public void visit(final UntilStatement object)
     {
         condition(object.getCondition());
 
@@ -128,7 +127,7 @@ public final class StatementTypeChecker
     }
 
     @Override
-    public void visit(DoUntilStatement object)
+    public void visit(final DoWhileStatement object)
     {
         condition(object.getCondition());
 
@@ -140,7 +139,19 @@ public final class StatementTypeChecker
     }
 
     @Override
-    public void visit(ForStatement object)
+    public void visit(final DoUntilStatement object)
+    {
+        condition(object.getCondition());
+
+        ++loop_nesting_level;
+        {
+            object.getBody().accept(this);
+        }
+        --loop_nesting_level;
+    }
+
+    @Override
+    public void visit(final ForStatement object)
     {
         function.scope.declareVar(object.getVariable(), program.typesystem.utils.PRIMITIVE_INT);
 
@@ -155,7 +166,7 @@ public final class StatementTypeChecker
     }
 
     @Override
-    public void visit(ForeachStatement object)
+    public void visit(final ForeachStatement object)
     {
         final Variable variable = object.getVariable();
         final IExpressionType type = function.module.resolveType(object.getType());
@@ -169,7 +180,7 @@ public final class StatementTypeChecker
     }
 
     @Override
-    public void visit(BreakStatement object)
+    public void visit(final BreakStatement object)
     {
         if (loop_nesting_level == 0)
         {
@@ -178,7 +189,7 @@ public final class StatementTypeChecker
     }
 
     @Override
-    public void visit(ContinueStatement object)
+    public void visit(final ContinueStatement object)
     {
         if (loop_nesting_level == 0)
         {
@@ -187,7 +198,7 @@ public final class StatementTypeChecker
     }
 
     @Override
-    public void visit(RedoStatement object)
+    public void visit(final RedoStatement object)
     {
         if (loop_nesting_level == 0)
         {
@@ -196,7 +207,7 @@ public final class StatementTypeChecker
     }
 
     @Override
-    public void visit(VarStatement object)
+    public void visit(final VarStatement object)
     {
         object.getValue().accept(this);
 
@@ -217,7 +228,7 @@ public final class StatementTypeChecker
     }
 
     @Override
-    public void visit(ValStatement object)
+    public void visit(final ValStatement object)
     {
         object.getValue().accept(this);
 
@@ -238,7 +249,7 @@ public final class StatementTypeChecker
     }
 
     @Override
-    public void visit(LetStatement object)
+    public void visit(final LetStatement object)
     {
         object.getValue().accept(this);
 
@@ -250,25 +261,37 @@ public final class StatementTypeChecker
     }
 
     @Override
-    public void visit(SetterStatement object)
+    public void visit(final LambdaStatement object)
+    {
+        throw new UnsupportedOperationException("This should never happen.");
+    }
+
+    @Override
+    public void visit(final DelegateStatement object)
+    {
+        throw new UnsupportedOperationException("This should never happen.");
+    }
+
+    @Override
+    public void visit(final SetterStatement object)
     {
         object.getOwner().accept(this);
     }
 
     @Override
-    public void visit(GetterStatement object)
+    public void visit(final GetterStatement object)
     {
         object.getOwner().accept(this);
     }
 
     @Override
-    public void visit(MethodStatement object)
+    public void visit(final MethodStatement object)
     {
         object.getOwner().accept(this);
     }
 
     @Override
-    public void visit(SequenceStatement object)
+    public void visit(final SequenceStatement object)
     {
         for (IStatement s : object.getElements())
         {
@@ -284,25 +307,25 @@ public final class StatementTypeChecker
     }
 
     @Override
-    public void visit(ExpressionStatement object)
+    public void visit(final ExpressionStatement object)
     {
         object.getExpression().accept(this);
     }
 
     @Override
-    public void visit(NopStatement object)
+    public void visit(final NopStatement object)
     {
         // Pass
     }
 
     @Override
-    public void visit(DebugStatement object)
+    public void visit(final DebugStatement object)
     {
         // Pass
     }
 
     @Override
-    public void visit(TryCatchStatement object)
+    public void visit(final TryCatchStatement object)
     {
         object.getBody().accept(this);
         object.getHandlers().accept(this);
@@ -345,7 +368,7 @@ public final class StatementTypeChecker
     }
 
     @Override
-    public void visit(ExceptionHandler object)
+    public void visit(final ExceptionHandler object)
     {
         final IExpressionType type = function.module.resolveType(object.getType());
 
@@ -361,7 +384,7 @@ public final class StatementTypeChecker
     }
 
     @Override
-    public void visit(ThrowStatement object)
+    public void visit(final ThrowStatement object)
     {
         object.getValue().accept(this);
 
@@ -370,7 +393,7 @@ public final class StatementTypeChecker
     }
 
     @Override
-    public void visit(AssertStatement object)
+    public void visit(final AssertStatement object)
     {
         object.getCondition().accept(this);
 
@@ -386,7 +409,7 @@ public final class StatementTypeChecker
     }
 
     @Override
-    public void visit(AssumeStatement object)
+    public void visit(final AssumeStatement object)
     {
         object.getCondition().accept(this);
 
@@ -402,7 +425,7 @@ public final class StatementTypeChecker
     }
 
     @Override
-    public void visit(ReturnVoidStatement object)
+    public void visit(final ReturnVoidStatement object)
     {
         if (function.isReturnTypeVoid() == false)
         {
@@ -411,7 +434,7 @@ public final class StatementTypeChecker
     }
 
     @Override
-    public void visit(ReturnValueStatement object)
+    public void visit(final ReturnValueStatement object)
     {
         object.getValue().accept(this);
 
@@ -424,7 +447,7 @@ public final class StatementTypeChecker
     }
 
     @Override
-    public void visit(RecurStatement object)
+    public void visit(final RecurStatement object)
     {
         final List<IType> args = Lists.newLinkedList();
 
@@ -438,7 +461,7 @@ public final class StatementTypeChecker
     }
 
     @Override
-    public void visit(YieldVoidStatement object)
+    public void visit(final YieldVoidStatement object)
     {
         if (function.isReturnTypeVoid() == false)
         {
@@ -453,7 +476,7 @@ public final class StatementTypeChecker
     }
 
     @Override
-    public void visit(YieldValueStatement object)
+    public void visit(final YieldValueStatement object)
     {
         object.getValue().accept(this);
 

@@ -3,10 +3,6 @@ module * in typechecks;
 @Start
 defun main (args : String[]) : void
 {
-    "An Object" === (My::moo);
+    "Venus" === 2;
 }
 
-defun moo() : void
-{
-    // This function's purpose is to return-void.
-}

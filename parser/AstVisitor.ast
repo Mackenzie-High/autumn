@@ -1,11 +1,4 @@
 
-# TODO: 
-# 1. Anonymous Modules (Also, anonymous-modules with no functions should not generate bytecode.)
-# 2. Annotations can have enum-constants as arguments. 
-
-
-
-
 output "src/high/mackenzie/autumn/lang/compiler/parser/AstBuilder.java";
 
 package high.mackenzie.autumn.lang.compiler.parser;
@@ -99,44 +92,6 @@ rule import_directive
 }
 
 ###################################################################################################
-# Annotations -> Annotation List
-###################################################################################################
-
-rule annotation_list
-{
-  # Get the AST builder.
-  builder : TreeBuilder = call Utils.builder();
-
-  # Create the AST node.
-  call builder.createAnnotationList();
-
-  # Set the source-location information.
-  call Utils.setSourceLocation($node);
-
-  # Merge the upper stack with the next lower stack.
-  call builder.popStack();
-}
-
-###################################################################################################
-# Annotations -> Annotation 
-###################################################################################################
-
-rule annotation
-{
-  # Get the AST builder.
-  builder : TreeBuilder = call Utils.builder();
-
-  # Create the AST node.
-  call builder.createAnnotation();
-
-  # Set the source-location information.
-  call Utils.setSourceLocation($node);
-
-  # Merge the upper stack with the next lower stack.
-  call builder.popStack();
-}
-
-###################################################################################################
 # Exceptions --> Definition
 ###################################################################################################
 
@@ -185,6 +140,44 @@ rule enum_definition
 
   # Create the AST node.
   call builder.createDefinitionEnum();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+
+  # Merge the upper stack with the next lower stack.
+  call builder.popStack();
+}
+
+###################################################################################################
+# Tuple --> Definition
+###################################################################################################
+
+rule tuple_definition
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createDefinitionTuple();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+
+  # Merge the upper stack with the next lower stack.
+  call builder.popStack();
+}
+
+###################################################################################################
+# Functor --> Definition
+###################################################################################################
+
+rule functor_definition
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createDefinitionFunctor();
 
   # Set the source-location information.
   call Utils.setSourceLocation($node);
@@ -778,6 +771,44 @@ rule let_statement
 }
 
 ###################################################################################################
+# Statements --> Lambda
+###################################################################################################
+
+rule lambda_statement
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createStatementLambda();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+
+  # Merge the upper stack with the next lower stack.
+  call builder.popStack();
+}
+
+###################################################################################################
+# Statements --> Delegate
+###################################################################################################
+
+rule delegate_statement
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createStatementDelegate();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+
+  # Merge the upper stack with the next lower stack.
+  call builder.popStack();
+}
+
+###################################################################################################
 # Statements --> Debug
 ###################################################################################################
 
@@ -1109,11 +1140,14 @@ rule string_datum
   # Get the AST builder.
   builder : TreeBuilder = call Utils.builder();
 
+  # Get the flag that indicates whether the string-literal is verbatim.
+  verbatim : boolean = call Utils.getVerbatim();
+
   # Extract the value from the parse-tree node. 
   value : String = call Utils.getString();
 
   # Create the AST node.
-  call builder.createDatum(value);
+  call builder.createDatum(verbatim, value);
 
   # Set the source-location information.
   call Utils.setSourceLocation($node);
@@ -1777,44 +1811,6 @@ rule list_expression
 }
 
 ###################################################################################################
-# Expressions --> Delegate - Simplified
-###################################################################################################
-
-rule delegate_expression
-{
-  # Get the AST builder.
-  builder : TreeBuilder = call Utils.builder();
-
-  # Create the AST node.
-  call builder.createExpressionDelegate();
-
-  # Set the source-location information.
-  call Utils.setSourceLocation($node);
-
-  # Merge the upper stack with the next lower stack.
-  call builder.popStack();
-}
-
-###################################################################################################
-# Expressions --> Funcall
-###################################################################################################
-
-rule funcall_expression
-{
-  # Get the AST builder.
-  builder : TreeBuilder = call Utils.builder();
-
-  # Create the AST node.
-  call builder.createExpressionFuncall();
-
-  # Set the source-location information.
-  call Utils.setSourceLocation($node);
-
-  # Merge the upper stack with the next lower stack.
-  call builder.popStack();
-}
-
-###################################################################################################
 # Expressions --> Locals
 ###################################################################################################
 
@@ -1863,6 +1859,85 @@ rule ternary_conditional_expression
 
   # Create the AST node.
   call builder.createExpressionTernaryConditional();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+
+  # Merge the upper stack with the next lower stack.
+  call builder.popStack();
+}
+
+###################################################################################################
+# Components --> Doc Comment 
+###################################################################################################
+
+rule api_comment
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createComponentDocComment();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+
+  # Merge the upper stack with the next lower stack.
+  call builder.popStack();
+}
+
+###################################################################################################
+# Components --> Doc Comment Line
+###################################################################################################
+
+rule api_comment_line
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Extract the comment's text.
+  text : String = call Utils.extractCommentLine($node);
+
+  # Create the AST node.
+  call builder.createComponentDocCommentLine(text);
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+
+  # Merge the upper stack with the next lower stack.
+  call builder.popStack();
+}
+
+###################################################################################################
+# Components --> Annotations -> Annotation List
+###################################################################################################
+
+rule annotation_list
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createComponentAnnotationList();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+
+  # Merge the upper stack with the next lower stack.
+  call builder.popStack();
+}
+
+###################################################################################################
+# Components --> Annotations -> Annotation 
+###################################################################################################
+
+rule annotation
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createComponentAnnotation();
 
   # Set the source-location information.
   call Utils.setSourceLocation($node);
@@ -2071,9 +2146,14 @@ rule PS
 # Value --> String Value
 ###################################################################################################
 
-rule string_value
+rule verbatim_string_value
 {
   # Store the string for later use.
-  call Utils.storeStringValue($node);
+  call Utils.storeStringValue($node, true);
 }
 
+rule regular_string_value
+{
+  # Store the string for later use.
+  call Utils.storeStringValue($node, false);
+}

@@ -8,7 +8,6 @@ import autumn.lang.compiler.ast.nodes.*;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IDeclaredType;
-import high.mackenzie.autumn.lang.compiler.typesystem.design.IExpressionType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IField;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IInvokableMember;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IMethod;
@@ -21,8 +20,8 @@ import high.mackenzie.autumn.lang.compiler.utils.Utils;
 import java.util.Iterator;
 import java.util.List;
 import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.FieldInsnNode;
+import org.objectweb.asm.tree.InsnList;
 import org.objectweb.asm.tree.InsnNode;
 import org.objectweb.asm.tree.JumpInsnNode;
 import org.objectweb.asm.tree.LabelNode;
@@ -67,7 +66,7 @@ public class ExpressionCodeGenerator
      * This is the list of instructions being generated.
      * The whole purpose of this ExpressionCodeGenerator is to add instructions to this list.
      */
-    protected final List<AbstractInsnNode> code;
+    protected final InsnList code;
 
     /**
      * Sole Constructor.
@@ -78,7 +77,7 @@ public class ExpressionCodeGenerator
      */
     public ExpressionCodeGenerator(final ModuleCompiler module,
                                    final VariableManipulator vars,
-                                   final List<AbstractInsnNode> code)
+                                   final InsnList code)
     {
         Preconditions.checkNotNull(module);
         Preconditions.checkNotNull(vars);
@@ -158,7 +157,7 @@ public class ExpressionCodeGenerator
             args.get(i).accept(this);
 
             // Generate code to box/unbox the argument, if needed.
-            code.addAll(types.utils.assign(argument, parameter));
+            code.add(types.utils.assign(argument, parameter));
         }
 
         /**
@@ -168,30 +167,6 @@ public class ExpressionCodeGenerator
                                     Utils.internalName(method.getOwner()),
                                     method.getName(),
                                     method.getDescriptor()));
-    }
-
-    /**
-     * This method generates the bytecode necessary to box a value.
-     *
-     * <p>
-     * This method effectively does nothing, if no boxing is required.
-     * </p>
-     *
-     * @param type is the type of the topmost value on the operand-stack.
-     */
-    protected final void autoboxToObject(final IType type)
-    {
-        Preconditions.checkNotNull(type);
-
-        // Generate the code to box the value.
-        // If no boxing is required, then this variable will be assigned null.
-        List<AbstractInsnNode> boxing = types.utils.box(type, types.utils.OBJECT);
-
-        boxing = boxing == null ? Lists.<AbstractInsnNode>newArrayList() : boxing;
-
-        assert boxing != null;
-
-        code.addAll(boxing);
     }
 
     /**
@@ -221,7 +196,7 @@ public class ExpressionCodeGenerator
 
             final IType output = program.typesystem.utils.PRIMITIVE_BOOLEAN;
 
-            code.addAll(program.typesystem.utils.unbox(input, output));
+            code.add(program.typesystem.utils.unbox(input, output));
         }
     }
 
@@ -244,77 +219,77 @@ public class ExpressionCodeGenerator
 
         final IType etype = program.symbols.expressions.get(expression);
 
-        code.addAll(program.typesystem.utils.assign(etype, type));
+        code.add(program.typesystem.utils.assign(etype, type));
     }
 
     @Override
-    public void visit(BooleanDatum object)
+    public void visit(final BooleanDatum object)
     {
         code.add(new LdcInsnNode(object.getValue()));
     }
 
     @Override
-    public void visit(CharDatum object)
+    public void visit(final CharDatum object)
     {
         code.add(new LdcInsnNode(object.getValue().value()));
     }
 
     @Override
-    public void visit(ByteDatum object)
+    public void visit(final ByteDatum object)
     {
         code.add(new LdcInsnNode(object.getValue().value()));
     }
 
     @Override
-    public void visit(ShortDatum object)
+    public void visit(final ShortDatum object)
     {
         code.add(new LdcInsnNode(object.getValue().value()));
     }
 
     @Override
-    public void visit(IntDatum object)
+    public void visit(final IntDatum object)
     {
         code.add(new LdcInsnNode(object.getValue().value()));
     }
 
     @Override
-    public void visit(LongDatum object)
+    public void visit(final LongDatum object)
     {
         code.add(new LdcInsnNode(object.getValue().value()));
     }
 
     @Override
-    public void visit(FloatDatum object)
+    public void visit(final FloatDatum object)
     {
         code.add(new LdcInsnNode(object.getValue().value()));
     }
 
     @Override
-    public void visit(DoubleDatum object)
+    public void visit(final DoubleDatum object)
     {
         code.add(new LdcInsnNode(object.getValue().value()));
     }
 
     @Override
-    public void visit(StringDatum object)
+    public void visit(final StringDatum object)
     {
         code.add(new LdcInsnNode(object.getValue()));
     }
 
     @Override
-    public void visit(NullDatum object)
+    public void visit(final NullDatum object)
     {
         code.add(new InsnNode(Opcodes.ACONST_NULL));
     }
 
     @Override
-    public void visit(VariableDatum object)
+    public void visit(final VariableDatum object)
     {
         vars.load(object.getVariable().getName());
     }
 
     @Override
-    public void visit(ClassDatum object)
+    public void visit(final ClassDatum object)
     {
         final IReturnType type = module.resolveType(object.getType());
 
@@ -322,7 +297,7 @@ public class ExpressionCodeGenerator
     }
 
     @Override
-    public void visit(PrognExpression object)
+    public void visit(final PrognExpression object)
     {
         final Iterator<IExpression> iter = object.getElements().iterator();
 
@@ -346,7 +321,7 @@ public class ExpressionCodeGenerator
     }
 
     @Override
-    public void visit(ListExpression object)
+    public void visit(final ListExpression object)
     {
         final ExpressionCodeGenerator THIS = this;
 
@@ -359,11 +334,11 @@ public class ExpressionCodeGenerator
 
                 element.accept(THIS);
 
-                autoboxToObject(element_type);
+                program.typesystem.utils.autoboxToObject(code(), element_type);
             }
 
             @Override
-            public List code()
+            public InsnList code()
             {
                 return THIS.code;
             }
@@ -374,7 +349,7 @@ public class ExpressionCodeGenerator
     }
 
     @Override
-    public void visit(DispatchExpression object)
+    public void visit(final DispatchExpression object)
     {
         throw new UnsupportedOperationException("Not supported yet.");
     }
@@ -386,7 +361,7 @@ public class ExpressionCodeGenerator
     }
 
     @Override
-    public void visit(CallStaticMethodExpression object)
+    public void visit(final CallStaticMethodExpression object)
     {
         final IMethod method = (IMethod) module.program.symbols.calls.get(object);
 
@@ -394,7 +369,7 @@ public class ExpressionCodeGenerator
     }
 
     @Override
-    public void visit(SetStaticFieldExpression object)
+    public void visit(final SetStaticFieldExpression object)
     {
         final IField field = program.symbols.fields.get(object);
 
@@ -412,7 +387,7 @@ public class ExpressionCodeGenerator
     }
 
     @Override
-    public void visit(GetStaticFieldExpression object)
+    public void visit(final GetStaticFieldExpression object)
     {
         final IField field = program.symbols.fields.get(object);
 
@@ -427,7 +402,7 @@ public class ExpressionCodeGenerator
     }
 
     @Override
-    public void visit(NewExpression object)
+    public void visit(final NewExpression object)
     {
         final IInvokableMember method = program.symbols.calls.get(object);
 
@@ -448,7 +423,7 @@ public class ExpressionCodeGenerator
             arguments.get(i).accept(this);
 
             // Generate code to box/unbox the argument, if needed.
-            code.addAll(types.utils.assign(argument, parameter));
+            code.add(types.utils.assign(argument, parameter));
         }
 
         code.add(new MethodInsnNode(Opcodes.INVOKESPECIAL,
@@ -458,7 +433,7 @@ public class ExpressionCodeGenerator
     }
 
     @Override
-    public void visit(CreateExpression object)
+    public void visit(final CreateExpression object)
     {
         final ClassCompiler creator = program.symbols.creators.get(object);
 
@@ -466,7 +441,7 @@ public class ExpressionCodeGenerator
     }
 
     @Override
-    public void visit(CallMethodExpression object)
+    public void visit(final CallMethodExpression object)
     {
         final IMethod method = (IMethod) program.symbols.calls.get(object);
 
@@ -483,7 +458,7 @@ public class ExpressionCodeGenerator
             arguments.get(i).accept(this);
 
             // Generate code to box/unbox the argument, if needed.
-            code.addAll(types.utils.assign(argument, parameter));
+            code.add(types.utils.assign(argument, parameter));
         }
 
         final int opcode = method.getOwner().isInterfaceType()
@@ -497,7 +472,7 @@ public class ExpressionCodeGenerator
     }
 
     @Override
-    public void visit(SetFieldExpression object)
+    public void visit(final SetFieldExpression object)
     {
         final IField field = program.symbols.fields.get(object);
 
@@ -518,7 +493,7 @@ public class ExpressionCodeGenerator
     }
 
     @Override
-    public void visit(GetFieldExpression object)
+    public void visit(final GetFieldExpression object)
     {
         final IField field = program.symbols.fields.get(object);
 
@@ -536,7 +511,7 @@ public class ExpressionCodeGenerator
     }
 
     @Override
-    public void visit(InstanceOfExpression object)
+    public void visit(final InstanceOfExpression object)
     {
         final IType type = module.resolveType(object.getType());
 
@@ -548,59 +523,7 @@ public class ExpressionCodeGenerator
     }
 
     @Override
-    public void visit(FuncallExpression object)
-    {
-        // Evaluate the functor.
-        object.getFunctor().accept(this);
-
-        // Retrieve the argument-stack.
-        code.add(new MethodInsnNode(Opcodes.INVOKESTATIC,
-                                    "autumn/lang/internals/ArgumentStack",
-                                    "getThreadStack",
-                                    "()Lautumn/lang/internals/ArgumentStack;"));
-
-        // Duplicate the reference to the argument-stack.
-        code.add(new InsnNode(Opcodes.DUP));
-
-        // Ensure that the argument-stack is clear.
-        code.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL,
-                                    "autumn/lang/internals/ArgumentStack",
-                                    "clear",
-                                    "()V"));
-
-        // Push the arguments onto the argument-stack.
-        for (IExpression arg : object.getArguments())
-        {
-            // Duplicate the reference to the argument-stack.
-            code.add(new InsnNode(Opcodes.DUP));
-
-            final IExpressionType type = program.symbols.expressions.get(arg);
-
-            // Evaluate the argument.
-            arg.accept(this);
-
-            // Push the actual-argument onto the argument-stack.
-            Utils.pushArgument(program, code, type);
-        }
-
-        // Duplicate the reference to the argument-stack and insert it under the functor.
-        code.add(new InsnNode(Opcodes.DUP_X1));
-
-        // Perform the functor invocation.
-        code.add(new MethodInsnNode(Opcodes.INVOKEINTERFACE,
-                                    "autumn/lang/Functor",
-                                    "invoke",
-                                    "(Lautumn/lang/internals/ArgumentStack;)V"));
-
-        // Retrieve the result of invoking the functor, as an object.
-        code.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL,
-                                    "autumn/lang/internals/ArgumentStack",
-                                    "popO",
-                                    "()Ljava/lang/Object;"));
-    }
-
-    @Override
-    public void visit(TernaryConditionalExpression object)
+    public void visit(final TernaryConditionalExpression object)
     {
         final LabelNode ELSE = new LabelNode();
         final LabelNode END = new LabelNode();
@@ -619,15 +542,7 @@ public class ExpressionCodeGenerator
     }
 
     @Override
-    public void visit(DelegateExpression object)
-    {
-//        final DelegateCompiler delegate = program.symbols.delegates.get(object);
-//
-//        delegate.load(code);
-    }
-
-    @Override
-    public void visit(LocalsExpression object)
+    public void visit(final LocalsExpression object)
     {
         this.loadLocalsMap(object.getLocation());
     }
@@ -695,7 +610,7 @@ public class ExpressionCodeGenerator
                 code().add(new LdcInsnNode(name));
                 code().add(Utils.ldcClass(type));
                 code().add(Utils.selectLoadVarInsn(type, address));
-                autoboxToObject(type);
+                program.typesystem.utils.autoboxToObject(code(), type);
 
                 // Invoke the constructor.
                 code().add(new MethodInsnNode(Opcodes.INVOKESPECIAL, owner, init, desc));
@@ -704,7 +619,7 @@ public class ExpressionCodeGenerator
             }
 
             @Override
-            public List code()
+            public InsnList code()
             {
                 return code;
             }
@@ -715,8 +630,9 @@ public class ExpressionCodeGenerator
     }
 
     @Override
-    public void visit(AsOperation object)
+    public void visit(final AsOperation object)
     {
+        // The type-checker created an object that describes the conversion to perform.
         final Conversion conversion = program.symbols.conversions.get(object);
 
         if (conversion.cast)
@@ -763,8 +679,9 @@ public class ExpressionCodeGenerator
     }
 
     @Override
-    public void visit(IsOperation object)
+    public void visit(final IsOperation object)
     {
+        // The type-checker created an object that describes the conversion to perform.
         final Conversion conversion = program.symbols.conversions.get(object);
 
         if (conversion.cast)
@@ -789,127 +706,127 @@ public class ExpressionCodeGenerator
     }
 
     @Override
-    public void visit(NegateOperation object)
+    public void visit(final NegateOperation object)
     {
         compileUnaryOperator(object);
     }
 
     @Override
-    public void visit(NotOperation object)
+    public void visit(final NotOperation object)
     {
         compileUnaryOperator(object);
     }
 
     @Override
-    public void visit(DivideOperation object)
+    public void visit(final DivideOperation object)
     {
         compileBinaryOperator(object);
     }
 
     @Override
-    public void visit(ModuloOperation object)
+    public void visit(final ModuloOperation object)
     {
         compileBinaryOperator(object);
     }
 
     @Override
-    public void visit(MultiplyOperation object)
+    public void visit(final MultiplyOperation object)
     {
         compileBinaryOperator(object);
     }
 
     @Override
-    public void visit(AddOperation object)
+    public void visit(final AddOperation object)
     {
         compileBinaryOperator(object);
     }
 
     @Override
-    public void visit(ConcatOperation object)
+    public void visit(final ConcatOperation object)
     {
         compileBinaryOperator(object);
     }
 
     @Override
-    public void visit(SubtractOperation object)
+    public void visit(final SubtractOperation object)
     {
         compileBinaryOperator(object);
     }
 
     @Override
-    public void visit(LessThanOperation object)
+    public void visit(final LessThanOperation object)
     {
         compileBinaryOperator(object);
     }
 
     @Override
-    public void visit(LessThanOrEqualsOperation object)
+    public void visit(final LessThanOrEqualsOperation object)
     {
         compileBinaryOperator(object);
     }
 
     @Override
-    public void visit(GreaterThanOperation object)
+    public void visit(final GreaterThanOperation object)
     {
         compileBinaryOperator(object);
     }
 
     @Override
-    public void visit(GreaterThanOrEqualsOperation object)
+    public void visit(final GreaterThanOrEqualsOperation object)
     {
         compileBinaryOperator(object);
     }
 
     @Override
-    public void visit(EqualsOperation object)
+    public void visit(final EqualsOperation object)
     {
         compileBinaryOperator(object);
     }
 
     @Override
-    public void visit(NotEqualsOperation object)
+    public void visit(final NotEqualsOperation object)
     {
         compileBinaryOperator(object);
     }
 
     @Override
-    public void visit(IdentityEqualsOperation object)
+    public void visit(final IdentityEqualsOperation object)
     {
         compileBinaryOperator(object);
     }
 
     @Override
-    public void visit(IdentityNotEqualsOperation object)
+    public void visit(final IdentityNotEqualsOperation object)
     {
         compileBinaryOperator(object);
     }
 
     @Override
-    public void visit(AndOperation object)
+    public void visit(final AndOperation object)
     {
         compileBinaryOperator(object);
     }
 
     @Override
-    public void visit(OrOperation object)
+    public void visit(final OrOperation object)
     {
         compileBinaryOperator(object);
     }
 
     @Override
-    public void visit(XorOperation object)
+    public void visit(final XorOperation object)
     {
         compileBinaryOperator(object);
     }
 
     @Override
-    public void visit(ImpliesOperation object)
+    public void visit(final ImpliesOperation object)
     {
         compileBinaryOperator(object);
     }
 
     @Override
-    public void visit(ShortCircuitAndOperation object)
+    public void visit(final ShortCircuitAndOperation object)
     {
         // Generated Bytecode:
         //
@@ -940,7 +857,7 @@ public class ExpressionCodeGenerator
     }
 
     @Override
-    public void visit(ShortCircuitOrOperation object)
+    public void visit(final ShortCircuitOrOperation object)
     {
         // Generated Bytecode:
         //
@@ -971,7 +888,7 @@ public class ExpressionCodeGenerator
     }
 
     @Override
-    public void visit(NullCoalescingOperation object)
+    public void visit(final NullCoalescingOperation object)
     {
         // Generated Bytecode:
         //

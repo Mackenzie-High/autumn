@@ -23,6 +23,7 @@ import autumn.lang.compiler.ast.commons.IBinaryOperation;
 import autumn.lang.compiler.ast.commons.IConstruct;
 import autumn.lang.compiler.ast.commons.IConversionOperation;
 import autumn.lang.compiler.ast.commons.IDirective;
+import autumn.lang.compiler.ast.commons.IDocumented;
 import autumn.lang.compiler.ast.commons.IExpression;
 import autumn.lang.compiler.ast.commons.IStatement;
 import autumn.lang.compiler.ast.commons.IUnaryOperation;
@@ -45,73 +46,46 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 
 /**
- * An instance of this class is an AST node that represents an expression that invokes an anonymous function.
+ * An instance of this class is an AST node that represents a single line within a doc-comment.
  * 
  * <p> 
  * <table border="1">
  *     <tr> <td> <b>Property Name</b> </td> <td> <b>Property Description</b> </td> </tr>
- *     <tr> <td> <code>functor</code> </td> <td>This expression produces the anonymous function to invoke.</td> </tr>
- *     <tr> <td> <code>arguments</code> </td> <td>These expressions produce the arguments to pass to the anonymous function.</td> </tr>
+ *     <tr> <td> <code>text</code> </td> <td>This si the actual text of the comment line.</td> </tr>
  *     <tr> <td> <code>location</code> </td> <td>This is the source-location information regarding this construct.</td> </tr>
  * </table>
  * </p>
  * 
- * <p> This file was auto-generated on (Mon Jul 14 10:23:51 EDT 2014).</p>
+ * <p> This file was auto-generated on (Thu Jul 24 16:15:35 EDT 2014).</p>
  */
 @SuppressWarnings("unchecked")
-public final class FuncallExpression extends Object implements IExpression
+public final class DocCommentLine extends Object implements IConstruct
 {
-    private IExpression functor;
-
-    private ConstructList<IExpression> arguments = new ConstructList();
+    private String text;
 
     private SourceLocation location = new SourceLocation();
 
     /**
      * Setter.
      * 
-     * @param value is the new value of property <code>functor</code>.
-     * @return a copy of this object with property <code>functor</code> set to value.
+     * @param value is the new value of property <code>text</code>.
+     * @return a copy of this object with property <code>text</code> set to value.
      */
-    public FuncallExpression setFunctor(final IExpression value)
+    public DocCommentLine setText(final String value)
     {
-        final FuncallExpression result = this.copy();
-        result.functor = value;
+        final DocCommentLine result = this.copy();
+        result.text = value;
         return result;
     }
 
     /**
      * Getter.
      * 
-     * @return the value of property <code>functor</code>.
+     * @return the value of property <code>text</code>.
      */
-    public IExpression getFunctor()
+    public String getText()
     {
-        final IExpression value = this.functor;
-        return value;
-    }
-
-    /**
-     * Setter.
-     * 
-     * @param value is the new value of property <code>arguments</code>.
-     * @return a copy of this object with property <code>arguments</code> set to value.
-     */
-    public FuncallExpression setArguments(final ConstructList<IExpression> value)
-    {
-        final FuncallExpression result = this.copy();
-        result.arguments = value;
-        return result;
-    }
-
-    /**
-     * Getter.
-     * 
-     * @return the value of property <code>arguments</code>.
-     */
-    public ConstructList<IExpression> getArguments()
-    {
-        final ConstructList<IExpression> value = this.arguments;
+        final String value = this.text;
         return value;
     }
 
@@ -121,9 +95,9 @@ public final class FuncallExpression extends Object implements IExpression
      * @param value is the new value of property <code>location</code>.
      * @return a copy of this object with property <code>location</code> set to value.
      */
-    public FuncallExpression setLocation(final SourceLocation value)
+    public DocCommentLine setLocation(final SourceLocation value)
     {
-        final FuncallExpression result = this.copy();
+        final DocCommentLine result = this.copy();
         result.location = value;
         return result;
     }
@@ -142,16 +116,14 @@ public final class FuncallExpression extends Object implements IExpression
     /**
      * This method creates a new instance of this class.
      * 
-     * @param functor is the value for property <code>functor</code>.
-     * @param arguments is the value for property <code>arguments</code>.
+     * @param text is the value for property <code>text</code>.
      * @param location is the value for property <code>location</code>.
      * @return a new instance of this class.
      */
-    public static FuncallExpression create(IExpression functor, ConstructList<IExpression> arguments, SourceLocation location)
+    public static DocCommentLine create(String text, SourceLocation location)
     {
-        FuncallExpression object = new FuncallExpression();
-        object = object.setFunctor(functor);
-        object = object.setArguments(arguments);
+        DocCommentLine object = new DocCommentLine();
+        object = object.setText(text);
         object = object.setLocation(location);
         return object;
     }
@@ -171,11 +143,10 @@ public final class FuncallExpression extends Object implements IExpression
      * 
      * @return a shallow copy of this object.
      */
-    public FuncallExpression copy()
+    public DocCommentLine copy()
     {
-        final FuncallExpression result = new FuncallExpression();
-        result.functor = this.functor;
-        result.arguments = this.arguments;
+        final DocCommentLine result = new DocCommentLine();
+        result.text = this.text;
         result.location = this.location;
         return result;
     }
@@ -193,8 +164,7 @@ public final class FuncallExpression extends Object implements IExpression
     public Map<String, Object> toMap()
     {
         final Map<String, Object> map = new TreeMap<String, Object>();
-        map.put("functor", this.getFunctor());
-        map.put("arguments", this.getArguments());
+        map.put("text", this.getText());
         map.put("location", this.getLocation());
 
         return map;

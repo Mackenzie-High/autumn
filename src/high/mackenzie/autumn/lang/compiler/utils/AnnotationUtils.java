@@ -25,7 +25,7 @@ public final class AnnotationUtils
     /**
      * Sole Constructor.
      *
-     * @param module is essentially the module that contains the annotations manipulated herein.
+     * @param module is essentially the module that is being compiled.
      */
     public AnnotationUtils(final ModuleCompiler module)
     {
@@ -44,13 +44,11 @@ public final class AnnotationUtils
      * @param annotation is the annotation to compile.
      * @return the bytecode representation of the given annotation.
      */
-    public AnnotationNode compileAnnotation(final Annotation annotation)
+    public AnnotationNode compileAnnotation(final IAnnotation annotation)
     {
         Preconditions.checkNotNull(annotation);
 
-        final IAnnotation type = this.typeOf(annotation);
-
-        final String descriptor = type.getAnnotationType().getDescriptor();
+        final String descriptor = annotation.getAnnotationType().getDescriptor();
 
         final AnnotationNode node = new AnnotationNode(descriptor);
 
@@ -69,13 +67,13 @@ public final class AnnotationUtils
      * @param annotations are the annotations to compile.
      * @return an immutable list containing the compiled list of annotations.
      */
-    public List<AnnotationNode> compileAnnotationList(final AnnotationList annotations)
+    public List<AnnotationNode> compileAnnotationList(final Iterable<IAnnotation> annotations)
     {
         Preconditions.checkNotNull(annotations);
 
         final List<AnnotationNode> result = Lists.newLinkedList();
 
-        for (Annotation anno : annotations.getAnnotations())
+        for (IAnnotation anno : annotations)
         {
             result.add(this.compileAnnotation(anno));
         }
@@ -87,7 +85,7 @@ public final class AnnotationUtils
      * This method gets the type representations of the annotations in an annotation-list.
      *
      * <p>
-     * Note: This method does not perform any type-checking.
+     * This method performs type-checking on the annotation-list.
      * </p>
      *
      * @param annotations is the annotation-list itself.
@@ -95,6 +93,8 @@ public final class AnnotationUtils
      */
     public List<IAnnotation> typesOf(final AnnotationList annotations)
     {
+        // TODO: check for duplicate annotations
+
         Preconditions.checkNotNull(annotations);
 
         final List<IAnnotation> result = Lists.newLinkedList();
@@ -111,6 +111,10 @@ public final class AnnotationUtils
 
     /**
      * This method creates the type-system representation of an annotation from its AST node.
+     *
+     * <p>
+     * The method will issue an error-message, if the annotation-type does not exist.
+     * </p>
      *
      * @param annotation is the AST node that represents the annotation.
      * @return the annotation's type-system representation,

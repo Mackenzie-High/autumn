@@ -1,11 +1,6 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package high.mackenzie.autumn.compiler.utils;
 
 import autumn.lang.internals.Conversions;
-import com.sun.xml.internal.ws.org.objectweb.asm.Opcodes;
 import high.mackenzie.autumn.lang.compiler.typesystem.TypeFactory;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IInterfaceType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IInvokableMember;
@@ -16,8 +11,9 @@ import java.util.Collection;
 import java.util.List;
 import static org.junit.Assert.*;
 import org.junit.Test;
+import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
-import org.objectweb.asm.tree.AbstractInsnNode;
+import org.objectweb.asm.tree.InsnList;
 import org.objectweb.asm.tree.MethodInsnNode;
 
 /**
@@ -90,7 +86,7 @@ public class TypeSystemUtilsTest
 
         final TypeSystemUtils utils = new TypeSystemUtils(factory);
 
-        List<AbstractInsnNode> code;
+        InsnList code;
 
         // Case #1: Identity
 
@@ -198,7 +194,7 @@ public class TypeSystemUtilsTest
 
         final TypeSystemUtils utils = new TypeSystemUtils(factory);
 
-        List<AbstractInsnNode> code;
+        InsnList code;
 
         // Case #1: Primitive-Type to Boxed-Type
 
@@ -445,7 +441,7 @@ public class TypeSystemUtilsTest
 
         final TypeSystemUtils utils = new TypeSystemUtils(factory);
 
-        List<AbstractInsnNode> code;
+        InsnList code;
 
         // Case #1: Boxed-Type to Primitive-Type
 

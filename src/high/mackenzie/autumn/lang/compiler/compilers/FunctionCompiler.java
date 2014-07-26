@@ -24,6 +24,7 @@ import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.FieldInsnNode;
 import org.objectweb.asm.tree.FieldNode;
+import org.objectweb.asm.tree.InsnList;
 import org.objectweb.asm.tree.InsnNode;
 import org.objectweb.asm.tree.JumpInsnNode;
 import org.objectweb.asm.tree.LabelNode;
@@ -61,11 +62,6 @@ public final class FunctionCompiler
     public final FunctionDefinition node;
 
     /**
-     * This is the bytecode representation of the function.
-     */
-    public final MethodNode method = new MethodNode();
-
-    /**
      * These are the bytecode declarations of the try-catch blocks in the function.
      */
     public final List<TryCatchBlockNode> trycatches = Lists.newLinkedList();
@@ -73,7 +69,7 @@ public final class FunctionCompiler
     /**
      * These are the bytecode instructions that constitute the body of the function.
      */
-    public final List<AbstractInsnNode> instructions = Lists.newLinkedList();
+    public final InsnList instructions = new InsnList();
 
     /**
      * This is the type-system representation of the function.
@@ -212,14 +208,16 @@ public final class FunctionCompiler
     @Override
     public void performCodeGeneration()
     {
+        // Pass
+    }
+
+    public MethodNode build()
+    {
         // TODO: This should be done in the type initiailiztion phase.
         final int sync = yield_field == null ? 0 : Opcodes.ACC_SYNCHRONIZED;
 
-        method.visibleAnnotations = module.anno_utils.compileAnnotationList(node.getAnnotations());
-        method.access = type.getModifiers() + sync;
-        method.name = type.getName();
-        method.desc = type.getDescriptor();
-        method.exceptions = Lists.newArrayList("java/lang/Throwable");
+        final MethodNode method = Utils.bytecodeOf(module, type);
+
         method.instructions.clear();
         {
             final StatementCodeGenerator codegen = new StatementCodeGenerator(this);
@@ -232,7 +230,7 @@ public final class FunctionCompiler
 
             node.getBody().accept(codegen);
 
-            for (AbstractInsnNode x : instructions)
+            for (AbstractInsnNode x : instructions.toArray())
             {
                 method.instructions.add(x);
             }
@@ -242,9 +240,11 @@ public final class FunctionCompiler
 //        method.instructions.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL, "java/io/PrintStream", "println", "(Ljava/lang/String;)V"));
 //        method.instructions.add(new InsnNode(Opcodes.RETURN));
 
-        addDefaultMethodTermination();
+        addDefaultMethodTermination(method);
 
         method.tryCatchBlocks = ImmutableList.copyOf(trycatches);
+
+        return method;
     }
 
     /**
@@ -397,8 +397,10 @@ public final class FunctionCompiler
      * Per the specification, a function will simply return, if the return-type is void.
      * On the other hand, the function will raise an exception, if the return-type is non-void.
      * </p>
+     *
+     * @param is the bytecode representation of the function.
      */
-    private void addDefaultMethodTermination()
+    private void addDefaultMethodTermination(final MethodNode method)
     {
         if (isReturnTypeVoid())
         {

@@ -23,6 +23,7 @@ import autumn.lang.compiler.ast.commons.IBinaryOperation;
 import autumn.lang.compiler.ast.commons.IConstruct;
 import autumn.lang.compiler.ast.commons.IConversionOperation;
 import autumn.lang.compiler.ast.commons.IDirective;
+import autumn.lang.compiler.ast.commons.IDocumented;
 import autumn.lang.compiler.ast.commons.IExpression;
 import autumn.lang.compiler.ast.commons.IStatement;
 import autumn.lang.compiler.ast.commons.IUnaryOperation;
@@ -45,11 +46,12 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 
 /**
- * An instance of this class is an AST node that represents the definition of an enumeration.
+ * An instance of this class is an AST node that represents the definition of an enum-type.
  * 
  * <p> 
  * <table border="1">
  *     <tr> <td> <b>Property Name</b> </td> <td> <b>Property Description</b> </td> </tr>
+ *     <tr> <td> <code>comment</code> </td> <td>This is the doc-comment applied directly to the definition.</td> </tr>
  *     <tr> <td> <code>annotations</code> </td> <td>These are the annotations applied directly to the definition.</td> </tr>
  *     <tr> <td> <code>name</code> </td> <td>This is the simple name of the new type.</td> </tr>
  *     <tr> <td> <code>constants</code> </td> <td>These are the constants in the enum.</td> </tr>
@@ -57,18 +59,44 @@ import java.util.TreeSet;
  * </table>
  * </p>
  * 
- * <p> This file was auto-generated on (Mon Jul 14 10:23:51 EDT 2014).</p>
+ * <p> This file was auto-generated on (Thu Jul 24 16:15:35 EDT 2014).</p>
  */
 @SuppressWarnings("unchecked")
-public final class EnumDefinition extends Object implements IAnnotated
+public final class EnumDefinition extends Object implements IAnnotated, IDocumented
 {
-    private AnnotationList annotations;
+    private DocComment comment = new DocComment();
+
+    private AnnotationList annotations = new AnnotationList();
 
     private Name name;
 
     private ConstructList<EnumConstant> constants = new ConstructList();
 
     private SourceLocation location = new SourceLocation();
+
+    /**
+     * Setter.
+     * 
+     * @param value is the new value of property <code>comment</code>.
+     * @return a copy of this object with property <code>comment</code> set to value.
+     */
+    public EnumDefinition setComment(final DocComment value)
+    {
+        final EnumDefinition result = this.copy();
+        result.comment = value;
+        return result;
+    }
+
+    /**
+     * Getter.
+     * 
+     * @return the value of property <code>comment</code>.
+     */
+    public DocComment getComment()
+    {
+        final DocComment value = this.comment;
+        return value;
+    }
 
     /**
      * Setter.
@@ -169,15 +197,17 @@ public final class EnumDefinition extends Object implements IAnnotated
     /**
      * This method creates a new instance of this class.
      * 
+     * @param comment is the value for property <code>comment</code>.
      * @param annotations is the value for property <code>annotations</code>.
      * @param name is the value for property <code>name</code>.
      * @param constants is the value for property <code>constants</code>.
      * @param location is the value for property <code>location</code>.
      * @return a new instance of this class.
      */
-    public static EnumDefinition create(AnnotationList annotations, Name name, ConstructList<EnumConstant> constants, SourceLocation location)
+    public static EnumDefinition create(DocComment comment, AnnotationList annotations, Name name, ConstructList<EnumConstant> constants, SourceLocation location)
     {
         EnumDefinition object = new EnumDefinition();
+        object = object.setComment(comment);
         object = object.setAnnotations(annotations);
         object = object.setName(name);
         object = object.setConstants(constants);
@@ -203,6 +233,7 @@ public final class EnumDefinition extends Object implements IAnnotated
     public EnumDefinition copy()
     {
         final EnumDefinition result = new EnumDefinition();
+        result.comment = this.comment;
         result.annotations = this.annotations;
         result.name = this.name;
         result.constants = this.constants;
@@ -223,6 +254,7 @@ public final class EnumDefinition extends Object implements IAnnotated
     public Map<String, Object> toMap()
     {
         final Map<String, Object> map = new TreeMap<String, Object>();
+        map.put("comment", this.getComment());
         map.put("annotations", this.getAnnotations());
         map.put("name", this.getName());
         map.put("constants", this.getConstants());

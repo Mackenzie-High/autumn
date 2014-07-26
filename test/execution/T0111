@@ -1,0 +1,15 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    val i = 0;
+
+    when (true) then i = 2;
+
+    assert i == 2;
+
+    when (false) then i = 3;
+
+    assert i == 2;
+}

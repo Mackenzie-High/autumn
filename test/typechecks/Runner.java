@@ -64,6 +64,12 @@ public final class Runner
         test("T0029", EXPECTED_CONDITION);
         test("T0030", EXPECTED_CONDITION);
         test("T0031", EXPECTED_CONDITION);
+        test("T0032", EXPECTED_REFERENCE_TYPE);
+        test("T0033", EXPECTED_REFERENCE_TYPE);
+        test("T0034", IMPOSSIBLE_CONVERSION);
+        test("T0035", IMPOSSIBLE_CONVERSION);
+        test("T0036", VALUE_REQUIRED);
+        test("T0037", EXPECTED_CONDITION, NO_SUCH_VARIABLE);
 
         System.out.println("Number of Failed Tests: " + failed_count);
     }

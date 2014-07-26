@@ -1,4 +1,4 @@
-package autumn.lang.util;
+package autumn.util.proto;
 
 import autumn.lang.Prototype;
 import com.google.common.base.Preconditions;

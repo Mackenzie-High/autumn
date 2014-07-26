@@ -1,6 +1,7 @@
 package autumn.lang.internals;
 
 import com.google.common.base.Objects;
+import high.mackenzie.autumn.resources.Finished;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
@@ -11,9 +12,10 @@ import java.math.BigInteger;
  * <b>Note:</b> Invocations of these methods should be optimized out by Autumn compilers.
  * </p>
  *
- * @author mackenzie
+ * @author Mackenzie High
  */
-public class Operators
+@Finished("2014/07/26")
+public final class Operators
 {
     /**
      * This method prevents null pointer exceptions.

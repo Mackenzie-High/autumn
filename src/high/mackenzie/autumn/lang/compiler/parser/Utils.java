@@ -55,9 +55,17 @@ public final class Utils
      */
     private static String last_string;
 
-    public static void storeStringValue(final ITreeNode node)
+    /**
+     * Whenever a string-literal is encountered, this field will be set.
+     */
+    private static boolean verbatim;
+
+    public static void storeStringValue(final ITreeNode node,
+                                        final boolean verbatim)
     {
-        final String literal = node.text().trim();
+        Utils.verbatim = verbatim;
+
+        String literal = TreeNode.find(node, "STRING_LITERAL").text().trim();
 
         if (literal.startsWith("'''"))
         {
@@ -67,6 +75,18 @@ public final class Utils
         {
             last_string = literal.substring(1, literal.length() - 1);
         }
+
+        if (verbatim)
+        {
+            return;
+        }
+
+        // TODO: escape sequences
+    }
+
+    public static boolean getVerbatim()
+    {
+        return verbatim;
     }
 
     public static String getString()
@@ -159,6 +179,11 @@ public final class Utils
     public static DoubleLiteral extractDoubleValue(final ITreeNode node)
     {
         return new DoubleLiteral(removeWS(node));
+    }
+
+    public static String extractCommentLine(final ITreeNode node)
+    {
+        return TreeNode.find(node, "api_comment_text").text().trim();
     }
 
     public static String removeWS(final ITreeNode node)

@@ -3,6 +3,7 @@ package autumn.lang.compiler;
 import autumn.lang.compiler.ast.nodes.Module;
 import autumn.lang.compiler.errors.BasicErrorReporter;
 import autumn.lang.compiler.errors.IErrorReporter;
+import com.google.common.io.Files;
 import com.google.common.io.Resources;
 import java.io.File;
 import java.io.IOException;
@@ -57,6 +58,16 @@ public final class AutumnParserTest
         printer.print(module);
 
         final String results = pretty.toString().trim();
+
+        try
+        {
+            Files.write(results, new File("/home/mackenzie/test/results"), Charset.defaultCharset());
+            Files.write(output, new File("/home/mackenzie/test/output"), Charset.defaultCharset());
+        }
+        catch (Exception ex)
+        {
+        }
+
 
         assertEquals(output, results);
 

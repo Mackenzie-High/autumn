@@ -1,13 +1,15 @@
 package autumn.lang.internals;
 
 import autumn.lang.Delegate;
-import autumn.lang.F;
+import autumn.util.F;
 import autumn.lang.Functor;
 import autumn.lang.LocalsMap;
 import autumn.lang.Module;
 import autumn.lang.Prototype;
 import com.google.common.base.Preconditions;
-import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -63,7 +65,11 @@ public final class Helpers
     {
         Preconditions.checkNotNull(iterable, "An iterable data-structure was expected.");
 
-        return ImmutableList.copyOf(iterable);
+        final ArrayList<T> list = Lists.newArrayList(iterable);
+
+        list.trimToSize();
+
+        return Collections.unmodifiableList(list);
     }
 
     /**
@@ -149,5 +155,20 @@ public final class Helpers
         }
 
         throw new IllegalStateException(); // TODO: is this right?
+    }
+
+    /**
+     * This method throws an index-out-of-bounds-exception when an index is out of bounds.
+     *
+     * @param index is the index that may be out of bounds.
+     * @param size is the maximum allowed index plus one.
+     */
+    public static void throwIndexOutOfBoundsException(final int index,
+                                                      final int size)
+    {
+        if (index < 0 || index >= size)
+        {
+            throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
+        }
     }
 }

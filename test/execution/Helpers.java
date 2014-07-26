@@ -27,7 +27,7 @@ public final class Helpers
         return new AbstractFunctor()
         {
             @Override
-            public void invoke(ArgumentStack stack)
+            public void apply(ArgumentStack stack)
                     throws Throwable
             {
                 Preconditions.checkState(stack.size() == 1);

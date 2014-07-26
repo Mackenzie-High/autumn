@@ -7,7 +7,7 @@ import high.mackenzie.snowflake.ITreeNodeVisitor;
 /**
  * This class was auto-generated using the Snowflake parser-generator.
  *
- * <p>Generated On: Mon Jul 14 10:23:35 EDT 2014</p>
+ * <p>Generated On: Thu Jul 24 14:30:08 EDT 2014</p>
  */
 public abstract class AbstractVisitor implements ITreeNodeVisitor
 {
@@ -28,12 +28,11 @@ public abstract class AbstractVisitor implements ITreeNodeVisitor
         else if("name_of_anonymous_module".equals(name)) { visit_name_of_anonymous_module(node); }
         else if("name_of_named_module".equals(name)) { visit_name_of_named_module(node); }
         else if("import_directive".equals(name)) { visit_import_directive(node); }
-        else if("annotation_list".equals(name)) { visit_annotation_list(node); }
-        else if("annotation".equals(name)) { visit_annotation(node); }
-        else if("annotation_type".equals(name)) { visit_annotation_type(node); }
         else if("definition".equals(name)) { visit_definition(node); }
         else if("annotation_definition".equals(name)) { visit_annotation_definition(node); }
         else if("exception_definition".equals(name)) { visit_exception_definition(node); }
+        else if("tuple_definition".equals(name)) { visit_tuple_definition(node); }
+        else if("functor_definition".equals(name)) { visit_functor_definition(node); }
         else if("design_definition".equals(name)) { visit_design_definition(node); }
         else if("design_extends_opt".equals(name)) { visit_design_extends_opt(node); }
         else if("design_extends".equals(name)) { visit_design_extends(node); }
@@ -103,6 +102,8 @@ public abstract class AbstractVisitor implements ITreeNodeVisitor
         else if("var_statement".equals(name)) { visit_var_statement(node); }
         else if("val_statement".equals(name)) { visit_val_statement(node); }
         else if("let_statement".equals(name)) { visit_let_statement(node); }
+        else if("lambda_statement".equals(name)) { visit_lambda_statement(node); }
+        else if("delegate_statement".equals(name)) { visit_delegate_statement(node); }
         else if("setter_statement".equals(name)) { visit_setter_statement(node); }
         else if("getter_statement".equals(name)) { visit_getter_statement(node); }
         else if("method_statement".equals(name)) { visit_method_statement(node); }
@@ -183,8 +184,6 @@ public abstract class AbstractVisitor implements ITreeNodeVisitor
         else if("class_datum".equals(name)) { visit_class_datum(node); }
         else if("null_datum".equals(name)) { visit_null_datum(node); }
         else if("variable_datum".equals(name)) { visit_variable_datum(node); }
-        else if("funcall_expression".equals(name)) { visit_funcall_expression(node); }
-        else if("delegate_expression".equals(name)) { visit_delegate_expression(node); }
         else if("locals_expression".equals(name)) { visit_locals_expression(node); }
         else if("ternary_conditional_expression".equals(name)) { visit_ternary_conditional_expression(node); }
         else if("list_expression".equals(name)) { visit_list_expression(node); }
@@ -199,6 +198,12 @@ public abstract class AbstractVisitor implements ITreeNodeVisitor
         else if("set_static_expression".equals(name)) { visit_set_static_expression(node); }
         else if("instanceof_expression".equals(name)) { visit_instanceof_expression(node); }
         else if("create_expression".equals(name)) { visit_create_expression(node); }
+        else if("api_comment".equals(name)) { visit_api_comment(node); }
+        else if("api_comment_line".equals(name)) { visit_api_comment_line(node); }
+        else if("api_comment_text".equals(name)) { visit_api_comment_text(node); }
+        else if("annotation_list".equals(name)) { visit_annotation_list(node); }
+        else if("annotation".equals(name)) { visit_annotation(node); }
+        else if("annotation_type".equals(name)) { visit_annotation_type(node); }
         else if("filepath".equals(name)) { visit_filepath(node); }
         else if("namespace".equals(name)) { visit_namespace(node); }
         else if("namespace_explicit".equals(name)) { visit_namespace_explicit(node); }
@@ -242,6 +247,8 @@ public abstract class AbstractVisitor implements ITreeNodeVisitor
         else if("float_value".equals(name)) { visit_float_value(node); }
         else if("double_value".equals(name)) { visit_double_value(node); }
         else if("string_value".equals(name)) { visit_string_value(node); }
+        else if("verbatim_string_value".equals(name)) { visit_verbatim_string_value(node); }
+        else if("regular_string_value".equals(name)) { visit_regular_string_value(node); }
         else if("class_value".equals(name)) { visit_class_value(node); }
         else if("enum_value".equals(name)) { visit_enum_value(node); }
         else if("SEMICOLON".equals(name)) { visit_SEMICOLON(node); }
@@ -571,6 +578,36 @@ public abstract class AbstractVisitor implements ITreeNodeVisitor
     }
 
     /**
+     * This method visits a parse-tree node created by rule "api_comment".
+     */
+    protected void visit_api_comment(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+        visitUnknown(node); // Default Behavior
+    }
+
+    /**
+     * This method visits a parse-tree node created by rule "api_comment_line".
+     */
+    protected void visit_api_comment_line(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+        visitUnknown(node); // Default Behavior
+    }
+
+    /**
+     * This method visits a parse-tree node created by rule "api_comment_text".
+     */
+    protected void visit_api_comment_text(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+        visitUnknown(node); // Default Behavior
+    }
+
+    /**
      * This method visits a parse-tree node created by rule "argument".
      */
     protected void visit_argument(ITreeNode node)
@@ -871,9 +908,9 @@ public abstract class AbstractVisitor implements ITreeNodeVisitor
     }
 
     /**
-     * This method visits a parse-tree node created by rule "delegate_expression".
+     * This method visits a parse-tree node created by rule "delegate_statement".
      */
-    protected void visit_delegate_expression(ITreeNode node)
+    protected void visit_delegate_statement(ITreeNode node)
     {
         // You should *not* place your code right here. 
         // Instead, you should override this method via a subclass.
@@ -1371,9 +1408,9 @@ public abstract class AbstractVisitor implements ITreeNodeVisitor
     }
 
     /**
-     * This method visits a parse-tree node created by rule "funcall_expression".
+     * This method visits a parse-tree node created by rule "function_definition".
      */
-    protected void visit_funcall_expression(ITreeNode node)
+    protected void visit_function_definition(ITreeNode node)
     {
         // You should *not* place your code right here. 
         // Instead, you should override this method via a subclass.
@@ -1381,9 +1418,9 @@ public abstract class AbstractVisitor implements ITreeNodeVisitor
     }
 
     /**
-     * This method visits a parse-tree node created by rule "function_definition".
+     * This method visits a parse-tree node created by rule "functor_definition".
      */
-    protected void visit_function_definition(ITreeNode node)
+    protected void visit_functor_definition(ITreeNode node)
     {
         // You should *not* place your code right here. 
         // Instead, you should override this method via a subclass.
@@ -1584,6 +1621,16 @@ public abstract class AbstractVisitor implements ITreeNodeVisitor
      * This method visits a parse-tree node created by rule "label".
      */
     protected void visit_label(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+        visitUnknown(node); // Default Behavior
+    }
+
+    /**
+     * This method visits a parse-tree node created by rule "lambda_statement".
+     */
+    protected void visit_lambda_statement(ITreeNode node)
     {
         // You should *not* place your code right here. 
         // Instead, you should override this method via a subclass.
@@ -2301,6 +2348,16 @@ public abstract class AbstractVisitor implements ITreeNodeVisitor
     }
 
     /**
+     * This method visits a parse-tree node created by rule "regular_string_value".
+     */
+    protected void visit_regular_string_value(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+        visitUnknown(node); // Default Behavior
+    }
+
+    /**
      * This method visits a parse-tree node created by rule "return_type".
      */
     protected void visit_return_type(ITreeNode node)
@@ -2601,6 +2658,16 @@ public abstract class AbstractVisitor implements ITreeNodeVisitor
     }
 
     /**
+     * This method visits a parse-tree node created by rule "tuple_definition".
+     */
+    protected void visit_tuple_definition(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+        visitUnknown(node); // Default Behavior
+    }
+
+    /**
      * This method visits a parse-tree node created by rule "type".
      */
     protected void visit_type(ITreeNode node)
@@ -2694,6 +2761,16 @@ public abstract class AbstractVisitor implements ITreeNodeVisitor
      * This method visits a parse-tree node created by rule "variable_datum".
      */
     protected void visit_variable_datum(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+        visitUnknown(node); // Default Behavior
+    }
+
+    /**
+     * This method visits a parse-tree node created by rule "verbatim_string_value".
+     */
+    protected void visit_verbatim_string_value(ITreeNode node)
     {
         // You should *not* place your code right here. 
         // Instead, you should override this method via a subclass.

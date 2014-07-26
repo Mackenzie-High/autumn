@@ -1,4 +1,4 @@
-package autumn.lang.util;
+package autumn.util.test;
 
 /**
  *

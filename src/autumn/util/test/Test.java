@@ -1,4 +1,4 @@
-package autumn.lang.annotations;
+package autumn.util.test;
 
 import high.mackenzie.autumn.resources.Finished;
 import java.lang.annotation.Retention;

@@ -22,7 +22,7 @@ public interface IAnnotated
     /**
      * This method sets the list of annotations applied to the construct.
      *
-     * @return a modified version of this object.
+     * @return a modified copy of this object.
      */
-    public IConstruct setAnnotations(AnnotationList annotations);
+    public IAnnotated setAnnotations(AnnotationList annotations);
 }

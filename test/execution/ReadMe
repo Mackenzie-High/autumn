@@ -21,8 +21,8 @@ Test Index
 . . . moduleDesignDefinitions()
 . . . moduleInvokeFunction(int, ArgumentStack)
 . . Delegates
-. . . T0078 = Metadata
-. . . T0079 = Invocation
+. . . T0078 = Metadata    // TODO: fix
+. . . T0079 = Invocation  // TODO: fix
 . Annotation Definitions
 . . Reflective Testing of the Annotation's Class
 . Exception Definitions
@@ -43,18 +43,21 @@ Test Index
 . . Parameter Lists
 . . T0063 = Return Types                   # TODO: Add array return-types to the test.
 . Statements
+. . Sequence
+. . . T0110 = All Cases
 . . If-Elif-Else
 . . . T0001 = Primitive Boolean Condition
 . . . T0002 = Boxed Boolean Condition
-. . . T0003 = N = Operand-Stack Leakage
 . . When
-. . .  = Primitive Boolean Condition
-. . .  = Boxed Boolean Condition
-. . .  = Operand-Stack Leakage
+. . . T0111 = Primitive Boolean Condition
+. . . T0112 = Boxed Boolean Condition
+. . Goto
+. . . T0113 = Basic Functionality (also used to test marker)
+. . Marker
+. . . T0113 = Basic Functionality (also used to test goto)
 . . While
 . . . T0007 = Primitive Boolean Condition
-. . . T0008 = N = Boxed Boolean Condition
-. . . T0009 = N = Operand-Stack Leakage
+. . . T0008 = Boxed Boolean Condition
 . . . T0010 = Iterate Zero Times
 . . . T0011 = Iterate One Time
 . . . T0012 = Iterate Multiple Times
@@ -132,7 +135,6 @@ Test Index
 . . . No Message
 . . . With Message
 . . Nop
-. . Sequence
 . . Expression
 . . Setter
 . . Getter
@@ -158,9 +160,6 @@ Test Index
 . . . T0070 = Auto-Boxing
 . . . T0071 = Auto-Unboxing
 . Expressions
-. . Funcall
-. . . T0052 = Single Argument
-. . . T0059 = Multiple Arguments
 . . Delegate
 . . . Checked Exceptions
 . . Dispatch

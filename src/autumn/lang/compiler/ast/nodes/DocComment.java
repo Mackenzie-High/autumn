@@ -23,6 +23,7 @@ import autumn.lang.compiler.ast.commons.IBinaryOperation;
 import autumn.lang.compiler.ast.commons.IConstruct;
 import autumn.lang.compiler.ast.commons.IConversionOperation;
 import autumn.lang.compiler.ast.commons.IDirective;
+import autumn.lang.compiler.ast.commons.IDocumented;
 import autumn.lang.compiler.ast.commons.IExpression;
 import autumn.lang.compiler.ast.commons.IStatement;
 import autumn.lang.compiler.ast.commons.IUnaryOperation;
@@ -45,73 +46,46 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 
 /**
- * An instance of this class is an AST node that represents the creation of a delegate.
+ * An instance of this class is an AST node that represents a doc-comment.
  * 
  * <p> 
  * <table border="1">
  *     <tr> <td> <b>Property Name</b> </td> <td> <b>Property Description</b> </td> </tr>
- *     <tr> <td> <code>owner</code> </td> <td>This is the type that owns the static method to invoke.</td> </tr>
- *     <tr> <td> <code>method</code> </td> <td>This is the name of the static method to invoke.</td> </tr>
+ *     <tr> <td> <code>lines</code> </td> <td>These are the individual lines that make up the comment.</td> </tr>
  *     <tr> <td> <code>location</code> </td> <td>This is the source-location information regarding this construct.</td> </tr>
  * </table>
  * </p>
  * 
- * <p> This file was auto-generated on (Mon Jul 14 10:23:51 EDT 2014).</p>
+ * <p> This file was auto-generated on (Thu Jul 24 16:15:35 EDT 2014).</p>
  */
 @SuppressWarnings("unchecked")
-public final class DelegateExpression extends Object implements IExpression
+public final class DocComment extends Object implements IConstruct
 {
-    private TypeSpecifier owner = null;
-
-    private Name method = null;
+    private ConstructList<DocCommentLine> lines = new ConstructList();
 
     private SourceLocation location = new SourceLocation();
 
     /**
      * Setter.
      * 
-     * @param value is the new value of property <code>owner</code>.
-     * @return a copy of this object with property <code>owner</code> set to value.
+     * @param value is the new value of property <code>lines</code>.
+     * @return a copy of this object with property <code>lines</code> set to value.
      */
-    public DelegateExpression setOwner(final TypeSpecifier value)
+    public DocComment setLines(final ConstructList<DocCommentLine> value)
     {
-        final DelegateExpression result = this.copy();
-        result.owner = value;
+        final DocComment result = this.copy();
+        result.lines = value;
         return result;
     }
 
     /**
      * Getter.
      * 
-     * @return the value of property <code>owner</code>.
+     * @return the value of property <code>lines</code>.
      */
-    public TypeSpecifier getOwner()
+    public ConstructList<DocCommentLine> getLines()
     {
-        final TypeSpecifier value = this.owner;
-        return value;
-    }
-
-    /**
-     * Setter.
-     * 
-     * @param value is the new value of property <code>method</code>.
-     * @return a copy of this object with property <code>method</code> set to value.
-     */
-    public DelegateExpression setMethod(final Name value)
-    {
-        final DelegateExpression result = this.copy();
-        result.method = value;
-        return result;
-    }
-
-    /**
-     * Getter.
-     * 
-     * @return the value of property <code>method</code>.
-     */
-    public Name getMethod()
-    {
-        final Name value = this.method;
+        final ConstructList<DocCommentLine> value = this.lines;
         return value;
     }
 
@@ -121,9 +95,9 @@ public final class DelegateExpression extends Object implements IExpression
      * @param value is the new value of property <code>location</code>.
      * @return a copy of this object with property <code>location</code> set to value.
      */
-    public DelegateExpression setLocation(final SourceLocation value)
+    public DocComment setLocation(final SourceLocation value)
     {
-        final DelegateExpression result = this.copy();
+        final DocComment result = this.copy();
         result.location = value;
         return result;
     }
@@ -142,16 +116,14 @@ public final class DelegateExpression extends Object implements IExpression
     /**
      * This method creates a new instance of this class.
      * 
-     * @param owner is the value for property <code>owner</code>.
-     * @param method is the value for property <code>method</code>.
+     * @param lines is the value for property <code>lines</code>.
      * @param location is the value for property <code>location</code>.
      * @return a new instance of this class.
      */
-    public static DelegateExpression create(TypeSpecifier owner, Name method, SourceLocation location)
+    public static DocComment create(ConstructList<DocCommentLine> lines, SourceLocation location)
     {
-        DelegateExpression object = new DelegateExpression();
-        object = object.setOwner(owner);
-        object = object.setMethod(method);
+        DocComment object = new DocComment();
+        object = object.setLines(lines);
         object = object.setLocation(location);
         return object;
     }
@@ -171,11 +143,10 @@ public final class DelegateExpression extends Object implements IExpression
      * 
      * @return a shallow copy of this object.
      */
-    public DelegateExpression copy()
+    public DocComment copy()
     {
-        final DelegateExpression result = new DelegateExpression();
-        result.owner = this.owner;
-        result.method = this.method;
+        final DocComment result = new DocComment();
+        result.lines = this.lines;
         result.location = this.location;
         return result;
     }
@@ -193,8 +164,7 @@ public final class DelegateExpression extends Object implements IExpression
     public Map<String, Object> toMap()
     {
         final Map<String, Object> map = new TreeMap<String, Object>();
-        map.put("owner", this.getOwner());
-        map.put("method", this.getMethod());
+        map.put("lines", this.getLines());
         map.put("location", this.getLocation());
 
         return map;

@@ -23,6 +23,8 @@ public final class CustomConstructor
     public CustomConstructor(final ITypeFactory factory)
     {
         super(factory);
+
+        super.setName("<init>");
     }
 
     /**
