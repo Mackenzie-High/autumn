@@ -5,7 +5,6 @@ import autumn.lang.internals.ArgumentStack;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
-import java.io.InputStream;
 import java.io.PrintStream;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -37,6 +36,17 @@ public final class F
         // Pass, because this is merely a static utility class.
     }
 
+    /**
+     * This method applies a functor to a list of arguments.
+     *
+     * @param functor is the functor itself.
+     * @param arguments are the arguments to apply the functor to.
+     * @return the result of applying the functor to the arguments.
+     * @throws NullPointerException if functor is null.
+     * @throws NullPointerException if arguments is null.
+     * @throws ClassCastException if any of the arguments cannot be accepted due to their type.
+     * @throws Throwable in order to propagate any exceptions thrown by the functor.
+     */
     public static Object apply(final Functor functor,
                                final Iterable<?> arguments)
             throws Throwable
@@ -56,7 +66,7 @@ public final class F
         functor.apply(stack);
 
         // Retrieve the return-value of the functor.
-        final Object result = stack.popO();
+        final Object result = stack.isEmpty() ? null : stack.popO();
 
         // Clear the stack in order to prevent unexpected bugs.
         // The stack should already be clear.
@@ -146,16 +156,29 @@ public final class F
     {
     }
 
+    /**
+     * This method prints a value to standard-output.
+     *
+     * @param is the value to print.
+     */
     public static void print(final Object value)
     {
         System.out.print(value);
     }
 
+    /**
+     * This method prints a value followed by a newline to standard-output.
+     *
+     * @param is the value to print.
+     */
     public static void println(final Object value)
     {
         System.out.println(value);
     }
 
+    /**
+     * This method prints a newline to standard-output.
+     */
     public static void println()
     {
         System.out.println();
@@ -180,28 +203,48 @@ public final class F
         System.out.printf(format, Lists.newLinkedList(args).toArray());
     }
 
+    /**
+     * This method reads a line of text from standard-input.
+     *
+     * @return the line of text.
+     */
     public static String readln()
     {
-        return readln(System.in);
+        final Scanner scanner = new Scanner(System.in);
+
+        final String input = scanner.nextLine();
+
+        return input;
     }
 
+    /**
+     * This method reads an integer from standard-input.
+     *
+     * <p>
+     * An entire line of text is read and then converted to an integer.
+     * </p>
+     *
+     * @return the integer that was read.
+     * @throws NumberFormatException if the line of text cannot be converted to an integer.
+     */
     public static int readInt()
     {
         return Integer.parseInt(readln());
     }
 
+    /**
+     * This method reads a double from standard-input.
+     *
+     * <p>
+     * An entire line of text is read and then converted to a double.
+     * </p>
+     *
+     * @return the double that was read.
+     * @throws NumberFormatException if the line of text cannot be converted to a double.
+     */
     public static double readDouble()
     {
         return Double.parseDouble(readln());
-    }
-
-    public static String readln(final InputStream stream)
-    {
-        final Scanner scanner = new Scanner(stream);
-
-        final String input = scanner.nextLine();
-
-        return input;
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -695,83 +738,228 @@ public final class F
         return string.length();
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    //                                 Get
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////////////
+    /**
+     * This method gets an element from an array.
+     *
+     * @param array is the array that contains the element.
+     * @param index is the index of the element.
+     * @return the element at the specified index in the array.
+     * @throws NullPointerException if the array is null.
+     * @throws IndexOutOfBoundsException if the index is out-of-bounds.
+     */
     public static boolean get(final boolean[] array,
                               final int index)
     {
         return array[index];
     }
 
+    /**
+     * This method gets an element from an array.
+     *
+     * @param array is the array that contains the element.
+     * @param index is the index of the element.
+     * @return the element at the specified index in the array.
+     * @throws NullPointerException if the array is null.
+     * @throws IndexOutOfBoundsException if the index is out-of-bounds.
+     */
     public static char get(final char[] array,
                            final int index)
     {
         return array[index];
     }
 
+    /**
+     * This method gets an element from an array.
+     *
+     * @param array is the array that contains the element.
+     * @param index is the index of the element.
+     * @return the element at the specified index in the array.
+     * @throws NullPointerException if the array is null.
+     * @throws IndexOutOfBoundsException if the index is out-of-bounds.
+     */
     public static byte get(final byte[] array,
                            final int index)
     {
         return array[index];
     }
 
+    /**
+     * This method gets an element from an array.
+     *
+     * @param array is the array that contains the element.
+     * @param index is the index of the element.
+     * @return the element at the specified index in the array.
+     * @throws NullPointerException if the array is null.
+     * @throws IndexOutOfBoundsException if the index is out-of-bounds.
+     */
     public static short get(final short[] array,
                             final int index)
     {
         return array[index];
     }
 
+    /**
+     * This method gets an element from an array.
+     *
+     * @param array is the array that contains the element.
+     * @param index is the index of the element.
+     * @return the element at the specified index in the array.
+     * @throws NullPointerException if the array is null.
+     * @throws IndexOutOfBoundsException if the index is out-of-bounds.
+     */
     public static int get(final int[] array,
                           final int index)
     {
         return array[index];
     }
 
+    /**
+     * This method gets an element from an array.
+     *
+     * @param array is the array that contains the element.
+     * @param index is the index of the element.
+     * @return the element at the specified index in the array.
+     * @throws NullPointerException if the array is null.
+     * @throws IndexOutOfBoundsException if the index is out-of-bounds.
+     */
     public static long get(final long[] array,
                            final int index)
     {
         return array[index];
     }
 
+    /**
+     * This method gets an element from an array.
+     *
+     * @param array is the array that contains the element.
+     * @param index is the index of the element.
+     * @return the element at the specified index in the array.
+     * @throws NullPointerException if the array is null.
+     * @throws IndexOutOfBoundsException if the index is out-of-bounds.
+     */
     public static float get(final float[] array,
                             final int index)
     {
         return array[index];
     }
 
+    /**
+     * This method gets an element from an array.
+     *
+     * @param array is the array that contains the element.
+     * @param index is the index of the element.
+     * @return the element at the specified index in the array.
+     * @throws NullPointerException if the array is null.
+     * @throws IndexOutOfBoundsException if the index is out-of-bounds.
+     */
     public static double get(final double[] array,
                              final int index)
     {
         return array[index];
     }
 
+    /**
+     * This method gets an element from an array.
+     *
+     * @param array is the array that contains the element.
+     * @param index is the index of the element.
+     * @return the element at the specified index in the array.
+     * @throws NullPointerException if the array is null.
+     * @throws IndexOutOfBoundsException if the index is out-of-bounds.
+     */
     public static String get(final String[] array,
                              final int index)
     {
         return array[index];
     }
 
+    /**
+     * This method gets an element from an array.
+     *
+     * @param array is the array that contains the element.
+     * @param index is the index of the element.
+     * @return the element at the specified index in the array.
+     * @throws NullPointerException if the array is null.
+     * @throws IndexOutOfBoundsException if the index is out-of-bounds.
+     */
     public static Object get(final Object[] array,
                              final int index)
     {
         return array[index];
     }
 
-    public static char get(final String string,
+    /**
+     * This method gets a character from a string.
+     *
+     * @param string is the sequence of characters that contains the character.
+     * @param index is the index of the character.
+     * @return the character at the specified index in the string.
+     * @throws NullPointerException if the string is null.
+     * @throws IndexOutOfBoundsException if the index is out-of-bounds.
+     */
+    public static char get(final CharSequence string,
                            final int index)
     {
         return string.charAt(index);
     }
 
+    /**
+     * This method gets an element from a list.
+     *
+     * @param list is the list that contains the element.
+     * @param index is the index of the element.
+     * @return the element at the specified index in the list.
+     * @throws NullPointerException if the list is null.
+     * @throws IndexOutOfBoundsException if the index is out-of-bounds.
+     */
     public static Object get(final List list,
                              final int index)
     {
         return list.get(index);
     }
 
+    /**
+     * This method gets an element from an iterable.
+     *
+     * @param iterable is the iterable that contains the element.
+     * @param index is the index of the element.
+     * @return the element at the specified index in the iterable.
+     * @throws NullPointerException if the iterable is null.
+     * @throws IndexOutOfBoundsException if the index is out-of-bounds.
+     */
+    public static Object get(final Iterable iterable,
+                             final int index)
+    {
+        // If the iterable is really a list, use the potentially faster algorithm.
+
+        if (iterable instanceof List)
+        {
+            return ((List) iterable).get(index);
+        }
+        else
+        {
+            int i = 0;
+
+            for (Object element : iterable)
+            {
+                if (i++ == index)
+                {
+                    return element;
+                }
+            }
+
+            throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + i);
+        }
+    }
+
+    /**
+     * This method gets the value of an entry in a map.
+     *
+     * @param map is the map that contains the entry.
+     * @param key is the key that identifies the entry.
+     * @return the value in the map entry; or null, if no such entry exists.
+     * @throws NullPointerException if the map is null.
+     */
     public static Object get(final Map map,
                              final Object key)
     {
@@ -947,5 +1135,63 @@ public final class F
     public static BigDecimal big(final double value)
     {
         return BigDecimal.valueOf(value);
+    }
+
+    /**
+     * This method returns the default value of a given type.
+     *
+     * <p>
+     * The boolean type returns false.
+     * Numeric types return zero.
+     * Reference types return null.
+     * </p>
+     *
+     * @param type is the type that indicates the value to return.
+     * @return
+     * @throws NullPointerException if the type is null.
+     * @throws IllegalArgumentException if the type is the void-type.
+     */
+    public static Object defaultValue(final Class type)
+    {
+        Preconditions.checkNotNull(type);
+        Preconditions.checkArgument(type != void.class,
+                                    "The void-type does not have a default value.");
+
+        if (type == boolean.class)
+        {
+            return false;
+        }
+        else if (type == char.class)
+        {
+            return (char) 0;
+        }
+        else if (type == byte.class)
+        {
+            return (byte) 0;
+        }
+        else if (type == short.class)
+        {
+            return (short) 0;
+        }
+        else if (type == int.class)
+        {
+            return (int) 0;
+        }
+        else if (type == long.class)
+        {
+            return (long) 0;
+        }
+        else if (type == float.class)
+        {
+            return (float) 0;
+        }
+        else if (type == double.class)
+        {
+            return (double) 0;
+        }
+        else // reference types
+        {
+            return null;
+        }
     }
 }

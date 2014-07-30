@@ -3292,7 +3292,6 @@ public final class TreeBuilder
 
         // Initialize the AST node.
         node = node.setVariable(variable);
-        node = node.setParameters(new ConstructList(parameters));
         node = node.setType(type);
         node = node.setBody(body);
 

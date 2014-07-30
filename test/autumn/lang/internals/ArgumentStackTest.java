@@ -176,7 +176,7 @@ public final class ArgumentStackTest
      * Case: Wrong Type - Expected boolean
      * </p>
      */
-    @Test(expected = IllegalStateException.class)
+    @Test(expected = ClassCastException.class)
     public void test20140716113639505362()
     {
         System.out.println("Test: 20140716113639505362");
@@ -195,7 +195,7 @@ public final class ArgumentStackTest
      * Case: Wrong Type - Expected char
      * </p>
      */
-    @Test(expected = IllegalStateException.class)
+    @Test(expected = ClassCastException.class)
     public void test20140716113639505397()
     {
         System.out.println("Test: 20140716113639505397");
@@ -214,7 +214,7 @@ public final class ArgumentStackTest
      * Case: Wrong Type - Expected byte
      * </p>
      */
-    @Test(expected = IllegalStateException.class)
+    @Test(expected = ClassCastException.class)
     public void test20140716113811355209()
     {
         System.out.println("Test: 20140716113811355209");
@@ -233,7 +233,7 @@ public final class ArgumentStackTest
      * Case: Wrong Type - Expected short
      * </p>
      */
-    @Test(expected = IllegalStateException.class)
+    @Test(expected = ClassCastException.class)
     public void test20140716113811355301()
     {
         System.out.println("Test: 20140716113811355301");
@@ -252,7 +252,7 @@ public final class ArgumentStackTest
      * Case: Wrong Type - Expected int
      * </p>
      */
-    @Test(expected = IllegalStateException.class)
+    @Test(expected = ClassCastException.class)
     public void test20140716113811355346()
     {
         System.out.println("Test: 20140716113811355346");
@@ -271,7 +271,7 @@ public final class ArgumentStackTest
      * Case: Wrong Type - Expected long
      * </p>
      */
-    @Test(expected = IllegalStateException.class)
+    @Test(expected = ClassCastException.class)
     public void test20140716113811355383()
     {
         System.out.println("Test: 20140716113811355383");
@@ -290,7 +290,7 @@ public final class ArgumentStackTest
      * Case: Wrong Type - Expected float
      * </p>
      */
-    @Test(expected = IllegalStateException.class)
+    @Test(expected = ClassCastException.class)
     public void test20140716113811355417()
     {
         System.out.println("Test: 20140716113811355417");
@@ -309,7 +309,7 @@ public final class ArgumentStackTest
      * Case: Wrong Type - Expected double
      * </p>
      */
-    @Test(expected = IllegalStateException.class)
+    @Test(expected = ClassCastException.class)
     public void test20140716113926644475()
     {
         System.out.println("Test: 20140716113926644475");

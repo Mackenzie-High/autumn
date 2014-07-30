@@ -402,7 +402,7 @@ public final class ArgumentStack
      */
     private RuntimeException wrongType()
     {
-        return new IllegalStateException("The argument cannot be returned due to its type.");
+        return new ClassCastException("The argument cannot be returned due to its type.");
     }
 
     /**
@@ -416,7 +416,7 @@ public final class ArgumentStack
      * @return the argument.
      * @throws IndexOutOfBoundsException if the index is invalid.
      * @throws ClassCastException if unboxing fails.
-     * @throws IllegalStateException if the value cannot be returned due to its type.
+     * @throws ClassCastException if the value cannot be returned due to its type.
      */
     public final boolean getZ(final int index)
     {
@@ -447,7 +447,7 @@ public final class ArgumentStack
      * @return the argument.
      * @throws IndexOutOfBoundsException if the index is invalid.
      * @throws ClassCastException if unboxing fails.
-     * @throws IllegalStateException if the value cannot be returned due to its type.
+     * @throws ClassCastException if the value cannot be returned due to its type.
      */
     public final char getC(final int index)
     {
@@ -478,7 +478,7 @@ public final class ArgumentStack
      * @return the argument.
      * @throws IndexOutOfBoundsException if the index is invalid.
      * @throws ClassCastException if unboxing fails.
-     * @throws IllegalStateException if the value cannot be returned due to its type.
+     * @throws ClassCastException if the value cannot be returned due to its type.
      */
     public final byte getB(final int index)
     {
@@ -509,7 +509,7 @@ public final class ArgumentStack
      * @return the argument.
      * @throws IndexOutOfBoundsException if the index is invalid.
      * @throws ClassCastException if unboxing fails.
-     * @throws IllegalStateException if the value cannot be returned due to its type.
+     * @throws ClassCastException if the value cannot be returned due to its type.
      */
     public final short getS(final int index)
     {
@@ -544,7 +544,7 @@ public final class ArgumentStack
      * @return the argument.
      * @throws IndexOutOfBoundsException if the index is invalid.
      * @throws ClassCastException if unboxing fails.
-     * @throws IllegalStateException if the value cannot be returned due to its type.
+     * @throws ClassCastException if the value cannot be returned due to its type.
      */
     public final int getI(final int index)
     {
@@ -587,7 +587,7 @@ public final class ArgumentStack
      * @return the argument.
      * @throws IndexOutOfBoundsException if the index is invalid.
      * @throws ClassCastException if unboxing fails.
-     * @throws IllegalStateException if the value cannot be returned due to its type.
+     * @throws ClassCastException if the value cannot be returned due to its type.
      */
     public final long getJ(final int index)
     {
@@ -634,7 +634,7 @@ public final class ArgumentStack
      * @return the argument.
      * @throws IndexOutOfBoundsException if the index is invalid.
      * @throws ClassCastException if unboxing fails.
-     * @throws IllegalStateException if the value cannot be returned due to its type.
+     * @throws ClassCastException if the value cannot be returned due to its type.
      */
     public final float getF(final int index)
     {
@@ -665,7 +665,7 @@ public final class ArgumentStack
      * @return the argument.
      * @throws IndexOutOfBoundsException if the index is invalid.
      * @throws ClassCastException if unboxing fails.
-     * @throws IllegalStateException if the value cannot be returned due to its type.
+     * @throws ClassCastException if the value cannot be returned due to its type.
      */
     public final double getD(final int index)
     {
@@ -699,7 +699,7 @@ public final class ArgumentStack
      * @param index is the zero-based index of the argument as measured from the stack's base.
      * @return the argument.
      * @throws IndexOutOfBoundsException if the index is invalid.
-     * @throws IllegalStateException if the value cannot be returned due to its type.
+     * @throws ClassCastException if the value cannot be returned due to its type.
      */
     public final Object getO(final int index)
     {
@@ -757,7 +757,7 @@ public final class ArgumentStack
      * @return the argument.
      * @throws IndexOutOfBoundsException if the stack is empty.
      * @throws ClassCastException if unboxing fails.
-     * @throws IllegalStateException if the value cannot be returned due to its type.
+     * @throws ClassCastException if the value cannot be returned due to its type.
      */
     public final boolean peekZ()
     {
@@ -774,7 +774,7 @@ public final class ArgumentStack
      * @return the argument.
      * @throws IndexOutOfBoundsException if the stack is empty.
      * @throws ClassCastException if unboxing fails.
-     * @throws IllegalStateException if the value cannot be returned due to its type.
+     * @throws ClassCastException if the value cannot be returned due to its type.
      */
     public final char peekC()
     {
@@ -791,7 +791,7 @@ public final class ArgumentStack
      * @return the argument.
      * @throws IndexOutOfBoundsException if the stack is empty.
      * @throws ClassCastException if unboxing fails.
-     * @throws IllegalStateException if the value cannot be returned due to its type.
+     * @throws ClassCastException if the value cannot be returned due to its type.
      */
     public final byte peekB()
     {
@@ -808,7 +808,7 @@ public final class ArgumentStack
      * @return the argument.
      * @throws IndexOutOfBoundsException if the stack is empty.
      * @throws ClassCastException if unboxing fails.
-     * @throws IllegalStateException if the value cannot be returned due to its type.
+     * @throws ClassCastException if the value cannot be returned due to its type.
      */
     public final short peekS()
     {
@@ -825,7 +825,7 @@ public final class ArgumentStack
      * @return the argument.
      * @throws IndexOutOfBoundsException if the stack is empty.
      * @throws ClassCastException if unboxing fails.
-     * @throws IllegalStateException if the value cannot be returned due to its type.
+     * @throws ClassCastException if the value cannot be returned due to its type.
      */
     public final int peekI()
     {
@@ -842,7 +842,7 @@ public final class ArgumentStack
      * @return the argument.
      * @throws IndexOutOfBoundsException if the stack is empty.
      * @throws ClassCastException if unboxing fails.
-     * @throws IllegalStateException if the value cannot be returned due to its type.
+     * @throws ClassCastException if the value cannot be returned due to its type.
      */
     public final long peekJ()
     {
@@ -859,7 +859,7 @@ public final class ArgumentStack
      * @return the argument.
      * @throws IndexOutOfBoundsException if the stack is empty.
      * @throws ClassCastException if unboxing fails.
-     * @throws IllegalStateException if the value cannot be returned due to its type.
+     * @throws ClassCastException if the value cannot be returned due to its type.
      */
     public final float peekF()
     {
@@ -876,7 +876,7 @@ public final class ArgumentStack
      * @return the argument.
      * @throws IndexOutOfBoundsException if the stack is empty.
      * @throws ClassCastException if unboxing fails.
-     * @throws IllegalStateException if the value cannot be returned due to its type.
+     * @throws ClassCastException if the value cannot be returned due to its type.
      */
     public final double peekD()
     {
@@ -892,7 +892,6 @@ public final class ArgumentStack
      *
      * @return the argument.
      * @throws IndexOutOfBoundsException if the stack is empty.
-     * @throws IllegalStateException if the value cannot be returned due to its type.
      */
     public final Object peekO()
     {

@@ -6,8 +6,8 @@ import java.util.List;
  * This interface is a supertype of all objects that are instantiated Autumn designs.
  *
  * <p>
- * The methods defined in this interface start with "object" in order to avoid name collisions
- * with user defined methods in implementations of this interface.
+ * Prototype objects are immutable.
+ * As a result, methods that mutate a prototype actually return a modified copy of the prototype.
  * </p>
  *
  * @author Mackenzie High
@@ -19,18 +19,27 @@ public interface Prototype
      *
      * @return a shallow copy of this object.
      */
-    public Prototype objectCopy();
+    public Prototype copy();        // Create a modified version of the low-level property.
+//        final AbstractLowLevelProperty property = low.setFieldValue(value);
+//
+//        // Create a copy of the owner that contains the modified low-level property.
+//        final AbstractPrototype prototype = Actions.replaceSlot(owner, low.meta.index, property);
+//
+//        // Create a copy of this object that reflects the changes.
+//        final ConcreteProperty result = new ConcreteProperty(prototype, low.meta.index, property);
+//
+//        return result;
 
     /**
      * This method retrieves a list of all the properties and methods in this object.
      *
      * <p>
-     * This is a constant-time operation.
+     * The returned list lazily creates its elements.
      * </p>
      *
      * @return an immutable list containing the properties and methods in the object.
      */
-    public List<Member> objectMembers();
+    public List<Member> members();
 
     @Override
     public boolean equals(Object o);

@@ -3,6 +3,7 @@
 // For example, should compare throw USOException or ISException?
 package autumn.lang;
 
+import java.io.Serializable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
@@ -47,7 +48,8 @@ import java.util.SortedMap;
  */
 public interface Tuple<T extends Tuple>
         extends Iterable,
-                Comparable<Tuple>
+                Comparable<Tuple>,
+                Serializable
 {
     /**
      * This method creates a list of the static-types of the elements.
