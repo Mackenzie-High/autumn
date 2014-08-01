@@ -183,15 +183,6 @@ public final class ExceptionCompiler
     {
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void performCodeGeneration()
-    {
-        // Pass, because this is done in the build() method.
-    }
-
     private void addInferredCtors(final ClassNode clazz)
     {
         for (IConstructor ctor : type.getConstructors())

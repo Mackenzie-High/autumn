@@ -8,7 +8,7 @@ defun main (args : String[]) : void
 
     // Assign an array to the variable.
     // However, this does not change the static-type of the variable.
-    let object = (F::newArray (class String), 100);
+    let object = (DS::newArray (class String), 100);
 
     // The static-type of this variable will be String[].
     var array = object is String[];

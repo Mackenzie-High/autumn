@@ -21,7 +21,7 @@ import java.util.SortedMap;
  * <ul>
  * <li>a constructor that takes the elements as its parameters,</li>
  * <li>implementations of the abstract methods defined herein,</li>
- * <li>the empty() static method, which returns an empty tuple,</li>
+ * <li>the instance() static method, which returns an empty tuple,</li>
  * <li>setters and getters for each element,</li>
  * <li>bridge methods for each method herein that returns a Tuple,</li>
  * </ul>

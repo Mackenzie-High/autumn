@@ -30,7 +30,7 @@ import java.util.SortedMap;
  * </p>
  *
  * <p>
- * An implementation of this interface should also provide a static method proto().
+ * An implementation of this interface should also provide a static method instance().
  * This method should return an instance of the implementation, when invoked.
  * Thus, the return type of the method would be the type of the enclosing implementation.
  * The returned instance must be immutable.

@@ -31,10 +31,4 @@ public final class AnnotationCompiler
     {
         throw new UnsupportedOperationException("Not supported yet.");
     }
-
-    @Override
-    public void performCodeGeneration()
-    {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
 }

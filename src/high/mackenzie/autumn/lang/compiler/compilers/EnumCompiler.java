@@ -243,15 +243,6 @@ public final class EnumCompiler
     }
 
     /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void performCodeGeneration()
-    {
-        // Pass, because this is done in the build() method.
-    }
-
-    /**
      * This method adds a static-initializer that initializes the enum-constant fields.
      *
      * @param clazz is the enum to add the static-initializer to.

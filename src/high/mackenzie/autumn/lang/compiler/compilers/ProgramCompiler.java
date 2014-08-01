@@ -187,18 +187,6 @@ public final class ProgramCompiler
     }
 
     /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void performCodeGeneration()
-    {
-        for (ModuleCompiler m : modules)
-        {
-            m.performCodeGeneration();
-        }
-    }
-
-    /**
      * This method compiles a program to its bytecode representation.
      *
      * @param input are the modules in the program that will be compiled.
@@ -236,13 +224,6 @@ public final class ProgramCompiler
             }
 
             compiler.performTypeUsageChecking();
-
-            if (reporter.errorCount() > 0)
-            {
-                return null;
-            }
-
-            compiler.performCodeGeneration();
 
             if (reporter.errorCount() > 0)
             {

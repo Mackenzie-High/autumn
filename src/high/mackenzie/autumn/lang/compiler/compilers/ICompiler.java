@@ -29,9 +29,4 @@ public interface ICompiler
      * This 4th compiler pass.
      */
     public void performTypeUsageChecking();
-
-    /**
-     * This 5th compiler pass.
-     */
-    public void performCodeGeneration();
 }

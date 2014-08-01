@@ -1,0 +1,35 @@
+module Main in execution;
+
+tuple T0 ();
+
+tuple T1 (x : int);
+
+tuple T2 (a : boolean,
+          b : char,
+          c : byte,
+          d : short,
+          e : int,
+          f : long,
+          g : float,
+          h : double,
+          i : String);
+
+@Start
+defun main (args : String[]) : void
+{
+    val t0 = (new T0);
+
+    assert (t0.toString) == "()";
+
+    ####################################################################################
+
+    val t1 = (new T1 123);
+
+    assert (t1.toString) == "(123)";
+
+    ####################################################################################
+
+    val t2 = (new T2 true, 'X', 10B, 20S, 30, 40L, 50.0F, 60.0, "Venus");
+
+    assert (t2.toString) == "(true, X, 10, 20, 30, 40, 50.0, 60.0, Venus)";
+}

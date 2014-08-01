@@ -1,0 +1,13 @@
+module Main in execution;
+
+tuple T (x : int, y : int, z : int);
+
+@Start
+defun main (args : String[]) : void
+{
+    val t = (new T 100, 200, 300);
+
+    assert (t.get "x") == 100;
+    assert (t.get "y") == 200;
+    assert (t.get "z") == 300;
+}

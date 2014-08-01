@@ -202,15 +202,6 @@ public final class FunctionCompiler
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void performCodeGeneration()
-    {
-        // Pass
-    }
-
     public MethodNode build()
     {
         // TODO: This should be done in the type initiailiztion phase.

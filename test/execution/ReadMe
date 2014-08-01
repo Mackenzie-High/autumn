@@ -31,8 +31,25 @@ Test Index
 . . Reflective Testing of the Enum's Class
 . . T0051 = Basic Enum
 . Tuple Definitions
-. . Reflective Testing of the Tuple's Class
-. . Use Cases
+. . T0128 = Reflective Testing of the Tuple's Class                  // TODO: finish
+. . T0114 = Sole Constructor
+. . T0126 = Setters - (immutable)
+. . T0127 = Setters - (mutable)
+. . T0117 = Getters
+. . T0124 = Special Method - get(String) - (element exists)
+. . T0125 = Special Method - get(String) - (no such element)
+. . T0115 = Special Method - get(int) - (index OK)
+. . T0116 = Special Method - get(int) - (index Out-Of-Bounds)
+. . T0118 = Special Method - toString()
+. . T0119 = Special Method - values()
+. . T0120 = Special Method - keys()
+. . T0121 = Special Method - types()
+. . T0122 = Special Method - instance()
+. . T0123 = Special Method - size() and isEmpty()
+. . Equals method
+. . Hash-Code Method
+. . To-String Method
+. . Compare-To Method
 . Design Definitions
 . . Reflective Testing of the Design's Class
 . Functions

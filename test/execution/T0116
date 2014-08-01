@@ -1,0 +1,22 @@
+module Main in execution;
+
+tuple T (x : int);
+
+@Start
+defun main (args : String[]) : void
+{
+    var t = (new T 123);
+
+    assert (t.get 0) == 123;
+
+    try
+    {
+        (t.get 100);
+
+        assert false;
+    }
+    catch(ex : IndexOutOfBoundsException)
+    {
+        // Pass, because this is what is supposed to happen.
+    }
+}

@@ -5,6 +5,7 @@ import high.mackenzie.autumn.lang.compiler.typesystem.design.IInterfaceType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IMethod;
 import high.mackenzie.autumn.lang.compiler.utils.Design;
 import org.objectweb.asm.tree.ClassNode;
+import org.objectweb.asm.tree.InsnList;
 import org.objectweb.asm.tree.MethodNode;
 
 /**
@@ -37,6 +38,15 @@ public final class KlassCompiler
         this.location = location;
 
         this.info = new Design(type);
+    }
+
+    /**
+     * This method generates bytecode that loads an instance of the class onto the operand-stack.
+     *
+     * @param code is the list of instructions being generated.
+     */
+    public void load(final InsnList code)
+    {
     }
 
     public ClassNode build()

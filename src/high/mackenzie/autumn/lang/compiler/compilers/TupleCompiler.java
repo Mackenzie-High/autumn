@@ -151,9 +151,9 @@ public final class TupleCompiler
                                  null,
                                  null));
 
-        // Create the field that stores the empty tuple.
+        // Create the field that stores the instance() tuple.
         fields.add(new FieldNode(Opcodes.ACC_PRIVATE + Opcodes.ACC_STATIC + Opcodes.ACC_FINAL,
-                                 "empty",
+                                 "instance",
                                  type.getDescriptor(),
                                  null,
                                  null));
@@ -182,7 +182,7 @@ public final class TupleCompiler
 
             clazz.methods.add(this.generateCtor());
 
-            clazz.methods.add(this.generateMethodEmpty());
+            clazz.methods.add(this.generateMethodInstance());
 
             clazz.methods.add(this.generateMethodKeys());
 
@@ -268,8 +268,14 @@ public final class TupleCompiler
          */
         final List<IMethod> methods = Lists.newLinkedList();
 
-        methods.add(this.typeofEmpty());
+        /**
+         * Add the type of the static instance() method.
+         */
+        methods.add(this.typeofInstance());
 
+        /**
+         * Create the getter and setter methods for each element in the tuple.
+         */
         for (FormalParameter formal : node.getElements().getParameters())
         {
             final String element_name = formal.getVariable().getName();
@@ -278,14 +284,28 @@ public final class TupleCompiler
 
             final Element element = new Element(elements.size(), element_name, element_type);
 
+            // Hold onto the type of the element for later use in other methods.
             elements.add(element);
 
+            /**
+             * Each element has an associated getter method and a setter method.
+             */
             methods.add(typeofSetter(element));
             methods.add(typeofGetter(element));
         }
 
+        /**
+         * Now we have generated the types of the methods in the tuple.
+         * However, we still need to add the generated method types to the tuple's type.
+         */
         type.setMethods(methods);
 
+        /**
+         * Now we need to generate bridge methods.
+         * The Tuple interface defines methods that return the Tuple interface-type.
+         * However, we would like for those methods to return the type of the tuple being compiled.
+         * This makes the return-type of these methods more specific, which is useful.
+         */
         typeofBridgeMethods();
     }
 
@@ -354,17 +374,18 @@ public final class TupleCompiler
     }
 
     /**
-     * This method creates the type-system representation of the method that returns an empty tuple.
+     * This method creates the type-system representation of the method
+     * that returns an instance() tuple.
      *
      * @return the aforedescribed method.
      */
-    private IMethod typeofEmpty()
+    private IMethod typeofInstance()
     {
         final CustomMethod method = new CustomMethod(program.typesystem.typefactory(), false);
 
         method.setAnnotations(new LinkedList());
         method.setModifiers(Opcodes.ACC_PUBLIC + Opcodes.ACC_STATIC);
-        method.setName("empty");
+        method.setName("instance");
         method.setOwner(type);
         method.setParameters(new LinkedList());
         method.setReturnType(type);
@@ -437,11 +458,6 @@ public final class TupleCompiler
         // Pass
     }
 
-    @Override
-    public void performCodeGeneration()
-    {
-    }
-
     private List<FieldNode> generateElementFields()
     {
         final List<FieldNode> fields = Lists.newLinkedList();
@@ -503,7 +519,7 @@ public final class TupleCompiler
             method.instructions.add(Utils.selectLoadVarInsn(element.type, address));
             method.instructions.add(new FieldInsnNode(Opcodes.PUTFIELD, owner, name, desc));
 
-            address += Utils.sizeof(type);
+            address += Utils.sizeof(element.type);
         }
 
         method.instructions.add(new InsnNode(Opcodes.RETURN));
@@ -530,7 +546,7 @@ public final class TupleCompiler
 
         initListOfKeys(clinit.instructions);
         initListOfTypes(clinit.instructions);
-        initEmpty(clinit.instructions);
+        initInstance(clinit.instructions);
 
         clinit.instructions.add(new InsnNode(Opcodes.RETURN));
 
@@ -620,11 +636,11 @@ public final class TupleCompiler
     }
 
     /**
-     * This method generates bytecode that initializes the field containing empty tuple.
+     * This method generates bytecode that initializes the field containing instance() tuple.
      *
      * @param code is the bytecode being generated.
      */
-    private void initEmpty(final InsnList code)
+    private void initInstance(final InsnList code)
     {
         /**
          * Create a new uninitialized instance of the tuple.
@@ -660,7 +676,7 @@ public final class TupleCompiler
          */
         code.add(new FieldInsnNode(Opcodes.PUTSTATIC,
                                    Utils.internalName(type),
-                                   "empty",
+                                   "instance",
                                    type.getDescriptor()));
     }
 
@@ -677,17 +693,22 @@ public final class TupleCompiler
      */
     private List<MethodNode> generateBridgeMethods()
     {
+        final Set<String> done = Sets.newTreeSet();
+
         final List<MethodNode> result = Lists.newLinkedList();
 
-        for (IMethod method : type.getMethods())
+        for (IMethod method : type.getAllVisibleMethods())
         {
-            final boolean same_return = method.getReturnType().equals(type);
+            final boolean not_done = !done.contains(method.getNamePlusDescriptor());
+
+            final boolean returns_tuple = method.getReturnType().equals(program.typesystem.utils.TUPLE);
 
             final boolean non_static = !Modifier.isStatic(method.getModifiers());
 
-            if (same_return && non_static)
+            if (not_done && returns_tuple && non_static)
             {
                 result.add(this.generateBridgeMethod(method));
+                done.add(method.getNamePlusDescriptor());
             }
         }
 
@@ -747,15 +768,15 @@ public final class TupleCompiler
     }
 
     /**
-     * This method generates the bytecode of the empty() method.
+     * This method generates the bytecode of the instance() method.
      *
      * @return the generated method.
      */
-    private MethodNode generateMethodEmpty()
+    private MethodNode generateMethodInstance()
     {
         final MethodNode method = Utils.bytecodeOf(module,
                                                    TypeSystemUtils.find(type.getMethods(),
-                                                                        "empty",
+                                                                        "instance",
                                                                         "()" + type.getDescriptor()));
 
         // Remove the abstract modifier.
@@ -766,7 +787,7 @@ public final class TupleCompiler
          */
         method.instructions.add(new FieldInsnNode(Opcodes.GETSTATIC,
                                                   Utils.internalName(type),
-                                                  "empty",
+                                                  "instance",
                                                   type.getDescriptor()));
 
         method.instructions.add(new InsnNode(Opcodes.ARETURN));
@@ -802,43 +823,66 @@ public final class TupleCompiler
         final LabelNode default_case = new LabelNode();
 
         /**
-         * Create a jump-table, which branches based on the index that is provided as an argument.
+         * Essentially, this will generate a switch-statement.
+         * The switch-case branches based on the index that is given as an parameter to the method.
+         * If a case is executed, it will do the following things.
+         * First, the value of the element is loaded onto the operand-stack.
+         * Second, the value will be auto-boxed, if the element is a primitive-type.
+         * Third, the value will be returned from the method.
+         * The default-case will be generated at the bottom of this method,.
+         * because no jump-table is needed, if the tuple is empty.
          */
-        final TableSwitchInsnNode table = new TableSwitchInsnNode(0, elements.size() - 1, default_case);
-        method.instructions.add(new VarInsnNode(Opcodes.ILOAD, 1));
-        method.instructions.add(table);
-
-        for (Element element : elements)
+        if (!elements.isEmpty())
         {
             /**
-             * Mark the entry-point of the switch-case.
+             * Generate the jump-table itself.
              */
-            final LabelNode label = new LabelNode();
-            table.labels.add(label);
-            method.instructions.add(label);
+            final int min = 0;
+            final int max = elements.isEmpty() ? 0 : elements.size() - 1;
+            final TableSwitchInsnNode table = new TableSwitchInsnNode(min, max, default_case);
+
+            // Load the actual argument onto the operand-stack and then branch.
+            method.instructions.add(new VarInsnNode(Opcodes.ILOAD, 1));
+            method.instructions.add(table);
 
             /**
-             * Load the value of the element onto the operand-stack.
-             * This requires retrieving the value from the field it is stored in.
+             * Generate each case in the switch-case, except the default-case.
              */
-            method.instructions.add(new VarInsnNode(Opcodes.ALOAD, 0)); // Load 'this'
-            method.instructions.add(new FieldInsnNode(Opcodes.GETFIELD,
-                                                      Utils.internalName(type),
-                                                      nameOfField(element.name),
-                                                      element.type.getDescriptor()));
+            for (Element element : elements)
+            {
+                /**
+                 * Mark the entry-point of the switch-case.
+                 */
+                final LabelNode label = new LabelNode();
+                table.labels.add(label);
+                method.instructions.add(label);
+
+                /**
+                 * Load the value of the element onto the operand-stack.
+                 * This requires retrieving the value from the field it is stored in.
+                 */
+                method.instructions.add(new VarInsnNode(Opcodes.ALOAD, 0)); // Load 'this'
+                method.instructions.add(new FieldInsnNode(Opcodes.GETFIELD,
+                                                          Utils.internalName(type),
+                                                          nameOfField(element.name),
+                                                          element.type.getDescriptor()));
+
+                /**
+                 * Box the value, if needed, so it can be added to the list.
+                 */
+                program.typesystem.utils.autoboxToObject(method.instructions, element.type);
+
+                /**
+                 * Return the result.
+                 */
+                method.instructions.add(new InsnNode(Opcodes.ARETURN));
+            }
 
             /**
-             * Box the value, if needed, so it can be added to the list.
+             * The default-case executes the same code that executes when the tuple is empty.
              */
-            program.typesystem.utils.autoboxToObject(method.instructions, element.type);
-
-            /**
-             * Return the result.
-             */
-            method.instructions.add(new InsnNode(Opcodes.ARETURN));
+            method.instructions.add(default_case);
         }
-
-        method.instructions.add(default_case);
 
         /**
          * Throw an exception, if the element does not exist.
@@ -1074,7 +1118,7 @@ public final class TupleCompiler
 
         /**
          * Get a variant of the tuple which can be modified.
-         * If the original tuple is mutable, then this will simply be that tuple.
+         * If the original tuple is mutable, then this will simply be the original tuple.
          * If the original tuple is immutable, then this will be a copy of the original.
          */
         loadModifiableVariant(method.instructions);
@@ -1084,11 +1128,15 @@ public final class TupleCompiler
          */
         method.instructions.add(new InsnNode(Opcodes.DUP));
 
+
+        /**
+         * Load the value, which will be assigned to the field, onto the operand-stack.
+         */
+        method.instructions.add(Utils.selectLoadVarInsn(element.type, 1));
+
         /**
          * Set the field that stores the value of the element.
          */
-        method.instructions.add(new VarInsnNode(Opcodes.ALOAD, 0)); // Load 'this'
-        method.instructions.add(Utils.selectLoadVarInsn(element.type, 1)); // Load the value.
         method.instructions.add(new FieldInsnNode(Opcodes.PUTFIELD,
                                                   Utils.internalName(type),
                                                   nameOfField(element.name),
@@ -1111,14 +1159,12 @@ public final class TupleCompiler
         // IF_FALSE @ELSE
         //
         // ALOAD 0
-        // ARETURN
         //
         // GOTO @END
         // @ELSE
         //
         // ALOAD 0
         // INVOKEVIRTUAL this.immutableCopy()
-        // ARETURN
         //
         // @END
         //
@@ -1137,7 +1183,6 @@ public final class TupleCompiler
         code.add(new JumpInsnNode(Utils.IF_FALSE, ELSE));
 
         code.add(new VarInsnNode(Opcodes.ALOAD, 0)); // Load 'this'
-        code.add(new InsnNode(Opcodes.ARETURN));
 
         code.add(new JumpInsnNode(Opcodes.GOTO, END));
         code.add(ELSE);
@@ -1147,7 +1192,6 @@ public final class TupleCompiler
                                     Utils.internalName(type),
                                     "immutableCopy",
                                     "()" + type.getDescriptor()));
-        code.add(new InsnNode(Opcodes.ARETURN));
 
         code.add(END);
     }

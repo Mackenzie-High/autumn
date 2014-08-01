@@ -375,7 +375,7 @@ public final class Utils
         }
         else if (type.getDescriptor().equals("D"))
         {
-            return 1;
+            return 2;
         }
         else if (type.getDescriptor().equals("V"))
         {

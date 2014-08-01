@@ -24,6 +24,7 @@ import java.util.List;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.ClassNode;
+import org.objectweb.asm.tree.FieldNode;
 import org.objectweb.asm.tree.MethodNode;
 
 /**
@@ -68,6 +69,34 @@ public class DesignCompiler
      */
     public ClassFile build()
     {
+        final List<MethodNode> methods = Lists.newLinkedList();
+
+        /**
+         * Generate the field that stores the prototype.
+         */
+        clazz.fields.add(generateProtoField());
+
+        /**
+         * Generate each interface method.
+         */
+        for (IMethod method : this.type.getMethods())
+        {
+            methods.add(generateMethod(method));
+        }
+
+        /**
+         * Create the bytecode representation of the design itself.
+         */
+        clazz.version = Opcodes.V1_6;
+        clazz.visibleAnnotations = Lists.newLinkedList();
+        clazz.access = type.getModifiers();
+        clazz.name = Utils.internalName(type);
+        clazz.superName = Utils.internalName(type.getSuperclass());
+        clazz.interfaces = Lists.newLinkedList();
+        clazz.fields = ImmutableList.of();
+        clazz.methods = methods;
+        clazz.sourceFile = String.valueOf(node.getLocation().getFile());
+
         /**
          * Assemble the bytecode into an array of bytes.
          */
@@ -253,33 +282,6 @@ public class DesignCompiler
     }
 
     /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void performCodeGeneration()
-    {
-        final List<MethodNode> methods = Lists.newLinkedList();
-
-        for (IMethod method : this.type.getMethods())
-        {
-            methods.add(generateMethod(method));
-        }
-
-        /**
-         * Create the bytecode representation of the design itself.
-         */
-        clazz.version = Opcodes.V1_6;
-        clazz.visibleAnnotations = Lists.newLinkedList();
-        clazz.access = type.getModifiers();
-        clazz.name = Utils.internalName(type);
-        clazz.superName = Utils.internalName(type.getSuperclass());
-        clazz.interfaces = Lists.newLinkedList();
-        clazz.fields = ImmutableList.of();
-        clazz.methods = methods;
-        clazz.sourceFile = String.valueOf(node.getLocation().getFile());
-    }
-
-    /**
      * This method generates the bytecode representation of a setter, getter, or regular method.
      *
      * @param method is the type-system representation of the method.
@@ -295,5 +297,23 @@ public class DesignCompiler
         m.exceptions = ImmutableList.of();
 
         return m;
+    }
+
+    /**
+     * This method generates the public static final field that stores the prototypical instance.
+     *
+     * @return the generated field.
+     */
+    private FieldNode generateProtoField()
+    {
+        final int access = Opcodes.ACC_PUBLIC + Opcodes.ACC_STATIC + Opcodes.ACC_FINAL;
+
+        final FieldNode field = new FieldNode(access,
+                                              "INSTANCE",
+                                              type.getDescriptor(),
+                                              null,
+                                              null);
+
+        return field;
     }
 }

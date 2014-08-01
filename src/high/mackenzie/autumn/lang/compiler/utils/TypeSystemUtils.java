@@ -5,6 +5,7 @@ import autumn.lang.Functor;
 import autumn.lang.Local;
 import autumn.lang.LocalsMap;
 import autumn.lang.Module;
+import autumn.lang.Prototype;
 import autumn.lang.Tuple;
 import autumn.lang.annotations.Start;
 import autumn.lang.compiler.ast.nodes.Name;
@@ -18,6 +19,7 @@ import autumn.lang.internals.Helpers;
 import autumn.lang.internals.ModuleDelegate;
 import autumn.lang.internals.Operators;
 import autumn.lang.internals.YieldState;
+import autumn.lang.internals.proto.AbstractPrototype;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
@@ -128,6 +130,8 @@ public final class TypeSystemUtils
 
     public final IInterfaceType FUNCTOR;
 
+    public final IInterfaceType PROTOTYPE;
+
     public final IInterfaceType MODULE;
 
     public final IClassType MODULE_DELEGATE;
@@ -137,6 +141,8 @@ public final class TypeSystemUtils
     public final IClassType ABSTRACT_DELEGATE;
 
     public final IClassType ABSTRACT_TUPLE;
+
+    public final IClassType ABSTRACT_PROTOTYPE;
 
     public final IClassType HELPERS;
 
@@ -212,6 +218,8 @@ public final class TypeSystemUtils
 
         this.FUNCTOR = (IInterfaceType) factory.fromClass(Functor.class);
 
+        this.PROTOTYPE = (IInterfaceType) factory.fromClass(Prototype.class);
+
         this.MODULE = (IInterfaceType) factory.fromClass(Module.class);
 
         this.MODULE_DELEGATE = (IClassType) factory.fromClass(ModuleDelegate.class);
@@ -221,6 +229,8 @@ public final class TypeSystemUtils
         this.ABSTRACT_MODULE = (IClassType) factory.fromClass(AbstractModule.class);
 
         this.ABSTRACT_DELEGATE = (IClassType) factory.fromClass(AbstractDelegate.class);
+
+        this.ABSTRACT_PROTOTYPE = (IClassType) factory.fromClass(AbstractPrototype.class);
 
         this.HELPERS = (IClassType) factory.fromClass(Helpers.class);
 

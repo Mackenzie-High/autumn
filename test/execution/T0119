@@ -1,0 +1,23 @@
+module Main in execution;
+
+tuple T (a : boolean,
+         b : char,
+         c : byte,
+         d : short,
+         e : int,
+         f : long,
+         g : float,
+         h : double,
+         i : String);
+
+@Start
+defun main (args : String[]) : void
+{
+    val t = (new T true, 'X', 10B, 20S, 30, 40L, 50.0F, 60.0, "Venus");
+
+    # The values() method should create a list containing the elements.
+    assert (t.values) == [true, 'X', 10B, 20S, 30, 40L, 50.0F, 60.0, "Venus"];
+
+    # The values() method should *not* cache the list.
+    assert (t.values) !== (t.values);
+}

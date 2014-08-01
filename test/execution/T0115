@@ -1,0 +1,27 @@
+module Main in execution;
+
+tuple T0 ();
+tuple T1 (x : int);
+tuple T2 (x : int, y : int);
+tuple T3 (x : int, y : int, z : int);
+
+@Start
+defun main (args : String[]) : void
+{
+    val t0 = (new T0);
+    val t1 = (new T1 100);
+    val t2 = (new T2 200, 300);
+    val t3 = (new T3 400, 500, 600);
+
+    assert 0 == (t0.size);
+    assert 1 == (t1.size);
+    assert 2 == (t2.size);
+    assert 3 == (t3.size);
+
+    assert 100 == (t1.get 0);
+    assert 200 == (t2.get 0);
+    assert 300 == (t2.get 1);
+    assert 400 == (t3.get 0);
+    assert 500 == (t3.get 1);
+    assert 600 == (t3.get 2);
+}

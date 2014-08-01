@@ -148,12 +148,9 @@ public class ExpressionTypeChecker
     @Override
     public void visit(final ClassDatum object)
     {
-        final IReturnType type = module.resolveType(object.getType());
-
-        if (type == null)
-        {
-            // TODO: No such type
-        }
+        // Perform type-checking.
+        // This call will throw an exception, if the type does not exist, etc.
+        module.resolveType(object.getType());
 
         infer(object, program.typesystem.utils.CLASS);
     }
@@ -307,9 +304,13 @@ public class ExpressionTypeChecker
 
         final IInterfaceType face = (IInterfaceType) type;
 
-        final ClassCompiler creator = new ClassCompiler(module, face, object.getLocation());
+        if (face.isSubtypeOf(program.typesystem.utils.ABSTRACT_PROTOTYPE) == false)
+        {
+            // TODO: error
+        }
 
-        program.symbols.creators.put(object, creator);
+        // final ClassCompiler creator = new ClassCompiler(module, face, object.getLocation());
+        // program.symbols.creators.put(object, creator);
 
         infer(object, face);
     }

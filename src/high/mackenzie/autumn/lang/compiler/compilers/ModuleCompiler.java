@@ -1,7 +1,6 @@
 package high.mackenzie.autumn.lang.compiler.compilers;
 
 import autumn.lang.Delegate;
-import autumn.util.F;
 import autumn.lang.Functor;
 import autumn.lang.compiler.ClassFile;
 import autumn.lang.compiler.ast.nodes.DesignDefinition;
@@ -15,6 +14,8 @@ import autumn.lang.compiler.ast.nodes.ModuleDirective;
 import autumn.lang.compiler.ast.nodes.Name;
 import autumn.lang.compiler.ast.nodes.TupleDefinition;
 import autumn.lang.compiler.ast.nodes.TypeSpecifier;
+import autumn.util.DS;
+import autumn.util.F;
 import autumn.util.proto.ProtoMap;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
@@ -41,6 +42,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
@@ -100,6 +102,7 @@ public final class ModuleCompiler
         imports.put("Unique", "autumn.lang.annotations.Unique");
 
         importClass(F.class);
+        importClass(DS.class);
         importClass(Functor.class);
         importClass(Delegate.class);
 
@@ -129,6 +132,8 @@ public final class ModuleCompiler
         importClass(ClassCastException.class);
         importClass(IllegalArgumentException.class);
         importClass(IllegalStateException.class);
+        importClass(IndexOutOfBoundsException.class);
+        importClass(NoSuchElementException.class);
 
         importClass(Iterable.class);
         importClass(Iterator.class);
@@ -913,18 +918,6 @@ public final class ModuleCompiler
         for (ICompiler x : compilers())
         {
             x.performTypeUsageChecking();
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void performCodeGeneration()
-    {
-        for (ICompiler x : compilers())
-        {
-            x.performCodeGeneration();
         }
     }
 

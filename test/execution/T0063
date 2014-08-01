@@ -53,7 +53,7 @@ defun main (args : String[]) : void
 
     var type = (class Main);
     var method = null as Method;
-    var arguments = (F::newArray (class Class), 0) as Class[];
+    var arguments = (DS::newArray (class Class), 0) as Class[];
     var returns = null as Class;
 
     let method = (type.getMethod "F01", arguments);
