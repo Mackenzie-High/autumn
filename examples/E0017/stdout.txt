@@ -1,9 +1,0 @@
-char = A
-byte = 8
-short = 8
-int = 8
-long = 8
-float = 8.0
-double = 8.0
-BigInteger = 8
-BigDecimal = 8.0

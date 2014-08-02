@@ -4,145 +4,145 @@ function spec()
     
 "index": 
 [
-  [0, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=License\">License</a>"],
-  [0, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Introduction\">Introduction</a>"],
-  [0, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Where%20to%20Download\">Where%20to%20Download</a>"],
-  [0, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Hello%20World\">Hello%20World</a>"],
-  [0, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Compiler%20Command%20Line%20Options\">Compiler%20Command%20Line%20Options</a>"],
-  [0, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Special%20Thanks\">Special%20Thanks</a>"],
+  [0, "<a%20href=\"TextPage.html?page=License\">License</a>"],
+  [0, "<a%20href=\"TextPage.html?page=Introduction\">Introduction</a>"],
+  [0, "<a%20href=\"TextPage.html?page=Where%20to%20Download\">Where%20to%20Download</a>"],
+  [0, "<a%20href=\"TextPage.html?page=Hello%20World\">Hello%20World</a>"],
+  [0, "<a%20href=\"TextPage.html?page=Compiler%20Command%20Line%20Options\">Compiler%20Command%20Line%20Options</a>"],
+  [0, "<a%20href=\"TextPage.html?page=Special%20Thanks\">Special%20Thanks</a>"],
   [0, "<b>Language%20Constructs</b>"],
-  [1, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=Module\">Module</a>"],
+  [1, "<a%20href=\"ConstructPage.html?construct=Module\">Module</a>"],
   [1, "<b>Directives</b>"],
-  [2, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=Module%20Directive\">Module%20Directive</a>"],
-  [2, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=Import%20Directive\">Import%20Directive</a>"],
+  [2, "<a%20href=\"ConstructPage.html?construct=Module%20Directive\">Module%20Directive</a>"],
+  [2, "<a%20href=\"ConstructPage.html?construct=Import%20Directive\">Import%20Directive</a>"],
   [1, "<b>Definitions</b>"],
-  [2, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=Annotation%20Definition\">Annotation%20Definition</a>"],
-  [2, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=Exception%20Definition\">Exception%20Definition</a>"],
-  [2, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=Enum%20Definition\">Enum%20Definition</a>"],
-  [3, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=Enum%20Constant\">Enum%20Constant</a>"],
-  [2, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=Tuple%20Definition\">Tuple%20Definition</a>"],
-  [2, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=Functor%20Definition\">Functor%20Definition</a>"],
-  [2, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=Design%20Definition\">Design%20Definition</a>"],
-  [3, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=Design%20Property\">Design%20Property</a>"],
-  [3, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=Design%20Method\">Design%20Method</a>"],
-  [2, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=Function%20Definition\">Function%20Definition</a>"],
+  [2, "<a%20href=\"ConstructPage.html?construct=Annotation%20Definition\">Annotation%20Definition</a>"],
+  [2, "<a%20href=\"ConstructPage.html?construct=Exception%20Definition\">Exception%20Definition</a>"],
+  [2, "<a%20href=\"ConstructPage.html?construct=Enum%20Definition\">Enum%20Definition</a>"],
+  [3, "<a%20href=\"ConstructPage.html?construct=Enum%20Constant\">Enum%20Constant</a>"],
+  [2, "<a%20href=\"ConstructPage.html?construct=Tuple%20Definition\">Tuple%20Definition</a>"],
+  [2, "<a%20href=\"ConstructPage.html?construct=Functor%20Definition\">Functor%20Definition</a>"],
+  [2, "<a%20href=\"ConstructPage.html?construct=Design%20Definition\">Design%20Definition</a>"],
+  [3, "<a%20href=\"ConstructPage.html?construct=Design%20Property\">Design%20Property</a>"],
+  [3, "<a%20href=\"ConstructPage.html?construct=Design%20Method\">Design%20Method</a>"],
+  [2, "<a%20href=\"ConstructPage.html?construct=Function%20Definition\">Function%20Definition</a>"],
   [1, "<b>Statements</b>"],
   [2, "<b>Flow%20Control</b>"],
-  [3, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=Sequence%20Statement\">Sequence%20Statement</a>"],
-  [3, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=If-Then%20Statement\">If-Then%20Statement</a>"],
-  [3, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=When%20Statement\">When%20Statement</a>"],
-  [3, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=Goto%20Statement\">Goto%20Statement</a>"],
-  [3, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=Marker%20Statement\">Marker%20Statement</a>"],
+  [3, "<a%20href=\"ConstructPage.html?construct=Sequence%20Statement\">Sequence%20Statement</a>"],
+  [3, "<a%20href=\"ConstructPage.html?construct=If-Then%20Statement\">If-Then%20Statement</a>"],
+  [3, "<a%20href=\"ConstructPage.html?construct=When%20Statement\">When%20Statement</a>"],
+  [3, "<a%20href=\"ConstructPage.html?construct=Goto%20Statement\">Goto%20Statement</a>"],
+  [3, "<a%20href=\"ConstructPage.html?construct=Marker%20Statement\">Marker%20Statement</a>"],
   [3, "<b>Looping</b>"],
-  [4, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=While%20Statement\">While%20Statement</a>"],
-  [4, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=Until%20Statement\">Until%20Statement</a>"],
-  [4, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=Do-While%20Statement\">Do-While%20Statement</a>"],
-  [4, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=Do-Until%20Statement\">Do-Until%20Statement</a>"],
-  [4, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=Forever%20Statement\">Forever%20Statement</a>"],
-  [4, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=For%20Statement\">For%20Statement</a>"],
-  [4, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=Foreach%20Statement\">Foreach%20Statement</a>"],
-  [4, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=Break%20Statement\">Break%20Statement</a>"],
-  [4, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=Continue%20Statement\">Continue%20Statement</a>"],
-  [4, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=Redo%20Statement\">Redo%20Statement</a>"],
+  [4, "<a%20href=\"ConstructPage.html?construct=While%20Statement\">While%20Statement</a>"],
+  [4, "<a%20href=\"ConstructPage.html?construct=Until%20Statement\">Until%20Statement</a>"],
+  [4, "<a%20href=\"ConstructPage.html?construct=Do-While%20Statement\">Do-While%20Statement</a>"],
+  [4, "<a%20href=\"ConstructPage.html?construct=Do-Until%20Statement\">Do-Until%20Statement</a>"],
+  [4, "<a%20href=\"ConstructPage.html?construct=Forever%20Statement\">Forever%20Statement</a>"],
+  [4, "<a%20href=\"ConstructPage.html?construct=For%20Statement\">For%20Statement</a>"],
+  [4, "<a%20href=\"ConstructPage.html?construct=Foreach%20Statement\">Foreach%20Statement</a>"],
+  [4, "<a%20href=\"ConstructPage.html?construct=Break%20Statement\">Break%20Statement</a>"],
+  [4, "<a%20href=\"ConstructPage.html?construct=Continue%20Statement\">Continue%20Statement</a>"],
+  [4, "<a%20href=\"ConstructPage.html?construct=Redo%20Statement\">Redo%20Statement</a>"],
   [2, "<b>Variable%20Related</b>"],
-  [3, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=Var%20Statement\">Var%20Statement</a>"],
-  [3, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=Val%20Statement\">Val%20Statement</a>"],
-  [3, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=Let%20Statement\">Let%20Statement</a>"],
+  [3, "<a%20href=\"ConstructPage.html?construct=Var%20Statement\">Var%20Statement</a>"],
+  [3, "<a%20href=\"ConstructPage.html?construct=Val%20Statement\">Val%20Statement</a>"],
+  [3, "<a%20href=\"ConstructPage.html?construct=Let%20Statement\">Let%20Statement</a>"],
   [2, "<b>Exception%20Handling</b>"],
-  [3, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=Throw%20Statement\">Throw%20Statement</a>"],
-  [3, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=Try-Catch%20Statement\">Try-Catch%20Statement</a>"],
+  [3, "<a%20href=\"ConstructPage.html?construct=Throw%20Statement\">Throw%20Statement</a>"],
+  [3, "<a%20href=\"ConstructPage.html?construct=Try-Catch%20Statement\">Try-Catch%20Statement</a>"],
   [3, "<b>Assertions</b>"],
-  [4, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=Assert%20Statement\">Assert%20Statement</a>"],
-  [4, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=Assume%20Statement\">Assume%20Statement</a>"],
+  [4, "<a%20href=\"ConstructPage.html?construct=Assert%20Statement\">Assert%20Statement</a>"],
+  [4, "<a%20href=\"ConstructPage.html?construct=Assume%20Statement\">Assume%20Statement</a>"],
   [2, "<b>Anonymous%20Functions</b>"],
-  [3, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=Delegate%20Statement\">Delegate%20Statement</a>"],
-  [3, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=Lambda%20Statement\">Lambda%20Statement</a>"],
+  [3, "<a%20href=\"ConstructPage.html?construct=Delegate%20Statement\">Delegate%20Statement</a>"],
+  [3, "<a%20href=\"ConstructPage.html?construct=Lambda%20Statement\">Lambda%20Statement</a>"],
   [2, "<b>Handler%20Binding</b>"],
-  [3, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=Setter%20Statement\">Setter%20Statement</a>"],
-  [3, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=Getter%20Statement\">Getter%20Statement</a>"],
-  [3, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=Method%20Statement\">Method%20Statement</a>"],
+  [3, "<a%20href=\"ConstructPage.html?construct=Setter%20Statement\">Setter%20Statement</a>"],
+  [3, "<a%20href=\"ConstructPage.html?construct=Getter%20Statement\">Getter%20Statement</a>"],
+  [3, "<a%20href=\"ConstructPage.html?construct=Method%20Statement\">Method%20Statement</a>"],
   [2, "<b>Special</b>"],
-  [3, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=Nop%20Statement\">Nop%20Statement</a>"],
-  [3, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=Debug%20Statement\">Debug%20Statement</a>"],
-  [3, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=Expression%20Statement\">Expression%20Statement</a>"],
+  [3, "<a%20href=\"ConstructPage.html?construct=Nop%20Statement\">Nop%20Statement</a>"],
+  [3, "<a%20href=\"ConstructPage.html?construct=Debug%20Statement\">Debug%20Statement</a>"],
+  [3, "<a%20href=\"ConstructPage.html?construct=Expression%20Statement\">Expression%20Statement</a>"],
   [2, "<b>Return</b>"],
-  [3, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=Return%20Void%20Statement\">Return%20Void%20Statement</a>"],
-  [3, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=Return%20Value%20Statement\">Return%20Value%20Statement</a>"],
-  [3, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=Recur%20Statement\">Recur%20Statement</a>"],
-  [3, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=Yield%20Void%20Statement\">Yield%20Void%20Statement</a>"],
-  [3, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=Yield%20Value%20Statement\">Yield%20Value%20Statement</a>"],
+  [3, "<a%20href=\"ConstructPage.html?construct=Return%20Void%20Statement\">Return%20Void%20Statement</a>"],
+  [3, "<a%20href=\"ConstructPage.html?construct=Return%20Value%20Statement\">Return%20Value%20Statement</a>"],
+  [3, "<a%20href=\"ConstructPage.html?construct=Recur%20Statement\">Recur%20Statement</a>"],
+  [3, "<a%20href=\"ConstructPage.html?construct=Yield%20Void%20Statement\">Yield%20Void%20Statement</a>"],
+  [3, "<a%20href=\"ConstructPage.html?construct=Yield%20Value%20Statement\">Yield%20Value%20Statement</a>"],
   [1, "<b>Expressions</b>"],
   [2, "<b>Datums</b>"],
-  [3, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=Boolean%20Datum\">Boolean%20Datum</a>"],
-  [3, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=Char%20Datum\">Char%20Datum</a>"],
-  [3, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=Byte%20Datum\">Byte%20Datum</a>"],
-  [3, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=Short%20Datum\">Short%20Datum</a>"],
-  [3, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=Int%20Datum\">Int%20Datum</a>"],
-  [3, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=Long%20Datum\">Long%20Datum</a>"],
-  [3, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=Float%20Datum\">Float%20Datum</a>"],
-  [3, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=Double%20Datum\">Double%20Datum</a>"],
-  [3, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=String%20Datum\">String%20Datum</a>"],
-  [3, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=Class%20Datum\">Class%20Datum</a>"],
-  [3, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=Null%20Datum\">Null%20Datum</a>"],
-  [3, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=Variable%20Datum\">Variable%20Datum</a>"],
+  [3, "<a%20href=\"ConstructPage.html?construct=Boolean%20Datum\">Boolean%20Datum</a>"],
+  [3, "<a%20href=\"ConstructPage.html?construct=Char%20Datum\">Char%20Datum</a>"],
+  [3, "<a%20href=\"ConstructPage.html?construct=Byte%20Datum\">Byte%20Datum</a>"],
+  [3, "<a%20href=\"ConstructPage.html?construct=Short%20Datum\">Short%20Datum</a>"],
+  [3, "<a%20href=\"ConstructPage.html?construct=Int%20Datum\">Int%20Datum</a>"],
+  [3, "<a%20href=\"ConstructPage.html?construct=Long%20Datum\">Long%20Datum</a>"],
+  [3, "<a%20href=\"ConstructPage.html?construct=Float%20Datum\">Float%20Datum</a>"],
+  [3, "<a%20href=\"ConstructPage.html?construct=Double%20Datum\">Double%20Datum</a>"],
+  [3, "<a%20href=\"ConstructPage.html?construct=String%20Datum\">String%20Datum</a>"],
+  [3, "<a%20href=\"ConstructPage.html?construct=Class%20Datum\">Class%20Datum</a>"],
+  [3, "<a%20href=\"ConstructPage.html?construct=Null%20Datum\">Null%20Datum</a>"],
+  [3, "<a%20href=\"ConstructPage.html?construct=Variable%20Datum\">Variable%20Datum</a>"],
   [2, "<b>Operators</b>"],
-  [3, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=Negate%20Operation\">Negate%20Operation</a>"],
-  [3, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=Not%20Operation\">Not%20Operation</a>"],
-  [3, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=Divide%20Operation\">Divide%20Operation</a>"],
-  [3, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=Modulo%20Operation\">Modulo%20Operation</a>"],
-  [3, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=Multiply%20Operation\">Multiply%20Operation</a>"],
-  [3, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=Add%20Operation\">Add%20Operation</a>"],
-  [3, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=Subtract%20Operation\">Subtract%20Operation</a>"],
-  [3, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=Concat%20Operation\">Concat%20Operation</a>"],
-  [3, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=Identity%20Equality%20Operation\">Identity%20Equality%20Operation</a>"],
-  [3, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=Identity%20Inequality%20Operation\">Identity%20Inequality%20Operation</a>"],
-  [3, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=Equality%20Operation\">Equality%20Operation</a>"],
-  [3, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=Inequality%20Operation\">Inequality%20Operation</a>"],
-  [3, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=Greater-Than-OR-Equals%20Operation\">Greater-Than-OR-Equals%20Operation</a>"],
-  [3, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=Less-Than-OR-Equals%20Operation\">Less-Than-OR-Equals%20Operation</a>"],
-  [3, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=Greater-Than%20Operation\">Greater-Than%20Operation</a>"],
-  [3, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=Less-Than%20Operation\">Less-Than%20Operation</a>"],
-  [3, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=And%20Operation\">And%20Operation</a>"],
-  [3, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=Or%20Operation\">Or%20Operation</a>"],
-  [3, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=Xor%20Operation\">Xor%20Operation</a>"],
-  [3, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=Implies%20Operation\">Implies%20Operation</a>"],
-  [3, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=Short-Circuit%20And%20Operation\">Short-Circuit%20And%20Operation</a>"],
-  [3, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=Short-Circuit%20Or%20Operation\">Short-Circuit%20Or%20Operation</a>"],
-  [3, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=Null%20Coalescing%20Operation\">Null%20Coalescing%20Operation</a>"],
-  [3, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=As%20Operation\">As%20Operation</a>"],
-  [3, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=Is%20Operation\">Is%20Operation</a>"],
+  [3, "<a%20href=\"ConstructPage.html?construct=Negate%20Operation\">Negate%20Operation</a>"],
+  [3, "<a%20href=\"ConstructPage.html?construct=Not%20Operation\">Not%20Operation</a>"],
+  [3, "<a%20href=\"ConstructPage.html?construct=Divide%20Operation\">Divide%20Operation</a>"],
+  [3, "<a%20href=\"ConstructPage.html?construct=Modulo%20Operation\">Modulo%20Operation</a>"],
+  [3, "<a%20href=\"ConstructPage.html?construct=Multiply%20Operation\">Multiply%20Operation</a>"],
+  [3, "<a%20href=\"ConstructPage.html?construct=Add%20Operation\">Add%20Operation</a>"],
+  [3, "<a%20href=\"ConstructPage.html?construct=Subtract%20Operation\">Subtract%20Operation</a>"],
+  [3, "<a%20href=\"ConstructPage.html?construct=Concat%20Operation\">Concat%20Operation</a>"],
+  [3, "<a%20href=\"ConstructPage.html?construct=Identity%20Equality%20Operation\">Identity%20Equality%20Operation</a>"],
+  [3, "<a%20href=\"ConstructPage.html?construct=Identity%20Inequality%20Operation\">Identity%20Inequality%20Operation</a>"],
+  [3, "<a%20href=\"ConstructPage.html?construct=Equality%20Operation\">Equality%20Operation</a>"],
+  [3, "<a%20href=\"ConstructPage.html?construct=Inequality%20Operation\">Inequality%20Operation</a>"],
+  [3, "<a%20href=\"ConstructPage.html?construct=Greater-Than-OR-Equals%20Operation\">Greater-Than-OR-Equals%20Operation</a>"],
+  [3, "<a%20href=\"ConstructPage.html?construct=Less-Than-OR-Equals%20Operation\">Less-Than-OR-Equals%20Operation</a>"],
+  [3, "<a%20href=\"ConstructPage.html?construct=Greater-Than%20Operation\">Greater-Than%20Operation</a>"],
+  [3, "<a%20href=\"ConstructPage.html?construct=Less-Than%20Operation\">Less-Than%20Operation</a>"],
+  [3, "<a%20href=\"ConstructPage.html?construct=And%20Operation\">And%20Operation</a>"],
+  [3, "<a%20href=\"ConstructPage.html?construct=Or%20Operation\">Or%20Operation</a>"],
+  [3, "<a%20href=\"ConstructPage.html?construct=Xor%20Operation\">Xor%20Operation</a>"],
+  [3, "<a%20href=\"ConstructPage.html?construct=Implies%20Operation\">Implies%20Operation</a>"],
+  [3, "<a%20href=\"ConstructPage.html?construct=Short-Circuit%20And%20Operation\">Short-Circuit%20And%20Operation</a>"],
+  [3, "<a%20href=\"ConstructPage.html?construct=Short-Circuit%20Or%20Operation\">Short-Circuit%20Or%20Operation</a>"],
+  [3, "<a%20href=\"ConstructPage.html?construct=Null%20Coalescing%20Operation\">Null%20Coalescing%20Operation</a>"],
+  [3, "<a%20href=\"ConstructPage.html?construct=As%20Operation\">As%20Operation</a>"],
+  [3, "<a%20href=\"ConstructPage.html?construct=Is%20Operation\">Is%20Operation</a>"],
   [2, "<b>Object%20Orientation</b>"],
-  [3, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=New%20Expression\">New%20Expression</a>"],
-  [3, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=Call%20Static%20Method%20Expression\">Call%20Static%20Method%20Expression</a>"],
-  [3, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=Call%20Method%20Expression\">Call%20Method%20Expression</a>"],
-  [3, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=Set%20Static%20Field%20Expression\">Set%20Static%20Field%20Expression</a>"],
-  [3, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=Get%20Static%20Field%20Expression\">Get%20Static%20Field%20Expression</a>"],
-  [3, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=Set%20Field%20Expression\">Set%20Field%20Expression</a>"],
-  [3, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=Get%20Field%20Expression\">Get%20Field%20Expression</a>"],
-  [3, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=Instance-Of%20Expression\">Instance-Of%20Expression</a>"],
-  [3, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=Dispatch%20Expression\">Dispatch%20Expression</a>"],
-  [3, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=Create%20Expression\">Create%20Expression</a>"],
-  [2, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=Ternary%20Conditional%20Expression\">Ternary%20Conditional%20Expression</a>"],
-  [2, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=Locals%20Expression\">Locals%20Expression</a>"],
-  [2, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=Progn%20Expression\">Progn%20Expression</a>"],
-  [2, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=List%20Expression\">List%20Expression</a>"],
+  [3, "<a%20href=\"ConstructPage.html?construct=New%20Expression\">New%20Expression</a>"],
+  [3, "<a%20href=\"ConstructPage.html?construct=Call%20Static%20Method%20Expression\">Call%20Static%20Method%20Expression</a>"],
+  [3, "<a%20href=\"ConstructPage.html?construct=Call%20Method%20Expression\">Call%20Method%20Expression</a>"],
+  [3, "<a%20href=\"ConstructPage.html?construct=Set%20Static%20Field%20Expression\">Set%20Static%20Field%20Expression</a>"],
+  [3, "<a%20href=\"ConstructPage.html?construct=Get%20Static%20Field%20Expression\">Get%20Static%20Field%20Expression</a>"],
+  [3, "<a%20href=\"ConstructPage.html?construct=Set%20Field%20Expression\">Set%20Field%20Expression</a>"],
+  [3, "<a%20href=\"ConstructPage.html?construct=Get%20Field%20Expression\">Get%20Field%20Expression</a>"],
+  [3, "<a%20href=\"ConstructPage.html?construct=Instance-Of%20Expression\">Instance-Of%20Expression</a>"],
+  [3, "<a%20href=\"ConstructPage.html?construct=Dispatch%20Expression\">Dispatch%20Expression</a>"],
+  [3, "<a%20href=\"ConstructPage.html?construct=Create%20Expression\">Create%20Expression</a>"],
+  [2, "<a%20href=\"ConstructPage.html?construct=Ternary%20Conditional%20Expression\">Ternary%20Conditional%20Expression</a>"],
+  [2, "<a%20href=\"ConstructPage.html?construct=Locals%20Expression\">Locals%20Expression</a>"],
+  [2, "<a%20href=\"ConstructPage.html?construct=Progn%20Expression\">Progn%20Expression</a>"],
+  [2, "<a%20href=\"ConstructPage.html?construct=List%20Expression\">List%20Expression</a>"],
   [0, "<b>Components</b>"],
-  [1, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=Annotations\">Annotations</a>"],
-  [1, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=Annotation%20List\">Annotation%20List</a>"],
-  [1, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=Formal%20Parameter\">Formal%20Parameter</a>"],
-  [1, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=Name\">Name</a>"],
-  [1, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=Type%20Specifier\">Type%20Specifier</a>"],
-  [1, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=Doc%20Comment\">Doc%20Comment</a>"],
-  [2, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=Doc%20Comment%20Line\">Doc%20Comment%20Line</a>"],
-  [1, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/ConstructPage.html?construct=Comments\">Comments</a>"],
+  [1, "<a%20href=\"ConstructPage.html?construct=Annotations\">Annotations</a>"],
+  [1, "<a%20href=\"ConstructPage.html?construct=Annotation%20List\">Annotation%20List</a>"],
+  [1, "<a%20href=\"ConstructPage.html?construct=Formal%20Parameter\">Formal%20Parameter</a>"],
+  [1, "<a%20href=\"ConstructPage.html?construct=Name\">Name</a>"],
+  [1, "<a%20href=\"ConstructPage.html?construct=Type%20Specifier\">Type%20Specifier</a>"],
+  [1, "<a%20href=\"ConstructPage.html?construct=Doc%20Comment\">Doc%20Comment</a>"],
+  [2, "<a%20href=\"ConstructPage.html?construct=Doc%20Comment%20Line\">Doc%20Comment%20Line</a>"],
+  [1, "<a%20href=\"ConstructPage.html?construct=Comments\">Comments</a>"],
   [0, "<b>Type%20System</b>"],
-  [1, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Type%20Structure\">Type%20Structure</a>"],
-  [1, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Type%20Conversions%20and%20Assignability\">Type%20Conversions%20and%20Assignability</a>"],
-  [1, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Special%20Names\">Special%20Names</a>"],
-  [1, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Accessibility\">Accessibility</a>"],
-  [1, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Resolution\">Resolution</a>"],
-  [0, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Debugger\">Debugger</a>"],
-  [0, "<a%20href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/javadoc/index.html\"><b>Standard%20Library</b></a>"],
+  [1, "<a%20href=\"TextPage.html?page=Type%20Structure\">Type%20Structure</a>"],
+  [1, "<a%20href=\"TextPage.html?page=Type%20Conversions%20and%20Assignability\">Type%20Conversions%20and%20Assignability</a>"],
+  [1, "<a%20href=\"TextPage.html?page=Special%20Names\">Special%20Names</a>"],
+  [1, "<a%20href=\"TextPage.html?page=Accessibility\">Accessibility</a>"],
+  [1, "<a%20href=\"TextPage.html?page=Resolution\">Resolution</a>"],
+  [0, "<a%20href=\"TextPage.html?page=Debugger\">Debugger</a>"],
+  [0, "<a%20href=\"javadoc/index.html\"><b>Standard%20Library</b></a>"],
 ],
 
 
@@ -171,7 +171,7 @@ function spec()
       ["DUPLICATE_MODULE_DIRECTIVE", "A module can only contain one module-directive."],
       ["DUPLICATE_FUNCTION", "No two functions in the same module can share their name and parameter-list descriptor."],
     ],
-  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    (F::println %22Hello World!%22);%0A}", "Hello World!"],
+  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    (F::println %22Hello World!%22);%0A}", ""],
 },
 
 
@@ -455,9 +455,9 @@ function spec()
   "syntax":
     [
       [0, "{"],
-      [1, "<i><a href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Statement\">statement</a><sub>1</sub></i>"],
-      [1, "<i><a href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Statement\">statement</a><sub>2</sub></i>"],
-      [1, "<i><a href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Statement\">statement</a><sub>n</sub></i>"],
+      [1, "<i><a href=\"TextPage.html?page=Statement\">statement</a><sub>1</sub></i>"],
+      [1, "<i><a href=\"TextPage.html?page=Statement\">statement</a><sub>2</sub></i>"],
+      [1, "<i><a href=\"TextPage.html?page=Statement\">statement</a><sub>n</sub></i>"],
       [0, "}"],
     ],
   "details":
@@ -467,7 +467,7 @@ function spec()
   "static-checks":
     [
     ],
-  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    {%0A        (F::println %22A%22);%0A        (F::println %22B%22);%0A        (F::println %22C%22);%0A    }%0A}", "A%0AB%0AC"],
+  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    {%0A        (F::println %22A%22);%0A        (F::println %22B%22);%0A        (F::println %22C%22);%0A    }%0A}", ""],
 },
 
 
@@ -476,19 +476,19 @@ function spec()
   "ast" : "autumn.lang.compiler.ast.nodes.IfStatement",
   "syntax":
     [
-      [0, "<span class=\"keyword\">if</span> ( <i><a href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Expression\">condition</a><sub>1</sub></i> )"],
+      [0, "<span class=\"keyword\">if</span> ( <i><a href=\"TextPage.html?page=Expression\">condition</a><sub>1</sub></i> )"],
       [0, "{"],
       [1, "<i>body<sub>1</sub></i>"],
       [0, "}"],
-      [0, "<span class=\"keyword\">elif</span> ( <i><a href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Expression\">condition</a><sub>2</sub></i> )<sub>1</sub>"],
+      [0, "<span class=\"keyword\">elif</span> ( <i><a href=\"TextPage.html?page=Expression\">condition</a><sub>2</sub></i> )<sub>1</sub>"],
       [0, "{"],
       [1, "<i>body<sub>2</sub></i>"],
       [0, "}"],
-      [0, "<span class=\"keyword\">elif</span> ( <i><a href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Expression\">condition</a><sub>3</sub></i> )<sub>2</sub>"],
+      [0, "<span class=\"keyword\">elif</span> ( <i><a href=\"TextPage.html?page=Expression\">condition</a><sub>3</sub></i> )<sub>2</sub>"],
       [0, "{"],
       [1, "<i>body<sub>3</sub></i>"],
       [0, "}"],
-      [0, "<span class=\"keyword\">elif</span> ( <i><a href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Expression\">condition</a><sub>4</sub></i> )<sub>n</sub>"],
+      [0, "<span class=\"keyword\">elif</span> ( <i><a href=\"TextPage.html?page=Expression\">condition</a><sub>4</sub></i> )<sub>n</sub>"],
       [0, "{"],
       [1, "<i>body<sub>4</sub></i>"],
       [0, "}"],
@@ -510,9 +510,9 @@ function spec()
     [
       ["EXPECTED_CONDITION", "The type of each condition must be assignable to primitive-type boolean."],
     ],
-  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    for(i = 10; i < 25; i + 1)%0A    {%0A        (My::write i);%0A    }%0A} %0A%0Adefun write(index : int) : void%0A{%0A    val case1 = index &#37; 3 == 0; // Fizz%0A    val case2 = index &#37; 5 == 0; // Buzz%0A    val case3 = case1 && case2; // Both%0A%0A    if(case3)%0A    {%0A        (F::println index .. %22 = Both%22);%0A    }%0A    elif(case2)%0A    {%0A        (F::println index .. %22 = Buzz%22);%0A    }%0A    elif(case1)%0A    {%0A        (F::println index .. %22 = Fizz%22);%0A    }%0A    else%0A    {%0A        (F::println index);%0A    }%0A}", "10 = Buzz%0A11%0A12 = Fizz%0A13%0A14%0A15 = Both%0A16%0A17%0A18 = Fizz%0A19%0A20 = Buzz%0A21 = Fizz%0A22%0A23%0A24 = Fizz"],
+  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    for(i = 10; i < 25; i + 1)%0A    {%0A        (My::write i);%0A    }%0A} %0A%0Adefun write(index : int) : void%0A{%0A    val case1 = index &#37; 3 == 0; // Fizz%0A    val case2 = index &#37; 5 == 0; // Buzz%0A    val case3 = case1 && case2; // Both%0A%0A    if(case3)%0A    {%0A        (F::println index .. %22 = Both%22);%0A    }%0A    elif(case2)%0A    {%0A        (F::println index .. %22 = Buzz%22);%0A    }%0A    elif(case1)%0A    {%0A        (F::println index .. %22 = Fizz%22);%0A    }%0A    else%0A    {%0A        (F::println index);%0A    }%0A}", ""],
   "example-2" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    (My::write %22Mercury%22, false);%0A    (My::write %22Venus%22, false);%0A    (My::write %22Earth%22, false);%0A    (My::write %22Mars%22, false);%0A%0A    (F::println);%0A%0A    (My::write %22Jupiter%22, true);%0A    (My::write %22Saturn%22, true);%0A    (My::write %22Uranus%22, true);%0A    (My::write %22Neptune%22, true);%0A}%0A%0Adefun write(name : String, jovian : boolean) : void%0A{%0A    if(jovian)%0A    {%0A        (F::println name .. %22 is a jovian planet.%22);%0A    }%0A    else%0A    {%0A        (F::println name .. %22 is a terrestrial planet.%22);%0A    }%0A}", "Mercury is a terrestrial planet.%0AVenus is a terrestrial planet.%0AEarth is a terrestrial planet.%0AMars is a terrestrial planet.%0A%0AJupiter is a jovian planet.%0ASaturn is a jovian planet.%0AUranus is a jovian planet.%0ANeptune is a jovian planet."],
-  "example-3" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    (My::write 0);%0A    (My::write 1);%0A    (My::write 2);%0A    (My::write 3);%0A    (My::write 4);%0A    (My::write 5);%0A    (My::write 6);%0A    (My::write 7);%0A    (My::write 8);%0A    (My::write 9);%0A}%0A%0Adefun write(number : int) : void%0A{%0A    if(number &#37; 2 != 0)%0A    {%0A        (F::println number .. %22 is very odd.%22);%0A    }%0A}", "1 is very odd.%0A3 is very odd.%0A5 is very odd.%0A7 is very odd.%0A9 is very odd."],
+  "example-3" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    (My::write 0);%0A    (My::write 1);%0A    (My::write 2);%0A    (My::write 3);%0A    (My::write 4);%0A    (My::write 5);%0A    (My::write 6);%0A    (My::write 7);%0A    (My::write 8);%0A    (My::write 9);%0A}%0A%0Adefun write(number : int) : void%0A{%0A    if(number &#37; 2 != 0)%0A    {%0A        (F::println number .. %22 is very odd.%22);%0A    }%0A}", ""],
 },
 
 
@@ -521,7 +521,7 @@ function spec()
   "ast" : "autumn.lang.compiler.ast.nodes.WhenStatement",
   "syntax":
     [
-      [0, "<span class=\"keyword\">when</span> ( <i><a href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Expression\">condition</a></i> ) <span class=\"keyword\">then</span> <i><a href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Statement\">statement</a></i>"],
+      [0, "<span class=\"keyword\">when</span> ( <i><a href=\"TextPage.html?page=Expression\">condition</a></i> ) <span class=\"keyword\">then</span> <i><a href=\"TextPage.html?page=Statement\">statement</a></i>"],
     ],
   "details":
     [
@@ -533,7 +533,7 @@ function spec()
       ["EXPECTED_CONDITION", "The type of condition must be assignable to type boolean."],
     ],
   "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    (My::write %22Europa%22, false);%0A    (My::write %22Titan%22, false);%0A    (My::write %22Ceres%22, false);%0A    (My::write %22Mimas%22, false);%0A%0A    (My::write %22Mercury%22, true);%0A    (My::write %22Venus%22, true);%0A    (My::write %22Earth%22, true);%0A    (My::write %22Mars%22, true);%0A}%0A%0Adefun write(name : String, planet : boolean) : void%0A{%0A    when (planet) then (F::println name .. %22 is a planet.%22);%0A}", "Mercury is a planet.%0AVenus is a planet.%0AEarth is a planet.%0AMars is a planet."],
-  "example-2" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    val emma = 5000;%0A    val elle = 23000;%0A    val evie = 127000;%0A    val erin = 230000;%0A%0A    (My::write %22Emma%22, emma);%0A    (My::write %22Elle%22, elle);%0A    (My::write %22Evie%22, evie);%0A    (My::write %22Erin%22, erin);%0A}%0A%0Adefun write(name : String, income : int) : void%0A{%0A    val tax = (My::tax income);%0A%0A    (F::println name .. %22's Tax = %22 .. tax);%0A}%0A%0Adefun tax(income : int) : int%0A{%0A    // No tax, if income is less than $10000.%0A    when (income < 10000) then return 0;%0A%0A    // 10&#37; tax, if income is less than $100,000.%0A    when (income < 100000) then return income / 10;%0A%0A    // 20&#37; tax, if income is less than $200,000.%0A    when (income < 200000) then return income / 5;%0A%0A    // Otherwise, 50&#37; tax.%0A    return income / 2;%0A}", "Emma's Tax = 0%0AElle's Tax = 2300%0AEvie's Tax = 25400%0AErin's Tax = 115000"],
+  "example-2" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    val emma = 5000;%0A    val elle = 23000;%0A    val evie = 127000;%0A    val erin = 230000;%0A%0A    (My::write %22Emma%22, emma);%0A    (My::write %22Elle%22, elle);%0A    (My::write %22Evie%22, evie);%0A    (My::write %22Erin%22, erin);%0A}%0A%0Adefun write(name : String, income : int) : void%0A{%0A    val tax = (My::tax income);%0A%0A    (F::println name .. %22's Tax = %22 .. tax);%0A}%0A%0Adefun tax(income : int) : int%0A{%0A    // No tax, if income is less than $10000.%0A    when (income < 10000) then return 0;%0A%0A    // 10&#37; tax, if income is less than $100,000.%0A    when (income < 100000) then return income / 10;%0A%0A    // 20&#37; tax, if income is less than $200,000.%0A    when (income < 200000) then return income / 5;%0A%0A    // Otherwise, 50&#37; tax.%0A    return income / 2;%0A}", ""],
 },
 
 
@@ -552,9 +552,9 @@ function spec()
     [
       ["NO_SUCH_LABEL", "The <i>label</i> must be declared somewhere in the enclosing function."],
     ],
-  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    (F::println %22Virginia%22);%0A%0A    goto WEST;%0A%0A    (F::println %22Kansas%22);%0A%0A    marker WEST;%0A%0A    (F::println %22California%22);%0A}", "Virginia%0ACalifornia"],
+  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    (F::println %22Virginia%22);%0A%0A    goto WEST;%0A%0A    (F::println %22Kansas%22);%0A%0A    marker WEST;%0A%0A    (F::println %22California%22);%0A}", ""],
   "example-2" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    for (x = 0; x < 3; x + 1)%0A    {%0A        for (y = 0; y < 3; y + 1)%0A        {%0A            for (z = 0; z < 3; z + 1)%0A            {%0A                (F::println [x, y, z]);%0A%0A                when (x == 3 && y == 2 && z == 1) then goto END;%0A            }%0A        }%0A    }%0A%0A    marker END;%0A}", "[0, 0, 0]%0A[0, 0, 1]%0A[0, 0, 2]%0A[0, 1, 0]%0A[0, 1, 1]%0A[0, 1, 2]%0A[0, 2, 0]%0A[0, 2, 1]%0A[0, 2, 2]%0A[1, 0, 0]%0A[1, 0, 1]%0A[1, 0, 2]%0A[1, 1, 0]%0A[1, 1, 1]%0A[1, 1, 2]%0A[1, 2, 0]%0A[1, 2, 1]%0A[1, 2, 2]%0A[2, 0, 0]%0A[2, 0, 1]%0A[2, 0, 2]%0A[2, 1, 0]%0A[2, 1, 1]%0A[2, 1, 2]%0A[2, 2, 0]%0A[2, 2, 1]%0A[2, 2, 2]"],
-  "example-3" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    (F::print %22This%22);%0A%0A    goto IS;%0A%0A    marker DONOT;%0A%0A    (F::print %22do not%22);%0A%0A    goto DO;%0A%0A    marker PASTA;%0A%0A    (F::print %22spaghetti%22);%0A%0A    goto CODE;%0A%0A    marker IS;%0A%0A    (F::print %22 is %22);%0A%0A    goto PASTA;%0A%0A    marker DO;%0A%0A    (F::print %22 do %22);%0A%0A    goto THIS;%0A%0A    marker CODE;%0A%0A    (F::print %22 code %22);%0A%0A    goto DONOT;%0A%0A    marker THIS;%0A%0A    (F::print %22this!!!%22);%0A}", "This is spaghetti code do not do this!!!"],
+  "example-3" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    (F::print %22This%22);%0A%0A    goto IS;%0A%0A    marker DONOT;%0A%0A    (F::print %22do not%22);%0A%0A    goto DO;%0A%0A    marker PASTA;%0A%0A    (F::print %22spaghetti%22);%0A%0A    goto CODE;%0A%0A    marker IS;%0A%0A    (F::print %22 is %22);%0A%0A    goto PASTA;%0A%0A    marker DO;%0A%0A    (F::print %22 do %22);%0A%0A    goto THIS;%0A%0A    marker CODE;%0A%0A    (F::print %22 code %22);%0A%0A    goto DONOT;%0A%0A    marker THIS;%0A%0A    (F::print %22this!!!%22);%0A}", ""],
 },
 
 
@@ -575,7 +575,7 @@ function spec()
     [
       ["DUPLICATE_LABEL", "No two labels in the same function can share a name."],
     ],
-  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    (F::println %22Virginia%22);%0A%0A    goto WEST;%0A%0A    (F::println %22Kansas%22);%0A%0A    marker WEST;%0A%0A    (F::println %22California%22);%0A}", "Virginia%0ACalifornia"],
+  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    (F::println %22Virginia%22);%0A%0A    goto WEST;%0A%0A    (F::println %22Kansas%22);%0A%0A    marker WEST;%0A%0A    (F::println %22California%22);%0A}", ""],
 },
 
 
@@ -584,7 +584,7 @@ function spec()
   "ast" : "autumn.lang.compiler.ast.nodes.WhileStatement",
   "syntax":
     [
-      [0, "<span class=\"keyword\">while</span> ( <i><a href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Expression\">condition</a></i> )"],
+      [0, "<span class=\"keyword\">while</span> ( <i><a href=\"TextPage.html?page=Expression\">condition</a></i> )"],
       [0, "{"],
       [1, "<i>body</i>"],
       [0, "}"],
@@ -599,7 +599,7 @@ function spec()
     [
       ["EXPECTED_CONDITION", "The type of condition must be assignable to type boolean."],
     ],
-  "example-1" : ["module * in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    var i = 0;%0A%0A    while (i < 5)%0A    {%0A        (F::print %22X = %22);%0A        (F::println i);%0A%0A        i = i + 1;%0A    }%0A}", "X = 0%0AX = 1%0AX = 2%0AX = 3%0AX = 4"],
+  "example-1" : ["module * in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    var i = 0;%0A%0A    while (i < 5)%0A    {%0A        (F::print %22X = %22);%0A        (F::println i);%0A%0A        i = i + 1;%0A    }%0A}", ""],
 },
 
 
@@ -608,7 +608,7 @@ function spec()
   "ast" : "autumn.lang.compiler.ast.nodes.UntilStatement",
   "syntax":
     [
-      [0, "<span class=\"keyword\">until</span> ( <i><a href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Expression\">condition</a></i> )"],
+      [0, "<span class=\"keyword\">until</span> ( <i><a href=\"TextPage.html?page=Expression\">condition</a></i> )"],
       [0, "{"],
       [1, "<i>body</i>"],
       [0, "}"],
@@ -623,7 +623,7 @@ function spec()
     [
       ["EXPECTED_CONDITION", "The type of condition must be assignable to type boolean."],
     ],
-  "example-1" : ["module * in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    var i = 0;%0A%0A    until (i > 5)%0A    {%0A        (F::print %22X = %22);%0A        (F::println i);%0A%0A        i = i + 1;%0A    }%0A}", "X = 0%0AX = 1%0AX = 2%0AX = 3%0AX = 4%0AX = 5"],
+  "example-1" : ["module * in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    var i = 0;%0A%0A    until (i > 5)%0A    {%0A        (F::print %22X = %22);%0A        (F::println i);%0A%0A        i = i + 1;%0A    }%0A}", ""],
 },
 
 
@@ -636,7 +636,7 @@ function spec()
       [0, "{"],
       [1, "<i>body</i>"],
       [0, "}"],
-      [0, "<span class=\"keyword\">while</span> ( <i><a href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Expression\">condition</a></i> )"],
+      [0, "<span class=\"keyword\">while</span> ( <i><a href=\"TextPage.html?page=Expression\">condition</a></i> )"],
     ],
   "details":
     [
@@ -662,7 +662,7 @@ function spec()
       [0, "{"],
       [1, "<i>body</i>"],
       [0, "}"],
-      [0, "<span class=\"keyword\">until</span> ( <i><a href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Expression\">condition</a></i> )"],
+      [0, "<span class=\"keyword\">until</span> ( <i><a href=\"TextPage.html?page=Expression\">condition</a></i> )"],
     ],
   "details":
     [
@@ -675,7 +675,7 @@ function spec()
     [
       ["EXPECTED_CONDITION", "The type of condition must be assignable to type boolean."],
     ],
-  "example-1" : ["module * in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    var i = 0;%0A    %0A    do%0A    {%0A        (F::print %22X = %22);%0A        (F::println i);%0A%0A        i = i + 1;%0A    }%0A    until (i == 5)%0A}", "X = 0%0AX = 1%0AX = 2%0AX = 3%0AX = 4"],
+  "example-1" : ["module * in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    var i = 0;%0A    %0A    do%0A    {%0A        (F::print %22X = %22);%0A        (F::println i);%0A%0A        i = i + 1;%0A    }%0A    until (i == 5)%0A}", ""],
 },
 
 
@@ -706,7 +706,7 @@ function spec()
   "ast" : "autumn.lang.compiler.ast.nodes.ForStatement",
   "syntax":
     [
-      [0, "<span class=\"keyword\">for</span> ( <i>assignee</i> = <i>#initializer#</i> ; <i><a href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Expression\">condition</a></i> ; <i>#modifier#</i> )"],
+      [0, "<span class=\"keyword\">for</span> ( <i>assignee</i> = <i>#initializer#</i> ; <i><a href=\"TextPage.html?page=Expression\">condition</a></i> ; <i>#modifier#</i> )"],
       [0, "{"],
       [1, "<i>body</i>"],
       [0, "}"],
@@ -729,7 +729,7 @@ function spec()
       ["EXPECTED_INTEGER", "The type of modifier must be assignable to type int."],
       ["DUPLICATE_VARIABLE", "No two variables declared inside the same function can share a name."],
     ],
-  "example-1" : ["module * in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    for (i = 0; i < 5; i + 1)%0A    {%0A        (F::print %22X = %22);%0A        (F::println i);%0A    }%0A}", "X = 0%0AX = 1%0AX = 2%0AX = 3%0AX = 4"],
+  "example-1" : ["module * in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    for (i = 0; i < 5; i + 1)%0A    {%0A        (F::print %22X = %22);%0A        (F::println i);%0A    }%0A}", ""],
 },
 
 
@@ -760,7 +760,7 @@ function spec()
       ["NO_SUCH_TYPE", "The <i>type</i> type must exist."],
       ["INACCESSIBLE_TYPE", "The <i>type</i> type must be accessible from the enclosing package."],
     ],
-  "example-1" : ["module * in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    var pets = [%22Jet%22, %22Fluffy%22, %22Eyeball%22, %22Molly%22];%0A%0A    foreach (x : String in pets)%0A    {%0A        (F::print %22Pet Name = %22);%0A        (F::println x);%0A    }%0A}", "Pet Name = Jet%0APet Name = Fluffy%0APet Name = Eyeball%0APet Name = Molly"],
+  "example-1" : ["module * in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    var pets = [%22Jet%22, %22Fluffy%22, %22Eyeball%22, %22Molly%22];%0A%0A    foreach (x : String in pets)%0A    {%0A        (F::print %22Pet Name = %22);%0A        (F::println x);%0A    }%0A}", ""],
 },
 
 
@@ -779,7 +779,7 @@ function spec()
     [
       ["BREAK_OUTSIDE_OF_LOOP", "A break-statement must be in the body of a loop."],
     ],
-  "example-1" : ["module * in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    var i = 0;%0A%0A    while (i < 100)%0A    {%0A        (F::print %22X = %22);%0A        (F::println i);%0A%0A        when (i == 5) then break;%0A%0A        i = i + 1;%0A    }%0A}", "X = 0%0AX = 1%0AX = 2%0AX = 3%0AX = 4%0AX = 5"],
+  "example-1" : ["module * in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    var i = 0;%0A%0A    while (i < 100)%0A    {%0A        (F::print %22X = %22);%0A        (F::println i);%0A%0A        when (i == 5) then break;%0A%0A        i = i + 1;%0A    }%0A}", ""],
 },
 
 
@@ -798,7 +798,7 @@ function spec()
     [
       ["CONTINUE_OUTSIDE_OF_LOOP", "A continue-statement must be in the body of a loop."],
     ],
-  "example-1" : ["module * in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    var i = 0;%0A%0A    while (i < 5)%0A    {%0A        i = i + 1;%0A%0A        when (i == 2) then continue;%0A%0A        (F::print %22X = %22);%0A        (F::println i);%0A    }%0A}", "X = 1%0AX = 3%0AX = 4%0AX = 5"],
+  "example-1" : ["module * in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    var i = 0;%0A%0A    while (i < 5)%0A    {%0A        i = i + 1;%0A%0A        when (i == 2) then continue;%0A%0A        (F::print %22X = %22);%0A        (F::println i);%0A    }%0A}", ""],
 },
 
 
@@ -825,7 +825,7 @@ function spec()
   "ast" : "autumn.lang.compiler.ast.nodes.VarStatement",
   "syntax":
     [
-      [0, "<span class=\"keyword\">var</span> <i>assignee</i> = <i><a href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Expression\">value</a></i> ;"],
+      [0, "<span class=\"keyword\">var</span> <i>assignee</i> = <i><a href=\"TextPage.html?page=Expression\">value</a></i> ;"],
     ],
   "details":
     [
@@ -840,7 +840,7 @@ function spec()
       ["VALUE_REQUIRED", "The type of the <i>value</i> cannot be the void-type."],
       ["EXPECTED_NON_NULL", "The type of the <i>value</i> cannot be the null-type."],
     ],
-  "example-1" : ["module * in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    # Create a boolean variable.%0A    var a = true;%0A%0A    # Create a char variable.%0A    var b = 'A';%0A%0A    # Create a byte variable.%0A    var c = 11B;%0A%0A    # Create a short variable.%0A    var d = 13S;%0A%0A    # Create a int variable.%0A    var e = 17;%0A%0A    # Create a long variable.%0A    var f = 19L;%0A%0A    # Create a float variable.%0A    var g = 23.0F;%0A%0A    # Create a double variable.%0A    var h = 27.0;%0A%0A    # Create a string variable.%0A    var i = %22Venus%22;%0A%0A    # Create a list variable.%0A    var j = [%22Jupiter%22, %22Saturn%22, %22Uranus%22, %22Neptune%22];%0A%0A    # Create another int variable.%0A    var x = e + 3;%0A%0A    # Create yet another int variable.%0A    var y = x + e;%0A%0A    # Create a list containing the values of the previous variables.%0A    var values = [a, b, c, d, e, f, g, i, j, x, y];%0A%0A    foreach (value : Object in values)%0A    {%0A        (F::print %22Value = %22);%0A        (F::println value);%0A    }%0A}", "Value = true%0AValue = A%0AValue = 11%0AValue = 13%0AValue = 17%0AValue = 19%0AValue = 23.0%0AValue = Venus%0AValue = [Jupiter, Saturn, Uranus, Neptune]%0AValue = 20%0AValue = 37"],
+  "example-1" : ["module * in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    # Create a boolean variable.%0A    var a = true;%0A%0A    # Create a char variable.%0A    var b = 'A';%0A%0A    # Create a byte variable.%0A    var c = 11B;%0A%0A    # Create a short variable.%0A    var d = 13S;%0A%0A    # Create a int variable.%0A    var e = 17;%0A%0A    # Create a long variable.%0A    var f = 19L;%0A%0A    # Create a float variable.%0A    var g = 23.0F;%0A%0A    # Create a double variable.%0A    var h = 27.0;%0A%0A    # Create a string variable.%0A    var i = %22Venus%22;%0A%0A    # Create a list variable.%0A    var j = [%22Jupiter%22, %22Saturn%22, %22Uranus%22, %22Neptune%22];%0A%0A    # Create another int variable.%0A    var x = e + 3;%0A%0A    # Create yet another int variable.%0A    var y = x + e;%0A%0A    # Create a list containing the values of the previous variables.%0A    var values = [a, b, c, d, e, f, g, i, j, x, y];%0A%0A    foreach (value : Object in values)%0A    {%0A        (F::print %22Value = %22);%0A        (F::println value);%0A    }%0A}", ""],
 },
 
 
@@ -849,7 +849,7 @@ function spec()
   "ast" : "autumn.lang.compiler.ast.nodes.ValStatement",
   "syntax":
     [
-      [0, "<span class=\"keyword\">val</span> <i>assignee</i> = <i><a href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Expression\">value</a></i> ;"],
+      [0, "<span class=\"keyword\">val</span> <i>assignee</i> = <i><a href=\"TextPage.html?page=Expression\">value</a></i> ;"],
     ],
   "details":
     [
@@ -872,9 +872,9 @@ function spec()
   "ast" : "autumn.lang.compiler.ast.nodes.LetStatement",
   "syntax":
     [
-      [0, "<span class=\"keyword\">let</span> <i>assignee</i> = <i><a href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Expression\">value</a></i> ;"],
+      [0, "<span class=\"keyword\">let</span> <i>assignee</i> = <i><a href=\"TextPage.html?page=Expression\">value</a></i> ;"],
       [0, "<hr class=\%22syntax-hr\%22>"],
-      [0, "<i>assignee</i> = <i><a href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Expression\">value</a></i> ;"],
+      [0, "<i>assignee</i> = <i><a href=\"TextPage.html?page=Expression\">value</a></i> ;"],
     ],
   "details":
     [
@@ -897,7 +897,7 @@ function spec()
   "ast" : "autumn.lang.compiler.ast.nodes.ThrowStatement",
   "syntax":
     [
-      [0, "<span class=\"keyword\">throw</span> <i><a href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Expression\">argument</a></i> ;"],
+      [0, "<span class=\"keyword\">throw</span> <i><a href=\"TextPage.html?page=Expression\">argument</a></i> ;"],
     ],
   "details":
     [
@@ -954,9 +954,9 @@ function spec()
   "ast" : "autumn.lang.compiler.ast.nodes.AssertStatement",
   "syntax":
     [
-      [0, "<span class=\"keyword\">assert</span> <i><a href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Expression\">condition</a></i> ;"],
+      [0, "<span class=\"keyword\">assert</span> <i><a href=\"TextPage.html?page=Expression\">condition</a></i> ;"],
       [0, "<hr class=\%22syntax-hr\%22>"],
-      [0, "<span class=\"keyword\">assert</span> <i><a href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Expression\">condition</a></i> <span class=\"keyword\">echo</span> <i>#message#</i> ;"],
+      [0, "<span class=\"keyword\">assert</span> <i><a href=\"TextPage.html?page=Expression\">condition</a></i> <span class=\"keyword\">echo</span> <i>#message#</i> ;"],
     ],
   "details":
     [
@@ -979,9 +979,9 @@ function spec()
   "ast" : "autumn.lang.compiler.ast.nodes.AssertStatement",
   "syntax":
     [
-      [0, "<span class=\"keyword\">assume</span> <i><a href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Expression\">condition</a></i> ;"],
+      [0, "<span class=\"keyword\">assume</span> <i><a href=\"TextPage.html?page=Expression\">condition</a></i> ;"],
       [0, "<hr class=\%22syntax-hr\%22>"],
-      [0, "<span class=\"keyword\">assume</span> <i><a href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Expression\">condition</a></i> <span class=\"keyword\">echo</span> <i>#message#</i> ;"],
+      [0, "<span class=\"keyword\">assume</span> <i><a href=\"TextPage.html?page=Expression\">condition</a></i> <span class=\"keyword\">echo</span> <i>#message#</i> ;"],
     ],
   "details":
     [
@@ -1029,7 +1029,7 @@ function spec()
     [
       [0, "<span class=\"keyword\">lambda</span> <i>variable</i> : <i>type</i>"],
       [0, "{"],
-      [1, "<i><a href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Statement\">body</a></i>"],
+      [1, "<i><a href=\"TextPage.html?page=Statement\">body</a></i>"],
       [0, "}"],
     ],
   "details":
@@ -1048,7 +1048,7 @@ function spec()
   "ast" : "autumn.lang.compiler.ast.nodes.SetterStatement",
   "syntax":
     [
-      [0, "<span class=\"keyword\">setter</span> <i>#owner#</i> . <i>#name#</i> =&gt; <i><a href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Expression\">value</a></i> ;"],
+      [0, "<span class=\"keyword\">setter</span> <i>#owner#</i> . <i>#name#</i> =&gt; <i><a href=\"TextPage.html?page=Expression\">value</a></i> ;"],
     ],
   "details":
     [
@@ -1065,7 +1065,7 @@ function spec()
   "ast" : "autumn.lang.compiler.ast.nodes.GetterStatement",
   "syntax":
     [
-      [0, "<span class=\"keyword\">getter</span> <i>#owner#</i> . <i>#name#</i> =&gt; <i><a href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Expression\">value</a></i> ;"],
+      [0, "<span class=\"keyword\">getter</span> <i>#owner#</i> . <i>#name#</i> =&gt; <i><a href=\"TextPage.html?page=Expression\">value</a></i> ;"],
     ],
   "details":
     [
@@ -1082,7 +1082,7 @@ function spec()
   "ast" : "autumn.lang.compiler.ast.nodes.MethodStatement",
   "syntax":
     [
-      [0, "<span class=\"keyword\">method</span> <i>#owner#</i> . <i>#name#</i> ( <i>#parameter#<sub>1</sub></i> , ... , <i>#parameter#<sub>n</sub></i> ) =&gt; <i><a href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Expression\">value</a></i> ;"],
+      [0, "<span class=\"keyword\">method</span> <i>#owner#</i> . <i>#name#</i> ( <i>#parameter#<sub>1</sub></i> , ... , <i>#parameter#<sub>n</sub></i> ) =&gt; <i><a href=\"TextPage.html?page=Expression\">value</a></i> ;"],
     ],
   "details":
     [
@@ -1133,7 +1133,7 @@ function spec()
   "ast" : "autumn.lang.compiler.ast.nodes.ExpressionStatement",
   "syntax":
     [
-      [0, "<i><a href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Expression\">expression</a></i> ;"],
+      [0, "<i><a href=\"TextPage.html?page=Expression\">expression</a></i> ;"],
     ],
   "details":
     [
@@ -1168,7 +1168,7 @@ function spec()
   "ast" : "autumn.lang.compiler.ast.nodes.ReturnValueStatement",
   "syntax":
     [
-      [0, "<span class=\"keyword\">return</span> <i><a href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Expression\">value</a></i> ;"],
+      [0, "<span class=\"keyword\">return</span> <i><a href=\"TextPage.html?page=Expression\">value</a></i> ;"],
     ],
   "details":
     [
@@ -1186,7 +1186,7 @@ function spec()
   "ast" : "autumn.lang.compiler.ast.nodes.RecurStatement",
   "syntax":
     [
-      [0, "<span class=\"keyword\">recur</span> <i><a href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Expression\">argument</a><sub>1</sub></i> , <i><a href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Expression\">argument</a><sub>2</sub></i> , ... , <i><a href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Expression\">argument</a><sub>n</sub></i> ;"],
+      [0, "<span class=\"keyword\">recur</span> <i><a href=\"TextPage.html?page=Expression\">argument</a><sub>1</sub></i> , <i><a href=\"TextPage.html?page=Expression\">argument</a><sub>2</sub></i> , ... , <i><a href=\"TextPage.html?page=Expression\">argument</a><sub>n</sub></i> ;"],
     ],
   "details":
     [
@@ -1226,7 +1226,7 @@ function spec()
   "ast" : "autumn.lang.compiler.ast.nodes.YieldValueStatement",
   "syntax":
     [
-      [0, "<span class=\"keyword\">yield</span> <i><a href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Expression\">value</a></i> ;"],
+      [0, "<span class=\"keyword\">yield</span> <i><a href=\"TextPage.html?page=Expression\">value</a></i> ;"],
     ],
   "details":
     [
@@ -1500,7 +1500,7 @@ function spec()
   "ast" : "autumn.lang.compiler.ast.nodes.NegateOperation",
   "syntax":
     [
-      [0, "- <i><a href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Expression\">value</a></i>"],
+      [0, "- <i><a href=\"TextPage.html?page=Expression\">value</a></i>"],
     ],
   "details":
     [
@@ -1524,7 +1524,7 @@ function spec()
     [
       ["NO_SUCH_UNARY_OPERATOR", "None of the overloads will accept the operand due to its type."],
     ],
-  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    val B = 17B;%0A    val S = 17S;%0A    val I = 17;%0A    val L = 17L;%0A    val F = 17.0F;%0A    val D = 17.0;%0A    val BI = (F::big 17);%0A    val BD = (F::big 17.0);%0A%0A    var value = null as Object;%0A    %0A    # Negate a byte and print it. %0A    value = - B;%0A    (F::println %22byte = %22 .. value);%0A%0A    # Negate a short and print it. %0A    value = - S;%0A    (F::println %22short = %22 .. value);%0A%0A    # Negate an int and print it. %0A    value = - I;%0A    (F::println %22int = %22 .. value);%0A%0A    # Negate a long and print it. %0A    value = - L;%0A    (F::println %22long = %22 .. value);%0A%0A    # Negate a float and print it. %0A    value = - F;%0A    (F::println %22float = %22 .. value);%0A%0A    # Negate a double and print it. %0A    value = - D;%0A    (F::println %22double = %22 .. value);%0A%0A    # Negate a BigInteger and print it. %0A    value = - BI;%0A    (F::println %22BigInteger = %22 .. value);%0A%0A    # Negate a BigDecimal and print it. %0A    value = - BD;%0A    (F::println %22BigDecimal = %22 .. value);%0A}", "byte = -17%0Ashort = -17%0Aint = -17%0Along = -17%0Afloat = -17.0%0Adouble = -17.0%0ABigInteger = -17%0ABigDecimal = -17.0"],
+  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    val B = 17B;%0A    val S = 17S;%0A    val I = 17;%0A    val L = 17L;%0A    val F = 17.0F;%0A    val D = 17.0;%0A    val BI = (F::big 17);%0A    val BD = (F::big 17.0);%0A%0A    var value = null as Object;%0A    %0A    # Negate a byte and print it. %0A    value = - B;%0A    (F::println %22byte = %22 .. value);%0A%0A    # Negate a short and print it. %0A    value = - S;%0A    (F::println %22short = %22 .. value);%0A%0A    # Negate an int and print it. %0A    value = - I;%0A    (F::println %22int = %22 .. value);%0A%0A    # Negate a long and print it. %0A    value = - L;%0A    (F::println %22long = %22 .. value);%0A%0A    # Negate a float and print it. %0A    value = - F;%0A    (F::println %22float = %22 .. value);%0A%0A    # Negate a double and print it. %0A    value = - D;%0A    (F::println %22double = %22 .. value);%0A%0A    # Negate a BigInteger and print it. %0A    value = - BI;%0A    (F::println %22BigInteger = %22 .. value);%0A%0A    # Negate a BigDecimal and print it. %0A    value = - BD;%0A    (F::println %22BigDecimal = %22 .. value);%0A}", ""],
 },
 
 
@@ -1533,7 +1533,7 @@ function spec()
   "ast" : "autumn.lang.compiler.ast.nodes.NotOperation",
   "syntax":
     [
-      [0, "! <i><a href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Expression\">value</a></i>"],
+      [0, "! <i><a href=\"TextPage.html?page=Expression\">value</a></i>"],
     ],
   "details":
     [
@@ -1557,7 +1557,7 @@ function spec()
   "ast" : "autumn.lang.compiler.ast.nodes.DivideOperation",
   "syntax":
     [
-      [0, "<i><a href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Expression\">left</a></i> / <i><a href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Expression\">right</a></i>"],
+      [0, "<i><a href=\"TextPage.html?page=Expression\">left</a></i> / <i><a href=\"TextPage.html?page=Expression\">right</a></i>"],
     ],
   "details":
     [
@@ -1596,7 +1596,7 @@ function spec()
   "ast" : "autumn.lang.compiler.ast.nodes.ModuloOperation",
   "syntax":
     [
-      [0, "<i><a href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Expression\">left</a></i> &#37; <i><a href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Expression\">right</a></i>"],
+      [0, "<i><a href=\"TextPage.html?page=Expression\">left</a></i> &#37; <i><a href=\"TextPage.html?page=Expression\">right</a></i>"],
     ],
   "details":
     [
@@ -1626,7 +1626,7 @@ function spec()
       ["NO_SUCH_BINARY_OPERATOR", "None of the overloads will accept the left-operand due to its type."],
       ["NO_SUCH_BINARY_OPERATOR", "None of the overloads will accept the right-operand due to its type."],
     ],
-  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    var value = null as Object;%0A%0A    value = 231C &#37; 83C;%0A    (F::println %22char = %22 .. value);%0A%0A    value = 32B &#37; 3B;%0A    (F::println %22byte = %22 .. value);%0A%0A    value = 32S &#37; 3S;%0A    (F::println %22short = %22 .. value);%0A%0A    value = 32 &#37; 3;%0A    (F::println %22int = %22 .. value);%0A%0A    value = 32L &#37; 3L;%0A    (F::println %22long = %22 .. value);%0A%0A    value = 32.0F &#37; 3.0F;%0A    (F::println %22float = %22 .. value);%0A%0A    value = 32.0 &#37; 3.0;%0A    (F::println %22double = %22 .. value);%0A%0A    value = (F::big 32) &#37; (F::big 3);%0A    (F::println %22BigInteger = %22 .. value);%0A%0A    value = (F::big 32.0) &#37; (F::big 3.0);%0A    (F::println %22BigDecimal = %22 .. value);%0A}", "char = A%0Abyte = 2%0Ashort = 2%0Aint = 2%0Along = 2%0Afloat = 2.0%0Adouble = 2.0%0ABigInteger = 2%0ABigDecimal = 2.0"],
+  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    var value = null as Object;%0A%0A    value = 231C &#37; 83C;%0A    (F::println %22char = %22 .. value);%0A%0A    value = 32B &#37; 3B;%0A    (F::println %22byte = %22 .. value);%0A%0A    value = 32S &#37; 3S;%0A    (F::println %22short = %22 .. value);%0A%0A    value = 32 &#37; 3;%0A    (F::println %22int = %22 .. value);%0A%0A    value = 32L &#37; 3L;%0A    (F::println %22long = %22 .. value);%0A%0A    value = 32.0F &#37; 3.0F;%0A    (F::println %22float = %22 .. value);%0A%0A    value = 32.0 &#37; 3.0;%0A    (F::println %22double = %22 .. value);%0A%0A    value = (F::big 32) &#37; (F::big 3);%0A    (F::println %22BigInteger = %22 .. value);%0A%0A    value = (F::big 32.0) &#37; (F::big 3.0);%0A    (F::println %22BigDecimal = %22 .. value);%0A}", ""],
 },
 
 
@@ -1635,7 +1635,7 @@ function spec()
   "ast" : "autumn.lang.compiler.ast.nodes.MultiplyOperation",
   "syntax":
     [
-      [0, "<i><a href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Expression\">left</a></i> * <i><a href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Expression\">right</a></i>"],
+      [0, "<i><a href=\"TextPage.html?page=Expression\">left</a></i> * <i><a href=\"TextPage.html?page=Expression\">right</a></i>"],
     ],
   "details":
     [
@@ -1665,7 +1665,7 @@ function spec()
       ["NO_SUCH_BINARY_OPERATOR", "None of the overloads will accept the left-operand due to its type."],
       ["NO_SUCH_BINARY_OPERATOR", "None of the overloads will accept the right-operand due to its type."],
     ],
-  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    var value = null as Object;%0A%0A    value = 40C * 2C;%0A    (F::println %22char = %22 .. value);%0A%0A    value = 10B * 2B;%0A    (F::println %22byte = %22 .. value);%0A%0A    value = 10S * 2S;%0A    (F::println %22short = %22 .. value);%0A%0A    value = 10 * 2;%0A    (F::println %22int = %22 .. value);%0A%0A    value = 10L * 2L;%0A    (F::println %22long = %22 .. value);%0A%0A    value = 10.0F * 2.0F;%0A    (F::println %22float = %22 .. value);%0A%0A    value = 10.0 * 2.0;%0A    (F::println %22double = %22 .. value); %0A%0A    value = (F::big 10L) * (F::big 2L);%0A    (F::println %22BigInteger = %22 .. value);%0A%0A    value = (F::big 10.0) * (F::big 2.0);%0A    (F::println %22BigDecimal = %22 .. value);%0A}", "char = P%0Abyte = 20%0Ashort = 20%0Aint = 20%0Along = 20%0Afloat = 20.0%0Adouble = 20.0%0ABigInteger = 20%0ABigDecimal = 20.00"],
+  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    var value = null as Object;%0A%0A    value = 40C * 2C;%0A    (F::println %22char = %22 .. value);%0A%0A    value = 10B * 2B;%0A    (F::println %22byte = %22 .. value);%0A%0A    value = 10S * 2S;%0A    (F::println %22short = %22 .. value);%0A%0A    value = 10 * 2;%0A    (F::println %22int = %22 .. value);%0A%0A    value = 10L * 2L;%0A    (F::println %22long = %22 .. value);%0A%0A    value = 10.0F * 2.0F;%0A    (F::println %22float = %22 .. value);%0A%0A    value = 10.0 * 2.0;%0A    (F::println %22double = %22 .. value); %0A%0A    value = (F::big 10L) * (F::big 2L);%0A    (F::println %22BigInteger = %22 .. value);%0A%0A    value = (F::big 10.0) * (F::big 2.0);%0A    (F::println %22BigDecimal = %22 .. value);%0A}", ""],
 },
 
 
@@ -1674,7 +1674,7 @@ function spec()
   "ast" : "autumn.lang.compiler.ast.nodes.AddOperation",
   "syntax":
     [
-      [0, "<i><a href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Expression\">left</a></i> + <i><a href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Expression\">right</a></i>"],
+      [0, "<i><a href=\"TextPage.html?page=Expression\">left</a></i> + <i><a href=\"TextPage.html?page=Expression\">right</a></i>"],
     ],
   "details":
     [
@@ -1704,7 +1704,7 @@ function spec()
       ["NO_SUCH_BINARY_OPERATOR", "None of the overloads will accept the left-operand due to its type."],
       ["NO_SUCH_BINARY_OPERATOR", "None of the overloads will accept the right-operand due to its type."],
     ],
-  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    var value = null as Object;%0A%0A    value = 63C + 2C;%0A    (F::println %22char = %22 .. value);%0A%0A    value = 10B + 2B;%0A    (F::println %22byte = %22 .. value);%0A%0A    value = 10S + 2S;%0A    (F::println %22short = %22 .. value);%0A%0A    value = 10 + 2;%0A    (F::println %22int = %22 .. value);%0A%0A    value = 10L + 2L;%0A    (F::println %22long = %22 .. value);%0A%0A    value = 10.0F + 2.0F;%0A    (F::println %22float = %22 .. value);%0A%0A    value = 10.0 + 2.0;%0A    (F::println %22double = %22 .. value);%0A%0A    value = (F::big 10L) + (F::big 2L);%0A    (F::println %22BigInteger = %22 .. value); %0A%0A    value = (F::big 10.0) + (F::big 2.0);%0A    (F::println %22BigDecimal = %22 .. value);%0A}", "char = A%0Abyte = 12%0Ashort = 12%0Aint = 12%0Along = 12%0Afloat = 12.0%0Adouble = 12.0%0ABigInteger = 12%0ABigDecimal = 12.0"],
+  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    var value = null as Object;%0A%0A    value = 63C + 2C;%0A    (F::println %22char = %22 .. value);%0A%0A    value = 10B + 2B;%0A    (F::println %22byte = %22 .. value);%0A%0A    value = 10S + 2S;%0A    (F::println %22short = %22 .. value);%0A%0A    value = 10 + 2;%0A    (F::println %22int = %22 .. value);%0A%0A    value = 10L + 2L;%0A    (F::println %22long = %22 .. value);%0A%0A    value = 10.0F + 2.0F;%0A    (F::println %22float = %22 .. value);%0A%0A    value = 10.0 + 2.0;%0A    (F::println %22double = %22 .. value);%0A%0A    value = (F::big 10L) + (F::big 2L);%0A    (F::println %22BigInteger = %22 .. value); %0A%0A    value = (F::big 10.0) + (F::big 2.0);%0A    (F::println %22BigDecimal = %22 .. value);%0A}", ""],
 },
 
 
@@ -1713,7 +1713,7 @@ function spec()
   "ast" : "autumn.lang.compiler.ast.nodes.SubtractOperation",
   "syntax":
     [
-      [0, "<i><a href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Expression\">left</a></i> - <i><a href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Expression\">right</a></i>"],
+      [0, "<i><a href=\"TextPage.html?page=Expression\">left</a></i> - <i><a href=\"TextPage.html?page=Expression\">right</a></i>"],
     ],
   "details":
     [
@@ -1743,7 +1743,7 @@ function spec()
       ["NO_SUCH_BINARY_OPERATOR", "None of the overloads will accept the left-operand due to its type."],
       ["NO_SUCH_BINARY_OPERATOR", "None of the overloads will accept the right-operand due to its type."],
     ],
-  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    var value = null as Object;%0A%0A    value = 67C - 2C;%0A    (F::println %22char = %22 .. value);%0A%0A    value = 10B - 2B;%0A    (F::println %22byte = %22 .. value);%0A%0A    value = 10S - 2S;%0A    (F::println %22short = %22 .. value);%0A%0A    value = 10 - 2;%0A    (F::println %22int = %22 .. value);%0A%0A    value = 10L - 2L;%0A    (F::println %22long = %22 .. value);%0A%0A    value = 10.0F - 2.0F;%0A    (F::println %22float = %22 .. value);%0A%0A    value = 10.0 - 2.0;%0A    (F::println %22double = %22 .. value);%0A%0A    value = (F::big 10L) - (F::big 2L);%0A    (F::println %22BigInteger = %22 .. value);%0A%0A    value = (F::big 10.0) - (F::big 2.0);%0A    (F::println %22BigDecimal = %22 .. value);%0A}", "char = A%0Abyte = 8%0Ashort = 8%0Aint = 8%0Along = 8%0Afloat = 8.0%0Adouble = 8.0%0ABigInteger = 8%0ABigDecimal = 8.0"],
+  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    var value = null as Object;%0A%0A    value = 67C - 2C;%0A    (F::println %22char = %22 .. value);%0A%0A    value = 10B - 2B;%0A    (F::println %22byte = %22 .. value);%0A%0A    value = 10S - 2S;%0A    (F::println %22short = %22 .. value);%0A%0A    value = 10 - 2;%0A    (F::println %22int = %22 .. value);%0A%0A    value = 10L - 2L;%0A    (F::println %22long = %22 .. value);%0A%0A    value = 10.0F - 2.0F;%0A    (F::println %22float = %22 .. value);%0A%0A    value = 10.0 - 2.0;%0A    (F::println %22double = %22 .. value);%0A%0A    value = (F::big 10L) - (F::big 2L);%0A    (F::println %22BigInteger = %22 .. value);%0A%0A    value = (F::big 10.0) - (F::big 2.0);%0A    (F::println %22BigDecimal = %22 .. value);%0A}", ""],
 },
 
 
@@ -1752,7 +1752,7 @@ function spec()
   "ast" : "autumn.lang.compiler.ast.nodes.ConcatOperation",
   "syntax":
     [
-      [0, "<i><a href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Expression\">left</a></i> .. <i><a href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Expression\">right</a></i>"],
+      [0, "<i><a href=\"TextPage.html?page=Expression\">left</a></i> .. <i><a href=\"TextPage.html?page=Expression\">right</a></i>"],
     ],
   "details":
     [
@@ -1781,7 +1781,7 @@ function spec()
   "ast" : "autumn.lang.compiler.ast.nodes.IdentityEqualsOperation",
   "syntax":
     [
-      [0, "<i><a href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Expression\">left</a></i> === <i><a href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Expression\">right</a></i>"],
+      [0, "<i><a href=\"TextPage.html?page=Expression\">left</a></i> === <i><a href=\"TextPage.html?page=Expression\">right</a></i>"],
     ],
   "details":
     [
@@ -1798,7 +1798,7 @@ function spec()
       ["EXPECTED_REFERENCE_TYPE", "The type of the left-operand must be a reference-type."],
       ["EXPECTED_REFERENCE_TYPE", "The type of the right-operand must be a reference-type."],
     ],
-  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    val object1 = (new Object);%0A    val object2 = (new Object);%0A%0A    val case1 = object1 === object1;%0A    val case2 = object1 === object2;%0A%0A    (F::println case1);%0A    (F::println case2);%0A}", "true%0Afalse"],
+  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    val object1 = (new Object);%0A    val object2 = (new Object);%0A%0A    val case1 = object1 === object1;%0A    val case2 = object1 === object2;%0A%0A    (F::println case1);%0A    (F::println case2);%0A}", ""],
 },
 
 
@@ -1807,7 +1807,7 @@ function spec()
   "ast" : "autumn.lang.compiler.ast.nodes.IdentityNotEqualsOperation",
   "syntax":
     [
-      [0, "<i><a href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Expression\">left</a></i> !== <i><a href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Expression\">right</a></i>"],
+      [0, "<i><a href=\"TextPage.html?page=Expression\">left</a></i> !== <i><a href=\"TextPage.html?page=Expression\">right</a></i>"],
     ],
   "details":
     [
@@ -1824,7 +1824,7 @@ function spec()
       ["EXPECTED_REFERENCE_TYPE", "The type of the left-operand must be a reference-type."],
       ["EXPECTED_REFERENCE_TYPE", "The type of the right-operand must be a reference-type."],
     ],
-  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    val object1 = (new Object);%0A    val object2 = (new Object);%0A%0A    val case1 = object1 !== object1;%0A    val case2 = object1 !== object2;%0A%0A    (F::println case1);%0A    (F::println case2);%0A}", "false%0Atrue"],
+  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    val object1 = (new Object);%0A    val object2 = (new Object);%0A%0A    val case1 = object1 !== object1;%0A    val case2 = object1 !== object2;%0A%0A    (F::println case1);%0A    (F::println case2);%0A}", ""],
 },
 
 
@@ -1833,7 +1833,7 @@ function spec()
   "ast" : "autumn.lang.compiler.ast.nodes.EqualsOperation",
   "syntax":
     [
-      [0, "<i><a href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Expression\">left</a></i> == <i><a href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Expression\">right</a></i>"],
+      [0, "<i><a href=\"TextPage.html?page=Expression\">left</a></i> == <i><a href=\"TextPage.html?page=Expression\">right</a></i>"],
     ],
   "details":
     [
@@ -1864,7 +1864,7 @@ function spec()
       ["NO_SUCH_BINARY_OPERATOR", "None of the overloads will accept the left-operand due to its type."],
       ["NO_SUCH_BINARY_OPERATOR", "None of the overloads will accept the right-operand due to its type."],
     ],
-  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    var case1 = false;%0A    var case2 = false;%0A    var case3 = false;%0A    var case4 = false;%0A%0A%0A    (F::println %22Case: boolean%22);%0A%0A    case1 = false == false;%0A    case2 = false == true;%0A    case3 = true == false;%0A    case4 = true == true;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A    (F::println case4);%0A%0A    (F::println);%0A    (F::println %22Case: char%22);%0A%0A    case1 = 2C == 3C;%0A    case2 = 3C == 3C;%0A    case3 = 3C == 2C;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A   %0A    (F::println);%0A    (F::println %22Case: byte%22);%0A%0A    case1 = 2B == 3B;%0A    case2 = 3B == 3B;%0A    case3 = 3B == 2B;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A%0A    (F::println);%0A    (F::println %22Case: short%22);%0A%0A    case1 = 2S == 3S;%0A    case2 = 3S == 3S;%0A    case3 = 3S == 2S;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A%0A    (F::println);%0A    (F::println %22Case: int%22);%0A%0A    case1 = 2 == 3;%0A    case2 = 3 == 3;%0A    case3 = 3 == 2;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A%0A    (F::println);%0A    (F::println %22Case: long%22);%0A%0A    case1 = 2L == 3L;%0A    case2 = 3L == 3L;%0A    case3 = 3L == 2L;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A%0A    (F::println);%0A    (F::println %22Case: float%22);%0A%0A    case1 = 2.0F == 3.0F;%0A    case2 = 3.0F == 3.0F;%0A    case3 = 3.0F == 2.0F;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A%0A    (F::println);%0A    (F::println %22Case: double%22);%0A%0A    case1 = 2.0 == 3.0;%0A    case2 = 3.0 == 3.0;%0A    case3 = 3.0 == 2.0;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A%0A    (F::println);%0A    (F::println %22Case: Comparable%22);%0A%0A    case1 = %22A%22 == %22B%22;%0A    case2 = %22B%22 == %22B%22;%0A    case3 = %22B%22 == %22A%22;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A}", "Case: boolean%0Atrue%0Afalse%0Afalse%0Atrue%0A%0ACase: char%0Afalse%0Atrue%0Afalse%0A%0ACase: byte%0Afalse%0Atrue%0Afalse%0A%0ACase: short%0Afalse%0Atrue%0Afalse%0A%0ACase: int%0Afalse%0Atrue%0Afalse%0A%0ACase: long%0Afalse%0Atrue%0Afalse%0A%0ACase: float%0Afalse%0Atrue%0Afalse%0A%0ACase: double%0Afalse%0Atrue%0Afalse%0A%0ACase: Comparable%0Afalse%0Atrue%0Afalse"],
+  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    var case1 = false;%0A    var case2 = false;%0A    var case3 = false;%0A    var case4 = false;%0A%0A%0A    (F::println %22Case: boolean%22);%0A%0A    case1 = false == false;%0A    case2 = false == true;%0A    case3 = true == false;%0A    case4 = true == true;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A    (F::println case4);%0A%0A    (F::println);%0A    (F::println %22Case: char%22);%0A%0A    case1 = 2C == 3C;%0A    case2 = 3C == 3C;%0A    case3 = 3C == 2C;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A   %0A    (F::println);%0A    (F::println %22Case: byte%22);%0A%0A    case1 = 2B == 3B;%0A    case2 = 3B == 3B;%0A    case3 = 3B == 2B;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A%0A    (F::println);%0A    (F::println %22Case: short%22);%0A%0A    case1 = 2S == 3S;%0A    case2 = 3S == 3S;%0A    case3 = 3S == 2S;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A%0A    (F::println);%0A    (F::println %22Case: int%22);%0A%0A    case1 = 2 == 3;%0A    case2 = 3 == 3;%0A    case3 = 3 == 2;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A%0A    (F::println);%0A    (F::println %22Case: long%22);%0A%0A    case1 = 2L == 3L;%0A    case2 = 3L == 3L;%0A    case3 = 3L == 2L;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A%0A    (F::println);%0A    (F::println %22Case: float%22);%0A%0A    case1 = 2.0F == 3.0F;%0A    case2 = 3.0F == 3.0F;%0A    case3 = 3.0F == 2.0F;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A%0A    (F::println);%0A    (F::println %22Case: double%22);%0A%0A    case1 = 2.0 == 3.0;%0A    case2 = 3.0 == 3.0;%0A    case3 = 3.0 == 2.0;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A%0A    (F::println);%0A    (F::println %22Case: Comparable%22);%0A%0A    case1 = %22A%22 == %22B%22;%0A    case2 = %22B%22 == %22B%22;%0A    case3 = %22B%22 == %22A%22;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A}", ""],
 },
 
 
@@ -1873,7 +1873,7 @@ function spec()
   "ast" : "autumn.lang.compiler.ast.nodes.NotEqualsOperation",
   "syntax":
     [
-      [0, "<i><a href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Expression\">left</a></i> != <i><a href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Expression\">right</a></i>"],
+      [0, "<i><a href=\"TextPage.html?page=Expression\">left</a></i> != <i><a href=\"TextPage.html?page=Expression\">right</a></i>"],
     ],
   "details":
     [
@@ -1904,7 +1904,7 @@ function spec()
       ["NO_SUCH_BINARY_OPERATOR", "None of the overloads will accept the left-operand due to its type."],
       ["NO_SUCH_BINARY_OPERATOR", "None of the overloads will accept the right-operand due to its type."],
     ],
-  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    var case1 = false;%0A    var case2 = false;%0A    var case3 = false;%0A    var case4 = false;%0A%0A%0A    (F::println %22Case: boolean%22);%0A%0A    case1 = false != false;%0A    case2 = false != true;%0A    case3 = true != false;%0A    case4 = true != true;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A    (F::println case4);%0A%0A    (F::println);%0A    (F::println %22Case: char%22);%0A%0A    case1 = 2C != 3C;%0A    case2 = 3C != 3C;%0A    case3 = 3C != 2C;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A   %0A    (F::println);%0A    (F::println %22Case: byte%22);%0A%0A    case1 = 2B != 3B;%0A    case2 = 3B != 3B;%0A    case3 = 3B != 2B;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A%0A    (F::println);%0A    (F::println %22Case: short%22);%0A%0A    case1 = 2S != 3S;%0A    case2 = 3S != 3S;%0A    case3 = 3S != 2S;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A%0A    (F::println);%0A    (F::println %22Case: int%22);%0A%0A    case1 = 2 != 3;%0A    case2 = 3 != 3;%0A    case3 = 3 != 2;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A%0A    (F::println);%0A    (F::println %22Case: long%22);%0A%0A    case1 = 2L != 3L;%0A    case2 = 3L != 3L;%0A    case3 = 3L != 2L;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A%0A    (F::println);%0A    (F::println %22Case: float%22);%0A%0A    case1 = 2.0F != 3.0F;%0A    case2 = 3.0F != 3.0F;%0A    case3 = 3.0F != 2.0F;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A%0A    (F::println);%0A    (F::println %22Case: double%22);%0A%0A    case1 = 2.0 != 3.0;%0A    case2 = 3.0 != 3.0;%0A    case3 = 3.0 != 2.0;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A%0A    (F::println);%0A    (F::println %22Case: Comparable%22);%0A%0A    case1 = %22A%22 != %22B%22;%0A    case2 = %22B%22 != %22B%22;%0A    case3 = %22B%22 != %22A%22;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A}", "Case: boolean%0Afalse%0Atrue%0Atrue%0Afalse%0A%0ACase: char%0Atrue%0Afalse%0Atrue%0A%0ACase: byte%0Atrue%0Afalse%0Atrue%0A%0ACase: short%0Atrue%0Afalse%0Atrue%0A%0ACase: int%0Atrue%0Afalse%0Atrue%0A%0ACase: long%0Atrue%0Afalse%0Atrue%0A%0ACase: float%0Atrue%0Afalse%0Atrue%0A%0ACase: double%0Atrue%0Afalse%0Atrue%0A%0ACase: Comparable%0Atrue%0Afalse%0Atrue"],
+  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    var case1 = false;%0A    var case2 = false;%0A    var case3 = false;%0A    var case4 = false;%0A%0A%0A    (F::println %22Case: boolean%22);%0A%0A    case1 = false != false;%0A    case2 = false != true;%0A    case3 = true != false;%0A    case4 = true != true;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A    (F::println case4);%0A%0A    (F::println);%0A    (F::println %22Case: char%22);%0A%0A    case1 = 2C != 3C;%0A    case2 = 3C != 3C;%0A    case3 = 3C != 2C;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A   %0A    (F::println);%0A    (F::println %22Case: byte%22);%0A%0A    case1 = 2B != 3B;%0A    case2 = 3B != 3B;%0A    case3 = 3B != 2B;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A%0A    (F::println);%0A    (F::println %22Case: short%22);%0A%0A    case1 = 2S != 3S;%0A    case2 = 3S != 3S;%0A    case3 = 3S != 2S;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A%0A    (F::println);%0A    (F::println %22Case: int%22);%0A%0A    case1 = 2 != 3;%0A    case2 = 3 != 3;%0A    case3 = 3 != 2;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A%0A    (F::println);%0A    (F::println %22Case: long%22);%0A%0A    case1 = 2L != 3L;%0A    case2 = 3L != 3L;%0A    case3 = 3L != 2L;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A%0A    (F::println);%0A    (F::println %22Case: float%22);%0A%0A    case1 = 2.0F != 3.0F;%0A    case2 = 3.0F != 3.0F;%0A    case3 = 3.0F != 2.0F;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A%0A    (F::println);%0A    (F::println %22Case: double%22);%0A%0A    case1 = 2.0 != 3.0;%0A    case2 = 3.0 != 3.0;%0A    case3 = 3.0 != 2.0;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A%0A    (F::println);%0A    (F::println %22Case: Comparable%22);%0A%0A    case1 = %22A%22 != %22B%22;%0A    case2 = %22B%22 != %22B%22;%0A    case3 = %22B%22 != %22A%22;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A}", ""],
 },
 
 
@@ -1913,7 +1913,7 @@ function spec()
   "ast" : "autumn.lang.compiler.ast.nodes.GreaterThanOrEqualsOperation",
   "syntax":
     [
-      [0, "<i><a href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Expression\">left</a></i> &gt;= <i><a href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Expression\">right</a></i>"],
+      [0, "<i><a href=\"TextPage.html?page=Expression\">left</a></i> &gt;= <i><a href=\"TextPage.html?page=Expression\">right</a></i>"],
     ],
   "details":
     [
@@ -1953,7 +1953,7 @@ function spec()
   "ast" : "autumn.lang.compiler.ast.nodes.LessThanOrEqualsOperation",
   "syntax":
     [
-      [0, "<i><a href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Expression\">left</a></i> &lt;= <i><a href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Expression\">right</a></i>"],
+      [0, "<i><a href=\"TextPage.html?page=Expression\">left</a></i> &lt;= <i><a href=\"TextPage.html?page=Expression\">right</a></i>"],
     ],
   "details":
     [
@@ -1993,7 +1993,7 @@ function spec()
   "ast" : "autumn.lang.compiler.ast.nodes.GreaterThanOperation",
   "syntax":
     [
-      [0, "<i><a href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Expression\">left</a></i> &gt; <i><a href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Expression\">right</a></i>"],
+      [0, "<i><a href=\"TextPage.html?page=Expression\">left</a></i> &gt; <i><a href=\"TextPage.html?page=Expression\">right</a></i>"],
     ],
   "details":
     [
@@ -2024,7 +2024,7 @@ function spec()
       ["NO_SUCH_BINARY_OPERATOR", "None of the overloads will accept the left-operand due to its type."],
       ["NO_SUCH_BINARY_OPERATOR", "None of the overloads will accept the right-operand due to its type."],
     ],
-  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    var case1 = false;%0A    var case2 = false;%0A    var case3 = false;%0A    var case4 = false;%0A%0A%0A    (F::println %22Case: boolean%22);%0A%0A    case1 = false > false;%0A    case2 = false > true;%0A    case3 = true > false;%0A    case4 = true > true;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A    (F::println case4);%0A%0A    (F::println);%0A    (F::println %22Case: char%22);%0A%0A    case1 = 2C > 3C;%0A    case2 = 3C > 3C;%0A    case3 = 3C > 2C;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A   %0A    (F::println);%0A    (F::println %22Case: byte%22);%0A%0A    case1 = 2B > 3B;%0A    case2 = 3B > 3B;%0A    case3 = 3B > 2B;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A%0A    (F::println);%0A    (F::println %22Case: short%22);%0A%0A    case1 = 2S > 3S;%0A    case2 = 3S > 3S;%0A    case3 = 3S > 2S;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A%0A    (F::println);%0A    (F::println %22Case: int%22);%0A%0A    case1 = 2 > 3;%0A    case2 = 3 > 3;%0A    case3 = 3 > 2;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A%0A    (F::println);%0A    (F::println %22Case: long%22);%0A%0A    case1 = 2L > 3L;%0A    case2 = 3L > 3L;%0A    case3 = 3L > 2L;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A%0A    (F::println);%0A    (F::println %22Case: float%22);%0A%0A    case1 = 2.0F > 3.0F;%0A    case2 = 3.0F > 3.0F;%0A    case3 = 3.0F > 2.0F;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A%0A    (F::println);%0A    (F::println %22Case: double%22);%0A%0A    case1 = 2.0 > 3.0;%0A    case2 = 3.0 > 3.0;%0A    case3 = 3.0 > 2.0;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A%0A    (F::println);%0A    (F::println %22Case: Comparable%22);%0A%0A    case1 = %22A%22 > %22B%22;%0A    case2 = %22B%22 > %22B%22;%0A    case3 = %22B%22 > %22A%22;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A}", "Case: boolean%0Afalse%0Afalse%0Atrue%0Afalse%0A%0ACase: char%0Afalse%0Afalse%0Atrue%0A%0ACase: byte%0Afalse%0Afalse%0Atrue%0A%0ACase: short%0Afalse%0Afalse%0Atrue%0A%0ACase: int%0Afalse%0Afalse%0Atrue%0A%0ACase: long%0Afalse%0Afalse%0Atrue%0A%0ACase: float%0Afalse%0Afalse%0Atrue%0A%0ACase: double%0Afalse%0Afalse%0Atrue%0A%0ACase: Comparable%0Afalse%0Afalse%0Atrue"],
+  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    var case1 = false;%0A    var case2 = false;%0A    var case3 = false;%0A    var case4 = false;%0A%0A%0A    (F::println %22Case: boolean%22);%0A%0A    case1 = false > false;%0A    case2 = false > true;%0A    case3 = true > false;%0A    case4 = true > true;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A    (F::println case4);%0A%0A    (F::println);%0A    (F::println %22Case: char%22);%0A%0A    case1 = 2C > 3C;%0A    case2 = 3C > 3C;%0A    case3 = 3C > 2C;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A   %0A    (F::println);%0A    (F::println %22Case: byte%22);%0A%0A    case1 = 2B > 3B;%0A    case2 = 3B > 3B;%0A    case3 = 3B > 2B;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A%0A    (F::println);%0A    (F::println %22Case: short%22);%0A%0A    case1 = 2S > 3S;%0A    case2 = 3S > 3S;%0A    case3 = 3S > 2S;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A%0A    (F::println);%0A    (F::println %22Case: int%22);%0A%0A    case1 = 2 > 3;%0A    case2 = 3 > 3;%0A    case3 = 3 > 2;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A%0A    (F::println);%0A    (F::println %22Case: long%22);%0A%0A    case1 = 2L > 3L;%0A    case2 = 3L > 3L;%0A    case3 = 3L > 2L;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A%0A    (F::println);%0A    (F::println %22Case: float%22);%0A%0A    case1 = 2.0F > 3.0F;%0A    case2 = 3.0F > 3.0F;%0A    case3 = 3.0F > 2.0F;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A%0A    (F::println);%0A    (F::println %22Case: double%22);%0A%0A    case1 = 2.0 > 3.0;%0A    case2 = 3.0 > 3.0;%0A    case3 = 3.0 > 2.0;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A%0A    (F::println);%0A    (F::println %22Case: Comparable%22);%0A%0A    case1 = %22A%22 > %22B%22;%0A    case2 = %22B%22 > %22B%22;%0A    case3 = %22B%22 > %22A%22;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A}", ""],
 },
 
 
@@ -2033,7 +2033,7 @@ function spec()
   "ast" : "autumn.lang.compiler.ast.nodes.LessThanOperation",
   "syntax":
     [
-      [0, "<i><a href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Expression\">left</a></i> &lt; <i><a href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Expression\">right</a></i>"],
+      [0, "<i><a href=\"TextPage.html?page=Expression\">left</a></i> &lt; <i><a href=\"TextPage.html?page=Expression\">right</a></i>"],
     ],
   "details":
     [
@@ -2073,7 +2073,7 @@ function spec()
   "ast" : "autumn.lang.compiler.ast.nodes.AndOperation",
   "syntax":
     [
-      [0, "<i><a href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Expression\">left</a></i> & <i><a href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Expression\">right</a></i>"],
+      [0, "<i><a href=\"TextPage.html?page=Expression\">left</a></i> & <i><a href=\"TextPage.html?page=Expression\">right</a></i>"],
     ],
   "details":
     [
@@ -2102,7 +2102,7 @@ function spec()
   "ast" : "autumn.lang.compiler.ast.nodes.OrOperation",
   "syntax":
     [
-      [0, "<i><a href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Expression\">left</a></i> | <i><a href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Expression\">right</a></i>"],
+      [0, "<i><a href=\"TextPage.html?page=Expression\">left</a></i> | <i><a href=\"TextPage.html?page=Expression\">right</a></i>"],
     ],
   "details":
     [
@@ -2122,7 +2122,7 @@ function spec()
       ["NO_SUCH_BINARY_OPERATOR", "None of the overloads will accept the left-operand due to its type."],
       ["NO_SUCH_BINARY_OPERATOR", "None of the overloads will accept the right-operand due to its type."],
     ],
-  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    val case1 = false | false;%0A    val case2 = false | true;%0A    val case3 = true | false;%0A    val case4 = true | true;%0A%0A    (F::println %22F | F = %22 .. case1);%0A    (F::println %22F | T = %22 .. case2);%0A    (F::println %22T | F = %22 .. case3);%0A    (F::println %22T | T = %22 .. case4);%0A}", "F | F = false%0AF | T = true%0AT | F = true%0AT | T = true"],
+  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    val case1 = false | false;%0A    val case2 = false | true;%0A    val case3 = true | false;%0A    val case4 = true | true;%0A%0A    (F::println %22F | F = %22 .. case1);%0A    (F::println %22F | T = %22 .. case2);%0A    (F::println %22T | F = %22 .. case3);%0A    (F::println %22T | T = %22 .. case4);%0A}", ""],
 },
 
 
@@ -2131,7 +2131,7 @@ function spec()
   "ast" : "autumn.lang.compiler.ast.nodes.XorOperation",
   "syntax":
     [
-      [0, "<i><a href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Expression\">left</a></i> ^ <i><a href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Expression\">right</a></i>"],
+      [0, "<i><a href=\"TextPage.html?page=Expression\">left</a></i> ^ <i><a href=\"TextPage.html?page=Expression\">right</a></i>"],
     ],
   "details":
     [
@@ -2151,7 +2151,7 @@ function spec()
       ["NO_SUCH_BINARY_OPERATOR", "None of the overloads will accept the left-operand due to its type."],
       ["NO_SUCH_BINARY_OPERATOR", "None of the overloads will accept the right-operand due to its type."],
     ],
-  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    val case1 = false ^ false;%0A    val case2 = false ^ true;%0A    val case3 = true ^ false;%0A    val case4 = true ^ true;%0A%0A    (F::println %22F ^ F = %22 .. case1);%0A    (F::println %22F ^ T = %22 .. case2);%0A    (F::println %22T ^ F = %22 .. case3);%0A    (F::println %22T ^ T = %22 .. case4);%0A}", "F ^ F = false%0AF ^ T = true%0AT ^ F = true%0AT ^ T = false"],
+  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    val case1 = false ^ false;%0A    val case2 = false ^ true;%0A    val case3 = true ^ false;%0A    val case4 = true ^ true;%0A%0A    (F::println %22F ^ F = %22 .. case1);%0A    (F::println %22F ^ T = %22 .. case2);%0A    (F::println %22T ^ F = %22 .. case3);%0A    (F::println %22T ^ T = %22 .. case4);%0A}", ""],
 },
 
 
@@ -2160,7 +2160,7 @@ function spec()
   "ast" : "autumn.lang.compiler.ast.nodes.XorOperation",
   "syntax":
     [
-      [0, "<i><a href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Expression\">left</a></i> -> <i><a href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Expression\">right</a></i>"],
+      [0, "<i><a href=\"TextPage.html?page=Expression\">left</a></i> -> <i><a href=\"TextPage.html?page=Expression\">right</a></i>"],
     ],
   "details":
     [
@@ -2182,7 +2182,7 @@ function spec()
       ["NO_SUCH_BINARY_OPERATOR", "None of the overloads will accept the left-operand due to its type."],
       ["NO_SUCH_BINARY_OPERATOR", "None of the overloads will accept the right-operand due to its type."],
     ],
-  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    val case1 = false -> false;%0A    val case2 = false -> true;%0A    val case3 = true -> false;%0A    val case4 = true -> true;%0A%0A    (F::println %22F -> F = %22 .. case1);%0A    (F::println %22F -> T = %22 .. case2);%0A    (F::println %22T -> F = %22 .. case3);%0A    (F::println %22T -> T = %22 .. case4);%0A}", "F -> F = true%0AF -> T = true%0AT -> F = false%0AT -> T = true"],
+  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    val case1 = false -> false;%0A    val case2 = false -> true;%0A    val case3 = true -> false;%0A    val case4 = true -> true;%0A%0A    (F::println %22F -> F = %22 .. case1);%0A    (F::println %22F -> T = %22 .. case2);%0A    (F::println %22T -> F = %22 .. case3);%0A    (F::println %22T -> T = %22 .. case4);%0A}", ""],
 },
 
 
@@ -2191,7 +2191,7 @@ function spec()
   "ast" : "autumn.lang.compiler.ast.nodes.ShortCircuitAndOperation",
   "syntax":
     [
-      [0, "<i><a href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Expression\">left</a></i> && <i><a href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Expression\">right</a></i>"],
+      [0, "<i><a href=\"TextPage.html?page=Expression\">left</a></i> && <i><a href=\"TextPage.html?page=Expression\">right</a></i>"],
     ],
   "details":
     [
@@ -2207,7 +2207,7 @@ function spec()
       ["EXPECTED_CONDITION", "The type of the left-operand must be either boolean or <a href=\"http://docs.oracle.com/javase/7/docs/api/java/lang/Boolean.html\">java.lang.Boolean</a>."],
       ["EXPECTED_CONDITION", "The type of the right-operand must be either boolean or <a href=\"http://docs.oracle.com/javase/7/docs/api/java/lang/Boolean.html\">java.lang.Boolean</a>."],
     ],
-  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    val case1 = false && false;%0A    val case2 = false && true;%0A    val case3 = true && false;%0A    val case4 = true && true;%0A%0A    (F::println %22Truth Table:%22);%0A    (F::println %22  F && F = %22 .. case1);%0A    (F::println %22  F && T = %22 .. case2);%0A    (F::println %22  T && F = %22 .. case3);%0A    (F::println %22  T && T = %22 .. case4);%0A%0A    (F::println);%0A%0A    (F::println %22Short Circuit:%22);%0A    (My::sc false, false);%0A    (My::sc false, true);%0A    (My::sc true, false);%0A    (My::sc true, true);%0A}%0A%0Adefun sc(left : boolean, right : boolean) : void%0A{%0A    (F::print %22  %22);%0A    (My::operand1 left) && (My::operand2 left);%0A    (F::println);%0A}%0A%0Adefun operand1(value : boolean) : boolean%0A{%0A    (F::print %22L%22);%0A    return value;%0A}%0A%0Adefun operand2(value : boolean) : boolean%0A{%0A    (F::print %22R%22);%0A    return value;%0A}", "Truth Table:%0A  F && F = false%0A  F && T = false%0A  T && F = false%0A  T && T = true%0A%0AShort Circuit:%0A  L%0A  L%0A  LR%0A  LR"],
+  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    val case1 = false && false;%0A    val case2 = false && true;%0A    val case3 = true && false;%0A    val case4 = true && true;%0A%0A    (F::println %22Truth Table:%22);%0A    (F::println %22  F && F = %22 .. case1);%0A    (F::println %22  F && T = %22 .. case2);%0A    (F::println %22  T && F = %22 .. case3);%0A    (F::println %22  T && T = %22 .. case4);%0A%0A    (F::println);%0A%0A    (F::println %22Short Circuit:%22);%0A    (My::sc false, false);%0A    (My::sc false, true);%0A    (My::sc true, false);%0A    (My::sc true, true);%0A}%0A%0Adefun sc(left : boolean, right : boolean) : void%0A{%0A    (F::print %22  %22);%0A    (My::operand1 left) && (My::operand2 left);%0A    (F::println);%0A}%0A%0Adefun operand1(value : boolean) : boolean%0A{%0A    (F::print %22L%22);%0A    return value;%0A}%0A%0Adefun operand2(value : boolean) : boolean%0A{%0A    (F::print %22R%22);%0A    return value;%0A}", ""],
 },
 
 
@@ -2216,7 +2216,7 @@ function spec()
   "ast" : "autumn.lang.compiler.ast.nodes.ShortCircuitOrOperation",
   "syntax":
     [
-      [0, "<i><a href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Expression\">left</a></i> || <i><a href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Expression\">right</a></i>"],
+      [0, "<i><a href=\"TextPage.html?page=Expression\">left</a></i> || <i><a href=\"TextPage.html?page=Expression\">right</a></i>"],
     ],
   "details":
     [
@@ -2232,7 +2232,7 @@ function spec()
       ["EXPECTED_CONDITION", "The type of the left-operand must be either boolean or <a href=\"http://docs.oracle.com/javase/7/docs/api/java/lang/Boolean.html\">java.lang.Boolean</a>."],
       ["EXPECTED_CONDITION", "The type of the right-operand must be either boolean or <a href=\"http://docs.oracle.com/javase/7/docs/api/java/lang/Boolean.html\">java.lang.Boolean</a>."],
     ],
-  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    val case1 = false || false;%0A    val case2 = false || true;%0A    val case3 = true || false;%0A    val case4 = true || true;%0A%0A    (F::println %22Truth Table:%22);%0A    (F::println %22  F || F = %22 .. case1);%0A    (F::println %22  F || T = %22 .. case2);%0A    (F::println %22  T || F = %22 .. case3);%0A    (F::println %22  T || T = %22 .. case4);%0A%0A    (F::println);%0A%0A    (F::println %22Short Circuit:%22);%0A    (My::sc false, false);%0A    (My::sc false, true);%0A    (My::sc true, false);%0A    (My::sc true, true);%0A}%0A%0Adefun sc(left : boolean, right : boolean) : void%0A{%0A    (F::print %22  %22);%0A    (My::operand1 left) || (My::operand2 left);%0A    (F::println);%0A}%0A%0Adefun operand1(value : boolean) : boolean%0A{%0A    (F::print %22L%22);%0A    return value;%0A}%0A%0Adefun operand2(value : boolean) : boolean%0A{%0A    (F::print %22R%22);%0A    return value;%0A}", "Truth Table:%0A  F || F = false%0A  F || T = true%0A  T || F = true%0A  T || T = true%0A%0AShort Circuit:%0A  LR%0A  LR%0A  L%0A  L"],
+  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    val case1 = false || false;%0A    val case2 = false || true;%0A    val case3 = true || false;%0A    val case4 = true || true;%0A%0A    (F::println %22Truth Table:%22);%0A    (F::println %22  F || F = %22 .. case1);%0A    (F::println %22  F || T = %22 .. case2);%0A    (F::println %22  T || F = %22 .. case3);%0A    (F::println %22  T || T = %22 .. case4);%0A%0A    (F::println);%0A%0A    (F::println %22Short Circuit:%22);%0A    (My::sc false, false);%0A    (My::sc false, true);%0A    (My::sc true, false);%0A    (My::sc true, true);%0A}%0A%0Adefun sc(left : boolean, right : boolean) : void%0A{%0A    (F::print %22  %22);%0A    (My::operand1 left) || (My::operand2 left);%0A    (F::println);%0A}%0A%0Adefun operand1(value : boolean) : boolean%0A{%0A    (F::print %22L%22);%0A    return value;%0A}%0A%0Adefun operand2(value : boolean) : boolean%0A{%0A    (F::print %22R%22);%0A    return value;%0A}", ""],
 },
 
 
@@ -2241,7 +2241,7 @@ function spec()
   "ast" : "autumn.lang.compiler.ast.nodes.NullCoalescingOperation",
   "syntax":
     [
-      [0, "<i><a href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Expression\">left</a></i> ?? <i><a href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Expression\">right</a></i>"],
+      [0, "<i><a href=\"TextPage.html?page=Expression\">left</a></i> ?? <i><a href=\"TextPage.html?page=Expression\">right</a></i>"],
     ],
   "details":
     [
@@ -2256,8 +2256,8 @@ function spec()
     [
       ["INCOMPATIBLE_OPERANDS", "The type of one of the operands must be a subtype of the other."],
     ],
-  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    val value1 = %22Mercury%22;%0A    val value2 = %22Venus%22;%0A    val value3 = %22Earth%22;%0A%0A    # Case: The left operand is non-null.%0A    val value4 = (value1 ?? value2) is String;%0A%0A    # Case: The left-operand is null.%0A    val value5 = (null ?? value3) is String;%0A%0A    # Case: Both operands are null.%0A    val value6 = (null ?? null) is String;%0A%0A    # Print the results.%0A    (F::println value4);%0A    (F::println value5);%0A    (F::println value6);%0A}", "Mercury%0AEarth%0Anull"],
-  "example-2" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    val value1 = null is Object;%0A    val value2 = %22Not Null%22; %0A%0A    (F::print %22Case 1: %22);%0A    (My::operand1 value1) ?? (My::operand2 value1);%0A    (F::println);%0A%0A    (F::print %22Case 2: %22);%0A    (My::operand1 value1) ?? (My::operand2 value2);%0A    (F::println);%0A%0A    (F::print %22Case 3: %22);%0A    (My::operand1 value2) ?? (My::operand2 value1);%0A    (F::println);%0A%0A    (F::print %22Case 4: %22);%0A    (My::operand1 value2) ?? (My::operand2 value2);%0A    (F::println);%0A}%0A%0Adefun operand1(value : Object) : Object%0A{%0A    (F::print %22L%22);%0A    return value;%0A}%0A%0Adefun operand2(value : Object) : Object%0A{%0A    (F::print %22R%22);%0A    return value;%0A}", "Case 1: LR%0ACase 2: LR%0ACase 3: L%0ACase 4: L"],
+  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    val value1 = %22Mercury%22;%0A    val value2 = %22Venus%22;%0A    val value3 = %22Earth%22;%0A%0A    # Case: The left operand is non-null.%0A    val value4 = (value1 ?? value2) is String;%0A%0A    # Case: The left-operand is null.%0A    val value5 = (null ?? value3) is String;%0A%0A    # Case: Both operands are null.%0A    val value6 = (null ?? null) is String;%0A%0A    # Print the results.%0A    (F::println value4);%0A    (F::println value5);%0A    (F::println value6);%0A}", ""],
+  "example-2" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    val value1 = null is Object;%0A    val value2 = %22Not Null%22; %0A%0A    (F::print %22Case 1: %22);%0A    (My::operand1 value1) ?? (My::operand2 value1);%0A    (F::println);%0A%0A    (F::print %22Case 2: %22);%0A    (My::operand1 value1) ?? (My::operand2 value2);%0A    (F::println);%0A%0A    (F::print %22Case 3: %22);%0A    (My::operand1 value2) ?? (My::operand2 value1);%0A    (F::println);%0A%0A    (F::print %22Case 4: %22);%0A    (My::operand1 value2) ?? (My::operand2 value2);%0A    (F::println);%0A}%0A%0Adefun operand1(value : Object) : Object%0A{%0A    (F::print %22L%22);%0A    return value;%0A}%0A%0Adefun operand2(value : Object) : Object%0A{%0A    (F::print %22R%22);%0A    return value;%0A}", ""],
 },
 
 
@@ -2384,7 +2384,7 @@ function spec()
     [
       ["IMPOSSIBLE_CONVERSION", "The conversion must be either predefined or a valid cast."],
     ],
-  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    # Case: Predefined Conversion (int ==> char). %0A    val value1 = 65 as char;%0A%0A    # Generalized Input%0A    val input = %22Mars%22 is Object;%0A%0A    # Case: Successful Cast%0A    val value2 = input as CharSequence;%0A%0A    # Case: Unsuccessful Cast%0A    val value3 = input as List;%0A%0A    # Print the results.%0A    (F::println %22Case 1: %22 .. value1);%0A    (F::println %22Case 2: %22 .. value2);%0A    (F::println %22Case 3: %22 .. value3);%0A}", "Case 1: A%0ACase 2: Mars%0ACase 3: null"],
+  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    # Case: Predefined Conversion (int ==> char). %0A    val value1 = 65 as char;%0A%0A    # Generalized Input%0A    val input = %22Mars%22 is Object;%0A%0A    # Case: Successful Cast%0A    val value2 = input as CharSequence;%0A%0A    # Case: Unsuccessful Cast%0A    val value3 = input as List;%0A%0A    # Print the results.%0A    (F::println %22Case 1: %22 .. value1);%0A    (F::println %22Case 2: %22 .. value2);%0A    (F::println %22Case 3: %22 .. value3);%0A}", ""],
 },
 
 
@@ -2511,8 +2511,8 @@ function spec()
     [
       ["IMPOSSIBLE_CONVERSION", "The conversion must be either predefined or a valid cast."],
     ],
-  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    # Case: Predefined Conversion (int ==> char). %0A%0A    val value1 = 65 is char;%0A%0A    (F::println %22Case 1: %22 .. value1);%0A%0A%0A%0A    # Case: Successful Cast%0A%0A    val value2 = %22Mars%22 is CharSequence;%0A%0A    (F::println %22Case 2: %22 .. value2);%0A}", "Case 1: A%0ACase 2: Mars"],
-  "example-2" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    # Generalized Input%0A    val input = %22Neptune%22 as Object;%0A%0A    try%0A    {%0A        # Case: Unsuccessful Cast%0A        input is List; %0A%0A        (F::println %22Failure: An exception was *not* thrown.%22);%0A    }%0A    catch (ex : ClassCastException)%0A    {%0A        (F::println %22Success: An exception was thrown.%22);%0A    }%0A}", "Success: An exception was thrown."],
+  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    # Case: Predefined Conversion (int ==> char). %0A%0A    val value1 = 65 is char;%0A%0A    (F::println %22Case 1: %22 .. value1);%0A%0A%0A%0A    # Case: Successful Cast%0A%0A    val value2 = %22Mars%22 is CharSequence;%0A%0A    (F::println %22Case 2: %22 .. value2);%0A}", ""],
+  "example-2" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    # Generalized Input%0A    val input = %22Neptune%22 as Object;%0A%0A    try%0A    {%0A        # Case: Unsuccessful Cast%0A        input is List; %0A%0A        (F::println %22Failure: An exception was *not* thrown.%22);%0A    }%0A    catch (ex : ClassCastException)%0A    {%0A        (F::println %22Success: An exception was thrown.%22);%0A    }%0A}", ""],
 },
 
 
@@ -2521,7 +2521,7 @@ function spec()
   "ast" : "autumn.lang.compiler.ast.nodes.NewExpression",
   "syntax":
     [
-      [0, "( <span class=\"keyword\">new</span> <i>type</i> <i><a href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Expression\">argument</a><sub>1</sub></i> , <i><a href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Expression\">argument</a><sub>2</sub></i> , ... , <i><a href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Expression\">argument</a><sub>n</sub></i> )"],
+      [0, "( <span class=\"keyword\">new</span> <i>type</i> <i><a href=\"TextPage.html?page=Expression\">argument</a><sub>1</sub></i> , <i><a href=\"TextPage.html?page=Expression\">argument</a><sub>2</sub></i> , ... , <i><a href=\"TextPage.html?page=Expression\">argument</a><sub>n</sub></i> )"],
     ],
   "details":
     [
@@ -2544,7 +2544,7 @@ function spec()
   "ast" : "autumn.lang.compiler.ast.nodes.CallStaticMethodExpression",
   "syntax":
     [
-      [0, "( <span class=\"keyword\">call</span> module::name <i><a href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Expression\">argument</a><sub>1</sub></i> , <i><a href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Expression\">argument</a><sub>2</sub></i> , ... , <i><a href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Expression\">argument</a><sub>n</sub></i> )"],
+      [0, "( <span class=\"keyword\">call</span> module::name <i><a href=\"TextPage.html?page=Expression\">argument</a><sub>1</sub></i> , <i><a href=\"TextPage.html?page=Expression\">argument</a><sub>2</sub></i> , ... , <i><a href=\"TextPage.html?page=Expression\">argument</a><sub>n</sub></i> )"],
     ],
   "details":
     [
@@ -2569,7 +2569,7 @@ function spec()
   "ast" : "autumn.lang.compiler.ast.nodes.CallMethodExpression",
   "syntax":
     [
-      [0, "( <span class=\"keyword\">call</span> <i><a href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Expression\">expression</a></i>.<i>name</i> <i><a href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Expression\">argument</a><sub>1</sub></i> , <i><a href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Expression\">argument</a><sub>2</sub></i> , ... , <i><a href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Expression\">argument</a><sub>n</sub></i> )"],
+      [0, "( <span class=\"keyword\">call</span> <i><a href=\"TextPage.html?page=Expression\">expression</a></i>.<i>name</i> <i><a href=\"TextPage.html?page=Expression\">argument</a><sub>1</sub></i> , <i><a href=\"TextPage.html?page=Expression\">argument</a><sub>2</sub></i> , ... , <i><a href=\"TextPage.html?page=Expression\">argument</a><sub>n</sub></i> )"],
     ],
   "details":
     [
@@ -2590,7 +2590,7 @@ function spec()
   "ast" : "autumn.lang.compiler.ast.nodes.SetStaticFieldExpression",
   "syntax":
     [
-      [0, "( <span class=\"keyword\">set</span> <i>module</i>::<i>name</i> = <i><a href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Expression\">value</a></i> )"],
+      [0, "( <span class=\"keyword\">set</span> <i>module</i>::<i>name</i> = <i><a href=\"TextPage.html?page=Expression\">value</a></i> )"],
     ],
   "details":
     [
@@ -2636,7 +2636,7 @@ function spec()
   "ast" : "autumn.lang.compiler.ast.nodes.SetFieldExpression",
   "syntax":
     [
-      [0, "( <span class=\"keyword\">set</span> <i>owner</i>.<i>name</i> = <i><a href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Expression\">value</a></i> )"],
+      [0, "( <span class=\"keyword\">set</span> <i>owner</i>.<i>name</i> = <i><a href=\"TextPage.html?page=Expression\">value</a></i> )"],
     ],
   "details":
     [
@@ -2680,7 +2680,7 @@ function spec()
   "ast" : "autumn.lang.compiler.ast.nodes.InstanceOfExpression",
   "syntax":
     [
-      [0, "( <span class=\"keyword\">instanceof</span> <i><a href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Expression\">argument</a></i> : <i>type</i> )"],
+      [0, "( <span class=\"keyword\">instanceof</span> <i><a href=\"TextPage.html?page=Expression\">argument</a></i> : <i>type</i> )"],
     ],
   "details":
     [
@@ -2705,7 +2705,7 @@ function spec()
   "ast" : "autumn.lang.compiler.ast.nodes.DispatchExpression",
   "syntax":
     [
-      [0, "( <span class=\"keyword\">dispatch</span> module::name <i><a href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Expression\">argument</a><sub>1</sub></i> , ... , <i><a href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Expression\">argument</a><sub>n</sub></i> )"],
+      [0, "( <span class=\"keyword\">dispatch</span> module::name <i><a href=\"TextPage.html?page=Expression\">argument</a><sub>1</sub></i> , ... , <i><a href=\"TextPage.html?page=Expression\">argument</a><sub>n</sub></i> )"],
     ],
   "details":
     [
@@ -2752,7 +2752,7 @@ function spec()
   "ast" : "autumn.lang.compiler.ast.nodes.TernaryConditionalExpression",
   "syntax":
     [
-      [0, "( <span class=\"keyword\">if</span> <i><a href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Expression\">condition</a></i> <span class=\"keyword\">then</span> <i><a href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Expression\">left</a></i> <span class=\"keyword\">else</span> <i><a href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Expression\">right</a></i>)"],
+      [0, "( <span class=\"keyword\">if</span> <i><a href=\"TextPage.html?page=Expression\">condition</a></i> <span class=\"keyword\">then</span> <i><a href=\"TextPage.html?page=Expression\">left</a></i> <span class=\"keyword\">else</span> <i><a href=\"TextPage.html?page=Expression\">right</a></i>)"],
     ],
   "details":
     [
@@ -2795,11 +2795,11 @@ function spec()
   "ast" : "autumn.lang.compiler.ast.nodes.PrognExpression",
   "syntax":
     [
-      [0, "( <i><a href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Expression\">argument</a><sub>1</sub></i> , ... , <i><a href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Expression\">argument</a><sub>n</sub></i> )"],
+      [0, "( <i><a href=\"TextPage.html?page=Expression\">argument</a><sub>1</sub></i> , ... , <i><a href=\"TextPage.html?page=Expression\">argument</a><sub>n</sub></i> )"],
     ],
   "details":
     [
-      [0, "Return Type: type of <i><a href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Expression\">argument</a><sub>n</sub></i>"],
+      [0, "Return Type: type of <i><a href=\"TextPage.html?page=Expression\">argument</a><sub>n</sub></i>"],
       [0, "Return The value that the last argument produces will be returned.."],
     ],
   "static-checks":
@@ -2814,7 +2814,7 @@ function spec()
   "ast" : "autumn.lang.compiler.ast.nodes.ListExpression",
   "syntax":
     [
-      [0, "[ <i><a href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Expression\">element</a><sub>1</sub></i> , <i><a href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Expression\">element</a><sub>2</sub></i> , ... , <i><a href=\"file:///media/disk/Code/EclipseProjects/AutumnSpecification/TextPage.html?page=Expression\">element</a><sub>n</sub></i> ]"],
+      [0, "[ <i><a href=\"TextPage.html?page=Expression\">element</a><sub>1</sub></i> , <i><a href=\"TextPage.html?page=Expression\">element</a><sub>2</sub></i> , ... , <i><a href=\"TextPage.html?page=Expression\">element</a><sub>n</sub></i> ]"],
     ],
   "details":
     [
@@ -2826,8 +2826,8 @@ function spec()
     [
       ["VALUE_REQUIRED", "The type of each <i>element</i> must be either a primitive-type or a reference-type."],
     ],
-  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    # Create an empty list.%0A    val empty = [];%0A%0A    # Create a list with a single element. %0A    val home = [%22Earth%22];%0A%0A    # Create a list with two elements. %0A    val hot = [%22Mercury%22, %22Venus%22];%0A%0A    # Create a list with multiple elements.%0A    val jovian = [%22Jupiter%22, %22Saturn%22, %22Uranus%22, %22Neptune%22];%0A%0A    # Print the results.%0A    (F::println empty);%0A    (F::println home);%0A    (F::println hot);%0A    (F::println jovian);%0A}", "[]%0A[Earth]%0A[Mercury, Venus]%0A[Jupiter, Saturn, Uranus, Neptune]"],
-  "example-2" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    # Create an empty list.%0A    val pets = [];%0A%0A    # Add elements to the list. %0A    (pets.add %22Jet%22);%0A    (pets.add %22Fluffy%22);%0A    (pets.add %22Chicky%22);%0A    (pets.add %22Picky%22);%0A    (pets.add %22Sikorsky%22);%0A    (pets.add %22Lucky%22);%0A    (pets.add %22Eyeball%22);%0A%0A    # Print the results.%0A    (F::println pets);%0A}", "[Jet, Fluffy, Chicky, Picky, Sikorsky, Lucky, Eyeball]"],
+  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    # Create an empty list.%0A    val empty = [];%0A%0A    # Create a list with a single element. %0A    val home = [%22Earth%22];%0A%0A    # Create a list with two elements. %0A    val hot = [%22Mercury%22, %22Venus%22];%0A%0A    # Create a list with multiple elements.%0A    val jovian = [%22Jupiter%22, %22Saturn%22, %22Uranus%22, %22Neptune%22];%0A%0A    # Print the results.%0A    (F::println empty);%0A    (F::println home);%0A    (F::println hot);%0A    (F::println jovian);%0A}", ""],
+  "example-2" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    # Create an empty list.%0A    val pets = [];%0A%0A    # Add elements to the list. %0A    (pets.add %22Jet%22);%0A    (pets.add %22Fluffy%22);%0A    (pets.add %22Chicky%22);%0A    (pets.add %22Picky%22);%0A    (pets.add %22Sikorsky%22);%0A    (pets.add %22Lucky%22);%0A    (pets.add %22Eyeball%22);%0A%0A    # Print the results.%0A    (F::println pets);%0A}", ""],
 },
 
 
@@ -3054,7 +3054,7 @@ function spec()
 "Compiler Command Line Options" : "",
 
 
-"Special Thanks" : "<h1>Special Thanks</h1>%0A<ul>%0A  <li>Mom (dedication)</li>%0A  <li>ObjectWeb for ASM Library</li>%0A  <li>Google for Guava Library</li>%0A</ul>",
+"Special Thanks" : "<h1>Special Thanks</h1><h2>Dedication:</h2><p>My Mother</p><h2>Other:</h2><h3>Thanks to the developers of <a ref=%22http://asm.ow2.org/%22>ObjectWeb for ASM Library</a>.</h3><p>The ObjectWeb ASM library is used inside the Autumn compiler in order to generate class files. </p><h3>Thanks to the developers of <a ref=%22https://code.google.com/p/guava-libraries/%22>Google Guava</a>.</h3><p>The Guava library is used inside of the Autumn compiler, because of the utilities it provides.</p><h3>Thanks to backgroundlabs.com for the website background images.</h3><p><a href=%22http://www.backgroundlabs.com%22 title=%22Background Labs%22><img src=%22http://www.backgroundlabs.com/images/backgroundlabs-100x100.png%22 border=%220%22 alt=%22Background Labs%22 /></a></p>",
 
 
 "Type Structure" : "<h1>Type Systen</h1><p>Autumn is a statically-typed language that compiles to JVM bytecode and can interact with other JVM based languages. As a result, the type-system is closely related to the JVM type-system. </p><h2>Recursive Definition of Types</h2><p><code>&lt;img alt=&quot;Diagram of Type Hierarchy&quot; src=&quot;/dot/TypeHeirarchy.png&quot;&gt;</code></p>%0A<ul>%0A  <li>The boolean-type is a primitive-type.</li>%0A  <li>The char-type is a primitive-type.</li>%0A  <li>The byte-type is a primitive-type.</li>%0A  <li>A class-type is a declared-type.</li>%0A  <li>An interface-type is a declared-type.</li>%0A  <li>An enum-type is a declared-type.</li>%0A  <li>A declared-type is a reference-type.</li>%0A  <li>An array-type is a reference-type.</li>%0A</ul>",

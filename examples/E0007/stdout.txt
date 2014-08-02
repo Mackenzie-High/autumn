@@ -1,4 +1,0 @@
-Pet Name = Jet
-Pet Name = Fluffy
-Pet Name = Eyeball
-Pet Name = Molly

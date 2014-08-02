@@ -1,4 +1,0 @@
-Emma's Tax = 0
-Elle's Tax = 2300
-Evie's Tax = 25400
-Erin's Tax = 115000
