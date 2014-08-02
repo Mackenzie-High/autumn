@@ -1,0 +1,17 @@
+module * in examples;
+
+@Start
+defun main (args : String[]) : void
+{
+    var i = 0;
+
+    until (i > 10)
+    {
+        (F::print "X = ");
+        (F::println i);
+
+        i = i + 2;
+    }
+} 
+
+

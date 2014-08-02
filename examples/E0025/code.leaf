@@ -1,0 +1,46 @@
+module Main in examples;
+
+@Start
+defun main (args : String[]) : void
+{
+    val case1 = false && false;
+    val case2 = false && true;
+    val case3 = true && false;
+    val case4 = true && true;
+
+    (F::println "Truth Table:");
+    (F::println "  F && F = " .. case1);
+    (F::println "  F && T = " .. case2);
+    (F::println "  T && F = " .. case3);
+    (F::println "  T && T = " .. case4);
+
+    (F::println);
+
+    (F::println "Short Circuit:");
+    (My::sc false, false);
+    (My::sc false, true);
+    (My::sc true, false);
+    (My::sc true, true);
+}
+
+defun sc(left : boolean, right : boolean) : void
+{
+    (F::print "  ");
+    (My::operand1 left) && (My::operand2 left);
+    (F::println);
+}
+
+defun operand1(value : boolean) : boolean
+{
+    (F::print "L");
+    return value;
+}
+
+defun operand2(value : boolean) : boolean
+{
+    (F::print "R");
+    return value;
+}
+
+ 
+

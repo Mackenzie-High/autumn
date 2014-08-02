@@ -1,0 +1,10 @@
+char = K
+byte = 5
+short = 5
+int = 5
+long = 5
+float = 5.0
+double = 5.0
+BigInteger = 5
+BigDecimal = 5
+Associativity = 2

@@ -1,0 +1,48 @@
+module Main in examples;
+
+@Start
+defun main (args : String[]) : void
+{
+    (F::println "This");
+
+    goto IS;
+
+    marker DONOT;
+
+    (F::println "do not");
+
+    goto DO;
+
+    marker PASTA;
+
+    (F::println "spaghetti");
+
+    goto CODE;
+
+    marker IS;
+
+    (F::println " is ");
+
+    goto PASTA;
+
+    marker DO;
+
+    (F::println " do ");
+
+    goto THIS;
+
+    marker CODE;
+
+    (F::println " code ");
+
+    goto DONOT;
+
+    marker THIS;
+
+    (F::println "this!!!");
+}
+
+
+
+ 
+

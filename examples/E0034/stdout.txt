@@ -1,0 +1,4 @@
+Case 1: LR
+Case 2: LR
+Case 3: L
+Case 4: L

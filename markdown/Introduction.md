@@ -1,0 +1,25 @@
+# Introduction
+
+Autumn is a statically-typed multi-paradigm general-purpose programming language that compiles directly to JVM bytecode.
+
+## Paradigms
+
++ Object-Oriented
++ Imperative
++ Functional
++ Procedural
++ Reflective
++ Concurrent
++ Dataflow (events in properties)????
++ Metaprograming
+..+ Limited Homioconicity
+..+ Reflective
+
+## Notable Features and Benefits:
+
++ Prototype-based Object System
++ Anonymous Functions via Delegates
++ Optional Multiple Dispatch
++ Explicit support for direct tail-recursion
++ Generator Functions
+

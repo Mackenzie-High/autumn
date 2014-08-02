@@ -1,0 +1,19 @@
+module * in examples;
+
+@Start
+defun main (args : String[]) : void
+{
+    var i = 0;
+
+    while (i < 100)
+    {
+        (F::print "X = ");
+        (F::println i);
+
+        when (i == 5) then break;
+
+        i = i + 1;
+    }
+} 
+
+

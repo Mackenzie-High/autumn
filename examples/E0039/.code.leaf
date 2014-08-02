@@ -1,0 +1,24 @@
+module Main in examples;
+
+@Start
+defun main (args : String[]) : void
+{
+    # Generalized Input
+    val input = "Neptune" as Object;
+
+    try
+    {
+        # Case: Unsuccessful Cast
+        input is List; 
+
+        (F::println "Case 3: An exception was *not* thrown.");
+    }
+    catch (ex : ClassCastException)
+    {
+        (F::println "Case 3: An exception was thrown.");
+    }
+}
+
+
+ 
+

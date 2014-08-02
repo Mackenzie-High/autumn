@@ -1,0 +1,47 @@
+module * in examples;
+
+@Start
+defun main (args : String[]) : void
+{
+    (F::println (Me::next));
+    (F::println (Me::next));
+    (F::println (Me::next));
+
+    (F::println (Me::next));
+    (F::println (Me::next));
+    (F::println (Me::next));
+
+    (F::println (Me::next));
+    (F::println (Me::next));
+    (F::println (Me::next));
+
+    (F::println (Me::next));
+    (F::println (Me::next));
+    (F::println (Me::next));
+
+    (F::println (Me::next));
+    (F::println (Me::next));
+    (F::println (Me::next));
+}
+
+defun next() : String
+{
+    marker StartOfYear;
+
+    yield "January";
+    yield "February";
+    yield "March";
+    yield "April";
+    yield "May";
+    yield "June";
+    yield "July";
+    yield "August";
+    yield "September";
+    yield "October";
+    yield "November";
+    yield "December";
+
+    goto StartOfYear;
+}
+ 
+

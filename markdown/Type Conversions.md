@@ -1,0 +1,61 @@
+# Type Conversions and Assignability
+
+## Boxing Conversions
++ A value of the boolean-type can be converted to a #JavaLangBoolean# value via a boxing conversion. 
++ A value of the char-type can be converted to a #JavaLangCharacter# value via a boxing conversion. 
++ A value of the byte-type can be converted to a #JavaLangByte# value via a boxing conversion. 
++ A value of the short-type can be converted to a #JavaLangShort# value via a boxing conversion. 
++ A value of the int-type can be converted to a #JavaLangInteger# value via a boxing conversion. 
++ A value of the long-type can be converted to a #JavaLangLong# value via a boxing conversion. 
++ A value of the float-type can be converted to a #JavaLangFloat# value via a boxing conversion. 
++ A value of the double-type can be converted to a #JavaLangDouble# value via a boxing conversion. 
+
+
+
+## Unboxing Conversions
++ A #JavaLangBoolean# value can be converted to a value of the boolean-type via a boxing conversion. 
++ A #JavaLangCharacter# value can be converted to a value of the char-type via a boxing conversion. 
++ A #JavaLangByte# value can be converted to a value of the byte-type via a boxing conversion. 
++ A #JavaLangShort# value can be converted to a value of the short-type via a boxing conversion. 
++ A #JavaLangInteger# value can be converted to a value of the int-type via a boxing conversion. 
++ A #JavaLangLong# value can be converted to a value of the long-type via a boxing conversion. 
++ A #JavaLangFloat# value can be converted to a value of the float-type via a boxing conversion. 
++ A #JavaLangDouble# value can be converted to a value of the double-type via a boxing conversion. 
+
+
+## Coercions
++ char ==> int
++ char ==> long
++ byte ==> short
++ byte ==> short
++ byte ==> int
++ byte ==> long
++ short ==> int
++ short ==> long
++ int ==> long
++ float ==> double
+
+
+## Identity Conversion
+Any value of a type X can is a value of type X via an identity conversion. 
+
+
+
+## Subtyping
+A type X is a subtype of a type T, iff:
+
++ X is T
++ X is a reference-type and the direct superclass of X is a subtype of T.
++ X is a reference-type and a direct superinterface of X is a subtype of T.
++ X is the null-type and T is a reference-type. 
++ X and T are array-types of N dimensions and the element-type of X is a subtype of the element-type T
+
+
+## Assignability
+A value of type X is assignable to a location of type T, iff:
+
++ X is T
++ X is a subtype of T
++ X is convertable to T via a boxing conversion
++ X is convertable to T via an unboxing conversion
++ X is the null-type and T is a reference-type 
