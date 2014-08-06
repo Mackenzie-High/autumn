@@ -5,6 +5,7 @@ import autumn.lang.compiler.ClassFile;
 import autumn.lang.compiler.ast.nodes.FormalParameter;
 import autumn.lang.compiler.ast.nodes.FunctorDefinition;
 import autumn.lang.internals.ArgumentStack;
+import autumn.lang.internals.Helpers;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import high.mackenzie.autumn.lang.compiler.typesystem.CustomConstructor;
@@ -315,6 +316,13 @@ public final class FunctorCompiler
         /**
          * Convert the mutableList to an immutable list.
          */
+        Utils.invoke(method.instructions,
+                     Opcodes.INVOKESTATIC,
+                     Helpers.class,
+                     List.class,
+                     "newImmutableList",
+                     Iterable.class);
+
         /**
          * Return from the method.
          */
