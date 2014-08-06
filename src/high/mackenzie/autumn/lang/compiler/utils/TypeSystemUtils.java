@@ -12,6 +12,7 @@ import autumn.lang.compiler.ast.nodes.Name;
 import autumn.lang.compiler.ast.nodes.TypeSpecifier;
 import autumn.lang.internals.AbstractDelegate;
 import autumn.lang.internals.AbstractModule;
+import autumn.lang.internals.AbstractStaticFunctor;
 import autumn.lang.internals.AbstractTuple;
 import autumn.lang.internals.ArgumentStack;
 import autumn.lang.internals.Conversions;
@@ -23,6 +24,7 @@ import autumn.lang.internals.proto.AbstractPrototype;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
+import high.mackenzie.autumn.lang.compiler.typesystem.CustomFormalParameter;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IAnnotatable;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IAnnotation;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IAnnotationType;
@@ -44,10 +46,12 @@ import high.mackenzie.autumn.lang.compiler.typesystem.design.IType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.ITypeFactory;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IVariableType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IVoidType;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Modifier;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
@@ -104,6 +108,8 @@ public final class TypeSystemUtils
 
     public final IClassType BIG_DECIMAL;
 
+    public final IInterfaceType ANNOTATION;
+
     public final IClassType OBJECT;
 
     public final IClassType COMPARABLE;
@@ -143,6 +149,8 @@ public final class TypeSystemUtils
     public final IClassType ABSTRACT_TUPLE;
 
     public final IClassType ABSTRACT_PROTOTYPE;
+
+    public final IClassType ABSTRACT_STATIC_FUNCTOR;
 
     public final IClassType HELPERS;
 
@@ -194,6 +202,8 @@ public final class TypeSystemUtils
         this.BIG_INTEGER = (IClassType) factory.fromClass(BigInteger.class);
         this.BIG_DECIMAL = (IClassType) factory.fromClass(BigDecimal.class);
 
+        this.ANNOTATION = (IInterfaceType) factory.fromClass(Annotation.class);
+
         this.OBJECT = (IClassType) factory.fromClass(Object.class);
 
         this.COMPARABLE = (IClassType) factory.fromClass(Comparable.class);
@@ -231,6 +241,8 @@ public final class TypeSystemUtils
         this.ABSTRACT_DELEGATE = (IClassType) factory.fromClass(AbstractDelegate.class);
 
         this.ABSTRACT_PROTOTYPE = (IClassType) factory.fromClass(AbstractPrototype.class);
+
+        this.ABSTRACT_STATIC_FUNCTOR = (IClassType) factory.fromClass(AbstractStaticFunctor.class);
 
         this.HELPERS = (IClassType) factory.fromClass(Helpers.class);
 
@@ -1298,5 +1310,32 @@ NEXT_METHOD:
         boxing = boxing == null ? new InsnList() : boxing;
 
         code.add(boxing);
+    }
+
+    public List<String> superinterfaces(final Iterable<IInterfaceType> superinterfaces)
+    {
+        final List<String> result = Lists.newLinkedList();
+
+        for (IInterfaceType superinterface : superinterfaces)
+        {
+            result.add(Utils.internalName(superinterface));
+        }
+
+        return result;
+    }
+
+    /**
+     * This method creates the type-system representation of a formal-parameter.
+     *
+     * @param type is the type part of the parameter.
+     * @return the new formal parameter.
+     */
+    public IFormalParameter formal(final IVariableType type)
+    {
+        final CustomFormalParameter param = new CustomFormalParameter();
+        param.setAnnotations(new LinkedList());
+        param.setType(type);
+
+        return param;
     }
 }

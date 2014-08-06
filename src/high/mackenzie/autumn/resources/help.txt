@@ -16,8 +16,4 @@ limitations under the License.
 
 Usages:
 
-  To Compile: autumn -c <input-file> <output-file>
-
-  To Pretty Print: autumn -p <input-file>
-
-  To Pseudo-Interpret: autumn -i <input-file> <argument-0> <argument-1> ... <argument-n>
+  To Pseudo-Interpret: autumn -i -src <input-file> -args <argument-0> <argument-1> ... <argument-n>

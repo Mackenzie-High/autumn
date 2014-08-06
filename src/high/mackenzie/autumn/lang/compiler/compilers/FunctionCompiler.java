@@ -152,7 +152,7 @@ public final class FunctionCompiler
         {
             for (FormalParameter p : node.getParameters().getParameters())
             {
-                final IVariableType param_type = (IVariableType) module.resolveType(p.getType());
+                final IVariableType param_type = (IVariableType) module.imports.resolveType(p.getType());
 
                 final CustomFormalParameter param = new CustomFormalParameter();
 
@@ -171,7 +171,7 @@ public final class FunctionCompiler
         type.setModifiers(modifiers);
         type.setName(node.getName().getName());
         type.setParameters(params);
-        type.setReturnType(module.resolveType(node.getReturnType()));
+        type.setReturnType(module.imports.resolveType(node.getReturnType()));
     }
 
     /**

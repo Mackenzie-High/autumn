@@ -1,0 +1,12 @@
+module Main in execution;
+
+annotation Anno;
+
+@Anno
+@Start
+defun main (args : String[]) : void
+{
+    val method = (Reflect::getMethod (class Main), "main", [(class String[])]);
+
+    assert (method.isAnnotationPresent (class Anno));
+}

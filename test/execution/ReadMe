@@ -13,18 +13,18 @@ Test Index
 . . Module
 . Modules
 . . Reflective Testing of the Module's Class
-. . Special Methods
-. . . instance()
-. . . moduleAnnotationDefinitions()
-. . . T0081 = moduleExceptionDefinitions()
-. . . T0080 = moduleEnumDefinitions()
-. . . moduleDesignDefinitions()
-. . . moduleInvokeFunction(int, ArgumentStack)
+. . Special Methods - instance()
+. . Special Method - moduleAnnotationDefinitions()
+. . T0081 = Special Method - moduleExceptionDefinitions()
+. . T0080 = Special Method - moduleEnumDefinitions()
+. . Special Method - moduleDesignDefinitions()
+. . Special Method - moduleInvokeFunction(int, ArgumentStack)
 . . Delegates
 . . . T0078 = Metadata    // TODO: fix
 . . . T0079 = Invocation  // TODO: fix
 . Annotation Definitions
-. . Reflective Testing of the Annotation's Class
+. . T0140 = Reflective Testing of the Annotation's Class
+. . T0141 = Usage of a Defined Annotation
 . Exception Definitions
 . . Reflective Testing of the Exception's Class
 . Enum Definitions
@@ -36,6 +36,12 @@ Test Index
 . . T0126 = Setters - (immutable)
 . . T0127 = Setters - (mutable)
 . . T0117 = Getters
+. . T0135 = Special Method - set(String, Object) - (element exists, immutable tuple)
+. . T0137 = Special Method - set(String, Object) - (element exists, mutable tuple)
+. . T0136 = Special Method - set(String, Object) - (no such element)
+. . T0132 = Special Method - set(int, Object) - (index OK, immutable tuple)
+. . T0133 = Special Method - set(int, Object) - (index OK, mutable tuple)
+. . T0134 = Special Method - set(int, Object) - (index Out-Of-Bounds)
 . . T0124 = Special Method - get(String) - (element exists)
 . . T0125 = Special Method - get(String) - (no such element)
 . . T0115 = Special Method - get(int) - (index OK)
@@ -46,10 +52,28 @@ Test Index
 . . T0121 = Special Method - types()
 . . T0122 = Special Method - instance()
 . . T0123 = Special Method - size() and isEmpty()
-. . Equals method
-. . Hash-Code Method
-. . To-String Method
-. . Compare-To Method
+. . T0129 = Special Method - mutableCopy()
+. . T0130 = Special Method - immutableCopy()
+. . T0138 = Special Method - copy() - (immutable tuple)
+. . T0139 = Special Method - copy() - (mutable tuple)
+. . Special Method - equals(Object)
+. . Special Method - hashCode()
+. . Special Method - toString()
+. . T0131 = Special Method - toMap()
+. . Special Method - compareTo(Object)
+. . Special Method - compareTo(Tuple)
+. . Special Method - assign(Tuple)
+. . Special Method - iterator()
+. . Special Method - listIterator()
+. Functor Definition
+. . Reflective Testing of the Functor's Class
+. . Functor Usage
+. . T0143 = Very Basic Functor Usage
+. . T0142 = Special Method - inner()
+. . T0144 = Special Method - parameterTypes() - (non empty)
+. . T0145 = Special Method - parameterTypes() - (empty)
+. . T0146 = Special Method - returnType() - (non void)
+. . T0147 = Special Method - returnType() - (void)
 . Design Definitions
 . . Reflective Testing of the Design's Class
 . Functions

@@ -733,4 +733,18 @@ public final class Utils
                      "newImmutableList",
                      Iterable.class);
     }
+
+    /**
+     * This method generates the bytecode necessary to load the current thread's
+     * argument-stack onto the operand-stack.
+     *
+     * @param code is the code being generated.
+     */
+    public static void loadArgumentStack(final InsnList code)
+    {
+        code.add(new MethodInsnNode(Opcodes.INVOKESTATIC,
+                                    "autumn/lang/internals/ArgumentStack",
+                                    "getThreadStack",
+                                    "()Lautumn/lang/internals/ArgumentStack;"));
+    }
 }

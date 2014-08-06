@@ -1,25 +1,21 @@
 package high.mackenzie.autumn.lang.compiler.compilers;
 
-import autumn.lang.Delegate;
-import autumn.lang.Functor;
 import autumn.lang.compiler.ClassFile;
+import autumn.lang.compiler.ast.nodes.AnnotationDefinition;
 import autumn.lang.compiler.ast.nodes.DesignDefinition;
 import autumn.lang.compiler.ast.nodes.EnumDefinition;
 import autumn.lang.compiler.ast.nodes.ExceptionDefinition;
 import autumn.lang.compiler.ast.nodes.FormalParameter;
 import autumn.lang.compiler.ast.nodes.FunctionDefinition;
+import autumn.lang.compiler.ast.nodes.FunctorDefinition;
 import autumn.lang.compiler.ast.nodes.ImportDirective;
 import autumn.lang.compiler.ast.nodes.Module;
 import autumn.lang.compiler.ast.nodes.ModuleDirective;
 import autumn.lang.compiler.ast.nodes.Name;
 import autumn.lang.compiler.ast.nodes.TupleDefinition;
 import autumn.lang.compiler.ast.nodes.TypeSpecifier;
-import autumn.util.DS;
-import autumn.util.F;
-import autumn.util.proto.ProtoMap;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import high.mackenzie.autumn.lang.compiler.typesystem.CustomDeclaredType;
 import high.mackenzie.autumn.lang.compiler.typesystem.CustomFormalParameter;
@@ -28,24 +24,12 @@ import high.mackenzie.autumn.lang.compiler.typesystem.design.IExpressionType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IFormalParameter;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IInterfaceType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IMethod;
-import high.mackenzie.autumn.lang.compiler.typesystem.design.IReturnType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IVariableType;
 import high.mackenzie.autumn.lang.compiler.utils.AnnotationUtils;
 import high.mackenzie.autumn.lang.compiler.utils.Utils;
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-import java.util.NoSuchElementException;
 import java.util.Set;
-import java.util.TreeMap;
-import java.util.TreeSet;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.ClassNode;
@@ -93,70 +77,17 @@ public final class ModuleCompiler
      */
     private boolean anonymous;
 
-    private final Map<String, String> imports = Maps.newTreeMap();
+    public final Importer imports;
 
-
-    {
-        imports.put("Start", "autumn.lang.annotations.Start");
-        imports.put("Significant", "autumn.lang.annotations.Significant");
-        imports.put("Unique", "autumn.lang.annotations.Unique");
-
-        importClass(F.class);
-        importClass(DS.class);
-        importClass(Functor.class);
-        importClass(Delegate.class);
-
-        importClass(Object.class);
-        importClass(Number.class);
-        importClass(CharSequence.class);
-
-        importClass(Boolean.class);
-        importClass(Character.class);
-        importClass(Byte.class);
-        importClass(Short.class);
-        importClass(Integer.class);
-        importClass(Long.class);
-        importClass(Float.class);
-        importClass(Double.class);
-        importClass(BigInteger.class);
-        importClass(BigDecimal.class);
-        importClass(String.class);
-        importClass(CharSequence.class);
-        importClass(StringBuilder.class);
-
-        importClass(Class.class);
-
-        importClass(Throwable.class);
-        importClass(Exception.class);
-        importClass(RuntimeException.class);
-        importClass(ClassCastException.class);
-        importClass(IllegalArgumentException.class);
-        importClass(IllegalStateException.class);
-        importClass(IndexOutOfBoundsException.class);
-        importClass(NoSuchElementException.class);
-
-        importClass(Iterable.class);
-        importClass(Iterator.class);
-
-        importClass(Collection.class);
-        importClass(List.class);
-        importClass(LinkedList.class);
-        importClass(ArrayList.class);
-        importClass(Map.class);
-        importClass(HashMap.class);
-        importClass(TreeMap.class);
-        importClass(Set.class);
-        importClass(HashSet.class);
-        importClass(TreeSet.class);
-
-        importClass(ProtoMap.class);
-    }
+    public final List<AnnotationCompiler> annotations = Lists.newLinkedList();
 
     public final List<ExceptionCompiler> exceptions = Lists.newLinkedList();
 
     public final List<TupleCompiler> tuples = Lists.newLinkedList();
 
     public final List<EnumCompiler> enums = Lists.newLinkedList();
+
+    public final List<FunctorCompiler> functors = Lists.newLinkedList();
 
     public final List<DesignCompiler> designs = Lists.newLinkedList();
 
@@ -191,9 +122,21 @@ public final class ModuleCompiler
         this.program = program;
         this.node = node;
 
+        this.imports = new Importer(this);
+
+        for (AnnotationDefinition x : node.getAnnotations())
+        {
+            annotations.add(new AnnotationCompiler(this, x));
+        }
+
         for (ExceptionDefinition x : node.getExceptions())
         {
             exceptions.add(new ExceptionCompiler(this, x));
+        }
+
+        for (EnumDefinition x : node.getEnums())
+        {
+            enums.add(new EnumCompiler(this, x));
         }
 
         for (TupleDefinition x : node.getTuples())
@@ -201,9 +144,9 @@ public final class ModuleCompiler
             tuples.add(new TupleCompiler(this, x));
         }
 
-        for (EnumDefinition x : node.getEnums())
+        for (FunctorDefinition x : node.getFunctors())
         {
-            enums.add(new EnumCompiler(this, x));
+            functors.add(new FunctorCompiler(this, x));
         }
 
         for (DesignDefinition x : node.getDesigns())
@@ -223,7 +166,17 @@ public final class ModuleCompiler
     {
         final Set<ClassFile> classes = Sets.newHashSet();
 
+        for (AnnotationCompiler x : annotations)
+        {
+            classes.add(x.build());
+        }
+
         for (ExceptionCompiler x : exceptions)
+        {
+            classes.add(x.build());
+        }
+
+        for (EnumCompiler x : enums)
         {
             classes.add(x.build());
         }
@@ -233,7 +186,7 @@ public final class ModuleCompiler
             classes.add(x.build());
         }
 
-        for (EnumCompiler x : enums)
+        for (FunctorCompiler x : functors)
         {
             classes.add(x.build());
         }
@@ -784,43 +737,6 @@ public final class ModuleCompiler
         return m;
     }
 
-    private String dealisTypeName(final String typename)
-    {
-        final String deimported = imports.containsKey(typename) ? imports.get(typename) : typename;
-
-        final String dealiased = deimported.contains(".")
-                ? deimported
-                : type.getNamespace() + '.' + typename;
-
-        return dealiased;
-    }
-
-    public IReturnType resolveType(final TypeSpecifier specifier)
-    {
-        final String alias = program.typesystem.utils.extractTypeName(specifier);
-
-        if (Utils.isKeyword(alias))
-        {
-            // Special Case: The specifier specifies a primitive-type or the void-type.
-            return program.typesystem.utils.findType(alias, null);
-        }
-
-        final String typename = dealisTypeName(alias);
-
-        final Integer dimensions = specifier.getDimensions();
-
-        final IReturnType result = program.typesystem.utils.findType(typename, dimensions);
-
-        return result;
-    }
-
-    public IVariableType resolveVariableType(final TypeSpecifier specifier)
-    {
-        // TODO: error if non-vartype
-
-        return (IVariableType) resolveType(specifier);
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -929,11 +845,11 @@ public final class ModuleCompiler
         /**
          * Import the module itself.
          */
-        imports.put(name.substring(name.lastIndexOf('.') + 1),
-                    Utils.sourceName(type));
+        imports.importType(name.substring(name.lastIndexOf('.') + 1),
+                           Utils.sourceName(type));
 
         // The module name "My" is used to generically refer to the current module.
-        imports.put("My", Utils.sourceName(type));
+        imports.importType("My", Utils.sourceName(type));
 
         /**
          * Execute all the import directives.
@@ -951,7 +867,7 @@ public final class ModuleCompiler
                 // TODO: error
             }
 
-            imports.put(simple_name, typename);
+            imports.importType(simple_name, typename);
         }
 
         /**
@@ -963,7 +879,7 @@ public final class ModuleCompiler
 
             final String typename = Utils.internalName(cmp.type).replace('/', '.');
 
-            imports.put(simple_name, typename);
+            imports.importType(simple_name, typename);
         }
     }
 
@@ -1013,18 +929,15 @@ public final class ModuleCompiler
     {
         final Set<ICompiler> result = Sets.newHashSet();
 
+        result.addAll(annotations);
         result.addAll(exceptions);
-        result.addAll(tuples);
         result.addAll(enums);
+        result.addAll(tuples);
+        result.addAll(functors);
         result.addAll(designs);
         result.addAll(functions);
 
         return result;
-    }
-
-    private void importClass(final Class type)
-    {
-        imports.put(type.getSimpleName(), type.getName());
     }
 
     /**
@@ -1041,7 +954,7 @@ public final class ModuleCompiler
         for (FormalParameter param : parameters)
         {
             // This method will issue an error-message, if the type does not exist, etc.
-            final IVariableType param_type = resolveVariableType(param.getType());
+            final IVariableType param_type = imports.resolveVariableType(param.getType());
 
             // Create the type-system representation of the formal parameter.
             final CustomFormalParameter formal = new CustomFormalParameter();

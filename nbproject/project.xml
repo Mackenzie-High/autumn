@@ -24,8 +24,25 @@
         <spellchecker-wordlist xmlns="http://www.netbeans.org/ns/spellchecker-wordlist/1">
             <word>ArgumentStack</word>
             <word>BigInteger</word>
+            <word>eq</word>
+            <word>getAnnotation</word>
+            <word>getClass</word>
+            <word>getInterfaces</word>
+            <word>getMethod</word>
+            <word>getName</word>
+            <word>getSimpleName</word>
+            <word>getSuperclass</word>
+            <word>getSuperinterfaces</word>
             <word>incrementAndGet</word>
             <word>intValue</word>
+            <word>isAnnotation</word>
+            <word>isAnnotationPresent</word>
+            <word>isAssignableFrom</word>
+            <word>isClass</word>
+            <word>isEnum</word>
+            <word>isInterface</word>
+            <word>isLocalClass</word>
+            <word>listIterator</word>
             <word>moduleAnnotationDefinitions</word>
             <word>moduleDesignDefinitions</word>
             <word>moduleExceptionDefinitions</word>
@@ -33,7 +50,9 @@
             <word>moduleInvokeFunction</word>
             <word>newArray</word>
             <word>parameterTypes</word>
+            <word>RetentionPolicy</word>
             <word>returnType</word>
+            <word>toMap</word>
             <word>valueOf</word>
         </spellchecker-wordlist>
     </configuration>

@@ -95,58 +95,6 @@ public interface Tuple<T extends Tuple>
     public int size();
 
     /**
-     * This method searches for a value in this tuple.
-     *
-     * <p>
-     * The search is conducted in moving away from index zero.
-     * </p>
-     *
-     * @param value is the value to search for,
-     * @return the index of the found value, or negative one, if the value was not found.
-     */
-    public int indexOf(Object value);
-
-    /**
-     * This method searches for a value in this tuple, but skips given number of occurrences.
-     *
-     * <p>
-     * The search is conducted in moving away from index zero.
-     * </p>
-     *
-     * @param value is the value to search for,
-     * @param skip is the number of occurrences to skip.
-     * @return the index of the found value, or negative one, if the value was not found.
-     */
-    public int indexOf(Object value,
-                       int skip);
-
-    /**
-     * This method searches for a value in this tuple.
-     *
-     * <p>
-     * The search is conducted in moving towards index zero.
-     * </p>
-     *
-     * @param value is the value to search for,
-     * @return the index of the found value, or negative one, if the value was not found.
-     */
-    public int lastIndexOf(Object value);
-
-    /**
-     * This method searches for a value in this tuple, but skips given number of occurrences.
-     *
-     * <p>
-     * The search is conducted in moving towards index zero.
-     * </p>
-     *
-     * @param value is the value to search for,
-     * @param skip is the number of occurrences to skip.
-     * @return the index of the found value, or negative one, if the value was not found.
-     */
-    public int lastIndexOf(Object value,
-                           int skip);
-
-    /**
      * This method sets the value of each element to its default value.
      *
      * <p>
@@ -158,15 +106,12 @@ public interface Tuple<T extends Tuple>
     public Tuple<T> clear();
 
     /**
-     * This method determines whether this tuple contains a given value.
-     *
-     * @param value is the value this tuple may contain.
-     * @return true, iff this tuple contains the value.
-     */
-    public boolean contains(Object value);
-
-    /**
      * This method assigns a new value to the element at a given index.
+     *
+     * <p>
+     * Auto-unboxing will be performed, if necessary.
+     * However, the unboxed value will not be auto-widened.
+     * </p>
      *
      * @param index is the index of the element to assign.
      * @param value is the new value.

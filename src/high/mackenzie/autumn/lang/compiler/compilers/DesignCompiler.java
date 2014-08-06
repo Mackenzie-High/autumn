@@ -177,7 +177,7 @@ public class DesignCompiler
     private void initProperty(final Collection<IMethod> methods,
                               final DesignProperty property)
     {
-        final IVariableType ptype = module.resolveVariableType(property.getType());
+        final IVariableType ptype = module.imports.resolveVariableType(property.getType());
 
         initGetter(methods, property, ptype);
         initSetter(methods, property, ptype);
@@ -244,7 +244,7 @@ public class DesignCompiler
 
         for (FormalParameter formal : method.getParameters().getParameters())
         {
-            final IVariableType ftype = module.resolveVariableType(formal.getType());
+            final IVariableType ftype = module.imports.resolveVariableType(formal.getType());
 
             final CustomFormalParameter param = new CustomFormalParameter();
             param.setAnnotations(ImmutableList.<IAnnotation>of());
@@ -259,7 +259,7 @@ public class DesignCompiler
         cm.setModifiers(Opcodes.ACC_PUBLIC + Opcodes.ACC_ABSTRACT);
         cm.setName(method.getName().getName());
         cm.setParameters(ImmutableList.<IFormalParameter>copyOf(params));
-        cm.setReturnType(module.resolveType(method.getReturnType()));
+        cm.setReturnType(module.imports.resolveType(method.getReturnType()));
         cm.setThrowsClause(Lists.<IClassType>newLinkedList());
 
         methods.add(cm);

@@ -1,0 +1,15 @@
+module Main in execution;
+
+functor P (x : Object) : boolean;
+
+@Start
+defun main (args : String[]) : void
+{
+    # Create a functor to test.
+    val inner = (Predicates::eq "Venus");
+    val p = (new P inner);
+
+    # Test
+    assert (p.invoke "Venus") == true;
+    assert (p.invoke "Pluto") == false;
+}

@@ -1,7 +1,6 @@
 package autumn.lang.internals;
 
 import autumn.lang.Tuple;
-import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -249,91 +248,6 @@ public abstract class AbstractTuple<T extends AbstractTuple>
     public final boolean isEmpty()
     {
         return size() == 0;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public final int indexOf(final Object value)
-    {
-        return indexOf(value, 0);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public final int indexOf(final Object value,
-                             final int skip)
-    {
-        final int size = size();
-
-        int skipped = 0;
-
-        for (int i = 0; i < size; i++)
-        {
-            if (Objects.equal(value, get(i)))
-            {
-                if (skipped == skip)
-                {
-                    return i;
-                }
-                else
-                {
-                    ++skipped;
-                }
-            }
-        }
-
-        return -1;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public final int lastIndexOf(final Object value)
-    {
-        return lastIndexOf(value, 0);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public final int lastIndexOf(final Object value,
-                                 int skip)
-    {
-        final int size = size();
-
-        int skipped = 0;
-
-        for (int i = size - 1; i >= 0; i--)
-        {
-            if (Objects.equal(value, get(i)))
-            {
-                if (skipped == skip)
-                {
-                    return i;
-                }
-                else
-                {
-                    ++skipped;
-                }
-            }
-        }
-
-        return -1;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public final boolean contains(final Object value)
-    {
-        return indexOf(value) >= 0;
     }
 
     /**

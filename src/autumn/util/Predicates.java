@@ -1,6 +1,9 @@
 package autumn.util;
 
+import autumn.lang.Functor;
+import autumn.lang.internals.ArgumentStack;
 import autumn.util.functors.Predicate;
+import com.google.common.base.Objects;
 
 /**
  * This class provides static utility methods for creating commonly used predicates.
@@ -9,6 +12,21 @@ import autumn.util.functors.Predicate;
  */
 public final class Predicates
 {
+    private static abstract class PredicateImp
+            implements Functor
+    {
+        public abstract boolean invoke(final Object argument);
+
+        @Override
+        public void apply(ArgumentStack stack)
+                throws Throwable
+        {
+            final Object argument = stack.popO();
+
+            stack.push(invoke(argument));
+        }
+    }
+
     /**
      * Sole Constructor.
      */
@@ -97,7 +115,16 @@ public final class Predicates
      */
     public static Predicate eq(final Object value)
     {
-        return null;
+        final PredicateImp inner = new PredicateImp()
+        {
+            @Override
+            public boolean invoke(Object argument)
+            {
+                return Objects.equal(value, argument);
+            }
+        };
+
+        return new Predicate(inner);
     }
 
     /**

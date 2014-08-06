@@ -150,7 +150,7 @@ public final class ExceptionCompiler
     @Override
     public void performTypeInitialization()
     {
-        final IType supertype = module.resolveType(node.getSuperclass());
+        final IType supertype = module.imports.resolveType(node.getSuperclass());
 
         if (supertype instanceof IClassType == false)
         {

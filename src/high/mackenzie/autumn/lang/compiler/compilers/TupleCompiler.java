@@ -194,9 +194,12 @@ public final class TupleCompiler
 
             clazz.methods.add(this.generateMethodImmutableCopy());
 
+            clazz.methods.add(this.generateMethodGet());
+
+            clazz.methods.add(this.generateMethodSet());
+
             clazz.methods.addAll(this.generateBridgeMethods());
 
-            clazz.methods.add(this.generateMethodGet());
 
             for (Element element : elements)
             {
@@ -280,7 +283,7 @@ public final class TupleCompiler
         {
             final String element_name = formal.getVariable().getName();
 
-            final IVariableType element_type = module.resolveVariableType(formal.getType());
+            final IVariableType element_type = module.imports.resolveVariableType(formal.getType());
 
             final Element element = new Element(elements.size(), element_name, element_type);
 
@@ -374,8 +377,7 @@ public final class TupleCompiler
     }
 
     /**
-     * This method creates the type-system representation of the method
-     * that returns an instance() tuple.
+     * This method creates the type-system representation of the instance() method.
      *
      * @return the aforedescribed method.
      */
@@ -468,7 +470,7 @@ public final class TupleCompiler
 
             final String name = nameOfField(element.getVariable().getName());
 
-            final String desc = module.resolveVariableType(element.getType()).getDescriptor();
+            final String desc = module.imports.resolveVariableType(element.getType()).getDescriptor();
 
             final FieldNode field = new FieldNode(access, name, desc, null, null);
 
@@ -802,7 +804,120 @@ public final class TupleCompiler
      */
     private MethodNode generateMethodSet()
     {
-        return null;
+        final MethodNode method = Utils.bytecodeOf(module,
+                                                   TypeSystemUtils.find(type.getAllVisibleMethods(),
+                                                                        "set",
+                                                                        "(ILjava/lang/Object;)" + program.typesystem.utils.TUPLE.getDescriptor()));
+
+        // Remove the abstract modifier.
+        method.access = method.access & (~Opcodes.ACC_ABSTRACT);
+
+        final LabelNode default_case = new LabelNode();
+
+        /**
+         * Essentially, this will generate a switch-statement.
+         * The switch-case branches based on the index that is given as an parameter to the method.
+         * The default-case will be generated at the bottom of this method,.
+         * because no jump-table is needed, if the tuple is empty.
+         */
+        if (!elements.isEmpty())
+        {
+            /**
+             * Generate the jump-table itself.
+             */
+            final int min = 0;
+            final int max = elements.isEmpty() ? 0 : elements.size() - 1;
+            final TableSwitchInsnNode table = new TableSwitchInsnNode(min, max, default_case);
+
+            // Load the actual argument onto the operand-stack and then branch.
+            method.instructions.add(new VarInsnNode(Opcodes.ILOAD, 1));
+            method.instructions.add(table);
+
+            /**
+             * Generate each case in the switch-case, except the default-case.
+             */
+            for (Element element : elements)
+            {
+                /**
+                 * Mark the entry-point of the switch-case.
+                 */
+                final LabelNode label = new LabelNode();
+                table.labels.add(label);
+                method.instructions.add(label);
+
+                /**
+                 * Obtain a modifiable version of the tuple.
+                 * If the tuple is modifiable, then this will be the tuple itself.
+                 * Otherwise, this will be a copy of the tuple.
+                 */
+                loadModifiableVariant(method.instructions);
+
+                /**
+                 * Duplicate the object-reference, because we will need an extra one later.
+                 */
+                method.instructions.add(new InsnNode(Opcodes.DUP));
+
+                /**
+                 * Push the value onto an argument-stack and then pop it right back off.
+                 * This will convert the value to the appropriate type.
+                 *
+                 * The argument is an object and is the second user-defined parameter.
+                 * The first parameter is the index, which is an int.
+                 */
+                // Load two references to the the argument-stack.
+                Utils.loadArgumentStack(method.instructions);
+                method.instructions.add(new InsnNode(Opcodes.DUP));
+                // Push
+                method.instructions.add(new VarInsnNode(Opcodes.ALOAD, 2));
+                Utils.pushArgument(program, method.instructions, program.typesystem.utils.OBJECT);
+                // Pop - Peek Value
+                Utils.peekArgument(program, method.instructions, element.type);
+                // Pop - Clear the Argument Stack
+                Utils.loadArgumentStack(method.instructions);
+                method.instructions.add(new InsnNode(Opcodes.POP));
+
+                /**
+                 * Assign the value to the element.
+                 */
+                method.instructions.add(new FieldInsnNode(Opcodes.PUTFIELD,
+                                                          Utils.internalName(type),
+                                                          nameOfField(element.name),
+                                                          element.type.getDescriptor()));
+
+                /**
+                 * Return the modified object.
+                 * This is why the object-reference was duplicated previously.
+                 */
+                method.instructions.add(new InsnNode(Opcodes.ARETURN));
+            }
+
+            /**
+             * The default-case executes the same code that executes when the tuple is empty.
+             */
+            method.instructions.add(default_case);
+        }
+
+        /**
+         * Throw an exception, if the element does not exist.
+         */
+        method.instructions.add(new VarInsnNode(Opcodes.ILOAD, 1));
+        method.instructions.add(new LdcInsnNode(elements.size()));
+        Utils.invoke(method.instructions,
+                     Opcodes.INVOKESTATIC,
+                     Helpers.class,
+                     void.class,
+                     "throwIndexOutOfBoundsException",
+                     int.class,
+                     int.class);
+
+        /**
+         * Add a return instruction, even though it will never actually execute.
+         * This is needed, due to bytecode verification.
+         */
+        method.instructions.add(new InsnNode(Opcodes.ACONST_NULL));
+        method.instructions.add(new InsnNode(Opcodes.ARETURN));
+
+        return method;
     }
 
     /**

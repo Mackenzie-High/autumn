@@ -1,0 +1,53 @@
+module Main in execution;
+
+annotation Anno;
+
+@Start
+defun main (args : String[]) : void
+{
+    val anno = (class Anno);
+
+
+
+    # Check the names of the annotation-type.
+    assert (anno.getName) == "execution.Anno";
+    assert (anno.getSimpleName) == "Anno";
+
+
+
+    # Check that the annotation-type is really the type of an annotation.
+    assert (anno.isAnnotation) == true;
+    assert (anno.isInterface) == true;
+    assert (anno.isEnum) == false;
+    assert (anno.isSynthetic) == false;
+    assert (anno.isLocalClass) == false;
+
+
+
+    # Check that the @Retention annotation is applied to the annotation-type.
+    assert (anno.isAnnotationPresent (class java.lang.annotation.Retention));
+
+
+
+    # The Retention-Policy of the @Retention annotation must be RUNTIME.
+    val retention_annotation = (anno.getAnnotation (class java.lang.annotation.Retention));
+    val retention = (retention_annotation is java.lang.annotation.Retention);
+    val policy = (retention.value);
+    assert policy == (field java.lang.annotation.RetentionPolicy::RUNTIME);
+
+
+
+    # Check that the superclass is correct.
+    # Note: Autumn treats an annotation-type as a subclass of Object.
+    #       However, the JVM treats annotation-types as though they do not have a superclass.
+    #       As a result, the reflective view of an annotation-type should not have a superclass.
+    assert (anno.getSuperclass) == null;
+
+
+
+    # Check that the superinterface is correct.
+    # Note: Only one superinterface should be present.
+    #       Specifically, the superinterface should be java.lang.annotation.Annotation.
+    assert (F::len (anno.getInterfaces)) == 1;
+    assert (F::get (anno.getInterfaces), 0) == (class java.lang.annotation.Annotation);
+}

@@ -124,7 +124,7 @@ public final class AnnotationUtils
     {
         Preconditions.checkNotNull(annotation);
 
-        final IType type = module.resolveType(annotation.getType());
+        final IType type = module.imports.resolveType(annotation.getType());
 
         if (type == null || type instanceof IAnnotationType == false)
         {

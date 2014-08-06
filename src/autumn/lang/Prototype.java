@@ -19,16 +19,7 @@ public interface Prototype
      *
      * @return a shallow copy of this object.
      */
-    public Prototype copy();        // Create a modified version of the low-level property.
-//        final AbstractLowLevelProperty property = low.setFieldValue(value);
-//
-//        // Create a copy of the owner that contains the modified low-level property.
-//        final AbstractPrototype prototype = Actions.replaceSlot(owner, low.meta.index, property);
-//
-//        // Create a copy of this object that reflects the changes.
-//        final ConcreteProperty result = new ConcreteProperty(prototype, low.meta.index, property);
-//
-//        return result;
+    public Prototype copy();
 
     /**
      * This method retrieves a list of all the properties and methods in this object.

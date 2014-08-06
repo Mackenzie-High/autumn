@@ -1,0 +1,38 @@
+module Main in execution;
+
+tuple T (a : boolean,
+         b : char,
+         c : byte,
+         d : short,
+         e : int,
+         f : long,
+         g : float,
+         h : double,
+         i : String);
+
+@Start
+defun main (args : String[]) : void
+{
+    var t = ((T::instance).mutableCopy);
+
+    val first = t;
+
+    t = (t.set "a", true);
+    t = (t.set "b", 'X');
+    t = (t.set "c", 10B);
+    t = (t.set "d", 20S);
+    t = (t.set "e", 30);
+    t = (t.set "f", 40L);
+    t = (t.set "g", 50.0F);
+    t = (t.set "h", 60.0);
+    t = (t.set "i", "Venus");
+
+    val last = t;
+
+    assert first === last;
+
+    assert (first.isMutable);
+    assert (last.isMutable);
+
+    assert (t.toString) == "(true, X, 10, 20, 30, 40, 50.0, 60.0, Venus)";
+}

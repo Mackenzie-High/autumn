@@ -1,0 +1,34 @@
+module Main in execution;
+
+tuple Person (name : String, age : int);
+
+@Start
+defun main (args : String[]) : void
+{
+    # Create a mutable tuple.
+    val p1 = ((new Person "Emma", 24).mutableCopy);
+
+    assert (p1.isMutable);
+    assert (p1.isMutable) ^ (p1.isImmutable);
+
+
+
+
+
+    # Create an immutable copy of the mutable tuple.
+    val p2 = (p1.immutableCopy);
+
+    assert (p2.isImmutable);
+    assert (p2.isMutable) ^ (p2.isImmutable);
+
+
+
+
+
+    # Create an immutable copy of the immutable tuple.
+    val p3 = (p2.immutableCopy);
+
+    assert (p3.isImmutable);
+    assert (p3.isMutable) ^ (p3.isImmutable);
+
+}

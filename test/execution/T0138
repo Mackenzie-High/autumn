@@ -1,0 +1,16 @@
+module Main in execution;
+
+tuple T (x : int);
+
+@Start
+defun main (args : String[]) : void
+{
+    val x = (new T 123);
+    val y = (x.copy);
+
+    assert x == y;
+    assert x !== y;
+
+    assert (x.isImmutable);
+    assert (y.isImmutable);
+}

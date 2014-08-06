@@ -1,0 +1,35 @@
+module Main in execution;
+
+tuple T (a : boolean,
+         b : char,
+         c : byte,
+         d : short,
+         e : int,
+         f : long,
+         g : float,
+         h : double,
+         i : String);
+
+@Start
+defun main (args : String[]) : void
+{
+    var t = ((T::instance).mutableCopy);
+
+    val first = t;
+
+    t = (t.set 0, true);
+    t = (t.set 1, 'X');
+    t = (t.set 2, 10B);
+    t = (t.set 3, 20S);
+    t = (t.set 4, 30);
+    t = (t.set 5, 40L);
+    t = (t.set 6, 50.0F);
+    t = (t.set 7, 60.0);
+    t = (t.set 8, "Venus");
+
+    val last = t;
+
+    assert first === last;
+
+    assert (t.toString) == "(true, X, 10, 20, 30, 40, 50.0, 60.0, Venus)";
+}

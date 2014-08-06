@@ -31,6 +31,25 @@ public final class Runner
     {
         failed_count = 0;
 
+        test("T0147");
+        test("T0146");
+        test("T0145");
+        test("T0144");
+        test("T0143");
+        test("T0142");
+        test("T0141");
+        test("T0140");
+        test("T0139");
+        test("T0138");
+        test("T0137");
+        test("T0136");
+        test("T0135");
+        test("T0134");
+        test("T0133");
+        test("T0132");
+        test("T0131");
+        test("T0130");
+        test("T0129");
         test("T0128");
         test("T0127");
         test("T0126");

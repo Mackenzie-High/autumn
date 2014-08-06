@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.NavigableMap;
 import java.util.NavigableSet;
+import java.util.Objects;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.SortedSet;
@@ -873,11 +874,6 @@ public final class DS
         return output;
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    //                                 Reduce
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////////////
     /**
      * This method creates a sorted list from an unsorted iterable.
      *
@@ -938,7 +934,7 @@ public final class DS
      * @param iterable provides the elements for the new list.
      * @return a list that contains the elements of the given input iterable in reverse.
      */
-    public <T> List<T> reversed(final Iterable<T> iterable)
+    public static <T> List<T> reversed(final Iterable<T> iterable)
     {
         Preconditions.checkNotNull(iterable);
 
@@ -950,5 +946,142 @@ public final class DS
         }
 
         return result;
+    }
+
+    /**
+     * This method searches for a value in an iterable.
+     *
+     * <p>
+     * The search is conducted in moving away from index zero.
+     * </p>
+     *
+     * @param iterable is the iterable to search.
+     * @param value is the value to search for,
+     * @return the index of the found value, or negative one, if the value was not found.
+     */
+    public static <T> int indexOf(final Iterable<T> iterable,
+                                  final T value)
+    {
+        return indexOf(iterable, value, 0);
+    }
+
+    /**
+     * This method searches for a value in an iterable, but skips given number of occurrences.
+     *
+     * <p>
+     * The search is conducted in moving away from index zero.
+     * </p>
+     *
+     * @param iterable is the iterable to search.
+     * @param value is the value to search for,
+     * @param skip is the number of occurrences to skip.
+     * @return the index of the found value, or negative one, if the value was not found.
+     */
+    public static <T> int indexOf(final Iterable<T> iterable,
+                                  final T value,
+                                  final int skip)
+    {
+        Preconditions.checkNotNull(iterable, "iterable is null");
+        Preconditions.checkArgument(skip >= 0, "skip is less than zero");
+
+        int skipped = 0;
+
+        int index = 0;
+
+        for (T element : iterable)
+        {
+            final boolean equals = Objects.equals(value, element);
+
+            if (equals)
+            {
+                if (skipped == skip)
+                {
+                    return index;
+                }
+                else
+                {
+                    ++skipped;
+                }
+            }
+
+            ++index;
+        }
+
+        return -1; // Not Found
+    }
+
+    /**
+     * This method determines whether an iterable contains a given value.
+     *
+     * @param iterable is the iterable to search.
+     * @param value is the value to search for.
+     * @return true, iff the iterable contains the value.
+     */
+    public static <T> boolean contains(final Iterable<T> iterable,
+                                       final T value)
+    {
+        Preconditions.checkNotNull(iterable, "iterable is null");
+
+        if (iterable instanceof Collection)
+        {
+            return ((Collection) iterable).contains(value);
+        }
+        else
+        {
+            return indexOf(iterable, value) >= 0;
+        }
+    }
+
+    /**
+     * This method determines whether an iterable contains every element of another iterable.
+     *
+     * @param iterable is the iterable that must contain every element of set.
+     * @param set is the iterable whose elements must be in the other iterable.
+     * @return true, iff at least one element X in iterable equals an element Y in set,
+     * for all elements in set.
+     */
+    public static <T> boolean containsAll(final Iterable<T> iterable,
+                                          final Iterable<T> set)
+    {
+        Preconditions.checkNotNull(iterable, "iterable is null");
+        Preconditions.checkNotNull(iterable, "set is null");
+
+        final Collection<T> required = set instanceof Collection
+                ? (Collection) set
+                : Sets.newHashSet(set);
+
+        final Collection<T> actual = iterable instanceof Collection
+                ? (Collection) iterable
+                : Sets.newHashSet(iterable);
+
+        final boolean result = actual.containsAll(required);
+
+        return result;
+    }
+
+    /**
+     * This method determines whether an iterable contains an element of another iterable.
+     *
+     * @param iterable is the iterable that must contain an element from set.
+     * @param set is the iterable that shares at least one element with the other iterable.
+     * @return true, iff at least one element in set equals an element in iterable.
+     */
+    public static <T> boolean containsAny(final Iterable<T> iterable,
+                                          final Iterable<T> set)
+    {
+        Preconditions.checkNotNull(iterable, "iterable is null");
+        Preconditions.checkNotNull(iterable, "set is null");
+
+        final Set<T> required = set instanceof Set ? (Set) set : Sets.newHashSet(set);
+
+        for (T element : iterable)
+        {
+            if (required.contains(element))
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

@@ -6,9 +6,9 @@ import autumn.lang.Property;
 import autumn.lang.Prototype;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
-import com.sun.xml.internal.ws.org.objectweb.asm.Type;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IMember;
 import java.util.List;
+import org.objectweb.asm.Type;
 
 /**
  * This class provides static utility methods for working with prototype based objects.
