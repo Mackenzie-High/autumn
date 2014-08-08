@@ -622,10 +622,10 @@ public final class TreeBuilder
      * <p>
      * <b>Precondition of the Stack</b>
      * <ul>
-     * <li> constant[n] : EnumConstant </li>
-     * <li> constant[2] : EnumConstant </li>
-     * <li> constant[1] : EnumConstant </li>
-     * <li> constant[0] : EnumConstant </li>
+     * <li> constant[n] : Name </li>
+     * <li> constant[2] : Name </li>
+     * <li> constant[1] : Name </li>
+     * <li> constant[0] : Name </li>
      * <li> name : Name </li>
      * <li> annotations : AnnotationList </li>
      * <li> comment : DocComment </li>
@@ -645,11 +645,11 @@ public final class TreeBuilder
 
         // Get the pieces off of the stack.
 
-        final LinkedList<EnumConstant> constants = Lists.newLinkedList();
+        final LinkedList<Name> constants = Lists.newLinkedList();
 
         while (stack.size() > 3)
         {
-            constants.add(0, (EnumConstant) stack.pop());
+            constants.add(0, (Name) stack.pop());
         }
 
         final Name name = (Name) stack.pop();
@@ -665,50 +665,7 @@ public final class TreeBuilder
         node = node.setComment(comment);
         node = node.setAnnotations(annotations);
         node = node.setName(name);
-        node = node.setConstants((new ConstructList<EnumConstant>()).addAll(constants));
-
-        // Push the AST node onto the stack.
-        stack.push(node);
-
-        assert stack.size() == 1;
-    }
-
-    /**
-     * This method creates an enum-constant for use in an enum-definition.
-     *
-     * <p>
-     * <b>Precondition of the Stack</b>
-     * <ul>
-     * <li> name : Name </li>
-     * <li> annotations : AnnotationList </li>
-     * <li> comment : DocComment </li>
-     * </ul>
-     * </p>
-     *
-     * <p>
-     * <b>Postcondition of the Stack</b>
-     * <ul>
-     * <li> result : EnumDefinition </li>
-     * </ul>
-     * </p>
-     */
-    public void createDefinitionEnumConstant()
-    {
-        Preconditions.checkState(stack.size() == 3);
-
-        // Get the pieces off of the stack.
-        final Name name = (Name) stack.pop();
-        final AnnotationList annotations = (AnnotationList) stack.pop();
-        final DocComment comment = (DocComment) stack.pop();
-
-        // Create the AST node.
-        EnumConstant node = new EnumConstant();
-
-        // Initialize the AST node.
-        node = node.setComment(comment);
-        node = node.setAnnotations(annotations);
-        node = node.setName(name);
-
+        node = node.setConstants((new ConstructList<Name>()).addAll(constants));
 
         // Push the AST node onto the stack.
         stack.push(node);

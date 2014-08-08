@@ -372,18 +372,34 @@ public final class StaticChecker
     {
     }
 
-    public void reportNoSuchMethod(final IReturnType owner,
+    public void reportNoSuchMethod(final IConstruct construct,
+                                   final IReturnType owner,
+                                   final String name,
                                    final List<IExpressionType> arguments)
     {
+        final ErrorCode ERROR_CODE = ErrorCode.NO_SUCH_METHOD;
+
+        final String MESSAGE = "No accessible method could be found that matches the given name and arguments.";
+
+        final ErrorReport report = new ErrorReport(construct, ERROR_CODE, MESSAGE);
+
+        report.addDetail("Method.Name", name);
+
+        int i = 0;
+
+        for (IExpressionType arg : arguments)
+        {
+            report.addDetail("Method.Argument[" + i++ + "]", Utils.sourceName(arg));
+        }
+
+        /**
+         * Issue the error-report to the user.
+         */
+        report(report);
     }
 
-    public void reportNoSuchStaticMethod(final IReturnType owner,
-                                         final List<IExpressionType> arguments)
-    {
-    }
-
-    public void reportNoSuchType(final TypeSpecifier specifier,
-                                 final IType type)
+    public void requireType(final TypeSpecifier specifier,
+                            final IType type)
     {
         if (type != null)
         {
@@ -396,7 +412,7 @@ public final class StaticChecker
 
         final ErrorReport report = new ErrorReport(specifier, ERROR_CODE, MESSAGE);
 
-        report.details().put("Type", program.typesystem.utils.extractTypeName(specifier));
+        report.addDetail("Type", program.typesystem.utils.extractTypeName(specifier));
 
         /**
          * Issue the error-report to the user.

@@ -135,4 +135,24 @@ public final class AnnotationUtils
 
         return result;
     }
+
+    /**
+     * This method creates the type-system representation of an annotation a Class object.
+     *
+     * @param type is the class-object that represents the annotation-type.
+     * @return the annotation's type-system representation,
+     * or null, if no such representation can be created.
+     */
+    public IAnnotation typeOf(final Class type)
+    {
+        Preconditions.checkNotNull(type);
+
+        final IAnnotationType annotation_type = (IAnnotationType) module.program.typesystem
+                .typefactory()
+                .fromClass(type);
+
+        final IAnnotation result = new CustomAnnotation(null, annotation_type);
+
+        return result;
+    }
 }

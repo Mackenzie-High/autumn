@@ -1,11 +1,6 @@
 module Main in execution;
 
-enum City
-{
-    constant Paris;
-    constant London;
-    constant Moscow;
-}
+enum City ( Paris, London, Moscow );
 
 @Start
 defun main (args : String[]) : void

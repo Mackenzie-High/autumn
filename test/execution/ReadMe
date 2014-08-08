@@ -76,6 +76,12 @@ Test Index
 . . T0147 = Special Method - returnType() - (void)
 . Design Definitions
 . . Reflective Testing of the Design's Class
+. . T0148 = Nullary Constructor
+. . T0150 = Special Method - copy() // TODO
+. . T0151 = Special Method - copy() // TODO: bridges
+. . Special Method - members()
+. . T0152 = Properties
+. . Methods
 . Functions
 . . Reflective Testing of the Reflective Method Object
 . . Recursive Generator
@@ -232,6 +238,7 @@ Test Index
 . . . Different Types of Values
 . . T0046 = Instance-Of
 . . Create
+. . . T0149 = Same Object
 . . Ternary Conditional
 . . . Primitive Boolean Condition
 . . . Boxed Boolean Condition

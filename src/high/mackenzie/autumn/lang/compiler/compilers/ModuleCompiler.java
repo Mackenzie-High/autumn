@@ -194,6 +194,7 @@ public final class ModuleCompiler
         for (DesignCompiler x : designs)
         {
             classes.add(x.build());
+            classes.add(x.klass.build());
         }
 
         classes.add(buildModule());

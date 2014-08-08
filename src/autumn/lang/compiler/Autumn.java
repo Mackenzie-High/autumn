@@ -1,6 +1,7 @@
 package autumn.lang.compiler;
 
 import autumn.lang.compiler.ast.nodes.Module;
+import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import java.io.File;
 import java.io.IOException;
@@ -43,6 +44,13 @@ public final class Autumn
 
     public void srcURL(final String url)
     {
+    }
+
+    public void src(final Module node)
+    {
+        Preconditions.checkNotNull(node);
+
+        modules.add(node);
     }
 
     public CompiledProgram compile()

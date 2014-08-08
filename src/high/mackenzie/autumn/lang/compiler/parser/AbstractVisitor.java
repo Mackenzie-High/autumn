@@ -7,7 +7,7 @@ import high.mackenzie.snowflake.ITreeNodeVisitor;
 /**
  * This class was auto-generated using the Snowflake parser-generator.
  *
- * <p>Generated On: Thu Jul 24 14:30:08 EDT 2014</p>
+ * <p>Generated On: Thu Aug 07 05:53:33 EDT 2014</p>
  */
 public abstract class AbstractVisitor implements ITreeNodeVisitor
 {
@@ -45,7 +45,7 @@ public abstract class AbstractVisitor implements ITreeNodeVisitor
         else if("property".equals(name)) { visit_property(node); }
         else if("method".equals(name)) { visit_method(node); }
         else if("enum_definition".equals(name)) { visit_enum_definition(node); }
-        else if("enum_constants".equals(name)) { visit_enum_constants(node); }
+        else if("enum_constant_list".equals(name)) { visit_enum_constant_list(node); }
         else if("enum_constant".equals(name)) { visit_enum_constant(node); }
         else if("function_definition".equals(name)) { visit_function_definition(node); }
         else if("statement".equals(name)) { visit_statement(node); }
@@ -250,7 +250,6 @@ public abstract class AbstractVisitor implements ITreeNodeVisitor
         else if("verbatim_string_value".equals(name)) { visit_verbatim_string_value(node); }
         else if("regular_string_value".equals(name)) { visit_regular_string_value(node); }
         else if("class_value".equals(name)) { visit_class_value(node); }
-        else if("enum_value".equals(name)) { visit_enum_value(node); }
         else if("SEMICOLON".equals(name)) { visit_SEMICOLON(node); }
         else if("ID".equals(name)) { visit_ID(node); }
         else if("DIGITS".equals(name)) { visit_DIGITS(node); }
@@ -1138,9 +1137,9 @@ public abstract class AbstractVisitor implements ITreeNodeVisitor
     }
 
     /**
-     * This method visits a parse-tree node created by rule "enum_constants".
+     * This method visits a parse-tree node created by rule "enum_constant_list".
      */
-    protected void visit_enum_constants(ITreeNode node)
+    protected void visit_enum_constant_list(ITreeNode node)
     {
         // You should *not* place your code right here. 
         // Instead, you should override this method via a subclass.
@@ -1151,16 +1150,6 @@ public abstract class AbstractVisitor implements ITreeNodeVisitor
      * This method visits a parse-tree node created by rule "enum_definition".
      */
     protected void visit_enum_definition(ITreeNode node)
-    {
-        // You should *not* place your code right here. 
-        // Instead, you should override this method via a subclass.
-        visitUnknown(node); // Default Behavior
-    }
-
-    /**
-     * This method visits a parse-tree node created by rule "enum_value".
-     */
-    protected void visit_enum_value(ITreeNode node)
     {
         // You should *not* place your code right here. 
         // Instead, you should override this method via a subclass.

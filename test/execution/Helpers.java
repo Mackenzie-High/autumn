@@ -5,6 +5,9 @@ import autumn.lang.internals.AbstractFunctor;
 import autumn.lang.internals.ArgumentStack;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Sets;
+import java.util.Collection;
+import java.util.Set;
 
 /**
  * This class provides methods and fields for use during testing.
@@ -37,5 +40,21 @@ public final class Helpers
                 stack.push(v);
             }
         };
+    }
+
+    /**
+     * This method determines whether all the elements in an iterable are unique.
+     *
+     * @param elements are the elements which may be unique.
+     * @return true, iff none of the elements occurs twice in the list.
+     */
+    public static boolean unique(final Collection<?> elements)
+    {
+        final Set<Object> set = Sets.newIdentityHashSet();
+        set.addAll(elements);
+
+        final boolean result = elements.size() == set.size();
+
+        return result;
     }
 }

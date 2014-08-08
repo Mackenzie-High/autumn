@@ -5,6 +5,9 @@ import autumn.lang.compiler.ast.nodes.DesignDefinition;
 import autumn.lang.compiler.ast.nodes.DesignMethod;
 import autumn.lang.compiler.ast.nodes.DesignProperty;
 import autumn.lang.compiler.ast.nodes.FormalParameter;
+import autumn.lang.compiler.ast.nodes.TypeSpecifier;
+import autumn.lang.internals.annotations.Getter;
+import autumn.lang.internals.annotations.Setter;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
@@ -24,7 +27,9 @@ import java.util.List;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.ClassNode;
+import org.objectweb.asm.tree.FieldInsnNode;
 import org.objectweb.asm.tree.FieldNode;
+import org.objectweb.asm.tree.InsnNode;
 import org.objectweb.asm.tree.MethodNode;
 
 /**
@@ -44,6 +49,8 @@ public class DesignCompiler
     public CustomDeclaredType type;
 
     private final ClassNode clazz = new ClassNode();
+
+    public KlassCompiler klass;
 
     /**
      * Sole Constructor.
@@ -72,9 +79,14 @@ public class DesignCompiler
         final List<MethodNode> methods = Lists.newLinkedList();
 
         /**
-         * Generate the field that stores the prototype.
+         * Generate the field that stores the prototypical instance.
          */
         clazz.fields.add(generateProtoField());
+
+        /**
+         * Generate the static constructor, which creates the prototypical instance.
+         */
+        methods.add(generateStaticCtor());
 
         /**
          * Generate each interface method.
@@ -92,8 +104,7 @@ public class DesignCompiler
         clazz.access = type.getModifiers();
         clazz.name = Utils.internalName(type);
         clazz.superName = Utils.internalName(type.getSuperclass());
-        clazz.interfaces = Lists.newLinkedList();
-        clazz.fields = ImmutableList.of();
+        clazz.interfaces = program.typesystem.utils.internalNamesOf(type.getSuperinterfaces());
         clazz.methods = methods;
         clazz.sourceFile = String.valueOf(node.getLocation().getFile());
 
@@ -146,6 +157,15 @@ public class DesignCompiler
     @Override
     public void performTypeInitialization()
     {
+        final List<IInterfaceType> superinterfaces = Lists.newLinkedList();
+        
+        superinterfaces.add(program.typesystem.utils.PROTOTYPE);
+
+        for (TypeSpecifier face : node.getSuperinterfaces())
+        {
+            superinterfaces.add(module.imports.resolveInterfaceType(face));
+        }
+
         final List<IMethod> methods = Lists.newLinkedList();
 
         for (DesignProperty property : node.getProperties())
@@ -161,9 +181,9 @@ public class DesignCompiler
         /**
          * Initialize the type that represents the design being compiled.
          */
-        this.type.setModifiers(Opcodes.ACC_PUBLIC + Opcodes.ACC_INTERFACE);
+        this.type.setModifiers(Opcodes.ACC_PUBLIC + Opcodes.ACC_ABSTRACT + Opcodes.ACC_INTERFACE);
         this.type.setSuperclass(program.typesystem.utils.OBJECT);
-        this.type.setSuperinterfaces(ImmutableList.<IInterfaceType>of());
+        this.type.setSuperinterfaces(superinterfaces);
         this.type.setFields(ImmutableList.<IField>of());
         this.type.setMethods(ImmutableList.copyOf(methods));
     }
@@ -193,14 +213,24 @@ public class DesignCompiler
                             final DesignProperty property,
                             final IVariableType ptype)
     {
+        /**
+         * Create the type-system representations of the getter's annotations.
+         */
+        final List<IAnnotation> annotations = Lists.newLinkedList();
+        annotations.add(module.anno_utils.typeOf(Getter.class));
+        annotations.addAll(module.anno_utils.typesOf(property.getAnnotations()));
+
+        /**
+         * Create the type-system representation of the getter itself.
+         */
         final CustomMethod cm = new CustomMethod(type.getTypeFactory(), false);
         cm.setOwner(type);
-        cm.setAnnotations(Lists.<IAnnotation>newLinkedList());
+        cm.setAnnotations(annotations);
         cm.setModifiers(Opcodes.ACC_PUBLIC + Opcodes.ACC_ABSTRACT);
         cm.setName(property.getName().getName());
         cm.setParameters(Lists.<IFormalParameter>newLinkedList());
         cm.setReturnType(ptype);
-        cm.setThrowsClause(Lists.<IClassType>newLinkedList());
+        cm.setThrowsClause(Lists.<IClassType>newArrayList(program.typesystem.utils.THROWABLE));
 
         methods.add(cm);
     }
@@ -215,18 +245,31 @@ public class DesignCompiler
                             final DesignProperty property,
                             final IVariableType ptype)
     {
+        /**
+         * Create the type-system representations of the setter's annotations.
+         */
+        final List<IAnnotation> annotations = Lists.newLinkedList();
+        annotations.add(module.anno_utils.typeOf(Setter.class));
+        annotations.addAll(module.anno_utils.typesOf(property.getAnnotations()));
+
+        /**
+         * Create the type-system representation of the setter's only formal-parameter.
+         */
         final CustomFormalParameter param = new CustomFormalParameter();
         param.setAnnotations(ImmutableList.<IAnnotation>of());
         param.setType(ptype);
 
+        /**
+         * Create the type-system representation of the setter itself.
+         */
         final CustomMethod cm = new CustomMethod(type.getTypeFactory(), false);
         cm.setOwner(type);
-        cm.setAnnotations(Lists.<IAnnotation>newLinkedList());
+        cm.setAnnotations(annotations);
         cm.setModifiers(Opcodes.ACC_PUBLIC + Opcodes.ACC_ABSTRACT);
         cm.setName(property.getName().getName());
         cm.setParameters(ImmutableList.<IFormalParameter>of(param));
         cm.setReturnType(type);
-        cm.setThrowsClause(Lists.<IClassType>newLinkedList());
+        cm.setThrowsClause(Lists.<IClassType>newArrayList(program.typesystem.utils.THROWABLE));
 
         methods.add(cm);
     }
@@ -240,6 +283,15 @@ public class DesignCompiler
     private void initMethod(final Collection<IMethod> methods,
                             final DesignMethod method)
     {
+        /**
+         * Create the type-system representations of the method's annotations.
+         */
+        final List<IAnnotation> annotations = Lists.newLinkedList();
+        annotations.addAll(module.anno_utils.typesOf(method.getAnnotations()));
+
+        /**
+         * Create the type-system representation of the method's formal-parameters.
+         */
         final List<IFormalParameter> params = Lists.newLinkedList();
 
         for (FormalParameter formal : method.getParameters().getParameters())
@@ -253,14 +305,17 @@ public class DesignCompiler
             params.add(param);
         }
 
+        /**
+         * Create the type-system representation of the method itself.
+         */
         final CustomMethod cm = new CustomMethod(type.getTypeFactory(), false);
         cm.setOwner(type);
-        cm.setAnnotations(Lists.<IAnnotation>newLinkedList());
+        cm.setAnnotations(annotations);
         cm.setModifiers(Opcodes.ACC_PUBLIC + Opcodes.ACC_ABSTRACT);
         cm.setName(method.getName().getName());
         cm.setParameters(ImmutableList.<IFormalParameter>copyOf(params));
         cm.setReturnType(module.imports.resolveType(method.getReturnType()));
-        cm.setThrowsClause(Lists.<IClassType>newLinkedList());
+        cm.setThrowsClause(Lists.<IClassType>newArrayList(program.typesystem.utils.THROWABLE));
 
         methods.add(cm);
     }
@@ -291,10 +346,11 @@ public class DesignCompiler
     {
         final MethodNode m = new MethodNode();
 
+        m.visibleAnnotations = module.anno_utils.compileAnnotationList(method.getAnnotations());
         m.access = method.getModifiers();
         m.name = method.getName();
         m.desc = method.getDescriptor();
-        m.exceptions = ImmutableList.of();
+        m.exceptions = Lists.newArrayList(Utils.internalName(program.typesystem.utils.THROWABLE));
 
         return m;
     }
@@ -315,5 +371,33 @@ public class DesignCompiler
                                               null);
 
         return field;
+    }
+
+    /**
+     * This method generates the static-constructor of the interface.
+     *
+     * @return the bytecode representation of the static constructor.
+     */
+    private MethodNode generateStaticCtor()
+    {
+        klass = new KlassCompiler(module, type, node.getLocation());
+
+        final MethodNode ctor = new MethodNode();
+
+        ctor.access = Opcodes.ACC_PRIVATE + Opcodes.ACC_STATIC;
+        ctor.name = "<clinit>";
+        ctor.desc = "()V";
+        ctor.exceptions = ImmutableList.of();
+
+        klass.load(ctor.instructions);
+
+        ctor.instructions.add(new FieldInsnNode(Opcodes.PUTSTATIC,
+                                                Utils.internalName(type),
+                                                "INSTANCE",
+                                                type.getDescriptor()));
+
+        ctor.instructions.add(new InsnNode(Opcodes.RETURN));
+
+        return ctor;
     }
 }

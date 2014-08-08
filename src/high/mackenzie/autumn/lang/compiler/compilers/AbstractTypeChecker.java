@@ -236,7 +236,7 @@ abstract class AbstractTypeChecker
                                     final Name name,
                                     final Iterable<IExpression> arguments)
     {
-        final List<IType> args = Lists.newLinkedList();
+        final List<IExpressionType> args = Lists.newLinkedList();
 
         for (IExpression arg : arguments)
         {
@@ -257,8 +257,7 @@ abstract class AbstractTypeChecker
 
         if (methods.isEmpty())
         {
-            // TODO: Compile Error
-            throw new RuntimeException("No Such Method: " + name.getName() + " " + args);
+            program.checker.reportNoSuchMethod(operation, declared_type, name.getName(), args);
         }
 
         final IMethod method = (IMethod) methods.get(0);

@@ -2,16 +2,10 @@ package high.mackenzie.autumn.lang.compiler.utils;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IInterfaceType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IMethod;
-import high.mackenzie.autumn.lang.compiler.typesystem.design.IReturnType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IType;
 import java.util.List;
-import java.util.Map;
-import java.util.Queue;
 
 /**
  * An instance of this class sorts the overrides of a getter.
@@ -24,6 +18,7 @@ import java.util.Queue;
  * @author Mackenzie High
  */
 public final class GetterList
+        extends MemberList
 {
     private final IInterfaceType type;
 
@@ -56,6 +51,7 @@ public final class GetterList
      *
      * @return the aforesaid immutable list.
      */
+    @Override
     public List<IMethod> list()
     {
         final TopoSorter<IMethod> sorter = new TopoSorter<IMethod>()
@@ -81,31 +77,5 @@ public final class GetterList
         sorter.addAll(getters);
 
         return ImmutableList.copyOf(sorter.elements());
-    }
-
-    /**
-     * This map computes the bridge getters that are present in this list.
-     *
-     * @return a map that maps a bridge getter to the appropriate real getter.
-     */
-    public Map<IMethod, IMethod> bridgeGetters()
-    {
-        final Map<IMethod, IMethod> map = Maps.newIdentityHashMap();
-
-        final Queue<IMethod> queue = Lists.newLinkedList(list());
-
-        final IMethod most_specific = queue.remove();
-
-        final IReturnType most_specific_return = most_specific.getReturnType();
-
-        for (IMethod next : queue)
-        {
-            if (next.getReturnType().equals(most_specific_return) == false)
-            {
-                map.put(next, most_specific);
-            }
-        }
-
-        return ImmutableMap.copyOf(map);
     }
 }

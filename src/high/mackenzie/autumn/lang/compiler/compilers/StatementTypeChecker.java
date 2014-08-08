@@ -10,11 +10,14 @@ import autumn.lang.compiler.ast.nodes.*;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import high.mackenzie.autumn.lang.compiler.typesystem.design.IClassType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IExpressionType;
+import high.mackenzie.autumn.lang.compiler.typesystem.design.IMethod;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IReturnType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IVariableType;
 import high.mackenzie.autumn.lang.compiler.utils.TopoSorter;
+import high.mackenzie.autumn.lang.compiler.utils.TypeSystemUtils;
 import java.util.List;
 import java.util.Set;
 import org.objectweb.asm.tree.LabelNode;
@@ -269,7 +272,25 @@ public final class StatementTypeChecker
     @Override
     public void visit(final DelegateStatement object)
     {
-        throw new UnsupportedOperationException("This should never happen.");
+        final String name = object.getMethod().getName();
+
+        final IClassType functor_type = module.imports.resolveFunctorType(object.getType());
+
+        final IClassType owner_type = module.imports.resolveModuleType(object.getType());
+
+        final List<IMethod> overloads = TypeSystemUtils.findFunctions(owner_type, name);
+
+        if (overloads.isEmpty())
+        {
+            // TODO: error
+        }
+
+        if (overloads.size() > 1)
+        {
+            // TODO: error
+        }
+
+
     }
 
     @Override
@@ -374,7 +395,7 @@ public final class StatementTypeChecker
 
         final boolean already_declared = function.scope.isDeclared(object.getVariable().getName());
 
-        program.checker.reportNoSuchType(object.getType(), type);
+        program.checker.requireType(object.getType(), type);
         program.checker.reportDuplicateVariable(object.getVariable(), already_declared);
         program.checker.requireThrowable(object, type);
 

@@ -59,7 +59,7 @@ import java.util.TreeSet;
  * </table>
  * </p>
  * 
- * <p> This file was auto-generated on (Thu Jul 24 16:15:35 EDT 2014).</p>
+ * <p> This file was auto-generated on (Thu Aug 07 06:01:15 EDT 2014).</p>
  */
 @SuppressWarnings("unchecked")
 public final class EnumDefinition extends Object implements IAnnotated, IDocumented
@@ -70,7 +70,7 @@ public final class EnumDefinition extends Object implements IAnnotated, IDocumen
 
     private Name name;
 
-    private ConstructList<EnumConstant> constants = new ConstructList();
+    private ConstructList<Name> constants = new ConstructList();
 
     private SourceLocation location = new SourceLocation();
 
@@ -152,7 +152,7 @@ public final class EnumDefinition extends Object implements IAnnotated, IDocumen
      * @param value is the new value of property <code>constants</code>.
      * @return a copy of this object with property <code>constants</code> set to value.
      */
-    public EnumDefinition setConstants(final ConstructList<EnumConstant> value)
+    public EnumDefinition setConstants(final ConstructList<Name> value)
     {
         final EnumDefinition result = this.copy();
         result.constants = value;
@@ -164,9 +164,9 @@ public final class EnumDefinition extends Object implements IAnnotated, IDocumen
      * 
      * @return the value of property <code>constants</code>.
      */
-    public ConstructList<EnumConstant> getConstants()
+    public ConstructList<Name> getConstants()
     {
-        final ConstructList<EnumConstant> value = this.constants;
+        final ConstructList<Name> value = this.constants;
         return value;
     }
 
@@ -204,7 +204,7 @@ public final class EnumDefinition extends Object implements IAnnotated, IDocumen
      * @param location is the value for property <code>location</code>.
      * @return a new instance of this class.
      */
-    public static EnumDefinition create(DocComment comment, AnnotationList annotations, Name name, ConstructList<EnumConstant> constants, SourceLocation location)
+    public static EnumDefinition create(DocComment comment, AnnotationList annotations, Name name, ConstructList<Name> constants, SourceLocation location)
     {
         EnumDefinition object = new EnumDefinition();
         object = object.setComment(comment);

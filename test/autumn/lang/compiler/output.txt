@@ -45,6 +45,22 @@ exception Goo extends Boo;
 exception Goo extends Boo;
 
 '' This is a doc-comment.
+@Anno04B
+@Anno05B
+@Anno06B
+enum City ();
+
+@Anno04B
+@Anno05B
+@Anno06B
+enum City (Paris);
+
+@Anno04B
+@Anno05B
+@Anno06B
+enum City (Moscow, Geneva, Turin);
+
+'' This is a doc-comment.
 @Anno07
 @Anno08
 @Anno09
@@ -85,38 +101,6 @@ functor Function2 (x : byte, y : short) : boolean;
 @Anno08
 @Anno09
 functor Function3 (x : byte, y : short, z : int) : boolean;
-
-'' This is a doc-comment.
-@Anno07
-@Anno08
-@Anno09
-enum Moo
-{
-    @Anno10
-    @Anno11
-    @Anno12
-    constant XOO;
-
-    '' This is a doc-comment.
-    @Anno13
-    @Anno14
-    @Anno15
-    constant YOO;
-
-    @Anno16
-    @Anno17
-    @Anno18
-    constant ZOO;
-}
-
-enum Moo
-{
-    constant AOO;
-
-    constant BOO;
-
-    constant XOO;
-}
 
 '' This is a doc-comment.
 @Anno19

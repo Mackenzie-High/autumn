@@ -187,25 +187,6 @@ rule functor_definition
 }
 
 ###################################################################################################
-# Enum --> Constant
-###################################################################################################
-
-rule enum_constant
-{
-  # Get the AST builder.
-  builder : TreeBuilder = call Utils.builder();
-
-  # Create the AST node.
-  call builder.createDefinitionEnumConstant();
-
-  # Set the source-location information.
-  call Utils.setSourceLocation($node);
-
-  # Merge the upper stack with the next lower stack.
-  call builder.popStack();
-}
-
-###################################################################################################
 # Designs --> Definition
 ###################################################################################################
 

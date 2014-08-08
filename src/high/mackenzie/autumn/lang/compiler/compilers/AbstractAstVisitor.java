@@ -73,12 +73,6 @@ public class AbstractAstVisitor
     }
 
     @Override
-    public void visit(EnumConstant object)
-    {
-        throw new UnsupportedOperationException("This should never happen.");
-    }
-
-    @Override
     public void visit(DesignDefinition object)
     {
         throw new UnsupportedOperationException("This should never happen.");

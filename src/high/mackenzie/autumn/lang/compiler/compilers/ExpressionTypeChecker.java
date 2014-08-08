@@ -320,7 +320,7 @@ public class ExpressionTypeChecker
     {
         object.getOwner().accept(this);
 
-        final List<IType> args = Lists.newLinkedList();
+        final List<IExpressionType> args = Lists.newLinkedList();
 
         for (IExpression arg : object.getArguments())
         {
@@ -341,8 +341,10 @@ public class ExpressionTypeChecker
 
         if (methods.isEmpty())
         {
-            // TODO: Compile Error
-            throw new RuntimeException("No Such Method: " + object.getName().getName() + args.toString());
+            program.checker.reportNoSuchMethod(object,
+                                               declared_type,
+                                               object.getName().getName(),
+                                               args);
         }
 
         final IMethod method = (IMethod) methods.get(0);

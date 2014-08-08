@@ -30,7 +30,7 @@ import java.util.List;
 public abstract class AbstractPrototype
         implements Prototype
 {
-    protected static final class Actions
+    public static final class Actions
     {
         /**
          * This method creates a copy of this object with one member replaced.
@@ -106,9 +106,9 @@ public abstract class AbstractPrototype
          * The stack will also be used to pass the return-value back, if any.
          * @throws Throwable in order to propagate exceptions thrown by the method.
          */
-        protected static void invoke(final AbstractPrototype owner,
-                                     final int index,
-                                     final ArgumentStack stack)
+        public static void invoke(final AbstractPrototype owner,
+                                  final int index,
+                                  final ArgumentStack stack)
                 throws Throwable
         {
             assert owner != null;
@@ -222,9 +222,9 @@ public abstract class AbstractPrototype
             // State 2 occurs when no getter is present.
         }
 
-        protected static AbstractPrototype set(final AbstractPrototype owner,
-                                               final int index,
-                                               final boolean value)
+        public static AbstractPrototype set(final AbstractPrototype owner,
+                                            final int index,
+                                            final boolean value)
                 throws Throwable
         {
             // Get the argument-stack for the current thread.
@@ -241,9 +241,9 @@ public abstract class AbstractPrototype
             return result;
         }
 
-        protected static AbstractPrototype set(final AbstractPrototype owner,
-                                               final int index,
-                                               final char value)
+        public static AbstractPrototype set(final AbstractPrototype owner,
+                                            final int index,
+                                            final char value)
                 throws Throwable
         {
             // Get the argument-stack for the current thread.
@@ -260,9 +260,9 @@ public abstract class AbstractPrototype
             return result;
         }
 
-        protected static AbstractPrototype set(final AbstractPrototype owner,
-                                               final int index,
-                                               final byte value)
+        public static AbstractPrototype set(final AbstractPrototype owner,
+                                            final int index,
+                                            final byte value)
                 throws Throwable
         {
             // Get the argument-stack for the current thread.
@@ -279,9 +279,9 @@ public abstract class AbstractPrototype
             return result;
         }
 
-        protected static AbstractPrototype set(final AbstractPrototype owner,
-                                               final int index,
-                                               final short value)
+        public static AbstractPrototype set(final AbstractPrototype owner,
+                                            final int index,
+                                            final short value)
                 throws Throwable
         {
             // Get the argument-stack for the current thread.
@@ -298,9 +298,9 @@ public abstract class AbstractPrototype
             return result;
         }
 
-        protected static AbstractPrototype set(final AbstractPrototype owner,
-                                               final int index,
-                                               final int value)
+        public static AbstractPrototype set(final AbstractPrototype owner,
+                                            final int index,
+                                            final int value)
                 throws Throwable
         {
             // Get the argument-stack for the current thread.
@@ -317,9 +317,9 @@ public abstract class AbstractPrototype
             return result;
         }
 
-        protected static AbstractPrototype set(final AbstractPrototype owner,
-                                               final int index,
-                                               final long value)
+        public static AbstractPrototype set(final AbstractPrototype owner,
+                                            final int index,
+                                            final long value)
                 throws Throwable
         {
             // Get the argument-stack for the current thread.
@@ -336,9 +336,9 @@ public abstract class AbstractPrototype
             return result;
         }
 
-        protected static AbstractPrototype set(final AbstractPrototype owner,
-                                               final int index,
-                                               final float value)
+        public static AbstractPrototype set(final AbstractPrototype owner,
+                                            final int index,
+                                            final float value)
                 throws Throwable
         {
             // Get the argument-stack for the current thread.
@@ -355,9 +355,9 @@ public abstract class AbstractPrototype
             return result;
         }
 
-        protected static AbstractPrototype set(final AbstractPrototype owner,
-                                               final int index,
-                                               final double value)
+        public static AbstractPrototype set(final AbstractPrototype owner,
+                                            final int index,
+                                            final double value)
                 throws Throwable
         {
             // Get the argument-stack for the current thread.
@@ -374,9 +374,9 @@ public abstract class AbstractPrototype
             return result;
         }
 
-        protected static AbstractPrototype set(final AbstractPrototype owner,
-                                               final int index,
-                                               final Object value)
+        public static AbstractPrototype set(final AbstractPrototype owner,
+                                            final int index,
+                                            final Object value)
                 throws Throwable
         {
             // Get the argument-stack for the current thread.
@@ -393,8 +393,8 @@ public abstract class AbstractPrototype
             return result;
         }
 
-        protected static boolean getZ(final AbstractPrototype owner,
-                                      final int index)
+        public static boolean getZ(final AbstractPrototype owner,
+                                   final int index)
                 throws Throwable
         {
             // Get the argument-stack for the current thread.
@@ -411,8 +411,8 @@ public abstract class AbstractPrototype
             return value;
         }
 
-        protected static char getC(final AbstractPrototype owner,
-                                   final int index)
+        public static char getC(final AbstractPrototype owner,
+                                final int index)
                 throws Throwable
         {
             // Get the argument-stack for the current thread.
@@ -429,8 +429,26 @@ public abstract class AbstractPrototype
             return value;
         }
 
-        protected static short getS(final AbstractPrototype owner,
-                                    final int index)
+        public static byte getB(final AbstractPrototype owner,
+                                final int index)
+                throws Throwable
+        {
+            // Get the argument-stack for the current thread.
+            final ArgumentStack stack = ArgumentStack.getThreadStack();
+
+            // Get the value from the property.
+            // This may cause a getter to be executed.
+            get(owner, index, stack);
+
+            // Retrieve the returned value.
+            final byte value = stack.peekB();
+            stack.clear();
+
+            return value;
+        }
+
+        public static short getS(final AbstractPrototype owner,
+                                 final int index)
                 throws Throwable
         {
             // Get the argument-stack for the current thread.
@@ -447,8 +465,8 @@ public abstract class AbstractPrototype
             return value;
         }
 
-        protected static int getI(final AbstractPrototype owner,
-                                  final int index)
+        public static int getI(final AbstractPrototype owner,
+                               final int index)
                 throws Throwable
         {
             // Get the argument-stack for the current thread.
@@ -465,8 +483,8 @@ public abstract class AbstractPrototype
             return value;
         }
 
-        protected static long getJ(final AbstractPrototype owner,
-                                   final int index)
+        public static long getJ(final AbstractPrototype owner,
+                                final int index)
                 throws Throwable
         {
             // Get the argument-stack for the current thread.
@@ -483,8 +501,8 @@ public abstract class AbstractPrototype
             return value;
         }
 
-        protected static float getF(final AbstractPrototype owner,
-                                    final int index)
+        public static float getF(final AbstractPrototype owner,
+                                 final int index)
                 throws Throwable
         {
             // Get the argument-stack for the current thread.
@@ -501,8 +519,8 @@ public abstract class AbstractPrototype
             return value;
         }
 
-        protected static double getD(final AbstractPrototype owner,
-                                     final int index)
+        public static double getD(final AbstractPrototype owner,
+                                  final int index)
                 throws Throwable
         {
             // Get the argument-stack for the current thread.
@@ -519,8 +537,8 @@ public abstract class AbstractPrototype
             return value;
         }
 
-        protected static Object getO(final AbstractPrototype owner,
-                                     final int index)
+        public static Object getO(final AbstractPrototype owner,
+                                  final int index)
                 throws Throwable
         {
             // Get the argument-stack for the current thread.
@@ -612,7 +630,7 @@ public abstract class AbstractPrototype
     @Override
     public final boolean equals(final Object o)
     {
-        return false;
+        return super.equals(o); // TODO
     }
 
     /**
@@ -621,7 +639,7 @@ public abstract class AbstractPrototype
     @Override
     public final int hashCode()
     {
-        return 0;
+        return super.hashCode(); // TODO
     }
 
     /**
@@ -630,6 +648,6 @@ public abstract class AbstractPrototype
     @Override
     public final String toString()
     {
-        return "";
+        return super.toString(); // TODO
     }
 }

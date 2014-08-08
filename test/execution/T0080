@@ -1,16 +1,8 @@
 module Main in execution;
 
-enum Pets
-{
-    constant Lucky;
-    constant Chicky;
-}
+enum Pets (Lucky, Chicky);
 
-enum Cities
-{
-    constant Paris;
-    constant London;
-}
+enum Cities (Paris, London);
 
 @Start
 defun main (args : String[]) : void

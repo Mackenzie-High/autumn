@@ -20,17 +20,16 @@ public final class MetaPrototype
      *
      * @param name is the name of the property.
      * @param type is the type of value stored in the property.
-     * @return the index of the new property.
      */
-    public int newProperty(final String name,
-                           final Class type)
+    public void newProperty(final String name,
+                            final Class type)
     {
         Preconditions.checkNotNull(name);
         Preconditions.checkNotNull(type);
 
         members.add(new MetaProperty(index, name, type));
 
-        return index++;
+        index++;
     }
 
     /**
@@ -39,11 +38,10 @@ public final class MetaPrototype
      * @param name is the name of the method.
      * @param params ares the types of the method's parameters.
      * @param returns is the return-type of the method.
-     * @return the index of the new method.
      */
-    public int newMethod(final String name,
-                         final Iterable<Class> params,
-                         final Class returns)
+    public void newMethod(final String name,
+                          final Iterable<Class> params,
+                          final Class returns)
     {
         Preconditions.checkNotNull(name);
         Preconditions.checkNotNull(params);
@@ -51,7 +49,7 @@ public final class MetaPrototype
 
         members.add(new MetaMethod(index, name, params, returns));
 
-        return index++;
+        index++;
     }
 
     /**

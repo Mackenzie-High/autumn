@@ -3,7 +3,6 @@ package high.mackenzie.autumn.lang.compiler.compilers;
 import autumn.lang.compiler.ast.commons.IConstruct;
 import autumn.lang.compiler.ast.commons.IExpression;
 import autumn.lang.compiler.ast.commons.IStatement;
-import autumn.lang.compiler.ast.nodes.CreateExpression;
 import autumn.lang.compiler.ast.nodes.DispatchExpression;
 import autumn.lang.compiler.ast.nodes.ExceptionHandler;
 import autumn.lang.compiler.ast.nodes.TryCatchStatement;
@@ -59,8 +58,6 @@ public final class SymbolTable
      * This map maps a statement that uses a label to the bytecode representation of the label.
      */
     public final Map<IStatement, LabelNode> yields = Maps.newIdentityHashMap();
-
-    public final Map<CreateExpression, ClassCompiler> creators = Maps.newIdentityHashMap();
 
     /**
      * This map maps an exception-type to the compiler that compiles the exception's class.

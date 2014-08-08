@@ -1,8 +1,8 @@
 package high.mackenzie.autumn.lang.compiler.compilers;
 
 import autumn.lang.compiler.ClassFile;
-import autumn.lang.compiler.ast.nodes.EnumConstant;
 import autumn.lang.compiler.ast.nodes.EnumDefinition;
+import autumn.lang.compiler.ast.nodes.Name;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import high.mackenzie.autumn.lang.compiler.typesystem.CustomDeclaredType;
@@ -177,7 +177,7 @@ public final class EnumCompiler
         {
             int ordinal = 0;
 
-            for (EnumConstant ec : node.getConstants())
+            for (Name ec : node.getConstants())
             {
                 final CustomField field = new CustomField(program.typesystem.typefactory());
                 {
@@ -185,7 +185,7 @@ public final class EnumCompiler
                     field.setModifiers(Opcodes.ACC_PUBLIC
                                        + Opcodes.ACC_STATIC
                                        + Opcodes.ACC_FINAL);
-                    field.setName(ec.getName().getName());
+                    field.setName(ec.getName());
                     field.setType(type);
                     field.setOrdinal(ordinal++);
 

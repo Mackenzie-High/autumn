@@ -1,6 +1,6 @@
 header "/media/disk/bin/struct_generator/example1/header.txt";
 
-folder "/media/disk/Code/NetBeansProjects/AutumnCompiler/src/autumn/lang/compiler/ast/nodes/";
+folder "/media/disk/Code/NetBeansProjects/autumn/src/autumn/lang/compiler/ast/nodes/";
 
 package autumn.lang.compiler.ast.nodes;
 
@@ -226,29 +226,7 @@ struct EnumDefinition
   data name : Name;
 
   doc These are the constants in the enum.
-  data constants : ConstructList<EnumConstant> = { new ConstructList() }; 
-
-  doc This is the source-location information regarding this construct.
-  data location : SourceLocation = { new SourceLocation() };
-end
-
-###################################################################################################
-# Enum --> Constant
-###################################################################################################
-
-doc An instance of this class is an AST node that represents a constant in an enumeration.
-struct EnumConstant
-  implement IAnnotated;
-  implement IDocumented;
-
-  doc This is the doc-comment applied directly to the enum-constant.
-  data comment : DocComment = { new DocComment() };
-
-  doc These are the annotations applied directly to the enum-constant. 
-  data annotations : AnnotationList = { new AnnotationList() };
-
-  doc This is the simple name of the new type.
-  data name : Name;
+  data constants : ConstructList<Name> = { new ConstructList() }; 
 
   doc This is the source-location information regarding this construct.
   data location : SourceLocation = { new SourceLocation() };

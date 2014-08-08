@@ -62,7 +62,7 @@ public final class AnnotationCompiler
             clazz.access = type.getModifiers();
             clazz.name = internal_name;
             clazz.superName = Utils.internalName(type.getSuperclass());
-            clazz.interfaces = program.typesystem.utils.superinterfaces(type.getSuperinterfaces());
+            clazz.interfaces = program.typesystem.utils.internalNamesOf(type.getSuperinterfaces());
             clazz.fields = ImmutableList.of();
             clazz.methods = ImmutableList.of();
             clazz.sourceFile = String.valueOf(node.getLocation().getFile());

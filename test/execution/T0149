@@ -1,0 +1,21 @@
+module Main in execution;
+
+design Person
+{
+    data name : String;
+
+    data age : int;
+
+    method speak(text : String) : void;
+}
+
+
+
+@Start
+defun main (args : String[]) : void
+{
+    # The same object must be returned, because (create Person) simply reads a field.
+    assert (create Person) === (create Person);
+    assert (create Person) === (create Person);
+    assert (create Person) === (create Person);
+}

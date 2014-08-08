@@ -1,0 +1,26 @@
+module Main in execution;
+
+design Person
+{
+    data name : String;
+
+    data age : int;
+
+    method speak(text : String) : void;
+}
+
+@Start
+defun main (args : String[]) : void
+{
+    # Create a a prototype object and a copy thereof.
+    val p1 = (create Person);
+    val p2 = (p1.copy); // static return-type: Person
+
+    # The copy and the original cannot be the same object.
+    assert p1 !== p2;
+
+    # The object's must actually exist.
+    assert p1 != null;
+    assert p2 != null;
+}
+

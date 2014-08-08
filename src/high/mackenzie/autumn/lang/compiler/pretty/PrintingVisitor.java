@@ -230,6 +230,13 @@ public final class PrintingVisitor
 
         p.addEmptyLine();
 
+        for (EnumDefinition x : object.getEnums())
+        {
+            x.accept(this);
+        }
+
+        p.addEmptyLine();
+
         for (TupleDefinition x : object.getTuples())
         {
             x.accept(this);
@@ -238,13 +245,6 @@ public final class PrintingVisitor
         p.addEmptyLine();
 
         for (FunctorDefinition x : object.getFunctors())
-        {
-            x.accept(this);
-        }
-
-        p.addEmptyLine();
-
-        for (EnumDefinition x : object.getEnums())
         {
             x.accept(this);
         }
@@ -425,36 +425,10 @@ public final class PrintingVisitor
         p.addLine();
         p.addText("enum ");
         object.getName().accept(this);
+        p.addText(" ");
 
-        p.addOpeningBracket();
-        {
-            for (EnumConstant x : object.getConstants())
-            {
-                x.accept(this);
-                p.addEmptyLine();
-            }
-        }
-        p.removeEmptyLines();
-        p.addClosingBracket();
+        printList("(", object.getConstants(), ", ", ")");
 
-        p.addEmptyLine();
-    }
-
-    @Override
-    public void visit(final EnumConstant object)
-    {
-        record(object);
-        require(object, object.getComment());
-        require(object, object.getAnnotations());
-        require(object, object.getName());
-
-        object.getComment().accept(this);
-
-        object.getAnnotations().accept(this);
-
-        p.addLine();
-        p.addText("constant ");
-        object.getName().accept(this);
         p.addText(";");
 
         p.addEmptyLine();

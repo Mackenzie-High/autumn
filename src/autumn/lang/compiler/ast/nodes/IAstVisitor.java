@@ -48,7 +48,7 @@ import java.util.TreeSet;
 /**
  * An instance of this interface is a visitor that can visit the nodes in an Autumn abstract-syntax-tree.
  * 
- * <p> This file was auto-generated on (Thu Jul 24 16:15:35 EDT 2014).</p>
+ * <p> This file was auto-generated on (Thu Aug 07 06:01:15 EDT 2014).</p>
  */
 public interface IAstVisitor
 {
@@ -107,13 +107,6 @@ public interface IAstVisitor
      * @param object is the object to visit.
      */
     public void visit(final EnumDefinition object);
-
-    /**
-     * This method visits an object of type <code>EnumConstant</code>.
-     * 
-     * @param object is the object to visit.
-     */
-    public void visit(final EnumConstant object);
 
     /**
      * This method visits an object of type <code>DesignDefinition</code>.

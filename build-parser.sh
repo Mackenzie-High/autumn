@@ -2,13 +2,14 @@
 
 # Remember to use the Snowflake GUI to "Generate Parser" before running this script, if changes were made to the grammar. 
 
-cd "parser"
-
 #########################################################################################
 # Create the AST node  structs.
 #########################################################################################
 
-rm -r "/media/disk/Code/NetBeansProjects/AutumnCompiler/src/autumn/lang/compiler/ast/nodes/" 
+
+rm -r "src/autumn/lang/compiler/ast/nodes/" 
+
+cd "parser"
 
 bash "/media/disk/bin/generate-struct" "autumn.structs"
 

@@ -70,11 +70,6 @@ public final class ProgramCompiler
             classes.addAll(m.build());
         }
 
-        for (ClassCompiler x : symbols.creators.values())
-        {
-            classes.add(x.build());
-        }
-
         final List<IMethod> starts = this.findStart();
 
         final String main_class = starts.size() == 1

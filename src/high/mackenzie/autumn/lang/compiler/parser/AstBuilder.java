@@ -275,29 +275,6 @@ public final class AstBuilder extends AbstractVisitor
      * {inheritDoc} 
      */
     @Override
-    public void visit_enum_constant(final ITreeNode $node)
-    {
-        final int $stack_size = $stack.size();
-
-        visitUnknown($node);
-
-        final int $change = $stack.size() - $stack_size;
-
-        assert $change >= 0;
-
-        final TreeBuilder builder = Utils.builder();
-
-        builder.createDefinitionEnumConstant();
-
-        Utils.setSourceLocation($node);
-
-        builder.popStack();
-    }
-
-    /**
-     * {inheritDoc} 
-     */
-    @Override
     public void visit_design_definition(final ITreeNode $node)
     {
         final int $stack_size = $stack.size();

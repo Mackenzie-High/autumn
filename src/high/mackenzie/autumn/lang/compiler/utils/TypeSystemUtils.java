@@ -21,6 +21,7 @@ import autumn.lang.internals.ModuleDelegate;
 import autumn.lang.internals.Operators;
 import autumn.lang.internals.YieldState;
 import autumn.lang.internals.proto.AbstractPrototype;
+import autumn.lang.internals.proto.MetaPrototype;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
@@ -41,6 +42,7 @@ import high.mackenzie.autumn.lang.compiler.typesystem.design.IMember;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IMethod;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.INullType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IPrimitiveType;
+import high.mackenzie.autumn.lang.compiler.typesystem.design.IReferenceType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IReturnType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.ITypeFactory;
@@ -142,6 +144,8 @@ public final class TypeSystemUtils
 
     public final IClassType MODULE_DELEGATE;
 
+    public final IClassType ACTIONS;
+
     public final IClassType ABSTRACT_MODULE;
 
     public final IClassType ABSTRACT_DELEGATE;
@@ -151,6 +155,8 @@ public final class TypeSystemUtils
     public final IClassType ABSTRACT_PROTOTYPE;
 
     public final IClassType ABSTRACT_STATIC_FUNCTOR;
+
+    public final IClassType META_PROTOTYPE;
 
     public final IClassType HELPERS;
 
@@ -234,6 +240,8 @@ public final class TypeSystemUtils
 
         this.MODULE_DELEGATE = (IClassType) factory.fromClass(ModuleDelegate.class);
 
+        this.ACTIONS = (IClassType) factory.fromClass(AbstractPrototype.Actions.class);
+
         this.ABSTRACT_TUPLE = (IClassType) factory.fromClass(AbstractTuple.class);
 
         this.ABSTRACT_MODULE = (IClassType) factory.fromClass(AbstractModule.class);
@@ -241,6 +249,8 @@ public final class TypeSystemUtils
         this.ABSTRACT_DELEGATE = (IClassType) factory.fromClass(AbstractDelegate.class);
 
         this.ABSTRACT_PROTOTYPE = (IClassType) factory.fromClass(AbstractPrototype.class);
+
+        this.META_PROTOTYPE = (IClassType) factory.fromClass(MetaPrototype.class);
 
         this.ABSTRACT_STATIC_FUNCTOR = (IClassType) factory.fromClass(AbstractStaticFunctor.class);
 
@@ -723,7 +733,7 @@ public final class TypeSystemUtils
      * @return a list containing the selected members.
      */
     public <T extends IInvokableMember> List<T> checkArgs(final List<T> members,
-                                                          final List<IType> arguments)
+                                                          final List<? extends IType> arguments)
     {
         final List<T> result = Lists.newLinkedList();
 
@@ -910,7 +920,7 @@ NEXT_METHOD:
      */
     public List<IConstructor> resolveCtors(final IDeclaredType user,
                                            final IDeclaredType owner,
-                                           final List<IType> arguments)
+                                           final List<? extends IType> arguments)
     {
         Preconditions.checkNotNull(user);
         Preconditions.checkNotNull(owner);
@@ -940,7 +950,7 @@ NEXT_METHOD:
     public List<IMethod> resolveMethods(final IDeclaredType user,
                                         final IDeclaredType owner,
                                         final String name,
-                                        final List<IType> arguments)
+                                        final List<? extends IType> arguments)
     {
         Preconditions.checkNotNull(user);
         Preconditions.checkNotNull(owner);
@@ -971,7 +981,7 @@ NEXT_METHOD:
     public List<IMethod> resolveStaticMethods(final IDeclaredType user,
                                               final IDeclaredType owner,
                                               final String name,
-                                              final List<IType> arguments)
+                                              final List<? extends IType> arguments)
     {
         Preconditions.checkNotNull(user);
         Preconditions.checkNotNull(owner);
@@ -1312,13 +1322,19 @@ NEXT_METHOD:
         code.add(boxing);
     }
 
-    public List<String> superinterfaces(final Iterable<IInterfaceType> superinterfaces)
+    /**
+     * This method creates a list containing the internal-names of a set of reference-types.
+     *
+     * @param types are the reference-types whose internal-names will be placed in a new list.
+     * @return the list containing the internal-names of the given types.
+     */
+    public List<String> internalNamesOf(final Iterable<? extends IReferenceType> types)
     {
         final List<String> result = Lists.newLinkedList();
 
-        for (IInterfaceType superinterface : superinterfaces)
+        for (IReferenceType x : types)
         {
-            result.add(Utils.internalName(superinterface));
+            result.add(Utils.internalName(x));
         }
 
         return result;
@@ -1337,5 +1353,40 @@ NEXT_METHOD:
         param.setType(type);
 
         return param;
+    }
+
+    /**
+     * This method creates a list of the overloads of a specific function.
+     *
+     * <p>
+     * The returned list is not sorted.
+     * </p>
+     *
+     * @param owner is the type of the module that contains the overloads.
+     * @param name is the name of the function.
+     * @return a list of the overloads of the named function.
+     * If there are no overloads, the list will be empty.
+     */
+    public static List<IMethod> findFunctions(final IDeclaredType owner,
+                                              final String name)
+    {
+        Preconditions.checkNotNull(owner);
+        Preconditions.checkNotNull(name);
+        Preconditions.checkArgument(owner.isSubtypeOf(owner.getTypeFactory().fromClass(Module.class)));
+
+        final List<IMethod> result = Lists.newLinkedList();
+
+        for (IMethod function : owner.getMethods())
+        {
+            if (function.getName().equals(name))
+            {
+                assert Modifier.isPublic(function.getModifiers());
+                assert Modifier.isStatic(function.getModifiers());
+
+                result.add(function);
+            }
+        }
+
+        return result;
     }
 }

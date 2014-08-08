@@ -2,6 +2,7 @@ package high.mackenzie.autumn.lang.compiler.compilers;
 
 import autumn.lang.Delegate;
 import autumn.lang.Functor;
+import autumn.lang.Prototype;
 import autumn.lang.compiler.ast.nodes.TypeSpecifier;
 import autumn.util.DS;
 import autumn.util.F;
@@ -12,6 +13,8 @@ import autumn.util.proto.ProtoMap;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import high.mackenzie.autumn.lang.compiler.typesystem.design.IClassType;
+import high.mackenzie.autumn.lang.compiler.typesystem.design.IInterfaceType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IReturnType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IVariableType;
 import high.mackenzie.autumn.lang.compiler.utils.Utils;
@@ -58,6 +61,7 @@ public final class Importer
         importClass(DS.class);
         importClass(Functor.class);
         importClass(Delegate.class);
+        importClass(Prototype.class);
 
         importClass(Object.class);
         importClass(Number.class);
@@ -142,6 +146,8 @@ public final class Importer
 
         final IReturnType result = module.program.typesystem.utils.findType(typename, dimensions);
 
+        module.program.checker.requireType(specifier, result);
+
         return result;
     }
 
@@ -150,6 +156,27 @@ public final class Importer
         // TODO: error if non-vartype
 
         return (IVariableType) resolveType(specifier);
+    }
+
+    public IClassType resolveModuleType(final TypeSpecifier specifier)
+    {
+        // TODO: error if non-vartype
+
+        return (IClassType) resolveType(specifier);
+    }
+
+    public IClassType resolveFunctorType(final TypeSpecifier specifier)
+    {
+        // TODO: error if non-vartype
+
+        return (IClassType) resolveType(specifier);
+    }
+
+    public IInterfaceType resolveInterfaceType(final TypeSpecifier specifier)
+    {
+        // TODO: error if non-vartype
+
+        return (IInterfaceType) resolveType(specifier);
     }
 
     public void importType(final String alias,
