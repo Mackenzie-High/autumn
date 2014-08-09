@@ -1,0 +1,16 @@
+module Main in execution;
+
+functor F1 (x : int) : List;
+
+@Start
+defun main (args : String[]) : void
+{
+    delegate p : F1 => Main::moo;
+
+    assert [13] == (p.invoke 10);
+}
+
+defun moo (x : int) : List
+{
+    return [x + 3];
+}

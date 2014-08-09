@@ -22,6 +22,7 @@ import high.mackenzie.autumn.lang.compiler.typesystem.design.IExpressionType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IMethod;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IReturnType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IType;
+import high.mackenzie.autumn.lang.compiler.typesystem.design.IVariableType;
 import high.mackenzie.autumn.lang.compiler.utils.Utils;
 import java.util.List;
 
@@ -233,6 +234,32 @@ public final class StaticChecker
         final String MESSAGE = "The type of a particular expression must be a reference-type.";
 
         final ErrorReport report = new ErrorReport(expression, ERROR_CODE, MESSAGE);
+
+        /**
+         * Issue the error-report to the user.
+         */
+        report(report);
+    }
+
+    /**
+     * This method ensures that a type is a variable-type.
+     *
+     * @param construct is the construct that is performing the type-check.
+     * @param expression is the expression that must be a variable-type.
+     */
+    public void requireVariableType(final IConstruct construct,
+                                    final IExpressionType type)
+    {
+        if (type instanceof IVariableType)
+        {
+            return;
+        }
+
+        final ErrorCode ERROR_CODE = ErrorCode.EXPECTED_VARIABLE_TYPE;
+
+        final String MESSAGE = "A variable-type was expected.";
+
+        final ErrorReport report = new ErrorReport(construct, ERROR_CODE, MESSAGE);
 
         /**
          * Issue the error-report to the user.

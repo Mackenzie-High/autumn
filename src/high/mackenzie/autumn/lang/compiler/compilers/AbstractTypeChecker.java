@@ -5,6 +5,7 @@ import autumn.lang.compiler.ast.commons.IExpression;
 import autumn.lang.compiler.ast.commons.IUnaryOperation;
 import autumn.lang.compiler.ast.nodes.Name;
 import autumn.lang.compiler.ast.nodes.TypeSpecifier;
+import autumn.lang.compiler.ast.nodes.Variable;
 import autumn.lang.internals.Operators;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
@@ -382,6 +383,35 @@ abstract class AbstractTypeChecker
         else
         {
             program.checker.expectSubtype(expression, target);
+        }
+    }
+
+    protected void declareVar(final Variable variable,
+                              final IExpressionType type,
+                              final boolean mutable)
+    {
+        /**
+         * The variable cannot be declared, if another variable was already created
+         * with the same name.
+         */
+        final boolean alread_declared = function.scope.isDeclared(variable.getName());
+        program.checker.reportDuplicateVariable(variable, alread_declared);
+
+        /**
+         * The type of a variable must be a variable-type.
+         */
+        program.checker.requireVariableType(variable, type);
+
+        /**
+         * Perform the actual variable declaration.
+         */
+        if (mutable)
+        {
+            function.scope.declareVar(variable, type);
+        }
+        else
+        {
+            function.scope.declareVal(variable, type);
         }
     }
 }

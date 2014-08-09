@@ -513,7 +513,7 @@ public final class ModuleCompiler
 
         m.access = (anonymous ? 0 : Opcodes.ACC_PUBLIC) + Opcodes.ACC_STATIC;
         m.name = "instance";
-        m.desc = "()" + program.typesystem.utils.MODULE.getDescriptor();
+        m.desc = "()" + type.getDescriptor();
         m.exceptions = ImmutableList.of();
 
         // The only instance of the module's class is stored in a static final field.
@@ -791,7 +791,7 @@ public final class ModuleCompiler
         instance.setName("instance");
         instance.setModifiers(Opcodes.ACC_PUBLIC + Opcodes.ACC_STATIC);
         instance.setParameters(new LinkedList());
-        instance.setReturnType(program.typesystem.utils.MODULE);
+        instance.setReturnType(type);
         instance.setThrowsClause(new LinkedList());
 
         // Add this function's type to the collection of functions in the module's type.

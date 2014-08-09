@@ -6,7 +6,6 @@ import autumn.lang.Property;
 import autumn.lang.Prototype;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
-import high.mackenzie.autumn.lang.compiler.typesystem.design.IMember;
 import java.util.List;
 import org.objectweb.asm.Type;
 
@@ -102,15 +101,53 @@ public final class Proto
         return true;
     }
 
-    public static IMember property(final Prototype owner,
-                                   final String name)
+    public static Property property(final Prototype owner,
+                                    final String name)
     {
+        for (Member member : owner.members())
+        {
+            if (member.isProperty())
+            {
+                final Property property = (Property) member;
+
+                if (property.name().equals(name))
+                {
+                    return property;
+                }
+            }
+        }
+
         return null;
     }
 
-    public static IMember method(final Prototype owner,
-                                 final String name,
-                                 final Iterable<Class> parameters)
+    /**
+     *
+     * @param owner
+     * @param key is the name + parameter-list-descriptor
+     * @return
+     */
+    public static Method method(final Prototype owner,
+                                final String key)
+    {
+        for (Member member : owner.members())
+        {
+            if (member.isMethod())
+            {
+                final Method method = (Method) member;
+
+                if (namePlusParameterListDescriptorOf(method).equals(key))
+                {
+                    return method;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    public static Method method(final Prototype owner,
+                                final String name,
+                                final Iterable<Class> parameters)
     {
         return null;
     }

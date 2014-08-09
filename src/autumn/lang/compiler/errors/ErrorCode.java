@@ -100,6 +100,10 @@ public enum ErrorCode
      */
     EXPECTED_PRIMITIVE_TYPE,
     /**
+     * Meaning: A variable-type was expected.
+     */
+    EXPECTED_VARIABLE_TYPE,
+    /**
      * Meaning: A primitive boolean or a java.lang.Boolean was expected.
      */
     EXPECTED_CONDITION,

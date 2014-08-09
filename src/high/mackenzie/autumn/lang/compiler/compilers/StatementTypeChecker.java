@@ -10,16 +10,24 @@ import autumn.lang.compiler.ast.nodes.*;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import high.mackenzie.autumn.lang.compiler.exceptions.BadGetterAssignment;
+import high.mackenzie.autumn.lang.compiler.exceptions.BadMethodAssignment;
+import high.mackenzie.autumn.lang.compiler.exceptions.BadSetterAssignment;
+import high.mackenzie.autumn.lang.compiler.exceptions.NoSuchHandlerFunction;
+import high.mackenzie.autumn.lang.compiler.exceptions.NoSuchProperty;
+import high.mackenzie.autumn.lang.compiler.exceptions.PrototypeExpected;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IClassType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IExpressionType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IMethod;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IReturnType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IVariableType;
+import high.mackenzie.autumn.lang.compiler.utils.MemberToHandler;
 import high.mackenzie.autumn.lang.compiler.utils.TopoSorter;
-import high.mackenzie.autumn.lang.compiler.utils.TypeSystemUtils;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.objectweb.asm.tree.LabelNode;
 
 /**
@@ -174,7 +182,7 @@ public final class StatementTypeChecker
         final Variable variable = object.getVariable();
         final IExpressionType type = function.module.imports.resolveType(object.getType());
 
-        function.scope.declareVal(variable, type);
+        super.declareVar(variable, type, false);
 
         object.getIterable().accept(this);
         object.getBody().accept(this);
@@ -214,20 +222,13 @@ public final class StatementTypeChecker
     {
         object.getValue().accept(this);
 
-        // TODO: Require that the type of the initializer is a variable-type.
-        //       Expressions can be of the void-type or the null-type.
-        //       Neither of those two types() can be the type of a variable.
-
         final Variable variable = object.getVariable();
 
         final IExpression value = object.getValue();
 
-        final IVariableType type = (IVariableType) program.symbols.expressions.get(value);
+        final IExpressionType type = program.symbols.expressions.get(value);
 
-        final boolean alread_declared = function.scope.isDeclared(variable.getName());
-        program.checker.reportDuplicateVariable(variable, alread_declared);
-
-        function.scope.declareVar(variable, type);
+        super.declareVar(variable, type, true);
     }
 
     @Override
@@ -235,20 +236,13 @@ public final class StatementTypeChecker
     {
         object.getValue().accept(this);
 
-        // TODO: Require that the type of the initializer is a variable-type.
-        //       Expressions can be of the void-type or the null-type.
-        //       Neither of those two types() can be the type of a variable.
-
         final Variable variable = object.getVariable();
 
         final IExpression value = object.getValue();
 
-        final IVariableType type = (IVariableType) program.symbols.expressions.get(value);
+        final IExpressionType type = program.symbols.expressions.get(value);
 
-        final boolean alread_declared = function.scope.isDeclared(variable.getName());
-        program.checker.reportDuplicateVariable(variable, alread_declared);
-
-        function.scope.declareVal(variable, type);
+        super.declareVar(variable, type, false);
     }
 
     @Override
@@ -276,39 +270,154 @@ public final class StatementTypeChecker
 
         final IClassType functor_type = module.imports.resolveFunctorType(object.getType());
 
-        final IClassType owner_type = module.imports.resolveModuleType(object.getType());
+        final IClassType owner_type = module.imports.resolveModuleType(object.getOwner());
 
-        final List<IMethod> overloads = TypeSystemUtils.findFunctions(owner_type, name);
+        final IMethod handler = MemberToHandler.findHandler(owner_type, name);
 
-        if (overloads.isEmpty())
-        {
-            // TODO: error
-        }
+        super.declareVar(object.getVariable(), functor_type, false);
 
-        if (overloads.size() > 1)
-        {
-            // TODO: error
-        }
-
-
+        program.symbols.delegates.put(object, handler);
     }
 
     @Override
     public void visit(final SetterStatement object)
     {
-        object.getOwner().accept(this);
+        /**
+         * Get the type of the prototype object.
+         */
+        final IVariableType owner = function.scope.typeOf(object.getOwner().getName());
+
+        /**
+         * Get the type of the module that contains the handler function.
+         */
+        final IClassType mule = module.imports.resolveModuleType(object.getModule());
+
+        /**
+         * Create the mapping between the setter and the handler function.
+         */
+        try
+        {
+            final MemberToHandler mapping = MemberToHandler.forSetter(owner,
+                                                                      object.getName().getName(),
+                                                                      mule,
+                                                                      object.getMethod().getName());
+
+            /**
+             * Record the mapping, because the code-generator will need it.
+             */
+            program.symbols.setters.put(object, mapping);
+        }
+        catch (PrototypeExpected ex)
+        {
+            // TODO
+            Logger.getLogger(StatementTypeChecker.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        catch (NoSuchProperty ex)
+        {
+            Logger.getLogger(StatementTypeChecker.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        catch (NoSuchHandlerFunction ex)
+        {
+            Logger.getLogger(StatementTypeChecker.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        catch (BadSetterAssignment ex)
+        {
+            Logger.getLogger(StatementTypeChecker.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @Override
     public void visit(final GetterStatement object)
     {
-        object.getOwner().accept(this);
+        /**
+         * Get the type of the prototype object.
+         */
+        final IVariableType owner = function.scope.typeOf(object.getOwner().getName());
+
+        /**
+         * Get the type of the module that contains the handler function.
+         */
+        final IClassType mule = module.imports.resolveModuleType(object.getModule());
+
+        /**
+         * Create the mapping between the setter and the handler function.
+         */
+        try
+        {
+            final MemberToHandler mapping = MemberToHandler.forGetter(owner,
+                                                                      object.getName().getName(),
+                                                                      mule,
+                                                                      object.getMethod().getName());
+
+            /**
+             * Record the mapping, because the code-generator will need it.
+             */
+            program.symbols.getters.put(object, mapping);
+        }
+        catch (PrototypeExpected ex)
+        {
+            // TODO
+            Logger.getLogger(StatementTypeChecker.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        catch (NoSuchProperty ex)
+        {
+            Logger.getLogger(StatementTypeChecker.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        catch (NoSuchHandlerFunction ex)
+        {
+            Logger.getLogger(StatementTypeChecker.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        catch (BadGetterAssignment ex)
+        {
+            Logger.getLogger(StatementTypeChecker.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @Override
     public void visit(final MethodStatement object)
     {
-        object.getOwner().accept(this);
+        /**
+         * Get the type of the prototype object.
+         */
+        final IVariableType owner = function.scope.typeOf(object.getOwner().getName());
+
+        /**
+         * Get the type of the module that contains the handler function.
+         */
+        final IClassType mule = module.imports.resolveModuleType(object.getModule());
+
+        /**
+         * Create the mapping between the setter and the handler function.
+         */
+        try
+        {
+            final MemberToHandler mapping = MemberToHandler.forMethod(owner,
+                                                                      object.getName().getName(),
+                                                                      mule,
+                                                                      object.getMethod().getName());
+
+            /**
+             * Record the mapping, because the code-generator will need it.
+             */
+            program.symbols.methods.put(object, mapping);
+        }
+        catch (PrototypeExpected ex)
+        {
+            // TODO
+            Logger.getLogger(StatementTypeChecker.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        catch (NoSuchProperty ex)
+        {
+            Logger.getLogger(StatementTypeChecker.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        catch (NoSuchHandlerFunction ex)
+        {
+            Logger.getLogger(StatementTypeChecker.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        catch (BadMethodAssignment ex)
+        {
+            Logger.getLogger(StatementTypeChecker.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @Override
@@ -393,13 +502,10 @@ public final class StatementTypeChecker
     {
         final IExpressionType type = function.module.imports.resolveType(object.getType());
 
-        final boolean already_declared = function.scope.isDeclared(object.getVariable().getName());
-
         program.checker.requireType(object.getType(), type);
-        program.checker.reportDuplicateVariable(object.getVariable(), already_declared);
         program.checker.requireThrowable(object, type);
 
-        function.scope.declareVal(object.getVariable(), type);
+        super.declareVar(object.getVariable(), type, false);
 
         object.getHandler().accept(this);
     }

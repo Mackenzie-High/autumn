@@ -81,7 +81,9 @@ Test Index
 . . T0151 = Special Method - copy() // TODO: bridges
 . . Special Method - members()
 . . T0152 = Properties
-. . Methods
+. . T0157 = Basic Method Test
+. . Inherited Properties
+. . Covariant Properties
 . Functions
 . . Reflective Testing of the Reflective Method Object
 . . Recursive Generator
@@ -209,6 +211,12 @@ Test Index
 . Expressions
 . . Delegate
 . . . Checked Exceptions
+. . . T0153 = No Parameters
+. . . T0154 = Single Parameter
+. . . T0155 = Multiple Parameters
+. . . T0156 = Different Types of Parameters
+. . . Different Types of Return-Types
+. . . Operand-Stack Leakage
 . . Dispatch
 . . . Resolution Order
 . . New

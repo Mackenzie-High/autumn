@@ -92,7 +92,16 @@ final class ConcreteMethod
     @Override
     public Method setHandler(final Functor handler)
     {
-        throw new UnsupportedOperationException("Not supported yet.");
+        // Create a modified version of the low-level method.
+        final LowLevelMethod method = new LowLevelMethod(low.meta, handler);
+
+        // Create a copy of the owner that contains the modified low-level method.
+        final AbstractPrototype prototype = AbstractPrototype.Actions.replaceSlot(owner, low.meta.index, method);
+
+        // Create a copy of this object that reflects the changes.
+        final ConcreteMethod result = new ConcreteMethod(prototype, low.meta.index, method);
+
+        return result;
     }
 
     /**
