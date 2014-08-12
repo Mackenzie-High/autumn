@@ -1,0 +1,15 @@
+module Main in execution;
+
+annotation Anno1;
+annotation Anno2;
+
+@Anno1
+@Anno2
+annotation Anno3;
+
+@Start
+defun main (args : String[]) : void
+{
+    assert ((class Anno3).isAnnotationPresent (class Anno1));
+    assert ((class Anno3).isAnnotationPresent (class Anno2));
+}

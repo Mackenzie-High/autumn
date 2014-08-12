@@ -25,14 +25,18 @@
             <word>ArgumentStack</word>
             <word>BigInteger</word>
             <word>eq</word>
+            <word>expectField</word>
+            <word>expectMethod</word>
             <word>getAnnotation</word>
             <word>getClass</word>
+            <word>getDeclaredConstructors</word>
             <word>getInterfaces</word>
             <word>getMethod</word>
             <word>getName</word>
             <word>getSimpleName</word>
             <word>getSuperclass</word>
             <word>getSuperinterfaces</word>
+            <word>InaccessibleClass</word>
             <word>incrementAndGet</word>
             <word>intValue</word>
             <word>isAnnotation</word>
@@ -50,8 +54,12 @@
             <word>moduleInvokeFunction</word>
             <word>newArray</word>
             <word>parameterTypes</word>
+            <word>ReflectionTester</word>
+            <word>ReflectiveTester</word>
             <word>RetentionPolicy</word>
             <word>returnType</word>
+            <word>superclasses</word>
+            <word>ThisTypeDoesNotExist</word>
             <word>toMap</word>
             <word>valueOf</word>
         </spellchecker-wordlist>

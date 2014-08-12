@@ -34,6 +34,22 @@ public final class Runner
     {
         failed_count = 0;
 
+
+        test("T0050", DUPLICATE_CONSTANT);
+        test("T0049", DUPLICATE_TYPE);
+        test("T0048", ILLEGAL_NAME);
+        test("T0047", ILLEGAL_NAME);
+        test("T0046", CIRCULAR_INHERITANCE);
+        test("T0045", CIRCULAR_INHERITANCE);
+        test("T0044", INACCESSIBLE_TYPE);
+        test("T0043", NO_SUCH_TYPE);
+        test("T0042", EXPECTED_THROWABLE);
+        test("T0041", DUPLICATE_TYPE);
+        test("T0040", ILLEGAL_NAME);
+        test("T0039", DUPLICATE_TYPE);
+        test("T0038", ILLEGAL_NAME);
+
+        //
         test("T0001", EXPECTED_CONDITION);
         test("T0002", EXPECTED_CONDITION);
         test("T0003", EXPECTED_CONDITION);

@@ -180,7 +180,7 @@ public final class StatementTypeChecker
     public void visit(final ForeachStatement object)
     {
         final Variable variable = object.getVariable();
-        final IExpressionType type = function.module.imports.resolveType(object.getType());
+        final IExpressionType type = function.module.imports.resolveReturnType(object.getType());
 
         super.declareVar(variable, type, false);
 
@@ -466,8 +466,8 @@ public final class StatementTypeChecker
             public boolean isLess(final ExceptionHandler left,
                                   final ExceptionHandler right)
             {
-                final IType left_type = function.module.imports.resolveType(left.getType());
-                final IType right_type = function.module.imports.resolveType(right.getType());
+                final IType left_type = function.module.imports.resolveReturnType(left.getType());
+                final IType right_type = function.module.imports.resolveReturnType(right.getType());
 
                 return left_type.isSubtypeOf(right_type);
             }
@@ -486,7 +486,7 @@ public final class StatementTypeChecker
 
         for (ExceptionHandler handler : sorted)
         {
-            final IExpressionType type = function.module.imports.resolveType(handler.getType());
+            final IExpressionType type = function.module.imports.resolveReturnType(handler.getType());
 
             if (types.contains(type))
             {
@@ -500,10 +500,10 @@ public final class StatementTypeChecker
     @Override
     public void visit(final ExceptionHandler object)
     {
-        final IExpressionType type = function.module.imports.resolveType(object.getType());
+        final IExpressionType type = function.module.imports.resolveReturnType(object.getType());
 
         program.checker.requireType(object.getType(), type);
-        program.checker.requireThrowable(object, type);
+        program.checker.requireThrowable(object.getType(), type);
 
         super.declareVar(object.getVariable(), type, false);
 

@@ -25,11 +25,20 @@ Test Index
 . Annotation Definitions
 . . T0140 = Reflective Testing of the Annotation's Class
 . . T0141 = Usage of a Defined Annotation
+. . T0160 = Annotation Applied to Itself
+. . T0161 = Annotations Applied to an Annotation
 . Exception Definitions
-. . Reflective Testing of the Exception's Class
+. . T0164 = Applied Annotations are Present
+. . T0163 = Inherited Constructors
+. . T0162 = Usage of a Declared Exception
 . Enum Definitions
-. . Reflective Testing of the Enum's Class
+. . T0170 = Reflective Testing of the Enum's Class
+. . T0167 = Applied Annotations are Present
 . . T0051 = Basic Enum
+. . T0165 = Special Method - valueOf(String) - Normal Operation
+. . T0168 = Special Method - valueOf(String) - Null Argument
+. . T0169 = Special Method - valueOf(String) - No Such Enum Constant
+. . T0166 = Special Method - values()
 . Tuple Definitions
 . . T0128 = Reflective Testing of the Tuple's Class                  // TODO: finish
 . . T0114 = Sole Constructor
@@ -80,10 +89,17 @@ Test Index
 . . T0150 = Special Method - copy() // TODO
 . . T0151 = Special Method - copy() // TODO: bridges
 . . Special Method - members()
-. . T0152 = Properties
-. . T0157 = Basic Method Test
+. . T0152 = Properties - (no setters, no getters)
 . . Inherited Properties
 . . Covariant Properties
+. . T0159 = Method Call - (no arguments)
+. . T0157 = Method Call - (single argument)
+. . T0158 = Method Call - (multiple arguments)
+. . Inherited Methods
+. . Covariant Methods
+. . Special Method - equals(Object) - (default)
+. . Special Method - hashCode() - (default)
+. . Special Method - toString() - (default)
 . Functions
 . . Reflective Testing of the Reflective Method Object
 . . Recursive Generator

@@ -11,13 +11,15 @@ import autumn.lang.compiler.ast.nodes.ContinueStatement;
 import autumn.lang.compiler.ast.nodes.ExceptionHandler;
 import autumn.lang.compiler.ast.nodes.IsOperation;
 import autumn.lang.compiler.ast.nodes.Label;
+import autumn.lang.compiler.ast.nodes.Name;
 import autumn.lang.compiler.ast.nodes.RedoStatement;
 import autumn.lang.compiler.ast.nodes.TypeSpecifier;
 import autumn.lang.compiler.ast.nodes.Variable;
 import autumn.lang.compiler.errors.ErrorCode;
 import autumn.lang.compiler.errors.ErrorReport;
 import autumn.lang.compiler.errors.IErrorReporter;
-import high.mackenzie.autumn.lang.compiler.exceptions.TypeUsageCheckFailed;
+import high.mackenzie.autumn.lang.compiler.exceptions.TypeCheckFailed;
+import high.mackenzie.autumn.lang.compiler.typesystem.design.IEnumType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IExpressionType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IMethod;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IReturnType;
@@ -57,15 +59,16 @@ public final class StaticChecker
     }
 
     /**
-     * This method is invoked in order to actually issue an error report.
+     * This method is invoked in order to actually issue an error report,
+     * regarding a type-usage.
      *
      * @param report is the error report to issue.
-     * @throws TypeUsageCheckFailed always.
+     * @throws TypeCheckFailed always.
      */
     private void report(final ErrorReport report)
     {
         reporter.reportFailedCheck(report);
-        throw new TypeUsageCheckFailed();
+        throw new TypeCheckFailed();
     }
 
     /**
@@ -330,7 +333,13 @@ public final class StaticChecker
         report(report);
     }
 
-    public void requireThrowable(final IConstruct construct,
+    /**
+     * This method ensures that a type-specifier specifies a Throwable type.
+     *
+     * @param specifier must specify a Throwable type.
+     * @param type must be a subtype of Throwable.
+     */
+    public void requireThrowable(final TypeSpecifier specifier,
                                  final IType type)
     {
         if (type.isSubtypeOf(program.typesystem.utils.THROWABLE))
@@ -342,7 +351,132 @@ public final class StaticChecker
 
         final String MESSAGE = "A java.lang.Throwable was expected.";
 
-        final ErrorReport report = new ErrorReport(construct, ERROR_CODE, MESSAGE);
+        final ErrorReport report = new ErrorReport(specifier, ERROR_CODE, MESSAGE);
+
+        /**
+         * Issue the error-report to the user.
+         */
+        report(report);
+    }
+
+    /**
+     * This method ensures that a name is not a keyword.
+     *
+     * @param name is the name to check.
+     */
+    public void requireLegalName(final Name name)
+    {
+        if (Utils.isKeyword(name.getName()) == false)
+        {
+            return;
+        }
+
+        final ErrorCode ERROR_CODE = ErrorCode.ILLEGAL_NAME;
+
+        final String MESSAGE = "A name cannot be a JVM keyword.";
+
+        final ErrorReport report = new ErrorReport(name, ERROR_CODE, MESSAGE);
+
+        report.addDetail("Name", name.getName());
+
+        /**
+         * Issue the error-report to the user.
+         */
+        report(report);
+    }
+
+    /**
+     * This method ensures that a type-declaration is not a duplicate.
+     *
+     * @param type is the name of the type being declared.
+     * @param descriptor is the type-descriptor of the type being declared.
+     */
+    public void requireNonDuplicateType(final Name type,
+                                        final String descriptor)
+    {
+        if (program.typesystem.typefactory().findType(descriptor) == null)
+        {
+            return;
+        }
+
+        final ErrorCode ERROR_CODE = ErrorCode.DUPLICATE_TYPE;
+
+        final String MESSAGE = "The fully-qualified name of a type must be unique.";
+
+        final ErrorReport report = new ErrorReport(type, ERROR_CODE, MESSAGE);
+
+        report.addDetail("Type", type.getName());
+
+        /**
+         * Issue the error-report to the user.
+         */
+        report(report);
+    }
+
+    /**
+     * This method reports that a type is not accessible where it is used.
+     *
+     * @param specifier specifies the inaccessible type.
+     * @param type is the type that is inaccessible.
+     */
+    public void reportInaccessibleType(final TypeSpecifier specifier,
+                                       final IReturnType type)
+    {
+        final ErrorCode ERROR_CODE = ErrorCode.INACCESSIBLE_TYPE;
+
+        final String MESSAGE = "The specified type is not accessible from where it is used.";
+
+        final ErrorReport report = new ErrorReport(specifier, ERROR_CODE, MESSAGE);
+
+        report.addDetail("Type", Utils.sourceName(type));
+
+        /**
+         * Issue the error-report to the user.
+         */
+        report(report);
+    }
+
+    /**
+     * This method reports that a type inherits from itself.
+     *
+     * @param declaration is the declaration of the erroneous type.
+     * @param type is the type-system representation of the erroneous type.
+     */
+    public void reportCircularInheritance(final IConstruct declaration,
+                                          final IReturnType type)
+    {
+        final ErrorCode ERROR_CODE = ErrorCode.CIRCULAR_INHERITANCE;
+
+        final String MESSAGE = "A type cannot be a subtype of itself.";
+
+        final ErrorReport report = new ErrorReport(declaration, ERROR_CODE, MESSAGE);
+
+        report.addDetail("Type", Utils.sourceName(type));
+
+        /**
+         * Issue the error-report to the user.
+         */
+        report(report);
+    }
+
+    /**
+     * This method reports a duplicate enum-constant.
+     *
+     * @param enumeration is the type-system representation of the enum.
+     * @param constant is the name of the duplicated enum-constant.
+     */
+    public void reportDuplicateEnumConstant(final IEnumType enumeration,
+                                            final Name constant)
+    {
+        final ErrorCode ERROR_CODE = ErrorCode.DUPLICATE_CONSTANT;
+
+        final String MESSAGE = "No two enum-constants, in the same enum, can share their name.";
+
+        final ErrorReport report = new ErrorReport(constant, ERROR_CODE, MESSAGE);
+
+        report.addDetail("Enum Type", Utils.sourceName(enumeration));
+
+        report.addDetail("Constant", constant.getName());
 
         /**
          * Issue the error-report to the user.

@@ -8,7 +8,7 @@ import high.mackenzie.autumn.resources.Finished;
  * @author Mackenzie high
  */
 @Finished("2014/07/12")
-public final class TypeUsageCheckFailed
+public final class TypeCheckFailed
         extends RuntimeException
 {
     // Pass

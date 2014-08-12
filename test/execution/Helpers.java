@@ -17,6 +17,33 @@ import java.util.Set;
 public final class Helpers
 {
     /**
+     * This class is used to test that Autumn exceptions only inherit public constructors.
+     */
+    public static class TestException
+            extends Exception
+    {
+        public TestException(final String x)
+        {
+            // Pass
+        }
+
+        protected TestException(final int x)
+        {
+            // Pass
+        }
+
+        TestException(final short x)
+        {
+            // Pass
+        }
+
+        private TestException(final byte x)
+        {
+            // Pass
+        }
+    }
+
+    /**
      * This method creates functor(n : int) that returns the n-th Fibonacci number (n less-than 12).
      *
      * @return a new Fibonacci functor.

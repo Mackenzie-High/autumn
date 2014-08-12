@@ -8,7 +8,7 @@ import autumn.lang.compiler.ast.nodes.FormalParameter;
 import autumn.lang.compiler.ast.nodes.FunctionDefinition;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
-import high.mackenzie.autumn.lang.compiler.exceptions.TypeUsageCheckFailed;
+import high.mackenzie.autumn.lang.compiler.exceptions.TypeCheckFailed;
 import high.mackenzie.autumn.lang.compiler.typesystem.CustomFormalParameter;
 import high.mackenzie.autumn.lang.compiler.typesystem.CustomMethod;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IAnnotation;
@@ -152,7 +152,7 @@ public final class FunctionCompiler
         {
             for (FormalParameter p : node.getParameters().getParameters())
             {
-                final IVariableType param_type = (IVariableType) module.imports.resolveType(p.getType());
+                final IVariableType param_type = (IVariableType) module.imports.resolveReturnType(p.getType());
 
                 final CustomFormalParameter param = new CustomFormalParameter();
 
@@ -171,7 +171,7 @@ public final class FunctionCompiler
         type.setModifiers(modifiers);
         type.setName(node.getName().getName());
         type.setParameters(params);
-        type.setReturnType(module.imports.resolveType(node.getReturnType()));
+        type.setReturnType(module.imports.resolveReturnType(node.getReturnType()));
     }
 
     /**
@@ -196,7 +196,7 @@ public final class FunctionCompiler
 
             labels.check();
         }
-        catch (TypeUsageCheckFailed ex)
+        catch (TypeCheckFailed ex)
         {
             // Pass
         }

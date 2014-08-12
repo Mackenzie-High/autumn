@@ -2,6 +2,7 @@ package high.mackenzie.autumn.lang.compiler.compilers;
 
 import autumn.lang.compiler.ClassFile;
 import autumn.lang.compiler.ast.nodes.ExceptionDefinition;
+import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
@@ -16,6 +17,7 @@ import high.mackenzie.autumn.lang.compiler.typesystem.design.IInterfaceType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IMethod;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IType;
 import high.mackenzie.autumn.lang.compiler.utils.Utils;
+import high.mackenzie.autumn.resources.Finished;
 import java.lang.reflect.Modifier;
 import java.util.List;
 import java.util.Set;
@@ -32,28 +34,49 @@ import org.objectweb.asm.tree.VarInsnNode;
  *
  * @author Mackenzie High
  */
-public final class ExceptionCompiler
+@Finished("2014/08/11")
+final class ExceptionCompiler
         implements ICompiler
 {
+    /**
+     * Essentially, this is the program being compiled.
+     */
     public final ProgramCompiler program;
 
+    /**
+     * Essentially, this is the module that contains the exception-definition.
+     */
     public final ModuleCompiler module;
 
+    /**
+     * This is the Abstract-Syntax-Tree representation of the exception-definition.
+     */
     public final ExceptionDefinition node;
 
+    /**
+     * This will be the type-system representation of the exception-definition.
+     *
+     * This field is set during the type-declaration compiler pass.
+     */
     public CustomDeclaredType type;
 
     /**
-     * This field indicates whether any constructors were inferred from the superclass.
-     * If inferred is negate, then inference has not been attempted yet.
-     * If inferred is zero, then no constructors were inferred (report compile-time error).
-     * If inferred is non-zero and positive, then constructors were inferred.
+     * This flag is used to prevent a stack-overflow during constructor-inference.
      */
-    private int inferred = -100;
+    private boolean inferred = false;
 
+    /**
+     * Sole Constructor.
+     *
+     * @param module is the module that contains the exception being compiled.
+     * @param node is the AST node that represents the exception being compiled.
+     */
     public ExceptionCompiler(final ModuleCompiler module,
                              final ExceptionDefinition node)
     {
+        Preconditions.checkNotNull(module);
+        Preconditions.checkNotNull(node);
+
         this.program = module.program;
         this.module = module;
         this.node = node;
@@ -76,7 +99,7 @@ public final class ExceptionCompiler
         final ClassNode clazz = new ClassNode();
         {
             clazz.version = Opcodes.V1_6;
-            clazz.visibleAnnotations = Lists.newLinkedList();
+            clazz.visibleAnnotations = module.anno_utils.compileAnnotationList(type.getAnnotations());
             clazz.access = type.getModifiers();
             clazz.name = exception_internal_name;
             clazz.superName = Utils.internalName(type.getSuperclass());
@@ -85,15 +108,7 @@ public final class ExceptionCompiler
             clazz.methods = Lists.newLinkedList();
             clazz.sourceFile = String.valueOf(node.getLocation().getFile());
 
-            if (inferred == 0)
-            {
-                // TODO: Error
-                assert false;
-            }
-            else
-            {
-                addInferredCtors(clazz);
-            }
+            addInferredCtors(clazz);
         }
 
         /**
@@ -125,13 +140,14 @@ public final class ExceptionCompiler
         final String descriptor = "L" + namespace + '/' + name + ';';
 
         /**
-         * Ensure that this exception is not a duplicate type-declaration.
+         * Ensure that the name is not forbidden.
          */
-        if (program.typesystem.typefactory().findType(descriptor) != null)
-        {
-            // TODO: error
-            System.out.println("Duplicate Type: " + descriptor);
-        }
+        program.checker.requireLegalName(node.getName());
+
+        /**
+         * Ensure that the type was not already declared elsewhere.
+         */
+        program.checker.requireNonDuplicateType(node.getName(), descriptor);
 
         /**
          * Declare the exception.
@@ -150,21 +166,21 @@ public final class ExceptionCompiler
     @Override
     public void performTypeInitialization()
     {
-        final IType supertype = module.imports.resolveType(node.getSuperclass());
+        final IType supertype = module.imports.resolveReturnType(node.getSuperclass());
 
-        if (supertype instanceof IClassType == false)
-        {
-            // TODO: error
-            assert false;
-        }
-
-        this.type.setAnnotations(ImmutableList.<IAnnotation>of());
+        this.type.setAnnotations(module.anno_utils.typesOf(node.getAnnotations()));
         this.type.setModifiers(Opcodes.ACC_PUBLIC);
         this.type.setSuperclass((IClassType) supertype);
         this.type.setSuperinterfaces(ImmutableList.<IInterfaceType>of());
         this.type.setFields(ImmutableList.<IField>of());
         this.type.setConstructors(ImmutableList.<IConstructor>of());
         this.type.setMethods(ImmutableList.<IMethod>of());
+
+        // Note: The constructors will be inferred after all types are partially initialized.
+        //       An exception-type may infer contructors from a type being created simultaneously.
+        //       If we infer the constructors right now, the superclass may not be ready.
+        //       So, we will wait for the types themselves to be partially constructed.
+        //       Then, the constructors can be safely inferred.
     }
 
     /**
@@ -173,6 +189,16 @@ public final class ExceptionCompiler
     @Override
     public void performTypeStructureChecking()
     {
+        final IType supertype = module.imports.resolveReturnType(node.getSuperclass());
+
+        // If circular inheritance was allowed to exist, bad things would happen.
+        if (detectCircularInheritance())
+        {
+            program.checker.reportCircularInheritance(node, type);
+        }
+
+        // The superclass must be a subtype of Throwable.
+        program.checker.requireThrowable(node.getSuperclass(), supertype);
     }
 
     /**
@@ -181,17 +207,19 @@ public final class ExceptionCompiler
     @Override
     public void performTypeUsageChecking()
     {
+        // Pass, because because no type-usage needs checked.
     }
 
+    /**
+     * This method generates the bytecode representation of the inherited constructors.
+     *
+     * @param clazz is the bytecode representation of the exception's class.
+     */
     private void addInferredCtors(final ClassNode clazz)
     {
         for (IConstructor ctor : type.getConstructors())
         {
-            final MethodNode m = new MethodNode();
-            m.access = ctor.getModifiers();
-            m.name = "<init>";
-            m.desc = ctor.getDescriptor();
-            m.exceptions = Lists.newLinkedList(); // TODO: infer exceptions
+            final MethodNode m = Utils.bytecodeOf(module, ctor);
             clazz.methods.add(m);
 
             // Load 'this'
@@ -221,7 +249,7 @@ public final class ExceptionCompiler
      *
      * @return true, iff circular inheritance is present.
      */
-    public boolean detectCircularInheritance()
+    private boolean detectCircularInheritance()
     {
         final Set<IType> set = Sets.newHashSet();
 
@@ -250,18 +278,10 @@ public final class ExceptionCompiler
      */
     public void inferConstructors()
     {
-        inferred = 0;
-
-        // If circular inheritance exists, then bad things will happen.
-        if (detectCircularInheritance())
-        {
-            // Prevent bad things from happening.
-            return;
-        }
-
         // The superclass may have to infer its constructors first.
-        if (program.symbols.exceptions.containsKey(type.getSuperclass()))
+        if (!inferred && program.symbols.exceptions.containsKey(type.getSuperclass()))
         {
+            inferred = true;
             program.symbols.exceptions.get(type.getSuperclass()).inferConstructors();
         }
 
@@ -270,10 +290,9 @@ public final class ExceptionCompiler
         for (IConstructor ctor : type.getSuperclass().getConstructors())
         {
             final boolean public_access = Modifier.isPublic(ctor.getModifiers());
-            final boolean protected_access = Modifier.isProtected(ctor.getModifiers());
 
-            // The constructor must either be public or protected.
-            if (!public_access && !protected_access)
+            // The constructor must be public.
+            if (!public_access)
             {
                 continue;
             }
@@ -289,7 +308,6 @@ public final class ExceptionCompiler
             custom.setThrowsClause(ctor.getThrowsClause());
 
             ctors.add(custom);
-            ++inferred;
         }
 
         // Add all the constructors that were copied from the supertype to the type.

@@ -9,6 +9,7 @@ import high.mackenzie.autumn.lang.compiler.utils.TypeSystemUtils;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.List;
 import org.objectweb.asm.Type;
 
 /**
@@ -51,7 +52,13 @@ public final class Reflect
         Preconditions.checkNotNull(owner);
         Preconditions.checkNotNull(parameters);
 
-        return owner.getConstructor(Lists.newArrayList(parameters).toArray(new Class[0]));
+        final List<Class> list = Lists.newArrayList(parameters);
+
+        final Class[] array = list.toArray(new Class[0]);
+
+        final Constructor ctor = owner.getConstructor(array);
+
+        return ctor;
     }
 
     /**

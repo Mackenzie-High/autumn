@@ -245,7 +245,7 @@ abstract class AbstractTypeChecker
             args.add(program.symbols.expressions.get(arg));
         }
 
-        final IType type = module.imports.resolveType(owner);
+        final IType type = module.imports.resolveReturnType(owner);
 
         // TODO: Check that the owner is a declared type.
 
@@ -281,7 +281,7 @@ abstract class AbstractTypeChecker
     {
         final IClassType user = module.type;
 
-        final IType owner = module.imports.resolveType(type);
+        final IType owner = module.imports.resolveReturnType(type);
 
         if (owner == null)
         {

@@ -2,10 +2,12 @@ package high.mackenzie.autumn.lang.compiler.compilers;
 
 import autumn.lang.compiler.ClassFile;
 import autumn.lang.compiler.ast.nodes.AnnotationDefinition;
+import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import high.mackenzie.autumn.lang.compiler.typesystem.CustomDeclaredType;
 import high.mackenzie.autumn.lang.compiler.utils.Utils;
+import high.mackenzie.autumn.resources.Finished;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.AnnotationNode;
@@ -16,15 +18,30 @@ import org.objectweb.asm.tree.ClassNode;
  *
  * @author Mackenzie High
  */
-public final class AnnotationCompiler
+@Finished("2014/08/11")
+final class AnnotationCompiler
         implements ICompiler
 {
+    /**
+     * Essentially, this is the program that is being compiled.
+     */
     public final ProgramCompiler program;
 
+    /**
+     * Essentially, this is the module that contains the annotation-definition.
+     */
     public final ModuleCompiler module;
 
+    /**
+     * This is the Abstract-Syntax-Tree representation of the annotation-definition.
+     */
     public final AnnotationDefinition node;
 
+    /**
+     * This will be the type-system representation of the annotation-definition.
+     *
+     * This field is set during the type-declaration compiler pass.
+     */
     public CustomDeclaredType type;
 
     /**
@@ -36,6 +53,9 @@ public final class AnnotationCompiler
     public AnnotationCompiler(final ModuleCompiler module,
                               final AnnotationDefinition node)
     {
+        Preconditions.checkNotNull(module);
+        Preconditions.checkNotNull(node);
+
         this.program = module.program;
         this.module = module;
         this.node = node;
@@ -58,7 +78,9 @@ public final class AnnotationCompiler
         final ClassNode clazz = new ClassNode();
         {
             clazz.version = Opcodes.V1_6;
-            clazz.visibleAnnotations = Lists.newArrayList(createRuntimeAnnotation());
+            clazz.visibleAnnotations = Lists.newLinkedList();
+            clazz.visibleAnnotations.addAll(module.anno_utils.compileAnnotationList(type.getAnnotations()));
+            clazz.visibleAnnotations.add(createRuntimeAnnotation());
             clazz.access = type.getModifiers();
             clazz.name = internal_name;
             clazz.superName = Utils.internalName(type.getSuperclass());
@@ -118,13 +140,14 @@ public final class AnnotationCompiler
         final String descriptor = "L" + namespace + '/' + name + ';';
 
         /**
-         * Ensure that this annotation is not a duplicate type-declaration.
+         * Ensure that the name is not forbidden.
          */
-        if (program.typesystem.typefactory().findType(descriptor) != null)
-        {
-            // TODO: error
-            System.out.println("Duplicate Type: " + descriptor);
-        }
+        program.checker.requireLegalName(node.getName());
+
+        /**
+         * Ensure that the type was not already declared elsewhere.
+         */
+        program.checker.requireNonDuplicateType(node.getName(), descriptor);
 
         /**
          * Declare the annotation.
@@ -138,6 +161,11 @@ public final class AnnotationCompiler
     @Override
     public void performTypeInitialization()
     {
+        /**
+         * Set the annotation's applied to the annotation-type.
+         */
+        type.setAnnotations(module.anno_utils.typesOf(node.getAnnotations()));
+
         /**
          * Set the type's modifier flags.
          */

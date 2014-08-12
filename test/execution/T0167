@@ -1,0 +1,12 @@
+module Main in execution;
+
+annotation Place;
+
+@Place
+enum City ( Paris, London, Moscow );
+
+@Start
+defun main (args : String[]) : void
+{
+    assert ((class City).isAnnotationPresent (class Place));
+}

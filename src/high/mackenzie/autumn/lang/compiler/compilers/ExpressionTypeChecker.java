@@ -150,7 +150,7 @@ public class ExpressionTypeChecker
     {
         // Perform type-checking.
         // This call will throw an exception, if the type does not exist, etc.
-        module.imports.resolveType(object.getType());
+        module.imports.resolveReturnType(object.getType());
 
         infer(object, program.typesystem.utils.CLASS);
     }
@@ -260,7 +260,7 @@ public class ExpressionTypeChecker
             args.add(program.symbols.expressions.get(arg));
         }
 
-        final IType type = module.imports.resolveType(object.getType());
+        final IType type = module.imports.resolveReturnType(object.getType());
 
         // TODO: Check that the owner is a declared type.
 
@@ -285,7 +285,7 @@ public class ExpressionTypeChecker
     @Override
     public void visit(final CreateExpression object)
     {
-        final IExpressionType type = module.imports.resolveType(object.getType());
+        final IExpressionType type = module.imports.resolveReturnType(object.getType());
 
         if (type.isReferenceType() == false)
         {
@@ -385,7 +385,7 @@ public class ExpressionTypeChecker
     {
         object.getValue().accept(this);
 
-        final IType type = module.imports.resolveType(object.getType());
+        final IType type = module.imports.resolveReturnType(object.getType());
 
         if ((type instanceof IReferenceType && ((IReferenceType) type).isDeclaredType()) == false)
         {
@@ -430,7 +430,7 @@ public class ExpressionTypeChecker
         final IExpressionType input = program.symbols.expressions.get(object.getValue());
 
         // Get the output type.
-        final IReturnType output = module.imports.resolveType(object.getType());
+        final IReturnType output = module.imports.resolveReturnType(object.getType());
 
         // Obtain a description of the conversion being performed.
         // This will be null, if the conversion is impossible.
@@ -462,7 +462,7 @@ public class ExpressionTypeChecker
         final IExpressionType input = program.symbols.expressions.get(object.getValue());
 
         // Get the output type.
-        final IReturnType output = module.imports.resolveType(object.getType());
+        final IReturnType output = module.imports.resolveReturnType(object.getType());
 
         // Obtain a description of the conversion being performed.
         // This will be null, if the conversion is impossible.

@@ -132,13 +132,14 @@ public final class FunctorCompiler
         final String descriptor = "L" + namespace + '/' + name + ';';
 
         /**
-         * Ensure that this functor is not a duplicate type-declaration.
+         * Ensure that the name is not forbidden.
          */
-        if (program.typesystem.typefactory().findType(descriptor) != null)
-        {
-            // TODO: error
-            System.out.println("Duplicate Type: " + descriptor);
-        }
+        program.checker.requireLegalName(node.getName());
+
+        /**
+         * Ensure that the type was not already declared elsewhere.
+         */
+        program.checker.requireNonDuplicateType(node.getName(), descriptor);
 
         /**
          * Declare the functor.
@@ -246,7 +247,7 @@ public final class FunctorCompiler
         invoke.setModifiers(Opcodes.ACC_PUBLIC + Opcodes.ACC_FINAL);
         invoke.setName("invoke");
         invoke.setParameters(formals);
-        invoke.setReturnType(module.imports.resolveType(node.getReturnType()));
+        invoke.setReturnType(module.imports.resolveReturnType(node.getReturnType()));
         invoke.setThrowsClause(Lists.newArrayList(program.typesystem.utils.THROWABLE));
 
         return invoke;

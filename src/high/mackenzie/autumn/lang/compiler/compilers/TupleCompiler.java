@@ -234,13 +234,14 @@ public final class TupleCompiler
         final String descriptor = "L" + namespace + '/' + name + ';';
 
         /**
-         * Ensure that this tuple is not a duplicate type-declaration.
+         * Ensure that the name is not forbidden.
          */
-        if (program.typesystem.typefactory().findType(descriptor) != null)
-        {
-            // TODO: error
-            System.out.println("Duplicate Type: " + descriptor);
-        }
+        program.checker.requireLegalName(node.getName());
+
+        /**
+         * Ensure that the type was not already declared elsewhere.
+         */
+        program.checker.requireNonDuplicateType(node.getName(), descriptor);
 
         /**
          * Declare the tuple.

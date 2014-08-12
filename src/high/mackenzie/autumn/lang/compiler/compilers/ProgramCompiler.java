@@ -7,6 +7,7 @@ import autumn.lang.compiler.errors.IErrorReporter;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.common.io.Files;
+import high.mackenzie.autumn.lang.compiler.exceptions.TypeCheckFailed;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IMethod;
 import high.mackenzie.autumn.lang.compiler.utils.Utils;
 import java.io.File;
@@ -229,10 +230,11 @@ public final class ProgramCompiler
 
             return program;
         }
-        catch (RuntimeException ex)
+        catch (TypeCheckFailed ex)
         {
-            throw ex;
-            //return null;
+            // Pass, because the error will be reported via the error-reporter object.
         }
+
+        return null;
     }
 }

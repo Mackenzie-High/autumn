@@ -91,7 +91,7 @@ public final class ReflectionTester
                              final Collection<Class> formals,
                              final Class returns)
     {
-        final String key = name + descriptorOf(formals, void.class);
+        final String key = name + descriptorOf(formals, returns);
 
         expected.add(key);
         expected_annotations.put(key, Sets.newHashSet(annotations));
@@ -231,7 +231,7 @@ public final class ReflectionTester
     {
         final List params = Lists.newArrayList(method.getParameterTypes());
 
-        final String key = "<init>" + descriptorOf(params, void.class);
+        final String key = method.getName() + descriptorOf(params, method.getReturnType());
 
         if (expected.contains(key))
         {

@@ -1,0 +1,4 @@
+module * in typechecks;
+
+exception Moo extends Throwable;
+exception Moo extends Throwable;

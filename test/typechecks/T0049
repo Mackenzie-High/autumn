@@ -1,0 +1,5 @@
+module * in typechecks;
+
+enum City ();
+
+enum City ();

@@ -342,7 +342,7 @@ public final class StatementCodeGenerator
     @Override
     public void visit(final ForeachStatement object)
     {
-        final IDeclaredType type = (IDeclaredType) function.module.imports.resolveType(object.getType());
+        final IDeclaredType type = (IDeclaredType) function.module.imports.resolveReturnType(object.getType());
 
         final LabelNode BREAK = new LabelNode();
         final LabelNode CONTINUE = new LabelNode();
@@ -731,7 +731,7 @@ public final class StatementCodeGenerator
         /**
          * This is the name of the type that this exception-handler handles.
          */
-        final String type = Utils.internalName((IDeclaredType) module.imports.resolveType(handler.getType()));
+        final String type = Utils.internalName((IDeclaredType) module.imports.resolveReturnType(handler.getType()));
 
         /**
          * This label marks the entry-point of this try-catch handler.

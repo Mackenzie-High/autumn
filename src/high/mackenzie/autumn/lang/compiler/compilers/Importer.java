@@ -14,8 +14,10 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IClassType;
+import high.mackenzie.autumn.lang.compiler.typesystem.design.IDeclaredType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IInterfaceType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IReturnType;
+import high.mackenzie.autumn.lang.compiler.typesystem.design.IType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IVariableType;
 import high.mackenzie.autumn.lang.compiler.utils.Utils;
 import java.math.BigDecimal;
@@ -83,6 +85,8 @@ public final class Importer
 
         importClass(Class.class);
 
+        importClass(Enum.class);
+
         importClass(Throwable.class);
         importClass(Exception.class);
         importClass(RuntimeException.class);
@@ -91,6 +95,7 @@ public final class Importer
         importClass(IllegalStateException.class);
         importClass(IndexOutOfBoundsException.class);
         importClass(NoSuchElementException.class);
+        importClass(NullPointerException.class);
 
         importClass(Iterable.class);
         importClass(Iterator.class);
@@ -114,6 +119,26 @@ public final class Importer
         importClass(Reflect.class);
     }
 
+    private void checkAccess(final TypeSpecifier specifier,
+                             final IType type)
+    {
+        if (type instanceof IDeclaredType == false)
+        {
+            return;
+        }
+
+        final IDeclaredType used = (IDeclaredType) type;
+
+        final IDeclaredType user = module.type;
+
+        final boolean accessible = module.program.typesystem.utils.isAccessible(user, used);
+
+        if (!accessible)
+        {
+            module.program.checker.reportInaccessibleType(specifier, used);
+        }
+    }
+
     public Set<String> imported()
     {
         return Sets.newTreeSet(imports.values());
@@ -130,7 +155,7 @@ public final class Importer
         return dealiased;
     }
 
-    public IReturnType resolveType(final TypeSpecifier specifier)
+    public IReturnType resolveReturnType(final TypeSpecifier specifier)
     {
         final String alias = module.program.typesystem.utils.extractTypeName(specifier);
 
@@ -148,6 +173,8 @@ public final class Importer
 
         module.program.checker.requireType(specifier, result);
 
+        checkAccess(specifier, result);
+
         return result;
     }
 
@@ -155,28 +182,28 @@ public final class Importer
     {
         // TODO: error if non-vartype
 
-        return (IVariableType) resolveType(specifier);
+        return (IVariableType) resolveReturnType(specifier);
     }
 
     public IClassType resolveModuleType(final TypeSpecifier specifier)
     {
         // TODO: error if non-vartype
 
-        return (IClassType) resolveType(specifier);
+        return (IClassType) resolveReturnType(specifier);
     }
 
     public IClassType resolveFunctorType(final TypeSpecifier specifier)
     {
         // TODO: error if non-vartype
 
-        return (IClassType) resolveType(specifier);
+        return (IClassType) resolveReturnType(specifier);
     }
 
     public IInterfaceType resolveInterfaceType(final TypeSpecifier specifier)
     {
         // TODO: error if non-vartype
 
-        return (IInterfaceType) resolveType(specifier);
+        return (IInterfaceType) resolveReturnType(specifier);
     }
 
     public void importType(final String alias,

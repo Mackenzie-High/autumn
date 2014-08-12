@@ -137,13 +137,14 @@ public class DesignCompiler
         final String descriptor = "L" + namespace + '/' + name + ';';
 
         /**
-         * Ensure that this design is not a duplicate type-declaration.
+         * Ensure that the name is not forbidden.
          */
-        if (program.typesystem.typefactory().findType(descriptor) != null)
-        {
-            // TODO: error
-            System.out.println("Duplicate Type: " + descriptor);
-        }
+        program.checker.requireLegalName(node.getName());
+
+        /**
+         * Ensure that the type was not already declared elsewhere.
+         */
+        program.checker.requireNonDuplicateType(node.getName(), descriptor);
 
         /**
          * Declare the design.
@@ -158,7 +159,7 @@ public class DesignCompiler
     public void performTypeInitialization()
     {
         final List<IInterfaceType> superinterfaces = Lists.newLinkedList();
-        
+
         superinterfaces.add(program.typesystem.utils.PROTOTYPE);
 
         for (TypeSpecifier face : node.getSuperinterfaces())
@@ -314,7 +315,7 @@ public class DesignCompiler
         cm.setModifiers(Opcodes.ACC_PUBLIC + Opcodes.ACC_ABSTRACT);
         cm.setName(method.getName().getName());
         cm.setParameters(ImmutableList.<IFormalParameter>copyOf(params));
-        cm.setReturnType(module.imports.resolveType(method.getReturnType()));
+        cm.setReturnType(module.imports.resolveReturnType(method.getReturnType()));
         cm.setThrowsClause(Lists.<IClassType>newArrayList(program.typesystem.utils.THROWABLE));
 
         methods.add(cm);

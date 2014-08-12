@@ -3,8 +3,10 @@ package high.mackenzie.autumn.lang.compiler.compilers;
 import autumn.lang.compiler.ClassFile;
 import autumn.lang.compiler.ast.nodes.EnumDefinition;
 import autumn.lang.compiler.ast.nodes.Name;
+import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import high.mackenzie.autumn.lang.compiler.typesystem.CustomDeclaredType;
 import high.mackenzie.autumn.lang.compiler.typesystem.CustomField;
 import high.mackenzie.autumn.lang.compiler.typesystem.CustomFormalParameter;
@@ -16,7 +18,9 @@ import high.mackenzie.autumn.lang.compiler.typesystem.design.IFormalParameter;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IInterfaceType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IMethod;
 import high.mackenzie.autumn.lang.compiler.utils.Utils;
+import high.mackenzie.autumn.resources.Finished;
 import java.util.List;
+import java.util.Set;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.ClassNode;
@@ -34,15 +38,30 @@ import org.objectweb.asm.tree.VarInsnNode;
  *
  * @author Mackenzie High
  */
-public final class EnumCompiler
+@Finished("2014/08/11")
+final class EnumCompiler
         implements ICompiler
 {
+    /**
+     * Essentially, this is the program that is being compiled.
+     */
     public final ProgramCompiler program;
 
+    /**
+     * Essentially, this is the module that contains the enum-definition.
+     */
     public final ModuleCompiler module;
 
+    /**
+     * This is the Abstract-Syntax-Tree representation of the enum-definition.
+     */
     public final EnumDefinition node;
 
+    /**
+     * This will be the type-system representation of the enum-definition.
+     *
+     * This field is set during the type-declaration compiler pass.
+     */
     public CustomDeclaredType type;
 
     /**
@@ -64,6 +83,9 @@ public final class EnumCompiler
     public EnumCompiler(final ModuleCompiler module,
                         final EnumDefinition node)
     {
+        Preconditions.checkNotNull(module);
+        Preconditions.checkNotNull(node);
+
         this.program = module.program;
         this.module = module;
         this.node = node;
@@ -105,7 +127,7 @@ public final class EnumCompiler
         final ClassNode clazz = new ClassNode();
         {
             clazz.version = Opcodes.V1_6;
-            clazz.visibleAnnotations = Lists.newLinkedList();
+            clazz.visibleAnnotations = module.anno_utils.compileAnnotationList(type.getAnnotations());
             clazz.access = type.getModifiers();
             clazz.name = enum_internal_name;
             clazz.superName = Utils.internalName(type.getSuperclass());
@@ -115,10 +137,10 @@ public final class EnumCompiler
             clazz.sourceFile = String.valueOf(node.getLocation().getFile());
 
             // Add some special methods to the enum.
-            addStaticInitializer(clazz);
-            addConstructor(clazz);
-            addMethodValues(clazz);
-            addMethodValueOf(clazz);
+            clazz.methods.add(generateStaticInitializer());
+            clazz.methods.add(generateConstructor());
+            clazz.methods.add(generateMethodValues());
+            clazz.methods.add(generateMethodValueOf());
         }
 
         /**
@@ -150,13 +172,14 @@ public final class EnumCompiler
         final String descriptor = "L" + namespace + '/' + name + ';';
 
         /**
-         * Ensure that this enum is not a duplicate type-declaration.
+         * Ensure that the name is not forbidden.
          */
-        if (program.typesystem.typefactory().findType(descriptor) != null)
-        {
-            // TODO: error
-            System.out.println("Duplicate Type: " + descriptor);
-        }
+        program.checker.requireLegalName(node.getName());
+
+        /**
+         * Ensure that the type was not already declared elsewhere.
+         */
+        program.checker.requireNonDuplicateType(node.getName(), descriptor);
 
         /**
          * Declare the enum.
@@ -219,11 +242,12 @@ public final class EnumCompiler
         /**
          * Initialize the type that represents the enum being compiled.
          */
-        this.type.setModifiers(Opcodes.ACC_PUBLIC + Opcodes.ACC_FINAL + Opcodes.ACC_ENUM);
-        this.type.setSuperclass(program.typesystem.utils.ENUM);
-        this.type.setSuperinterfaces(ImmutableList.<IInterfaceType>of());
-        this.type.setFields(constants);
-        this.type.setMethods(ImmutableList.<IMethod>of(method_values, method_valueof));
+        type.setAnnotations(module.anno_utils.typesOf(node.getAnnotations()));
+        type.setModifiers(Opcodes.ACC_PUBLIC + Opcodes.ACC_FINAL + Opcodes.ACC_ENUM);
+        type.setSuperclass(program.typesystem.utils.ENUM);
+        type.setSuperinterfaces(ImmutableList.<IInterfaceType>of());
+        type.setFields(constants);
+        type.setMethods(ImmutableList.<IMethod>of(method_values, method_valueof));
     }
 
     /**
@@ -232,6 +256,27 @@ public final class EnumCompiler
     @Override
     public void performTypeStructureChecking()
     {
+        final Set<String> constants = Sets.newHashSet();
+
+        for (Name name : node.getConstants())
+        {
+            /**
+             * The name of an enum-constant cannot be a reserved word.
+             */
+            program.checker.requireLegalName(name);
+
+            /**
+             * No two enum-constants can have the same name.
+             */
+            if (constants.contains(name.getName()))
+            {
+                program.checker.reportDuplicateEnumConstant(type, name);
+            }
+            else
+            {
+                constants.add(name.getName());
+            }
+        }
     }
 
     /**
@@ -240,17 +285,17 @@ public final class EnumCompiler
     @Override
     public void performTypeUsageChecking()
     {
+        // Pass, because no type-usages exist to check.
     }
 
     /**
-     * This method adds a static-initializer that initializes the enum-constant fields.
+     * This method generates the static-initializer that initializes the enum-constant fields.
      *
-     * @param clazz is the enum to add the static-initializer to.
+     * @return the bytecode representation of the generated method.
      */
-    private void addStaticInitializer(final ClassNode clazz)
+    private MethodNode generateStaticInitializer()
     {
         final MethodNode method = new MethodNode();
-        clazz.methods.add(method);
         method.access = Opcodes.ACC_PRIVATE + Opcodes.ACC_STATIC;
         method.name = "<clinit>";
         method.desc = "()V";
@@ -291,17 +336,18 @@ public final class EnumCompiler
 
         // Return.
         method.instructions.add(new InsnNode(Opcodes.RETURN));
+
+        return method;
     }
 
     /**
-     * This method adds an instance constructor to the enum.
+     * This method generates an instance constructor for the enum.
      *
-     * @param clazz is the enum to add the constructor to.
+     * @return the bytecode representation of the generated method.
      */
-    private void addConstructor(final ClassNode clazz)
+    private MethodNode generateConstructor()
     {
         final MethodNode method = new MethodNode();
-        clazz.methods.add(method);
         method.access = Opcodes.ACC_PRIVATE;
         method.name = "<init>";
         method.desc = "(Ljava/lang/String;I)V";
@@ -318,21 +364,18 @@ public final class EnumCompiler
 
         // Return.
         method.instructions.add(new InsnNode(Opcodes.RETURN));
+
+        return method;
     }
 
     /**
-     * This method adds the values() method to the enum.
+     * This method generates the values() method for the enum.
      *
-     * @param clazz is the enum to add the method to.
+     * @return the bytecode representation of the generated method.
      */
-    private void addMethodValues(final ClassNode clazz)
+    private MethodNode generateMethodValues()
     {
-        final MethodNode method = new MethodNode();
-        clazz.methods.add(method);
-        method.access = method_values.getModifiers();
-        method.name = method_values.getName();
-        method.desc = method_values.getDescriptor();
-        method.exceptions = ImmutableList.of();
+        final MethodNode method = Utils.bytecodeOf(module, method_values);
 
         // Now bytecode will be generated that creates an array and then returns it.
 
@@ -379,21 +422,18 @@ public final class EnumCompiler
 
         // Return the array.
         method.instructions.add(new InsnNode(Opcodes.ARETURN));
+
+        return method;
     }
 
     /**
-     * This method adds the valueOf(String) method to the enum.
+     * This method generates the valueOf(String) method for the enum.
      *
-     * @param clazz is the enum to add the method to.
+     * @return the bytecode representation of the generated method.
      */
-    private void addMethodValueOf(final ClassNode clazz)
+    private MethodNode generateMethodValueOf()
     {
-        final MethodNode method = new MethodNode();
-        clazz.methods.add(method);
-        method.access = method_valueof.getModifiers();
-        method.name = method_valueof.getName();
-        method.desc = method_valueof.getDescriptor();
-        method.exceptions = ImmutableList.of();
+        final MethodNode method = Utils.bytecodeOf(module, method_valueof);
 
         // Now bytecode will be generated that searches for the specified enum-constant.
 
@@ -418,5 +458,7 @@ public final class EnumCompiler
 
         // Return the enum-constant that was found.
         method.instructions.add(new InsnNode(Opcodes.ARETURN));
+
+        return method;
     }
 }

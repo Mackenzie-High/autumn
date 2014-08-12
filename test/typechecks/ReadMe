@@ -4,17 +4,21 @@
 
 Test Index
 . Annotation Definitions
-. . Bad Annotation List
-. . Duplicate Type
+. . T0038 = Illegal Type Name
+. . T0039 = Duplicate Type
 . Exception Definitions
-. . Bad Annotation List
-. . Duplicate Type
-. . Expected Throwable - Superclass
+. . T0040 = Illegal Name
+. . T0041 = Duplicate Type
+. . T0043 = Superclass - No Such Type
+. . T0044 = Superclass - Inaccessible Type
+. . T0042 = Superclass - Expected Throwable
+. . T0045 = Circular Inheritance - Direct
+. . T0046 = Circular Inheritance - Indirect
 . Enum Definitions
-. . Duplicate Type
-. . Bad Annotation List
-. . Bad Name
-. . Duplicate Constant
+. . T0047 = Illegal Name - Name of Type
+. . T0048 = Illegal Name - Name of Constant
+. . T0049 = Duplicate Type
+. . T0050 = Duplicate Constant
 . Enum Constant
 . . Bad Annotation List
 . . Bad Name

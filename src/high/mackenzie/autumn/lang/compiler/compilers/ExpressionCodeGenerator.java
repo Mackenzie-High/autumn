@@ -291,7 +291,7 @@ public class ExpressionCodeGenerator
     @Override
     public void visit(final ClassDatum object)
     {
-        final IReturnType type = module.imports.resolveType(object.getType());
+        final IReturnType type = module.imports.resolveReturnType(object.getType());
 
         code.add(Utils.ldcClass(type));
     }
@@ -444,7 +444,7 @@ public class ExpressionCodeGenerator
         /**
          * Get the type that is being created, which is an interface-type.
          */
-        final IReferenceType type = (IReferenceType) module.imports.resolveType(object.getType());
+        final IReferenceType type = (IReferenceType) module.imports.resolveReturnType(object.getType());
 
 
         /**
@@ -530,7 +530,7 @@ public class ExpressionCodeGenerator
     @Override
     public void visit(final InstanceOfExpression object)
     {
-        final IType type = module.imports.resolveType(object.getType());
+        final IType type = module.imports.resolveReturnType(object.getType());
 
         // Evaluate the expression.
         object.getValue().accept(this);

@@ -1,0 +1,18 @@
+module Main in execution;
+
+enum City ( Paris, London, Moscow );
+
+@Start
+defun main (args : String[]) : void
+{
+    try
+    {
+        (call City::valueOf null);
+
+        assert false;
+    }
+    catch (ex : NullPointerException)
+    {
+        assert true;
+    }
+}
