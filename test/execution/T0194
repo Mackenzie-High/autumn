@@ -1,0 +1,20 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    var s = "";
+
+    var i = 0;
+
+    until (false)
+    {
+        s = s .. i;
+
+        when (i == 5) then break;
+
+        let i = i + 1;
+    }
+
+    assert s == "012345";
+}

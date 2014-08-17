@@ -7,7 +7,7 @@ defun main (args : String[]) : void
 
     var i = 100C;
 
-    until(i > 90C)
+    until (i > 90C)
     {
         (call letters.append i);
 

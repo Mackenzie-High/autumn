@@ -1,3 +1,0 @@
-module * in typechecks;
-
-exception if extends Throwable;

@@ -19,6 +19,7 @@ import high.mackenzie.autumn.lang.compiler.exceptions.PrototypeExpected;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IClassType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IExpressionType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IMethod;
+import high.mackenzie.autumn.lang.compiler.typesystem.design.IReferenceType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IReturnType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IVariableType;
@@ -106,6 +107,9 @@ public final class StatementTypeChecker
     @Override
     public void visit(final ForeverStatement object)
     {
+        /**
+         * Visit the body.
+         */
         ++loop_nesting_level;
         {
             object.getBody().accept(this);
@@ -116,8 +120,14 @@ public final class StatementTypeChecker
     @Override
     public void visit(final WhileStatement object)
     {
+        /**
+         * Visit and type-check the condition.
+         */
         condition(object.getCondition());
 
+        /**
+         * Visit the body.
+         */
         ++loop_nesting_level;
         {
             object.getBody().accept(this);
@@ -128,8 +138,14 @@ public final class StatementTypeChecker
     @Override
     public void visit(final UntilStatement object)
     {
+        /**
+         * Visit and type-check the condition.
+         */
         condition(object.getCondition());
 
+        /**
+         * Visit the body.
+         */
         ++loop_nesting_level;
         {
             object.getBody().accept(this);
@@ -140,8 +156,14 @@ public final class StatementTypeChecker
     @Override
     public void visit(final DoWhileStatement object)
     {
+        /**
+         * Visit and type-check the condition.
+         */
         condition(object.getCondition());
 
+        /**
+         * Visit the body.
+         */
         ++loop_nesting_level;
         {
             object.getBody().accept(this);
@@ -152,8 +174,14 @@ public final class StatementTypeChecker
     @Override
     public void visit(final DoUntilStatement object)
     {
+        /**
+         * Visit and type-check the condition.
+         */
         condition(object.getCondition());
 
+        /**
+         * Visit the body.
+         */
         ++loop_nesting_level;
         {
             object.getBody().accept(this);
@@ -164,35 +192,71 @@ public final class StatementTypeChecker
     @Override
     public void visit(final ForStatement object)
     {
-        function.scope.declareVar(object.getVariable(), program.typesystem.utils.PRIMITIVE_INT);
+        /**
+         * Declare the control variable.
+         */
+        super.declareVar(object.getVariable(), program.typesystem.utils.PRIMITIVE_INT, false);
 
+
+        /**
+         * Visit and type-check the initializer.
+         */
         object.getInitializer().accept(this);
-        object.getCondition().accept(this);
+        program.checker.requireInteger(object.getInitializer());
+
+        /**
+         * Visit and type-check the condition.
+         */
+        condition(object.getCondition());
+
+        /**
+         * Visit and type-check the modifier.
+         */
         object.getNext().accept(this);
-        object.getBody().accept(this);
+        program.checker.requireInteger(object.getNext());
 
-        program.checker.checkCondition(object.getCondition());
-
-        // TODO: Type Checking
+        /**
+         * Visit the body.
+         */
+        ++loop_nesting_level;
+        {
+            object.getBody().accept(this);
+        }
+        --loop_nesting_level;
     }
 
     @Override
     public void visit(final ForeachStatement object)
     {
+        /**
+         * Declare the variable and type-check the type.
+         */
         final Variable variable = object.getVariable();
-        final IExpressionType type = function.module.imports.resolveReturnType(object.getType());
-
+        final IReferenceType type = function.module.imports.resolveReferenceType(object.getType());
         super.declareVar(variable, type, false);
 
+        /**
+         * Visit and type-check the iterable.
+         */
         object.getIterable().accept(this);
-        object.getBody().accept(this);
-
         program.checker.requireIterable(object.getIterable());
+
+        /**
+         * Visit the body.
+         */
+        ++loop_nesting_level;
+        {
+            object.getBody().accept(this);
+        }
+        --loop_nesting_level;
     }
 
     @Override
     public void visit(final BreakStatement object)
     {
+        /**
+         * Ensure that the break-statement is actually inside of a loop.
+         */
         if (loop_nesting_level == 0)
         {
             program.checker.reportBreakOutsideOfLoop(object);
@@ -202,6 +266,9 @@ public final class StatementTypeChecker
     @Override
     public void visit(final ContinueStatement object)
     {
+        /**
+         * Ensure that the continue-statement is actually inside of a loop.
+         */
         if (loop_nesting_level == 0)
         {
             program.checker.reportContinueOutsideOfLoop(object);
@@ -211,6 +278,9 @@ public final class StatementTypeChecker
     @Override
     public void visit(final RedoStatement object)
     {
+        /**
+         * Ensure that the redo-statement is actually inside of a loop.
+         */
         if (loop_nesting_level == 0)
         {
             program.checker.reportRedoOutsideOfLoop(object);

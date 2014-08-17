@@ -1,0 +1,12 @@
+module Main in typechecks;
+
+@Start
+defun main (args : String[]) : void
+{
+    var i = 0;
+
+    for (i = 0; i < 5; i + 1)
+    {
+        nop;
+    }
+}

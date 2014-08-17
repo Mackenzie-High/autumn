@@ -4,10 +4,8 @@
 
 Test Index
 . Annotation Definitions
-. . T0038 = Illegal Type Name
 . . T0039 = Duplicate Type
 . Exception Definitions
-. . T0040 = Illegal Name
 . . T0041 = Duplicate Type
 . . T0043 = Superclass - No Such Type
 . . T0044 = Superclass - Inaccessible Type
@@ -15,13 +13,8 @@ Test Index
 . . T0045 = Circular Inheritance - Direct
 . . T0046 = Circular Inheritance - Indirect
 . Enum Definitions
-. . T0047 = Illegal Name - Name of Type
-. . T0048 = Illegal Name - Name of Constant
 . . T0049 = Duplicate Type
 . . T0050 = Duplicate Constant
-. Enum Constant
-. . Bad Annotation List
-. . Bad Name
 . Design Definitions
 . . Duplicate Type
 . . Bad Annotation List
@@ -67,17 +60,18 @@ Test Index
 . . Do Until
 . . . T0006 = Expected Condition
 . . For
-. . . Duplicate Variable Declaration
-. . . Expected Int - Initializer
-. . . Expected Int - Modifier
-. . . Expected Condition
+. . . T0056 = Duplicate Variable
+. . . T0057 = Expected Int - Initializer
+. . . T0058 = Expected Int - Modifier
+. . . T0059 = Expected Condition
 . . Foreach
-. . . Duplicate Variable Declaration
-. . . Non-Existent Type
-. . . Expected Reference-Type
-. . . Expected Iterable
+. . . T0051 = Duplicate Variable
+. . . T0052 = No Such Type
+. . . T0053 = Inaccessible Type
+. . . T0054 = Expected Reference-Type
+. . . T0055 = Expected Iterable
 . . Break
-. . . Outside of Loop
+. . . T0060 = Outside of Loop
 . . Continue
 . . . Outside of Loop
 . . Redo

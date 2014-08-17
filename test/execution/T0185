@@ -1,0 +1,23 @@
+module Main in execution;
+
+import java.util.LinkedList;
+
+@Start
+defun main (args : String[]) : void
+{
+    # If there is leakage, then a long-running loop should expose it.
+
+    var i = 0;
+
+    var list = ["Mercury", "Venus", "Earth", "Mars"];
+
+    while (i < 123456)
+    {
+        foreach (x : String in list)
+        {
+            assert true;
+        }
+
+        i = i + 1;
+    }
+}

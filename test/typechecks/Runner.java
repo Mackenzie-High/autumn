@@ -35,19 +35,28 @@ public final class Runner
         failed_count = 0;
 
 
+
+        test("T0062", REDO_OUTSIDE_OF_LOOP);
+        test("T0061", CONTINUE_OUTSIDE_OF_LOOP);
+        test("T0060", BREAK_OUTSIDE_OF_LOOP);
+        test("T0059", EXPECTED_CONDITION);
+        test("T0058", EXPECTED_INTEGER);
+        test("T0057", EXPECTED_INTEGER);
+        test("T0056", DUPLICATE_VARIABLE);
+        test("T0055", EXPECTED_ITERABLE);
+        test("T0054", EXPECTED_REFERENCE_TYPE);
+        test("T0053", INACCESSIBLE_TYPE);
+        test("T0052", NO_SUCH_TYPE);
+        test("T0051", DUPLICATE_VARIABLE);
         test("T0050", DUPLICATE_CONSTANT);
         test("T0049", DUPLICATE_TYPE);
-        test("T0048", ILLEGAL_NAME);
-        test("T0047", ILLEGAL_NAME);
         test("T0046", CIRCULAR_INHERITANCE);
         test("T0045", CIRCULAR_INHERITANCE);
         test("T0044", INACCESSIBLE_TYPE);
         test("T0043", NO_SUCH_TYPE);
         test("T0042", EXPECTED_THROWABLE);
         test("T0041", DUPLICATE_TYPE);
-        test("T0040", ILLEGAL_NAME);
         test("T0039", DUPLICATE_TYPE);
-        test("T0038", ILLEGAL_NAME);
 
         //
         test("T0001", EXPECTED_CONDITION);

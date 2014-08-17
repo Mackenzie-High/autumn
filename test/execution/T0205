@@ -1,0 +1,16 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    var s = "";
+
+    foreach (i : Integer in [0, 1, 2, 3, 4, 5])
+    {
+        when (i == 3) then continue;
+
+        s = s .. i;
+    }
+
+    assert s == "01245";
+}

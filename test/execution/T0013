@@ -6,7 +6,7 @@ defun main (args : String[]) : void
     var control = false;
     var i = 0;
 
-    until(control)
+    until (control)
     {
         let i = i + 1;
 

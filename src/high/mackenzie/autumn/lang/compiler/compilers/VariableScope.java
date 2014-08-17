@@ -43,6 +43,10 @@ public final class VariableScope
          * This constant indicates that a local-variable is a immutable stack-allocated variable.
          */
         VAL,
+        /**
+         * This constant indicates that a local-variable is a mutable stack-allocated temporary.
+         */
+        TEMP,
     }
 
     /**
@@ -163,7 +167,7 @@ public final class VariableScope
     {
         Preconditions.checkState(!non_parameters_declared);
 
-        declare(VarTypes.PARAM, variable, type);
+        declare(VarTypes.PARAM, variable.getName(), type);
     }
 
     /**
@@ -176,7 +180,7 @@ public final class VariableScope
     public boolean declareVar(final Variable variable,
                               final IExpressionType type)
     {
-        return declare(VarTypes.VAR, variable, type);
+        return declare(VarTypes.VAR, variable.getName(), type);
     }
 
     /**
@@ -189,7 +193,20 @@ public final class VariableScope
     public boolean declareVal(final Variable variable,
                               final IExpressionType type)
     {
-        return declare(VarTypes.VAL, variable, type);
+        return declare(VarTypes.VAL, variable.getName(), type);
+    }
+
+    /**
+     * This method declares and allocates a new temporary local-variable.
+     *
+     * @param variable is the name of the temporary to declare.
+     * @param type is the proposed static-type of the variable.
+     * @return true, if declaration was successful.
+     */
+    public boolean declareTemp(final String variable,
+                               final IExpressionType type)
+    {
+        return declare(VarTypes.TEMP, variable, type);
     }
 
     /**
@@ -244,6 +261,21 @@ public final class VariableScope
         final VarTypes form = findVar(name).form;
 
         return form == VarTypes.VAL || form == VarTypes.PARAM;
+    }
+
+    /**
+     * This method determines whether a named variable is a temporary variable.
+     *
+     * @param name is the name of the variable.
+     * @return true, if and only if, the variable is a temporary.
+     */
+    public boolean isTemporary(final String name)
+    {
+        Preconditions.checkNotNull(name);
+
+        final VarTypes form = findVar(name).form;
+
+        return form == VarTypes.TEMP;
     }
 
     /**
@@ -312,7 +344,7 @@ public final class VariableScope
     /**
      * This method creates a set containing the names of every variable in this scope.
      *
-     * @return the names of every variable declared directly or indirectly in this scope.
+     * @return the names of every variable declared in this scope.
      */
     public Set<String> getAllVariables()
     {
@@ -329,21 +361,39 @@ public final class VariableScope
     }
 
     /**
+     * This method creates a set containing the names of every non-temporary variable in this scope.
+     *
+     * @return the names of every non-temporary variable declared directly in this scope.
+     */
+    public Set<String> getAllVisibleVariables()
+    {
+        final Set<String> names = Sets.newTreeSet();
+
+        for (String name : getAllVariables())
+        {
+            if (isTemporary(name) == false)
+            {
+                names.add(name);
+            }
+        }
+
+        return names;
+    }
+
+    /**
      * This method performs all necessary static type-checking of a variable declaration.
      *
      * @param variable is the variable being declared.
      * @param type is the static-type of the variable.
      * @return true, if the declaration should fail.
      */
-    private boolean checkDeclare(final Variable variable,
+    private boolean checkDeclare(final String variable,
                                  final IExpressionType type)
     {
         Preconditions.checkNotNull(variable);
         Preconditions.checkNotNull(type);
 
-        final String name = variable.getName();
-
-        if (isDeclared(name))
+        if (isDeclared(variable))
         {
         }
 
@@ -363,7 +413,7 @@ public final class VariableScope
      * @return true, if declaration was successful.
      */
     private boolean declare(final VarTypes form,
-                            final Variable variable,
+                            final String variable,
                             final IExpressionType type)
     {
         if (checkDeclare(variable, type))
@@ -373,7 +423,7 @@ public final class VariableScope
 
         this.non_parameters_declared = form != VarTypes.PARAM;
 
-        final String name = variable.getName();
+        final String name = variable;
 
         final int address = addresses;
 

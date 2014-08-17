@@ -8,12 +8,14 @@ import com.google.common.collect.Lists;
 import java.io.PrintStream;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.AbstractList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 /**
@@ -28,6 +30,8 @@ import java.util.Scanner;
  */
 public final class F
 {
+    private static BigInteger unique = BigInteger.ZERO;
+
     /**
      * Sole Constructor.
      */
@@ -252,70 +256,50 @@ public final class F
     //                                 Range
     ////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    public static Iterator<Integer> range(final int start)
+    public static List<Integer> range(final int start)
     {
         return range(start, Integer.MAX_VALUE, 1);
     }
 
-    public static Iterator<Integer> range(final int start,
-                                          final int end)
+    public static List<Integer> range(final int start,
+                                      final int end)
     {
         return range(start, end, 1);
     }
 
-    public static Iterator<Integer> range(final int start,
-                                          final int end,
-                                          final int step)
+    /**
+     * This method creates a list of the integers in a discrete range.
+     *
+     * @param start is the inclusive lowest value in the range.
+     * @param end is the inclusive highest value in the range.
+     * @param step is the distance that elements in the range are separated for one another.
+     * @return a lazy list of integers.
+     * @throws IllegalArgumentException if end is less-than start.
+     */
+    public static List<Integer> range(final int start,
+                                      final int end,
+                                      final int step)
     {
-        // If start <= end, then the iterator must iterate upwards.
-        // If start >= end, then the iterator must iterate downwards.
-        // Otherwise, the iterator would potentially iterate infinitely, which is forbidden.
-        Preconditions.checkArgument((start <= end) && (step > 0) || (step >= end) && (step < 0));
+        // TODO: test
 
-        return new Iterator<Integer>()
+        Preconditions.checkArgument(start >= end);
+
+        final int size = (start - end) / step;
+
+        return new AbstractList<Integer>()
         {
-            private int index = start;
-
             @Override
-            public boolean hasNext()
+            public Integer get(int index)
             {
-                return index < end;
+                return start + index * step;
             }
 
             @Override
-            public Integer next()
+            public int size()
             {
-                return index++;
-            }
-
-            @Override
-            public void remove()
-            {
-                throw new UnsupportedOperationException("Not Supported");
+                return size;
             }
         };
-    }
-
-    public static List<Integer> listRange(final int start,
-                                          final int end)
-    {
-        return listRange(start, end, 1);
-    }
-
-    public static List<Integer> listRange(final int start,
-                                          final int end,
-                                          final int step)
-    {
-        final int size = ((end - start) / 2) + 10;
-
-        final List<Integer> list = Lists.newArrayListWithExpectedSize(size);
-
-        for (int i = start; i < end; i = i + step)
-        {
-            list.add(i);
-        }
-
-        return Collections.unmodifiableList(list);
     }
 
     /**
@@ -326,11 +310,18 @@ public final class F
      * </p>
      *
      * @param array is the array itself.
-     * @return an iterator that can iterator over the given array.
+     * @return an iterable whose iterator can iterate over the given array.
      */
-    public static Iterator iter(final boolean[] array)
+    public static Iterable<Boolean> iter(final boolean[] array)
     {
-        return Iterators.forArray(array);
+        return new Iterable()
+        {
+            @Override
+            public Iterator iterator()
+            {
+                return Iterators.forArray(array);
+            }
+        };
     }
 
     /**
@@ -341,11 +332,18 @@ public final class F
      * </p>
      *
      * @param array is the array itself.
-     * @return an iterator that can iterator over the given array.
+     * @return an iterable whose iterator can iterate over the given array.
      */
-    public static Iterator iter(final char[] array)
+    public static Iterable<Character> iter(final char[] array)
     {
-        return Iterators.forArray(array);
+        return new Iterable()
+        {
+            @Override
+            public Iterator iterator()
+            {
+                return Iterators.forArray(array);
+            }
+        };
     }
 
     /**
@@ -356,11 +354,18 @@ public final class F
      * </p>
      *
      * @param array is the array itself.
-     * @return an iterator that can iterator over the given array.
+     * @return an iterable whose iterator can iterate over the given array.
      */
-    public static Iterator iter(final byte[] array)
+    public static Iterable<Byte> iter(final byte[] array)
     {
-        return Iterators.forArray(array);
+        return new Iterable()
+        {
+            @Override
+            public Iterator iterator()
+            {
+                return Iterators.forArray(array);
+            }
+        };
     }
 
     /**
@@ -371,11 +376,18 @@ public final class F
      * </p>
      *
      * @param array is the array itself.
-     * @return an iterator that can iterator over the given array.
+     * @return an iterable whose iterator can iterate over the given array.
      */
-    public static Iterator iter(final short[] array)
+    public static Iterable<Short> iter(final short[] array)
     {
-        return Iterators.forArray(array);
+        return new Iterable()
+        {
+            @Override
+            public Iterator iterator()
+            {
+                return Iterators.forArray(array);
+            }
+        };
     }
 
     /**
@@ -386,11 +398,18 @@ public final class F
      * </p>
      *
      * @param array is the array itself.
-     * @return an iterator that can iterator over the given array.
+     * @return an iterable whose iterator can iterate over the given array.
      */
-    public static Iterator iter(final int[] array)
+    public static Iterable<Integer> iter(final int[] array)
     {
-        return Iterators.forArray(array);
+        return new Iterable()
+        {
+            @Override
+            public Iterator iterator()
+            {
+                return Iterators.forArray(array);
+            }
+        };
     }
 
     /**
@@ -401,11 +420,18 @@ public final class F
      * </p>
      *
      * @param array is the array itself.
-     * @return an iterator that can iterator over the given array.
+     * @return an iterable whose iterator can iterate over the given array.
      */
-    public static Iterator iter(final long[] array)
+    public static Iterable<Long> iter(final long[] array)
     {
-        return Iterators.forArray(array);
+        return new Iterable()
+        {
+            @Override
+            public Iterator iterator()
+            {
+                return Iterators.forArray(array);
+            }
+        };
     }
 
     /**
@@ -416,11 +442,18 @@ public final class F
      * </p>
      *
      * @param array is the array itself.
-     * @return an iterator that can iterator over the given array.
+     * @return an iterable whose iterator can iterate over the given array.
      */
-    public static Iterator iter(final float[] array)
+    public static Iterable<Float> iter(final float[] array)
     {
-        return Iterators.forArray(array);
+        return new Iterable()
+        {
+            @Override
+            public Iterator iterator()
+            {
+                return Iterators.forArray(array);
+            }
+        };
     }
 
     /**
@@ -431,11 +464,18 @@ public final class F
      * </p>
      *
      * @param array is the array itself.
-     * @return an iterator that can iterator over the given array.
+     * @return an iterable whose iterator can iterate over the given array.
      */
-    public static Iterator iter(final double[] array)
+    public static Iterable<Double> iter(final double[] array)
     {
-        return Iterators.forArray(array);
+        return new Iterable()
+        {
+            @Override
+            public Iterator iterator()
+            {
+                return Iterators.forArray(array);
+            }
+        };
     }
 
     /**
@@ -446,41 +486,44 @@ public final class F
      * </p>
      *
      * @param array is the array itself.
-     * @return an iterator that can iterator over the given array.
+     * @return an iterable whose iterator can iterate over the given array.
      */
-    public static Iterator iter(final Object[] array)
+    public static <T> Iterable<T> iter(final T[] array)
     {
-        return Iterators.forArray(array);
+        return new Iterable()
+        {
+            @Override
+            public Iterator iterator()
+            {
+                return Iterators.forArray(array);
+            }
+        };
     }
 
     /**
      * This method creates an iterator over an iterable.
      *
-     * <p>
-     * This method is equivalent to calling the iterable's iterator() method.
-     * </p>
-     *
      * @param iterable is the iterable itself.
-     * @return an iterator that can iterate over the given iterable.
+     * @return iterable.
      */
-    public static Iterator iter(final Iterable iterable)
+    public static <T> Iterable<T> iter(final Iterable<T> iterable)
     {
-        return iterable.iterator();
+        return iterable;
     }
 
     /**
      * This method creates an iterator over a map.
      *
      * <p>
-     * This method is equivalent to calling the iterator() method on the map's entry-set.
+     * This method is equivalent to map.entrySet().
      * </p>
      *
      * @param map is the map itself.
-     * @return an iterator that can iterate over the given map's entries.
+     * @return an iterable whose iterator can iterate over the given map's entries.
      */
-    public static Iterator iter(final Map map)
+    public static <K, V> Iterable<Entry<K, V>> iter(final Map<K, V> map)
     {
-        return map.entrySet().iterator();
+        return map.entrySet();
     }
 
     /**
@@ -491,30 +534,44 @@ public final class F
      * </p>
      *
      * @param string is the string itself.
-     * @return an iterator that can iterator over the given string.
+     * @return an iterable whose iterator can iterate over the given string.
      */
-    public static Iterator iter(final String string)
+    public static Iterable<Character> iter(final CharSequence string)
     {
-        return new Iterator<Character>()
+        return new Iterable()
         {
-            private int position = -1;
-
             @Override
-            public boolean hasNext()
+            public Iterator iterator()
             {
-                return position != string.length() - 1;
-            }
+                return new Iterator()
+                {
+                    int index = -1;
 
-            @Override
-            public Character next()
-            {
-                return string.charAt(++position);
-            }
+                    @Override
+                    public boolean hasNext()
+                    {
+                        return index + 1 < string.length();
+                    }
 
-            @Override
-            public void remove()
-            {
-                throw new UnsupportedOperationException("Not Supported");
+                    @Override
+                    public Object next()
+                    {
+                        if (hasNext())
+                        {
+                            return string.charAt(++index);
+                        }
+                        else
+                        {
+                            throw new NoSuchElementException();
+                        }
+                    }
+
+                    @Override
+                    public void remove()
+                    {
+                        throw new UnsupportedOperationException("Not Supported");
+                    }
+                };
             }
         };
     }
@@ -527,11 +584,18 @@ public final class F
      * </p>
      *
      * @param enumeration is the enumeration itself.
-     * @return an iterator that can iterator over the given enumeration.
+     * @return an iterable whose iterator can iterate over the given enumeration.
      */
-    public static Iterator iter(final Enumeration enumeration)
+    public static <T> Iterable<T> iter(final Enumeration<T> enumeration)
     {
-        return Iterators.forEnumeration(enumeration);
+        return new Iterable()
+        {
+            @Override
+            public Iterator iterator()
+            {
+                return Iterators.forEnumeration(enumeration);
+            }
+        };
     }
 
     /**
@@ -542,13 +606,20 @@ public final class F
      * </p>
      *
      * @param enumeration is the enum itself.
-     * @return an iterator that can iterator over the given enum.
+     * @return an iterable whose iterator can iterate over the given enum.
      */
-    public static Iterator<Enum> iter(final Enum enumeration)
+    public static Iterable<Enum> iter(final Enum enumeration)
     {
         final Enum[] constants = (Enum[]) enumeration.getDeclaringClass().getEnumConstants();
 
-        return (Iterator<Enum>) Iterators.forArray(constants);
+        return new Iterable()
+        {
+            @Override
+            public Iterator iterator()
+            {
+                return Iterators.forArray(constants);
+            }
+        };
     }
 
     /**
@@ -563,9 +634,9 @@ public final class F
      * </p>
      *
      * @param next is the function object that is invoked by the iterator's next() method.
-     * @return an iterator that simply invokes the given function object.
+     * @return an iterable whose iterator simply invokes the given function object.
      */
-    public static Iterator iter(final Functor next)
+    public static Iterable iter(final Functor next)
     {
         return iter(next, null, null);
     }
@@ -583,9 +654,9 @@ public final class F
      *
      * @param next is the function object that is invoked by the iterator's next() method.
      * @param has is the function object that is invoked by the iterator's hasNext() method.
-     * @return an iterator based on the given function objects.
+     * @return an iterable whose iterator is based on the given function objects.
      */
-    public static Iterator iter(final Functor next,
+    public static Iterable iter(final Functor next,
                                 final Functor has)
     {
         return iter(next, has);
@@ -597,9 +668,9 @@ public final class F
      * @param next is the function object that is invoked by the iterator's next() method.
      * @param has is the function object that is invoked by the iterator's hasNext() method.
      * @param remove is the function object that is invoked by the iterator's remove() method.
-     * @return an iterator based on the given function objects.
+     * @return an iterable whose iterator is based on the given function objects.
      */
-    public static Iterator iter(final Functor next,
+    public static Iterable iter(final Functor next,
                                 final Functor has,
                                 final Functor remove)
     {
@@ -1193,5 +1264,19 @@ public final class F
         {
             return null;
         }
+    }
+
+    /**
+     * This method never returns the same BigInteger twice.
+     *
+     * @return a new unique positive integer.
+     */
+    public static synchronized BigInteger unique()
+    {
+        final BigInteger result = unique;
+
+        unique = unique.add(BigInteger.ONE);
+
+        return result;
     }
 }

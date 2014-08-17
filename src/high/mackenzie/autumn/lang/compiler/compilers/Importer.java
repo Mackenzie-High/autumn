@@ -16,6 +16,7 @@ import com.google.common.collect.Sets;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IClassType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IDeclaredType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IInterfaceType;
+import high.mackenzie.autumn.lang.compiler.typesystem.design.IReferenceType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IReturnType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IVariableType;
@@ -180,9 +181,11 @@ public final class Importer
 
     public IVariableType resolveVariableType(final TypeSpecifier specifier)
     {
-        // TODO: error if non-vartype
+        final IReturnType type = resolveReturnType(specifier);
 
-        return (IVariableType) resolveReturnType(specifier);
+        module.program.checker.requireVariableType(specifier, type);
+
+        return (IVariableType) type;
     }
 
     public IClassType resolveModuleType(final TypeSpecifier specifier)
@@ -204,6 +207,15 @@ public final class Importer
         // TODO: error if non-vartype
 
         return (IInterfaceType) resolveReturnType(specifier);
+    }
+
+    public IReferenceType resolveReferenceType(final TypeSpecifier specifier)
+    {
+        final IReturnType type = resolveReturnType(specifier);
+
+        module.program.checker.requireReferenceType(specifier, type);
+
+        return (IReferenceType) type;
     }
 
     public void importType(final String alias,

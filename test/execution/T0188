@@ -1,0 +1,18 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    var s = "";
+
+    var control = true is Boolean;
+
+    for (i = 0; control; i + 1)
+    {
+        s = s .. i;
+
+        control = i < 5;
+    }
+
+    assert s == "012345";
+}

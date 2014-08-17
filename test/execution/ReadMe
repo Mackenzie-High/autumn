@@ -128,57 +128,66 @@ Test Index
 . . . T0012 = Iterate Multiple Times
 . . Until
 . . . T0013 = Primitive Boolean Condition
-. . . T0014 = N = Boxed Boolean Condition
-. . . T0015 = N = Operand-Stack Leakage
+. . . T0014 = Boxed Boolean Condition
 . . . T0016 = Iterate Zero Times
 . . . T0017 = Iterate One Time
 . . . T0018 = Iterate Multiple Times
 . . Do While
-. . . T0019 = N = Primitive Boolean Condition
-. . . T0020 = N = Boxed Boolean Condition
-. . . T0021 = N = Operand-Stack Leakage
-. . . T0022 = N = Iterate Zero Times
-. . . T0023 = N = Iterate One Time
-. . . T0024 = N = Iterate Multiple Times
+. . . T0171 = Primitive Boolean Condition
+. . . T0172 = Boxed Boolean Condition
+. . . T0173 = Iterate Zero Times
+. . . T0174 = Iterate One Time
+. . . T0175 = Iterate Multiple Times
 . . Do Until
-. . . T0025 = N = Primitive Boolean Condition
-. . . T0026 = N = Boxed Boolean Condition
-. . . T0027 = N = Operand-Stack Leakage
-. . . T0028 = N = Iterate Zero Times
-. . . T0029 = N = Iterate One Time
-. . . T0030 = N = Iterate Multiple Times
+. . . T0176 = Primitive Boolean Condition
+. . . T0177 = Boxed Boolean Condition
+. . . T0178 = Iterate Zero Times
+. . . T0179 = Iterate One Time
+. . . T0180 = Iterate Multiple Times
+. . Forever
+. . . T0181 = Iterate Zero Times
+. . . T0182 = Iterate One Time
+. . . T0183 = Iterate Multiple Times
 . . Foreach
-. . . T0033 = N = Operand-Stack Leakage
+. . . T0184 = Cast Failed
 . . . T0034 = Iterate Zero Times
 . . . T0035 = Iterate One Time
 . . . T0036 = Iterate Multiple Times
+. . . T0185 = Operand-Stack Leakage
+. . . T0186 = Exception in Body
 . . For
 . . . T0037 = Iterate Zero Times
 . . . T0038 = Iterate One Time
 . . . T0039 = Iterate Multiple Times
-. . . Primitive Boolean Condition
-. . . Boxed Boolean Condition
+. . . T0187 = Primitive Boolean Condition
+. . . T0188 = Boxed Boolean Condition
+. . . T0189 = Boxed Initializer
+. . . T0190 = Boxed Modifier
+. . . T0191 = Operand-Stack Leakage
 . . Break
-. . . Within While-Loop
-. . . Within Until-Loop
-. . . Within Do-While-Loop
-. . . Within Do-Until-Loop
-. . . Within For-Loop
-. . . Within Foreach-Loop
+. . . T0192 = Within Forever-Loop
+. . . T0193 = Within While-Loop
+. . . T0194 = Within Until-Loop
+. . . T0195 = Within Do-While-Loop
+. . . T0196 = Within Do-Until-Loop
+. . . T0197 = Within For-Loop
+. . . T0198 = Within Foreach-Loop
 . . Continue
-. . . Within While-Loop
-. . . Within Until-Loop
-. . . Within Do-While-Loop
-. . . Within Do-Until-Loop
-. . . Within For-Loop
-. . . Within Foreach-Loop
+. . . T0199 = Within Forever-Loop
+. . . T0200 = Within While-Loop
+. . . T0201 = Within Until-Loop
+. . . T0202 = Within Do-While-Loop
+. . . T0203 = Within Do-Until-Loop
+. . . T0204 = Within For-Loop
+. . . T0205 = Within Foreach-Loop
 . . Redo
-. . . Within While-Loop
-. . . Within Until-Loop
-. . . Within Do-While-Loop
-. . . Within Do-Until-Loop
-. . . Within For-Loop
-. . . Within Foreach-Loop
+. . . T0206 = Within Forever-Loop
+. . . T0207 = Within While-Loop
+. . . T0208 = Within Until-Loop
+. . . T0209 = Within Do-While-Loop
+. . . T0210 = Within Do-Until-Loop
+. . . T0211 = Within For-Loop
+. . . T0212 = Within Foreach-Loop
 . . Var
 . . . T0076 = Different Types of Values
 . . Val
@@ -313,9 +322,7 @@ Test Index
 . . T0055 = Types of Datums
 . . T0056 = Values of Datums
 . . Strings
-. Standard Library
-. . F
-. . . T0074 = listRange
+
 
 
 

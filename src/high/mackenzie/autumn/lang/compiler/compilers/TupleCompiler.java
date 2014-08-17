@@ -234,11 +234,6 @@ public final class TupleCompiler
         final String descriptor = "L" + namespace + '/' + name + ';';
 
         /**
-         * Ensure that the name is not forbidden.
-         */
-        program.checker.requireLegalName(node.getName());
-
-        /**
          * Ensure that the type was not already declared elsewhere.
          */
         program.checker.requireNonDuplicateType(node.getName(), descriptor);

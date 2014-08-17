@@ -22,6 +22,7 @@ import high.mackenzie.autumn.lang.compiler.exceptions.TypeCheckFailed;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IEnumType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IExpressionType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IMethod;
+import high.mackenzie.autumn.lang.compiler.typesystem.design.IReferenceType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IReturnType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IVariableType;
@@ -270,6 +271,32 @@ public final class StaticChecker
         report(report);
     }
 
+    /**
+     * This method ensures that a type is a reference-type.
+     *
+     * @param construct is the construct that is performing the type-check.
+     * @param expression is the expression that must be a variable-type.
+     */
+    public void requireReferenceType(final IConstruct construct,
+                                     final IExpressionType type)
+    {
+        if (type instanceof IReferenceType)
+        {
+            return;
+        }
+
+        final ErrorCode ERROR_CODE = ErrorCode.EXPECTED_REFERENCE_TYPE;
+
+        final String MESSAGE = "A reference-type was expected.";
+
+        final ErrorReport report = new ErrorReport(construct, ERROR_CODE, MESSAGE);
+
+        /**
+         * Issue the error-report to the user.
+         */
+        report(report);
+    }
+
     public void requireString(final IExpression expression)
     {
         final IType actual = program.symbols.expressions.get(expression);
@@ -282,6 +309,32 @@ public final class StaticChecker
         final ErrorCode ERROR_CODE = ErrorCode.EXPECTED_STRING;
 
         final String MESSAGE = "A java.lang.String was expected.";
+
+        final ErrorReport report = new ErrorReport(expression, ERROR_CODE, MESSAGE);
+
+        /**
+         * Issue the error-report to the user.
+         */
+        report(report);
+    }
+
+    /**
+     * This method ensures that an expression produces an primitive-int result.
+     *
+     * @param expression is the expression to type-check.
+     */
+    public void requireInteger(final IExpression expression)
+    {
+        final IType actual = program.symbols.expressions.get(expression);
+
+        if (program.typesystem.utils.assign(actual, program.typesystem.utils.PRIMITIVE_INT) != null)
+        {
+            return;
+        }
+
+        final ErrorCode ERROR_CODE = ErrorCode.EXPECTED_INTEGER;
+
+        final String MESSAGE = "An integer was expected.";
 
         final ErrorReport report = new ErrorReport(expression, ERROR_CODE, MESSAGE);
 
@@ -352,32 +405,6 @@ public final class StaticChecker
         final String MESSAGE = "A java.lang.Throwable was expected.";
 
         final ErrorReport report = new ErrorReport(specifier, ERROR_CODE, MESSAGE);
-
-        /**
-         * Issue the error-report to the user.
-         */
-        report(report);
-    }
-
-    /**
-     * This method ensures that a name is not a keyword.
-     *
-     * @param name is the name to check.
-     */
-    public void requireLegalName(final Name name)
-    {
-        if (Utils.isKeyword(name.getName()) == false)
-        {
-            return;
-        }
-
-        final ErrorCode ERROR_CODE = ErrorCode.ILLEGAL_NAME;
-
-        final String MESSAGE = "A name cannot be a JVM keyword.";
-
-        final ErrorReport report = new ErrorReport(name, ERROR_CODE, MESSAGE);
-
-        report.addDetail("Name", name.getName());
 
         /**
          * Issue the error-report to the user.
@@ -628,11 +655,16 @@ public final class StaticChecker
         report(report);
     }
 
+    /**
+     * This method reports that a break-statement is located outside of a loop.
+     *
+     * @param statement is the break-statement itself.
+     */
     public void reportBreakOutsideOfLoop(final BreakStatement statement)
     {
         final ErrorCode ERROR_CODE = ErrorCode.BREAK_OUTSIDE_OF_LOOP;
 
-        final String MESSAGE = "'break' statements can only be used inside of loop constructs.";
+        final String MESSAGE = "A break-statement can only be used inside of a loop construct.";
 
         final ErrorReport report = new ErrorReport(statement, ERROR_CODE, MESSAGE);
 
@@ -642,11 +674,16 @@ public final class StaticChecker
         report(report);
     }
 
+    /**
+     * This method reports that a continue-statement is located outside of a loop.
+     *
+     * @param statement is the continue-statement itself.
+     */
     public void reportContinueOutsideOfLoop(final ContinueStatement statement)
     {
-        final ErrorCode ERROR_CODE = ErrorCode.BREAK_OUTSIDE_OF_LOOP;
+        final ErrorCode ERROR_CODE = ErrorCode.CONTINUE_OUTSIDE_OF_LOOP;
 
-        final String MESSAGE = "'continue' statements can only be used inside of loop constructs.";
+        final String MESSAGE = "A continue-statement can only be used inside of a loop construct.";
 
         final ErrorReport report = new ErrorReport(statement, ERROR_CODE, MESSAGE);
 
@@ -656,11 +693,16 @@ public final class StaticChecker
         report(report);
     }
 
+    /**
+     * This method reports that a redo-statement is located outside of a loop.
+     *
+     * @param statement is the redo-statement itself.
+     */
     public void reportRedoOutsideOfLoop(final RedoStatement statement)
     {
-        final ErrorCode ERROR_CODE = ErrorCode.BREAK_OUTSIDE_OF_LOOP;
+        final ErrorCode ERROR_CODE = ErrorCode.REDO_OUTSIDE_OF_LOOP;
 
-        final String MESSAGE = "'redo' statements can only be used inside of loop constructs.";
+        final String MESSAGE = "A redo-statement can only be used inside of a loop construct.";
 
         final ErrorReport report = new ErrorReport(statement, ERROR_CODE, MESSAGE);
 

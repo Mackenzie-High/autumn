@@ -80,8 +80,4 @@ public final class Autumn
     public void test()
     {
     }
-
-    public void document(final File outdir)
-    {
-    }
 }

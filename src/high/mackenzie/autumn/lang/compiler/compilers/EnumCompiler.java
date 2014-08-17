@@ -172,11 +172,6 @@ final class EnumCompiler
         final String descriptor = "L" + namespace + '/' + name + ';';
 
         /**
-         * Ensure that the name is not forbidden.
-         */
-        program.checker.requireLegalName(node.getName());
-
-        /**
          * Ensure that the type was not already declared elsewhere.
          */
         program.checker.requireNonDuplicateType(node.getName(), descriptor);
@@ -260,11 +255,6 @@ final class EnumCompiler
 
         for (Name name : node.getConstants())
         {
-            /**
-             * The name of an enum-constant cannot be a reserved word.
-             */
-            program.checker.requireLegalName(name);
-
             /**
              * No two enum-constants can have the same name.
              */
