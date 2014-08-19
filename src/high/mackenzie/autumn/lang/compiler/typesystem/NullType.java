@@ -56,6 +56,42 @@ public final class NullType
      * {@inheritDoc}
      */
     @Override
+    public boolean isAnnotationType()
+    {
+        return false;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isClassType()
+    {
+        return false;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isEnumType()
+    {
+        return false;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isInterfaceType()
+    {
+        return false;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public boolean isNullType()
     {
         return true;

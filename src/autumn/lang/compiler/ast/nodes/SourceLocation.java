@@ -35,6 +35,7 @@ import autumn.lang.compiler.ast.literals.IntLiteral;
 import autumn.lang.compiler.ast.literals.LongLiteral;
 import autumn.lang.compiler.ast.literals.ShortLiteral;
 import java.io.File;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -58,12 +59,12 @@ import java.util.TreeSet;
  * </table>
  * </p>
  * 
- * <p> This file was auto-generated on (Thu Aug 07 06:01:15 EDT 2014).</p>
+ * <p> This file was auto-generated on (Tue Aug 19 02:50:18 EDT 2014).</p>
  */
 @SuppressWarnings("unchecked")
 public final class SourceLocation extends Object 
 {
-    private File file = null;
+    private URL file = null;
 
     private Integer line = null;
 
@@ -77,7 +78,7 @@ public final class SourceLocation extends Object
      * @param value is the new value of property <code>file</code>.
      * @return a copy of this object with property <code>file</code> set to value.
      */
-    public SourceLocation setFile(final File value)
+    public SourceLocation setFile(final URL value)
     {
         final SourceLocation result = this.copy();
         result.file = value;
@@ -89,9 +90,9 @@ public final class SourceLocation extends Object
      * 
      * @return the value of property <code>file</code>.
      */
-    public File getFile()
+    public URL getFile()
     {
-        final File value = this.file;
+        final URL value = this.file;
         return value;
     }
 
@@ -176,7 +177,7 @@ public final class SourceLocation extends Object
      * @param additional_info is the value for property <code>additional_info</code>.
      * @return a new instance of this class.
      */
-    public static SourceLocation create(File file, Integer line, Integer column, Object additional_info)
+    public static SourceLocation create(URL file, Integer line, Integer column, Object additional_info)
     {
         SourceLocation object = new SourceLocation();
         object = object.setFile(file);

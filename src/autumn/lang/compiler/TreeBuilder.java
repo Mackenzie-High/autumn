@@ -12,7 +12,7 @@ import autumn.lang.compiler.ast.nodes.*;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import high.mackenzie.autumn.resources.Finished;
-import java.io.File;
+import java.net.URL;
 import java.util.LinkedList;
 import java.util.Stack;
 
@@ -76,7 +76,7 @@ public final class TreeBuilder
      * @param additional_info is additional information that helps locate the node.
      * This is null, if no additional-info is specified.
      */
-    public void setSourceLocation(final File file,
+    public void setSourceLocation(final URL file,
                                   final Integer line,
                                   final Integer column,
                                   final Object additional_info)

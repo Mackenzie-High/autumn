@@ -7,12 +7,18 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Sets;
 import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 
 /**
  * This class provides methods and fields for use during testing.
  *
- * @author mackenzie
+ * <p>
+ * This class must be public, because the tests will be run in a different class-loader.
+ * </p>
+ *
+ * @author Mackenzie High
  */
 public final class Helpers
 {
@@ -40,6 +46,39 @@ public final class Helpers
         private TestException(final byte x)
         {
             // Pass
+        }
+    }
+
+    /**
+     * This class is used to lightly test constructor resolution.
+     */
+    public static final class CtorTester
+    {
+        public final Class type;
+
+        public CtorTester(final Collection x)
+        {
+            type = Collection.class;
+        }
+
+        public CtorTester(final List x)
+        {
+            type = List.class;
+        }
+
+        public CtorTester(final LinkedList x)
+        {
+            type = LinkedList.class;
+        }
+
+        public CtorTester(final CharSequence x)
+        {
+            type = CharSequence.class;
+        }
+
+        private CtorTester(final String x)
+        {
+            type = String.class;
         }
     }
 

@@ -30,15 +30,7 @@ public enum ErrorCode
     /**
      * Meaning: No accessible overload of the constructor will accept the arguments' type(s).
      */
-    NO_SUCH_CTOR_OVERLOAD,
-    /**
-     * Meaning: No accessible overload of the method will accept the arguments' type(s).
-     */
-    NO_SUCH_METHOD_OVERLOAD,
-    /**
-     * Meaning: No accessible overload of the constructor will accept the arguments' type(s).
-     */
-    NO_SUCH_CONSTRUCTOR_OVERLOAD,
+    NO_SUCH_CONSTRUCTOR,
     /**
      * Meaning: No method can be found with the given name, whether accessible or inaccessible.
      */
@@ -47,10 +39,6 @@ public enum ErrorCode
      * Meaning: No field can be found with the given name, whether accessible or inaccessible.
      */
     NO_SUCH_FIELD,
-    /**
-     * Meaning: No accessible field can be found with the given name.
-     */
-    NO_SUCH_ACCESSIBLE_FIELD,
     /**
      * Meaning: The variable was not declared (i.e. Undeclared Variable).
      */
@@ -95,6 +83,10 @@ public enum ErrorCode
      * Meaning: A reference-type was expected.
      */
     EXPECTED_REFERENCE_TYPE,
+    /**
+     * Meaning: A class-type was expected.
+     */
+    EXPECTED_CLASS_TYPE,
     /**
      * Meaning: A primitive-type was expected.
      */
@@ -228,18 +220,6 @@ public enum ErrorCode
      * Meaning: A type does not have adequate access privileges.
      */
     INACCESSIBLE_TYPE,
-    /**
-     * Meaning: A constructor does not have adequate access privileges.
-     */
-    INACCESSIBLE_CTOR,
-    /**
-     * Meaning: A field does not have adequate access privileges.
-     */
-    INACCESSIBLE_FIELD,
-    /**
-     * Meaning: A method does not have adequate access privileges.
-     */
-    INACCESSIBLE_METHOD,
     /**
      * Meaning: An expression produces a value of an unexpected static-type.
      */

@@ -816,15 +816,23 @@ NEXT_METHOD:
             return false;
         }
 
-        // Case: A member, with public-access, of an accessible type is always accessible.
+        // Case: A member with public-access, of an accessible type, is always accessible.
 
         if (Modifier.isPublic(member.getModifiers()))
         {
             return true;
         }
 
-        // Case: A member, with package-access, of an accessible type is only accessible
-        //        from within the same package.
+        // Case: A member with private-access, of an accessible type, is never accessible.
+        //       Remember, Autumn does not support access modifiers is Autumn code.
+
+        if (Modifier.isPrivate(member.getModifiers()))
+        {
+            return false;
+        }
+
+        // Case: A member with package-access, of an accessible type,
+        //       is only accessible from within the same package.
 
         final String namespace1 = user.getNamespace();
         final String namespace2 = member.getOwner().getNamespace();

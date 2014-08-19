@@ -19,6 +19,34 @@ public interface IReferenceType
     public boolean isArrayType();
 
     /**
+     * This method determines whether this type is an annotation-type.
+     *
+     * @return true, iff this type is an annotation-type.
+     */
+    public boolean isAnnotationType();
+
+    /**
+     * This method determines whether this type is a class-type.
+     *
+     * @return true, iff this type is a class-type.
+     */
+    public boolean isClassType();
+
+    /**
+     * This method determines whether this type is an enum-type.
+     *
+     * @return true, iff this type is an enum-type.
+     */
+    public boolean isEnumType();
+
+    /**
+     * This method determines whether this type is an interface-type.
+     *
+     * @return true, iff this type is an interface-type.
+     */
+    public boolean isInterfaceType();
+
+    /**
      * This method determines whether this type is a declared-type.
      *
      * @return true, iff this type is a declared-type.

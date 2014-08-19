@@ -297,6 +297,32 @@ public final class StaticChecker
         report(report);
     }
 
+    /**
+     * This method ensures that a type is a class-type.
+     *
+     * @param construct is the construct that is performing the type-check.
+     * @param expression is the expression that must be a variable-type.
+     */
+    public void requireClassType(final IConstruct construct,
+                                 final IExpressionType type)
+    {
+        if (type.isReferenceType() && ((IReferenceType) type).isClassType())
+        {
+            return;
+        }
+
+        final ErrorCode ERROR_CODE = ErrorCode.EXPECTED_CLASS_TYPE;
+
+        final String MESSAGE = "A class-type was expected.";
+
+        final ErrorReport report = new ErrorReport(construct, ERROR_CODE, MESSAGE);
+
+        /**
+         * Issue the error-report to the user.
+         */
+        report(report);
+    }
+
     public void requireString(final IExpression expression)
     {
         final IType actual = program.symbols.expressions.get(expression);
@@ -555,9 +581,29 @@ public final class StaticChecker
     {
     }
 
-    public void reportNoSuchConstructor(final IReturnType owner,
+    /**
+     * This method reports that the resolution of a constructor failed.
+     *
+     * @param site is the location where the constructor is being invoked from.
+     * @param owner is the type that owns the constructor.
+     * @param arguments are the types of the arguments to the constructor.
+     */
+    public void reportNoSuchConstructor(final IConstruct site,
+                                        final IReturnType owner,
                                         final List<IExpressionType> arguments)
     {
+        final ErrorCode ERROR_CODE = ErrorCode.NO_SUCH_CONSTRUCTOR;
+
+        final String MESSAGE = "No accessible constructor was found that will accept the given arguments.";
+
+        final ErrorReport report = new ErrorReport(site, ERROR_CODE, MESSAGE);
+
+        report.addDetail("Type", Utils.sourceName(owner));
+
+        /**
+         * Issue the error-report to the user.
+         */
+        report(report);
     }
 
     public void reportNoSuchMethod(final IConstruct construct,

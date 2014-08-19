@@ -24,9 +24,11 @@
         <spellchecker-wordlist xmlns="http://www.netbeans.org/ns/spellchecker-wordlist/1">
             <word>ArgumentStack</word>
             <word>BigInteger</word>
+            <word>CtorTester</word>
             <word>eq</word>
             <word>expectField</word>
             <word>expectMethod</word>
+            <word>FloatTypes</word>
             <word>getAnnotation</word>
             <word>getClass</word>
             <word>getDeclaredConstructors</word>
@@ -38,6 +40,7 @@
             <word>getSuperinterfaces</word>
             <word>InaccessibleClass</word>
             <word>incrementAndGet</word>
+            <word>IntegerTypes</word>
             <word>intValue</word>
             <word>isAnnotation</word>
             <word>isAnnotationPresent</word>

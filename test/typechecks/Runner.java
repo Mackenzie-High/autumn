@@ -36,6 +36,10 @@ public final class Runner
 
 
 
+        test("T0066", NO_SUCH_CONSTRUCTOR);
+        test("T0065", EXPECTED_CLASS_TYPE);
+        test("T0064", INACCESSIBLE_TYPE);
+        test("T0063", NO_SUCH_TYPE);
         test("T0062", REDO_OUTSIDE_OF_LOOP);
         test("T0061", CONTINUE_OUTSIDE_OF_LOOP);
         test("T0060", BREAK_OUTSIDE_OF_LOOP);

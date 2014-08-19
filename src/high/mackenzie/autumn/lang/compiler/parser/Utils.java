@@ -15,6 +15,7 @@ import high.mackenzie.snowflake.LinesAndColumns;
 import high.mackenzie.snowflake.NewlineStyles;
 import high.mackenzie.snowflake.TreeNode;
 import java.io.File;
+import java.net.URL;
 
 /**
  * This class is used by the parser to help facilitate the building of an abstract-syntax-tree.
@@ -33,7 +34,7 @@ public final class Utils
     /**
      * It is OK for this to be public.
      */
-    public static File source_file = null;
+    public static URL source_file = null;
 
     /**
      * This builder is used to construct an AST.

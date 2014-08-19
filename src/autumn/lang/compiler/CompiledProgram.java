@@ -3,6 +3,7 @@ package autumn.lang.compiler;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
+import high.mackenzie.autumn.resources.Finished;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -17,6 +18,7 @@ import java.util.jar.Manifest;
  *
  * @author Mackenzie High
  */
+@Finished("2014/08/19")
 public final class CompiledProgram
 {
     private final String main_class;
@@ -25,6 +27,22 @@ public final class CompiledProgram
 
     private final List<ClassFile> classes = Lists.newLinkedList();
 
+    /**
+     * Sole Constructor.
+     *
+     * <p>
+     * The main-class parameter must be null, if no entry-point is specified.
+     * For example, this would occur when the compiled program is a library only.
+     * </p>
+     *
+     * <p>
+     * The dependency files will be added to the generated generated Jar file's manifest.
+     * </p>
+     *
+     * @param main_class is the name of the class that contains the program's entry-point.
+     * @param dependencies are the Jar files that the program relies on.
+     * @param classes are the classes that the compiled program is composed of.
+     */
     public CompiledProgram(final String main_class,
                            final List<File> dependencies,
                            final List<ClassFile> classes)
@@ -43,7 +61,11 @@ public final class CompiledProgram
     /**
      * This method retrieves the name of the module that contains the entry-point.
      *
-     * @return the aforedescribed name.
+     * <p>
+     * This is the fully-qualified name as it would appear in source code.
+     * </p>
+     *
+     * @return the aforedescribed name (may be null).
      */
     public String mainClass()
     {
@@ -106,13 +128,22 @@ public final class CompiledProgram
     {
         final Manifest manifest = new Manifest();
 
+        /**
+         * Set the manifest version.
+         */
         manifest.getMainAttributes().put(Attributes.Name.MANIFEST_VERSION, "1.0");
 
+        /**
+         * Set the main-class attribute.
+         */
         if (mainClass() != null)
         {
             manifest.getMainAttributes().put(Attributes.Name.MAIN_CLASS, mainClass());
         }
 
+        /**
+         * Add the dependency files to the manifest as part of the class-path attribute.
+         */
         final StringBuilder entries = new StringBuilder();
 
         for (File file : dependencies)
@@ -139,15 +170,19 @@ public final class CompiledProgram
                                 final ClassFile file)
             throws IOException
     {
+        /**
+         * Compute the name of the class-file as a regular file.
+         * In other words, the package part of the name specifies a folder hierarchy.
+         */
         final String name = file.name().replace('.', '/') + ".class";
 
+        /**
+         * Add the class-file to the jar-file.
+         */
         final JarEntry entry = new JarEntry(name);
         entry.setTime(System.currentTimeMillis());
-
         jos.putNextEntry(entry);
-
         jos.write(file.bytecode());
-
         jos.closeEntry();
     }
 

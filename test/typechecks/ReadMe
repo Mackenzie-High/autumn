@@ -123,6 +123,10 @@ Test Index
 . . . No Such Method
 . . Dispatch
 . . New
+. . . T0063 = No Such Type
+. . . T0064 = Inaccessible Type
+. . . T0065 = Expected Class Type
+. . . T0066 = No Such Constructor
 . . Call Method
 . . . Owner - Expected Declared Type
 . . . No Such Method
@@ -167,14 +171,14 @@ Test Index
 . . Is
 . . . T0035 = Impossible Conversion
 . Datums
-. . Boolean
-. . Char
-. . Byte
-. . Short
-. . Int
-. . Long
-. . Float
-. . Double
+. . No Test Needed = Boolean
+. . No Test Needed = Char
+. . No Test Needed = Byte
+. . No Test Needed = Short
+. . No Test Needed = Int
+. . No Test Needed = Long
+. . No Test Needed = Float
+. . No Test Needed = Double
 . . String
 . . Null
 . . Class

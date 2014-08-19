@@ -2,8 +2,8 @@ package autumn.lang.compiler.errors;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
-import java.io.File;
 import java.io.PrintStream;
+import java.net.URL;
 import java.util.List;
 import java.util.Map.Entry;
 
@@ -49,7 +49,7 @@ public final class BasicErrorReporter
      * {@inheritDoc}
      */
     @Override
-    public void reportSyntaxError(final File file,
+    public void reportSyntaxError(final URL file,
                                   final int line,
                                   final int column)
     {

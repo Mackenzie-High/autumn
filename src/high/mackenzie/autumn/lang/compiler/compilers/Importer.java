@@ -218,6 +218,15 @@ public final class Importer
         return (IReferenceType) type;
     }
 
+    public IClassType resolveClassType(final TypeSpecifier specifier)
+    {
+        final IReturnType type = resolveReturnType(specifier);
+
+        module.program.checker.requireClassType(specifier, type);
+
+        return (IClassType) type;
+    }
+
     public void importType(final String alias,
                            final String type)
     {

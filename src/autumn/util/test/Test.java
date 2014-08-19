@@ -5,7 +5,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 /**
- * This annotation indicates that a function is a unit test.
+ * This type of annotation indicates that a function is a unit-test.
  *
  * @author Mackenzie High
  */

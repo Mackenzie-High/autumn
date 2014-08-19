@@ -17,6 +17,34 @@ public final class Autumn
 {
     private final List<Module> modules = Lists.newLinkedList();
 
+    /**
+     * This method turns the debug-statements on.
+     */
+    public static void enableDebugger()
+    {
+    }
+
+    /**
+     * This method turns the debug-statements off.
+     */
+    public static void disableDebugger()
+    {
+    }
+
+    /**
+     * This method turns the assume-statements on.
+     */
+    public static void enableAssume()
+    {
+    }
+
+    /**
+     * This method turns the assume-statements off.
+     */
+    public static void disableAssume()
+    {
+    }
+
     public void help()
     {
     }

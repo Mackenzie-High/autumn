@@ -5,7 +5,6 @@ import autumn.lang.internals.ArgumentStack;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
-import java.io.PrintStream;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.AbstractList;
@@ -79,85 +78,30 @@ public final class F
         return result;
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    //                                 Standard I/O
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    public static void printAll(final PrintStream out,
-                                final Iterable value)
+    /**
+     * This method prints zero-or-more lines to standard-output.
+     *
+     * @param lines contains the lines to print.
+     */
+    public static void printlns(final Iterable<?> lines)
     {
-        for (Object element : value)
+        for (Object line : lines)
         {
-            out.println(element);
+            println(line);
         }
     }
 
-    public static void printAll(final Iterable value)
+    /**
+     * This method prints zero-or-more lines to standard-error.
+     *
+     * @param lines contains the lines to print.
+     */
+    public static void printerrlns(final Iterable<?> lines)
     {
-        printAll(System.out, value);
-    }
-
-    public static void printIter(final Iterable value)
-    {
-    }
-
-    public static void printIter(final Object[] value)
-    {
-        for (Object o : value)
+        for (Object line : lines)
         {
-            System.out.println(o);
+            printerrln(line);
         }
-    }
-
-    public static void printIter(final Iterable value,
-                                 final String separator)
-    {
-    }
-
-    public static void printIter(final Iterable value,
-                                 final String separator,
-                                 final String prefix,
-                                 final String postfix)
-    {
-    }
-
-    public static void printIter(final StringBuilder out,
-                                 final Iterable value)
-    {
-    }
-
-    public static void printIter(final StringBuilder out,
-                                 final Iterable value,
-                                 final String separator)
-    {
-    }
-
-    public static void printIter(final StringBuilder out,
-                                 final Iterable value,
-                                 final String separator,
-                                 final String prefix,
-                                 final String postfix)
-    {
-    }
-
-    public static void printIter(final PrintStream out,
-                                 final Iterable value)
-    {
-    }
-
-    public static void printIter(final PrintStream out,
-                                 final Iterable value,
-                                 final String separator)
-    {
-    }
-
-    public static void printIter(final PrintStream out,
-                                 final Iterable value,
-                                 final String separator,
-                                 final String prefix,
-                                 final String postfix)
-    {
     }
 
     /**
@@ -166,6 +110,16 @@ public final class F
      * @param is the value to print.
      */
     public static void print(final Object value)
+    {
+        System.out.print(value);
+    }
+
+    /**
+     * This method prints a value to standard-error.
+     *
+     * @param is the value to print.
+     */
+    public static void printerr(final Object value)
     {
         System.out.print(value);
     }
@@ -181,6 +135,16 @@ public final class F
     }
 
     /**
+     * This method prints a value followed by a newline to standard-error.
+     *
+     * @param is the value to print.
+     */
+    public static void printerrln(final Object value)
+    {
+        System.err.println(value);
+    }
+
+    /**
      * This method prints a newline to standard-output.
      */
     public static void println()
@@ -188,18 +152,37 @@ public final class F
         System.out.println();
     }
 
-    public static void printerr(final Object value)
-    {
-        System.err.print(value);
-    }
-
-    public static void printerrln(final Object value)
-    {
-        System.err.println(value);
-    }
-
+    /**
+     * This method prints a formated string to standard-output.
+     *
+     * <p>
+     * This is simply a convenience method on top of PrintStream's printf(String, Object[]).
+     * </p>
+     *
+     * @param format is the format specifier.
+     * @param args are the arguments to substitute into the format string.
+     */
     public static void printf(final String format,
                               final Iterable<Object> args)
+    {
+        Preconditions.checkNotNull(format);
+        Preconditions.checkNotNull(args);
+
+        System.out.printf(format, Lists.newLinkedList(args).toArray());
+    }
+
+    /**
+     * This method prints a formated string to standard-error.
+     *
+     * <p>
+     * This is simply a convenience method on top of PrintStream's printf(String, Object[]).
+     * </p>
+     *
+     * @param format is the format specifier.
+     * @param args are the arguments to substitute into the format string.
+     */
+    public static void printerrf(final String format,
+                                 final Iterable<Object> args)
     {
         Preconditions.checkNotNull(format);
         Preconditions.checkNotNull(args);
@@ -251,11 +234,6 @@ public final class F
         return Double.parseDouble(readln());
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    //                                 Range
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////////////
     public static List<Integer> range(final int start)
     {
         return range(start, Integer.MAX_VALUE, 1);
@@ -1171,21 +1149,6 @@ public final class F
         return list.get(list.size() - 1);
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    //                                 Hash
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    public static int hash(final byte value)
-    {
-        return 0;
-    }
-
-    public static int hash(final short value)
-    {
-        return 0;
-    }
-
     /**
      * This method creates a new BigInteger from a long value.
      *
@@ -1278,5 +1241,16 @@ public final class F
         unique = unique.add(BigInteger.ONE);
 
         return result;
+    }
+
+    /**
+     * This method converts a value to its string representation.
+     *
+     * @param value is the value to convert.
+     * @return the string representation of the value.
+     */
+    public static String str(final Object value)
+    {
+        return "" + value;
     }
 }

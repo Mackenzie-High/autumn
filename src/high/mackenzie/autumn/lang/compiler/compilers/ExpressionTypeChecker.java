@@ -4,6 +4,7 @@ import autumn.lang.compiler.ast.commons.IExpression;
 import autumn.lang.compiler.ast.nodes.*;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
+import high.mackenzie.autumn.lang.compiler.typesystem.design.IClassType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IConstructor;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IDeclaredType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IExpressionType;
@@ -252,7 +253,16 @@ public class ExpressionTypeChecker
     @Override
     public void visit(final NewExpression object)
     {
-        final List<IType> args = Lists.newLinkedList();
+        /**
+         * Get the type that is being instantiated.
+         * This will throw an exception, if the type does not exist or is inaccessible.
+         */
+        final IClassType type = module.imports.resolveClassType(object.getType());
+
+        /**
+         * Visit and type-check the arguments.
+         */
+        final List<IExpressionType> args = Lists.newLinkedList();
 
         for (IExpression arg : object.getArguments())
         {
@@ -260,25 +270,28 @@ public class ExpressionTypeChecker
             args.add(program.symbols.expressions.get(arg));
         }
 
-        final IType type = module.imports.resolveReturnType(object.getType());
-
-        // TODO: Check that the owner is a declared type.
-
-        final IDeclaredType declared_type = (IDeclaredType) type;
-
-        final List<IConstructor> ctors = program.typesystem.utils.resolveCtors(declared_type, // TODO: fix
-                                                                               declared_type,
+        /**
+         * Resolve the constructor that will be invoked.
+         */
+        final List<IConstructor> ctors = program.typesystem.utils.resolveCtors(module.type,
+                                                                               type,
                                                                                args);
 
+        /**
+         * If no applicable constructor exists, issue a warning.
+         */
         if (ctors.isEmpty())
         {
-            // TODO: Compile Error
-            throw new RuntimeException("No Ctor: " + type);
+            // This will throw an exception.
+            program.checker.reportNoSuchConstructor(object, type, args);
         }
 
+        /**
+         * Remember the resolved constructor, because the code-generator will need it.
+         */
         final IConstructor ctor = (IConstructor) ctors.get(0);
-
         program.symbols.calls.put(object, ctor);
+
         infer(object, (IExpressionType) type);
     }
 

@@ -1,7 +1,7 @@
 package autumn.lang.compiler.errors;
 
 import com.google.common.base.Preconditions;
-import java.io.File;
+import java.net.URL;
 
 /**
  * An instance of this class is an error-reporter that routes reports through two other
@@ -53,7 +53,7 @@ public class CoupledErrorReporter
      * {@inheritDoc}
      */
     @Override
-    public void reportSyntaxError(final File file,
+    public void reportSyntaxError(final URL file,
                                   final int line,
                                   final int column)
     {

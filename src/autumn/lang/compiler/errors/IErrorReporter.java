@@ -1,6 +1,6 @@
 package autumn.lang.compiler.errors;
 
-import java.io.File;
+import java.net.URL;
 
 /**
  * An instance of this interface is used to report compile-time errors to the user/programmer.
@@ -22,7 +22,7 @@ public interface IErrorReporter
      * @param line is an estimate of where parsing failed within the input.
      * @param column is an estimate of where parsing failed within the input.
      */
-    public void reportSyntaxError(final File file,
+    public void reportSyntaxError(final URL file,
                                   final int line,
                                   final int column);
 

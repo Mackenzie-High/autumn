@@ -245,10 +245,11 @@ Test Index
 . . Dispatch
 . . . Resolution Order
 . . New
-. . . Different Types of Arguments
-. . . Resolution Order
-. . . Auto-Boxing
-. . . Auto-Unboxing
+. . . T0213 = Different Types of Arguments
+. . . T0214 = Resolution Order
+. . . T0215 = Auto-Widening
+. . . T0216 = Auto-Boxing
+. . . T0217 = Auto-Unboxing
 . . Call Method
 . . . Different Types of Arguments
 . . . Resolution Order

@@ -6,16 +6,20 @@ import com.google.common.base.Preconditions;
 import high.mackenzie.autumn.lang.compiler.parser.AstBuilder;
 import high.mackenzie.autumn.lang.compiler.parser.Parser;
 import high.mackenzie.autumn.lang.compiler.parser.Utils;
+import high.mackenzie.autumn.resources.Finished;
 import high.mackenzie.snowflake.LinesAndColumns;
 import high.mackenzie.snowflake.NewlineStyles;
 import high.mackenzie.snowflake.ParserOutput;
 import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 /**
  * An instance of this class is a parser that can parse an Autumn module.
  *
  * @author Mackenzie High
  */
+@Finished("2014/08/19")
 public final class AutumnParser
 {
     private final IErrorReporter reporter;
@@ -46,7 +50,7 @@ public final class AutumnParser
      * @return a module created via parsing, or null, if parsing fails.
      */
     public Module parse(final String code,
-                        final File file)
+                        final URL file)
     {
         Preconditions.checkNotNull(code);
 
@@ -84,6 +88,38 @@ public final class AutumnParser
             final Module module = AstBuilder.build(output.parseTree());
 
             return module;
+        }
+    }
+
+    /**
+     * This method parses a string of Autumn source code that represents a single module.
+     *
+     * <p>
+     * If a syntax-error is found, then the error-reporter will be used to report the error.
+     * </p>
+     *
+     * @param code is the source-code itself.
+     * @param file denotes the location of the module, if error reporting occurs.
+     * This may be null; however, that is usually not recommended.
+     * @return a module created via parsing, or null, if parsing fails.
+     * @throws IllegalArgumentException if the file cannot be converted to a URL.
+     */
+    public Module parse(final String code,
+                        final File file)
+    {
+        Preconditions.checkNotNull(code);
+
+        try
+        {
+            final URL url = file.toURI().toURL();
+
+            final Module module = parse(code, url);
+
+            return module;
+        }
+        catch (MalformedURLException ex)
+        {
+            throw new IllegalArgumentException("Bad URL", ex);
         }
     }
 }

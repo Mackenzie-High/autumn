@@ -1,0 +1,9 @@
+module Main in execution;
+
+tuple T (value : Integer);
+
+@Start
+defun main (args : String[]) : void
+{
+    assert ((new T 23).value) == 23;
+}
