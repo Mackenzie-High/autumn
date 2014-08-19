@@ -2,6 +2,7 @@ package autumn.lang.compiler;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
+import high.mackenzie.autumn.resources.Finished;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Map;
@@ -11,13 +12,18 @@ import java.util.Map;
  *
  * @author Mackenzie High
  */
+@Finished("2014/08/18")
 public final class DynamicLoader
         extends ClassLoader
 {
-    private static final ClassLoader system = System.class.getClassLoader();
-
+    /**
+     * This map maps a name to its related class-object.
+     */
     private final Map<String, Class> defined = Maps.newHashMap();
 
+    /**
+     * This is the program that this loader loads.
+     */
     private final CompiledProgram program;
 
     /**

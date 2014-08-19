@@ -1,4 +1,4 @@
 /**
- * This package contains a compiler for the Autumn programming language.
+ * Autumn Compiler and Related Utilities.
  */
 package autumn.lang.compiler;
