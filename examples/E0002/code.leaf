@@ -1,4 +1,4 @@
-module * in examples;
+module Main in examples;
 
 @Start
 defun main (args : String[]) : void
@@ -7,8 +7,7 @@ defun main (args : String[]) : void
 
     while (i < 5)
     {
-        (F::print "X = ");
-        (F::println i);
+        (F::println "i = " .. i);
 
         i = i + 1;
     }

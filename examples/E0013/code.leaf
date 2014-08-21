@@ -1,4 +1,4 @@
-module * in examples;
+module Main in examples;
 
 @Start
 defun main (args : String[]) : void

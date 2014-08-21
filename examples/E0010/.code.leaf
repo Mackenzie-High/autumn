@@ -42,7 +42,7 @@ defun main (args : String[]) : void
     # Create a list containing the values of the previous variables.
     var values = [a, b, c, d, e, f, g, i, j, x, y];
 
-    for (value : Object in values)
+    foreach (value : Object in values)
     {
         (F::print "Value = ");
         (F::println value);

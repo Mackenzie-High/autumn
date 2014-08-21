@@ -3,25 +3,25 @@ module * in examples;
 @Start
 defun main (args : String[]) : void
 {
-    (F::println (Me::next));
-    (F::println (Me::next));
-    (F::println (Me::next));
+    (F::println (My::next));
+    (F::println (My::next));
+    (F::println (My::next));
 
-    (F::println (Me::next));
-    (F::println (Me::next));
-    (F::println (Me::next));
+    (F::println (My::next));
+    (F::println (My::next));
+    (F::println (My::next));
 
-    (F::println (Me::next));
-    (F::println (Me::next));
-    (F::println (Me::next));
+    (F::println (My::next));
+    (F::println (My::next));
+    (F::println (My::next));
 
-    (F::println (Me::next));
-    (F::println (Me::next));
-    (F::println (Me::next));
+    (F::println (My::next));
+    (F::println (My::next));
+    (F::println (My::next));
 
-    (F::println (Me::next));
-    (F::println (Me::next));
-    (F::println (Me::next));
+    (F::println (My::next));
+    (F::println (My::next));
+    (F::println (My::next));
 }
 
 defun next() : String

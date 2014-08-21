@@ -4,12 +4,11 @@ function spec()
     
 "index": 
 [
-  [0, "<a%20href=\"TextPage.html?page=License\">License</a>"],
+  [0, "<a%20href=\"https://github.com/Mackenzie-High/autumn\"><b>GitHub%20Page</b></a>"],
+  [0, "<a%20href=\"TextPage.html?page=Downloads\">Downloads</a>"],
   [0, "<a%20href=\"TextPage.html?page=Introduction\">Introduction</a>"],
-  [0, "<a%20href=\"TextPage.html?page=Where%20to%20Download\">Where%20to%20Download</a>"],
-  [0, "<a%20href=\"TextPage.html?page=Hello%20World\">Hello%20World</a>"],
-  [0, "<a%20href=\"TextPage.html?page=Compiler%20Command%20Line%20Options\">Compiler%20Command%20Line%20Options</a>"],
   [0, "<a%20href=\"TextPage.html?page=Special%20Thanks\">Special%20Thanks</a>"],
+  [0, "<a%20href=\"javadoc/index.html\"><b>Standard%20Library</b></a>"],
   [0, "<b>Language%20Constructs</b>"],
   [1, "<a%20href=\"ConstructPage.html?construct=Module\">Module</a>"],
   [1, "<b>Directives</b>"],
@@ -19,7 +18,6 @@ function spec()
   [2, "<a%20href=\"ConstructPage.html?construct=Annotation%20Definition\">Annotation%20Definition</a>"],
   [2, "<a%20href=\"ConstructPage.html?construct=Exception%20Definition\">Exception%20Definition</a>"],
   [2, "<a%20href=\"ConstructPage.html?construct=Enum%20Definition\">Enum%20Definition</a>"],
-  [3, "<a%20href=\"ConstructPage.html?construct=Enum%20Constant\">Enum%20Constant</a>"],
   [2, "<a%20href=\"ConstructPage.html?construct=Tuple%20Definition\">Tuple%20Definition</a>"],
   [2, "<a%20href=\"ConstructPage.html?construct=Functor%20Definition\">Functor%20Definition</a>"],
   [2, "<a%20href=\"ConstructPage.html?construct=Design%20Definition\">Design%20Definition</a>"],
@@ -127,13 +125,14 @@ function spec()
   [2, "<a%20href=\"ConstructPage.html?construct=Progn%20Expression\">Progn%20Expression</a>"],
   [2, "<a%20href=\"ConstructPage.html?construct=List%20Expression\">List%20Expression</a>"],
   [0, "<b>Components</b>"],
-  [1, "<a%20href=\"ConstructPage.html?construct=Annotations\">Annotations</a>"],
   [1, "<a%20href=\"ConstructPage.html?construct=Annotation%20List\">Annotation%20List</a>"],
+  [1, "<a%20href=\"ConstructPage.html?construct=Annotation\">Annotation</a>"],
+  [1, "<a%20href=\"ConstructPage.html?construct=Formal%20Parameter%20List\">Formal%20Parameter%20List</a>"],
   [1, "<a%20href=\"ConstructPage.html?construct=Formal%20Parameter\">Formal%20Parameter</a>"],
   [1, "<a%20href=\"ConstructPage.html?construct=Name\">Name</a>"],
   [1, "<a%20href=\"ConstructPage.html?construct=Type%20Specifier\">Type%20Specifier</a>"],
   [1, "<a%20href=\"ConstructPage.html?construct=Doc%20Comment\">Doc%20Comment</a>"],
-  [2, "<a%20href=\"ConstructPage.html?construct=Doc%20Comment%20Line\">Doc%20Comment%20Line</a>"],
+  [1, "<a%20href=\"ConstructPage.html?construct=Doc%20Comment%20Line\">Doc%20Comment%20Line</a>"],
   [1, "<a%20href=\"ConstructPage.html?construct=Comments\">Comments</a>"],
   [0, "<b>Type%20System</b>"],
   [1, "<a%20href=\"TextPage.html?page=Type%20Structure\">Type%20Structure</a>"],
@@ -141,8 +140,6 @@ function spec()
   [1, "<a%20href=\"TextPage.html?page=Special%20Names\">Special%20Names</a>"],
   [1, "<a%20href=\"TextPage.html?page=Accessibility\">Accessibility</a>"],
   [1, "<a%20href=\"TextPage.html?page=Resolution\">Resolution</a>"],
-  [0, "<a%20href=\"TextPage.html?page=Debugger\">Debugger</a>"],
-  [0, "<a%20href=\"javadoc/index.html\"><b>Standard%20Library</b></a>"],
 ],
 
 
@@ -171,7 +168,7 @@ function spec()
       ["DUPLICATE_MODULE_DIRECTIVE", "A module can only contain one module-directive."],
       ["DUPLICATE_FUNCTION", "No two functions in the same module can share their name and parameter-list descriptor."],
     ],
-  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    (F::println %22Hello World!%22);%0A}", ""],
+  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    (F::println %22Hello World!%22);%0A}", "Hello World!"],
 },
 
 
@@ -199,11 +196,85 @@ function spec()
   "ast" : "autumn.lang.compiler.ast.nodes.ImportDirective",
   "syntax":
     [
-      [0, "<span class=\"keyword\">import</span> <i>#type#</i> ;"],
+      [0, "<span class=\"keyword\">import</span> <i><a href=\"ConstructPage.html?construct=TypeSpecifier\">type</a></i> ;"],
     ],
   "details":
     [
       [0, "After importation, a type is accessible via its simple-name."],
+      [0, "<b>Predefined Imports:</b>"],
+      [1, "autumn.lang.Delegate"],
+      [1, "autumn.lang.Functor"],
+      [1, "autumn.lang.Local"],
+      [1, "autumn.lang.LocalsMap"],
+      [1, "autumn.lang.Member"],
+      [1, "autumn.lang.Method"],
+      [1, "autumn.lang.Module"],
+      [1, "autumn.lang.Property"],
+      [1, "autumn.lang.Prototype"],
+      [1, "autumn.lang.StaticFunctor"],
+      [1, "autumn.lang.Tuple"],
+      [1, "autumn.lang.TypedFunctor"],
+      [1, "autumn.lang.annotations.Clinit"],
+      [1, "autumn.lang.annotations.Hide"],
+      [1, "autumn.lang.annotations.Once"],
+      [1, "autumn.lang.annotations.Start"],
+      [1, "autumn.lang.annotations.Sync"],
+      [1, "autumn.lang.compiler.Autumn"],
+      [1, "autumn.util.Bitwise"],
+      [1, "autumn.util.DS"],
+      [1, "autumn.util.F"],
+      [1, "autumn.util.Files"],
+      [1, "autumn.util.Predicates"],
+      [1, "autumn.util.Reflect"],
+      [1, "autumn.util.Strings"],
+      [1, "autumn.util.Threads"],
+      [1, "autumn.util.functors.Predicate"],
+      [1, "autumn.util.proto.ProtoMap"],
+      [1, "autumn.util.test.MalformedTestException"],
+      [1, "autumn.util.test.Test"],
+      [1, "autumn.util.test.TestCase"],
+      [1, "autumn.util.test.TestResult"],
+      [1, "autumn.util.test.TestResults"],
+      [1, "autumn.util.test.Tester"],
+      [1, "autumn.util.test.UnitTester"],
+      [1, "java.lang.Boolean"],
+      [1, "java.lang.Byte"],
+      [1, "java.lang.CharSequence"],
+      [1, "java.lang.Character"],
+      [1, "java.lang.Class"],
+      [1, "java.lang.ClassCastException"],
+      [1, "java.lang.Double"],
+      [1, "java.lang.Enum"],
+      [1, "java.lang.Exception"],
+      [1, "java.lang.Float"],
+      [1, "java.lang.IllegalArgumentException"],
+      [1, "java.lang.IllegalStateException"],
+      [1, "java.lang.IndexOutOfBoundsException"],
+      [1, "java.lang.Integer"],
+      [1, "java.lang.Iterable"],
+      [1, "java.lang.Long"],
+      [1, "java.lang.NullPointerException"],
+      [1, "java.lang.Number"],
+      [1, "java.lang.Object"],
+      [1, "java.lang.RuntimeException"],
+      [1, "java.lang.Short"],
+      [1, "java.lang.String"],
+      [1, "java.lang.StringBuilder"],
+      [1, "java.lang.Throwable"],
+      [1, "java.math.BigDecimal"],
+      [1, "java.math.BigInteger"],
+      [1, "java.util.ArrayList"],
+      [1, "java.util.Collection"],
+      [1, "java.util.HashMap"],
+      [1, "java.util.HashSet"],
+      [1, "java.util.Iterator"],
+      [1, "java.util.LinkedList"],
+      [1, "java.util.List"],
+      [1, "java.util.Map"],
+      [1, "java.util.NoSuchElementException"],
+      [1, "java.util.Set"],
+      [1, "java.util.TreeMap"],
+      [1, "java.util.TreeSet"],
     ],
   "static-checks":
     [
@@ -219,16 +290,22 @@ function spec()
       [0, "@<i>annotation<sub>1</sub></i>"],
       [0, "@<i>annotation<sub>2</sub></i>"],
       [0, "@<i>annotation<sub>n</sub></i>"],
-      [0, "annotation <i>name</i>;"],
+      [0, "<span class=\"keyword\">annotation</span> <i><a href=\"ConstructPage.html?construct=Name\">name</a></i> ;"],
     ],
   "details":
     [
-      [0, "The retention policy of the new annotation-type is runtime."],
+      [0, "The new type has public-access."],
+      [0, "<a href=\"http://docs.oracle.com/javase/7/docs/api/java/lang/Object.html\">Object</a> is the direct superclass of the new type."],
+      [0, "<a href=\"http://docs.oracle.com/javase/7/docs/api/java/lang/annotation/Annotation.html\">Annotation</a> is a direct superinterface of the new type."],
+      [0, "The <a href=\"http://docs.oracle.com/javase/7/docs/api/java/lang/annotation/RetentionPolicy.html\">RetentionPolicy</a> of the new type is runtime."],
+      [0, "The new type does not directly define any fields, constructors, or methods."],
     ],
   "static-checks":
     [
       ["DUPLICATE_TYPE", "No two types can share the same descriptor."],
     ],
+  "example-1" : ["module Main in examples;%0A%0Aannotation Alien;%0A%0A@Alien%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    val owner = (class Main);%0A    val name = %22main%22;%0A    val params = [ (class String[]) ];%0A%0A    val func = (Reflect::getMethod owner, name, params);%0A%0A    val applied = (func.isAnnotationPresent (class Alien));%0A%0A    (F::println %22@Alien Present = %22 .. applied);%0A}", "@Alien Present = true"],
+  "example-2" : ["module Main in examples;%0A%0Aimport java.lang.reflect.Modifier;%0A%0Aannotation Alien;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    val klass = (class Alien);%0A%0A    val modifiers = (Modifier::toString (klass.getModifiers));%0A%0A    (F::println %22Name = %22 .. (klass.getName));%0A%0A    (F::println %22Annotation? = %22 .. (klass.isAnnotation));%0A%0A    (F::println %22Modifiers = %22 .. modifiers);%0A}", "Name = examples.Alien%0AAnnotation? = true%0AModifiers = public abstract interface"],
 },
 
 
@@ -240,65 +317,69 @@ function spec()
       [0, "@<i>annotation<sub>1</sub></i>"],
       [0, "@<i>annotation<sub>2</sub></i>"],
       [0, "@<i>annotation<sub>n</sub></i>"],
-      [0, "<span class=\"keyword\">exception</span> <i>name</i> extends <i>superclass</i>;"],
+      [0, "<span class=\"keyword\">exception</span> <i><a href=\"ConstructPage.html?construct=Name\">name</a></i> <span class=\"keyword\">extends</span> <i><a href=\"ConstructPage.html?construct=TypeSpecifier\">superclass</a></i> ;"],
     ],
   "details":
     [
-      [0, "An exception-type is really a class-type that extends <a href=\"http://docs.oracle.com/javase/7/docs/api/java/lang/Throwable.html\">java.lang.Throwable</a> either directly or indirectly."],
-      [0, "The new type inherits all the publically-accessible constructors of the direct superclass."],
+      [0, "An exception-type is really a class-type that extends <a href=\"http://docs.oracle.com/javase/7/docs/api/java/lang/Throwable.html\">Throwable</a> either directly or indirectly."],
+      [0, "The new type inherits all the publicly-accessible constructors of its direct superclass."],
+      [0, "The new type does not have any direct superinterfaces."],
+      [0, "The new type does not directly define any fields or methods."],
+      [0, "The new type has public-access."],
     ],
   "static-checks":
     [
       ["DUPLICATE_TYPE", "No two types can share the same descriptor."],
-      ["NO_SUCH_TYPE", "The superclass type must exist."],
-      ["INACCESSIBLE_TYPE", "The superclass type must be accessible from the enclosing package."],
+      ["NO_SUCH_TYPE", "The type specified by the <i>superclass</i> must exist."],
+      ["INACCESSIBLE_TYPE", "The type specified by the <i>superclass</i> must be accessible."],
+      ["EXPECTED_THROWABLE", "The <i>superclass</i> must be a subtype of <a href=\"http://docs.oracle.com/javase/7/docs/api/java/lang/Throwable.html\">Throwable</a>."],
+      ["CIRCULAR_INHERITANCE", "The new type cannot be a subtype of itself either directly or indirectly."],
     ],
+  "example-1" : ["module Main in examples;%0A%0Aexception Apocalypse extends RuntimeException;%0A%0Aexception Apophis99942 extends Apocalypse;%0A%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    try%0A    {%0A        (F::println %22Oh look, a meteor?%22);%0A%0A        throw (new Apophis99942 %22Oh no, an asteroid!%22);%0A%0A        (F::println %22The world survived!%22);%0A    }%0A    catch (problem : Apocalypse)%0A    {%0A        (F::println (problem.getMessage));%0A        (F::println %22Ah well, back to the stone age.%22);%0A    }%0A}", "Oh look, a meteor?%0AOh no, an asteroid!%0AAh well, back to the stone age."],
 },
 
 
 "Enum Definition" : {
-  "summary" : "An enum-definition creates a new annotation-type in the enclosing package.",
+  "summary" : "An enum-definition creates a new enum-type in the enclosing package.",
   "ast" : "autumn.lang.compiler.ast.nodes.EnumDefinition",
   "syntax":
     [
       [0, "@<i>annotation<sub>1</sub></i>"],
       [0, "@<i>annotation<sub>2</sub></i>"],
       [0, "@<i>annotation<sub>n</sub></i>"],
-      [0, "<span class=\"keyword\">enum</span> <i>name</i>"],
-      [0, "{"],
-      [1, "<i>constant<sub>1</sub></i>"],
-      [1, "<i>constant<sub>2</sub></i>"],
-      [1, "<i>...</i>"],
-      [1, "<i>constant<sub>n</sub></i>"],
-      [0, "}"],
+      [0, "<span class=\"keyword\">enum</span> <i><a href=\"ConstructPage.html?construct=Name\">name</a></i> ( <i><a href=\"ConstructPage.html?construct=Name\">constant</a><sub>1</sub></i> , ... , <i><a href=\"ConstructPage.html?construct=Name\">constant</a><sub>n</sub></i> ) ;"],
     ],
   "details":
     [
+      [0, "The new type has public-access."],
+      [0, "<a href=\"http://docs.oracle.com/javase/7/docs/api/java/lang/Enum.html\">Enum</a> is the direct superclass of the new type"],
+      [0, "The new type does not have any direct superinterfaces."],
+      [0, "Let E be the new enum-type:"],
+      [1, "For each enum-constant X in E, there is a field F in E such that:"],
+      [2, "The name of F is the name of X."],
+      [2, "The type of F is type of E."],
+      [2, "F is publicly-accessible."],
+      [2, "F is static."],
+      [2, "F is final."],
+      [2, "F is an enum-constant, according to reflection."],
+      [1, "E defines two publicly-accessible static methods:"],
+      [2, "values() : E[]"],
+      [3, "This method creates an array of the enum-constants declared in E."],
+      [3, "Each invocation of the method creates a new array instance."],
+      [3, "The elements in the array are in declaration order."],
+      [2, "valueOf(name : String) : E"],
+      [3, "This method retrieves an enum-constant based on its name."],
+      [3, "This method throws a <a href=\"http://docs.oracle.com/javase/7/docs/api/java/lang/NullPointerException.html\">NullPointerException</a>, if name is null."],
+      [3, "This method throws a <a href=\"http://docs.oracle.com/javase/7/docs/api/java/lang/IllegalArgumentException.html\">IllegalArgumentException</a>, if the named enum-constant cannot be found."],
     ],
   "static-checks":
     [
       ["DUPLICATE_TYPE", "No two types can share the same descriptor."],
       ["DUPLICATE_CONSTANT", "Enum constants cannot share their name."],
     ],
-},
-
-
-"Enum Constant" : {
-  "summary" : "An enum-constant defines a new constant in an enum-definition.",
-  "ast" : "autumn.lang.compiler.ast.nodes.EnumConstant",
-  "syntax":
-    [
-      [0, "@<i>annotation<sub>1</sub></i>"],
-      [0, "@<i>annotation<sub>2</sub></i>"],
-      [0, "@<i>annotation<sub>n</sub></i>"],
-      [0, "<span class=\"keyword\">constant</span> <i>name</i> ;"],
-    ],
-  "details":
-    [
-    ],
-  "static-checks":
-    [
-    ],
+  "example-1" : ["module Main in examples;%0A%0A%0Aenum City ( Paris, London, Rome );%0A%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    (My::print (field City::Paris));%0A%0A    (My::print (field City::London));%0A%0A    (My::print (field City::Rome));%0A}%0A%0A%0Adefun print (constant : Enum) : void%0A{%0A    (F::println %22Name: %22 .. (constant.name));%0A    (F::println %22Ordinal: %22 .. (constant.ordinal));%0A    (F::println);%0A}", "Name: Paris%0AOrdinal: 0%0A%0AName: London%0AOrdinal: 1%0A%0AName: Rome%0AOrdinal: 2"],
+  "example-2" : ["module Main in examples;%0A%0A%0Aenum City ( Paris, London, Rome );%0A%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    (My::print (City::valueOf %22Paris%22));%0A%0A    (My::print (City::valueOf %22London%22));%0A%0A    (My::print (City::valueOf %22Rome%22));%0A}%0A%0A%0Adefun print (constant : Enum) : void%0A{%0A    (F::println %22Name: %22 .. (constant.name));%0A    (F::println %22Ordinal: %22 .. (constant.ordinal));%0A    (F::println);%0A}", "Name: Paris%0AOrdinal: 0%0A%0AName: London%0AOrdinal: 1%0A%0AName: Rome%0AOrdinal: 2"],
+  "example-3" : ["module Main in examples;%0A%0A%0Aenum City ( Paris, London, Rome );%0A%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    val array = (City::values);%0A%0A    for(i = 0; i < (F::len array); i + 1)%0A    {%0A        val constant = (F::get array, i) is Enum;%0A%0A        (My::print constant);%0A    }%0A}%0A%0A%0Adefun print (constant : Enum) : void%0A{%0A    (F::println %22Name: %22 .. (constant.name));%0A    (F::println %22Ordinal: %22 .. (constant.ordinal));%0A    (F::println);%0A}", "Name: Paris%0AOrdinal: 0%0A%0AName: London%0AOrdinal: 1%0A%0AName: Rome%0AOrdinal: 2"],
 },
 
 
@@ -314,6 +395,7 @@ function spec()
     ],
   "details":
     [
+      [0, "The new type has public-access."],
     ],
   "static-checks":
     [
@@ -334,6 +416,7 @@ function spec()
     ],
   "details":
     [
+      [0, "The new type has public-access."],
     ],
   "static-checks":
     [
@@ -362,13 +445,14 @@ function spec()
     [
       [0, "A design <i>member</i> can be a design-property."],
       [0, "A design <i>member</i> can be a design-method."],
+      [0, "The new type has public-access."],
     ],
   "static-checks":
     [
       ["DUPLICATE_TYPE", "No two types can share the same descriptor."],
-      ["NO_SUCH_TYPE", "The <i>superinterface<sub>i</sub></i> type must exist."],
-      ["INACCESSIBLE_TYPE", "The <i>superinterface<sub>i</sub></i> type must be accessible from the enclosing package."],
-      ["EXPECTED_DESIGN", "The type of <i>superinterface<sub>i</sub></i> must be assignable to type autumn.lang.Prototype."],
+      ["NO_SUCH_TYPE", "The type specified by the <i><i>superinterface<sub>i</sub></i></i> must exist."],
+      ["INACCESSIBLE_TYPE", "The type specified by the <i><i>superinterface<sub>i</sub></i></i> must be accessible."],
+      ["EXPECTED_DESIGN", "The type of <i><i>superinterface<sub>i</sub></i></i> must be assignable to type autumn.lang.Prototype."],
       ["DUPLICATE_PROPERTY", "No two properties in the same design definition can share a name."],
       ["DUPLICATE_METHOD", "No two methods in the same design definition can share a name."],
       ["METHOD_CONFLICTS_WITH_PROPERTY", "A method and a property cannot share a name."],
@@ -467,7 +551,7 @@ function spec()
   "static-checks":
     [
     ],
-  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    {%0A        (F::println %22A%22);%0A        (F::println %22B%22);%0A        (F::println %22C%22);%0A    }%0A}", ""],
+  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    {%0A        (F::println %22A%22);%0A        (F::println %22B%22);%0A        (F::println %22C%22);%0A    }%0A}", "A%0AB%0AC"],
 },
 
 
@@ -510,9 +594,9 @@ function spec()
     [
       ["EXPECTED_CONDITION", "The type of each condition must be assignable to primitive-type boolean."],
     ],
-  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    for(i = 10; i < 25; i + 1)%0A    {%0A        (My::write i);%0A    }%0A} %0A%0Adefun write(index : int) : void%0A{%0A    val case1 = index &#37; 3 == 0; // Fizz%0A    val case2 = index &#37; 5 == 0; // Buzz%0A    val case3 = case1 && case2; // Both%0A%0A    if(case3)%0A    {%0A        (F::println index .. %22 = Both%22);%0A    }%0A    elif(case2)%0A    {%0A        (F::println index .. %22 = Buzz%22);%0A    }%0A    elif(case1)%0A    {%0A        (F::println index .. %22 = Fizz%22);%0A    }%0A    else%0A    {%0A        (F::println index);%0A    }%0A}", ""],
+  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    for(i = 10; i < 25; i + 1)%0A    {%0A        (My::write i);%0A    }%0A} %0A%0Adefun write(index : int) : void%0A{%0A    val case1 = index &#37; 3 == 0; // Fizz%0A    val case2 = index &#37; 5 == 0; // Buzz%0A    val case3 = case1 && case2; // Both%0A%0A    if(case3)%0A    {%0A        (F::println index .. %22 = Both%22);%0A    }%0A    elif(case2)%0A    {%0A        (F::println index .. %22 = Buzz%22);%0A    }%0A    elif(case1)%0A    {%0A        (F::println index .. %22 = Fizz%22);%0A    }%0A    else%0A    {%0A        (F::println index);%0A    }%0A}", "10 = Buzz%0A11%0A12 = Fizz%0A13%0A14%0A15 = Both%0A16%0A17%0A18 = Fizz%0A19%0A20 = Buzz%0A21 = Fizz%0A22%0A23%0A24 = Fizz"],
   "example-2" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    (My::write %22Mercury%22, false);%0A    (My::write %22Venus%22, false);%0A    (My::write %22Earth%22, false);%0A    (My::write %22Mars%22, false);%0A%0A    (F::println);%0A%0A    (My::write %22Jupiter%22, true);%0A    (My::write %22Saturn%22, true);%0A    (My::write %22Uranus%22, true);%0A    (My::write %22Neptune%22, true);%0A}%0A%0Adefun write(name : String, jovian : boolean) : void%0A{%0A    if(jovian)%0A    {%0A        (F::println name .. %22 is a jovian planet.%22);%0A    }%0A    else%0A    {%0A        (F::println name .. %22 is a terrestrial planet.%22);%0A    }%0A}", "Mercury is a terrestrial planet.%0AVenus is a terrestrial planet.%0AEarth is a terrestrial planet.%0AMars is a terrestrial planet.%0A%0AJupiter is a jovian planet.%0ASaturn is a jovian planet.%0AUranus is a jovian planet.%0ANeptune is a jovian planet."],
-  "example-3" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    (My::write 0);%0A    (My::write 1);%0A    (My::write 2);%0A    (My::write 3);%0A    (My::write 4);%0A    (My::write 5);%0A    (My::write 6);%0A    (My::write 7);%0A    (My::write 8);%0A    (My::write 9);%0A}%0A%0Adefun write(number : int) : void%0A{%0A    if(number &#37; 2 != 0)%0A    {%0A        (F::println number .. %22 is very odd.%22);%0A    }%0A}", ""],
+  "example-3" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    (My::write 0);%0A    (My::write 1);%0A    (My::write 2);%0A    (My::write 3);%0A    (My::write 4);%0A    (My::write 5);%0A    (My::write 6);%0A    (My::write 7);%0A    (My::write 8);%0A    (My::write 9);%0A}%0A%0Adefun write(number : int) : void%0A{%0A    if(number &#37; 2 != 0)%0A    {%0A        (F::println number .. %22 is very odd.%22);%0A    }%0A}", "1 is very odd.%0A3 is very odd.%0A5 is very odd.%0A7 is very odd.%0A9 is very odd."],
 },
 
 
@@ -527,13 +611,14 @@ function spec()
     [
       [0, "The condition will be unboxed, if necessary."],
       [0, "The statement will be executed, only if the <i>condition</i> produces true."],
+      [0, "The <i>condition</i> will be unboxed, if necessary."],
     ],
   "static-checks":
     [
-      ["EXPECTED_CONDITION", "The type of condition must be assignable to type boolean."],
+      ["EXPECTED_CONDITION", "The type of <i><i>condition</i></i> must be assignable to type boolean."],
     ],
   "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    (My::write %22Europa%22, false);%0A    (My::write %22Titan%22, false);%0A    (My::write %22Ceres%22, false);%0A    (My::write %22Mimas%22, false);%0A%0A    (My::write %22Mercury%22, true);%0A    (My::write %22Venus%22, true);%0A    (My::write %22Earth%22, true);%0A    (My::write %22Mars%22, true);%0A}%0A%0Adefun write(name : String, planet : boolean) : void%0A{%0A    when (planet) then (F::println name .. %22 is a planet.%22);%0A}", "Mercury is a planet.%0AVenus is a planet.%0AEarth is a planet.%0AMars is a planet."],
-  "example-2" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    val emma = 5000;%0A    val elle = 23000;%0A    val evie = 127000;%0A    val erin = 230000;%0A%0A    (My::write %22Emma%22, emma);%0A    (My::write %22Elle%22, elle);%0A    (My::write %22Evie%22, evie);%0A    (My::write %22Erin%22, erin);%0A}%0A%0Adefun write(name : String, income : int) : void%0A{%0A    val tax = (My::tax income);%0A%0A    (F::println name .. %22's Tax = %22 .. tax);%0A}%0A%0Adefun tax(income : int) : int%0A{%0A    // No tax, if income is less than $10000.%0A    when (income < 10000) then return 0;%0A%0A    // 10&#37; tax, if income is less than $100,000.%0A    when (income < 100000) then return income / 10;%0A%0A    // 20&#37; tax, if income is less than $200,000.%0A    when (income < 200000) then return income / 5;%0A%0A    // Otherwise, 50&#37; tax.%0A    return income / 2;%0A}", ""],
+  "example-2" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    val emma = 5000;%0A    val elle = 23000;%0A    val evie = 127000;%0A    val erin = 230000;%0A%0A    (My::write %22Emma%22, emma);%0A    (My::write %22Elle%22, elle);%0A    (My::write %22Evie%22, evie);%0A    (My::write %22Erin%22, erin);%0A}%0A%0Adefun write(name : String, income : int) : void%0A{%0A    val tax = (My::tax income);%0A%0A    (F::println name .. %22's Tax = %22 .. tax);%0A}%0A%0Adefun tax(income : int) : int%0A{%0A    // No tax, if income is less than $10000.%0A    when (income < 10000) then return 0;%0A%0A    // 10&#37; tax, if income is less than $100,000.%0A    when (income < 100000) then return income / 10;%0A%0A    // 20&#37; tax, if income is less than $200,000.%0A    when (income < 200000) then return income / 5;%0A%0A    // Otherwise, 50&#37; tax.%0A    return income / 2;%0A}", "Emma's Tax = 0%0AElle's Tax = 2300%0AEvie's Tax = 25400%0AErin's Tax = 115000"],
 },
 
 
@@ -552,9 +637,9 @@ function spec()
     [
       ["NO_SUCH_LABEL", "The <i>label</i> must be declared somewhere in the enclosing function."],
     ],
-  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    (F::println %22Virginia%22);%0A%0A    goto WEST;%0A%0A    (F::println %22Kansas%22);%0A%0A    marker WEST;%0A%0A    (F::println %22California%22);%0A}", ""],
+  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    (F::println %22Virginia%22);%0A%0A    goto WEST;%0A%0A    (F::println %22Kansas%22);%0A%0A    marker WEST;%0A%0A    (F::println %22California%22);%0A}", "Virginia%0ACalifornia"],
   "example-2" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    for (x = 0; x < 3; x + 1)%0A    {%0A        for (y = 0; y < 3; y + 1)%0A        {%0A            for (z = 0; z < 3; z + 1)%0A            {%0A                (F::println [x, y, z]);%0A%0A                when (x == 3 && y == 2 && z == 1) then goto END;%0A            }%0A        }%0A    }%0A%0A    marker END;%0A}", "[0, 0, 0]%0A[0, 0, 1]%0A[0, 0, 2]%0A[0, 1, 0]%0A[0, 1, 1]%0A[0, 1, 2]%0A[0, 2, 0]%0A[0, 2, 1]%0A[0, 2, 2]%0A[1, 0, 0]%0A[1, 0, 1]%0A[1, 0, 2]%0A[1, 1, 0]%0A[1, 1, 1]%0A[1, 1, 2]%0A[1, 2, 0]%0A[1, 2, 1]%0A[1, 2, 2]%0A[2, 0, 0]%0A[2, 0, 1]%0A[2, 0, 2]%0A[2, 1, 0]%0A[2, 1, 1]%0A[2, 1, 2]%0A[2, 2, 0]%0A[2, 2, 1]%0A[2, 2, 2]"],
-  "example-3" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    (F::print %22This%22);%0A%0A    goto IS;%0A%0A    marker DONOT;%0A%0A    (F::print %22do not%22);%0A%0A    goto DO;%0A%0A    marker PASTA;%0A%0A    (F::print %22spaghetti%22);%0A%0A    goto CODE;%0A%0A    marker IS;%0A%0A    (F::print %22 is %22);%0A%0A    goto PASTA;%0A%0A    marker DO;%0A%0A    (F::print %22 do %22);%0A%0A    goto THIS;%0A%0A    marker CODE;%0A%0A    (F::print %22 code %22);%0A%0A    goto DONOT;%0A%0A    marker THIS;%0A%0A    (F::print %22this!!!%22);%0A}", ""],
+  "example-3" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    (F::print %22This%22);%0A%0A    goto IS;%0A%0A    marker DONOT;%0A%0A    (F::print %22do not%22);%0A%0A    goto DO;%0A%0A    marker PASTA;%0A%0A    (F::print %22spaghetti%22);%0A%0A    goto CODE;%0A%0A    marker IS;%0A%0A    (F::print %22 is %22);%0A%0A    goto PASTA;%0A%0A    marker DO;%0A%0A    (F::print %22 do %22);%0A%0A    goto THIS;%0A%0A    marker CODE;%0A%0A    (F::print %22 code %22);%0A%0A    goto DONOT;%0A%0A    marker THIS;%0A%0A    (F::print %22this!!!%22);%0A}", "This is spaghetti code do not do this!!!"],
 },
 
 
@@ -575,7 +660,7 @@ function spec()
     [
       ["DUPLICATE_LABEL", "No two labels in the same function can share a name."],
     ],
-  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    (F::println %22Virginia%22);%0A%0A    goto WEST;%0A%0A    (F::println %22Kansas%22);%0A%0A    marker WEST;%0A%0A    (F::println %22California%22);%0A}", ""],
+  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    (F::println %22Virginia%22);%0A%0A    goto WEST;%0A%0A    (F::println %22Kansas%22);%0A%0A    marker WEST;%0A%0A    (F::println %22California%22);%0A}", "Virginia%0ACalifornia"],
 },
 
 
@@ -586,20 +671,21 @@ function spec()
     [
       [0, "<span class=\"keyword\">while</span> ( <i><a href=\"TextPage.html?page=Expression\">condition</a></i> )"],
       [0, "{"],
-      [1, "<i>body</i>"],
+      [1, "<i><a href=\"TextPage.html?page=Statement\">body</a></i>"],
       [0, "}"],
     ],
   "details":
     [
-      [0, "The body of a loop can contain break-statements."],
-      [0, "The body of a loop can contain continue-statements."],
-      [0, "The body of a loop can contain redo-statements."],
+      [0, "The <i>condition</i> will be unboxed, if necessary."],
+      [0, "The <i>body</i> of a loop can contain break-statements."],
+      [0, "The <i>body</i> of a loop can contain continue-statements."],
+      [0, "The <i>body</i> of a loop can contain redo-statements."],
     ],
   "static-checks":
     [
-      ["EXPECTED_CONDITION", "The type of condition must be assignable to type boolean."],
+      ["EXPECTED_CONDITION", "The type of <i><i>condition</i></i> must be assignable to type boolean."],
     ],
-  "example-1" : ["module * in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    var i = 0;%0A%0A    while (i < 5)%0A    {%0A        (F::print %22X = %22);%0A        (F::println i);%0A%0A        i = i + 1;%0A    }%0A}", ""],
+  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    var i = 0;%0A%0A    while (i < 5)%0A    {%0A        (F::println %22i = %22 .. i);%0A%0A        i = i + 1;%0A    }%0A}", "i = 0%0Ai = 1%0Ai = 2%0Ai = 3%0Ai = 4"],
 },
 
 
@@ -610,20 +696,21 @@ function spec()
     [
       [0, "<span class=\"keyword\">until</span> ( <i><a href=\"TextPage.html?page=Expression\">condition</a></i> )"],
       [0, "{"],
-      [1, "<i>body</i>"],
+      [1, "<i><a href=\"TextPage.html?page=Statement\">body</a></i>"],
       [0, "}"],
     ],
   "details":
     [
-      [0, "The body of a loop can contain break-statements."],
-      [0, "The body of a loop can contain continue-statements."],
-      [0, "The body of a loop can contain redo-statements."],
+      [0, "The <i>condition</i> will be unboxed, if necessary."],
+      [0, "The <i>body</i> of a loop can contain break-statements."],
+      [0, "The <i>body</i> of a loop can contain continue-statements."],
+      [0, "The <i>body</i> of a loop can contain redo-statements."],
     ],
   "static-checks":
     [
-      ["EXPECTED_CONDITION", "The type of condition must be assignable to type boolean."],
+      ["EXPECTED_CONDITION", "The type of <i><i>condition</i></i> must be assignable to type boolean."],
     ],
-  "example-1" : ["module * in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    var i = 0;%0A%0A    until (i > 5)%0A    {%0A        (F::print %22X = %22);%0A        (F::println i);%0A%0A        i = i + 1;%0A    }%0A}", ""],
+  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    var i = 0;%0A%0A    until (i > 5)%0A    {%0A        (F::println %22i = %22 .. i);%0A%0A        i = i + 1;%0A    }%0A}", "i = 0%0Ai = 1%0Ai = 2%0Ai = 3%0Ai = 4%0Ai = 5"],
 },
 
 
@@ -634,22 +721,23 @@ function spec()
     [
       [0, "<span class=\"keyword\">do</span>"],
       [0, "{"],
-      [1, "<i>body</i>"],
+      [1, "<i><a href=\"TextPage.html?page=Statement\">body</a></i>"],
       [0, "}"],
       [0, "<span class=\"keyword\">while</span> ( <i><a href=\"TextPage.html?page=Expression\">condition</a></i> )"],
     ],
   "details":
     [
       [0, "The <i>body</i> will be executed at least once."],
-      [0, "The body of a loop can contain break-statements."],
-      [0, "The body of a loop can contain continue-statements."],
-      [0, "The body of a loop can contain redo-statements."],
+      [0, "The <i>condition</i> will be unboxed, if necessary."],
+      [0, "The <i>body</i> of a loop can contain break-statements."],
+      [0, "The <i>body</i> of a loop can contain continue-statements."],
+      [0, "The <i>body</i> of a loop can contain redo-statements."],
     ],
   "static-checks":
     [
-      ["EXPECTED_CONDITION", "The type of condition must be assignable to type boolean."],
+      ["EXPECTED_CONDITION", "The type of <i><i>condition</i></i> must be assignable to type boolean."],
     ],
-  "example-1" : ["module * in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    var i = 0;%0A    %0A    do%0A    {%0A        (F::print %22X = %22);%0A        (F::println i);%0A%0A        i = i + 1;%0A    }%0A    while (i < 5)%0A}", "X = 0%0AX = 1%0AX = 2%0AX = 3%0AX = 4"],
+  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    var i = 0;%0A    %0A    do%0A    {%0A        (F::println %22i = %22 .. i);%0A%0A        i = i + 1;%0A    }%0A    while (i < 5)%0A}", "i = 0%0Ai = 1%0Ai = 2%0Ai = 3%0Ai = 4"],
 },
 
 
@@ -660,22 +748,23 @@ function spec()
     [
       [0, "<span class=\"keyword\">do</span>"],
       [0, "{"],
-      [1, "<i>body</i>"],
+      [1, "<i><a href=\"TextPage.html?page=Statement\">body</a></i>"],
       [0, "}"],
       [0, "<span class=\"keyword\">until</span> ( <i><a href=\"TextPage.html?page=Expression\">condition</a></i> )"],
     ],
   "details":
     [
       [0, "The <i>body</i> will be executed at least once."],
-      [0, "The body of a loop can contain break-statements."],
-      [0, "The body of a loop can contain continue-statements."],
-      [0, "The body of a loop can contain redo-statements."],
+      [0, "The <i>condition</i> will be unboxed, if necessary."],
+      [0, "The <i>body</i> of a loop can contain break-statements."],
+      [0, "The <i>body</i> of a loop can contain continue-statements."],
+      [0, "The <i>body</i> of a loop can contain redo-statements."],
     ],
   "static-checks":
     [
-      ["EXPECTED_CONDITION", "The type of condition must be assignable to type boolean."],
+      ["EXPECTED_CONDITION", "The type of <i><i>condition</i></i> must be assignable to type boolean."],
     ],
-  "example-1" : ["module * in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    var i = 0;%0A    %0A    do%0A    {%0A        (F::print %22X = %22);%0A        (F::println i);%0A%0A        i = i + 1;%0A    }%0A    until (i == 5)%0A}", ""],
+  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    var i = 0;%0A    %0A    do%0A    {%0A        (F::println %22i = %22 .. i);%0A%0A        i = i + 1;%0A    }%0A    until (i == 5)%0A}", "i = 0%0Ai = 1%0Ai = 2%0Ai = 3%0Ai = 4"],
 },
 
 
@@ -686,50 +775,53 @@ function spec()
     [
       [0, "<span class=\"keyword\">forever</span>"],
       [0, "{"],
-      [1, "<i>body</i>"],
+      [1, "<i><a href=\"TextPage.html?page=Statement\">body</a></i>"],
       [0, "}"],
     ],
   "details":
     [
-      [0, "The body of a loop can contain break-statements."],
-      [0, "The body of a loop can contain continue-statements."],
-      [0, "The body of a loop can contain redo-statements."],
+      [0, "The <i>body</i> of a loop can contain break-statements."],
+      [0, "The <i>body</i> of a loop can contain continue-statements."],
+      [0, "The <i>body</i> of a loop can contain redo-statements."],
     ],
   "static-checks":
     [
     ],
+  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    var i = 0;%0A%0A    var very = %22%22;%0A%0A    forever %0A    {%0A        (F::println %22Forever is a%22 .. very .. %22 long time.%22);%0A%0A        very = very .. %22 very%22;%0A%0A        i = i + 1;%0A%0A        when (i == 8) then break;%0A    }%0A}", "Forever is a long time.%0AForever is a very long time.%0AForever is a very very long time.%0AForever is a very very very long time.%0AForever is a very very very very long time.%0AForever is a very very very very very long time.%0AForever is a very very very very very very long time.%0AForever is a very very very very very very very long time."],
 },
 
 
 "For Statement" : {
-  "summary" : "A for-statement iterates based on a control variable and a condition.",
+  "summary" : "A for-statement is a loop that iterates based on a control variable and a condition.",
   "ast" : "autumn.lang.compiler.ast.nodes.ForStatement",
   "syntax":
     [
-      [0, "<span class=\"keyword\">for</span> ( <i>assignee</i> = <i>#initializer#</i> ; <i><a href=\"TextPage.html?page=Expression\">condition</a></i> ; <i>#modifier#</i> )"],
+      [0, "<span class=\"keyword\">for</span> ( <i><a href=\"ConstructPage.html?construct=Variable\">assignee</a></i> = <i><a href=\"TextPage.html?page=Expression\">initializer</a></i> ; <i><a href=\"TextPage.html?page=Expression\">condition</a></i> ; <i><a href=\"TextPage.html?page=Expression\">modifier</a></i> )"],
       [0, "{"],
-      [1, "<i>body</i>"],
+      [1, "<i><a href=\"TextPage.html?page=Statement\">body</a></i>"],
       [0, "}"],
     ],
   "details":
     [
-      [0, "The scope of the assignee is the enclosing function."],
-      [0, "The assignee is alive precisely during an activation of the enclosing function."],
-      [0, "The assignee variable will be of primitive-type int."],
-      [0, "The body of a loop can contain break-statements."],
-      [0, "The body of a loop can contain continue-statements."],
-      [0, "The body of a loop can contain redo-statements."],
+      [0, "The scope of the <i>assignee</i> is anywhere in the enclosing function."],
+      [0, "The <i>assignee</i> is alive precisely during an activation of the enclosing function."],
+      [0, "The type of the <i>assignee</i> variable will be primitive-type int."],
+      [0, "The <i>assignee</i> is a readonly variable."],
+      [0, "The <i>initializer</i> will be unboxed, if necessary."],
+      [0, "The <i>condition</i> will be unboxed, if necessary."],
+      [0, "The <i>modifier</i> will be unboxed, if necessary."],
+      [0, "The <i>body</i> of a loop can contain break-statements."],
+      [0, "The <i>body</i> of a loop can contain continue-statements."],
+      [0, "The <i>body</i> of a loop can contain redo-statements."],
     ],
   "static-checks":
     [
-      ["VALUE_REQUIRED", "The type of the <i>initializer</i> must be either a primitive-type or a reference-type."],
-      ["VALUE_REQUIRED", "The type of the <i>modifier</i> must be either a primitive-type or a reference-type."],
-      ["EXPECTED_INTEGER", "The type of initializer must be assignable to type int."],
-      ["EXPECTED_CONDITION", "The type of condition must be assignable to type boolean."],
-      ["EXPECTED_INTEGER", "The type of modifier must be assignable to type int."],
-      ["DUPLICATE_VARIABLE", "No two variables declared inside the same function can share a name."],
+      ["DUPLICATE_VARIABLE", "The <i>assignee</i> cannot share its name with another variable declared in the same scope."],
+      ["EXPECTED_INTEGER", "The type of <i>initializer</i> must be assignable to type int."],
+      ["EXPECTED_CONDITION", "The type of <i><i>condition</i></i> must be assignable to type boolean."],
+      ["EXPECTED_INTEGER", "The type of <i>modifier</i> must be assignable to type int."],
     ],
-  "example-1" : ["module * in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    for (i = 0; i < 5; i + 1)%0A    {%0A        (F::print %22X = %22);%0A        (F::println i);%0A    }%0A}", ""],
+  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    for (i = 0; i < 5; i + 1)%0A    {%0A        (F::print %22X = %22);%0A        (F::println i);%0A    }%0A}", "X = 0%0AX = 1%0AX = 2%0AX = 3%0AX = 4"],
 },
 
 
@@ -738,29 +830,30 @@ function spec()
   "ast" : "autumn.lang.compiler.ast.nodes.ForeachStatement",
   "syntax":
     [
-      [0, "<span class=\"keyword\">foreach</span> ( <i>assignee</i> : <i>type</i> <span class=\"keyword\">in</span> <i>iterable</i> )"],
+      [0, "<span class=\"keyword\">foreach</span> ( <i><a href=\"ConstructPage.html?construct=Variable\">assignee</a></i> : <i><a href=\"ConstructPage.html?construct=TypeSpecifier\">type</a></i> <span class=\"keyword\">in</span> <i><a href=\"TextPage.html?page=Expression\">iterable</a></i> )"],
       [0, "{"],
-      [1, "<i>body</i>"],
+      [1, "<i><a href=\"TextPage.html?page=Statement\">body</a></i>"],
       [0, "}"],
     ],
   "details":
     [
-      [0, "The type of the iterable must be assignable to type #JavaLangIterable#."],
-      [0, "Runtime Check: The value returned by the iterator must be cast-able to the <i>type</i>."],
-      [0, "The scope of the assignee is the enclosing function."],
-      [0, "The assignee is alive precisely during an activation of the enclosing function."],
-      [0, "The body of a loop can contain break-statements."],
-      [0, "The body of a loop can contain continue-statements."],
-      [0, "The body of a loop can contain redo-statements."],
+      [0, "The scope of the <i>assignee</i> is anywhere in the enclosing function."],
+      [0, "The <i>assignee</i> is alive precisely during an activation of the enclosing function."],
+      [0, "The <i>assignee</i> is a readonly variable."],
+      [0, "The <i>body</i> of a loop can contain break-statements."],
+      [0, "The <i>body</i> of a loop can contain continue-statements."],
+      [0, "The <i>body</i> of a loop can contain redo-statements."],
+      [0, "A <a href=\"http://docs.oracle.com/javase/7/docs/api/java/lang/ClassCastException.html\">ClassCastException</a> will result at runtime, if the value returned by the iterator cannot be cast to the specified <i>type</i>."],
     ],
   "static-checks":
     [
-      ["VALUE_REQUIRED", "The type of the <i>iterable</i> must be either a primitive-type or a reference-type."],
-      ["DUPLICATE_VARIABLE", "No two variables declared inside the same function can share a name."],
-      ["NO_SUCH_TYPE", "The <i>type</i> type must exist."],
-      ["INACCESSIBLE_TYPE", "The <i>type</i> type must be accessible from the enclosing package."],
+      ["DUPLICATE_VARIABLE", "The <i>assignee</i> cannot share its name with another variable declared in the same scope."],
+      ["NO_SUCH_TYPE", "The type specified by the <i><i>type</i></i> must exist."],
+      ["INACCESSIBLE_TYPE", "The type specified by the <i><i>type</i></i> must be accessible."],
+      ["EXPECTED_REFERENCE_TYPE", "The type specified by the <i>type</i> must be a reference-type."],
+      ["EXPECTED_ITERABLE", "The type of the <i>iterable</i> must be a subtype of <a href=\"http://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html\">Iterable</a>."],
     ],
-  "example-1" : ["module * in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    var pets = [%22Jet%22, %22Fluffy%22, %22Eyeball%22, %22Molly%22];%0A%0A    foreach (x : String in pets)%0A    {%0A        (F::print %22Pet Name = %22);%0A        (F::println x);%0A    }%0A}", ""],
+  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    var pets = [%22Jet%22, %22Fluffy%22, %22Eyeball%22, %22Molly%22];%0A%0A    foreach (x : String in pets)%0A    {%0A        (F::print %22Pet Name = %22);%0A        (F::println x);%0A    }%0A}", "Pet Name = Jet%0APet Name = Fluffy%0APet Name = Eyeball%0APet Name = Molly"],
 },
 
 
@@ -774,12 +867,20 @@ function spec()
   "details":
     [
       [0, "A break-statement cannot be used to exit an invocation."],
+      [0, "Types of Loops:"],
+      [1, "<a href=\"ConstructPage.html?construct=Forever Statement\">Forever Statement</a>s"],
+      [1, "<a href=\"ConstructPage.html?construct=While Statement\">While Statement</a>s"],
+      [1, "<a href=\"ConstructPage.html?construct=Until Statement\">Until Statement</a>s"],
+      [1, "<a href=\"ConstructPage.html?construct=Do-While Statement\">Do-While Statement</a>s"],
+      [1, "<a href=\"ConstructPage.html?construct=Do-Until Statement\">Do-Until Statement</a>s"],
+      [1, "<a href=\"ConstructPage.html?construct=For Statement\">For Statement</a>s"],
+      [1, "<a href=\"ConstructPage.html?construct=Foreach Statement\">Foreach Statement</a>s"],
     ],
   "static-checks":
     [
-      ["BREAK_OUTSIDE_OF_LOOP", "A break-statement must be in the body of a loop."],
+      ["BREAK_OUTSIDE_OF_LOOP", "A break-statement must be in the <i>body</i> of a loop."],
     ],
-  "example-1" : ["module * in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    var i = 0;%0A%0A    while (i < 100)%0A    {%0A        (F::print %22X = %22);%0A        (F::println i);%0A%0A        when (i == 5) then break;%0A%0A        i = i + 1;%0A    }%0A}", ""],
+  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    var i = 0;%0A%0A    while (i < 100)%0A    {%0A        (F::println %22i = %22 .. i);%0A%0A        when (i == 5) then break;%0A%0A        i = i + 1;%0A    }%0A}", "i = 0%0Ai = 1%0Ai = 2%0Ai = 3%0Ai = 4%0Ai = 5"],
 },
 
 
@@ -793,12 +894,21 @@ function spec()
   "details":
     [
       [0, "A continue-statement cannot be used to exit an invocation."],
+      [0, "Types of Loops:"],
+      [1, "<a href=\"ConstructPage.html?construct=Forever Statement\">Forever Statement</a>s"],
+      [1, "<a href=\"ConstructPage.html?construct=While Statement\">While Statement</a>s"],
+      [1, "<a href=\"ConstructPage.html?construct=Until Statement\">Until Statement</a>s"],
+      [1, "<a href=\"ConstructPage.html?construct=Do-While Statement\">Do-While Statement</a>s"],
+      [1, "<a href=\"ConstructPage.html?construct=Do-Until Statement\">Do-Until Statement</a>s"],
+      [1, "<a href=\"ConstructPage.html?construct=For Statement\">For Statement</a>s"],
+      [1, "<a href=\"ConstructPage.html?construct=Foreach Statement\">Foreach Statement</a>s"],
     ],
   "static-checks":
     [
-      ["CONTINUE_OUTSIDE_OF_LOOP", "A continue-statement must be in the body of a loop."],
+      ["CONTINUE_OUTSIDE_OF_LOOP", "A continue-statement must be in the <i>body</i> of a loop."],
     ],
-  "example-1" : ["module * in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    var i = 0;%0A%0A    while (i < 5)%0A    {%0A        i = i + 1;%0A%0A        when (i == 2) then continue;%0A%0A        (F::print %22X = %22);%0A        (F::println i);%0A    }%0A}", ""],
+  "example-1" : ["module Main in examples;%0A%0Aimport java.util.LinkedList;%0A%0Atuple Pet (kind : String, name : String);%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    val barn = (new LinkedList);%0A%0A    (barn.add (new Pet %22Chicken%22, %22Chicky%22)); %0A    (barn.add (new Pet %22Chicken%22, %22Picky%22));%0A    (barn.add (new Pet %22Dog%22,     %22Jet%22));%0A    (barn.add (new Pet %22Chicken%22, %22Sikorsky%22));%0A    (barn.add (new Pet %22Cat%22,     %22Fluffy%22));%0A    (barn.add (new Pet %22Sheep%22,   %22Eyeball%22));%0A    (barn.add (new Pet %22Chicken%22, %22Lucky%22));%0A%0A    foreach (pet : Pet in barn)%0A    {%0A        when ((pet.kind) != %22Chicken%22) then continue;%0A%0A        (F::println %22Name of Chicken: %22 .. (pet.name));%0A    }%0A}", "Name of Chicken: Chicky%0AName of Chicken: Picky%0AName of Chicken: Sikorsky%0AName of Chicken: Lucky"],
+  "example-2" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    var i = 0;%0A%0A    while (i < 5)%0A    {%0A        i = i + 1;%0A%0A        when (i == 3) then continue;%0A%0A        (F::println %22i = %22 .. i);%0A    }%0A}", "i = 1%0Ai = 2%0Ai = 4%0Ai = 5"],
 },
 
 
@@ -812,11 +922,20 @@ function spec()
   "details":
     [
       [0, "A redo-statement cannot be used to exit an invocation."],
+      [0, "Types of Loops:"],
+      [1, "<a href=\"ConstructPage.html?construct=Forever Statement\">Forever Statement</a>s"],
+      [1, "<a href=\"ConstructPage.html?construct=While Statement\">While Statement</a>s"],
+      [1, "<a href=\"ConstructPage.html?construct=Until Statement\">Until Statement</a>s"],
+      [1, "<a href=\"ConstructPage.html?construct=Do-While Statement\">Do-While Statement</a>s"],
+      [1, "<a href=\"ConstructPage.html?construct=Do-Until Statement\">Do-Until Statement</a>s"],
+      [1, "<a href=\"ConstructPage.html?construct=For Statement\">For Statement</a>s"],
+      [1, "<a href=\"ConstructPage.html?construct=Foreach Statement\">Foreach Statement</a>s"],
     ],
   "static-checks":
     [
-      ["REDO_OUTSIDE_OF_LOOP", "A redo-statement must be in the body of a loop."],
+      ["REDO_OUTSIDE_OF_LOOP", "A redo-statement must be in the <i>body</i> of a loop."],
     ],
+  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    var i = 1;%0A%0A    while ((My::condition i))%0A    {%0A        (F::println %22i = %22 .. i);%0A        (F::println);%0A%0A        i = i + 1;%0A%0A        when (i == 2) then redo;%0A    }%0A}%0A%0Adefun condition(x : int) : boolean%0A{%0A    (F::println %22x = %22 .. x);%0A%0A    return x < 4;%0A}", "x = 1%0Ai = 1%0A%0Ai = 2%0A%0Ax = 3%0Ai = 3%0A%0Ax = 4"],
 },
 
 
@@ -829,18 +948,18 @@ function spec()
     ],
   "details":
     [
-      [0, "The scope of the assignee is the enclosing function."],
-      [0, "The assignee is alive precisely during an activation of the enclosing function."],
+      [0, "The scope of the <i>assignee</i> is anywhere in the enclosing function."],
+      [0, "The <i>assignee</i> is alive precisely during an activation of the enclosing function."],
       [0, "The static-type of the assignee is the static-type of the value."],
     ],
   "static-checks":
     [
-      ["DUPLICATE_VARIABLE", "No two variables declared inside the same function can share a name."],
+      ["DUPLICATE_VARIABLE", "The <i>assignee</i> cannot share its name with another variable declared in the same scope."],
       ["VALUE_REQUIRED", "The type of the <i>value</i> must be either a primitive-type or a reference-type."],
       ["VALUE_REQUIRED", "The type of the <i>value</i> cannot be the void-type."],
       ["EXPECTED_NON_NULL", "The type of the <i>value</i> cannot be the null-type."],
     ],
-  "example-1" : ["module * in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    # Create a boolean variable.%0A    var a = true;%0A%0A    # Create a char variable.%0A    var b = 'A';%0A%0A    # Create a byte variable.%0A    var c = 11B;%0A%0A    # Create a short variable.%0A    var d = 13S;%0A%0A    # Create a int variable.%0A    var e = 17;%0A%0A    # Create a long variable.%0A    var f = 19L;%0A%0A    # Create a float variable.%0A    var g = 23.0F;%0A%0A    # Create a double variable.%0A    var h = 27.0;%0A%0A    # Create a string variable.%0A    var i = %22Venus%22;%0A%0A    # Create a list variable.%0A    var j = [%22Jupiter%22, %22Saturn%22, %22Uranus%22, %22Neptune%22];%0A%0A    # Create another int variable.%0A    var x = e + 3;%0A%0A    # Create yet another int variable.%0A    var y = x + e;%0A%0A    # Create a list containing the values of the previous variables.%0A    var values = [a, b, c, d, e, f, g, i, j, x, y];%0A%0A    foreach (value : Object in values)%0A    {%0A        (F::print %22Value = %22);%0A        (F::println value);%0A    }%0A}", ""],
+  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    # Create a boolean variable.%0A    var a = true;%0A%0A    # Create a char variable.%0A    var b = 'A';%0A%0A    # Create a byte variable.%0A    var c = 11B;%0A%0A    # Create a short variable.%0A    var d = 13S;%0A%0A    # Create a int variable.%0A    var e = 17;%0A%0A    # Create a long variable.%0A    var f = 19L;%0A%0A    # Create a float variable.%0A    var g = 23.0F;%0A%0A    # Create a double variable.%0A    var h = 27.0;%0A%0A    # Create a string variable.%0A    var i = %22Venus%22;%0A%0A    # Create a list variable.%0A    var j = [%22Jupiter%22, %22Saturn%22, %22Uranus%22, %22Neptune%22];%0A%0A    # Create another int variable.%0A    var x = e + 3;%0A%0A    # Create yet another int variable.%0A    var y = x + e;%0A%0A    # Create a list containing the values of the previous variables.%0A    var values = [a, b, c, d, e, f, g, i, j, x, y];%0A%0A    foreach (value : Object in values)%0A    {%0A        (F::print %22Value = %22);%0A        (F::println value);%0A    }%0A}", "Value = true%0AValue = A%0AValue = 11%0AValue = 13%0AValue = 17%0AValue = 19%0AValue = 23.0%0AValue = Venus%0AValue = [Jupiter, Saturn, Uranus, Neptune]%0AValue = 20%0AValue = 37"],
 },
 
 
@@ -853,13 +972,13 @@ function spec()
     ],
   "details":
     [
-      [0, "The scope of the assignee is the enclosing function."],
-      [0, "The assignee is alive precisely during an activation of the enclosing function."],
+      [0, "The scope of the <i>assignee</i> is anywhere in the enclosing function."],
+      [0, "The <i>assignee</i> is alive precisely during an activation of the enclosing function."],
       [0, "The static-type of the assignee is the static-type of the value."],
     ],
   "static-checks":
     [
-      ["DUPLICATE_VARIABLE", "No two variables declared inside the same function can share a name."],
+      ["DUPLICATE_VARIABLE", "The <i>assignee</i> cannot share its name with another variable declared in the same scope."],
       ["VALUE_REQUIRED", "The type of the <i>value</i> must be either a primitive-type or a reference-type."],
       ["VALUE_REQUIRED", "The type of the <i>value</i> cannot be the void-type."],
       ["EXPECTED_NON_NULL", "The type of the <i>value</i> cannot be the null-type."],
@@ -888,7 +1007,7 @@ function spec()
       ["IMPOSSIBLE_ASSIGNMENT", "The type of the <i>value</i> must be assignable to the type of the <i>assignee</i>."],
       ["VALUE_REQUIRED", "The type of the <i>value</i> must be either a primitive-type or a reference-type."],
     ],
-  "example-1" : ["module * in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    # Declare a new variable.%0A    var planet = %22Venus%22;%0A%0A    # Print the name of the planet.%0A    (F::println planet);%0A%0A    # Change the value of the variable. %0A    let planet = %22Mars%22;%0A%0A    # Print the name of the planet.%0A    (F::println planet);%0A%0A    # Change the value of the variable. %0A    planet = %22Pluto%22;%0A%0A    # Print the name of the planet.%0A    (F::println planet);%0A}", "Venus%0AMars%0APluto"],
+  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    # Declare a new variable.%0A    var planet = %22Venus%22;%0A%0A    # Print the name of the planet.%0A    (F::println planet);%0A%0A    # Change the value of the variable. %0A    let planet = %22Mars%22;%0A%0A    # Print the name of the planet.%0A    (F::println planet);%0A%0A    # Change the value of the variable. %0A    planet = %22Pluto%22;%0A%0A    # Print the name of the planet.%0A    (F::println planet);%0A}", "Venus%0AMars%0APluto"],
 },
 
 
@@ -905,7 +1024,7 @@ function spec()
   "static-checks":
     [
       ["VALUE_REQUIRED", "The type of the <i>argument</i> must be either a primitive-type or a reference-type."],
-      ["EXPECTED_THROWABLE", "The type of argument must be assignable to type java.lang.Throwable."],
+      ["EXPECTED_THROWABLE", "The type of <i>argument</i> must be assignable to type java.lang.Throwable."],
     ],
 },
 
@@ -935,15 +1054,15 @@ function spec()
   "details":
     [
       [0, "The try-catch block must have at least one handler."],
-      [0, "The scope of the <i>variable<sub>i</sub></i> is the enclosing function."],
-      [0, "The <i>variable<sub>i</sub></i> is alive precisely during an activation of the enclosing function."],
+      [0, "The scope of the <i><i>variable<sub>i</sub></i></i> is anywhere in the enclosing function."],
+      [0, "The <i><i>variable<sub>i</sub></i></i> is alive precisely during an activation of the enclosing function."],
       [0, "The compiler will automatically reorder the handlers based on their specificity."],
       [0, "A handler <i>X</i> is more specific than a handler <i>Y</i>, if <i>type<sub>X</sub></i> is a subclass of <i>type<sub>Y</sub></i>."],
     ],
   "static-checks":
     [
-      ["DUPLICATE_VARIABLE", "No two variables declared inside the same function can share a name."],
-      ["EXPECTED_THROWABLE", "The type of <i>type<sub>i</sub></i> must be assignable to type java.lang.Throwable."],
+      ["DUPLICATE_VARIABLE", "The <i><i>variable<sub>i</sub></i></i> cannot share its name with another variable declared in the same scope."],
+      ["EXPECTED_THROWABLE", "The type of <i><i>type<sub>i</sub></i></i> must be assignable to type java.lang.Throwable."],
       ["DUPLICATE_EXCEPTION_HANDLER", "No two <i>type</i>s in the same try-statement can be equal."],
     ],
 },
@@ -964,12 +1083,13 @@ function spec()
       [0, "If the condition evaluates to true, then execution simply continues onward."],
       [0, "If its is necessary to throw an exception and a value is provided, then the value will be the error-message part of the exception."],
       [0, "Unlike assume-statements, assert-statements cannot be disabled."],
+      [0, "The <i>condition</i> will be unboxed, if necessary."],
     ],
   "static-checks":
     [
-      ["EXPECTED_CONDITION", "The type of condition must be assignable to type boolean."],
+      ["EXPECTED_CONDITION", "The type of <i><i>condition</i></i> must be assignable to type boolean."],
       ["VALUE_REQUIRED", "The type of the <i>message</i> must be either a primitive-type or a reference-type."],
-      ["EXPECTED_STRING", "The type of message must be assignable to type java.lang.String."],
+      ["EXPECTED_STRING", "The type of <i>message</i> must be assignable to type java.lang.String."],
     ],
 },
 
@@ -990,12 +1110,13 @@ function spec()
       [0, "If the condition evaluates to true, then execution simply continues onward."],
       [0, "If its is necessary to throw an exception and a value is provided, then the value will be the error-message part of the exception."],
       [0, "Unlike assert-statements, assume-statements can be disabled."],
+      [0, "The <i>condition</i> will be unboxed, if necessary."],
     ],
   "static-checks":
     [
-      ["EXPECTED_CONDITION", "The type of condition must be assignable to type boolean."],
+      ["EXPECTED_CONDITION", "The type of <i><i>condition</i></i> must be assignable to type boolean."],
       ["VALUE_REQUIRED", "The type of the <i>message</i> must be either a primitive-type or a reference-type."],
-      ["EXPECTED_STRING", "The type of message must be assignable to type java.lang.String."],
+      ["EXPECTED_STRING", "The type of <i>message</i> must be assignable to type java.lang.String."],
     ],
 },
 
@@ -1014,8 +1135,8 @@ function spec()
     ],
   "static-checks":
     [
-      ["NO_SUCH_TYPE", "The <i>module</i> type must exist."],
-      ["INACCESSIBLE_TYPE", "The <i>module</i> type must be accessible from the enclosing package."],
+      ["NO_SUCH_TYPE", "The type specified by the <i><i>module</i></i> must exist."],
+      ["INACCESSIBLE_TYPE", "The type specified by the <i><i>module</i></i> must be accessible."],
       ["NO_SUCH_METHOD", "The <i>module</i> must contain exactly one function with the given <i>name</i>."],
       ["EXPECTED_MODULE", "The <i>module</i> must be a subtype of #AutumnLangModule#."],
     ],
@@ -1048,7 +1169,7 @@ function spec()
   "ast" : "autumn.lang.compiler.ast.nodes.SetterStatement",
   "syntax":
     [
-      [0, "<span class=\"keyword\">setter</span> <i>#owner#</i> . <i>#name#</i> =&gt; <i><a href=\"TextPage.html?page=Expression\">value</a></i> ;"],
+      [0, "<span class=\"keyword\">setter</span> <i>#owner#</i> . <i><a href=\"ConstructPage.html?construct=Name\">name</a></i> =&gt; <i>module</i> :: <i><span class=\"keyword\">method</span></i> ;"],
     ],
   "details":
     [
@@ -1056,16 +1177,18 @@ function spec()
   "static-checks":
     [
       ["VALUE_REQUIRED", "The type of the <i>owner</i> must be either a primitive-type or a reference-type."],
+      ["EXPECTED_DESIGN", "The type of the <i>owner</i> must be a subtype of #AutumnLangPrototype#."],
+      ["EXPECTED_MODULE", "The type of the <i>module</i> must be a subtype of #AutumnLangModule#."],
     ],
 },
 
 
 "Getter Statement" : {
-  "summary" : "A getter-statement sets the implementation of a property's getter. ",
+  "summary" : "A getter-statement sets the implementation of a property's getter.",
   "ast" : "autumn.lang.compiler.ast.nodes.GetterStatement",
   "syntax":
     [
-      [0, "<span class=\"keyword\">getter</span> <i>#owner#</i> . <i>#name#</i> =&gt; <i><a href=\"TextPage.html?page=Expression\">value</a></i> ;"],
+      [0, "<span class=\"keyword\">getter</span> <i>#owner#</i> . <i><a href=\"ConstructPage.html?construct=Name\">name</a></i> =&gt; <i><a href=\"TextPage.html?page=Expression\">value</a></i> ;"],
     ],
   "details":
     [
@@ -1082,7 +1205,7 @@ function spec()
   "ast" : "autumn.lang.compiler.ast.nodes.MethodStatement",
   "syntax":
     [
-      [0, "<span class=\"keyword\">method</span> <i>#owner#</i> . <i>#name#</i> ( <i>#parameter#<sub>1</sub></i> , ... , <i>#parameter#<sub>n</sub></i> ) =&gt; <i><a href=\"TextPage.html?page=Expression\">value</a></i> ;"],
+      [0, "<span class=\"keyword\">method</span> <i>#owner#</i> . <i><a href=\"ConstructPage.html?construct=Name\">name</a></i> ( <i>#parameter#<sub>1</sub></i> , ... , <i>#parameter#<sub>n</sub></i> ) =&gt; <i><a href=\"TextPage.html?page=Expression\">value</a></i> ;"],
     ],
   "details":
     [
@@ -1164,7 +1287,7 @@ function spec()
 
 
 "Return Value Statement" : {
-  "summary" : "A return-statement causes execution to exit the invocation of a function. ",
+  "summary" : "A return-statement causes execution to exit the invocation of a function.",
   "ast" : "autumn.lang.compiler.ast.nodes.ReturnValueStatement",
   "syntax":
     [
@@ -1199,7 +1322,7 @@ function spec()
       ["VALUE_REQUIRED", "The type of each <i>argument</i> must be either a primitive-type or a reference-type."],
       ["WRONG_TYPE", "The type of <i>argument<sub>i</sub></i> must be assignable to the type of <i>parameter<sub>i</sub></i> of the enclosing function."],
     ],
-  "example-1" : ["module * in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A// TODO%0A}", ""],
+  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A// TODO%0A}", ""],
 },
 
 
@@ -1237,7 +1360,7 @@ function spec()
       ["VALUE_REQUIRED", "The type of the <i>value</i> must be either a primitive-type or a reference-type."],
       ["WRONG_TYPE", "The type of the <i>value</i> must be assignable to the <i>return-type</i> of the enclosing function."],
     ],
-  "example-1" : ["module * in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    (F::println (My::next));%0A    (F::println (My::next));%0A    (F::println (My::next));%0A%0A    (F::println (My::next));%0A    (F::println (My::next));%0A    (F::println (My::next));%0A%0A    (F::println (My::next));%0A    (F::println (My::next));%0A    (F::println (My::next));%0A%0A    (F::println (My::next));%0A    (F::println (My::next));%0A    (F::println (My::next));%0A%0A    (F::println (My::next));%0A    (F::println (My::next));%0A    (F::println (My::next));%0A}%0A%0Adefun next() : String%0A{%0A    marker StartOfYear;%0A%0A    yield %22January%22;%0A    yield %22February%22;%0A    yield %22March%22;%0A    yield %22April%22;%0A    yield %22May%22;%0A    yield %22June%22;%0A    yield %22July%22;%0A    yield %22August%22;%0A    yield %22September%22;%0A    yield %22October%22;%0A    yield %22November%22;%0A    yield %22December%22;%0A%0A    goto StartOfYear;%0A}", "January%0AFebruary%0AMarch%0AApril%0AMay%0AJune%0AJuly%0AAugust%0ASeptember%0AOctober%0ANovember%0ADecember%0AJanuary%0AFebruary%0AMarch"],
+  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    (F::println (My::next));%0A    (F::println (My::next));%0A    (F::println (My::next));%0A%0A    (F::println (My::next));%0A    (F::println (My::next));%0A    (F::println (My::next));%0A%0A    (F::println (My::next));%0A    (F::println (My::next));%0A    (F::println (My::next));%0A%0A    (F::println (My::next));%0A    (F::println (My::next));%0A    (F::println (My::next));%0A%0A    (F::println (My::next));%0A    (F::println (My::next));%0A    (F::println (My::next));%0A}%0A%0Adefun next() : String%0A{%0A    marker StartOfYear;%0A%0A    yield %22January%22;%0A    yield %22February%22;%0A    yield %22March%22;%0A    yield %22April%22;%0A    yield %22May%22;%0A    yield %22June%22;%0A    yield %22July%22;%0A    yield %22August%22;%0A    yield %22September%22;%0A    yield %22October%22;%0A    yield %22November%22;%0A    yield %22December%22;%0A%0A    goto StartOfYear;%0A}", "January%0AFebruary%0AMarch%0AApril%0AMay%0AJune%0AJuly%0AAugust%0ASeptember%0AOctober%0ANovember%0ADecember%0AJanuary%0AFebruary%0AMarch"],
 },
 
 
@@ -1254,30 +1377,36 @@ function spec()
     [
       [0, "Return Type: boolean"],
       [0, "Return the value of the constant."],
+      [0, "Related Boxed Type: java.lang.Boolean"],
     ],
   "static-checks":
     [
     ],
+  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    (F::println true);%0A    (F::println false);%0A}", "true%0Afalse"],
 },
 
 
 "Char Datum" : {
-  "summary" : "A boolean-datum is a literal character.",
+  "summary" : "A char-datum is a literal character.",
   "ast" : "autumn.lang.compiler.ast.nodes.CharDatum",
   "syntax":
     [
       [0, "<b>'</b><i>character</i><b>'</b>"],
       [0, "<hr class=\%22syntax-hr\%22>"],
-      [0, "<i>digits</i><b>C</b>"],
+      [0, "<i>digits</i><b class='keyword'>C</b>"],
     ],
   "details":
     [
       [0, "Return Type: char"],
       [0, "Return the value of the constant."],
+      [0, "Minimum Value = 0"],
+      [0, "Maximum Value = 65535"],
+      [0, "Related Boxed Type: java.lang.Character"],
     ],
   "static-checks":
     [
     ],
+  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    val value = 'A' .. 'u' .. 116C .. 117C .. 'm' .. 'n';%0A%0A    (F::println value);%0A}", "Autumn"],
 },
 
 
@@ -1286,9 +1415,9 @@ function spec()
   "ast" : "autumn.lang.compiler.ast.nodes.ByteDatum",
   "syntax":
     [
-      [0, "<i>digits</i><b>B</b>"],
+      [0, "<i>digits</i><b class='keyword'>B</b>"],
       [0, "<hr class=\%22syntax-hr\%22>"],
-      [0, "<b>-</b><i>digits</i><b>B</b>"],
+      [0, "<b>-</b><i>digits</i><b class='keyword'>B</b>"],
     ],
   "details":
     [
@@ -1296,10 +1425,12 @@ function spec()
       [0, "Return the value of the constant."],
       [0, "Minimum Value = -128"],
       [0, "Maximum Value = 127"],
+      [0, "Related Boxed Type: java.lang.Byte"],
     ],
   "static-checks":
     [
     ],
+  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    val value = 23B + -5B + 1B;%0A%0A    (F::println value);%0A}", "19"],
 },
 
 
@@ -1308,9 +1439,9 @@ function spec()
   "ast" : "autumn.lang.compiler.ast.nodes.ShortDatum",
   "syntax":
     [
-      [0, "<i>digits</i><b>S</b>"],
+      [0, "<i>digits</i><b class='keyword'>S</b>"],
       [0, "<hr class=\%22syntax-hr\%22>"],
-      [0, "<b>-</b><i>digits</i><b>S</b>"],
+      [0, "<b>-</b><i>digits</i><b class='keyword'>S</b>"],
     ],
   "details":
     [
@@ -1318,10 +1449,12 @@ function spec()
       [0, "Return the value of the constant."],
       [0, "Minimum Value = -32768"],
       [0, "Maximum Value = 32767"],
+      [0, "Related Boxed Type: java.lang.Short"],
     ],
   "static-checks":
     [
     ],
+  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    val value = 23S + -5S + 1S;%0A%0A    (F::println value);%0A}", "19"],
 },
 
 
@@ -1340,10 +1473,12 @@ function spec()
       [0, "Return the value of the constant."],
       [0, "Minimum Value = -2147483648"],
       [0, "Maximum Value = 2147483647"],
+      [0, "Related Boxed Type: java.lang.Integer"],
     ],
   "static-checks":
     [
     ],
+  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    val value = 23 + -5 + 1;%0A%0A    (F::println value);%0A}", "19"],
 },
 
 
@@ -1352,9 +1487,9 @@ function spec()
   "ast" : "autumn.lang.compiler.ast.nodes.LongDatum",
   "syntax":
     [
-      [0, "<i>digits</i><b>L</b>"],
+      [0, "<i>digits</i><b class='keyword'>L</b>"],
       [0, "<hr class=\%22syntax-hr\%22>"],
-      [0, "<b>-</b><i>digits</i><b>L</b>"],
+      [0, "<b>-</b><i>digits</i><b class='keyword'>L</b>"],
     ],
   "details":
     [
@@ -1362,10 +1497,12 @@ function spec()
       [0, "Return the value of the constant."],
       [0, "Minimum Value = -9223372036854775808"],
       [0, "Maximum Value = 9223372036854775807"],
+      [0, "Related Boxed Type: java.lang.Long"],
     ],
   "static-checks":
     [
     ],
+  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    val value = 23L + -5L + 1L;%0A%0A    (F::println value);%0A}", "19"],
 },
 
 
@@ -1374,18 +1511,28 @@ function spec()
   "ast" : "autumn.lang.compiler.ast.nodes.FloatDatum",
   "syntax":
     [
-      [0, "<i>digits</i><b>.</b><i>digits</i><b>F</b>"],
+      [0, "<i>digits</i><b>.</b><i>digits</i><b class='keyword'>F</b>"],
       [0, "<hr class=\%22syntax-hr\%22>"],
-      [0, "<b>-</b><i>digits</i><b>.</b><i>digits</i><b>F</b>"],
+      [0, "<b>-</b><i>digits</i><b>.</b><i>digits</i><b class='keyword'>F</b>"],
+      [0, "<hr class=\%22syntax-hr\%22>"],
+      [0, "<i>digits</i><b>.</b><i>digits</i><b class='keyword'>e</b><i>digits</i><b class='keyword'>F</b>"],
+      [0, "<hr class=\%22syntax-hr\%22>"],
+      [0, "<b>-</b><i>digits</i><b>.</b><i>digits</i><b class='keyword'>e</b><i>digits</i><b class='keyword'>F</b>"],
+      [0, "<hr class=\%22syntax-hr\%22>"],
+      [0, "<i>digits</i><b>.</b><i>digits</i><b class='keyword'>E</b><i>digits</i><b class='keyword'>F</b>"],
+      [0, "<hr class=\%22syntax-hr\%22>"],
+      [0, "<b>-</b><i>digits</i><b>.</b><i>digits</i><b class='keyword'>E</b><i>digits</i><b class='keyword'>F</b>"],
     ],
   "details":
     [
       [0, "Return Type: float"],
       [0, "Return the value of the constant."],
+      [0, "Related Boxed Type: java.lang.Float"],
     ],
   "static-checks":
     [
     ],
+  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    val value = 23.0F + -5.0F + 1.0e2F + 2.0E3F;%0A%0A    (F::println value);%0A}", "2118.0"],
 },
 
 
@@ -1397,15 +1544,25 @@ function spec()
       [0, "<i>digits</i><b>.</b><i>digits</i>"],
       [0, "<hr class=\%22syntax-hr\%22>"],
       [0, "<b>-</b><i>digits</i><b>.</b><i>digits</i>"],
+      [0, "<hr class=\%22syntax-hr\%22>"],
+      [0, "<i>digits</i><b>.</b><i>digits</i><b class='keyword'>e</b><i>digits</i>"],
+      [0, "<hr class=\%22syntax-hr\%22>"],
+      [0, "<b>-</b><i>digits</i><b>.</b><i>digits</i><b class='keyword'>e</b><i>digits</i>"],
+      [0, "<hr class=\%22syntax-hr\%22>"],
+      [0, "<i>digits</i><b>.</b><i>digits</i><b class='keyword'>E</b><i>digits</i>"],
+      [0, "<hr class=\%22syntax-hr\%22>"],
+      [0, "<b>-</b><i>digits</i><b>.</b><i>digits</i><b class='keyword'>E</b><i>digits</i>"],
     ],
   "details":
     [
       [0, "Return Type: double"],
       [0, "Return the value of the constant."],
+      [0, "Related Boxed Type: java.lang.Double"],
     ],
   "static-checks":
     [
     ],
+  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    val value = 23.0 + -5.0 + 1.0e2 + 2.0E3;%0A%0A    (F::println value);%0A}", "2118.0"],
 },
 
 
@@ -1439,11 +1596,11 @@ function spec()
 
 
 "Class Datum" : {
-  "summary" : "A class-datum is a literal #JavaLangClass# value.",
+  "summary" : "A class-datum is a literal <a href=\"http://docs.oracle.com/javase/7/docs/api/java/lang/Class.html\">Class</a> value.",
   "ast" : "autumn.lang.compiler.ast.nodes.ClassDatum",
   "syntax":
     [
-      [0, "class <i>type</i>"],
+      [0, "<span class=\"keyword\">class</span> <i>type</i>"],
     ],
   "details":
     [
@@ -1452,9 +1609,10 @@ function spec()
     ],
   "static-checks":
     [
-      ["NO_SUCH_TYPE", "The <i>type</i> type must exist."],
-      ["INACCESSIBLE_TYPE", "The <i>type</i> type must be accessible from the enclosing package."],
+      ["NO_SUCH_TYPE", "The type specified by the <i><i>type</i></i> must exist."],
+      ["INACCESSIBLE_TYPE", "The type specified by the <i><i>type</i></i> must be accessible."],
     ],
+  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    var value00 = class void;%0A    var value01 = class boolean;%0A    var value02 = class char;%0A    var value03 = class byte;%0A    var value04 = class short;%0A    var value05 = class int;%0A    var value06 = class long;%0A    var value07 = class float;%0A    var value08 = class double;%0A    var value09 = class String;%0A    var value10 = class String[];%0A    var value11 = class String[][];%0A    var value12 = class String[][][];%0A%0A    (F::println value00);%0A    (F::println value01);%0A    (F::println value02);%0A    (F::println value03);%0A    (F::println value04);%0A    (F::println value05);%0A    (F::println value06);%0A    (F::println value07);%0A    (F::println value08);%0A    (F::println value09);%0A    (F::println value10);%0A    (F::println value11);%0A    (F::println value12);%0A}", "Parsing Failed!%0A  File: /media/disk/Code/EclipseProjects/AutumnSpecification/autumn/examples/E0068/code.leaf%0A  Line: #6%0A  Column: #25"],
 },
 
 
@@ -1512,8 +1670,8 @@ function spec()
       [1, "(- long) &#8614; long"],
       [1, "(- float) &#8614; float"],
       [1, "(- double) &#8614; double"],
-      [1, "(- <a href=\"http://docs.oracle.com/javase/7/docs/api/java/math/BigInteger.html\">java.math.BigInteger</a>) => <a href=\"http://docs.oracle.com/javase/7/docs/api/java/math/BigInteger.html\">java.math.BigInteger</a>"],
-      [1, "(- <a href=\"http://docs.oracle.com/javase/7/docs/api/java/math/BigDecimal.html\">java.math.BigDecimal</a>) => <a href=\"http://docs.oracle.com/javase/7/docs/api/java/math/BigDecimal.html\">java.math.BigDecimal</a>"],
+      [1, "(- <a href=\"http://docs.oracle.com/javase/7/docs/api/java/math/BigInteger.html\">BigInteger</a>) => <a href=\"http://docs.oracle.com/javase/7/docs/api/java/math/BigInteger.html\">BigInteger</a>"],
+      [1, "(- <a href=\"http://docs.oracle.com/javase/7/docs/api/java/math/BigDecimal.html\">BigDecimal</a>) => <a href=\"http://docs.oracle.com/javase/7/docs/api/java/math/BigDecimal.html\">BigDecimal</a>"],
       [0, "The overload that best matches the operand will be selected."],
       [1, "Unboxing will be performed, if necessary."],
       [1, "Coercion will be performed, if necessary."],
@@ -1524,7 +1682,7 @@ function spec()
     [
       ["NO_SUCH_UNARY_OPERATOR", "None of the overloads will accept the operand due to its type."],
     ],
-  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    val B = 17B;%0A    val S = 17S;%0A    val I = 17;%0A    val L = 17L;%0A    val F = 17.0F;%0A    val D = 17.0;%0A    val BI = (F::big 17);%0A    val BD = (F::big 17.0);%0A%0A    var value = null as Object;%0A    %0A    # Negate a byte and print it. %0A    value = - B;%0A    (F::println %22byte = %22 .. value);%0A%0A    # Negate a short and print it. %0A    value = - S;%0A    (F::println %22short = %22 .. value);%0A%0A    # Negate an int and print it. %0A    value = - I;%0A    (F::println %22int = %22 .. value);%0A%0A    # Negate a long and print it. %0A    value = - L;%0A    (F::println %22long = %22 .. value);%0A%0A    # Negate a float and print it. %0A    value = - F;%0A    (F::println %22float = %22 .. value);%0A%0A    # Negate a double and print it. %0A    value = - D;%0A    (F::println %22double = %22 .. value);%0A%0A    # Negate a BigInteger and print it. %0A    value = - BI;%0A    (F::println %22BigInteger = %22 .. value);%0A%0A    # Negate a BigDecimal and print it. %0A    value = - BD;%0A    (F::println %22BigDecimal = %22 .. value);%0A}", ""],
+  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    val B = 17B;%0A    val S = 17S;%0A    val I = 17;%0A    val L = 17L;%0A    val F = 17.0F;%0A    val D = 17.0;%0A    val BI = (F::big 17);%0A    val BD = (F::big 17.0);%0A%0A    var value = null as Object;%0A    %0A    # Negate a byte and print it. %0A    value = - B;%0A    (F::println %22byte = %22 .. value);%0A%0A    # Negate a short and print it. %0A    value = - S;%0A    (F::println %22short = %22 .. value);%0A%0A    # Negate an int and print it. %0A    value = - I;%0A    (F::println %22int = %22 .. value);%0A%0A    # Negate a long and print it. %0A    value = - L;%0A    (F::println %22long = %22 .. value);%0A%0A    # Negate a float and print it. %0A    value = - F;%0A    (F::println %22float = %22 .. value);%0A%0A    # Negate a double and print it. %0A    value = - D;%0A    (F::println %22double = %22 .. value);%0A%0A    # Negate a BigInteger and print it. %0A    value = - BI;%0A    (F::println %22BigInteger = %22 .. value);%0A%0A    # Negate a BigDecimal and print it. %0A    value = - BD;%0A    (F::println %22BigDecimal = %22 .. value);%0A}", "byte = -17%0Ashort = -17%0Aint = -17%0Along = -17%0Afloat = -17.0%0Adouble = -17.0%0ABigInteger = -17%0ABigDecimal = -17.0"],
 },
 
 
@@ -1571,8 +1729,8 @@ function spec()
       [1, "(long / long) &#8614; long"],
       [1, "(float / float) &#8614; float"],
       [1, "(double / double) &#8614; double"],
-      [1, "(<a href=\"http://docs.oracle.com/javase/7/docs/api/java/math/BigInteger.html\">java.math.BigInteger</a> / <a href=\"http://docs.oracle.com/javase/7/docs/api/java/math/BigInteger.html\">java.math.BigInteger</a>) &#8614; <a href=\"http://docs.oracle.com/javase/7/docs/api/java/math/BigInteger.html\">java.math.BigInteger</a>"],
-      [1, "(<a href=\"http://docs.oracle.com/javase/7/docs/api/java/math/BigDecimal.html\">java.math.BigDecimal</a> / <a href=\"http://docs.oracle.com/javase/7/docs/api/java/math/BigDecimal.html\">java.math.BigDecimal</a>) &#8614; <a href=\"http://docs.oracle.com/javase/7/docs/api/java/math/BigDecimal.html\">java.math.BigDecimal</a>"],
+      [1, "(<a href=\"http://docs.oracle.com/javase/7/docs/api/java/math/BigInteger.html\">BigInteger</a> / <a href=\"http://docs.oracle.com/javase/7/docs/api/java/math/BigInteger.html\">BigInteger</a>) &#8614; <a href=\"http://docs.oracle.com/javase/7/docs/api/java/math/BigInteger.html\">BigInteger</a>"],
+      [1, "(<a href=\"http://docs.oracle.com/javase/7/docs/api/java/math/BigDecimal.html\">BigDecimal</a> / <a href=\"http://docs.oracle.com/javase/7/docs/api/java/math/BigDecimal.html\">BigDecimal</a>) &#8614; <a href=\"http://docs.oracle.com/javase/7/docs/api/java/math/BigDecimal.html\">BigDecimal</a>"],
       [0, "The overload that best matches the operands will be selected."],
       [1, "Unboxing will be performed, if necessary."],
       [1, "Coercion will be performed, if necessary."],
@@ -1610,8 +1768,8 @@ function spec()
       [1, "(long &#37; long) &#8614; long"],
       [1, "(float &#37; float) &#8614; float"],
       [1, "(double &#37; double) &#8614; double"],
-      [1, "(<a href=\"http://docs.oracle.com/javase/7/docs/api/java/math/BigInteger.html\">java.math.BigInteger</a> &#37; <a href=\"http://docs.oracle.com/javase/7/docs/api/java/math/BigInteger.html\">java.math.BigInteger</a>) &#8614; <a href=\"http://docs.oracle.com/javase/7/docs/api/java/math/BigInteger.html\">java.math.BigInteger</a>"],
-      [1, "(<a href=\"http://docs.oracle.com/javase/7/docs/api/java/math/BigDecimal.html\">java.math.BigDecimal</a> &#37; <a href=\"http://docs.oracle.com/javase/7/docs/api/java/math/BigDecimal.html\">java.math.BigDecimal</a>) &#8614; <a href=\"http://docs.oracle.com/javase/7/docs/api/java/math/BigDecimal.html\">java.math.BigDecimal</a>"],
+      [1, "(<a href=\"http://docs.oracle.com/javase/7/docs/api/java/math/BigInteger.html\">BigInteger</a> &#37; <a href=\"http://docs.oracle.com/javase/7/docs/api/java/math/BigInteger.html\">BigInteger</a>) &#8614; <a href=\"http://docs.oracle.com/javase/7/docs/api/java/math/BigInteger.html\">BigInteger</a>"],
+      [1, "(<a href=\"http://docs.oracle.com/javase/7/docs/api/java/math/BigDecimal.html\">BigDecimal</a> &#37; <a href=\"http://docs.oracle.com/javase/7/docs/api/java/math/BigDecimal.html\">BigDecimal</a>) &#8614; <a href=\"http://docs.oracle.com/javase/7/docs/api/java/math/BigDecimal.html\">BigDecimal</a>"],
       [0, "The overload that best matches the operands will be selected."],
       [1, "Unboxing will be performed, if necessary."],
       [1, "Coercion will be performed, if necessary."],
@@ -1626,7 +1784,7 @@ function spec()
       ["NO_SUCH_BINARY_OPERATOR", "None of the overloads will accept the left-operand due to its type."],
       ["NO_SUCH_BINARY_OPERATOR", "None of the overloads will accept the right-operand due to its type."],
     ],
-  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    var value = null as Object;%0A%0A    value = 231C &#37; 83C;%0A    (F::println %22char = %22 .. value);%0A%0A    value = 32B &#37; 3B;%0A    (F::println %22byte = %22 .. value);%0A%0A    value = 32S &#37; 3S;%0A    (F::println %22short = %22 .. value);%0A%0A    value = 32 &#37; 3;%0A    (F::println %22int = %22 .. value);%0A%0A    value = 32L &#37; 3L;%0A    (F::println %22long = %22 .. value);%0A%0A    value = 32.0F &#37; 3.0F;%0A    (F::println %22float = %22 .. value);%0A%0A    value = 32.0 &#37; 3.0;%0A    (F::println %22double = %22 .. value);%0A%0A    value = (F::big 32) &#37; (F::big 3);%0A    (F::println %22BigInteger = %22 .. value);%0A%0A    value = (F::big 32.0) &#37; (F::big 3.0);%0A    (F::println %22BigDecimal = %22 .. value);%0A}", ""],
+  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    var value = null as Object;%0A%0A    value = 231C &#37; 83C;%0A    (F::println %22char = %22 .. value);%0A%0A    value = 32B &#37; 3B;%0A    (F::println %22byte = %22 .. value);%0A%0A    value = 32S &#37; 3S;%0A    (F::println %22short = %22 .. value);%0A%0A    value = 32 &#37; 3;%0A    (F::println %22int = %22 .. value);%0A%0A    value = 32L &#37; 3L;%0A    (F::println %22long = %22 .. value);%0A%0A    value = 32.0F &#37; 3.0F;%0A    (F::println %22float = %22 .. value);%0A%0A    value = 32.0 &#37; 3.0;%0A    (F::println %22double = %22 .. value);%0A%0A    value = (F::big 32) &#37; (F::big 3);%0A    (F::println %22BigInteger = %22 .. value);%0A%0A    value = (F::big 32.0) &#37; (F::big 3.0);%0A    (F::println %22BigDecimal = %22 .. value);%0A}", "char = A%0Abyte = 2%0Ashort = 2%0Aint = 2%0Along = 2%0Afloat = 2.0%0Adouble = 2.0%0ABigInteger = 2%0ABigDecimal = 2.0"],
 },
 
 
@@ -1649,8 +1807,8 @@ function spec()
       [1, "(long * long) &#8614; long"],
       [1, "(float * float) &#8614; float"],
       [1, "(double * double) &#8614; double"],
-      [1, "(<a href=\"http://docs.oracle.com/javase/7/docs/api/java/math/BigInteger.html\">java.math.BigInteger</a> * <a href=\"http://docs.oracle.com/javase/7/docs/api/java/math/BigInteger.html\">java.math.BigInteger</a>) &#8614; <a href=\"http://docs.oracle.com/javase/7/docs/api/java/math/BigInteger.html\">java.math.BigInteger</a>"],
-      [1, "(<a href=\"http://docs.oracle.com/javase/7/docs/api/java/math/BigDecimal.html\">java.math.BigDecimal</a> * <a href=\"http://docs.oracle.com/javase/7/docs/api/java/math/BigDecimal.html\">java.math.BigDecimal</a>) &#8614; <a href=\"http://docs.oracle.com/javase/7/docs/api/java/math/BigDecimal.html\">java.math.BigDecimal</a>"],
+      [1, "(<a href=\"http://docs.oracle.com/javase/7/docs/api/java/math/BigInteger.html\">BigInteger</a> * <a href=\"http://docs.oracle.com/javase/7/docs/api/java/math/BigInteger.html\">BigInteger</a>) &#8614; <a href=\"http://docs.oracle.com/javase/7/docs/api/java/math/BigInteger.html\">BigInteger</a>"],
+      [1, "(<a href=\"http://docs.oracle.com/javase/7/docs/api/java/math/BigDecimal.html\">BigDecimal</a> * <a href=\"http://docs.oracle.com/javase/7/docs/api/java/math/BigDecimal.html\">BigDecimal</a>) &#8614; <a href=\"http://docs.oracle.com/javase/7/docs/api/java/math/BigDecimal.html\">BigDecimal</a>"],
       [0, "The overload that best matches the operands will be selected."],
       [1, "Unboxing will be performed, if necessary."],
       [1, "Coercion will be performed, if necessary."],
@@ -1665,7 +1823,7 @@ function spec()
       ["NO_SUCH_BINARY_OPERATOR", "None of the overloads will accept the left-operand due to its type."],
       ["NO_SUCH_BINARY_OPERATOR", "None of the overloads will accept the right-operand due to its type."],
     ],
-  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    var value = null as Object;%0A%0A    value = 40C * 2C;%0A    (F::println %22char = %22 .. value);%0A%0A    value = 10B * 2B;%0A    (F::println %22byte = %22 .. value);%0A%0A    value = 10S * 2S;%0A    (F::println %22short = %22 .. value);%0A%0A    value = 10 * 2;%0A    (F::println %22int = %22 .. value);%0A%0A    value = 10L * 2L;%0A    (F::println %22long = %22 .. value);%0A%0A    value = 10.0F * 2.0F;%0A    (F::println %22float = %22 .. value);%0A%0A    value = 10.0 * 2.0;%0A    (F::println %22double = %22 .. value); %0A%0A    value = (F::big 10L) * (F::big 2L);%0A    (F::println %22BigInteger = %22 .. value);%0A%0A    value = (F::big 10.0) * (F::big 2.0);%0A    (F::println %22BigDecimal = %22 .. value);%0A}", ""],
+  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    var value = null as Object;%0A%0A    value = 40C * 2C;%0A    (F::println %22char = %22 .. value);%0A%0A    value = 10B * 2B;%0A    (F::println %22byte = %22 .. value);%0A%0A    value = 10S * 2S;%0A    (F::println %22short = %22 .. value);%0A%0A    value = 10 * 2;%0A    (F::println %22int = %22 .. value);%0A%0A    value = 10L * 2L;%0A    (F::println %22long = %22 .. value);%0A%0A    value = 10.0F * 2.0F;%0A    (F::println %22float = %22 .. value);%0A%0A    value = 10.0 * 2.0;%0A    (F::println %22double = %22 .. value); %0A%0A    value = (F::big 10L) * (F::big 2L);%0A    (F::println %22BigInteger = %22 .. value);%0A%0A    value = (F::big 10.0) * (F::big 2.0);%0A    (F::println %22BigDecimal = %22 .. value);%0A}", "char = P%0Abyte = 20%0Ashort = 20%0Aint = 20%0Along = 20%0Afloat = 20.0%0Adouble = 20.0%0ABigInteger = 20%0ABigDecimal = 20.00"],
 },
 
 
@@ -1688,8 +1846,8 @@ function spec()
       [1, "(long + long) &#8614; long"],
       [1, "(float + float) &#8614; float"],
       [1, "(double + double) &#8614; double"],
-      [1, "(<a href=\"http://docs.oracle.com/javase/7/docs/api/java/math/BigInteger.html\">java.math.BigInteger</a> + <a href=\"http://docs.oracle.com/javase/7/docs/api/java/math/BigInteger.html\">java.math.BigInteger</a>) &#8614; <a href=\"http://docs.oracle.com/javase/7/docs/api/java/math/BigInteger.html\">java.math.BigInteger</a>"],
-      [1, "(<a href=\"http://docs.oracle.com/javase/7/docs/api/java/math/BigDecimal.html\">java.math.BigDecimal</a> + <a href=\"http://docs.oracle.com/javase/7/docs/api/java/math/BigDecimal.html\">java.math.BigDecimal</a>) &#8614; <a href=\"http://docs.oracle.com/javase/7/docs/api/java/math/BigDecimal.html\">java.math.BigDecimal</a>"],
+      [1, "(<a href=\"http://docs.oracle.com/javase/7/docs/api/java/math/BigInteger.html\">BigInteger</a> + <a href=\"http://docs.oracle.com/javase/7/docs/api/java/math/BigInteger.html\">BigInteger</a>) &#8614; <a href=\"http://docs.oracle.com/javase/7/docs/api/java/math/BigInteger.html\">BigInteger</a>"],
+      [1, "(<a href=\"http://docs.oracle.com/javase/7/docs/api/java/math/BigDecimal.html\">BigDecimal</a> + <a href=\"http://docs.oracle.com/javase/7/docs/api/java/math/BigDecimal.html\">BigDecimal</a>) &#8614; <a href=\"http://docs.oracle.com/javase/7/docs/api/java/math/BigDecimal.html\">BigDecimal</a>"],
       [0, "The overload that best matches the operands will be selected."],
       [1, "Unboxing will be performed, if necessary."],
       [1, "Coercion will be performed, if necessary."],
@@ -1704,7 +1862,7 @@ function spec()
       ["NO_SUCH_BINARY_OPERATOR", "None of the overloads will accept the left-operand due to its type."],
       ["NO_SUCH_BINARY_OPERATOR", "None of the overloads will accept the right-operand due to its type."],
     ],
-  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    var value = null as Object;%0A%0A    value = 63C + 2C;%0A    (F::println %22char = %22 .. value);%0A%0A    value = 10B + 2B;%0A    (F::println %22byte = %22 .. value);%0A%0A    value = 10S + 2S;%0A    (F::println %22short = %22 .. value);%0A%0A    value = 10 + 2;%0A    (F::println %22int = %22 .. value);%0A%0A    value = 10L + 2L;%0A    (F::println %22long = %22 .. value);%0A%0A    value = 10.0F + 2.0F;%0A    (F::println %22float = %22 .. value);%0A%0A    value = 10.0 + 2.0;%0A    (F::println %22double = %22 .. value);%0A%0A    value = (F::big 10L) + (F::big 2L);%0A    (F::println %22BigInteger = %22 .. value); %0A%0A    value = (F::big 10.0) + (F::big 2.0);%0A    (F::println %22BigDecimal = %22 .. value);%0A}", ""],
+  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    var value = null as Object;%0A%0A    value = 63C + 2C;%0A    (F::println %22char = %22 .. value);%0A%0A    value = 10B + 2B;%0A    (F::println %22byte = %22 .. value);%0A%0A    value = 10S + 2S;%0A    (F::println %22short = %22 .. value);%0A%0A    value = 10 + 2;%0A    (F::println %22int = %22 .. value);%0A%0A    value = 10L + 2L;%0A    (F::println %22long = %22 .. value);%0A%0A    value = 10.0F + 2.0F;%0A    (F::println %22float = %22 .. value);%0A%0A    value = 10.0 + 2.0;%0A    (F::println %22double = %22 .. value);%0A%0A    value = (F::big 10L) + (F::big 2L);%0A    (F::println %22BigInteger = %22 .. value); %0A%0A    value = (F::big 10.0) + (F::big 2.0);%0A    (F::println %22BigDecimal = %22 .. value);%0A}", "char = A%0Abyte = 12%0Ashort = 12%0Aint = 12%0Along = 12%0Afloat = 12.0%0Adouble = 12.0%0ABigInteger = 12%0ABigDecimal = 12.0"],
 },
 
 
@@ -1727,8 +1885,8 @@ function spec()
       [1, "(long - long) &#8614; long"],
       [1, "(float - float) &#8614; float"],
       [1, "(double - double) &#8614; double"],
-      [1, "(<a href=\"http://docs.oracle.com/javase/7/docs/api/java/math/BigInteger.html\">java.math.BigInteger</a> - <a href=\"http://docs.oracle.com/javase/7/docs/api/java/math/BigInteger.html\">java.math.BigInteger</a>) &#8614; <a href=\"http://docs.oracle.com/javase/7/docs/api/java/math/BigInteger.html\">java.math.BigInteger</a>"],
-      [1, "(<a href=\"http://docs.oracle.com/javase/7/docs/api/java/math/BigDecimal.html\">java.math.BigDecimal</a> - <a href=\"http://docs.oracle.com/javase/7/docs/api/java/math/BigDecimal.html\">java.math.BigDecimal</a>) &#8614; <a href=\"http://docs.oracle.com/javase/7/docs/api/java/math/BigDecimal.html\">java.math.BigDecimal</a>"],
+      [1, "(<a href=\"http://docs.oracle.com/javase/7/docs/api/java/math/BigInteger.html\">BigInteger</a> - <a href=\"http://docs.oracle.com/javase/7/docs/api/java/math/BigInteger.html\">BigInteger</a>) &#8614; <a href=\"http://docs.oracle.com/javase/7/docs/api/java/math/BigInteger.html\">BigInteger</a>"],
+      [1, "(<a href=\"http://docs.oracle.com/javase/7/docs/api/java/math/BigDecimal.html\">BigDecimal</a> - <a href=\"http://docs.oracle.com/javase/7/docs/api/java/math/BigDecimal.html\">BigDecimal</a>) &#8614; <a href=\"http://docs.oracle.com/javase/7/docs/api/java/math/BigDecimal.html\">BigDecimal</a>"],
       [0, "The overload that best matches the operands will be selected."],
       [1, "Unboxing will be performed, if necessary."],
       [1, "Coercion will be performed, if necessary."],
@@ -1743,7 +1901,7 @@ function spec()
       ["NO_SUCH_BINARY_OPERATOR", "None of the overloads will accept the left-operand due to its type."],
       ["NO_SUCH_BINARY_OPERATOR", "None of the overloads will accept the right-operand due to its type."],
     ],
-  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    var value = null as Object;%0A%0A    value = 67C - 2C;%0A    (F::println %22char = %22 .. value);%0A%0A    value = 10B - 2B;%0A    (F::println %22byte = %22 .. value);%0A%0A    value = 10S - 2S;%0A    (F::println %22short = %22 .. value);%0A%0A    value = 10 - 2;%0A    (F::println %22int = %22 .. value);%0A%0A    value = 10L - 2L;%0A    (F::println %22long = %22 .. value);%0A%0A    value = 10.0F - 2.0F;%0A    (F::println %22float = %22 .. value);%0A%0A    value = 10.0 - 2.0;%0A    (F::println %22double = %22 .. value);%0A%0A    value = (F::big 10L) - (F::big 2L);%0A    (F::println %22BigInteger = %22 .. value);%0A%0A    value = (F::big 10.0) - (F::big 2.0);%0A    (F::println %22BigDecimal = %22 .. value);%0A}", ""],
+  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    var value = null as Object;%0A%0A    value = 67C - 2C;%0A    (F::println %22char = %22 .. value);%0A%0A    value = 10B - 2B;%0A    (F::println %22byte = %22 .. value);%0A%0A    value = 10S - 2S;%0A    (F::println %22short = %22 .. value);%0A%0A    value = 10 - 2;%0A    (F::println %22int = %22 .. value);%0A%0A    value = 10L - 2L;%0A    (F::println %22long = %22 .. value);%0A%0A    value = 10.0F - 2.0F;%0A    (F::println %22float = %22 .. value);%0A%0A    value = 10.0 - 2.0;%0A    (F::println %22double = %22 .. value);%0A%0A    value = (F::big 10L) - (F::big 2L);%0A    (F::println %22BigInteger = %22 .. value);%0A%0A    value = (F::big 10.0) - (F::big 2.0);%0A    (F::println %22BigDecimal = %22 .. value);%0A}", "char = A%0Abyte = 8%0Ashort = 8%0Aint = 8%0Along = 8%0Afloat = 8.0%0Adouble = 8.0%0ABigInteger = 8%0ABigDecimal = 8.0"],
 },
 
 
@@ -1759,7 +1917,7 @@ function spec()
       [0, "Precedence: 5"],
       [0, "Associativity: Left"],
       [0, "Predefined Overload:"],
-      [1, "(<a href=\"http://docs.oracle.com/javase/7/docs/api/java/lang/Object.html\">java.lang.Object</a> .. <a href=\"http://docs.oracle.com/javase/7/docs/api/java/lang/Object.html\">java.lang.Object</a>) &#8614; String"],
+      [1, "(<a href=\"http://docs.oracle.com/javase/7/docs/api/java/lang/Object.html\">Object</a> .. <a href=\"http://docs.oracle.com/javase/7/docs/api/java/lang/Object.html\">Object</a>) &#8614; String"],
       [0, "The operands will be boxed when necessary."],
       [0, "Both operands are greedily evaluated."],
       [1, "The left-operand is evaluated first."],
@@ -1798,7 +1956,7 @@ function spec()
       ["EXPECTED_REFERENCE_TYPE", "The type of the left-operand must be a reference-type."],
       ["EXPECTED_REFERENCE_TYPE", "The type of the right-operand must be a reference-type."],
     ],
-  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    val object1 = (new Object);%0A    val object2 = (new Object);%0A%0A    val case1 = object1 === object1;%0A    val case2 = object1 === object2;%0A%0A    (F::println case1);%0A    (F::println case2);%0A}", ""],
+  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    val object1 = (new Object);%0A    val object2 = (new Object);%0A%0A    val case1 = object1 === object1;%0A    val case2 = object1 === object2;%0A%0A    (F::println case1);%0A    (F::println case2);%0A}", "true%0Afalse"],
 },
 
 
@@ -1824,7 +1982,7 @@ function spec()
       ["EXPECTED_REFERENCE_TYPE", "The type of the left-operand must be a reference-type."],
       ["EXPECTED_REFERENCE_TYPE", "The type of the right-operand must be a reference-type."],
     ],
-  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    val object1 = (new Object);%0A    val object2 = (new Object);%0A%0A    val case1 = object1 !== object1;%0A    val case2 = object1 !== object2;%0A%0A    (F::println case1);%0A    (F::println case2);%0A}", ""],
+  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    val object1 = (new Object);%0A    val object2 = (new Object);%0A%0A    val case1 = object1 !== object1;%0A    val case2 = object1 !== object2;%0A%0A    (F::println case1);%0A    (F::println case2);%0A}", "false%0Atrue"],
 },
 
 
@@ -1848,7 +2006,7 @@ function spec()
       [1, "(long == long) &#8614; boolean"],
       [1, "(float == float) &#8614; boolean"],
       [1, "(double == double) &#8614; boolean"],
-      [1, "(<a href=\"http://docs.oracle.com/javase/7/docs/api/java/lang/Object.html\">java.lang.Object</a> == <a href=\"http://docs.oracle.com/javase/7/docs/api/java/lang/Object.html\">java.lang.Object</a>) &#8614; boolean"],
+      [1, "(<a href=\"http://docs.oracle.com/javase/7/docs/api/java/lang/Object.html\">Object</a> == <a href=\"http://docs.oracle.com/javase/7/docs/api/java/lang/Object.html\">Object</a>) &#8614; boolean"],
       [0, "The overload that best matches the operands will be selected."],
       [1, "Boxing will be performed, if necessary."],
       [1, "Unboxing will be performed, if necessary."],
@@ -1864,7 +2022,7 @@ function spec()
       ["NO_SUCH_BINARY_OPERATOR", "None of the overloads will accept the left-operand due to its type."],
       ["NO_SUCH_BINARY_OPERATOR", "None of the overloads will accept the right-operand due to its type."],
     ],
-  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    var case1 = false;%0A    var case2 = false;%0A    var case3 = false;%0A    var case4 = false;%0A%0A%0A    (F::println %22Case: boolean%22);%0A%0A    case1 = false == false;%0A    case2 = false == true;%0A    case3 = true == false;%0A    case4 = true == true;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A    (F::println case4);%0A%0A    (F::println);%0A    (F::println %22Case: char%22);%0A%0A    case1 = 2C == 3C;%0A    case2 = 3C == 3C;%0A    case3 = 3C == 2C;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A   %0A    (F::println);%0A    (F::println %22Case: byte%22);%0A%0A    case1 = 2B == 3B;%0A    case2 = 3B == 3B;%0A    case3 = 3B == 2B;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A%0A    (F::println);%0A    (F::println %22Case: short%22);%0A%0A    case1 = 2S == 3S;%0A    case2 = 3S == 3S;%0A    case3 = 3S == 2S;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A%0A    (F::println);%0A    (F::println %22Case: int%22);%0A%0A    case1 = 2 == 3;%0A    case2 = 3 == 3;%0A    case3 = 3 == 2;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A%0A    (F::println);%0A    (F::println %22Case: long%22);%0A%0A    case1 = 2L == 3L;%0A    case2 = 3L == 3L;%0A    case3 = 3L == 2L;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A%0A    (F::println);%0A    (F::println %22Case: float%22);%0A%0A    case1 = 2.0F == 3.0F;%0A    case2 = 3.0F == 3.0F;%0A    case3 = 3.0F == 2.0F;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A%0A    (F::println);%0A    (F::println %22Case: double%22);%0A%0A    case1 = 2.0 == 3.0;%0A    case2 = 3.0 == 3.0;%0A    case3 = 3.0 == 2.0;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A%0A    (F::println);%0A    (F::println %22Case: Comparable%22);%0A%0A    case1 = %22A%22 == %22B%22;%0A    case2 = %22B%22 == %22B%22;%0A    case3 = %22B%22 == %22A%22;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A}", ""],
+  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    var case1 = false;%0A    var case2 = false;%0A    var case3 = false;%0A    var case4 = false;%0A%0A%0A    (F::println %22Case: boolean%22);%0A%0A    case1 = false == false;%0A    case2 = false == true;%0A    case3 = true == false;%0A    case4 = true == true;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A    (F::println case4);%0A%0A    (F::println);%0A    (F::println %22Case: char%22);%0A%0A    case1 = 2C == 3C;%0A    case2 = 3C == 3C;%0A    case3 = 3C == 2C;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A   %0A    (F::println);%0A    (F::println %22Case: byte%22);%0A%0A    case1 = 2B == 3B;%0A    case2 = 3B == 3B;%0A    case3 = 3B == 2B;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A%0A    (F::println);%0A    (F::println %22Case: short%22);%0A%0A    case1 = 2S == 3S;%0A    case2 = 3S == 3S;%0A    case3 = 3S == 2S;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A%0A    (F::println);%0A    (F::println %22Case: int%22);%0A%0A    case1 = 2 == 3;%0A    case2 = 3 == 3;%0A    case3 = 3 == 2;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A%0A    (F::println);%0A    (F::println %22Case: long%22);%0A%0A    case1 = 2L == 3L;%0A    case2 = 3L == 3L;%0A    case3 = 3L == 2L;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A%0A    (F::println);%0A    (F::println %22Case: float%22);%0A%0A    case1 = 2.0F == 3.0F;%0A    case2 = 3.0F == 3.0F;%0A    case3 = 3.0F == 2.0F;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A%0A    (F::println);%0A    (F::println %22Case: double%22);%0A%0A    case1 = 2.0 == 3.0;%0A    case2 = 3.0 == 3.0;%0A    case3 = 3.0 == 2.0;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A%0A    (F::println);%0A    (F::println %22Case: Comparable%22);%0A%0A    case1 = %22A%22 == %22B%22;%0A    case2 = %22B%22 == %22B%22;%0A    case3 = %22B%22 == %22A%22;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A}", "Case: boolean%0Atrue%0Afalse%0Afalse%0Atrue%0A%0ACase: char%0Afalse%0Atrue%0Afalse%0A%0ACase: byte%0Afalse%0Atrue%0Afalse%0A%0ACase: short%0Afalse%0Atrue%0Afalse%0A%0ACase: int%0Afalse%0Atrue%0Afalse%0A%0ACase: long%0Afalse%0Atrue%0Afalse%0A%0ACase: float%0Afalse%0Atrue%0Afalse%0A%0ACase: double%0Afalse%0Atrue%0Afalse%0A%0ACase: Comparable%0Afalse%0Atrue%0Afalse"],
 },
 
 
@@ -1888,7 +2046,7 @@ function spec()
       [1, "(long != long) &#8614; boolean"],
       [1, "(float != float) &#8614; boolean"],
       [1, "(double != double) &#8614; boolean"],
-      [1, "(<a href=\"http://docs.oracle.com/javase/7/docs/api/java/lang/Object.html\">java.lang.Object</a> != <a href=\"http://docs.oracle.com/javase/7/docs/api/java/lang/Object.html\">java.lang.Object</a>) &#8614; boolean"],
+      [1, "(<a href=\"http://docs.oracle.com/javase/7/docs/api/java/lang/Object.html\">Object</a> != <a href=\"http://docs.oracle.com/javase/7/docs/api/java/lang/Object.html\">Object</a>) &#8614; boolean"],
       [0, "The overload that best matches the operands will be selected."],
       [1, "Boxing will be performed, if necessary."],
       [1, "Unboxing will be performed, if necessary."],
@@ -1904,7 +2062,7 @@ function spec()
       ["NO_SUCH_BINARY_OPERATOR", "None of the overloads will accept the left-operand due to its type."],
       ["NO_SUCH_BINARY_OPERATOR", "None of the overloads will accept the right-operand due to its type."],
     ],
-  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    var case1 = false;%0A    var case2 = false;%0A    var case3 = false;%0A    var case4 = false;%0A%0A%0A    (F::println %22Case: boolean%22);%0A%0A    case1 = false != false;%0A    case2 = false != true;%0A    case3 = true != false;%0A    case4 = true != true;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A    (F::println case4);%0A%0A    (F::println);%0A    (F::println %22Case: char%22);%0A%0A    case1 = 2C != 3C;%0A    case2 = 3C != 3C;%0A    case3 = 3C != 2C;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A   %0A    (F::println);%0A    (F::println %22Case: byte%22);%0A%0A    case1 = 2B != 3B;%0A    case2 = 3B != 3B;%0A    case3 = 3B != 2B;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A%0A    (F::println);%0A    (F::println %22Case: short%22);%0A%0A    case1 = 2S != 3S;%0A    case2 = 3S != 3S;%0A    case3 = 3S != 2S;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A%0A    (F::println);%0A    (F::println %22Case: int%22);%0A%0A    case1 = 2 != 3;%0A    case2 = 3 != 3;%0A    case3 = 3 != 2;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A%0A    (F::println);%0A    (F::println %22Case: long%22);%0A%0A    case1 = 2L != 3L;%0A    case2 = 3L != 3L;%0A    case3 = 3L != 2L;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A%0A    (F::println);%0A    (F::println %22Case: float%22);%0A%0A    case1 = 2.0F != 3.0F;%0A    case2 = 3.0F != 3.0F;%0A    case3 = 3.0F != 2.0F;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A%0A    (F::println);%0A    (F::println %22Case: double%22);%0A%0A    case1 = 2.0 != 3.0;%0A    case2 = 3.0 != 3.0;%0A    case3 = 3.0 != 2.0;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A%0A    (F::println);%0A    (F::println %22Case: Comparable%22);%0A%0A    case1 = %22A%22 != %22B%22;%0A    case2 = %22B%22 != %22B%22;%0A    case3 = %22B%22 != %22A%22;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A}", ""],
+  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    var case1 = false;%0A    var case2 = false;%0A    var case3 = false;%0A    var case4 = false;%0A%0A%0A    (F::println %22Case: boolean%22);%0A%0A    case1 = false != false;%0A    case2 = false != true;%0A    case3 = true != false;%0A    case4 = true != true;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A    (F::println case4);%0A%0A    (F::println);%0A    (F::println %22Case: char%22);%0A%0A    case1 = 2C != 3C;%0A    case2 = 3C != 3C;%0A    case3 = 3C != 2C;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A   %0A    (F::println);%0A    (F::println %22Case: byte%22);%0A%0A    case1 = 2B != 3B;%0A    case2 = 3B != 3B;%0A    case3 = 3B != 2B;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A%0A    (F::println);%0A    (F::println %22Case: short%22);%0A%0A    case1 = 2S != 3S;%0A    case2 = 3S != 3S;%0A    case3 = 3S != 2S;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A%0A    (F::println);%0A    (F::println %22Case: int%22);%0A%0A    case1 = 2 != 3;%0A    case2 = 3 != 3;%0A    case3 = 3 != 2;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A%0A    (F::println);%0A    (F::println %22Case: long%22);%0A%0A    case1 = 2L != 3L;%0A    case2 = 3L != 3L;%0A    case3 = 3L != 2L;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A%0A    (F::println);%0A    (F::println %22Case: float%22);%0A%0A    case1 = 2.0F != 3.0F;%0A    case2 = 3.0F != 3.0F;%0A    case3 = 3.0F != 2.0F;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A%0A    (F::println);%0A    (F::println %22Case: double%22);%0A%0A    case1 = 2.0 != 3.0;%0A    case2 = 3.0 != 3.0;%0A    case3 = 3.0 != 2.0;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A%0A    (F::println);%0A    (F::println %22Case: Comparable%22);%0A%0A    case1 = %22A%22 != %22B%22;%0A    case2 = %22B%22 != %22B%22;%0A    case3 = %22B%22 != %22A%22;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A}", "Case: boolean%0Afalse%0Atrue%0Atrue%0Afalse%0A%0ACase: char%0Atrue%0Afalse%0Atrue%0A%0ACase: byte%0Atrue%0Afalse%0Atrue%0A%0ACase: short%0Atrue%0Afalse%0Atrue%0A%0ACase: int%0Atrue%0Afalse%0Atrue%0A%0ACase: long%0Atrue%0Afalse%0Atrue%0A%0ACase: float%0Atrue%0Afalse%0Atrue%0A%0ACase: double%0Atrue%0Afalse%0Atrue%0A%0ACase: Comparable%0Atrue%0Afalse%0Atrue"],
 },
 
 
@@ -1928,7 +2086,7 @@ function spec()
       [1, "(long >= long) &#8614; boolean"],
       [1, "(float >= float) &#8614; boolean"],
       [1, "(double >= double) &#8614; boolean"],
-      [1, "(<a href=\"http://docs.oracle.com/javase/7/docs/api/java/lang/Comparable.html\">java.lang.Comparable</a> >= <a href=\"http://docs.oracle.com/javase/7/docs/api/java/lang/Comparable.html\">java.lang.Comparable</a>) &#8614; boolean"],
+      [1, "(<a href=\"http://docs.oracle.com/javase/7/docs/api/java/lang/Comparable.html\">Comparable</a> >= <a href=\"http://docs.oracle.com/javase/7/docs/api/java/lang/Comparable.html\">Comparable</a>) &#8614; boolean"],
       [0, "The overload that best matches the operands will be selected."],
       [1, "Boxing will be performed, if necessary."],
       [1, "Unboxing will be performed, if necessary."],
@@ -1968,7 +2126,7 @@ function spec()
       [1, "(long <= long) &#8614; boolean"],
       [1, "(float <= float) &#8614; boolean"],
       [1, "(double <= double) &#8614; boolean"],
-      [1, "(<a href=\"http://docs.oracle.com/javase/7/docs/api/java/lang/Comparable.html\">java.lang.Comparable</a> <= <a href=\"http://docs.oracle.com/javase/7/docs/api/java/lang/Comparable.html\">java.lang.Comparable</a>) &#8614; boolean"],
+      [1, "(<a href=\"http://docs.oracle.com/javase/7/docs/api/java/lang/Comparable.html\">Comparable</a> <= <a href=\"http://docs.oracle.com/javase/7/docs/api/java/lang/Comparable.html\">Comparable</a>) &#8614; boolean"],
       [0, "The overload that best matches the operands will be selected."],
       [1, "Boxing will be performed, if necessary."],
       [1, "Unboxing will be performed, if necessary."],
@@ -2008,7 +2166,7 @@ function spec()
       [1, "(long > long) &#8614; boolean"],
       [1, "(float > float) &#8614; boolean"],
       [1, "(double > double) &#8614; boolean"],
-      [1, "(<a href=\"http://docs.oracle.com/javase/7/docs/api/java/lang/Comparable.html\">java.lang.Comparable</a> > <a href=\"http://docs.oracle.com/javase/7/docs/api/java/lang/Comparable.html\">java.lang.Comparable</a>) &#8614; boolean"],
+      [1, "(<a href=\"http://docs.oracle.com/javase/7/docs/api/java/lang/Comparable.html\">Comparable</a> > <a href=\"http://docs.oracle.com/javase/7/docs/api/java/lang/Comparable.html\">Comparable</a>) &#8614; boolean"],
       [0, "The overload that best matches the operands will be selected."],
       [1, "Boxing will be performed, if necessary."],
       [1, "Unboxing will be performed, if necessary."],
@@ -2024,7 +2182,7 @@ function spec()
       ["NO_SUCH_BINARY_OPERATOR", "None of the overloads will accept the left-operand due to its type."],
       ["NO_SUCH_BINARY_OPERATOR", "None of the overloads will accept the right-operand due to its type."],
     ],
-  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    var case1 = false;%0A    var case2 = false;%0A    var case3 = false;%0A    var case4 = false;%0A%0A%0A    (F::println %22Case: boolean%22);%0A%0A    case1 = false > false;%0A    case2 = false > true;%0A    case3 = true > false;%0A    case4 = true > true;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A    (F::println case4);%0A%0A    (F::println);%0A    (F::println %22Case: char%22);%0A%0A    case1 = 2C > 3C;%0A    case2 = 3C > 3C;%0A    case3 = 3C > 2C;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A   %0A    (F::println);%0A    (F::println %22Case: byte%22);%0A%0A    case1 = 2B > 3B;%0A    case2 = 3B > 3B;%0A    case3 = 3B > 2B;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A%0A    (F::println);%0A    (F::println %22Case: short%22);%0A%0A    case1 = 2S > 3S;%0A    case2 = 3S > 3S;%0A    case3 = 3S > 2S;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A%0A    (F::println);%0A    (F::println %22Case: int%22);%0A%0A    case1 = 2 > 3;%0A    case2 = 3 > 3;%0A    case3 = 3 > 2;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A%0A    (F::println);%0A    (F::println %22Case: long%22);%0A%0A    case1 = 2L > 3L;%0A    case2 = 3L > 3L;%0A    case3 = 3L > 2L;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A%0A    (F::println);%0A    (F::println %22Case: float%22);%0A%0A    case1 = 2.0F > 3.0F;%0A    case2 = 3.0F > 3.0F;%0A    case3 = 3.0F > 2.0F;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A%0A    (F::println);%0A    (F::println %22Case: double%22);%0A%0A    case1 = 2.0 > 3.0;%0A    case2 = 3.0 > 3.0;%0A    case3 = 3.0 > 2.0;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A%0A    (F::println);%0A    (F::println %22Case: Comparable%22);%0A%0A    case1 = %22A%22 > %22B%22;%0A    case2 = %22B%22 > %22B%22;%0A    case3 = %22B%22 > %22A%22;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A}", ""],
+  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    var case1 = false;%0A    var case2 = false;%0A    var case3 = false;%0A    var case4 = false;%0A%0A%0A    (F::println %22Case: boolean%22);%0A%0A    case1 = false > false;%0A    case2 = false > true;%0A    case3 = true > false;%0A    case4 = true > true;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A    (F::println case4);%0A%0A    (F::println);%0A    (F::println %22Case: char%22);%0A%0A    case1 = 2C > 3C;%0A    case2 = 3C > 3C;%0A    case3 = 3C > 2C;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A   %0A    (F::println);%0A    (F::println %22Case: byte%22);%0A%0A    case1 = 2B > 3B;%0A    case2 = 3B > 3B;%0A    case3 = 3B > 2B;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A%0A    (F::println);%0A    (F::println %22Case: short%22);%0A%0A    case1 = 2S > 3S;%0A    case2 = 3S > 3S;%0A    case3 = 3S > 2S;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A%0A    (F::println);%0A    (F::println %22Case: int%22);%0A%0A    case1 = 2 > 3;%0A    case2 = 3 > 3;%0A    case3 = 3 > 2;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A%0A    (F::println);%0A    (F::println %22Case: long%22);%0A%0A    case1 = 2L > 3L;%0A    case2 = 3L > 3L;%0A    case3 = 3L > 2L;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A%0A    (F::println);%0A    (F::println %22Case: float%22);%0A%0A    case1 = 2.0F > 3.0F;%0A    case2 = 3.0F > 3.0F;%0A    case3 = 3.0F > 2.0F;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A%0A    (F::println);%0A    (F::println %22Case: double%22);%0A%0A    case1 = 2.0 > 3.0;%0A    case2 = 3.0 > 3.0;%0A    case3 = 3.0 > 2.0;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A%0A    (F::println);%0A    (F::println %22Case: Comparable%22);%0A%0A    case1 = %22A%22 > %22B%22;%0A    case2 = %22B%22 > %22B%22;%0A    case3 = %22B%22 > %22A%22;%0A%0A    (F::println case1);%0A    (F::println case2);%0A    (F::println case3);%0A}", "Case: boolean%0Afalse%0Afalse%0Atrue%0Afalse%0A%0ACase: char%0Afalse%0Afalse%0Atrue%0A%0ACase: byte%0Afalse%0Afalse%0Atrue%0A%0ACase: short%0Afalse%0Afalse%0Atrue%0A%0ACase: int%0Afalse%0Afalse%0Atrue%0A%0ACase: long%0Afalse%0Afalse%0Atrue%0A%0ACase: float%0Afalse%0Afalse%0Atrue%0A%0ACase: double%0Afalse%0Afalse%0Atrue%0A%0ACase: Comparable%0Afalse%0Afalse%0Atrue"],
 },
 
 
@@ -2048,7 +2206,7 @@ function spec()
       [1, "(long < long) &#8614; boolean"],
       [1, "(float < float) &#8614; boolean"],
       [1, "(double < double) &#8614; boolean"],
-      [1, "(<a href=\"http://docs.oracle.com/javase/7/docs/api/java/lang/Comparable.html\">java.lang.Comparable</a> < <a href=\"http://docs.oracle.com/javase/7/docs/api/java/lang/Comparable.html\">java.lang.Comparable</a>) &#8614; boolean"],
+      [1, "(<a href=\"http://docs.oracle.com/javase/7/docs/api/java/lang/Comparable.html\">Comparable</a> < <a href=\"http://docs.oracle.com/javase/7/docs/api/java/lang/Comparable.html\">Comparable</a>) &#8614; boolean"],
       [0, "The overload that best matches the operands will be selected."],
       [1, "Boxing will be performed, if necessary."],
       [1, "Unboxing will be performed, if necessary."],
@@ -2122,7 +2280,7 @@ function spec()
       ["NO_SUCH_BINARY_OPERATOR", "None of the overloads will accept the left-operand due to its type."],
       ["NO_SUCH_BINARY_OPERATOR", "None of the overloads will accept the right-operand due to its type."],
     ],
-  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    val case1 = false | false;%0A    val case2 = false | true;%0A    val case3 = true | false;%0A    val case4 = true | true;%0A%0A    (F::println %22F | F = %22 .. case1);%0A    (F::println %22F | T = %22 .. case2);%0A    (F::println %22T | F = %22 .. case3);%0A    (F::println %22T | T = %22 .. case4);%0A}", ""],
+  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    val case1 = false | false;%0A    val case2 = false | true;%0A    val case3 = true | false;%0A    val case4 = true | true;%0A%0A    (F::println %22F | F = %22 .. case1);%0A    (F::println %22F | T = %22 .. case2);%0A    (F::println %22T | F = %22 .. case3);%0A    (F::println %22T | T = %22 .. case4);%0A}", "F | F = false%0AF | T = true%0AT | F = true%0AT | T = true"],
 },
 
 
@@ -2151,7 +2309,7 @@ function spec()
       ["NO_SUCH_BINARY_OPERATOR", "None of the overloads will accept the left-operand due to its type."],
       ["NO_SUCH_BINARY_OPERATOR", "None of the overloads will accept the right-operand due to its type."],
     ],
-  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    val case1 = false ^ false;%0A    val case2 = false ^ true;%0A    val case3 = true ^ false;%0A    val case4 = true ^ true;%0A%0A    (F::println %22F ^ F = %22 .. case1);%0A    (F::println %22F ^ T = %22 .. case2);%0A    (F::println %22T ^ F = %22 .. case3);%0A    (F::println %22T ^ T = %22 .. case4);%0A}", ""],
+  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    val case1 = false ^ false;%0A    val case2 = false ^ true;%0A    val case3 = true ^ false;%0A    val case4 = true ^ true;%0A%0A    (F::println %22F ^ F = %22 .. case1);%0A    (F::println %22F ^ T = %22 .. case2);%0A    (F::println %22T ^ F = %22 .. case3);%0A    (F::println %22T ^ T = %22 .. case4);%0A}", "F ^ F = false%0AF ^ T = true%0AT ^ F = true%0AT ^ T = false"],
 },
 
 
@@ -2182,7 +2340,7 @@ function spec()
       ["NO_SUCH_BINARY_OPERATOR", "None of the overloads will accept the left-operand due to its type."],
       ["NO_SUCH_BINARY_OPERATOR", "None of the overloads will accept the right-operand due to its type."],
     ],
-  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    val case1 = false -> false;%0A    val case2 = false -> true;%0A    val case3 = true -> false;%0A    val case4 = true -> true;%0A%0A    (F::println %22F -> F = %22 .. case1);%0A    (F::println %22F -> T = %22 .. case2);%0A    (F::println %22T -> F = %22 .. case3);%0A    (F::println %22T -> T = %22 .. case4);%0A}", ""],
+  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    val case1 = false -> false;%0A    val case2 = false -> true;%0A    val case3 = true -> false;%0A    val case4 = true -> true;%0A%0A    (F::println %22F -> F = %22 .. case1);%0A    (F::println %22F -> T = %22 .. case2);%0A    (F::println %22T -> F = %22 .. case3);%0A    (F::println %22T -> T = %22 .. case4);%0A}", "F -> F = true%0AF -> T = true%0AT -> F = false%0AT -> T = true"],
 },
 
 
@@ -2204,10 +2362,10 @@ function spec()
     ],
   "static-checks":
     [
-      ["EXPECTED_CONDITION", "The type of the left-operand must be either boolean or <a href=\"http://docs.oracle.com/javase/7/docs/api/java/lang/Boolean.html\">java.lang.Boolean</a>."],
-      ["EXPECTED_CONDITION", "The type of the right-operand must be either boolean or <a href=\"http://docs.oracle.com/javase/7/docs/api/java/lang/Boolean.html\">java.lang.Boolean</a>."],
+      ["EXPECTED_CONDITION", "The type of the left-operand must be either boolean or <a href=\"http://docs.oracle.com/javase/7/docs/api/java/lang/Boolean.html\">Boolean</a>."],
+      ["EXPECTED_CONDITION", "The type of the right-operand must be either boolean or <a href=\"http://docs.oracle.com/javase/7/docs/api/java/lang/Boolean.html\">Boolean</a>."],
     ],
-  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    val case1 = false && false;%0A    val case2 = false && true;%0A    val case3 = true && false;%0A    val case4 = true && true;%0A%0A    (F::println %22Truth Table:%22);%0A    (F::println %22  F && F = %22 .. case1);%0A    (F::println %22  F && T = %22 .. case2);%0A    (F::println %22  T && F = %22 .. case3);%0A    (F::println %22  T && T = %22 .. case4);%0A%0A    (F::println);%0A%0A    (F::println %22Short Circuit:%22);%0A    (My::sc false, false);%0A    (My::sc false, true);%0A    (My::sc true, false);%0A    (My::sc true, true);%0A}%0A%0Adefun sc(left : boolean, right : boolean) : void%0A{%0A    (F::print %22  %22);%0A    (My::operand1 left) && (My::operand2 left);%0A    (F::println);%0A}%0A%0Adefun operand1(value : boolean) : boolean%0A{%0A    (F::print %22L%22);%0A    return value;%0A}%0A%0Adefun operand2(value : boolean) : boolean%0A{%0A    (F::print %22R%22);%0A    return value;%0A}", ""],
+  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    val case1 = false && false;%0A    val case2 = false && true;%0A    val case3 = true && false;%0A    val case4 = true && true;%0A%0A    (F::println %22Truth Table:%22);%0A    (F::println %22  F && F = %22 .. case1);%0A    (F::println %22  F && T = %22 .. case2);%0A    (F::println %22  T && F = %22 .. case3);%0A    (F::println %22  T && T = %22 .. case4);%0A%0A    (F::println);%0A%0A    (F::println %22Short Circuit:%22);%0A    (My::sc false, false);%0A    (My::sc false, true);%0A    (My::sc true, false);%0A    (My::sc true, true);%0A}%0A%0Adefun sc(left : boolean, right : boolean) : void%0A{%0A    (F::print %22  %22);%0A    (My::operand1 left) && (My::operand2 left);%0A    (F::println);%0A}%0A%0Adefun operand1(value : boolean) : boolean%0A{%0A    (F::print %22L%22);%0A    return value;%0A}%0A%0Adefun operand2(value : boolean) : boolean%0A{%0A    (F::print %22R%22);%0A    return value;%0A}", "Truth Table:%0A  F && F = false%0A  F && T = false%0A  T && F = false%0A  T && T = true%0A%0AShort Circuit:%0A  L%0A  L%0A  LR%0A  LR"],
 },
 
 
@@ -2229,10 +2387,10 @@ function spec()
     ],
   "static-checks":
     [
-      ["EXPECTED_CONDITION", "The type of the left-operand must be either boolean or <a href=\"http://docs.oracle.com/javase/7/docs/api/java/lang/Boolean.html\">java.lang.Boolean</a>."],
-      ["EXPECTED_CONDITION", "The type of the right-operand must be either boolean or <a href=\"http://docs.oracle.com/javase/7/docs/api/java/lang/Boolean.html\">java.lang.Boolean</a>."],
+      ["EXPECTED_CONDITION", "The type of the left-operand must be either boolean or <a href=\"http://docs.oracle.com/javase/7/docs/api/java/lang/Boolean.html\">Boolean</a>."],
+      ["EXPECTED_CONDITION", "The type of the right-operand must be either boolean or <a href=\"http://docs.oracle.com/javase/7/docs/api/java/lang/Boolean.html\">Boolean</a>."],
     ],
-  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    val case1 = false || false;%0A    val case2 = false || true;%0A    val case3 = true || false;%0A    val case4 = true || true;%0A%0A    (F::println %22Truth Table:%22);%0A    (F::println %22  F || F = %22 .. case1);%0A    (F::println %22  F || T = %22 .. case2);%0A    (F::println %22  T || F = %22 .. case3);%0A    (F::println %22  T || T = %22 .. case4);%0A%0A    (F::println);%0A%0A    (F::println %22Short Circuit:%22);%0A    (My::sc false, false);%0A    (My::sc false, true);%0A    (My::sc true, false);%0A    (My::sc true, true);%0A}%0A%0Adefun sc(left : boolean, right : boolean) : void%0A{%0A    (F::print %22  %22);%0A    (My::operand1 left) || (My::operand2 left);%0A    (F::println);%0A}%0A%0Adefun operand1(value : boolean) : boolean%0A{%0A    (F::print %22L%22);%0A    return value;%0A}%0A%0Adefun operand2(value : boolean) : boolean%0A{%0A    (F::print %22R%22);%0A    return value;%0A}", ""],
+  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    val case1 = false || false;%0A    val case2 = false || true;%0A    val case3 = true || false;%0A    val case4 = true || true;%0A%0A    (F::println %22Truth Table:%22);%0A    (F::println %22  F || F = %22 .. case1);%0A    (F::println %22  F || T = %22 .. case2);%0A    (F::println %22  T || F = %22 .. case3);%0A    (F::println %22  T || T = %22 .. case4);%0A%0A    (F::println);%0A%0A    (F::println %22Short Circuit:%22);%0A    (My::sc false, false);%0A    (My::sc false, true);%0A    (My::sc true, false);%0A    (My::sc true, true);%0A}%0A%0Adefun sc(left : boolean, right : boolean) : void%0A{%0A    (F::print %22  %22);%0A    (My::operand1 left) || (My::operand2 left);%0A    (F::println);%0A}%0A%0Adefun operand1(value : boolean) : boolean%0A{%0A    (F::print %22L%22);%0A    return value;%0A}%0A%0Adefun operand2(value : boolean) : boolean%0A{%0A    (F::print %22R%22);%0A    return value;%0A}", "Truth Table:%0A  F || F = false%0A  F || T = true%0A  T || F = true%0A  T || T = true%0A%0AShort Circuit:%0A  LR%0A  LR%0A  L%0A  L"],
 },
 
 
@@ -2256,8 +2414,8 @@ function spec()
     [
       ["INCOMPATIBLE_OPERANDS", "The type of one of the operands must be a subtype of the other."],
     ],
-  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    val value1 = %22Mercury%22;%0A    val value2 = %22Venus%22;%0A    val value3 = %22Earth%22;%0A%0A    # Case: The left operand is non-null.%0A    val value4 = (value1 ?? value2) is String;%0A%0A    # Case: The left-operand is null.%0A    val value5 = (null ?? value3) is String;%0A%0A    # Case: Both operands are null.%0A    val value6 = (null ?? null) is String;%0A%0A    # Print the results.%0A    (F::println value4);%0A    (F::println value5);%0A    (F::println value6);%0A}", ""],
-  "example-2" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    val value1 = null is Object;%0A    val value2 = %22Not Null%22; %0A%0A    (F::print %22Case 1: %22);%0A    (My::operand1 value1) ?? (My::operand2 value1);%0A    (F::println);%0A%0A    (F::print %22Case 2: %22);%0A    (My::operand1 value1) ?? (My::operand2 value2);%0A    (F::println);%0A%0A    (F::print %22Case 3: %22);%0A    (My::operand1 value2) ?? (My::operand2 value1);%0A    (F::println);%0A%0A    (F::print %22Case 4: %22);%0A    (My::operand1 value2) ?? (My::operand2 value2);%0A    (F::println);%0A}%0A%0Adefun operand1(value : Object) : Object%0A{%0A    (F::print %22L%22);%0A    return value;%0A}%0A%0Adefun operand2(value : Object) : Object%0A{%0A    (F::print %22R%22);%0A    return value;%0A}", ""],
+  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    val value1 = %22Mercury%22;%0A    val value2 = %22Venus%22;%0A    val value3 = %22Earth%22;%0A%0A    # Case: The left operand is non-null.%0A    val value4 = (value1 ?? value2) is String;%0A%0A    # Case: The left-operand is null.%0A    val value5 = (null ?? value3) is String;%0A%0A    # Case: Both operands are null.%0A    val value6 = (null ?? null) is String;%0A%0A    # Print the results.%0A    (F::println value4);%0A    (F::println value5);%0A    (F::println value6);%0A}", "Mercury%0AEarth%0Anull"],
+  "example-2" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    val value1 = null is Object;%0A    val value2 = %22Not Null%22; %0A%0A    (F::print %22Case 1: %22);%0A    (My::operand1 value1) ?? (My::operand2 value1);%0A    (F::println);%0A%0A    (F::print %22Case 2: %22);%0A    (My::operand1 value1) ?? (My::operand2 value2);%0A    (F::println);%0A%0A    (F::print %22Case 3: %22);%0A    (My::operand1 value2) ?? (My::operand2 value1);%0A    (F::println);%0A%0A    (F::print %22Case 4: %22);%0A    (My::operand1 value2) ?? (My::operand2 value2);%0A    (F::println);%0A}%0A%0Adefun operand1(value : Object) : Object%0A{%0A    (F::print %22L%22);%0A    return value;%0A}%0A%0Adefun operand2(value : Object) : Object%0A{%0A    (F::print %22R%22);%0A    return value;%0A}", "Case 1: LR%0ACase 2: LR%0ACase 3: L%0ACase 4: L"],
 },
 
 
@@ -2266,7 +2424,7 @@ function spec()
   "ast" : "autumn.lang.compiler.ast.nodes.AsOperation",
   "syntax":
     [
-      [0, "<i>value</i> <span class=\"keyword\">as</span> <i>#type#</i>"],
+      [0, "<i>value</i> <span class=\"keyword\">as</span> <i><a href=\"ConstructPage.html?construct=TypeSpecifier\">type</a></i>"],
     ],
   "details":
     [
@@ -2384,7 +2542,7 @@ function spec()
     [
       ["IMPOSSIBLE_CONVERSION", "The conversion must be either predefined or a valid cast."],
     ],
-  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    # Case: Predefined Conversion (int ==> char). %0A    val value1 = 65 as char;%0A%0A    # Generalized Input%0A    val input = %22Mars%22 is Object;%0A%0A    # Case: Successful Cast%0A    val value2 = input as CharSequence;%0A%0A    # Case: Unsuccessful Cast%0A    val value3 = input as List;%0A%0A    # Print the results.%0A    (F::println %22Case 1: %22 .. value1);%0A    (F::println %22Case 2: %22 .. value2);%0A    (F::println %22Case 3: %22 .. value3);%0A}", ""],
+  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    # Case: Predefined Conversion (int ==> char). %0A    val value1 = 65 as char;%0A%0A    # Generalized Input%0A    val input = %22Mars%22 is Object;%0A%0A    # Case: Successful Cast%0A    val value2 = input as CharSequence;%0A%0A    # Case: Unsuccessful Cast%0A    val value3 = input as List;%0A%0A    # Print the results.%0A    (F::println %22Case 1: %22 .. value1);%0A    (F::println %22Case 2: %22 .. value2);%0A    (F::println %22Case 3: %22 .. value3);%0A}", "Case 1: A%0ACase 2: Mars%0ACase 3: null"],
 },
 
 
@@ -2393,7 +2551,7 @@ function spec()
   "ast" : "autumn.lang.compiler.ast.nodes.IsOperation",
   "syntax":
     [
-      [0, "<i>value</i> <span class=\"keyword\">is</span> <i>#type#</i>"],
+      [0, "<i>value</i> <span class=\"keyword\">is</span> <i><a href=\"ConstructPage.html?construct=TypeSpecifier\">type</a></i>"],
     ],
   "details":
     [
@@ -2503,7 +2661,7 @@ function spec()
       [0, "A cast (X => T) is impossible when both:"],
       [1, "X is not a supertype of T"],
       [1, "X is not a subtype of T"],
-      [0, "Runtime Check: If the conversion is an unsuccessful cast, then a <a href=\"http://docs.oracle.com/javase/7/docs/api/java/lang/ClassCastException.html\">java.lang.ClassCastException</a> is thrown."],
+      [0, "Runtime Check: If the conversion is an unsuccessful cast, then a <a href=\"http://docs.oracle.com/javase/7/docs/api/java/lang/ClassCastException.html\">ClassCastException</a> is thrown."],
       [0, "Return Type: <i>type</i>"],
       [0, "Return the result of the predefined conversion or cast."],
     ],
@@ -2511,8 +2669,8 @@ function spec()
     [
       ["IMPOSSIBLE_CONVERSION", "The conversion must be either predefined or a valid cast."],
     ],
-  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    # Case: Predefined Conversion (int ==> char). %0A%0A    val value1 = 65 is char;%0A%0A    (F::println %22Case 1: %22 .. value1);%0A%0A%0A%0A    # Case: Successful Cast%0A%0A    val value2 = %22Mars%22 is CharSequence;%0A%0A    (F::println %22Case 2: %22 .. value2);%0A}", ""],
-  "example-2" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    # Generalized Input%0A    val input = %22Neptune%22 as Object;%0A%0A    try%0A    {%0A        # Case: Unsuccessful Cast%0A        input is List; %0A%0A        (F::println %22Failure: An exception was *not* thrown.%22);%0A    }%0A    catch (ex : ClassCastException)%0A    {%0A        (F::println %22Success: An exception was thrown.%22);%0A    }%0A}", ""],
+  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    # Case: Predefined Conversion (int ==> char). %0A%0A    val value1 = 65 is char;%0A%0A    (F::println %22Case 1: %22 .. value1);%0A%0A%0A%0A    # Case: Successful Cast%0A%0A    val value2 = %22Mars%22 is CharSequence;%0A%0A    (F::println %22Case 2: %22 .. value2);%0A}", "Case 1: A%0ACase 2: Mars"],
+  "example-2" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    # Generalized Input%0A    val input = %22Neptune%22 as Object;%0A%0A    try%0A    {%0A        # Case: Unsuccessful Cast%0A        input is List; %0A%0A        (F::println %22Failure: An exception was *not* thrown.%22);%0A    }%0A    catch (ex : ClassCastException)%0A    {%0A        (F::println %22Success: An exception was thrown.%22);%0A    }%0A}", "Success: An exception was thrown."],
 },
 
 
@@ -2521,21 +2679,21 @@ function spec()
   "ast" : "autumn.lang.compiler.ast.nodes.NewExpression",
   "syntax":
     [
-      [0, "( <span class=\"keyword\">new</span> <i>type</i> <i><a href=\"TextPage.html?page=Expression\">argument</a><sub>1</sub></i> , <i><a href=\"TextPage.html?page=Expression\">argument</a><sub>2</sub></i> , ... , <i><a href=\"TextPage.html?page=Expression\">argument</a><sub>n</sub></i> )"],
+      [0, "( <span class=\"keyword\">new</span> <i><a href=\"ConstructPage.html?construct=TypeSpecifier\">type</a></i> <i><a href=\"TextPage.html?page=Expression\">argument</a><sub>1</sub></i> , <i><a href=\"TextPage.html?page=Expression\">argument</a><sub>2</sub></i> , ... , <i><a href=\"TextPage.html?page=Expression\">argument</a><sub>n</sub></i> )"],
     ],
   "details":
     [
       [0, "Return Type: type of <i>type</i>"],
-      [0, "Return A new instance of the <i>type</i> is returned.."],
+      [0, "Return a new instance of the <i>type</i>."],
     ],
   "static-checks":
     [
-      ["VALUE_REQUIRED", "The type of each <i>argument</i> must be either a primitive-type or a reference-type."],
-      ["NO_SUCH_TYPE", "The <i>type</i> type must exist."],
-      ["INACCESSIBLE_TYPE", "The <i>type</i> type must be accessible from the enclosing package."],
-      ["INACCESSIBLE_CTOR", "No accessible constructor exists."],
-      ["NO_SUCH_CTOR_OVERLOAD", "None of the accessible constructor overloads will accept the given arguments."],
+      ["NO_SUCH_TYPE", "The type specified by the <i><i>type</i></i> must exist."],
+      ["INACCESSIBLE_TYPE", "The type specified by the <i><i>type</i></i> must be accessible."],
+      ["EXPECTED_CLASS_TYPE", "The <i>type</i> must be a class-type."],
+      ["NO_SUCH_CONSTRUCTOR", "No accessible constructor overload will accept the given arguments."],
     ],
+  "example-1" : ["module Main in examples;%0A%0Atuple Pet (type : String, name : String);%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    val animal1 = (new Pet %22Sheep%22, %22Eyeball%22);%0A%0A    val animal2 = (new Pet %22German Shepherd%22, %22Jet%22);%0A%0A    val animal3 = (new Pet %22Cat%22, %22Fluffy%22);%0A%0A    (F::printlns [animal1, animal2, animal3]);%0A}", "(Sheep, Eyeball)%0A(German Shepherd, Jet)%0A(Cat, Fluffy)"],
 },
 
 
@@ -2555,11 +2713,9 @@ function spec()
   "static-checks":
     [
       ["VALUE_REQUIRED", "The type of each <i>argument</i> must be either a primitive-type or a reference-type."],
-      ["NO_SUCH_TYPE", "The <i>module</i> type must exist."],
-      ["INACCESSIBLE_TYPE", "The <i>module</i> type must be accessible from the enclosing package."],
+      ["NO_SUCH_TYPE", "The type specified by the <i><i>module</i></i> must exist."],
+      ["INACCESSIBLE_TYPE", "The type specified by the <i><i>module</i></i> must be accessible."],
       ["NO_SUCH_METHOD", "No method in the <i>module</i> has the given name."],
-      ["INACCESSIBLE_METHOD", "No such method is accessible."],
-      ["NO_SUCH_METHOD_OVERLOAD", "None of the accessible method overloads will accept the given arguments."],
     ],
 },
 
@@ -2579,8 +2735,6 @@ function spec()
       ["VALUE_REQUIRED", "The type of each <i>argument</i> must be either a primitive-type or a reference-type."],
       ["EXPECTED_REFERENCE_TYPE", "The type of the <i>owner</i> must be a reference-type."],
       ["NO_SUCH_METHOD", "No method in the <i>module</i> has the given name."],
-      ["INACCESSIBLE_METHOD", "No such method is accessible."],
-      ["NO_SUCH_METHOD_OVERLOAD", "None of the accessible method overloads will accept the given arguments."],
     ],
 },
 
@@ -2600,10 +2754,9 @@ function spec()
   "static-checks":
     [
       ["VALUE_REQUIRED", "The type of the <i>value</i> must be either a primitive-type or a reference-type."],
-      ["NO_SUCH_TYPE", "The <i>module</i> type must exist."],
-      ["INACCESSIBLE_TYPE", "The <i>module</i> type must be accessible from the enclosing package."],
+      ["NO_SUCH_TYPE", "The type specified by the <i><i>module</i></i> must exist."],
+      ["INACCESSIBLE_TYPE", "The type specified by the <i><i>module</i></i> must be accessible."],
       ["NO_SUCH_FIELD", "No field in the <i>module</i> has the given name."],
-      ["INACCESSIBLE_FIELD", "No such field is accessible."],
       ["IMPOSSIBLE_ASSIGNMENT", "The type of the <i>value</i> must be assignable to the <i>type</i> of the selected field."],
     ],
 },
@@ -2623,10 +2776,9 @@ function spec()
     ],
   "static-checks":
     [
-      ["NO_SUCH_TYPE", "The <i>module</i> type must exist."],
-      ["INACCESSIBLE_TYPE", "The <i>module</i> type must be accessible from the enclosing package."],
+      ["NO_SUCH_TYPE", "The type specified by the <i><i>module</i></i> must exist."],
+      ["INACCESSIBLE_TYPE", "The type specified by the <i><i>module</i></i> must be accessible."],
       ["NO_SUCH_FIELD", "No field in the <i>module</i> has the given name."],
-      ["INACCESSIBLE_FIELD", "No such field is accessible."],
     ],
 },
 
@@ -2648,7 +2800,6 @@ function spec()
       ["VALUE_REQUIRED", "The type of the <i>value</i> must be either a primitive-type or a reference-type."],
       ["EXPECTED_REFERENCE_TYPE", "The type of the <i>owner</i> must be a reference-type."],
       ["NO_SUCH_FIELD", "No field in the <i>module</i> has the given name."],
-      ["INACCESSIBLE_FIELD", "No such field is accessible."],
       ["IMPOSSIBLE_ASSIGNMENT", "The type of the <i>value</i> must be assignable to the <i>type</i> of the selected field."],
     ],
 },
@@ -2670,7 +2821,6 @@ function spec()
     [
       ["EXPECTED_REFERENCE_TYPE", "The type of the <i>owner</i> must be a reference-type."],
       ["NO_SUCH_FIELD", "No field in the <i>module</i> has the given name."],
-      ["INACCESSIBLE_FIELD", "No such field is accessible."],
     ],
 },
 
@@ -2693,8 +2843,8 @@ function spec()
   "static-checks":
     [
       ["VALUE_REQUIRED", "The type of the <i>value</i> must be either a primitive-type or a reference-type."],
-      ["NO_SUCH_TYPE", "The <i>type</i> type must exist."],
-      ["INACCESSIBLE_TYPE", "The <i>type</i> type must be accessible from the enclosing package."],
+      ["NO_SUCH_TYPE", "The type specified by the <i><i>type</i></i> must exist."],
+      ["INACCESSIBLE_TYPE", "The type specified by the <i><i>type</i></i> must be accessible."],
       ["NON_VIABLE_INSTANCEOF", "The check must be viable."],
     ],
 },
@@ -2715,10 +2865,9 @@ function spec()
     ],
   "static-checks":
     [
-      ["NO_SUCH_TYPE", "The <i>module</i> type must exist."],
-      ["INACCESSIBLE_TYPE", "The <i>module</i> type must be accessible from the enclosing package."],
+      ["NO_SUCH_TYPE", "The type specified by the <i><i>module</i></i> must exist."],
+      ["INACCESSIBLE_TYPE", "The type specified by the <i><i>module</i></i> must be accessible."],
       ["VALUE_REQUIRED", "The type of each <i>argument</i> must be either a primitive-type or a reference-type."],
-      ["INACCESSIBLE_METHOD", "No such method is accessible."],
       ["NO_SUCH_METHOD", "None of the accessible method overloads will accept the given arguments."],
       ["UNEQUAL_RETURN_TYPES", "The return-types of the applicable methods must be the same."],
     ],
@@ -2740,8 +2889,8 @@ function spec()
     ],
   "static-checks":
     [
-      ["NO_SUCH_TYPE", "The <i>type</i> type must exist."],
-      ["INACCESSIBLE_TYPE", "The <i>type</i> type must be accessible from the enclosing package."],
+      ["NO_SUCH_TYPE", "The type specified by the <i><i>type</i></i> must exist."],
+      ["INACCESSIBLE_TYPE", "The type specified by the <i><i>type</i></i> must be accessible."],
       ["EXPECTED_DESIGN", "The <i>type</i> must be a type that descripes a design."],
     ],
 },
@@ -2758,6 +2907,7 @@ function spec()
     [
       [0, "The <i>left</i> expression is only evaluated, if the <i>condition</i> produces true."],
       [0, "The <i>right</i> expression is only evaluated, if the <i>condition</i> produces false."],
+      [0, "The <i>condition</i> will be unboxed, if necessary."],
       [0, "Return Type: widest of typeof(<i>left</i>) or typeof(<i>right</i>)"],
       [0, "Return Depending on the value produced by the <i>condition</i>, either the value of <i>left</i> or the value of <i>right</i> is returned.."],
     ],
@@ -2766,7 +2916,7 @@ function spec()
       ["VALUE_REQUIRED", "The type of the <i>condition</i> must be either a primitive-type or a reference-type."],
       ["VALUE_REQUIRED", "The type of the <i>left</i> must be either a primitive-type or a reference-type."],
       ["VALUE_REQUIRED", "The type of the <i>right</i> must be either a primitive-type or a reference-type."],
-      ["EXPECTED_CONDITION", "The type of condition must be assignable to type boolean."],
+      ["EXPECTED_CONDITION", "The type of <i><i>condition</i></i> must be assignable to type boolean."],
       ["INCOMPATIBLE_OPERANDS", "Either typeof(<i>left</i>) is a subtype of typeof(<i>right</i>) or vice versa."],
     ],
 },
@@ -2826,27 +2976,8 @@ function spec()
     [
       ["VALUE_REQUIRED", "The type of each <i>element</i> must be either a primitive-type or a reference-type."],
     ],
-  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    # Create an empty list.%0A    val empty = [];%0A%0A    # Create a list with a single element. %0A    val home = [%22Earth%22];%0A%0A    # Create a list with two elements. %0A    val hot = [%22Mercury%22, %22Venus%22];%0A%0A    # Create a list with multiple elements.%0A    val jovian = [%22Jupiter%22, %22Saturn%22, %22Uranus%22, %22Neptune%22];%0A%0A    # Print the results.%0A    (F::println empty);%0A    (F::println home);%0A    (F::println hot);%0A    (F::println jovian);%0A}", ""],
-  "example-2" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    # Create an empty list.%0A    val pets = [];%0A%0A    # Add elements to the list. %0A    (pets.add %22Jet%22);%0A    (pets.add %22Fluffy%22);%0A    (pets.add %22Chicky%22);%0A    (pets.add %22Picky%22);%0A    (pets.add %22Sikorsky%22);%0A    (pets.add %22Lucky%22);%0A    (pets.add %22Eyeball%22);%0A%0A    # Print the results.%0A    (F::println pets);%0A}", ""],
-},
-
-
-"Annotations" : {
-  "summary" : "An annotation is a metadata applied to code.",
-  "ast" : "autumn.lang.compiler.ast.nodes.Annotation",
-  "syntax":
-    [
-      [0, "@<i>#type#</i>"],
-    ],
-  "details":
-    [
-    ],
-  "static-checks":
-    [
-      ["NO_SUCH_TYPE", "The <i>type</i> type must exist."],
-      ["INACCESSIBLE_TYPE", "The <i>type</i> type must be accessible from the enclosing package."],
-      ["EXPECTED_ANNOTATION", "The <i>type</i> must be an annotation-type."],
-    ],
+  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    # Create an empty list.%0A    val empty = [];%0A%0A    # Create a list with a single element. %0A    val home = [%22Earth%22];%0A%0A    # Create a list with two elements. %0A    val hot = [%22Mercury%22, %22Venus%22];%0A%0A    # Create a list with multiple elements.%0A    val jovian = [%22Jupiter%22, %22Saturn%22, %22Uranus%22, %22Neptune%22];%0A%0A    # Print the results.%0A    (F::println empty);%0A    (F::println home);%0A    (F::println hot);%0A    (F::println jovian);%0A}", "[]%0A[Earth]%0A[Mercury, Venus]%0A[Jupiter, Saturn, Uranus, Neptune]"],
+  "example-2" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    # Create an empty list.%0A    val pets = [];%0A%0A    # Add elements to the list. %0A    (pets.add %22Jet%22);%0A    (pets.add %22Fluffy%22);%0A    (pets.add %22Chicky%22);%0A    (pets.add %22Picky%22);%0A    (pets.add %22Sikorsky%22);%0A    (pets.add %22Lucky%22);%0A    (pets.add %22Eyeball%22);%0A%0A    # Print the results.%0A    (F::println pets);%0A}", "[Jet, Fluffy, Chicky, Picky, Sikorsky, Lucky, Eyeball]"],
 },
 
 
@@ -2855,9 +2986,9 @@ function spec()
   "ast" : "autumn.lang.compiler.ast.nodes.AnnotationList",
   "syntax":
     [
-      [0, "<i>#annotation#<sub>1</sub></i>"],
-      [0, "<i>#annotation#<sub>2</sub></i>"],
-      [0, "<i>#annotation#<sub>n</sub></i>"],
+      [0, "<i><span class=\"keyword\">annotation</span><sub>1</sub></i>"],
+      [0, "<i><span class=\"keyword\">annotation</span><sub>2</sub></i>"],
+      [0, "<i><span class=\"keyword\">annotation</span><sub>n</sub></i>"],
     ],
   "details":
     [
@@ -2865,6 +2996,41 @@ function spec()
   "static-checks":
     [
       ["DUPLICATE_ANNOTATION", "An annotation can oly appear once in a single annotation-list."],
+    ],
+},
+
+
+"Annotation" : {
+  "summary" : "An annotation is a metadata applied to code.",
+  "ast" : "autumn.lang.compiler.ast.nodes.Annotation",
+  "syntax":
+    [
+      [0, "@<i><a href=\"ConstructPage.html?construct=TypeSpecifier\">type</a></i>"],
+    ],
+  "details":
+    [
+    ],
+  "static-checks":
+    [
+      ["NO_SUCH_TYPE", "The type specified by the <i><i>type</i></i> must exist."],
+      ["INACCESSIBLE_TYPE", "The type specified by the <i><i>type</i></i> must be accessible."],
+      ["EXPECTED_ANNOTATION", "The <i>type</i> must be an annotation-type."],
+    ],
+},
+
+
+"Formal Parameter List" : {
+  "summary" : "A formal-parameter-list is a list of formal-parameters.",
+  "ast" : "autumn.lang.compiler.ast.nodes.FormalParameterList",
+  "syntax":
+    [
+      [0, "( <i>#formal#<sub>1</sub></i> , ... , <i>#formal#<sub>n</sub></i> )"],
+    ],
+  "details":
+    [
+    ],
+  "static-checks":
+    [
     ],
 },
 
@@ -2878,14 +3044,14 @@ function spec()
     ],
   "details":
     [
-      [0, "The scope of the variable is the enclosing function."],
-      [0, "The variable is alive precisely during an activation of the enclosing function."],
+      [0, "The scope of the <i>variable</i> is anywhere in the enclosing function."],
+      [0, "The <i>variable</i> is alive precisely during an activation of the enclosing function."],
     ],
   "static-checks":
     [
-      ["DUPLICATE_VARIABLE", "No two variables declared inside the same function can share a name."],
-      ["NO_SUCH_TYPE", "The <i>type</i> type must exist."],
-      ["INACCESSIBLE_TYPE", "The <i>type</i> type must be accessible from the enclosing package."],
+      ["DUPLICATE_VARIABLE", "The <i>variable</i> cannot share its name with another variable declared in the same scope."],
+      ["NO_SUCH_TYPE", "The type specified by the <i><i>type</i></i> must exist."],
+      ["INACCESSIBLE_TYPE", "The type specified by the <i><i>type</i></i> must be accessible."],
     ],
 },
 
@@ -2902,60 +3068,6 @@ function spec()
       [0, "A <i>name</i> is a sequence of letters, digits, underscores, and/or dollar signs."],
       [0, "A <i>name</i> cannot start with a digit."],
       [0, "A <i>name</i> is case-sensitive."],
-      [0, "A <i>name</i> cannot be any of the following reserved words."],
-      [1, "abstract"],
-      [1, "assert"],
-      [1, "boolean"],
-      [1, "break"],
-      [1, "byte"],
-      [1, "case"],
-      [1, "catch"],
-      [1, "char"],
-      [1, "class"],
-      [1, "const"],
-      [1, "continue"],
-      [1, "default"],
-      [1, "do"],
-      [1, "double"],
-      [1, "else"],
-      [1, "enum"],
-      [1, "extends"],
-      [1, "false"],
-      [1, "final"],
-      [1, "finally"],
-      [1, "float"],
-      [1, "for"],
-      [1, "goto"],
-      [1, "if"],
-      [1, "implements"],
-      [1, "import"],
-      [1, "instanceof"],
-      [1, "int"],
-      [1, "interface"],
-      [1, "long"],
-      [1, "native"],
-      [1, "new"],
-      [1, "null"],
-      [1, "package"],
-      [1, "private"],
-      [1, "protected"],
-      [1, "public"],
-      [1, "return"],
-      [1, "short"],
-      [1, "static"],
-      [1, "strictfp"],
-      [1, "super"],
-      [1, "switch"],
-      [1, "synchronized"],
-      [1, "this"],
-      [1, "throw"],
-      [1, "throws"],
-      [1, "transient"],
-      [1, "true"],
-      [1, "try"],
-      [1, "void"],
-      [1, "volatile"],
-      [1, "while"],
     ],
   "static-checks":
     [
@@ -2978,8 +3090,8 @@ function spec()
     ],
   "static-checks":
     [
-      ["NO_SUCH_TYPE", "The <i>type</i> type must exist."],
-      ["INACCESSIBLE_TYPE", "The <i>type</i> type must be accessible from the enclosing package."],
+      ["NO_SUCH_TYPE", "The type specified by the <i><i>type</i></i> must exist."],
+      ["INACCESSIBLE_TYPE", "The type specified by the <i><i>type</i></i> must be accessible."],
     ],
 },
 
@@ -3039,19 +3151,10 @@ function spec()
 },
 
 
-"License" : "<h1>Licences</h1><p>The Autumn Compiler itself is licenced under the terms of the Apache 2.0 licence.</p><p>The Autumn Compiler has the following dependencies:</p>%0A<ul>%0A  <li>The Snowflake Parser library which is licenced under the terms of the Apache 2.0 licence.</li>%0A  <li>The Autumn compiler uses the ObjectWeb ASM library which is licenced under the terms of the Apache 2.0 licence.</li>%0A  <li>The Autumn compiler uses the Google Guava library which is licenced under the terms of the Apache 2.0 licence.</li>%0A</ul><p>TODO: Specification Licence TODO: GPL instead of Apache?</p>",
+"Downloads" : "<h1>Downloads</h1><h2>Latest Binary Release of the Autumn Compiler:</h2><p><strong>Download Link</strong> (Zip File): <a href=%22https://googledrive.com/host/0B2am-qoFTOsTTFhuaFV2ME1tdVk%22>Click Here</a></p><p><em>You will have to click on the file-link (autumn-latest.zip) on the download-page</em>. </p><p><strong>Contents</strong></p>%0A<ul>%0A  <li><code>dist/LICENSE</code> is the full-text of the Apache 2.0 license.</li>%0A  <li><code>dist/README.pdf</code> contains notes relevant to the release.</li>%0A  <li><code>dist/autumn.jar</code> is the actual autumn compiler and runtime.</li>%0A  <li><code>dist/lib/asm-all-4.1.jar</code> is the ObjectWeb ASM bytecode manipulation library.</li>%0A  <li><code>dist/lib/guava-12.0.jar</code> is the Google Guava utility library.</li>%0A  <li><code>dist/lib/snowflake.jar</code> is the Snowflake PEG parser library.</li>%0A</ul>",
 
 
 "Introduction" : "<h1>Introduction</h1><p>Autumn is a statically-typed multi-paradigm general-purpose programming language that compiles directly to JVM bytecode.</p><h2>Paradigms</h2>%0A<ul>%0A  <li>Object-Oriented</li>%0A  <li>Imperative</li>%0A  <li>Functional</li>%0A  <li>Procedural</li>%0A  <li>Reflective</li>%0A  <li>Concurrent</li>%0A  <li>Dataflow (events in properties)????</li>%0A  <li>Metaprograming ..+ Limited Homioconicity ..+ Reflective</li>%0A</ul><h2>Notable Features and Benefits:</h2>%0A<ul>%0A  <li>Prototype-based Object System</li>%0A  <li>Anonymous Functions via Delegates</li>%0A  <li>Optional Multiple Dispatch</li>%0A  <li>Explicit support for direct tail-recursion</li>%0A  <li>Generator Functions</li>%0A</ul>",
-
-
-"Where to Download" : "",
-
-
-"Hello World" : "",
-
-
-"Compiler Command Line Options" : "",
 
 
 "Special Thanks" : "<h1>Special Thanks</h1><h2>Dedication:</h2><p>My Mother</p><h2>Other:</h2><h3>Thanks to the developers of <a ref=%22http://asm.ow2.org/%22>ObjectWeb for ASM Library</a>.</h3><p>The ObjectWeb ASM library is used inside the Autumn compiler in order to generate class files. </p><h3>Thanks to the developers of <a ref=%22https://code.google.com/p/guava-libraries/%22>Google Guava</a>.</h3><p>The Guava library is used inside of the Autumn compiler, because of the utilities it provides.</p><h3>Thanks to backgroundlabs.com for the website background images.</h3><p><a href=%22http://www.backgroundlabs.com%22 title=%22Background Labs%22><img src=%22http://www.backgroundlabs.com/images/backgroundlabs-100x100.png%22 border=%220%22 alt=%22Background Labs%22 /></a></p>",
@@ -3070,9 +3173,6 @@ function spec()
 
 
 "Resolution" : "<h2>Instance Field Resolution</h2><h2>Static Field Resolution</h2><h2>Constructor Resolution</h2><p>A constructor is simply a special method whose name is %22&lt;init&gt;%22. As a result, the resolution of a constructor is equivalent to that of a static method.</p><h2>Instance Method Resolution</h2><h2>Static Method Resolution</h2>",
-
-
-"Debugger" : "",
 
 
 "Expression" : "<h1>Expression</h1><p>An expression can be any of of the following:</p>%0A<ul>%0A  <li>Hello</li>%0A</ul>",

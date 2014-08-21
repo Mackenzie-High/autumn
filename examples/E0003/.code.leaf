@@ -5,12 +5,11 @@ defun main (args : String[]) : void
 {
     var i = 0;
 
-    until (i > 10)
+    until (i > 5)
     {
-        (F::print "X = ");
-        (F::println i);
+        (F::println "i = " .. i);
 
-        i = i + 2;
+        i = i + 1;
     }
 } 
 

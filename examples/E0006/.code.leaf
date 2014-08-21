@@ -3,16 +3,11 @@ module * in examples;
 @Start
 defun main (args : String[]) : void
 {
-    var i = 0;
-    
-    do
+    for (i = 0; i < 5; i + 1)
     {
         (F::print "X = ");
         (F::println i);
-
-        i = i + 1;
     }
-    until (i < 5)
 } 
 
 

@@ -1,0 +1,3 @@
+Case 1: A
+Case 2: Mars
+Case 3: null

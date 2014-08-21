@@ -5,10 +5,9 @@ defun main (args : String[]) : void
 {
     var i = 0;
 
-    while (i < 10)
+    while (i < 5)
     {
-        (F::print "X = ");
-        (F::println i);
+        (F::println "i = " .. i);
 
         i = i + 1;
     }
