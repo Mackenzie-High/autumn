@@ -91,7 +91,7 @@ public final class Autumn
      * @param file is the path to the source-file.
      * @throws IOException if the source-file cannot be read.
      */
-    public void srcFile(final File file)
+    public Module srcFile(final File file)
             throws IOException
     {
         Preconditions.checkNotNull(file);
@@ -102,7 +102,7 @@ public final class Autumn
 
         final Module module = parser.parse(code, file);
 
-        src(module);
+        return src(module);
     }
 
     /**
@@ -116,10 +116,10 @@ public final class Autumn
      * @param file is the path to the source-file.
      * @throws IOException if the source-file cannot be read.
      */
-    public void srcFile(final String file)
+    public Module srcFile(final String file)
             throws IOException
     {
-        srcFile(new File(file));
+        return srcFile(new File(file));
     }
 
     /**
@@ -128,7 +128,7 @@ public final class Autumn
      * @param file is the path to the source-file.
      * @throws IOException if the source-file cannot be read.
      */
-    public void srcURL(final URL file)
+    public Module srcURL(final URL file)
             throws IOException
     {
         Preconditions.checkNotNull(file);
@@ -139,7 +139,7 @@ public final class Autumn
 
         final Module module = parser.parse(code, file);
 
-        src(module);
+        return src(module);
     }
 
     /**
@@ -151,25 +151,29 @@ public final class Autumn
      * </p>
      *
      * @param file is the path to the source-file.
+     * @return the Abstract-Syntax-Tree represntation of the module.
      * @throws IOException if the source-file cannot be read.
      */
-    public void srcURL(final String file)
+    public Module srcURL(final String file)
             throws MalformedURLException,
                    IOException
     {
-        srcURL(new URL(file));
+        return srcURL(new URL(file));
     }
 
     /**
      * This method adds the Abstract-Syntax-Tree representation of a module to the list of modules.
      *
      * @param node is the AST representation of the module.
+     * @return node.
      */
-    public void src(final Module node)
+    public Module src(final Module node)
     {
         Preconditions.checkNotNull(node);
 
         modules.add(node);
+
+        return node;
     }
 
     /**
