@@ -325,6 +325,10 @@ Test Index
 . . Strings
 
 
+Standard Library
+. autumn.util.test
+. . T0218 = Test Cases, Test Results, and most of UnitTester
+. . T0219 = UnitTester - Load Non-Existent Class
 
 
 

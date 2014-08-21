@@ -77,10 +77,6 @@ public final class Autumn
         this.reporter = reporter;
     }
 
-    public void help()
-    {
-    }
-
     /**
      * This method loads a Jar library.
      *

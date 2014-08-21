@@ -72,6 +72,7 @@ public final class Importer
         importClass(autumn.util.Threads.class);
 
         // autumn.util.test
+        importClass(autumn.util.test.MalformedTestException.class);
         importClass(autumn.util.test.Test.class);
         importClass(autumn.util.test.TestCase.class);
         importClass(autumn.util.test.TestResult.class);

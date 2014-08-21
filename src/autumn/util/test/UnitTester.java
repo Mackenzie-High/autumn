@@ -7,22 +7,25 @@ import autumn.util.Reflect;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import high.mackenzie.autumn.resources.Finished;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
- * An instance of this class runs unit-tests on a group of modules.
+ * An instance of this class runs unit-tests contained in a group of modules.
  *
  * @author Mackenzie High
  */
+@Finished("2014/08/21")
 public final class UnitTester
         implements Tester
 {
@@ -130,7 +133,7 @@ public final class UnitTester
             }
 
             @Override
-            public long time()
+            public long executionTime()
             {
                 return time.get();
             }
@@ -144,12 +147,28 @@ public final class UnitTester
                     out.println();
                 }
 
-                out.println("Execution Time = " + time() + " Milliseconds");
+                out.println("Execution Time = " + executionTime() + " Milliseconds");
                 out.println();
 
                 // Print the number of test-cases that passed and failed.
                 out.println(this);
                 out.println();
+            }
+
+            @Override
+            public TestResult find(final String name)
+            {
+                Preconditions.checkNotNull(name);
+
+                for (TestResult result : results())
+                {
+                    if (result.name().equals(name))
+                    {
+                        return result;
+                    }
+                }
+
+                throw new NoSuchElementException(name);
             }
 
             @Override
@@ -355,7 +374,7 @@ public final class UnitTester
             }
 
             @Override
-            public long time()
+            public long executionTime()
             {
                 return total_time;
             }

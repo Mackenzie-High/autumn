@@ -37,7 +37,7 @@ public interface TestResults
      *
      * @return the total number of milliseconds that the tests spent executing.
      */
-    public long time();
+    public long executionTime();
 
     /**
      * This method prints a hopefully human readable description of these test results.
@@ -45,6 +45,15 @@ public interface TestResults
      * @param out is the output-stream to print to.
      */
     public void print(PrintStream out);
+
+    /**
+     * This method searches for a specific test-result given the its name.
+     *
+     * @param name is the name of the test-case.
+     * @return the test-result.
+     * @throws NoSuchElementException if the name is not the name of any of the test-cases.
+     */
+    public TestResult find(final String name);
 
     /**
      * This method converts this object to a list.

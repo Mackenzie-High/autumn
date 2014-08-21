@@ -75,7 +75,7 @@ public interface TestResult
      *
      * @return the number of milliseconds the test-case took executing.
      */
-    public long time();
+    public long executionTime();
 
     /**
      * This method prints a hopefully human readable representation of this test-result.

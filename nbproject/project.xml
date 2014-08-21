@@ -26,6 +26,7 @@
             <word>BigInteger</word>
             <word>CtorTester</word>
             <word>eq</word>
+            <word>executionTime</word>
             <word>expectField</word>
             <word>expectMethod</word>
             <word>FloatTypes</word>
@@ -50,6 +51,7 @@
             <word>isInterface</word>
             <word>isLocalClass</word>
             <word>listIterator</word>
+            <word>MalformedTestException</word>
             <word>moduleAnnotationDefinitions</word>
             <word>moduleDesignDefinitions</word>
             <word>moduleExceptionDefinitions</word>
@@ -62,6 +64,7 @@
             <word>RetentionPolicy</word>
             <word>returnType</word>
             <word>superclasses</word>
+            <word>TestCase</word>
             <word>ThisTypeDoesNotExist</word>
             <word>toMap</word>
             <word>UnitTester</word>
