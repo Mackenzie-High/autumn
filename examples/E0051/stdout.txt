@@ -1,0 +1,3 @@
+Name = examples.Alien
+Annotation? = true
+Modifiers = public abstract interface

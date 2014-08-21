@@ -1,0 +1,4 @@
+Parsing Failed!
+  File: /media/disk/Code/EclipseProjects/AutumnSpecification/autumn/examples/E0068/code.leaf
+  Line: #6
+  Column: #25
