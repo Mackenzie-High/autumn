@@ -3,7 +3,7 @@ Autumn Programming Language
 
 Autumn is a multi-paradigm dynamically compiled statically-typed programming language for the JVM.
 
-Autumn is licensed under the terms of the Apache 2.0 license. 
+Autumn is licensed under the terms of the [Apache 2.0 license](http://www.apache.org/licenses/LICENSE-2.0). 
 
 Quick Links:
 
