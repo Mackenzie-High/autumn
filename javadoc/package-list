@@ -10,9 +10,12 @@ autumn.lang.exceptions
 autumn.lang.internals
 autumn.lang.internals.annotations
 autumn.lang.internals.proto
-autumn.lang.util
+autumn.util
+autumn.util.ds
+autumn.util.functors
+autumn.util.proto
+autumn.util.test
 high.mackenzie.autumn
-high.mackenzie.autumn.lang
 high.mackenzie.autumn.lang.compiler.args
 high.mackenzie.autumn.lang.compiler.compilers
 high.mackenzie.autumn.lang.compiler.exceptions
@@ -23,3 +26,4 @@ high.mackenzie.autumn.lang.compiler.typesystem
 high.mackenzie.autumn.lang.compiler.typesystem.design
 high.mackenzie.autumn.lang.compiler.utils
 high.mackenzie.autumn.resources
+high.mackenzie.autumn.util.ds
