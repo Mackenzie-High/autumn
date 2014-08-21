@@ -1,7 +1,0 @@
-module Main in examples;
-
-@Start
-defun main (args : String[]) : void
-{
-    (F::println "Hello World!");
-} 
