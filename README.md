@@ -8,7 +8,6 @@ Autumn is licensed under the terms of the [Apache 2.0](http://www.apache.org/lic
 **Quick Links:**
 
 + [Website and Language Specification](http://mackenzie-high.github.io/autumn/)
-
 + [Download Page](http://mackenzie-high.github.io/autumn/TextPage.html?page=Downloads)
 
 
