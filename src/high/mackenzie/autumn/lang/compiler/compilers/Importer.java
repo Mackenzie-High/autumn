@@ -1,13 +1,6 @@
 package high.mackenzie.autumn.lang.compiler.compilers;
 
-import autumn.lang.Delegate;
-import autumn.lang.Functor;
-import autumn.lang.Prototype;
 import autumn.lang.compiler.ast.nodes.TypeSpecifier;
-import autumn.util.DS;
-import autumn.util.F;
-import autumn.util.Predicates;
-import autumn.util.Reflect;
 import autumn.util.functors.Predicate;
 import autumn.util.proto.ProtoMap;
 import com.google.common.base.Preconditions;
@@ -21,20 +14,8 @@ import high.mackenzie.autumn.lang.compiler.typesystem.design.IReturnType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IVariableType;
 import high.mackenzie.autumn.lang.compiler.utils.Utils;
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
-import java.util.NoSuchElementException;
 import java.util.Set;
-import java.util.TreeMap;
-import java.util.TreeSet;
 
 /**
  * Essentially, an instance of this class implements import-directives.
@@ -56,68 +37,99 @@ public final class Importer
     {
         this.module = module;
 
-        imports.put("Start", "autumn.lang.annotations.Start");
-        imports.put("Significant", "autumn.lang.annotations.Significant");
-        imports.put("Unique", "autumn.lang.annotations.Unique");
+        // autumn.lang
+        importClass(autumn.lang.Delegate.class);
+        importClass(autumn.lang.Functor.class);
+        importClass(autumn.lang.Local.class);
+        importClass(autumn.lang.LocalsMap.class);
+        importClass(autumn.lang.Member.class);
+        importClass(autumn.lang.Method.class);
+        importClass(autumn.lang.Module.class);
+        importClass(autumn.lang.Property.class);
+        importClass(autumn.lang.Prototype.class);
+        importClass(autumn.lang.StaticFunctor.class);
+        importClass(autumn.lang.Tuple.class);
+        importClass(autumn.lang.TypedFunctor.class);
 
-        importClass(F.class);
-        importClass(DS.class);
-        importClass(Functor.class);
-        importClass(Delegate.class);
-        importClass(Prototype.class);
+        // autumn.lang.annotations
+        importClass(autumn.lang.annotations.Clinit.class);
+        importClass(autumn.lang.annotations.Hide.class);
+        importClass(autumn.lang.annotations.Once.class);
+        importClass(autumn.lang.annotations.Start.class);
+        importClass(autumn.lang.annotations.Sync.class);
 
-        importClass(Object.class);
-        importClass(Number.class);
-        importClass(CharSequence.class);
+        // autumn.lang.compiler
+        importClass(autumn.lang.compiler.Autumn.class);
 
-        importClass(Boolean.class);
-        importClass(Character.class);
-        importClass(Byte.class);
-        importClass(Short.class);
-        importClass(Integer.class);
-        importClass(Long.class);
-        importClass(Float.class);
-        importClass(Double.class);
-        importClass(BigInteger.class);
-        importClass(BigDecimal.class);
-        importClass(String.class);
-        importClass(CharSequence.class);
-        importClass(StringBuilder.class);
+        // autumn.util
+        importClass(autumn.util.Bitwise.class);
+        importClass(autumn.util.DS.class);
+        importClass(autumn.util.F.class);
+        importClass(autumn.util.Files.class);
+        importClass(autumn.util.Predicates.class);
+        importClass(autumn.util.Reflect.class);
+        importClass(autumn.util.Strings.class);
+        importClass(autumn.util.Threads.class);
 
-        importClass(Class.class);
+        // autumn.util.test
+        importClass(autumn.util.test.Test.class);
+        importClass(autumn.util.test.TestCase.class);
+        importClass(autumn.util.test.TestResult.class);
+        importClass(autumn.util.test.TestResults.class);
+        importClass(autumn.util.test.Tester.class);
+        importClass(autumn.util.test.UnitTester.class);
 
-        importClass(Enum.class);
-
-        importClass(Throwable.class);
-        importClass(Exception.class);
-        importClass(RuntimeException.class);
-        importClass(ClassCastException.class);
-        importClass(IllegalArgumentException.class);
-        importClass(IllegalStateException.class);
-        importClass(IndexOutOfBoundsException.class);
-        importClass(NoSuchElementException.class);
-        importClass(NullPointerException.class);
-
-        importClass(Iterable.class);
-        importClass(Iterator.class);
-
-        importClass(Collection.class);
-        importClass(List.class);
-        importClass(LinkedList.class);
-        importClass(ArrayList.class);
-        importClass(Map.class);
-        importClass(HashMap.class);
-        importClass(TreeMap.class);
-        importClass(Set.class);
-        importClass(HashSet.class);
-        importClass(TreeSet.class);
-
+        // autumn.util.proto
         importClass(ProtoMap.class);
 
+        // autumn.util.functors
         importClass(Predicate.class);
 
-        importClass(Predicates.class);
-        importClass(Reflect.class);
+
+        // java.lang
+        importClass(java.lang.Boolean.class);
+        importClass(java.lang.Byte.class);
+        importClass(java.lang.Character.class);
+        importClass(java.lang.CharSequence.class);
+        importClass(java.lang.CharSequence.class);
+        importClass(java.lang.Class.class);
+        importClass(java.lang.ClassCastException.class);
+        importClass(java.lang.Double.class);
+        importClass(java.lang.Enum.class);
+        importClass(java.lang.Exception.class);
+        importClass(java.lang.Float.class);
+        importClass(java.lang.IllegalArgumentException.class);
+        importClass(java.lang.IllegalStateException.class);
+        importClass(java.lang.IndexOutOfBoundsException.class);
+        importClass(java.lang.Integer.class);
+        importClass(java.lang.Iterable.class);
+        importClass(java.lang.Long.class);
+        importClass(java.lang.NullPointerException.class);
+        importClass(java.lang.Number.class);
+        importClass(java.lang.Object.class);
+        importClass(java.lang.RuntimeException.class);
+        importClass(java.lang.Short.class);
+        importClass(java.lang.String.class);
+        importClass(java.lang.StringBuilder.class);
+        importClass(java.lang.Throwable.class);
+
+        // java.math
+        importClass(java.math.BigInteger.class);
+        importClass(java.math.BigDecimal.class);
+
+        // java.util
+        importClass(java.util.ArrayList.class);
+        importClass(java.util.Collection.class);
+        importClass(java.util.HashMap.class);
+        importClass(java.util.HashSet.class);
+        importClass(java.util.Iterator.class);
+        importClass(java.util.LinkedList.class);
+        importClass(java.util.List.class);
+        importClass(java.util.Map.class);
+        importClass(java.util.NoSuchElementException.class);
+        importClass(java.util.Set.class);
+        importClass(java.util.TreeMap.class);
+        importClass(java.util.TreeSet.class);
     }
 
     private void checkAccess(final TypeSpecifier specifier,

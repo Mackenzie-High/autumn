@@ -64,6 +64,7 @@
             <word>superclasses</word>
             <word>ThisTypeDoesNotExist</word>
             <word>toMap</word>
+            <word>UnitTester</word>
             <word>valueOf</word>
         </spellchecker-wordlist>
     </configuration>

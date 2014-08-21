@@ -1,9 +1,13 @@
 package autumn.lang.compiler;
 
 import autumn.lang.compiler.ast.nodes.Module;
+import autumn.lang.compiler.ast.nodes.ModuleDirective;
+import autumn.lang.compiler.ast.nodes.Name;
 import autumn.lang.compiler.errors.BasicErrorReporter;
 import autumn.lang.compiler.errors.IErrorReporter;
+import autumn.util.F;
 import autumn.util.test.TestResults;
+import autumn.util.test.UnitTester;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.common.io.Files;
@@ -14,6 +18,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -83,6 +88,65 @@ public final class Autumn
      */
     public void load(final File jar)
     {
+    }
+
+    /**
+     * This method causes source-files to be read, parsed, and added to the list of modules.
+     *
+     * <p>
+     * This method skips hidden files and files with extensions
+     * other than ".leaf" (ignoring case).
+     * </p>
+     *
+     * @param root is the path to the directory containing the source-files.
+     * @param recur is true, if this method should recurse into sub-directories.
+     * @throws IOException if a source-file cannot be read.
+     */
+    public List<Module> srcDir(final File root,
+                               final boolean recur)
+            throws IOException
+    {
+        Preconditions.checkNotNull(root);
+
+        final List<Module> result = Lists.newLinkedList();
+
+        for (File file : F.iter(autumn.util.Files.iterFiles(root, recur)))
+        {
+            final String name = file.getName();
+
+            final boolean is_file = file.isFile();
+
+            final boolean is_hidden = file.isHidden();
+
+            final boolean is_leaf = name.length() > 5
+                                    && name.substring(name.length() - 5, name.length()).equalsIgnoreCase(".leaf");
+
+            if (is_file && is_leaf && !is_hidden)
+            {
+                result.add(srcFile(file));
+            }
+        }
+
+        return Collections.unmodifiableList(result);
+    }
+
+    /**
+     * This method causes source-files to be read, parsed, and added to the list of modules.
+     *
+     * <p>
+     * Equivalence:
+     * <code> srcFile(new File(file)) </code>
+     * </p>
+     *
+     * @param root is the path to the directory containing the source-files.
+     * @param recur is true, if this method should recurse into sub-directories.
+     * @throws IOException if the source-file cannot be read.
+     */
+    public List<Module> srcDir(final String root,
+                               final boolean recur)
+            throws IOException
+    {
+        return srcDir(new File(root), recur);
     }
 
     /**
@@ -256,6 +320,69 @@ public final class Autumn
      */
     public TestResults test()
     {
-        return null;
+        final UnitTester tester = new UnitTester();
+
+        final CompiledProgram program = compile();
+
+        final DynamicLoader loader = program.load();
+
+        for (Module module : modules)
+        {
+            final String name = nameOf(module);
+
+            if (name == null)
+            {
+                continue;
+            }
+
+            try
+            {
+                final Class clazz = Class.forName(name, false, loader);
+
+                tester.add(clazz);
+            }
+            catch (ClassNotFoundException ex)
+            {
+                /**
+                 * Technically, this should never happen.
+                 * Compilation was successfully and the modules were successfully loaded.
+                 * As a result, the module's class must exist in the loader.
+                 */
+                throw new RuntimeException(ex);
+            }
+        }
+
+        final TestResults results = tester.run();
+
+        return results;
+    }
+
+    /**
+     * This method computes the fully-qualified name of a module.
+     *
+     * @param module is the Abstract-Syntax-Tree representation of the module.
+     * @return the name of the module; or null, if the module is anonymous.
+     */
+    private String nameOf(final Module module)
+    {
+        // The name of the module is specified by its only module-directive.
+        final ModuleDirective directive = module.getModuleDirectives().asMutableList().get(0);
+
+        // The name will consist of a package-part and s simple-name.
+        final StringBuilder name = new StringBuilder();
+
+        // For each part of the package's name:
+        for (Name part : directive.getNamespace().getNames())
+        {
+            name.append(part.getName());
+            name.append('.');
+        }
+
+        // Append the simple-name of the module.
+        // This will be a '*' character, if the module is anonymous.
+        name.append(directive.getName().getName());
+
+        // Return null, if the module is anonymous.
+        return name.toString().contains("*") ? null : name.toString();
     }
 }

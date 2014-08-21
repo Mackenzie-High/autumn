@@ -12,4 +12,5 @@ import high.mackenzie.autumn.resources.Finished;
 public abstract class AbstractFunctor
         implements Functor
 {
+    // Pass
 }

@@ -69,11 +69,7 @@ public final class F
         functor.apply(stack);
 
         // Retrieve the return-value of the functor.
-        final Object result = stack.isEmpty() ? null : stack.popO();
-
-        // Clear the stack in order to prevent unexpected bugs.
-        // The stack should already be clear.
-        stack.clear();
+        final Object result = stack.popResult();
 
         return result;
     }
@@ -487,6 +483,24 @@ public final class F
     public static <T> Iterable<T> iter(final Iterable<T> iterable)
     {
         return iterable;
+    }
+
+    /**
+     * This method creates an iterator over an iterator.
+     *
+     * @param iterable is the iterator itself.
+     * @return an iterable that wraps the iterator.
+     */
+    public static <T> Iterable<T> iter(final Iterator<T> iterable)
+    {
+        return new Iterable<T>()
+        {
+            @Override
+            public Iterator<T> iterator()
+            {
+                return iterable;
+            }
+        };
     }
 
     /**

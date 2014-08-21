@@ -6,8 +6,8 @@
 # Create the AST node  structs.
 #########################################################################################
 
-
-rm -r "src/autumn/lang/compiler/ast/nodes/" 
+# Remove the node files, but leave the package-info.java file.
+find "src/autumn/lang/compiler/ast/nodes/" -type f ! -name "package-info.java" -exec rm {} +
 
 cd "parser"
 

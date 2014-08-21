@@ -916,4 +916,30 @@ public final class ArgumentStack
 
         return value;
     }
+
+    /**
+     * This method retrieves and removes the value that is on top of the argument-stack, if any.
+     *
+     * <p>
+     * Caution: This method will also clear the stack.
+     * </p>
+     *
+     * <p>
+     * This method will return null, if the stack is empty.
+     * </p>
+     *
+     * <p>
+     * This method was added in order to simply the retrieval of functor return-values.
+     * </p>
+     *
+     * @return the topmost argument, if one exists; otherwise, return null.
+     */
+    public final Object popResult()
+    {
+        final Object result = isEmpty() ? null : popO();
+
+        clear();
+
+        return result;
+    }
 }
