@@ -1,4 +1,6 @@
 .*
+build.xml
+*.sh
 /dist/
 /build/
 /nbproject/private/
