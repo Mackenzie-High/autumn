@@ -7,6 +7,13 @@ echo $build > "distro-resources/build-counter"
 
 
 
+# Move the Javadoc to the specification folder. 
+rm -f "/media/disk/Code/EclipseProjects/AutumnSpecification/autumn/javadoc/"
+mv "dist/javadoc/" "/media/disk/Code/EclipseProjects/AutumnSpecification/autumn/"
+
+
+
+
 # Add the license to the distro.
 cp "distro-resources/LICENSE" "dist/LICENSE"
 
@@ -44,3 +51,9 @@ zip -r "backups/autumn-dist-$build-src.zip" "src" "test" "parser"
 
 # Create the distro's zip file. 
 zip -r "releases/autumn-dist-$build.zip" "dist"
+
+
+
+# Move the distro to my home folder, so I can upload it to GDrive.
+cp "releases/autumn-dist-$build.zip" "/home/mackenzie/autumn-latest.zip"
+

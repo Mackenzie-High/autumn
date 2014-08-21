@@ -33,10 +33,21 @@ public final class Autumn
     private final List<Module> modules = Lists.newLinkedList();
 
     /**
+     * This flag is true, if the debug-statements are turned on.
+     */
+    private static boolean debug = false;
+
+    /**
+     * This flag is true, if assume-statements are turned on.
+     */
+    private static boolean assume = true;
+
+    /**
      * This method turns the debug-statements on.
      */
     public static void enableDebugger()
     {
+        debug = true;
     }
 
     /**
@@ -44,6 +55,17 @@ public final class Autumn
      */
     public static void disableDebugger()
     {
+        debug = false;
+    }
+
+    /**
+     * This method determines whether the debugger is turned on.
+     *
+     * @return true, iff the debugger is turned on.
+     */
+    public static boolean isDebugOn()
+    {
+        return debug;
     }
 
     /**
@@ -51,6 +73,7 @@ public final class Autumn
      */
     public static void enableAssume()
     {
+        assume = true;
     }
 
     /**
@@ -58,6 +81,22 @@ public final class Autumn
      */
     public static void disableAssume()
     {
+        assume = false;
+    }
+
+    /**
+     * This method determines whether assumptions are turned on.
+     *
+     * <p>
+     * By default, assume-statements and assert-statements are both on.
+     * Only assume-statements (aka assumptions) can be turned off.
+     * </p>
+     *
+     * @return true, iff assumptions are turned on.
+     */
+    public static boolean isAssumeOn()
+    {
+        return assume;
     }
 
     /**
@@ -78,15 +117,6 @@ public final class Autumn
     }
 
     /**
-     * This method loads a Jar library.
-     *
-     * @param jar is the path to the jar-file.
-     */
-    public void load(final File jar)
-    {
-    }
-
-    /**
      * This method causes source-files to be read, parsed, and added to the list of modules.
      *
      * <p>
@@ -96,6 +126,7 @@ public final class Autumn
      *
      * @param root is the path to the directory containing the source-files.
      * @param recur is true, if this method should recurse into sub-directories.
+     * @return the modules that were successfully parsed.
      * @throws IOException if a source-file cannot be read.
      */
     public List<Module> srcDir(final File root,
@@ -119,7 +150,7 @@ public final class Autumn
 
             if (is_file && is_leaf && !is_hidden)
             {
-                result.add(srcFile(file));
+                srcFile(file);
             }
         }
 
@@ -136,6 +167,7 @@ public final class Autumn
      *
      * @param root is the path to the directory containing the source-files.
      * @param recur is true, if this method should recurse into sub-directories.
+     * @return the modules that were successfully parsed.
      * @throws IOException if the source-file cannot be read.
      */
     public List<Module> srcDir(final String root,
@@ -211,7 +243,7 @@ public final class Autumn
      * </p>
      *
      * @param file is the path to the source-file.
-     * @return the Abstract-Syntax-Tree represntation of the module.
+     * @return the Abstract-Syntax-Tree representation of the module.
      * @throws IOException if the source-file cannot be read.
      */
     public Module srcURL(final String file)
@@ -229,6 +261,11 @@ public final class Autumn
      */
     public Module src(final Module node)
     {
+        if (reporter.errorCount() > 0)
+        {
+            return null;
+        }
+
         Preconditions.checkNotNull(node);
 
         modules.add(node);
@@ -243,6 +280,11 @@ public final class Autumn
      */
     public CompiledProgram compile()
     {
+        if (reporter.errorCount() > 0)
+        {
+            return null;
+        }
+
         final AutumnCompiler cmp = new AutumnCompiler(reporter);
 
         final CompiledProgram program = cmp.compile(modules);
@@ -259,6 +301,11 @@ public final class Autumn
     public CompiledProgram compile(final File out)
             throws IOException
     {
+        if (reporter.errorCount() > 0)
+        {
+            return null;
+        }
+
         Preconditions.checkNotNull(out);
 
         final CompiledProgram program = compile();
@@ -282,6 +329,11 @@ public final class Autumn
         Preconditions.checkNotNull(args);
 
         final CompiledProgram program = compile();
+
+        if (reporter.errorCount() > 0)
+        {
+            return;
+        }
 
         final DynamicLoader loader = program.load();
 
@@ -316,6 +368,11 @@ public final class Autumn
      */
     public TestResults test()
     {
+        if (reporter.errorCount() > 0)
+        {
+            return null;
+        }
+
         final UnitTester tester = new UnitTester();
 
         final CompiledProgram program = compile();
