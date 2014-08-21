@@ -57,7 +57,7 @@ import java.util.TreeSet;
  * </table>
  * </p>
  * 
- * <p> This file was auto-generated on (Tue Aug 19 02:50:18 EDT 2014).</p>
+ * <p> This file was auto-generated on (Wed Aug 20 23:42:46 EDT 2014).</p>
  */
 @SuppressWarnings("unchecked")
 public final class NegateOperation extends Object implements IUnaryOperation

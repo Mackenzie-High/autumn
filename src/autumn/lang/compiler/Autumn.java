@@ -179,7 +179,11 @@ public final class Autumn
      */
     public CompiledProgram compile()
     {
-        return null;
+        final AutumnCompiler cmp = new AutumnCompiler(reporter);
+
+        final CompiledProgram program = cmp.compile(modules);
+
+        return program;
     }
 
     /**

@@ -1,4 +1,5 @@
-Copyright 2013 Michael Mackenzie High
+
+Copyright 2014 Michael Mackenzie High
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -12,8 +13,25 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-----------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 
-Usages:
+How to Use:
 
-  To Pseudo-Interpret: autumn -i -src <input-file> -args <argument-0> <argument-1> ... <argument-n>
+    To run an Autumn script:
+
+        autumn run <input-file> <argument-0> <argument-1> ... <argument-n>
+
+    To print the version:
+
+        autumn version
+
+    To print this help message:
+
+        autumn help
+
+    To print the full license:
+
+        autumn license
+
+
+Have a great day! Jesus loves you!

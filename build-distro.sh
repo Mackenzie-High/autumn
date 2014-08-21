@@ -26,6 +26,12 @@ date > "dist/notes/timestamp"
 
 
 
+# Embed the build number, which is used as the software version.
+rm -f "src/high/mackenzie/autumn/resources/version.txt"
+echo "$build" >> "src/high/mackenzie/autumn/resources/version.txt"
+
+
+
 # Add the "Hello World" example.
 cp "distro-resources/example-hello.leaf" "dist/notes/example-hello.leaf"
 
