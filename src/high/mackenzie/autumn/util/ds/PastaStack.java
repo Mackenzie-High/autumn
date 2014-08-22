@@ -1,4 +1,4 @@
-package autumn.util.ds;
+package high.mackenzie.autumn.util.ds;
 
 import java.util.AbstractList;
 
