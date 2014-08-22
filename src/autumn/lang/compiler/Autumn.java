@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLClassLoader;
 import java.nio.charset.Charset;
 import java.util.Collections;
 import java.util.List;
@@ -28,8 +29,22 @@ import java.util.List;
  */
 public final class Autumn
 {
+    private URLClassLoader loader;
+
+    /**
+     * These are the paths that where passed to the class-loader's constructor.
+     */
+    private final List<URL> libraries = Lists.newLinkedList();
+
+    /**
+     * This object is used to issue error-message,
+     * such as syntax errors and type-checking errors.
+     */
     private IErrorReporter reporter = new BasicErrorReporter();
 
+    /**
+     * These are the modules that will be compiled.
+     */
     private final List<Module> modules = Lists.newLinkedList();
 
     /**
@@ -41,6 +56,14 @@ public final class Autumn
      * This flag is true, if assume-statements are turned on.
      */
     private static boolean assume = true;
+
+    /**
+     * Sole Constructor.
+     */
+    public Autumn()
+    {
+        loader = new URLClassLoader(new URL[0]);
+    }
 
     /**
      * This method turns the debug-statements on.
@@ -285,7 +308,7 @@ public final class Autumn
             return null;
         }
 
-        final AutumnCompiler cmp = new AutumnCompiler(reporter);
+        final AutumnCompiler cmp = new AutumnCompiler(reporter, loader);
 
         final CompiledProgram program = cmp.compile(modules);
 
@@ -295,7 +318,7 @@ public final class Autumn
     /**
      * This method compiles the list of modules to bytecode.
      *
-     * @param out is the to write the jar-file to.
+     * @param out is the path to write the jar-file to.
      * @return the bytecode representation the program.
      */
     public CompiledProgram compile(final File out)
@@ -313,6 +336,23 @@ public final class Autumn
         program.jar(out);
 
         return program;
+    }
+
+    /**
+     * This method compiles the list of modules to bytecode.
+     *
+     * <p>
+     * Equivalence:
+     * <code> compile(new File(file)) </code>
+     * </p>
+     *
+     * @param out is the path to write the jar-file to.
+     * @return the bytecode representation the program.
+     */
+    public CompiledProgram compile(final String out)
+            throws IOException
+    {
+        return compile(new File(out));
     }
 
     /**
@@ -335,9 +375,9 @@ public final class Autumn
             return;
         }
 
-        final DynamicLoader loader = program.load();
+        final DynamicLoader dyn_loader = program.load();
 
-        loader.invokeMain(args);
+        dyn_loader.invokeMain(args);
     }
 
     /**
@@ -437,5 +477,60 @@ public final class Autumn
 
         // Return null, if the module is anonymous.
         return name.toString().contains("*") ? null : name.toString();
+    }
+
+    /**
+     * This method loads a jar-file library.
+     *
+     * @param path is the path to where the jar-file is located.
+     */
+    public void loadURL(final URL path)
+    {
+        Preconditions.checkNotNull(path);
+
+        libraries.add(path);
+
+        final URL[] array = libraries.toArray(new URL[0]);
+
+        loader = new URLClassLoader(array);
+    }
+
+    /**
+     * This method loads a jar-file library.
+     *
+     * @param path is the path to where the jar-file is located.
+     */
+    public void loadURL(final String path)
+            throws MalformedURLException
+    {
+        Preconditions.checkNotNull(path);
+
+        loadURL(new URL(path));
+    }
+
+    /**
+     * This method loads a jar-file library.
+     *
+     * @param path is the path to where the jar-file is located.
+     */
+    public void loadFile(final File path)
+            throws MalformedURLException
+    {
+        Preconditions.checkNotNull(path);
+
+        loadURL(path.toURI().toURL());
+    }
+
+    /**
+     * This method loads a jar-file library.
+     *
+     * @param path is the path to where the jar-file is located.
+     */
+    public void loadFile(final String path)
+            throws MalformedURLException
+    {
+        Preconditions.checkNotNull(path);
+
+        loadFile(path);
     }
 }

@@ -1,7 +1,6 @@
 package autumn.lang.compiler;
 
 import autumn.lang.compiler.ast.nodes.Module;
-import autumn.lang.compiler.errors.BasicErrorReporter;
 import autumn.lang.compiler.errors.IErrorReporter;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
@@ -12,6 +11,11 @@ import java.util.List;
 /**
  * An instance of this class is a compiler that can compile Autumn modules.
  *
+ * <p>
+ * You should not use this class directly.
+ * Instead, use it indirectly via the Autumn class.
+ * </p>
+ *
  * @author Mackenzie High
  */
 @Finished("2014/07/12")
@@ -19,44 +23,24 @@ public final class AutumnCompiler
 {
     private final IErrorReporter reporter;
 
-    /**
-     * Constructor.
-     *
-     * <p>
-     * A compiler created using this constructor will print error messages to STDOUT.
-     * </p>
-     */
-    public AutumnCompiler()
-    {
-        this(new BasicErrorReporter());
-    }
+    private final ClassLoader loader;
 
     /**
-     * Constructor.
+     * Sole Constructor.
      *
      * @param reporter is the error-reporter used to report compilation-errors.
+     * @param loader is the class-loader used to find types that were already loaded.
+     * @throws NullPointerException if reporter is null.
+     * @throws NullPointerException if loader is null.
      */
-    public AutumnCompiler(final IErrorReporter reporter)
+    public AutumnCompiler(final IErrorReporter reporter,
+                          final ClassLoader loader)
     {
         Preconditions.checkNotNull(reporter);
+        Preconditions.checkNotNull(loader);
 
         this.reporter = reporter;
-    }
-
-    /**
-     * This method compiles the abstract-syntax-tree representation of a module.
-     *
-     * @param module is the module that will be compiled.
-     * @return the compiled program that results from compiling the module,
-     * or null, if the program could not be compiled.
-     */
-    public CompiledProgram compile(final Module module)
-    {
-        final List<Module> list = ImmutableList.of(module);
-
-        final CompiledProgram program = ProgramCompiler.compile(list, reporter);
-
-        return program;
+        this.loader = loader;
     }
 
     /**
@@ -65,12 +49,15 @@ public final class AutumnCompiler
      * @param modules are the modules that will be compiled.
      * @return the compiled program that results from compiling the modules,
      * or null, if the program could not be compiled.
+     * @throws NullPointerException if modules is null.
      */
     public CompiledProgram compile(final Iterable<Module> modules)
     {
+        Preconditions.checkNotNull(modules);
+
         final List<Module> list = ImmutableList.copyOf(modules);
 
-        final CompiledProgram program = ProgramCompiler.compile(list, reporter);
+        final CompiledProgram program = ProgramCompiler.compile(list, reporter, loader);
 
         return program;
     }

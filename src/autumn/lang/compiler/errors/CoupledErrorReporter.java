@@ -1,6 +1,7 @@
 package autumn.lang.compiler.errors;
 
 import com.google.common.base.Preconditions;
+import high.mackenzie.autumn.resources.Finished;
 import java.net.URL;
 
 /**
@@ -10,7 +11,8 @@ import java.net.URL;
  *
  * @author Mackenzie High
  */
-public class CoupledErrorReporter
+@Finished("2014/08/22")
+public final class CoupledErrorReporter
         implements IErrorReporter
 {
     private final IErrorReporter reporter1;

@@ -4,6 +4,7 @@ import autumn.lang.compiler.Autumn;
 import com.google.common.collect.Lists;
 import com.google.common.io.Resources;
 import high.mackenzie.autumn.Main;
+import high.mackenzie.autumn.resources.Finished;
 import high.mackenzie.snowflake.ITreeNode;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -17,6 +18,7 @@ import java.util.LinkedList;
  *
  * @author Mackenzie High
  */
+@Finished("2014/08/22")
 public final class Visitor
         extends AbstractVisitor
 {
@@ -26,7 +28,10 @@ public final class Visitor
 
     private static final String VERSION = "/high/mackenzie/autumn/resources/version.txt";
 
-    private String src;
+    /**
+     * This is the path to the file to execute, if any.
+     */
+    private String src = null;
 
     /**
      * These are the command-line arguments to pass to the interpreted program.
@@ -128,11 +133,23 @@ public final class Visitor
         final Autumn cmp = new Autumn();
 
         /**
-         * Read the source-file.
+         * Read the source-file or jar-file.
          */
         try
         {
-            cmp.srcFile(src);
+            /**
+             * Compiled Autumn program are contained in jar-files.
+             * So, we simply need to load them, as though they are part of a library.
+             * On the other hand, Autumn scripts need to be parsed and then compiled.
+             */
+            if (src.toLowerCase().endsWith(".jar"))
+            {
+                cmp.loadFile(src);
+            }
+            else
+            {
+                cmp.srcFile(src);
+            }
         }
         catch (FileNotFoundException ex)
         {

@@ -13,30 +13,26 @@ import high.mackenzie.autumn.lang.compiler.utils.TypeSystemUtils;
 public final class TypeSystem
 {
     /**
-     * This is essentially the program that is being compiled.
-     */
-    private final ProgramCompiler program;
-
-    /**
      * This is the type-factory that the compiled uses to create new type objects.
      */
-    private final TypeFactory factory = new TypeFactory();
+    private final TypeFactory factory;
 
     /**
      * This object provides utility methods related to the type-system.
      */
-    public final TypeSystemUtils utils = new TypeSystemUtils(factory);
+    public final TypeSystemUtils utils;
 
     /**
      * Sole Constructor.
      *
-     * @param program is essentially the program that is being compiled.
+     * @param loader is the class-loader used to find previously compiled code.
      */
-    public TypeSystem(final ProgramCompiler program)
+    public TypeSystem(final ClassLoader loader)
     {
-        Preconditions.checkNotNull(program);
+        Preconditions.checkNotNull(loader);
 
-        this.program = program;
+        this.factory = new TypeFactory(loader);
+        this.utils = new TypeSystemUtils(factory);
     }
 
     /**

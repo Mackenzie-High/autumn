@@ -1,17 +1,11 @@
 package execution;
 
-import autumn.lang.compiler.AutumnCompiler;
-import autumn.lang.compiler.AutumnParser;
+import autumn.lang.compiler.Autumn;
 import autumn.lang.compiler.CompiledProgram;
-import autumn.lang.compiler.ast.nodes.Module;
-import autumn.lang.compiler.errors.BasicErrorReporter;
-import autumn.lang.compiler.errors.IErrorReporter;
 import autumn.lang.exceptions.AssertionFailedException;
 import com.google.common.io.Resources;
-import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
-import java.nio.charset.Charset;
 
 public final class Runner
 {
@@ -270,22 +264,24 @@ public final class Runner
 
             final URL url = Resources.getResource(Runner.class, path);
 
-            final String code = Resources.toString(url, Charset.defaultCharset());
+//            final String code = Resources.toString(url, Charset.defaultCharset());
+//
+//            final IErrorReporter reporter = new BasicErrorReporter();
+//
+//            final AutumnParser parser = new AutumnParser(reporter);
+//
+//            final Module module = parser.parse(code, new File(path));
+//
+//            if (module == null)
+//            {
+//                return FAILED;
+//            }
 
-            final IErrorReporter reporter = new BasicErrorReporter();
+            final Autumn cmp = new Autumn();
 
-            final AutumnParser parser = new AutumnParser(reporter);
+            cmp.srcURL(url);
 
-            final Module module = parser.parse(code, new File(path));
-
-            if (module == null)
-            {
-                return FAILED;
-            }
-
-            final AutumnCompiler cmp = new AutumnCompiler();
-
-            final CompiledProgram program = cmp.compile(module);
+            final CompiledProgram program = cmp.compile();
 
             if (program == null)
             {

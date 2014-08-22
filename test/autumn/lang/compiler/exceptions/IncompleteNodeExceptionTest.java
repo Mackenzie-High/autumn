@@ -19,10 +19,6 @@ public final class IncompleteNodeExceptionTest
     {
         System.out.println("Test: 20140111062507815886");
 
-        // TODO: Remove these two lines.
-        execution.Runner.main(null);
-        typechecks.Runner.main(null);
-
         final IConstruct node = new Module();
 
         final IncompleteNodeException object = new IncompleteNodeException(node);

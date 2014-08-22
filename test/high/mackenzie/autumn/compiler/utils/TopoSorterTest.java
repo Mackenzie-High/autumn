@@ -1,12 +1,8 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package high.mackenzie.autumn.compiler.utils;
 
-import high.mackenzie.autumn.lang.compiler.utils.TopoSorter;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
+import high.mackenzie.autumn.lang.compiler.utils.TopoSorter;
 import java.util.Collections;
 import java.util.List;
 import static org.junit.Assert.*;

@@ -1,7 +1,9 @@
 package autumn.lang.compiler.errors;
 
+import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
+import high.mackenzie.autumn.resources.Finished;
 import java.io.PrintStream;
 import java.net.URL;
 import java.util.List;
@@ -12,15 +14,28 @@ import java.util.Map.Entry;
  *
  * @author Mackenzie High
  */
+@Finished("2014/08/22")
 public final class BasicErrorReporter
         implements IErrorReporter
 {
+    /**
+     * This is where error messages will be sent to.
+     */
     private PrintStream out;
 
+    /**
+     * This is the number of errors that have been reported.
+     */
     private int count = 0;
 
+    /**
+     * These are the error-codes of the reported errors.
+     */
     private final List<ErrorCode> codes = Lists.newLinkedList();
 
+    /**
+     * These are the errors that have been reported.
+     */
     private final List<ErrorReport> reports = Lists.newLinkedList();
 
     /**
@@ -53,6 +68,8 @@ public final class BasicErrorReporter
                                   final int line,
                                   final int column)
     {
+        Preconditions.checkNotNull(file);
+
         codes.add(ErrorCode.SYNTAX_ERROR);
 
         ++count;
@@ -68,6 +85,8 @@ public final class BasicErrorReporter
     @Override
     public void reportFailedCheck(final ErrorReport report)
     {
+        Preconditions.checkNotNull(report);
+
         codes.add(report.code());
         reports.add(report);
 

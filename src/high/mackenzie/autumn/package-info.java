@@ -1,4 +1,4 @@
 /**
- * Compiler Entry-Point
+ * Entry-Point
  */
 package high.mackenzie.autumn;

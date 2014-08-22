@@ -1,5 +1,6 @@
 package autumn.lang.compiler.errors;
 
+import high.mackenzie.autumn.resources.Finished;
 import java.net.URL;
 
 /**
@@ -13,6 +14,7 @@ import java.net.URL;
  *
  * @author Mackenzie High
  */
+@Finished("2014/08/22")
 public interface IErrorReporter
 {
     /**

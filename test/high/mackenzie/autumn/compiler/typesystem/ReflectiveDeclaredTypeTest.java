@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package high.mackenzie.autumn.compiler.typesystem;
 
 import com.google.common.collect.ImmutableList;
@@ -244,10 +240,9 @@ public class ReflectiveDeclaredTypeTest
         }
 
         // Check Descriptor Methods
-        final String name = reflective.getName();
         final String descriptor = Type.getConstructorDescriptor(reflective);
         assertEquals(descriptor, ctor.getDescriptor());
-        assertEquals(name + descriptor, ctor.getNamePlusDescriptor());
+        assertEquals("<init>" + ctor.getDescriptor(), ctor.getNamePlusDescriptor());
     }
 
     private void checkMethod(final ReflectiveMethod method)

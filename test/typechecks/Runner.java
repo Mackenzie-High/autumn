@@ -1,6 +1,6 @@
 package typechecks;
 
-import autumn.lang.compiler.AutumnCompiler;
+import autumn.lang.compiler.Autumn;
 import autumn.lang.compiler.AutumnParser;
 import autumn.lang.compiler.ast.nodes.Module;
 import autumn.lang.compiler.errors.BasicErrorReporter;
@@ -158,9 +158,13 @@ public final class Runner
                 return FAILED;
             }
 
-            final AutumnCompiler cmp = new AutumnCompiler(reporter);
+            final Autumn cmp = new Autumn();
 
-            cmp.compile(module);
+            cmp.setErrorReporter(reporter);
+
+            cmp.src(module);
+
+            cmp.compile();
 
             final Set<ErrorCode> expected = ImmutableSet.copyOf(Arrays.asList(errors));
 

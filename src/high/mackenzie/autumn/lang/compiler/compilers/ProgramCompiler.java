@@ -37,9 +37,11 @@ public final class ProgramCompiler
      * Sole Constructor.
      *
      * @param reporter is used to report errors.
+     * @param loader is the class-loader used to find previously loaded types.
      * @param mules are the modules that will be compiled.
      */
     private ProgramCompiler(final IErrorReporter reporter,
+                            final ClassLoader loader,
                             final List<Module> mules)
     {
         Preconditions.checkNotNull(reporter);
@@ -47,7 +49,7 @@ public final class ProgramCompiler
 
         this.reporter = reporter;
 
-        this.typesystem = new TypeSystem(this);
+        this.typesystem = new TypeSystem(loader);
 
         this.checker = new StaticChecker(this);
 
@@ -187,16 +189,18 @@ public final class ProgramCompiler
      *
      * @param input are the modules in the program that will be compiled.
      * @param reporter is used to report errors.
+     * @param loader is the class-loader used to find previously loaded types.
      * @return the bytecode representation of the compiled program;
      * or null, if compilation fails.
      */
     public static CompiledProgram compile(final List<Module> input,
-                                          final IErrorReporter reporter)
+                                          final IErrorReporter reporter,
+                                          final ClassLoader loader)
     {
 
         try
         {
-            final ProgramCompiler compiler = new ProgramCompiler(reporter, input);
+            final ProgramCompiler compiler = new ProgramCompiler(reporter, loader, input);
 
             compiler.performTypeDeclaration();
 
