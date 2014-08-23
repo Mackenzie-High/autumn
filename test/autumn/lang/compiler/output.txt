@@ -729,10 +729,13 @@ defun main (args : String[]) : void
 
     nop;
 
-    lambda p : Predicate
-    {
-        return (1 + 2);
-    }
+    lambda xoo : Moo () => (1 + 2);
+
+    lambda xoo : Moo (x : int) => (1 + 2);
+
+    lambda xoo : Moo (x : int, y : int) => (1 + 2);
+
+    lambda xoo : Moo (x : int, y : int, z : int) => (1 + 2);
 }
 
 defun main (aoo : int, boo : int, xoo : int, zoo : int) : void

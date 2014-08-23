@@ -394,7 +394,7 @@ abstract class AbstractTypeChecker
          * The variable cannot be declared, if another variable was already created
          * with the same name.
          */
-        final boolean alread_declared = function.scope.isDeclared(variable.getName());
+        final boolean alread_declared = function.allocator.isDeclared(variable.getName());
         program.checker.reportDuplicateVariable(variable, alread_declared);
 
         /**
@@ -407,11 +407,11 @@ abstract class AbstractTypeChecker
          */
         if (mutable)
         {
-            function.scope.declareVar(variable, type);
+            function.allocator.declareVar(variable, type);
         }
         else
         {
-            function.scope.declareVal(variable, type);
+            function.allocator.declareVal(variable, type);
         }
     }
 }

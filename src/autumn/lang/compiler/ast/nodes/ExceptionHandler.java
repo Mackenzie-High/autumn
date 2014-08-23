@@ -54,12 +54,12 @@ import java.util.TreeSet;
  *     <tr> <td> <b>Property Name</b> </td> <td> <b>Property Description</b> </td> </tr>
  *     <tr> <td> <code>variable</code> </td> <td>If an exception is caught, then this variable will be assigned the exception object.</td> </tr>
  *     <tr> <td> <code>type</code> </td> <td>This is the type of exception that this exception handler catches.</td> </tr>
- *     <tr> <td> <code>handler</code> </td> <td>If an exception is caught, then this statement will be executed.</td> </tr>
+ *     <tr> <td> <code>body</code> </td> <td>If an exception is caught, then this statement will be executed.</td> </tr>
  *     <tr> <td> <code>location</code> </td> <td>This is the source-location information regarding this construct.</td> </tr>
  * </table>
  * </p>
  * 
- * <p> This file was auto-generated on (Thu Aug 21 00:36:55 EDT 2014).</p>
+ * <p> This file was auto-generated on (Sat Aug 23 06:16:35 EDT 2014).</p>
  */
 @SuppressWarnings("unchecked")
 public final class ExceptionHandler extends Object implements IConstruct
@@ -68,7 +68,7 @@ public final class ExceptionHandler extends Object implements IConstruct
 
     private TypeSpecifier type;
 
-    private SequenceStatement handler = new SequenceStatement();
+    private SequenceStatement body = new SequenceStatement();
 
     private SourceLocation location = new SourceLocation();
 
@@ -123,24 +123,24 @@ public final class ExceptionHandler extends Object implements IConstruct
     /**
      * Setter.
      * 
-     * @param value is the new value of property <code>handler</code>.
-     * @return a copy of this object with property <code>handler</code> set to value.
+     * @param value is the new value of property <code>body</code>.
+     * @return a copy of this object with property <code>body</code> set to value.
      */
-    public ExceptionHandler setHandler(final SequenceStatement value)
+    public ExceptionHandler setBody(final SequenceStatement value)
     {
         final ExceptionHandler result = this.copy();
-        result.handler = value;
+        result.body = value;
         return result;
     }
 
     /**
      * Getter.
      * 
-     * @return the value of property <code>handler</code>.
+     * @return the value of property <code>body</code>.
      */
-    public SequenceStatement getHandler()
+    public SequenceStatement getBody()
     {
-        final SequenceStatement value = this.handler;
+        final SequenceStatement value = this.body;
         return value;
     }
 
@@ -173,16 +173,16 @@ public final class ExceptionHandler extends Object implements IConstruct
      * 
      * @param variable is the value for property <code>variable</code>.
      * @param type is the value for property <code>type</code>.
-     * @param handler is the value for property <code>handler</code>.
+     * @param body is the value for property <code>body</code>.
      * @param location is the value for property <code>location</code>.
      * @return a new instance of this class.
      */
-    public static ExceptionHandler create(Variable variable, TypeSpecifier type, SequenceStatement handler, SourceLocation location)
+    public static ExceptionHandler create(Variable variable, TypeSpecifier type, SequenceStatement body, SourceLocation location)
     {
         ExceptionHandler object = new ExceptionHandler();
         object = object.setVariable(variable);
         object = object.setType(type);
-        object = object.setHandler(handler);
+        object = object.setBody(body);
         object = object.setLocation(location);
         return object;
     }
@@ -207,7 +207,7 @@ public final class ExceptionHandler extends Object implements IConstruct
         final ExceptionHandler result = new ExceptionHandler();
         result.variable = this.variable;
         result.type = this.type;
-        result.handler = this.handler;
+        result.body = this.body;
         result.location = this.location;
         return result;
     }
@@ -227,7 +227,7 @@ public final class ExceptionHandler extends Object implements IConstruct
         final Map<String, Object> map = new TreeMap<String, Object>();
         map.put("variable", this.getVariable());
         map.put("type", this.getType());
-        map.put("handler", this.getHandler());
+        map.put("body", this.getBody());
         map.put("location", this.getLocation());
 
         return map;

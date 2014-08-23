@@ -16,6 +16,7 @@ import high.mackenzie.autumn.lang.compiler.exceptions.BadSetterAssignment;
 import high.mackenzie.autumn.lang.compiler.exceptions.NoSuchHandlerFunction;
 import high.mackenzie.autumn.lang.compiler.exceptions.NoSuchProperty;
 import high.mackenzie.autumn.lang.compiler.exceptions.PrototypeExpected;
+import high.mackenzie.autumn.lang.compiler.exceptions.TypeCheckFailed;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IClassType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IExpressionType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IMethod;
@@ -43,7 +44,7 @@ public final class StatementTypeChecker
 
     public StatementTypeChecker(final FunctionCompiler function)
     {
-        super(function, function.scope);
+        super(function, function.allocator);
     }
 
     @Override
@@ -193,62 +194,103 @@ public final class StatementTypeChecker
     public void visit(final ForStatement object)
     {
         /**
-         * Declare the control variable.
-         */
-        super.declareVar(object.getVariable(), program.typesystem.utils.PRIMITIVE_INT, false);
-
-
-        /**
          * Visit and type-check the initializer.
+         *
+         * Warning: Do *not* move this code into the following try-catch.
          */
         object.getInitializer().accept(this);
         program.checker.requireInteger(object.getInitializer());
 
-        /**
-         * Visit and type-check the condition.
-         */
-        condition(object.getCondition());
-
-        /**
-         * Visit and type-check the modifier.
-         */
-        object.getNext().accept(this);
-        program.checker.requireInteger(object.getNext());
-
-        /**
-         * Visit the body.
-         */
-        ++loop_nesting_level;
+        try
         {
-            object.getBody().accept(this);
+            /**
+             * A for-loop defines a nested scope that covers the condition, modifier, and body.
+             */
+            allocator.enterScope();
+
+            /**
+             * Declare the control variable.
+             */
+            super.declareVar(object.getVariable(), program.typesystem.utils.PRIMITIVE_INT, false);
+
+            /**
+             * Visit and type-check the condition.
+             */
+            condition(object.getCondition());
+
+            /**
+             * Visit and type-check the modifier.
+             */
+            object.getNext().accept(this);
+            program.checker.requireInteger(object.getNext());
+
+            /**
+             * Visit the body.
+             */
+            ++loop_nesting_level;
+            {
+                object.getBody().accept(this);
+            }
+            --loop_nesting_level;
         }
-        --loop_nesting_level;
+        catch (TypeCheckFailed ex)
+        {
+            throw ex;
+        }
+        finally
+        {
+            /**
+             * This must always be done; otherwise, the scope management could get messed up.
+             */
+            allocator.exitScope();
+        }
     }
 
     @Override
     public void visit(final ForeachStatement object)
     {
         /**
-         * Declare the variable and type-check the type.
-         */
-        final Variable variable = object.getVariable();
-        final IReferenceType type = function.module.imports.resolveReferenceType(object.getType());
-        super.declareVar(variable, type, false);
-
-        /**
          * Visit and type-check the iterable.
+         *
+         * Warning: Do *not* move this code into the following try-catch.
          */
         object.getIterable().accept(this);
         program.checker.requireIterable(object.getIterable());
 
-        /**
-         * Visit the body.
-         */
-        ++loop_nesting_level;
+        try
         {
-            object.getBody().accept(this);
+            /**
+             * A foreach-loop defines a nested scope that covers body.
+             */
+            allocator.enterScope();
+
+            /**
+             * Declare the variable and type-check the type.
+             */
+            final Variable variable = object.getVariable();
+            final IReferenceType type = function.module.imports.resolveReferenceType(object.getType());
+            super.declareVar(variable, type, false);
+
+            /**
+             * Visit the body.
+             */
+            ++loop_nesting_level;
+            {
+                object.getBody().accept(this);
+            }
+            --loop_nesting_level;
         }
-        --loop_nesting_level;
+        catch (TypeCheckFailed ex)
+        {
+            throw ex;
+        }
+        finally
+        {
+            /**
+             * This must always be done; otherwise, the scope management could get messed up.
+             */
+            allocator.exitScope();
+        }
     }
 
     @Override
@@ -320,9 +362,9 @@ public final class StatementTypeChecker
     {
         object.getValue().accept(this);
 
-        program.checker.checkDeclared(function.scope, object.getVariable());
+        program.checker.checkDeclared(function.allocator, object.getVariable());
 
-        final IVariableType expected = function.scope.typeOf(object.getVariable().getName());
+        final IVariableType expected = function.allocator.typeOf(object.getVariable().getName());
 
         checkAssign(expected, object.getValue());
     }
@@ -330,7 +372,46 @@ public final class StatementTypeChecker
     @Override
     public void visit(final LambdaStatement object)
     {
-        throw new UnsupportedOperationException("This should never happen.");
+//        /**
+//         * Get the type of the lambda.
+//         */
+//        final IClassType functor_type = module.imports.resolveClassType(object.getType());
+//
+//        /**
+//         * Declare the lambda variable.
+//         */
+//        super.declareVar(object.getVariable(), functor_type, false);
+//
+//        try
+//        {
+//            /**
+//             * A lambda-statement defines a nested scope that covers its parameters and body.
+//             */
+//            allocator.enterScope();
+//
+//            /**
+//             * Declare the parameters.
+//             */
+//            for (Variable param : object.getParameters())
+//            {
+//                final IVariableType param_type = null;
+//
+//                super.declareVar(param, param_type, false);
+//            }
+//
+//
+//        }
+//        catch (TypeCheckFailed ex)
+//        {
+//            throw ex;
+//        }
+//        finally
+//        {
+//            /**
+//             * This must always be done; otherwise, the scope management could get messed up.
+//             */
+//            allocator.exitScope();
+//        }
     }
 
     @Override
@@ -355,7 +436,7 @@ public final class StatementTypeChecker
         /**
          * Get the type of the prototype object.
          */
-        final IVariableType owner = function.scope.typeOf(object.getOwner().getName());
+        final IVariableType owner = function.allocator.typeOf(object.getOwner().getName());
 
         /**
          * Get the type of the module that contains the handler function.
@@ -402,7 +483,7 @@ public final class StatementTypeChecker
         /**
          * Get the type of the prototype object.
          */
-        final IVariableType owner = function.scope.typeOf(object.getOwner().getName());
+        final IVariableType owner = function.allocator.typeOf(object.getOwner().getName());
 
         /**
          * Get the type of the module that contains the handler function.
@@ -449,7 +530,7 @@ public final class StatementTypeChecker
         /**
          * Get the type of the prototype object.
          */
-        final IVariableType owner = function.scope.typeOf(object.getOwner().getName());
+        final IVariableType owner = function.allocator.typeOf(object.getOwner().getName());
 
         /**
          * Get the type of the module that contains the handler function.
@@ -493,17 +574,25 @@ public final class StatementTypeChecker
     @Override
     public void visit(final SequenceStatement object)
     {
+        allocator.enterScope();
+
         for (IStatement s : object.getElements())
         {
+            /**
+             * The following code must be in a try-catch.
+             * Otherwise, an exception would mess up the scope management.
+             */
             try
             {
                 s.accept(this);
             }
-            catch (Exception ex)
+            catch (TypeCheckFailed ex)
             {
-                // Pass.
+                // Pass in order to report as many errors as possible.
             }
         }
+
+        allocator.exitScope();
     }
 
     @Override
@@ -527,9 +616,22 @@ public final class StatementTypeChecker
     @Override
     public void visit(final TryCatchStatement object)
     {
+        /**
+         * Visit and type-check the body.
+         */
         object.getBody().accept(this);
+
+        /**
+         * Visit and type-check all of the handlers.
+         */
         object.getHandlers().accept(this);
 
+        /**
+         * Sort the handlers based on the type of exception they catch.
+         * For example, a handler that catches Exception should come before
+         * a handler that catches Throwable, because Exception is more specific
+         * than Throwable.
+         */
         final TopoSorter<ExceptionHandler> sorter = new TopoSorter<ExceptionHandler>()
         {
             @Override
@@ -547,6 +649,9 @@ public final class StatementTypeChecker
 
         final List<ExceptionHandler> sorted = ImmutableList.copyOf(sorter.elements());
 
+        /**
+         * Remember the sorted handlers, so the code-generator can generate them in sorted order.
+         */
         program.symbols.handlers.put(object, sorted);
 
         /**
@@ -570,14 +675,45 @@ public final class StatementTypeChecker
     @Override
     public void visit(final ExceptionHandler object)
     {
+        /**
+         * Get the type of exception that the handler will handle.
+         */
         final IExpressionType type = function.module.imports.resolveReturnType(object.getType());
 
-        program.checker.requireType(object.getType(), type);
-        program.checker.requireThrowable(object.getType(), type);
+        try
+        {
+            /**
+             * The handler defines a scope that covers the body of the handler.
+             */
+            allocator.enterScope();
 
-        super.declareVar(object.getVariable(), type, false);
+            /**
+             * The handler can only be used to catch exception-types.
+             */
+            program.checker.requireType(object.getType(), type);
+            program.checker.requireThrowable(object.getType(), type);
 
-        object.getHandler().accept(this);
+            /**
+             * Declare the exception variable.
+             */
+            super.declareVar(object.getVariable(), type, false);
+
+            /**
+             * Visit and type-check the body of the handler.
+             */
+            object.getBody().accept(this);
+        }
+        catch (TypeCheckFailed ex)
+        {
+            throw ex;
+        }
+        finally
+        {
+            /**
+             * This must always be done; otherwise, the scope management could get messed up.
+             */
+            allocator.exitScope();
+        }
     }
 
     @Override

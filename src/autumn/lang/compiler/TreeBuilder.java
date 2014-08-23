@@ -1572,7 +1572,7 @@ public final class TreeBuilder
         ExceptionHandler node = new ExceptionHandler();
 
         // Initialize the AST node.
-        node = node.setHandler((SequenceStatement) stack.pop());
+        node = node.setBody((SequenceStatement) stack.pop());
         node = node.setType((TypeSpecifier) stack.pop());
         node = node.setVariable((Variable) stack.pop());
 
@@ -3210,13 +3210,9 @@ public final class TreeBuilder
      * <p>
      * <b>Precondition of the Stack</b>
      * <ul>
-     * <li> body : SequenceStatement </li>
+     * <li> body : IExpression </li>
+     * <li> formals : FormalParameterList </li>
      * <li> type : TypeSpecifier </li>
-     * <li> parameter[n] : Variable </li>
-     * <li> parameter[.] : Variable </li>
-     * <li> parameter[2] : Variable </li>
-     * <li> parameter[1] : Variable </li>
-     * <li> parameter[0] : Variable </li>
      * <li> variable : Variable </li>
      * </ul>
      * </p>
@@ -3230,18 +3226,12 @@ public final class TreeBuilder
      */
     public void createStatementLambda()
     {
-        Preconditions.checkState(stack.size() >= 3);
+        Preconditions.checkState(stack.size() == 4);
 
         // Get the pieces off of the stack.
-        final SequenceStatement body = (SequenceStatement) stack.pop();
+        final IExpression body = (IExpression) stack.pop();
+        final FormalParameterList formals = (FormalParameterList) stack.pop();
         final TypeSpecifier type = (TypeSpecifier) stack.pop();
-        final LinkedList<Variable> parameters = Lists.newLinkedList();
-
-        while (stack.size() > 1)
-        {
-            parameters.addFirst((Variable) stack.pop());
-        }
-
         final Variable variable = (Variable) stack.pop();
 
         // Create the AST node.
@@ -3249,6 +3239,7 @@ public final class TreeBuilder
 
         // Initialize the AST node.
         node = node.setVariable(variable);
+        node = node.setParameters(formals);
         node = node.setType(type);
         node = node.setBody(body);
 

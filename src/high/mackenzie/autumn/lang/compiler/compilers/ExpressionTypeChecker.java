@@ -38,25 +38,25 @@ public class ExpressionTypeChecker
     private final IMethod IDENTITY_INEQUALITY;
 
     /**
-     * This is the scope of variables in the enclosing function.
+     * This object manages the allocation of local variables.
      */
-    protected final VariableScope scope;
+    protected final VariableAllocator allocator;
 
     /**
      * Sole Constructor.
      *
      * @param function is the function being compiled.
-     * @param scope is the scope of the function being compiled.
+     * @param allocator manages the allocation of local variables.
      */
     public ExpressionTypeChecker(final FunctionCompiler function,
-                                 final VariableScope scope)
+                                 final VariableAllocator allocator)
     {
         super(function);
 
         Preconditions.checkNotNull(function);
-        Preconditions.checkNotNull(scope);
+        Preconditions.checkNotNull(allocator);
 
-        this.scope = scope;
+        this.allocator = allocator;
 
         // The Operators class in the standard library proivdes the operator implementations.
         final IDeclaredType OPERATORS = program.typesystem.utils.OPERATORS;
@@ -136,10 +136,13 @@ public class ExpressionTypeChecker
     public void visit(final VariableDatum object)
     {
         // The variable must have already been declared.
-        program.checker.checkDeclared(scope, object.getVariable());
+        program.checker.checkDeclared(allocator, object.getVariable());
+
+        // The variable must be in-scope.
+        program.checker.checkScope(allocator, object.getVariable());
 
         // This is the type of the variable based on its declaration.
-        final IVariableType type = scope.typeOf(object.getVariable().getName());
+        final IVariableType type = allocator.typeOf(object.getVariable().getName());
 
         // A variable datum returns the value stored in the variable.
         // Thus, the datum's type is the type of the variable.

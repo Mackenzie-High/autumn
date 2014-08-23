@@ -265,4 +265,8 @@ public enum ErrorCode
      * Meaning: A input value cannot be converted to an output type due to its type.
      */
     IMPOSSIBLE_CONVERSION,
+    /**
+     * Meaning: A variable was used outside the scope that it was declared in.
+     */
+    VARIABLE_OUTSIDE_OF_SCOPE,
 }

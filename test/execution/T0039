@@ -13,7 +13,6 @@ defun main (args : String[]) : void
         (list.add x);
     }
 
-    assert i == 10;
     assert x == 170;
 
     assert (list.toString) == "[17, 34, 51, 68, 85, 102, 119, 136, 153, 170]";

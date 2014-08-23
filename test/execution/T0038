@@ -10,6 +10,5 @@ defun main (args : String[]) : void
         let x = x + 17;
     }
 
-    assert i == 1;
     assert x == 17;
 }

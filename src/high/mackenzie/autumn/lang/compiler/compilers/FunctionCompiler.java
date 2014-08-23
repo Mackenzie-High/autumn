@@ -2,6 +2,7 @@ package high.mackenzie.autumn.lang.compiler.compilers;
 
 import autumn.lang.compiler.ast.nodes.FormalParameter;
 import autumn.lang.compiler.ast.nodes.FunctionDefinition;
+import autumn.lang.compiler.ast.nodes.Variable;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import high.mackenzie.autumn.lang.compiler.exceptions.TypeCheckFailed;
@@ -73,9 +74,9 @@ public final class FunctionCompiler
     public final CustomMethod type;
 
     /**
-     * This object manages the allocation of local variables in the function.
+     * This object manages the allocation of local variables.
      */
-    public final VariableScope scope;
+    public final VariableAllocator allocator;
 
     /**
      * This object simplifies the generation of bytecode that manipulates local variables.
@@ -104,6 +105,16 @@ public final class FunctionCompiler
     public final List<LabelNode> yields = Lists.newLinkedList();
 
     /**
+     * These are the formal-parameter variables.
+     */
+    private final List<Variable> param_vars = Lists.newArrayList();
+
+    /**
+     * These are the formal-parameter types.
+     */
+    private final List<IVariableType> param_types = Lists.newArrayList();
+
+    /**
      * Sole Constructor.
      *
      * @param module is the compiler of the module that this definition is part of.
@@ -117,8 +128,8 @@ public final class FunctionCompiler
         this.node = node;
 
         this.type = new CustomMethod(module.program.typesystem.typefactory(), false);
-        this.scope = new VariableScope(null, 0);
-        this.vars = new VariableManipulator(scope, this.instructions);
+        this.allocator = new VariableAllocator(0);
+        this.vars = new VariableManipulator(allocator, this.instructions);
         this.labels = new LabelScope(program);
     }
 
@@ -144,7 +155,7 @@ public final class FunctionCompiler
 
         final int modifiers = Opcodes.ACC_PUBLIC + Opcodes.ACC_STATIC + Opcodes.ACC_FINAL;
 
-        final List<IFormalParameter> params = Lists.newLinkedList();
+        final List<IFormalParameter> params = Lists.newArrayList();
         {
             for (FormalParameter p : node.getParameters().getParameters())
             {
@@ -158,7 +169,8 @@ public final class FunctionCompiler
 
                 params.add(param);
 
-                scope.declareParameter(p.getVariable(), param_type);
+                param_vars.add(p.getVariable());
+                param_types.add(param_type);
             }
         }
 
@@ -184,18 +196,46 @@ public final class FunctionCompiler
     @Override
     public void performTypeUsageChecking()
     {
-        try
+        /**
+         * The function defines a scope for local variables.
+         */
+        allocator.enterScope();
         {
-            final StatementTypeChecker checker = new StatementTypeChecker(this);
+            /**
+             * Allocate the formal-parameter local variables.
+             */
+            for (int i = 0; i < type.getFormalParameters().size(); i++)
+            {
+                allocator.declareParameter(param_vars.get(i), param_types.get(i));
+            }
 
-            node.getBody().accept(checker);
+            /**
+             * Visit and type-check the body of the function.
+             */
+            try
+            {
+                final StatementTypeChecker checker = new StatementTypeChecker(this);
 
-            labels.check();
+                node.getBody().accept(checker);
+
+                /**
+                 * Type-checking of labels was deferred in order to avoid
+                 * the need for another compiler pass.
+                 */
+                labels.check();
+            }
+            catch (TypeCheckFailed ex)
+            {
+                // Pass, because the error was already reported via the error-reporter.
+            }
         }
-        catch (TypeCheckFailed ex)
-        {
-            // Pass
-        }
+        allocator.exitScope();
+
+        /**
+         * A function defines the widest available scope for local variables.
+         * Therefore, no variable should be in-scope after the function's scope is exited.
+         */
+        allocator.checkExitStatus();
     }
 
     public MethodNode build()
@@ -337,12 +377,12 @@ public final class FunctionCompiler
         instructions.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL, owner, name, desc));
 
         // Restore each variable.
-        final List<String> reversed = Lists.newLinkedList(scope.getAllVariables());
+        final List<String> reversed = Lists.newLinkedList(allocator.getAllVariables());
         Collections.reverse(reversed);
         for (String variable : reversed)
         {
             // Skip parameters, because they are unique to each invocation.
-            if (scope.isParameter(variable))
+            if (allocator.isParameter(variable))
             {
                 continue;
             }
@@ -351,7 +391,7 @@ public final class FunctionCompiler
             instructions.add(new InsnNode(Opcodes.DUP));
 
             // Peek the variable's value off of the storage-stack.
-            final IExpressionType var_type = scope.typeOf(variable);
+            final IExpressionType var_type = allocator.typeOf(variable);
             Utils.peekArgument(program, instructions, var_type);
 
             // Pop the variable's value off of the stack and place it into the variable.

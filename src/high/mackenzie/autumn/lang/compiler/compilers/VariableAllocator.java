@@ -3,14 +3,15 @@ package high.mackenzie.autumn.lang.compiler.compilers;
 import autumn.lang.compiler.ast.nodes.Variable;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import high.mackenzie.autumn.lang.compiler.typesystem.TypeFactory;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IExpressionType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IVariableType;
+import high.mackenzie.autumn.lang.compiler.utils.Utils;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -24,7 +25,7 @@ import java.util.Set;
  *
  * @author Mackenzie High
  */
-public final class VariableScope
+public final class VariableAllocator
 {
     /**
      * These are the different types of local variables.
@@ -40,7 +41,7 @@ public final class VariableScope
          */
         VAR,
         /**
-         * This constant indicates that a local-variable is a immutable stack-allocated variable.
+         * This constant indicates that a local-variable is a readonly stack-allocated variable.
          */
         VAL,
         /**
@@ -55,9 +56,18 @@ public final class VariableScope
     private static final class VarInfo
     {
         /**
-         * This field indicates the scope that declared this local variable.
+         * This is the number of scopes that have a lock on this variable.
+         * This is used to implement nested scoping.
+         * When a nested scope is entered, it obtains a lock on each variable in the outer scope.
+         * When a variable is initially allocated, it has one lock.
+         * This is because the declaring scope has a lock on the variable.
+         * When a scope is exited, it releases its locks.
+         * As a a result, the scope of a variable will eventually hit zero.
+         * When that happens, attempts to grab a lock are simply ignored.
+         * Otherwise, strange things would happen.
+         * Overall, this is a very simply way to implement nested scoping.
          */
-        public final VariableScope owner;
+        public int locks;
 
         /**
          * This field indicates whether this local variable is a parameter, etc.
@@ -82,17 +92,16 @@ public final class VariableScope
         /**
          * Sole Constructor.
          */
-        public VarInfo(final VariableScope owner,
-                       final VarTypes form,
+        public VarInfo(final VarTypes form,
                        final String name,
                        final IVariableType type,
                        final int address)
         {
-            this.owner = owner;
             this.form = form;
             this.name = name;
             this.type = type;
             this.address = address;
+            this.locks = 1; // One lock, because of the declaration scope.
         }
 
         /**
@@ -129,30 +138,56 @@ public final class VariableScope
     private boolean non_parameters_declared = false;
 
     /**
-     * These are the variables allocated directly within this scope.
+     * These are the allocated variables.
      */
     private final Map<String, VarInfo> variables = Maps.newTreeMap();
 
     /**
-     * If this scope closes over another scope, then this field stores the outer scope.
-     */
-    private final VariableScope closes_over;
-
-    /**
      * Sole Constructor.
      *
-     * @param closes_over is the scope that the new scope closes-over,
-     * or null, if the new scope does not close over another scope.
      * @param initial_address indicates the address of the first allocated variable.
      * @throws IllegalArgumentException if <code>initial_address &lt; 0</code>.
      */
-    public VariableScope(final VariableScope closes_over,
-                         final int initial_address)
+    public VariableAllocator(final int initial_address)
     {
         Preconditions.checkArgument(initial_address >= 0);
 
-        this.closes_over = closes_over;
         this.addresses = initial_address;
+    }
+
+    /**
+     * This method signals that a scope is being entered.
+     */
+    public void enterScope()
+    {
+        for (VarInfo variable : variables.values())
+        {
+            variable.locks = variable.locks == 0 ? 0 : variable.locks + 1;
+        }
+    }
+
+    /**
+     * This method signals that a scope is being exited.
+     */
+    public void exitScope()
+    {
+        for (VarInfo variable : variables.values())
+        {
+            variable.locks = variable.locks == 0 ? 0 : variable.locks - 1;
+        }
+    }
+
+    /**
+     * This method determines whether a particular variable is in scope.
+     *
+     * @param name is the name of the variable.
+     * @return true, iff the variable is usable in the current scope.
+     */
+    public boolean isUsable(final String name)
+    {
+        final VarInfo variable = findVar(name);
+
+        return variable.locks >= 1;
     }
 
     /**
@@ -220,21 +255,6 @@ public final class VariableScope
         Preconditions.checkNotNull(name);
 
         return findVar(name) != null;
-    }
-
-    /**
-     * This method determines whether a named variable was inherited from an outer scope.
-     *
-     * @param name is the name of the variable to search for.
-     * @return true, if the variable was obtained via a closure.
-     */
-    public boolean isClosureVariable(final String name)
-    {
-        Preconditions.checkNotNull(name);
-
-        final VarInfo variable = findVar(name);
-
-        return variable != null && variable.owner != this;
     }
 
     /**
@@ -317,17 +337,6 @@ public final class VariableScope
     }
 
     /**
-     * This method retrieves the scope that this scope closes over.
-     *
-     * @return the scope that this scope forms a closure over,
-     * or null, if this scope does not close over any other scope.
-     */
-    public VariableScope outerScope()
-    {
-        return closes_over;
-    }
-
-    /**
      * This method creates a set containing the names of every variable in this exact scope.
      *
      * @return the names of every variable declared directly in this scope.
@@ -351,11 +360,6 @@ public final class VariableScope
         final Set<String> names = Sets.newTreeSet();
 
         names.addAll(variables.keySet());
-
-        if (closes_over != null)
-        {
-            names.addAll(closes_over.getAllVariables());
-        }
 
         return names;
     }
@@ -416,37 +420,42 @@ public final class VariableScope
                             final String variable,
                             final IExpressionType type)
     {
+        /**
+         * Variables in the same function cannot share a name.
+         */
         if (checkDeclare(variable, type))
         {
             return false;
         }
 
+        /**
+         * This is very important, because of the way the JVM handles parameters.
+         * Parameters must be assigned to the lowest addresses.
+         * As a result, parameters must be declared first.
+         * Otherwise, the non-parameter locals would interfere with the parameters.
+         */
         this.non_parameters_declared = form != VarTypes.PARAM;
 
-        final String name = variable;
-
+        /**
+         * Create a base address for the new variable.
+         */
         final int address = addresses;
 
-        final int increment;
-
-        // doubles and longs require two slots.
-        if (type.getDescriptor().equals("J") || type.getDescriptor().equals("D"))
-        {
-            increment = 2;
-        }
-        else
-        {
-            increment = 1;
-        }
-
+        /**
+         * Increment the address counter in order to allocate enough space to hold the variable.
+         * In particular, longs and doubles require two slots.
+         */
+        final int increment = Utils.sizeof(type);
         addresses = addresses + increment;
 
-        final VarInfo info = new VarInfo(this, form, name, (IVariableType) type, address);
+        /**
+         * Record the variable for later use.
+         */
+        final VarInfo info = new VarInfo(form, variable, (IVariableType) type, address);
+        variables.put(variable, info);
+        lang_testing_info.put(variable, type);
 
-        variables.put(name, info);
-
-        lang_testing_info.put(name, type);
-
+        // The variable was successfully allocated.
         return true;
     }
 
@@ -457,24 +466,9 @@ public final class VariableScope
      * @return the information regarding the sought after variable,
      * or null, if the variable cannot be found.
      */
-    private VarInfo findVar(String name)
+    private VarInfo findVar(final String name)
     {
-        final VarInfo result;
-
-        if (variables.containsKey(name))
-        {
-            result = variables.get(name);
-        }
-        else if (closes_over == null)
-        {
-            result = null;
-        }
-        else
-        {
-            result = closes_over.findVar(name);
-        }
-
-        return result;
+        return variables.containsKey(name) ? variables.get(name) : null;
     }
 
     /**
@@ -496,32 +490,35 @@ public final class VariableScope
      */
     public List<String> description()
     {
-        final List<String> result = description(0);
+        final List<String> result = Lists.newLinkedList();
+
+        for (VarInfo info : variables.values())
+        {
+            result.add(info.toString());
+        }
 
         Collections.sort(result);
 
         return result;
     }
 
-    private List<String> description(final int depth)
+    /**
+     * This method should be invoked after all local variables are allocated by this object.
+     * This method ensures the the ending state of this object is correct.
+     *
+     * @throws IllegalStateException if this object still thinks it is in a scope.
+     */
+    public void checkExitStatus()
     {
-        final List<String> result = outerScope() == null
-                ? new LinkedList<String>()
-                : outerScope().description(depth + 1);
-
         for (VarInfo info : variables.values())
         {
-            result.add("depth " + Strings.padStart("" + depth, 5, '0') + " " + info.toString());
+            Preconditions.checkState(info.locks == 0, "A variable is still in-scope.");
         }
-
-        return result;
     }
 
     public static void main(String[] args)
     {
-        VariableScope s = new VariableScope(null, 0);
-
-        // Bug: Auto-boxing list.remove(int) vs list.remove(Object);
+        VariableAllocator s = new VariableAllocator(0);
 
         final TypeFactory f = new TypeFactory();
 

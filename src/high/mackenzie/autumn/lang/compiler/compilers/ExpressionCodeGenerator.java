@@ -53,9 +53,9 @@ public class ExpressionCodeGenerator
     protected final TypeSystem types;
 
     /**
-     * This is the scope any variables that occur in expressions compiled by this object.
+     * This object manages the allocation of local variables.
      */
-    protected final VariableScope scope;
+    protected final VariableAllocator allocator;
 
     /**
      * This object simplifies the manipulation of variables.
@@ -87,7 +87,7 @@ public class ExpressionCodeGenerator
         this.module = module;
         this.types = program.typesystem;
         this.vars = vars;
-        this.scope = vars.scope();
+        this.allocator = vars.allocator();
         this.code = code;
     }
 
@@ -673,9 +673,9 @@ public class ExpressionCodeGenerator
             {
                 final String name = (String) element;
 
-                final IVariableType type = scope.typeOf(name);
+                final IVariableType type = allocator.typeOf(name);
 
-                final int address = scope.addressOf(name);
+                final int address = allocator.addressOf(name);
 
                 // Create the uninitialized Local object.
                 code().add(new TypeInsnNode(Opcodes.NEW, owner));
@@ -703,7 +703,7 @@ public class ExpressionCodeGenerator
         };
 
         // Generate the list.
-        cmp.compile(scope.getAllVisibleVariables());
+        cmp.compile(allocator.getAllVisibleVariables());
     }
 
     @Override

@@ -64,18 +64,22 @@ Test Index
 . . . T0057 = Expected Int - Initializer
 . . . T0058 = Expected Int - Modifier
 . . . T0059 = Expected Condition
+. . . T0069 = Variable Out of Scope - (in initializer)
+. . . T0070 = Variable Out of Scope - (outside of loop)
 . . Foreach
 . . . T0051 = Duplicate Variable
 . . . T0052 = No Such Type
 . . . T0053 = Inaccessible Type
 . . . T0054 = Expected Reference-Type
 . . . T0055 = Expected Iterable
+. . . T0067 = Variable Out of Scope - (in iterable)
+. . . T0067 = Variable Out of Scope - (outside of loop)
 . . Break
 . . . T0060 = Outside of Loop
 . . Continue
-. . . Outside of Loop
+. . . T0073 = Outside of Loop
 . . Redo
-. . . Outside of Loop
+. . . T0074 = Outside of Loop
 . . Var
 . . . T0015 = Duplicate Variable Declaration
 . . . Wrong Type for Assignment
@@ -90,7 +94,8 @@ Test Index
 . . . T0012 = Expected Throwable
 . . . T0013 = Duplicate Handler
 . . . T0014 = No Such Type
-. . . Inaccessible Type
+. . . T0072 = Inaccessible Type
+. . . T0071 = Variable Out of Scope - (outside of handler)
 . . Throw
 . . . T0010 = Expected Throwable
 . . Assert
@@ -99,6 +104,8 @@ Test Index
 . . . T0009 = Expected String
 . . Sequence
 . . . T0037 = Reporting of Multiple Errors
+. . . T0075 = Variable Out of Scope - (in outer scope)
+. . . T0076 = Variable Out of Scope - (in equally nested scope)
 . . Expression
 . . Setter
 . . . No Such Variable

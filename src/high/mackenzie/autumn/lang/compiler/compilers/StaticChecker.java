@@ -109,13 +109,13 @@ public final class StaticChecker
     /**
      * This method ensures that a variable was already declared.
      *
-     * @param scope is the scope that should contain the variable.
-     * @param variable is the variable itself.
+     * @param scope should contain the variable.
+     * @param allocator manages the allocation of local variables.
      */
-    public void checkDeclared(final VariableScope scope,
+    public void checkDeclared(final VariableAllocator allocator,
                               final Variable variable)
     {
-        final boolean declared = scope.isDeclared(variable.getName());
+        final boolean declared = allocator.isDeclared(variable.getName());
 
         if (declared)
         {
@@ -125,9 +125,36 @@ public final class StaticChecker
         final ErrorReport report = new ErrorReport(variable,
                                                    ErrorCode.NO_SUCH_VARIABLE,
                                                    "A variable was used before it was declared.");
+
+        report.addDetail("Variable", variable.getName());
+
+        /**
+         * Issue the error-report to the user.
+         */
+        report(report);
+    }
+
+    /**
+     * This method ensures that a variable is in scope.
+     *
+     * @param allocator manages the allocation of local variables.
+     * @param variable is the variable itself.
+     */
+    public void checkScope(final VariableAllocator allocator,
+                           final Variable variable)
+    {
+        final boolean usable = allocator.isUsable(variable.getName());
+
+        if (usable)
         {
-            report.addDetail("Variable", variable.getName());
+            return;
         }
+
+        final ErrorReport report = new ErrorReport(variable,
+                                                   ErrorCode.VARIABLE_OUTSIDE_OF_SCOPE,
+                                                   "A variable was outside of its declared scope.");
+
+        report.addDetail("Variable", variable.getName());
 
         /**
          * Issue the error-report to the user.

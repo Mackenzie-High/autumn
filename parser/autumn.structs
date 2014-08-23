@@ -659,8 +659,11 @@ struct LambdaStatement
   doc This is the type of the new lambda.
   data type : TypeSpecifier;
 
-  doc This is the statement that is evaluated whenever the anonymous function is invoked. 
-  data body : SequenceStatement = { new SequenceStatement() };
+  doc These are the formal-parameters of the anonymous function.
+  data parameters : FormalParameterList;
+
+  doc This is the expression that is evaluated whenever the anonymous function is invoked. 
+  data body : IExpression;
   
   doc This is the source-location information regarding this construct.
   data location : SourceLocation = { new SourceLocation() };
@@ -849,7 +852,7 @@ struct ExceptionHandler
   data type : TypeSpecifier;
 
   doc If an exception is caught, then this statement will be executed. 
-  data handler : SequenceStatement = { new SequenceStatement() };
+  data body : SequenceStatement = { new SequenceStatement() };
   
   doc This is the source-location information regarding this construct.
   data location : SourceLocation = { new SourceLocation() };

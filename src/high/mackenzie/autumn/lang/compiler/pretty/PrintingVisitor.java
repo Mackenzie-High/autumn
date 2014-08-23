@@ -868,7 +868,11 @@ public final class PrintingVisitor
         object.getVariable().accept(this);
         p.addText(" : ");
         object.getType().accept(this);
+        p.addText(" ");
+        object.getParameters().accept(this);
+        p.addText(" => ");
         object.getBody().accept(this);
+        p.addText(";");
         p.addEmptyLine();
     }
 
@@ -1025,7 +1029,7 @@ public final class PrintingVisitor
         record(object);
         require(object, object.getVariable());
         require(object, object.getType());
-        require(object, object.getHandler());
+        require(object, object.getBody());
 
         p.addLine();
         p.addText("catch (");
@@ -1033,7 +1037,7 @@ public final class PrintingVisitor
         p.addText(" : ");
         object.getType().accept(this);
         p.addText(")");
-        object.getHandler().accept(this);
+        object.getBody().accept(this);
     }
 
     @Override

@@ -460,7 +460,7 @@ public final class StatementCodeGenerator
          * Declare the temporary variable that will store the iterator.
          */
         final String iterator = "autumn$temp$" + F.unique();
-        function.scope.declareTemp(iterator, program.typesystem.utils.OBJECT);
+        function.allocator.declareTemp(iterator, program.typesystem.utils.OBJECT);
 
         // Evaluate the iterable.
         object.getIterable().accept(this);
@@ -585,7 +585,7 @@ public final class StatementCodeGenerator
     {
         final String name_of_variable = object.getVariable().getName();
 
-        final IType type_of_variable = function.scope.typeOf(name_of_variable);
+        final IType type_of_variable = function.allocator.typeOf(name_of_variable);
 
         // Evaluate the expression that produces the value to assign to the variable.
         object.getValue().accept(this);
@@ -895,7 +895,7 @@ public final class StatementCodeGenerator
         vars.store(variable);
 
         // Execute the exception handling code.
-        handler.getHandler().accept(this);
+        handler.getBody().accept(this);
     }
 
     @Override
@@ -1170,10 +1170,10 @@ public final class StatementCodeGenerator
         code.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL, owner, name, desc));
 
         // Store each variable.
-        for (String variable : function.scope.getAllVariables())
+        for (String variable : function.allocator.getAllVariables())
         {
             // Skip parameters, because they are unique to each invocation.
-            if (function.scope.isParameter(variable))
+            if (function.allocator.isParameter(variable))
             {
                 continue;
             }
@@ -1185,7 +1185,7 @@ public final class StatementCodeGenerator
             function.vars.load(variable);
 
             // Push the variable's value onto the storage-stack.
-            Utils.pushArgument(program, code, function.scope.typeOf(variable));
+            Utils.pushArgument(program, code, function.allocator.typeOf(variable));
         }
 
         // Pop the storage-stack off of the operand-stack.
