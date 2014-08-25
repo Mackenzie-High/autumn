@@ -2682,6 +2682,9 @@ function spec()
     [
       [0, "The constructor overload will be selected using the <a href=\"TextPage.html?page=Resolution\">Constructor Resolution Algorithm</a>."],
       [0, "The constructor overload is selected at compile-time."],
+      [0, "Boxing of the arguments will be performed, when necessary."],
+      [0, "Unboxing of the arguments will be performed, when necessary."],
+      [0, "Coercion of the arguments will be performed, when necessary."],
       [0, "Return Type: type of <i>type</i>"],
       [0, "Return a new instance of the <i>type</i>."],
     ],
@@ -2709,6 +2712,9 @@ function spec()
     [
       [0, "The method overload will be selected using the <a href=\"TextPage.html?page=Resolution\">Static Method Resolution Algorithm</a>."],
       [0, "The method overload is selected at compile-time."],
+      [0, "Boxing of the arguments will be performed, when necessary."],
+      [0, "Unboxing of the arguments will be performed, when necessary."],
+      [0, "Coercion of the arguments will be performed, when necessary."],
       [0, "Remember, a function is technically a static method."],
       [0, "Return Type: [return-type of the selected method overload]"],
       [0, "Return the value returned by the invoked method."],
@@ -2737,6 +2743,10 @@ function spec()
     [
       [0, "The method overload will be selected using the <a href=\"TextPage.html?page=Resolution\">Instance Method Resolution Algorithm</a>."],
       [0, "The method overload is selected at compile-time."],
+      [0, "Boxing of the arguments will be performed, when necessary."],
+      [0, "Unboxing of the arguments will be performed, when necessary."],
+      [0, "Coercion of the arguments will be performed, when necessary."],
+      [0, "Runtime Check: If <i>owner</i> is null, then a <a href=\"http://docs.oracle.com/javase/7/docs/api/java/lang/NullPointerException.html\">NullPointerException</a> will be thrown."],
       [0, "Return Type: [return-type of the selected method overload]"],
       [0, "Return the value returned by the invoked method."],
     ],
@@ -2755,20 +2765,27 @@ function spec()
   "ast" : "autumn.lang.compiler.ast.nodes.SetStaticFieldExpression",
   "syntax":
     [
-      [0, "( <span class=\"keyword\">set</span> <i>module</i>::<i>name</i> = <i><a href=\"TextPage.html?page=Expression\">value</a></i> )"],
+      [0, "( <span class=\"keyword\">field</span> <i><a href=\"ConstructPage.html?construct=TypeSpecifier\">Owner</a></i>::<i><a href=\"ConstructPage.html?construct=Name\">name</a></i> = <i><a href=\"TextPage.html?page=Expression\">value</a></i> )"],
     ],
   "details":
     [
+      [0, "The field will be selected using the <a href=\"TextPage.html?page=Resolution\">Static Field Resolution Algorithm</a>."],
+      [0, "Boxing of the value will be performed, when necessary."],
+      [0, "Unboxing of the value will be performed, when necessary."],
+      [0, "Coercion of the value will be performed, when necessary."],
       [0, "Return Type: void"],
-      [0, "Return Nothing is returned.."],
+      [0, "Return nothing, because the return-type is void."],
     ],
   "static-checks":
     [
-      ["NO_SUCH_TYPE", "The type specified by <i><i>module</i></i> must exist."],
-      ["INACCESSIBLE_TYPE", "The type specified by <i><i>module</i></i> must be accessible."],
-      ["NO_SUCH_FIELD", "No field in the <i>module</i> has the given name."],
+      ["NO_SUCH_TYPE", "The type specified by <i><i>owner</i></i> must exist."],
+      ["INACCESSIBLE_TYPE", "The type specified by <i><i>owner</i></i> must be accessible."],
+      ["EXPECTED_DECLARED_TYPE", "The type of <i>owner</i> must be a declared-type."],
+      ["NO_SUCH_FIELD", "No acceptable field could be found."],
+      ["ASSIGNMENT_TO_READONLY", "A value cannot be assigned to a final field, because it is readonly."],
       ["IMPOSSIBLE_ASSIGNMENT", "The type of the <i>value</i> must be assignable to the <i>type</i> of the selected field."],
     ],
+  "example-1" : ["module Main in examples;%0A%0Aimport high.mackenzie.autumn.resources.StaticFieldTester;%0A%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    (field StaticFieldTester::value9 = %22Venus%22);%0A%0A    (F::println %22Output = %22 .. (field StaticFieldTester::value9));%0A}", "Output = Venus"],
 },
 
 
@@ -2777,19 +2794,22 @@ function spec()
   "ast" : "autumn.lang.compiler.ast.nodes.GetStaticFieldExpression",
   "syntax":
     [
-      [0, "( <span class=\"keyword\">get</span> <i>module</i>::<i>name</i> )"],
+      [0, "( <span class=\"keyword\">field</span> <i><a href=\"ConstructPage.html?construct=TypeSpecifier\">Owner</a></i>::<i><a href=\"ConstructPage.html?construct=Name\">name</a></i> = <i><a href=\"TextPage.html?page=Expression\">value</a></i> )"],
     ],
   "details":
     [
-      [0, "Return Type: the field's type"],
-      [0, "Return The value stored in the field is returned.."],
+      [0, "The field will be selected using the <a href=\"TextPage.html?page=Resolution\">Static Field Resolution Algorithm</a>."],
+      [0, "Return Type: [type of the selected field]"],
+      [0, "Return the value stored in the field."],
     ],
   "static-checks":
     [
-      ["NO_SUCH_TYPE", "The type specified by <i><i>module</i></i> must exist."],
-      ["INACCESSIBLE_TYPE", "The type specified by <i><i>module</i></i> must be accessible."],
-      ["NO_SUCH_FIELD", "No field in the <i>module</i> has the given name."],
+      ["NO_SUCH_TYPE", "The type specified by <i><i>owner</i></i> must exist."],
+      ["INACCESSIBLE_TYPE", "The type specified by <i><i>owner</i></i> must be accessible."],
+      ["EXPECTED_DECLARED_TYPE", "The type of <i>owner</i> must be a declared-type."],
+      ["NO_SUCH_FIELD", "No acceptable field could be found."],
     ],
+  "example-1" : ["module Main in examples;%0A%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    val min = (field Integer::MIN_VALUE);%0A    val max = (field Integer::MAX_VALUE);%0A%0A    (F::println %22Integer Range: [%22 .. min .. %22, %22 .. max .. %22]%22);%0A}", "Integer Range: [-2147483648, 2147483647]"],
 },
 
 
@@ -2798,7 +2818,7 @@ function spec()
   "ast" : "autumn.lang.compiler.ast.nodes.SetFieldExpression",
   "syntax":
     [
-      [0, "( <span class=\"keyword\">set</span> <i>owner</i>.<i>name</i> = <i><a href=\"TextPage.html?page=Expression\">value</a></i> )"],
+      [0, "( <span class=\"keyword\">field</span> <i>owner</i>.<i>name</i> = <i><a href=\"TextPage.html?page=Expression\">value</a></i> )"],
     ],
   "details":
     [
@@ -2819,7 +2839,7 @@ function spec()
   "ast" : "autumn.lang.compiler.ast.nodes.GetFieldExpression",
   "syntax":
     [
-      [0, "( <span class=\"keyword\">get</span> <i>owner</i>.<i>name</i> )"],
+      [0, "( <span class=\"keyword\">field</span> <i>owner</i>.<i>name</i> )"],
     ],
   "details":
     [
