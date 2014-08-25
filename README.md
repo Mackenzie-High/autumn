@@ -1,8 +1,11 @@
 Autumn Programming Language
 ======
 
-Warning: Autumn is still currently under initial development. 
+**Warning:** Autumn is still currently under initial development. 
+
 The first production release is expected to be released in August or September of 2014.
+
+
 
 Autumn is a multi-paradigm dynamically compiled statically-typed programming language for the JVM.
 
