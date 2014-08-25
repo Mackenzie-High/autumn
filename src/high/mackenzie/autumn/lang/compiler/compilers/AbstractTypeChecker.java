@@ -293,29 +293,33 @@ abstract class AbstractTypeChecker
                                      final TypeSpecifier type,
                                      final String name)
     {
+        /**
+         * Get the type of the enclosing module in order to perform access checking.
+         */
         final IClassType user = module.type;
 
-        final IType owner = module.imports.resolveReturnType(type);
+        /**
+         * Get the type that owns the field.
+         *
+         * This will throw an exception, if the type does not exist
+         * or type is not a declared-type.
+         */
+        final IDeclaredType owner = module.imports.resolveDeclaredType(type);
 
-        if (owner == null)
-        {
-            // TODO: error
-        }
-
-        if (owner instanceof IDeclaredType == false)
-        {
-            // TODO: error
-        }
-
+        /**
+         * Resolve the field.
+         */
         final IField field = program.typesystem.utils.resolveStaticField(user,
-                                                                         (IDeclaredType) owner,
+                                                                         owner,
                                                                          name);
 
+        /**
+         * If no field was found, then issue an error.
+         */
         if (field == null)
         {
-            // TODO: error
-            System.out.println("No such field: " + name);
-            return null;
+            // This will throw an exception.
+            program.checker.reportNoSuchField(site, true, owner, name);
         }
 
         /**
@@ -338,29 +342,36 @@ abstract class AbstractTypeChecker
                                final IExpression object,
                                final String name)
     {
+        /**
+         * Get the type of the enclosing module in order to perform access checking.
+         */
         final IClassType user = module.type;
 
-        final IType owner = program.symbols.expressions.get(object);
+        /**
+         * Get the type that owns the field.
+         */
+        final IExpressionType owner_expr_type = program.symbols.expressions.get(object);
 
-        if (owner == null)
-        {
-            // TODO: error
-        }
+        // This will throw an exception, if the owner-type is not a declared-type.
+        program.checker.requireDeclaredType(object, owner_expr_type);
 
-        if (owner instanceof IDeclaredType == false)
-        {
-            // TODO: error
-        }
+        // This never fails.
+        final IDeclaredType owner = (IDeclaredType) owner_expr_type;
 
+        /**
+         * Resolve the field.
+         */
         final IField field = program.typesystem.utils.resolveField(user,
-                                                                   (IDeclaredType) owner,
+                                                                   owner,
                                                                    name);
 
+        /**
+         * If no field was found, then issue an error.
+         */
         if (field == null)
         {
-            // TODO: error
-            System.out.println("No such field: " + name);
-            return null;
+            // This will throw an exception.
+            program.checker.reportNoSuchField(site, false, owner, name);
         }
 
         /**
@@ -369,35 +380,6 @@ abstract class AbstractTypeChecker
         program.symbols.fields.put(site, field);
 
         return field;
-    }
-
-    /**
-     * This method ensures that an expression is assignable to a particular type.
-     *
-     * <p>
-     * This method takes into account boxing and unboxing.
-     * </p>
-     *
-     * @param target is the type of the location where the value will be assigned.
-     * @param expression is the expression that produces the value to assign.
-     */
-    protected void checkAssign(final IExpressionType target,
-                               final IExpression expression)
-    {
-        final IType etype = program.symbols.expressions.get(expression);
-
-        if (program.typesystem.utils.box(etype, target) != null)
-        {
-            return; // OK
-        }
-        else if (program.typesystem.utils.unbox(etype, target) != null)
-        {
-            return; // OK
-        }
-        else
-        {
-            program.checker.expectSubtype(expression, target);
-        }
     }
 
     /**

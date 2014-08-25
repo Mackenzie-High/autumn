@@ -366,7 +366,7 @@ public final class StatementTypeChecker
 
         final IVariableType expected = function.allocator.typeOf(object.getVariable().getName());
 
-        checkAssign(expected, object.getValue());
+        program.checker.checkAssign(object, expected, object.getValue());
     }
 
     @Override

@@ -250,27 +250,26 @@ Test Index
 . . . T0215 = Auto-Widening
 . . . T0216 = Auto-Boxing
 . . . T0217 = Auto-Unboxing
-. . Call Method
-. . . Different Types of Arguments
-. . . Resolution Order
-. . . Auto-Widening
-. . . Auto-Boxing
-. . . Auto-Unboxing
-. . . Covariant Return Types
 . . Call Static Method
 . . . T0224 = Different Types of Arguments
 . . . T0225 = Resolution Order
 . . . T0228 = Auto-Widening
 . . . T0226 = Auto-Boxing
 . . . T0227 = Auto-Unboxing
-. . . Covariant Return Types - Hidden Methods????
+. . Call Method
+. . . T0229 = Different Types of Arguments
+. . . T0233 = Resolution Order
+. . . T0230 = Auto-Widening
+. . . T0231 = Auto-Boxing
+. . . T0232 = Auto-Unboxing
+. . . T0234 = Covariant Return Types
+. . Set Static Field
+. . . T0235 = Different Types of Values - (also used to test get-static-field)
+. . Get Static Field
+. . . T0235 = Different Types of Values - (also used to test set-static-field)
 . . Set Field
 . . . Different Types of Values
 . . Get Field
-. . . Different Types of Values
-. . Set Static Field
-. . . Different Types of Values
-. . Get Static Field
 . . . Different Types of Values
 . . Instance-Of
 . . . T0046 = All Cases

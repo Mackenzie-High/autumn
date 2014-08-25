@@ -7,6 +7,10 @@ package autumn.lang.compiler.errors;
  * Note: The names of these constants are intended to infer their meaning.
  * </p>
  *
+ * <p>
+ * <b>Warning:</b> Constants may herein be added, deleted, or renamed in the future.
+ * </p>
+ *
  * @author Mackenzie High
  */
 public enum ErrorCode
@@ -281,4 +285,8 @@ public enum ErrorCode
      * Meaning: A string-literal contains a malformed escape-sequence.
      */
     MALFORMED_STRING_LITERAL,
+    /**
+     * Meaning: A value cannot be assigned to a readonly variable or field.
+     */
+    ASSIGNMENT_TO_READONLY,
 }

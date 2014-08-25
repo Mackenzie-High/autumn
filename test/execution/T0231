@@ -1,0 +1,18 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    val list = (new LinkedList);
+
+    (list.add true);
+    (list.add 'X');
+    (list.add 10B);
+    (list.add 20S);
+    (list.add 30);
+    (list.add 40L);
+    (list.add 50.0F);
+    (list.add 60.0);
+
+    assert (list.toString) == "[true, X, 10, 20, 30, 40, 50.0, 60.0]";
+}

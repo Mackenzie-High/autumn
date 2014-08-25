@@ -114,6 +114,37 @@ public final class Helpers
     }
 
     /**
+     * This class is used to lightly test instance method resolution.
+     */
+    public static final class InstanceMethodTester
+    {
+        public Class moo(final Collection x)
+        {
+            return Collection.class;
+        }
+
+        public Class moo(final List x)
+        {
+            return List.class;
+        }
+
+        public Class moo(final LinkedList x)
+        {
+            return LinkedList.class;
+        }
+
+        public Class moo(final CharSequence x)
+        {
+            return CharSequence.class;
+        }
+
+        private Class moo(final String x)
+        {
+            return String.class;
+        }
+    }
+
+    /**
      * This method creates functor(n : int) that returns the n-th Fibonacci number (n less-than 12).
      *
      * @return a new Fibonacci functor.

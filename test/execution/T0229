@@ -1,0 +1,29 @@
+module Main in execution;
+
+tuple T (a : boolean,
+         b : char,
+         c : byte,
+         d : short,
+         e : int,
+         f : long,
+         g : float,
+         h : double,
+         i : String);
+
+@Start
+defun main (args : String[]) : void
+{
+    var p = (T::instance);
+
+    p = (p.a true);
+    p = (p.b 'X');
+    p = (p.c 10B);
+    p = (p.d 20S);
+    p = (p.e 30);
+    p = (p.f 40L);
+    p = (p.g 50.0F);
+    p = (p.h 60.0);
+    p = (p.i "Venus");
+
+    assert "(true, X, 10, 20, 30, 40, 50.0, 60.0, Venus)" == (p.toString);
+}

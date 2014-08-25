@@ -145,7 +145,17 @@ Test Index
 . . Set Field
 . . Get Field
 . . Set Static Field
+. . . T0088 = Owner - No Such Type
+. . . T0089 = Owner - Inaccessible Type
+. . . T0090 = Owner - Expected Declared Type
+. . . T0091 = No Such Field
+. . . T0097 = Final (i.e. Readonly) Field
+. . . T0092 = Impossible Assignment
 . . Get Static Field
+. . . T0093 = Owner - No Such Type
+. . . T0094 = Owner - Inaccessible Type
+. . . T0095 = Owner - Expected Declared Type
+. . . T0096 = No Such Field
 . . Instance Of
 . . Create
 . . Ternary Conditional

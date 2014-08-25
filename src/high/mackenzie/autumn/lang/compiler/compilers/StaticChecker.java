@@ -24,12 +24,14 @@ import com.google.common.collect.Lists;
 import high.mackenzie.autumn.lang.compiler.exceptions.TypeCheckFailed;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IEnumType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IExpressionType;
+import high.mackenzie.autumn.lang.compiler.typesystem.design.IField;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IMethod;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IReferenceType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IReturnType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IVariableType;
 import high.mackenzie.autumn.lang.compiler.utils.Utils;
+import java.lang.reflect.Modifier;
 import java.util.List;
 
 /**
@@ -653,14 +655,35 @@ public final class StaticChecker
         report(report);
     }
 
-    public void reportNoSuchField(final IReturnType owner,
+    /**
+     * This method reports that the resolution of a field failed.
+     *
+     *
+     * @param construct is the invocation itself.
+     * @param shared is true, iff a static method was being resolved.
+     * @param owner is the type of the method's owner.
+     * @param name is then name of the method.
+     * @param arguments are the types of the method's arguments.
+     */
+    public void reportNoSuchField(final IConstruct construct,
+                                  final boolean shared,
+                                  final IReturnType owner,
                                   final String name)
     {
-    }
+        final ErrorCode ERROR_CODE = ErrorCode.NO_SUCH_FIELD;
 
-    public void reportNoSuchStaticField(final IReturnType owner,
-                                        final String name)
-    {
+        final String MESSAGE = "No acceptable field was found.";
+
+        final ErrorReport report = new ErrorReport(construct, ERROR_CODE, MESSAGE);
+
+        final String dot = shared ? "::" : ".";
+
+        report.addDetail("Field", Utils.simpleName(owner) + dot + name);
+
+        /**
+         * Issue the error-report to the user.
+         */
+        report(report);
     }
 
     /**
@@ -691,8 +714,8 @@ public final class StaticChecker
     /**
      * This method reports that the resolution of a method failed.
      *
-     * @param shared is true, iff a static method was being resolved.
      * @param construct is the invocation itself.
+     * @param shared is true, iff a static method was being resolved.
      * @param owner is the type of the method's owner.
      * @param name is then name of the method.
      * @param arguments are the types of the method's arguments.
@@ -1003,5 +1026,71 @@ public final class StaticChecker
         result.append(Strings.stringify(args, "(", ", ", ")"));
 
         return result.toString();
+    }
+
+    /**
+     * This method ensures that an expression is assignable to a particular type.
+     *
+     * <p>
+     * This method takes into account boxing, unboxing, and coercion.
+     * </p>
+     *
+     * @param site is the construct that is performing the assignment.
+     * @param target is the type of the location where the value will be assigned.
+     * @param expression is the expression that produces the value to assign.
+     */
+    public void checkAssign(final IConstruct site,
+                            final IExpressionType target,
+                            final IExpression expression)
+    {
+        final IExpressionType etype = program.symbols.expressions.get(expression);
+
+        if (program.typesystem.utils.assign(etype, target) != null)
+        {
+            return; // OK
+        }
+
+        final ErrorCode ERROR_CODE = ErrorCode.IMPOSSIBLE_ASSIGNMENT;
+
+        final String MESSAGE = "An impossible assignment operation was detected.";
+
+        final ErrorReport report = new ErrorReport(site, ERROR_CODE, MESSAGE);
+
+        report.addDetail("Assignment", Utils.simpleName(target) + " (Target) = " + Utils.simpleName(etype) + " (Value)");
+
+        /**
+         * Issue the error-report to the user.
+         */
+        report(report);
+    }
+
+    /**
+     * This method reports that an an assignment is not to a readonly field.
+     *
+     * @param site is the construct that is performing the assignment.
+     * @param field is the field being assigned to.
+     */
+    public void requireNonFinalFieldAssignment(final IConstruct site,
+                                               final IField field)
+    {
+        if (Modifier.isFinal(field.getModifiers()) == false)
+        {
+            return; // OK
+        }
+
+        final ErrorCode ERROR_CODE = ErrorCode.ASSIGNMENT_TO_READONLY;
+
+        final String MESSAGE = "A value cannot be assigned to a final field.";
+
+        final ErrorReport report = new ErrorReport(site, ERROR_CODE, MESSAGE);
+
+        final String dot = Modifier.isStatic(field.getModifiers()) ? "::" : ".";
+
+        report.addDetail("Field", Utils.simpleName(field.getOwner()) + dot + field.getName());
+
+        /**
+         * Issue the error-report to the user.
+         */
+        report(report);
     }
 }

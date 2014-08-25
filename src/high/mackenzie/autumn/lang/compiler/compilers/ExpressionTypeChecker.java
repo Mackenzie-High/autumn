@@ -239,11 +239,30 @@ public class ExpressionTypeChecker
     @Override
     public void visit(final SetStaticFieldExpression object)
     {
+        /**
+         * Resolve the field.
+         */
+        final IField field = findStaticField(object, object.getOwner(), object.getName().getName());
+
+        /**
+         * Visit and type-check the value.
+         */
         object.getValue().accept(this);
 
-        infer(object, program.typesystem.utils.VOID);
+        /**
+         * Ensure that the field is not readonly.
+         */
+        program.checker.requireNonFinalFieldAssignment(object, field);
 
-        findStaticField(object, object.getOwner(), object.getName().getName());
+        /**
+         * Ensure that the value can actually be assigned to the field.
+         */
+        program.checker.checkAssign(object, field.getType(), object.getValue());
+
+        /**
+         * The return-type of the expression is void.
+         */
+        infer(object, program.typesystem.utils.VOID);
     }
 
     @Override
