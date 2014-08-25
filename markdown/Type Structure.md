@@ -7,7 +7,7 @@ As a result, the type-system is closely related to the JVM type-system.
 
 ## Recursive Definition of Types
 
-`<img alt="Diagram of Type Hierarchy" src="/dot/TypeHeirarchy.png">`
+<img alt="Diagram of Type Hierarchy" src="dot/TypeHeirarchy.png">
 
 + The boolean-type is a primitive-type.
 + The char-type is a primitive-type. 

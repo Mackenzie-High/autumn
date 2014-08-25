@@ -1,6 +1,7 @@
-# Introduction
+<div class="center-text"> <h1> Introduction </h1> </div>
 
-Autumn is a statically-typed multi-paradigm general-purpose programming language that compiles directly to JVM bytecode.
+Autumn is a statically-typed dynamically-compiled multi-paradigm general-purpose programming language for the JVM.
+
 
 ## Paradigms
 
@@ -10,16 +11,18 @@ Autumn is a statically-typed multi-paradigm general-purpose programming language
 + Procedural
 + Reflective
 + Concurrent
-+ Dataflow (events in properties)????
 + Metaprograming
-..+ Limited Homioconicity
-..+ Reflective
+
 
 ## Notable Features and Benefits:
 
++ Precompiled Java Code can be used Directly in Autumn
 + Prototype-based Object System
-+ Anonymous Functions via Delegates
-+ Optional Multiple Dispatch
-+ Explicit support for direct tail-recursion
++ Automatic Easy-To-Use Immutability
++ Anonymous Functions
++ Multiple Dispatch
++ Direct Tail-Recursion
 + Generator Functions
++ Unit Testing Framework
++ Weak Homioconicity
 

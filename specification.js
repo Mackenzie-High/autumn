@@ -54,7 +54,6 @@ function spec()
   [4, "<a%20href=\"ConstructPage.html?construct=Assume%20Statement\">Assume%20Statement</a>"],
   [2, "<b>Anonymous%20Functions</b>"],
   [3, "<a%20href=\"ConstructPage.html?construct=Delegate%20Statement\">Delegate%20Statement</a>"],
-  [3, "<a%20href=\"ConstructPage.html?construct=Lambda%20Statement\">Lambda%20Statement</a>"],
   [2, "<b>Handler%20Binding</b>"],
   [3, "<a%20href=\"ConstructPage.html?construct=Setter%20Statement\">Setter%20Statement</a>"],
   [3, "<a%20href=\"ConstructPage.html?construct=Getter%20Statement\">Getter%20Statement</a>"],
@@ -118,7 +117,6 @@ function spec()
   [3, "<a%20href=\"ConstructPage.html?construct=Set%20Field%20Expression\">Set%20Field%20Expression</a>"],
   [3, "<a%20href=\"ConstructPage.html?construct=Get%20Field%20Expression\">Get%20Field%20Expression</a>"],
   [3, "<a%20href=\"ConstructPage.html?construct=Instance-Of%20Expression\">Instance-Of%20Expression</a>"],
-  [3, "<a%20href=\"ConstructPage.html?construct=Dispatch%20Expression\">Dispatch%20Expression</a>"],
   [3, "<a%20href=\"ConstructPage.html?construct=Create%20Expression\">Create%20Expression</a>"],
   [2, "<a%20href=\"ConstructPage.html?construct=Ternary%20Conditional%20Expression\">Ternary%20Conditional%20Expression</a>"],
   [2, "<a%20href=\"ConstructPage.html?construct=Locals%20Expression\">Locals%20Expression</a>"],
@@ -330,8 +328,8 @@ function spec()
   "static-checks":
     [
       ["DUPLICATE_TYPE", "No two types can share the same descriptor."],
-      ["NO_SUCH_TYPE", "The type specified by the <i>superclass</i> must exist."],
-      ["INACCESSIBLE_TYPE", "The type specified by the <i>superclass</i> must be accessible."],
+      ["NO_SUCH_TYPE", "The type specified by <i>superclass</i> must exist."],
+      ["INACCESSIBLE_TYPE", "The type specified by <i>superclass</i> must be accessible."],
       ["EXPECTED_THROWABLE", "The <i>superclass</i> must be a subtype of <a href=\"http://docs.oracle.com/javase/7/docs/api/java/lang/Throwable.html\">Throwable</a>."],
       ["CIRCULAR_INHERITANCE", "The new type cannot be a subtype of itself either directly or indirectly."],
     ],
@@ -450,8 +448,8 @@ function spec()
   "static-checks":
     [
       ["DUPLICATE_TYPE", "No two types can share the same descriptor."],
-      ["NO_SUCH_TYPE", "The type specified by the <i><i>superinterface<sub>i</sub></i></i> must exist."],
-      ["INACCESSIBLE_TYPE", "The type specified by the <i><i>superinterface<sub>i</sub></i></i> must be accessible."],
+      ["NO_SUCH_TYPE", "The type specified by <i><i>superinterface<sub>i</sub></i></i> must exist."],
+      ["INACCESSIBLE_TYPE", "The type specified by <i><i>superinterface<sub>i</sub></i></i> must be accessible."],
       ["EXPECTED_DESIGN", "The type of <i><i>superinterface<sub>i</sub></i></i> must be assignable to type autumn.lang.Prototype."],
       ["DUPLICATE_PROPERTY", "No two properties in the same design definition can share a name."],
       ["DUPLICATE_METHOD", "No two methods in the same design definition can share a name."],
@@ -848,8 +846,8 @@ function spec()
   "static-checks":
     [
       ["DUPLICATE_VARIABLE", "The <i>assignee</i> cannot share its name with another variable declared in the same scope."],
-      ["NO_SUCH_TYPE", "The type specified by the <i><i>type</i></i> must exist."],
-      ["INACCESSIBLE_TYPE", "The type specified by the <i><i>type</i></i> must be accessible."],
+      ["NO_SUCH_TYPE", "The type specified by <i><i>type</i></i> must exist."],
+      ["INACCESSIBLE_TYPE", "The type specified by <i><i>type</i></i> must be accessible."],
       ["EXPECTED_REFERENCE_TYPE", "The type specified by the <i>type</i> must be a reference-type."],
       ["EXPECTED_ITERABLE", "The type of the <i>iterable</i> must be a subtype of <a href=\"http://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html\">Iterable</a>."],
     ],
@@ -992,7 +990,7 @@ function spec()
   "syntax":
     [
       [0, "<span class=\"keyword\">let</span> <i>assignee</i> = <i><a href=\"TextPage.html?page=Expression\">value</a></i> ;"],
-      [0, "<hr class=\%22syntax-hr\%22>"],
+      [0, "<hr class=&#92%22syntax-hr&#92%22>"],
       [0, "<i>assignee</i> = <i><a href=\"TextPage.html?page=Expression\">value</a></i> ;"],
     ],
   "details":
@@ -1074,7 +1072,7 @@ function spec()
   "syntax":
     [
       [0, "<span class=\"keyword\">assert</span> <i><a href=\"TextPage.html?page=Expression\">condition</a></i> ;"],
-      [0, "<hr class=\%22syntax-hr\%22>"],
+      [0, "<hr class=&#92%22syntax-hr&#92%22>"],
       [0, "<span class=\"keyword\">assert</span> <i><a href=\"TextPage.html?page=Expression\">condition</a></i> <span class=\"keyword\">echo</span> <i>#message#</i> ;"],
     ],
   "details":
@@ -1100,7 +1098,7 @@ function spec()
   "syntax":
     [
       [0, "<span class=\"keyword\">assume</span> <i><a href=\"TextPage.html?page=Expression\">condition</a></i> ;"],
-      [0, "<hr class=\%22syntax-hr\%22>"],
+      [0, "<hr class=&#92%22syntax-hr&#92%22>"],
       [0, "<span class=\"keyword\">assume</span> <i><a href=\"TextPage.html?page=Expression\">condition</a></i> <span class=\"keyword\">echo</span> <i>#message#</i> ;"],
     ],
   "details":
@@ -1130,36 +1128,15 @@ function spec()
     ],
   "details":
     [
-      [0, "Return Type: class autumn.lang.internals.ModuleDelegate"],
+      [0, "Return Type: autumn.lang.internals.ModuleDelegate"],
       [0, "Return The expression returns a delegate that refers to the specified function.."],
     ],
   "static-checks":
     [
-      ["NO_SUCH_TYPE", "The type specified by the <i><i>module</i></i> must exist."],
-      ["INACCESSIBLE_TYPE", "The type specified by the <i><i>module</i></i> must be accessible."],
+      ["NO_SUCH_TYPE", "The type specified by <i><i>module</i></i> must exist."],
+      ["INACCESSIBLE_TYPE", "The type specified by <i><i>module</i></i> must be accessible."],
       ["NO_SUCH_METHOD", "The <i>module</i> must contain exactly one function with the given <i>name</i>."],
       ["EXPECTED_MODULE", "The <i>module</i> must be a subtype of #AutumnLangModule#."],
-    ],
-},
-
-
-"Lambda Statement" : {
-  "summary" : "A lambda-statement creates a new anonymous function that closes over the enclosing scope.",
-  "ast" : "autumn.lang.compiler.ast.nodes.LambdaStatement",
-  "syntax":
-    [
-      [0, "<span class=\"keyword\">lambda</span> <i>variable</i> : <i>type</i>"],
-      [0, "{"],
-      [1, "<i><a href=\"TextPage.html?page=Statement\">body</a></i>"],
-      [0, "}"],
-    ],
-  "details":
-    [
-      [0, "Return Type: class java.lang.Object"],
-      [0, "Return an instance of the anonymous function."],
-    ],
-  "static-checks":
-    [
     ],
 },
 
@@ -1169,7 +1146,7 @@ function spec()
   "ast" : "autumn.lang.compiler.ast.nodes.SetterStatement",
   "syntax":
     [
-      [0, "<span class=\"keyword\">setter</span> <i>#owner#</i> . <i><a href=\"ConstructPage.html?construct=Name\">name</a></i> =&gt; <i>module</i> :: <i><span class=\"keyword\">method</span></i> ;"],
+      [0, "<span class=\"keyword\">setter</span> <i><a href=\"TextPage.html?page=Expression\">owner</a></i> . <i><a href=\"ConstructPage.html?construct=Name\">name</a></i> =&gt; <i>module</i> :: <i><span class=\"keyword\">method</span></i> ;"],
     ],
   "details":
     [
@@ -1188,7 +1165,7 @@ function spec()
   "ast" : "autumn.lang.compiler.ast.nodes.GetterStatement",
   "syntax":
     [
-      [0, "<span class=\"keyword\">getter</span> <i>#owner#</i> . <i><a href=\"ConstructPage.html?construct=Name\">name</a></i> =&gt; <i><a href=\"TextPage.html?page=Expression\">value</a></i> ;"],
+      [0, "<span class=\"keyword\">getter</span> <i><a href=\"TextPage.html?page=Expression\">owner</a></i> . <i><a href=\"ConstructPage.html?construct=Name\">name</a></i> =&gt; <i><a href=\"TextPage.html?page=Expression\">value</a></i> ;"],
     ],
   "details":
     [
@@ -1205,7 +1182,7 @@ function spec()
   "ast" : "autumn.lang.compiler.ast.nodes.MethodStatement",
   "syntax":
     [
-      [0, "<span class=\"keyword\">method</span> <i>#owner#</i> . <i><a href=\"ConstructPage.html?construct=Name\">name</a></i> ( <i>#parameter#<sub>1</sub></i> , ... , <i>#parameter#<sub>n</sub></i> ) =&gt; <i><a href=\"TextPage.html?page=Expression\">value</a></i> ;"],
+      [0, "<span class=\"keyword\">method</span> <i><a href=\"TextPage.html?page=Expression\">owner</a></i> . <i><a href=\"ConstructPage.html?construct=Name\">name</a></i> ( <i>#parameter#<sub>1</sub></i> , ... , <i>#parameter#<sub>n</sub></i> ) =&gt; <i><a href=\"TextPage.html?page=Expression\">value</a></i> ;"],
     ],
   "details":
     [
@@ -1226,10 +1203,13 @@ function spec()
     ],
   "details":
     [
+      [0, "A nop-statement should generate a nop bytecode instruction."],
+      [0, "An optimizer is free to remove nop bytecode instructions."],
     ],
   "static-checks":
     [
     ],
+  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    nop;%0A}", ""],
 },
 
 
@@ -1264,8 +1244,8 @@ function spec()
     ],
   "static-checks":
     [
-      ["VALUE_REQUIRED", "The type of the <i>expression</i> must be either a primitive-type or a reference-type."],
     ],
+  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    # The following line is an expression used as a statement.%0A    (My::printNumber 17);%0A}%0A%0Adefun printNumber (x : int) : void%0A{%0A    (F::println %22x = %22 .. x);%0A}", "x = 17"],
 },
 
 
@@ -1370,7 +1350,7 @@ function spec()
   "syntax":
     [
       [0, "<span class=\"keyword\">true</span>"],
-      [0, "<hr class=\%22syntax-hr\%22>"],
+      [0, "<hr class=&#92%22syntax-hr&#92%22>"],
       [0, "<span class=\"keyword\">false</span>"],
     ],
   "details":
@@ -1392,7 +1372,7 @@ function spec()
   "syntax":
     [
       [0, "<b>'</b><i>character</i><b>'</b>"],
-      [0, "<hr class=\%22syntax-hr\%22>"],
+      [0, "<hr class=&#92%22syntax-hr&#92%22>"],
       [0, "<i>digits</i><b class='keyword'>C</b>"],
     ],
   "details":
@@ -1416,7 +1396,7 @@ function spec()
   "syntax":
     [
       [0, "<i>digits</i><b class='keyword'>B</b>"],
-      [0, "<hr class=\%22syntax-hr\%22>"],
+      [0, "<hr class=&#92%22syntax-hr&#92%22>"],
       [0, "<b>-</b><i>digits</i><b class='keyword'>B</b>"],
     ],
   "details":
@@ -1440,7 +1420,7 @@ function spec()
   "syntax":
     [
       [0, "<i>digits</i><b class='keyword'>S</b>"],
-      [0, "<hr class=\%22syntax-hr\%22>"],
+      [0, "<hr class=&#92%22syntax-hr&#92%22>"],
       [0, "<b>-</b><i>digits</i><b class='keyword'>S</b>"],
     ],
   "details":
@@ -1464,7 +1444,7 @@ function spec()
   "syntax":
     [
       [0, "<i>digits</i>"],
-      [0, "<hr class=\%22syntax-hr\%22>"],
+      [0, "<hr class=&#92%22syntax-hr&#92%22>"],
       [0, "<b>-</b><i>digits</i>"],
     ],
   "details":
@@ -1488,7 +1468,7 @@ function spec()
   "syntax":
     [
       [0, "<i>digits</i><b class='keyword'>L</b>"],
-      [0, "<hr class=\%22syntax-hr\%22>"],
+      [0, "<hr class=&#92%22syntax-hr&#92%22>"],
       [0, "<b>-</b><i>digits</i><b class='keyword'>L</b>"],
     ],
   "details":
@@ -1512,15 +1492,15 @@ function spec()
   "syntax":
     [
       [0, "<i>digits</i><b>.</b><i>digits</i><b class='keyword'>F</b>"],
-      [0, "<hr class=\%22syntax-hr\%22>"],
+      [0, "<hr class=&#92%22syntax-hr&#92%22>"],
       [0, "<b>-</b><i>digits</i><b>.</b><i>digits</i><b class='keyword'>F</b>"],
-      [0, "<hr class=\%22syntax-hr\%22>"],
+      [0, "<hr class=&#92%22syntax-hr&#92%22>"],
       [0, "<i>digits</i><b>.</b><i>digits</i><b class='keyword'>e</b><i>digits</i><b class='keyword'>F</b>"],
-      [0, "<hr class=\%22syntax-hr\%22>"],
+      [0, "<hr class=&#92%22syntax-hr&#92%22>"],
       [0, "<b>-</b><i>digits</i><b>.</b><i>digits</i><b class='keyword'>e</b><i>digits</i><b class='keyword'>F</b>"],
-      [0, "<hr class=\%22syntax-hr\%22>"],
+      [0, "<hr class=&#92%22syntax-hr&#92%22>"],
       [0, "<i>digits</i><b>.</b><i>digits</i><b class='keyword'>E</b><i>digits</i><b class='keyword'>F</b>"],
-      [0, "<hr class=\%22syntax-hr\%22>"],
+      [0, "<hr class=&#92%22syntax-hr&#92%22>"],
       [0, "<b>-</b><i>digits</i><b>.</b><i>digits</i><b class='keyword'>E</b><i>digits</i><b class='keyword'>F</b>"],
     ],
   "details":
@@ -1542,15 +1522,15 @@ function spec()
   "syntax":
     [
       [0, "<i>digits</i><b>.</b><i>digits</i>"],
-      [0, "<hr class=\%22syntax-hr\%22>"],
+      [0, "<hr class=&#92%22syntax-hr&#92%22>"],
       [0, "<b>-</b><i>digits</i><b>.</b><i>digits</i>"],
-      [0, "<hr class=\%22syntax-hr\%22>"],
+      [0, "<hr class=&#92%22syntax-hr&#92%22>"],
       [0, "<i>digits</i><b>.</b><i>digits</i><b class='keyword'>e</b><i>digits</i>"],
-      [0, "<hr class=\%22syntax-hr\%22>"],
+      [0, "<hr class=&#92%22syntax-hr&#92%22>"],
       [0, "<b>-</b><i>digits</i><b>.</b><i>digits</i><b class='keyword'>e</b><i>digits</i>"],
-      [0, "<hr class=\%22syntax-hr\%22>"],
+      [0, "<hr class=&#92%22syntax-hr&#92%22>"],
       [0, "<i>digits</i><b>.</b><i>digits</i><b class='keyword'>E</b><i>digits</i>"],
-      [0, "<hr class=\%22syntax-hr\%22>"],
+      [0, "<hr class=&#92%22syntax-hr&#92%22>"],
       [0, "<b>-</b><i>digits</i><b>.</b><i>digits</i><b class='keyword'>E</b><i>digits</i>"],
     ],
   "details":
@@ -1567,31 +1547,42 @@ function spec()
 
 
 "String Datum" : {
-  "summary" : "A string-datum is a literal textual value.",
+  "summary" : "A string-datum is a literal text value.",
   "ast" : "autumn.lang.compiler.ast.nodes.StringDatum",
   "syntax":
     [
       [0, "%22<i>string of characters</i>%22"],
-      [0, "<hr class=\%22syntax-hr\%22>"],
+      [0, "<hr class=&#92%22syntax-hr&#92%22>"],
       [0, "@ %22<i>string of characters</i>%22"],
-      [0, "<hr class=\%22syntax-hr\%22>"],
+      [0, "<hr class=&#92%22syntax-hr&#92%22>"],
       [0, "'''<i>string of characters</i>'''"],
-      [0, "<hr class=\%22syntax-hr\%22>"],
+      [0, "<hr class=&#92%22syntax-hr&#92%22>"],
       [0, "@ '''<i>string of characters</i>'''"],
     ],
   "details":
     [
       [0, "Escape Sequences"],
-      [1, "Tab: \\t"],
-      [1, "Newline: \\n"],
+      [1, "Tab: &#92t"],
+      [1, "Backspace: &#92b"],
+      [1, "Newline: &#92n"],
+      [1, "Carriage Return: &#92r"],
+      [1, "Form Feed: &#92f"],
+      [1, "Single Quote: &#92'"],
+      [1, "Double Quote: &#92&#34;"],
+      [1, "Backslash: &#92&#92"],
+      [1, "Character Code: &#92<i>D<sub>1</sub>D<sub>2</sub>D<sub>3</sub>D<sub>4</sub>D<sub>5</sub></i> (where <i>D<sub>i</sub></i> is a decimal digit)"],
+      [2, "The character-code must be between 0 and 65536."],
       [0, "The two syntactic forms that are prefixed with an '@' are verbose-strings."],
       [0, "Escape sequences are ignored in verbose strings."],
-      [0, "Return Type: class java.lang.String"],
+      [0, "String-literals can span multiple lines."],
+      [0, "Return Type: java.lang.String"],
       [0, "Return the value of the constant."],
     ],
   "static-checks":
     [
+      ["MALFORMED_STRING_LITERAL", "A non-verbatim string cannot contain malformed escape-sequences."],
     ],
+  "example-1" : ["module Main in examples;%0A%0Atuple Pet (type : String, name : String);%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    val string1 = %22C:&#92&#92planets&#92&#92Mercury.obj%22;%0A    val string2 = @%22C:&#92planets&#92Venus.obj%22;%0A%0A    val string3 = '''C:&#92&#92planets&#92&#92Earth.obj''';%0A    val string4 = @'''C:&#92planets&#92Mars.obj''';%0A%0A    (F::printlns [string1, string2, string3, string4]);%0A}", "C:&#92planets&#92Mercury.obj%0AC:&#92planets&#92Venus.obj%0AC:&#92planets&#92Earth.obj%0AC:&#92planets&#92Mars.obj"],
 },
 
 
@@ -1600,19 +1591,20 @@ function spec()
   "ast" : "autumn.lang.compiler.ast.nodes.ClassDatum",
   "syntax":
     [
-      [0, "<span class=\"keyword\">class</span> <i>type</i>"],
+      [0, "( <span class=\"keyword\">class</span> <i>type</i> )"],
     ],
   "details":
     [
-      [0, "Return Type: class java.lang.Class"],
+      [0, "Return Type: java.lang.Class"],
       [0, "Return the Class object representation of the <i>type</i>."],
     ],
   "static-checks":
     [
-      ["NO_SUCH_TYPE", "The type specified by the <i><i>type</i></i> must exist."],
-      ["INACCESSIBLE_TYPE", "The type specified by the <i><i>type</i></i> must be accessible."],
+      ["NO_SUCH_TYPE", "The type specified by <i><i>type</i></i> must exist."],
+      ["INACCESSIBLE_TYPE", "The type specified by <i><i>type</i></i> must be accessible."],
+      ["EXPECTED_RETURN_TYPE", "The type specified by <i>type</i> must be a return-type."],
     ],
-  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    var value00 = class void;%0A    var value01 = class boolean;%0A    var value02 = class char;%0A    var value03 = class byte;%0A    var value04 = class short;%0A    var value05 = class int;%0A    var value06 = class long;%0A    var value07 = class float;%0A    var value08 = class double;%0A    var value09 = class String;%0A    var value10 = class String[];%0A    var value11 = class String[][];%0A    var value12 = class String[][][];%0A%0A    (F::println value00);%0A    (F::println value01);%0A    (F::println value02);%0A    (F::println value03);%0A    (F::println value04);%0A    (F::println value05);%0A    (F::println value06);%0A    (F::println value07);%0A    (F::println value08);%0A    (F::println value09);%0A    (F::println value10);%0A    (F::println value11);%0A    (F::println value12);%0A}", "Parsing Failed!%0A  File: /media/disk/Code/EclipseProjects/AutumnSpecification/autumn/examples/E0068/code.leaf%0A  Line: #6%0A  Column: #25"],
+  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    var value00 = (class void);%0A    var value01 = (class boolean);%0A    var value02 = (class char);%0A    var value03 = (class byte);%0A    var value04 = (class short);%0A    var value05 = (class int);%0A    var value06 = (class long);%0A    var value07 = (class float);%0A    var value08 = (class double);%0A    var value09 = (class String);%0A    var value10 = (class String[]);%0A    var value11 = (class String[][]);%0A    var value12 = (class String[][][]);%0A%0A    (F::println value00);%0A    (F::println value01);%0A    (F::println value02);%0A    (F::println value03);%0A    (F::println value04);%0A    (F::println value05);%0A    (F::println value06);%0A    (F::println value07);%0A    (F::println value08);%0A    (F::println value09);%0A    (F::println value10);%0A    (F::println value11);%0A    (F::println value12);%0A}", "void%0Aboolean%0Achar%0Abyte%0Ashort%0Aint%0Along%0Afloat%0Adouble%0Aclass java.lang.String%0Aclass [Ljava.lang.String;%0Aclass [[Ljava.lang.String;%0Aclass [[[Ljava.lang.String;"],
 },
 
 
@@ -1631,6 +1623,7 @@ function spec()
   "static-checks":
     [
     ],
+  "example-1" : ["module Main in examples;%0A%0Atuple Pet (type : String, name : String);%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    var x = %22nil is %22;%0A%0A    (F::print x);%0A%0A    x = null;%0A%0A    (F::print x);%0A}", "nil is null"],
 },
 
 
@@ -1639,17 +1632,21 @@ function spec()
   "ast" : "autumn.lang.compiler.ast.nodes.VariableDatum",
   "syntax":
     [
-      [0, "<i>variable</i>"],
+      [0, "<i><a href=\"ConstructPage.html?construct=Variable\">variable</a></i>"],
     ],
   "details":
     [
-      [0, "Return Type: type of the variable"],
-      [0, "Return the value stored in the variable."],
+      [0, "A variable will return its default-value, if it is accessed before its first assignment."],
+      [0, "Return Type: (type of the referenced variable per the variable's declaration)"],
+      [0, "Return the value stored in the referenced variable."],
     ],
   "static-checks":
     [
       ["NO_SUCH_VARIABLE", "The <i>variable</i> must be declared somewhere within the enclosing scope."],
+      ["VARIABLE_OUTSIDE_OF_SCOPE", "The <i>variable</i> cannot be used outside of the scope in which it was declared."],
     ],
+  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    var planet1 = %22Mercury%22;%0A    var planet2 = %22Venus%22;%0A    var planet3 = %22Earth%22;%0A    var planet4 = %22Mars%22;%0A%0A    val planets = [planet1, planet2, planet3, planet4];%0A%0A    (F::println planets);%0A}", "[Mercury, Venus, Earth, Mars]"],
+  "example-2" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A%0A    goto ENTER;%0A%0A%0A    # Create a nested scope.%0A    {%0A        val a = true;%0A        val b = 'X';%0A        val c = 10B;%0A        val d = 20S;%0A        val e = 30;%0A        val f = 40L;%0A        val g = 50.0F;%0A        val h = 60.0;%0A        val i = %22Text%22;%0A%0A        marker ENTER;%0A%0A        (F::printlns [a, (b is int), c, d, e, f, g, h, i]);%0A    }%0A}", "false%0A0%0A0%0A0%0A0%0A0%0A0.0%0A0.0%0Anull"],
 },
 
 
@@ -1922,7 +1919,7 @@ function spec()
       [0, "Both operands are greedily evaluated."],
       [1, "The left-operand is evaluated first."],
       [1, "The right-operand is evaluated second."],
-      [0, "Return Type: class java.lang.String"],
+      [0, "Return Type: java.lang.String"],
       [0, "Return the string representation of the left-operand prepended onto the string-representation of the right-operand.."],
     ],
   "static-checks":
@@ -2679,17 +2676,19 @@ function spec()
   "ast" : "autumn.lang.compiler.ast.nodes.NewExpression",
   "syntax":
     [
-      [0, "( <span class=\"keyword\">new</span> <i><a href=\"ConstructPage.html?construct=TypeSpecifier\">type</a></i> <i><a href=\"TextPage.html?page=Expression\">argument</a><sub>1</sub></i> , <i><a href=\"TextPage.html?page=Expression\">argument</a><sub>2</sub></i> , ... , <i><a href=\"TextPage.html?page=Expression\">argument</a><sub>n</sub></i> )"],
+      [0, "( <span class=\"keyword\">new</span> <i><a href=\"ConstructPage.html?construct=TypeSpecifier\">type</a></i> <i><a href=\"TextPage.html?page=Expression\">argument</a><sub>1</sub></i> , ... , <i><a href=\"TextPage.html?page=Expression\">argument</a><sub>n</sub></i> )"],
     ],
   "details":
     [
+      [0, "The constructor overload will be selected using the <a href=\"TextPage.html?page=Resolution\">Constructor Resolution Algorithm</a>."],
+      [0, "The constructor overload is selected at compile-time."],
       [0, "Return Type: type of <i>type</i>"],
       [0, "Return a new instance of the <i>type</i>."],
     ],
   "static-checks":
     [
-      ["NO_SUCH_TYPE", "The type specified by the <i><i>type</i></i> must exist."],
-      ["INACCESSIBLE_TYPE", "The type specified by the <i><i>type</i></i> must be accessible."],
+      ["NO_SUCH_TYPE", "The type specified by <i><i>type</i></i> must exist."],
+      ["INACCESSIBLE_TYPE", "The type specified by <i><i>type</i></i> must be accessible."],
       ["EXPECTED_CLASS_TYPE", "The <i>type</i> must be a class-type."],
       ["NO_SUCH_CONSTRUCTOR", "No accessible constructor overload will accept the given arguments."],
     ],
@@ -2698,25 +2697,30 @@ function spec()
 
 
 "Call Static Method Expression" : {
-  "summary" : "A call-static-expression performs an invocation of a static method.",
+  "summary" : "A call-static-expression performs an invocation of a static method or function.",
   "ast" : "autumn.lang.compiler.ast.nodes.CallStaticMethodExpression",
   "syntax":
     [
-      [0, "( <span class=\"keyword\">call</span> module::name <i><a href=\"TextPage.html?page=Expression\">argument</a><sub>1</sub></i> , <i><a href=\"TextPage.html?page=Expression\">argument</a><sub>2</sub></i> , ... , <i><a href=\"TextPage.html?page=Expression\">argument</a><sub>n</sub></i> )"],
+      [0, "( <span class=\"keyword\">call</span> <i><a href=\"ConstructPage.html?construct=TypeSpecifier\">Owner</a></i>::<i><a href=\"ConstructPage.html?construct=Name\">name</a></i> <i><a href=\"TextPage.html?page=Expression\">argument</a><sub>1</sub></i> , ... , <i><a href=\"TextPage.html?page=Expression\">argument</a><sub>n</sub></i> )"],
+      [0, "<hr class=&#92%22syntax-hr&#92%22>"],
+      [0, "( <i><a href=\"ConstructPage.html?construct=TypeSpecifier\">Owner</a></i>::<i><a href=\"ConstructPage.html?construct=Name\">name</a></i> <i><a href=\"TextPage.html?page=Expression\">argument</a><sub>1</sub></i> , ... , <i><a href=\"TextPage.html?page=Expression\">argument</a><sub>n</sub></i> )"],
     ],
   "details":
     [
-      [0, "Remember: A function is technically a static method."],
-      [0, "Return Type: return-type of the selected method overload"],
-      [0, "Return The value returned by the invoked method is returned.."],
+      [0, "The method overload will be selected using the <a href=\"TextPage.html?page=Resolution\">Static Method Resolution Algorithm</a>."],
+      [0, "The method overload is selected at compile-time."],
+      [0, "Remember, a function is technically a static method."],
+      [0, "Return Type: [return-type of the selected method overload]"],
+      [0, "Return the value returned by the invoked method."],
     ],
   "static-checks":
     [
-      ["VALUE_REQUIRED", "The type of each <i>argument</i> must be either a primitive-type or a reference-type."],
-      ["NO_SUCH_TYPE", "The type specified by the <i><i>module</i></i> must exist."],
-      ["INACCESSIBLE_TYPE", "The type specified by the <i><i>module</i></i> must be accessible."],
-      ["NO_SUCH_METHOD", "No method in the <i>module</i> has the given name."],
+      ["NO_SUCH_TYPE", "The type specified by <i><i>owner</i></i> must exist."],
+      ["INACCESSIBLE_TYPE", "The type specified by <i><i>owner</i></i> must be accessible."],
+      ["EXPECTED_DECLARED_TYPE", "The type specified by <i>owner</i> must be a declared-type."],
+      ["NO_SUCH_METHOD", "No acceptable method overload could be found."],
     ],
+  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    (call My::printNumber 17);%0A%0A    (My::printNumber 23);%0A}%0A%0Adefun printNumber (x : int) : void%0A{%0A    (F::println %22x = %22 .. x);%0A}", "x = 17%0Ax = 23"],
 },
 
 
@@ -2725,17 +2729,24 @@ function spec()
   "ast" : "autumn.lang.compiler.ast.nodes.CallMethodExpression",
   "syntax":
     [
-      [0, "( <span class=\"keyword\">call</span> <i><a href=\"TextPage.html?page=Expression\">expression</a></i>.<i>name</i> <i><a href=\"TextPage.html?page=Expression\">argument</a><sub>1</sub></i> , <i><a href=\"TextPage.html?page=Expression\">argument</a><sub>2</sub></i> , ... , <i><a href=\"TextPage.html?page=Expression\">argument</a><sub>n</sub></i> )"],
+      [0, "( <span class=\"keyword\">call</span> <i><a href=\"TextPage.html?page=Expression\">owner</a></i>.<i><a href=\"ConstructPage.html?construct=Name\">name</a></i> <i><a href=\"TextPage.html?page=Expression\">argument</a><sub>1</sub></i> , ... , <i><a href=\"TextPage.html?page=Expression\">argument</a><sub>n</sub></i> )"],
+      [0, "<hr class=&#92%22syntax-hr&#92%22>"],
+      [0, "( <i><a href=\"TextPage.html?page=Expression\">owner</a></i>.<i><a href=\"ConstructPage.html?construct=Name\">name</a></i> <i><a href=\"TextPage.html?page=Expression\">argument</a><sub>1</sub></i> , ... , <i><a href=\"TextPage.html?page=Expression\">argument</a><sub>n</sub></i> )"],
     ],
   "details":
     [
+      [0, "The method overload will be selected using the <a href=\"TextPage.html?page=Resolution\">Instance Method Resolution Algorithm</a>."],
+      [0, "The method overload is selected at compile-time."],
+      [0, "Return Type: [return-type of the selected method overload]"],
+      [0, "Return the value returned by the invoked method."],
     ],
   "static-checks":
     [
-      ["VALUE_REQUIRED", "The type of each <i>argument</i> must be either a primitive-type or a reference-type."],
-      ["EXPECTED_REFERENCE_TYPE", "The type of the <i>owner</i> must be a reference-type."],
-      ["NO_SUCH_METHOD", "No method in the <i>module</i> has the given name."],
+      ["EXPECTED_DECLARED_TYPE", "The type of <i>owner</i> must be a declared-type."],
+      ["NO_SUCH_METHOD", "No acceptable method overload could be found."],
     ],
+  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    # Create an object.%0A    val sentence = %22Hello Alien World%22;%0A%0A    # Invoke an instance method. %0A    val word = (sentence.substring 6, 11);%0A%0A    # Print the result.%0A    (F::println %22Type of World: %22 .. word);%0A}", "Type of World: Alien"],
+  "example-2" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    # Create an object.%0A    val sentence = %22Hello Home World%22;%0A%0A    # Invoke an instance method. %0A    val word = (call sentence.substring 6, 10);%0A%0A    # Print the result.%0A    (F::println %22Type of World: %22 .. word);%0A}", "Type of World: Home"],
 },
 
 
@@ -2753,9 +2764,8 @@ function spec()
     ],
   "static-checks":
     [
-      ["VALUE_REQUIRED", "The type of the <i>value</i> must be either a primitive-type or a reference-type."],
-      ["NO_SUCH_TYPE", "The type specified by the <i><i>module</i></i> must exist."],
-      ["INACCESSIBLE_TYPE", "The type specified by the <i><i>module</i></i> must be accessible."],
+      ["NO_SUCH_TYPE", "The type specified by <i><i>module</i></i> must exist."],
+      ["INACCESSIBLE_TYPE", "The type specified by <i><i>module</i></i> must be accessible."],
       ["NO_SUCH_FIELD", "No field in the <i>module</i> has the given name."],
       ["IMPOSSIBLE_ASSIGNMENT", "The type of the <i>value</i> must be assignable to the <i>type</i> of the selected field."],
     ],
@@ -2776,8 +2786,8 @@ function spec()
     ],
   "static-checks":
     [
-      ["NO_SUCH_TYPE", "The type specified by the <i><i>module</i></i> must exist."],
-      ["INACCESSIBLE_TYPE", "The type specified by the <i><i>module</i></i> must be accessible."],
+      ["NO_SUCH_TYPE", "The type specified by <i><i>module</i></i> must exist."],
+      ["INACCESSIBLE_TYPE", "The type specified by <i><i>module</i></i> must be accessible."],
       ["NO_SUCH_FIELD", "No field in the <i>module</i> has the given name."],
     ],
 },
@@ -2797,7 +2807,6 @@ function spec()
     ],
   "static-checks":
     [
-      ["VALUE_REQUIRED", "The type of the <i>value</i> must be either a primitive-type or a reference-type."],
       ["EXPECTED_REFERENCE_TYPE", "The type of the <i>owner</i> must be a reference-type."],
       ["NO_SUCH_FIELD", "No field in the <i>module</i> has the given name."],
       ["IMPOSSIBLE_ASSIGNMENT", "The type of the <i>value</i> must be assignable to the <i>type</i> of the selected field."],
@@ -2842,34 +2851,9 @@ function spec()
     ],
   "static-checks":
     [
-      ["VALUE_REQUIRED", "The type of the <i>value</i> must be either a primitive-type or a reference-type."],
-      ["NO_SUCH_TYPE", "The type specified by the <i><i>type</i></i> must exist."],
-      ["INACCESSIBLE_TYPE", "The type specified by the <i><i>type</i></i> must be accessible."],
+      ["NO_SUCH_TYPE", "The type specified by <i><i>type</i></i> must exist."],
+      ["INACCESSIBLE_TYPE", "The type specified by <i><i>type</i></i> must be accessible."],
       ["NON_VIABLE_INSTANCEOF", "The check must be viable."],
-    ],
-},
-
-
-"Dispatch Expression" : {
-  "summary" : "A dispatch-expression dispatches an invocation of a static method.",
-  "ast" : "autumn.lang.compiler.ast.nodes.DispatchExpression",
-  "syntax":
-    [
-      [0, "( <span class=\"keyword\">dispatch</span> module::name <i><a href=\"TextPage.html?page=Expression\">argument</a><sub>1</sub></i> , ... , <i><a href=\"TextPage.html?page=Expression\">argument</a><sub>n</sub></i> )"],
-    ],
-  "details":
-    [
-      [0, "Remember: A function is technically a static method."],
-      [0, "Return Type: return-type of the selected method overload"],
-      [0, "Return The value returned by the invoked method is returned.."],
-    ],
-  "static-checks":
-    [
-      ["NO_SUCH_TYPE", "The type specified by the <i><i>module</i></i> must exist."],
-      ["INACCESSIBLE_TYPE", "The type specified by the <i><i>module</i></i> must be accessible."],
-      ["VALUE_REQUIRED", "The type of each <i>argument</i> must be either a primitive-type or a reference-type."],
-      ["NO_SUCH_METHOD", "None of the accessible method overloads will accept the given arguments."],
-      ["UNEQUAL_RETURN_TYPES", "The return-types of the applicable methods must be the same."],
     ],
 },
 
@@ -2889,8 +2873,8 @@ function spec()
     ],
   "static-checks":
     [
-      ["NO_SUCH_TYPE", "The type specified by the <i><i>type</i></i> must exist."],
-      ["INACCESSIBLE_TYPE", "The type specified by the <i><i>type</i></i> must be accessible."],
+      ["NO_SUCH_TYPE", "The type specified by <i><i>type</i></i> must exist."],
+      ["INACCESSIBLE_TYPE", "The type specified by <i><i>type</i></i> must be accessible."],
       ["EXPECTED_DESIGN", "The <i>type</i> must be a type that descripes a design."],
     ],
 },
@@ -2931,7 +2915,7 @@ function spec()
     ],
   "details":
     [
-      [0, "Return Type: class autumn.lang.LocalsMap"],
+      [0, "Return Type: autumn.lang.LocalsMap"],
       [0, "Return The expression returns an object that describes the local variables.."],
     ],
   "static-checks":
@@ -2969,7 +2953,7 @@ function spec()
   "details":
     [
       [0, "The values of the elements will be boxed when necessary."],
-      [0, "Return Type: interface java.util.List"],
+      [0, "Return Type: java.util.List"],
       [0, "Return A new mutable list object is returned that contains the values of the arguments.."],
     ],
   "static-checks":
@@ -3012,8 +2996,8 @@ function spec()
     ],
   "static-checks":
     [
-      ["NO_SUCH_TYPE", "The type specified by the <i><i>type</i></i> must exist."],
-      ["INACCESSIBLE_TYPE", "The type specified by the <i><i>type</i></i> must be accessible."],
+      ["NO_SUCH_TYPE", "The type specified by <i><i>type</i></i> must exist."],
+      ["INACCESSIBLE_TYPE", "The type specified by <i><i>type</i></i> must be accessible."],
       ["EXPECTED_ANNOTATION", "The <i>type</i> must be an annotation-type."],
     ],
 },
@@ -3050,8 +3034,8 @@ function spec()
   "static-checks":
     [
       ["DUPLICATE_VARIABLE", "The <i>variable</i> cannot share its name with another variable declared in the same scope."],
-      ["NO_SUCH_TYPE", "The type specified by the <i><i>type</i></i> must exist."],
-      ["INACCESSIBLE_TYPE", "The type specified by the <i><i>type</i></i> must be accessible."],
+      ["NO_SUCH_TYPE", "The type specified by <i><i>type</i></i> must exist."],
+      ["INACCESSIBLE_TYPE", "The type specified by <i><i>type</i></i> must be accessible."],
     ],
 },
 
@@ -3090,8 +3074,8 @@ function spec()
     ],
   "static-checks":
     [
-      ["NO_SUCH_TYPE", "The type specified by the <i><i>type</i></i> must exist."],
-      ["INACCESSIBLE_TYPE", "The type specified by the <i><i>type</i></i> must be accessible."],
+      ["NO_SUCH_TYPE", "The type specified by <i><i>type</i></i> must exist."],
+      ["INACCESSIBLE_TYPE", "The type specified by <i><i>type</i></i> must be accessible."],
     ],
 },
 
@@ -3136,9 +3120,9 @@ function spec()
   "syntax":
     [
       [0, "<b>//&nbsp;&nbsp;&nbsp;</b><i>body of single-line comment</i>"],
-      [0, "<hr class=\%22syntax-hr\%22>"],
+      [0, "<hr class=&#92%22syntax-hr&#92%22>"],
       [0, "<b>#&nbsp;&nbsp;&nbsp;</b><i>body of single-line comment</i>"],
-      [0, "<hr class=\%22syntax-hr\%22>"],
+      [0, "<hr class=&#92%22syntax-hr&#92%22>"],
       [0, "<b>/*&nbsp;&nbsp;&nbsp;</b><i>body of multi-line comment</i><b>&nbsp;&nbsp;&nbsp;*/</b>"],
     ],
   "details":
@@ -3151,16 +3135,16 @@ function spec()
 },
 
 
-"Downloads" : "<h1>Downloads</h1><h2>Latest Binary Release of the Autumn Compiler:</h2><p><strong>Download Link</strong> (Zip File): <a href=%22https://googledrive.com/host/0B2am-qoFTOsTTFhuaFV2ME1tdVk%22>Click Here</a></p><p><em>You will have to click on the file-link (autumn-latest.zip) on the download-page</em>. </p><p><strong>Contents</strong></p>%0A<ul>%0A  <li><code>dist/LICENSE</code> is the full-text of the Apache 2.0 license.</li>%0A  <li><code>dist/README.pdf</code> contains notes relevant to the release.</li>%0A  <li><code>dist/autumn.jar</code> is the actual autumn compiler and runtime.</li>%0A  <li><code>dist/lib/asm-all-4.1.jar</code> is the ObjectWeb ASM bytecode manipulation library.</li>%0A  <li><code>dist/lib/guava-12.0.jar</code> is the Google Guava utility library.</li>%0A  <li><code>dist/lib/snowflake.jar</code> is the Snowflake PEG parser library.</li>%0A</ul>",
+"Downloads" : "<div class=%22center-text%22> <h1> Downloads </h1> </div><p><br> <br></p><h2>Latest Binary Release of the Autumn Compiler:</h2><p><strong>Download Link</strong> (Zip File): <a href=%22https://googledrive.com/host/0B2am-qoFTOsTTFhuaFV2ME1tdVk%22>Click Here</a></p><p><em>You will have to click on the file-link (autumn-latest.zip) on the download-page</em>. </p><p><strong>Contents</strong></p>%0A<ul>%0A  <li><code>dist/LICENSE</code> is the full-text of the Apache 2.0 license.</li>%0A  <li><code>dist/README.pdf</code> contains notes relevant to the release.</li>%0A  <li><code>dist/autumn.jar</code> is the actual autumn compiler and runtime.</li>%0A  <li><code>dist/lib/asm-all-4.1.jar</code> is the ObjectWeb ASM bytecode manipulation library.</li>%0A  <li><code>dist/lib/guava-12.0.jar</code> is the Google Guava utility library.</li>%0A  <li><code>dist/lib/snowflake.jar</code> is the Snowflake PEG parser library.</li>%0A</ul>",
 
 
-"Introduction" : "<h1>Introduction</h1><p>Autumn is a statically-typed multi-paradigm general-purpose programming language that compiles directly to JVM bytecode.</p><h2>Paradigms</h2>%0A<ul>%0A  <li>Object-Oriented</li>%0A  <li>Imperative</li>%0A  <li>Functional</li>%0A  <li>Procedural</li>%0A  <li>Reflective</li>%0A  <li>Concurrent</li>%0A  <li>Dataflow (events in properties)????</li>%0A  <li>Metaprograming ..+ Limited Homioconicity ..+ Reflective</li>%0A</ul><h2>Notable Features and Benefits:</h2>%0A<ul>%0A  <li>Prototype-based Object System</li>%0A  <li>Anonymous Functions via Delegates</li>%0A  <li>Optional Multiple Dispatch</li>%0A  <li>Explicit support for direct tail-recursion</li>%0A  <li>Generator Functions</li>%0A</ul>",
+"Introduction" : "<div class=%22center-text%22> <h1> Introduction </h1> </div><p>Autumn is a statically-typed dynamically-compiled multi-paradigm general-purpose programming language for the JVM.</p><h2>Paradigms</h2>%0A<ul>%0A  <li>Object-Oriented</li>%0A  <li>Imperative</li>%0A  <li>Functional</li>%0A  <li>Procedural</li>%0A  <li>Reflective</li>%0A  <li>Concurrent</li>%0A  <li>Metaprograming</li>%0A</ul><h2>Notable Features and Benefits:</h2>%0A<ul>%0A  <li>Precompiled Java Code can be used Directly in Autumn</li>%0A  <li>Prototype-based Object System</li>%0A  <li>Automatic Easy-To-Use Immutability</li>%0A  <li>Anonymous Functions</li>%0A  <li>Multiple Dispatch</li>%0A  <li>Direct Tail-Recursion</li>%0A  <li>Generator Functions</li>%0A  <li>Unit Testing Framework</li>%0A  <li>Weak Homioconicity</li>%0A</ul>",
 
 
-"Special Thanks" : "<h1>Special Thanks</h1><h2>Dedication:</h2><p>My Mother</p><h2>Other:</h2><h3>Thanks to the developers of <a ref=%22http://asm.ow2.org/%22>ObjectWeb for ASM Library</a>.</h3><p>The ObjectWeb ASM library is used inside the Autumn compiler in order to generate class files. </p><h3>Thanks to the developers of <a ref=%22https://code.google.com/p/guava-libraries/%22>Google Guava</a>.</h3><p>The Guava library is used inside of the Autumn compiler, because of the utilities it provides.</p><h3>Thanks to backgroundlabs.com for the website background images.</h3><p><a href=%22http://www.backgroundlabs.com%22 title=%22Background Labs%22><img src=%22http://www.backgroundlabs.com/images/backgroundlabs-100x100.png%22 border=%220%22 alt=%22Background Labs%22 /></a></p>",
+"Special Thanks" : "<div class=%22center-text%22> <h1> Special Thanks </h1> </div><h2>Dedication:</h2><p><br> <div class=%22center-text%22> <i>This project is dedicated to my loving mother, who tirelessly supports all my endeavors.</i> </div> <br> <div id=%22mom-image%22> <img src=%22images/Mom.jpeg%22> </div></p><p><br> <br></p><h2>Other:</h2><h3>Thanks to the developers of the <a href=%22http://asm.ow2.org/%22>ObjectWeb ASM</a> library.</h3><p>The ObjectWeb ASM library is used inside the Autumn compiler in order to generate bytecode. </p><h3>Thanks to the developers of the <a href=%22https://code.google.com/p/guava-libraries/%22>Google Guava</a> library.</h3><p>The Guava library is used inside of the Autumn compiler, because of the utilities it provides.</p><h3>Thanks to <a href=%22http://www.backgroundlabs.com/%22>backgroundlabs.com</a> for the website background images.</h3><p><a href=%22http://www.backgroundlabs.com%22 title=%22Background Labs%22><img src=%22http://www.backgroundlabs.com/images/backgroundlabs-100x100.png%22 border=%220%22 alt=%22Background Labs%22 /></a></p>",
 
 
-"Type Structure" : "<h1>Type Systen</h1><p>Autumn is a statically-typed language that compiles to JVM bytecode and can interact with other JVM based languages. As a result, the type-system is closely related to the JVM type-system. </p><h2>Recursive Definition of Types</h2><p><code>&lt;img alt=&quot;Diagram of Type Hierarchy&quot; src=&quot;/dot/TypeHeirarchy.png&quot;&gt;</code></p>%0A<ul>%0A  <li>The boolean-type is a primitive-type.</li>%0A  <li>The char-type is a primitive-type.</li>%0A  <li>The byte-type is a primitive-type.</li>%0A  <li>A class-type is a declared-type.</li>%0A  <li>An interface-type is a declared-type.</li>%0A  <li>An enum-type is a declared-type.</li>%0A  <li>A declared-type is a reference-type.</li>%0A  <li>An array-type is a reference-type.</li>%0A</ul>",
+"Type Structure" : "<h1>Type Systen</h1><p>Autumn is a statically-typed language that compiles to JVM bytecode and can interact with other JVM based languages. As a result, the type-system is closely related to the JVM type-system. </p><h2>Recursive Definition of Types</h2><p><img alt=%22Diagram of Type Hierarchy%22 src=%22dot/TypeHeirarchy.png%22></p>%0A<ul>%0A  <li>The boolean-type is a primitive-type.</li>%0A  <li>The char-type is a primitive-type.</li>%0A  <li>The byte-type is a primitive-type.</li>%0A  <li>A class-type is a declared-type.</li>%0A  <li>An interface-type is a declared-type.</li>%0A  <li>An enum-type is a declared-type.</li>%0A  <li>A declared-type is a reference-type.</li>%0A  <li>An array-type is a reference-type.</li>%0A</ul>",
 
 
 "Type Conversions and Assignability" : "<h1>Type Conversions and Assignability</h1><h2>Boxing Conversions</h2>%0A<ul>%0A  <li>A value of the boolean-type can be converted to a #JavaLangBoolean# value via a boxing conversion.</li>%0A  <li>A value of the char-type can be converted to a #JavaLangCharacter# value via a boxing conversion.</li>%0A  <li>A value of the byte-type can be converted to a #JavaLangByte# value via a boxing conversion.</li>%0A  <li>A value of the short-type can be converted to a #JavaLangShort# value via a boxing conversion.</li>%0A  <li>A value of the int-type can be converted to a #JavaLangInteger# value via a boxing conversion.</li>%0A  <li>A value of the long-type can be converted to a #JavaLangLong# value via a boxing conversion.</li>%0A  <li>A value of the float-type can be converted to a #JavaLangFloat# value via a boxing conversion.</li>%0A  <li>A value of the double-type can be converted to a #JavaLangDouble# value via a boxing conversion.</li>%0A</ul><h2>Unboxing Conversions</h2>%0A<ul>%0A  <li>A #JavaLangBoolean# value can be converted to a value of the boolean-type via a boxing conversion.</li>%0A  <li>A #JavaLangCharacter# value can be converted to a value of the char-type via a boxing conversion.</li>%0A  <li>A #JavaLangByte# value can be converted to a value of the byte-type via a boxing conversion.</li>%0A  <li>A #JavaLangShort# value can be converted to a value of the short-type via a boxing conversion.</li>%0A  <li>A #JavaLangInteger# value can be converted to a value of the int-type via a boxing conversion.</li>%0A  <li>A #JavaLangLong# value can be converted to a value of the long-type via a boxing conversion.</li>%0A  <li>A #JavaLangFloat# value can be converted to a value of the float-type via a boxing conversion.</li>%0A  <li>A #JavaLangDouble# value can be converted to a value of the double-type via a boxing conversion.</li>%0A</ul><h2>Coercions</h2>%0A<ul>%0A  <li>char ==&gt; int</li>%0A  <li>char ==&gt; long</li>%0A  <li>byte ==&gt; short</li>%0A  <li>byte ==&gt; short</li>%0A  <li>byte ==&gt; int</li>%0A  <li>byte ==&gt; long</li>%0A  <li>short ==&gt; int</li>%0A  <li>short ==&gt; long</li>%0A  <li>int ==&gt; long</li>%0A  <li>float ==&gt; double</li>%0A</ul><h2>Identity Conversion</h2><p>Any value of a type X can is a value of type X via an identity conversion. </p><h2>Subtyping</h2><p>A type X is a subtype of a type T, iff:</p>%0A<ul>%0A  <li>X is T</li>%0A  <li>X is a reference-type and the direct superclass of X is a subtype of T.</li>%0A  <li>X is a reference-type and a direct superinterface of X is a subtype of T.</li>%0A  <li>X is the null-type and T is a reference-type.</li>%0A  <li>X and T are array-types of N dimensions and the element-type of X is a subtype of the element-type T</li>%0A</ul><h2>Assignability</h2><p>A value of type X is assignable to a location of type T, iff:</p>%0A<ul>%0A  <li>X is T</li>%0A  <li>X is a subtype of T</li>%0A  <li>X is convertable to T via a boxing conversion</li>%0A  <li>X is convertable to T via an unboxing conversion</li>%0A  <li>X is the null-type and T is a reference-type</li>%0A</ul>",
