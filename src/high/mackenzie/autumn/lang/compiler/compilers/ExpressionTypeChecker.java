@@ -123,6 +123,8 @@ public class ExpressionTypeChecker
     @Override
     public void visit(final StringDatum object)
     {
+        program.checker.requireWellFormedStringLiteral(object);
+
         infer(object, program.typesystem.utils.STRING);
     }
 
@@ -223,6 +225,11 @@ public class ExpressionTypeChecker
     @Override
     public void visit(final CallStaticMethodExpression object)
     {
+        /**
+         * The compilation of static methods is abstracted,
+         * because that are used for other things also,
+         * such as operators.
+         */
         callStaticMethod(object,
                          object.getOwner(),
                          object.getName(),
@@ -334,8 +341,23 @@ public class ExpressionTypeChecker
     @Override
     public void visit(final CallMethodExpression object)
     {
+        /**
+         * Visit and type-check the owner expression.
+         */
         object.getOwner().accept(this);
 
+        final IExpressionType type = program.symbols.expressions.get(object.getOwner());
+
+        // This will throw an exception, if the type is not a declared-type.
+        program.checker.requireDeclaredType(object, type);
+
+        // This never fails.
+        final IDeclaredType owner_type = (IDeclaredType) type;
+
+        /**
+         * Visit and type-check the argument expressions.
+         * At the same time, build a list containing the types of the arguments.
+         */
         final List<IExpressionType> args = Lists.newLinkedList();
 
         for (IExpression arg : object.getArguments())
@@ -344,28 +366,40 @@ public class ExpressionTypeChecker
             args.add(program.symbols.expressions.get(arg));
         }
 
-        final IType type = program.symbols.expressions.get(object.getOwner());
 
-        // TODO: Check that the owner is a declared type.
-
-        final IDeclaredType declared_type = (IDeclaredType) type;
+        /**
+         * Resolve the method.
+         */
+        final String name = object.getName().getName();
 
         final List<IMethod> methods = program.typesystem.utils.resolveMethods(module.type,
-                                                                              declared_type,
-                                                                              object.getName().getName(),
+                                                                              owner_type,
+                                                                              name,
                                                                               args);
 
+        /**
+         * If no acceptable method overload was found, issue an error.
+         */
         if (methods.isEmpty())
         {
+            // This will throw an exception.
             program.checker.reportNoSuchMethod(object,
-                                               declared_type,
+                                               false,
+                                               owner_type,
                                                object.getName().getName(),
                                                args);
         }
 
+        /**
+         * Remember the selected method overload, because the code-generator will need it.
+         */
         final IMethod method = (IMethod) methods.get(0);
-
         program.symbols.calls.put(object, method);
+
+        /**
+         * The return-type of a call-expression is the return-type
+         * of the selected method overload.
+         */
         infer(object, method.getReturnType());
     }
 

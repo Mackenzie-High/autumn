@@ -35,6 +35,18 @@ public final class Runner
         failed_count = 0;
 
 
+
+
+        test("T0086", EXPECTED_DECLARED_TYPE);
+        test("T0085", NO_SUCH_METHOD);
+        test("T0084", EXPECTED_DECLARED_TYPE);
+        test("T0083", INACCESSIBLE_TYPE);
+        test("T0082", NO_SUCH_TYPE);
+        test("T0081", VARIABLE_OUTSIDE_OF_SCOPE);
+        test("T0080", NO_SUCH_VARIABLE);
+        test("T0079", INACCESSIBLE_TYPE);
+        test("T0078", NO_SUCH_TYPE);
+        test("T0077", MALFORMED_STRING_LITERAL);
         test("T0076", VARIABLE_OUTSIDE_OF_SCOPE);
         test("T0075", VARIABLE_OUTSIDE_OF_SCOPE);
         test("T0074", REDO_OUTSIDE_OF_LOOP);

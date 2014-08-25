@@ -83,6 +83,37 @@ public final class Helpers
     }
 
     /**
+     * This class is used to lightly test static method resolution.
+     */
+    public static final class StaticMethodTester
+    {
+        public static Class moo(final Collection x)
+        {
+            return Collection.class;
+        }
+
+        public static Class moo(final List x)
+        {
+            return List.class;
+        }
+
+        public static Class moo(final LinkedList x)
+        {
+            return LinkedList.class;
+        }
+
+        public static Class moo(final CharSequence x)
+        {
+            return CharSequence.class;
+        }
+
+        private static Class moo(final String x)
+        {
+            return String.class;
+        }
+    }
+
+    /**
      * This method creates functor(n : int) that returns the n-th Fibonacci number (n less-than 12).
      *
      * @return a new Fibonacci functor.
@@ -122,5 +153,32 @@ public final class Helpers
         final boolean result = elements.size() == set.size();
 
         return result;
+    }
+
+    /**
+     * This method creates a list of values.
+     *
+     * @param a is value[0].
+     * @param b is value[1].
+     * @param c is value[2].
+     * @param d is value[3].
+     * @param e is value[4].
+     * @param f is value[5].
+     * @param g is value[6].
+     * @param h is value[7].
+     * @param i is value[8].
+     * @return the list of values.
+     */
+    public static List<Object> list(final boolean a,
+                                    final char b,
+                                    final byte c,
+                                    final short d,
+                                    final int e,
+                                    final long f,
+                                    final float g,
+                                    final double h,
+                                    final String i)
+    {
+        return ImmutableList.<Object>of(a, b, c, d, e, f, g, h, i);
     }
 }

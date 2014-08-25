@@ -13,11 +13,14 @@ import autumn.lang.compiler.ast.nodes.IsOperation;
 import autumn.lang.compiler.ast.nodes.Label;
 import autumn.lang.compiler.ast.nodes.Name;
 import autumn.lang.compiler.ast.nodes.RedoStatement;
+import autumn.lang.compiler.ast.nodes.StringDatum;
 import autumn.lang.compiler.ast.nodes.TypeSpecifier;
 import autumn.lang.compiler.ast.nodes.Variable;
 import autumn.lang.compiler.errors.ErrorCode;
 import autumn.lang.compiler.errors.ErrorReport;
 import autumn.lang.compiler.errors.IErrorReporter;
+import autumn.util.Strings;
+import com.google.common.collect.Lists;
 import high.mackenzie.autumn.lang.compiler.exceptions.TypeCheckFailed;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IEnumType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IExpressionType;
@@ -299,6 +302,32 @@ public final class StaticChecker
     }
 
     /**
+     * This method ensures that a type is a return-type.
+     *
+     * @param construct is the construct that is performing the type-check.
+     * @param expression is the expression that must be a return-type.
+     */
+    public void requireReturnType(final IConstruct construct,
+                                  final IExpressionType type)
+    {
+        if (type instanceof IReturnType)
+        {
+            return;
+        }
+
+        final ErrorCode ERROR_CODE = ErrorCode.EXPECTED_RETURN_TYPE;
+
+        final String MESSAGE = "A return-type was expected.";
+
+        final ErrorReport report = new ErrorReport(construct, ERROR_CODE, MESSAGE);
+
+        /**
+         * Issue the error-report to the user.
+         */
+        report(report);
+    }
+
+    /**
      * This method ensures that a type is a reference-type.
      *
      * @param construct is the construct that is performing the type-check.
@@ -341,6 +370,32 @@ public final class StaticChecker
         final ErrorCode ERROR_CODE = ErrorCode.EXPECTED_CLASS_TYPE;
 
         final String MESSAGE = "A class-type was expected.";
+
+        final ErrorReport report = new ErrorReport(construct, ERROR_CODE, MESSAGE);
+
+        /**
+         * Issue the error-report to the user.
+         */
+        report(report);
+    }
+
+    /**
+     * This method ensures that a type is a declared-type.
+     *
+     * @param construct is the construct that is performing the type-check.
+     * @param expression is the expression that must be a declared-type.
+     */
+    public void requireDeclaredType(final IConstruct construct,
+                                    final IExpressionType type)
+    {
+        if (type.isReferenceType() && ((IReferenceType) type).isDeclaredType())
+        {
+            return;
+        }
+
+        final ErrorCode ERROR_CODE = ErrorCode.EXPECTED_DECLARED_TYPE;
+
+        final String MESSAGE = "A declared-type was expected.";
 
         final ErrorReport report = new ErrorReport(construct, ERROR_CODE, MESSAGE);
 
@@ -633,25 +688,30 @@ public final class StaticChecker
         report(report);
     }
 
+    /**
+     * This method reports that the resolution of a method failed.
+     *
+     * @param shared is true, iff a static method was being resolved.
+     * @param construct is the invocation itself.
+     * @param owner is the type of the method's owner.
+     * @param name is then name of the method.
+     * @param arguments are the types of the method's arguments.
+     */
     public void reportNoSuchMethod(final IConstruct construct,
+                                   final boolean shared,
                                    final IReturnType owner,
                                    final String name,
                                    final List<IExpressionType> arguments)
     {
         final ErrorCode ERROR_CODE = ErrorCode.NO_SUCH_METHOD;
 
-        final String MESSAGE = "No accessible method could be found that matches the given name and arguments.";
+        final String MESSAGE = "No acceptable method overload was found.";
 
         final ErrorReport report = new ErrorReport(construct, ERROR_CODE, MESSAGE);
 
-        report.addDetail("Method.Name", name);
+        final String dot = shared ? "::" : ".";
 
-        int i = 0;
-
-        for (IExpressionType arg : arguments)
-        {
-            report.addDetail("Method.Argument[" + i++ + "]", Utils.sourceName(arg));
-        }
+        report.addDetail("Invocation", describeInvocation(owner, dot, name, arguments));
 
         /**
          * Issue the error-report to the user.
@@ -686,6 +746,39 @@ public final class StaticChecker
         for (IExpression x : arguments)
         {
             requireNonVoid(x);
+        }
+    }
+
+    /**
+     * This method ensures that an a string-literal does not contain malformed escapes-sequences.
+     *
+     * @param expression is the expression to type-check.
+     */
+    public void requireWellFormedStringLiteral(final StringDatum datum)
+    {
+        if (datum.getVerbatim())
+        {
+            return;
+        }
+
+        try
+        {
+            Strings.escape(datum.getValue());
+        }
+        catch (IllegalArgumentException ex)
+        {
+            final ErrorCode ERROR_CODE = ErrorCode.MALFORMED_STRING_LITERAL;
+
+            final String MESSAGE = "A non-verbatim string cannot contain malformed escape-sequences.";
+
+            final ErrorReport report = new ErrorReport(datum, ERROR_CODE, MESSAGE);
+
+            report.addDetail("Detail", ex.getMessage());
+
+            /**
+             * Issue the error-report to the user.
+             */
+            report(report);
         }
     }
 
@@ -873,5 +966,42 @@ public final class StaticChecker
          * Issue the error-report to the user.
          */
         report(report);
+    }
+
+    /**
+     * This method creates a string that describes a method invocation.
+     *
+     * @param owner is the owner-type.
+     * @param dot is the separator between the owner and the name.
+     * @param name is the name of the method.
+     * @param arguments are the types of the arguments.
+     * @return the description.
+     */
+    private String describeInvocation(final IExpressionType owner,
+                                      final String dot,
+                                      final String name,
+                                      final Iterable<IExpressionType> arguments)
+    {
+        /**
+         * Get the simple-names of the arguments.
+         */
+        final List<String> args = Lists.newLinkedList();
+
+        for (IExpressionType arg : arguments)
+        {
+            args.add(Utils.simpleName(arg));
+        }
+
+        /**
+         * Create the description.
+         */
+        final StringBuilder result = new StringBuilder();
+
+        result.append(Utils.simpleName(owner));
+        result.append(dot);
+        result.append(name);
+        result.append(Strings.stringify(args, "(", ", ", ")"));
+
+        return result.toString();
     }
 }

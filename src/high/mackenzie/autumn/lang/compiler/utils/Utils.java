@@ -2,11 +2,13 @@ package high.mackenzie.autumn.lang.compiler.utils;
 
 import autumn.lang.internals.Helpers;
 import com.google.common.base.Preconditions;
+import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import high.mackenzie.autumn.lang.compiler.compilers.ModuleCompiler;
 import high.mackenzie.autumn.lang.compiler.compilers.ProgramCompiler;
+import high.mackenzie.autumn.lang.compiler.typesystem.design.IArrayType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IClassType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IDeclaredType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IExpressionType;
@@ -118,6 +120,8 @@ public final class Utils
      */
     public static String internalName(final IReferenceType type)
     {
+        Preconditions.checkNotNull(type);
+
         assert type.isNullType() == false;
 
         if (type.isArrayType())
@@ -135,6 +139,32 @@ public final class Utils
     }
 
     /**
+     * This method computes the simple name of a type.
+     *
+     * <p>
+     * Example: "java.lang.String" returns "String" <br>
+     * Example: "java.lang.String[]" returns "String[]" <br>
+     * </p>
+     *
+     * @param type is the type whose simple name is requested.
+     * @return the simple name of the type.
+     */
+    public static String simpleName(final IExpressionType type)
+    {
+        Preconditions.checkNotNull(type);
+
+        assert type.isNullType() == false;
+
+        final String source = sourceName(type);
+
+        final String[] parts = source.split("\\.");
+
+        final String name = parts[parts.length - 1];
+
+        return name;
+    }
+
+    /**
      * This method computes the name of a type as it appears in the source-code.
      *
      * @param type is the type whose name is requested.
@@ -142,6 +172,8 @@ public final class Utils
      */
     public static String sourceName(final IExpressionType type)
     {
+        Preconditions.checkNotNull(type);
+
         if (type.isNullType())
         {
             return "null";
@@ -153,6 +185,16 @@ public final class Utils
         else if (type.isPrimitiveType())
         {
             return ((IPrimitiveType) type).toClass().getName();
+        }
+        else if (type.isReferenceType() && ((IReferenceType) type).isArrayType())
+        {
+            final IArrayType array = (IArrayType) type;
+
+            final String element = sourceName(array.getElement());
+
+            final String dimensions = Strings.repeat("[]", array.getDimensions());
+
+            return element + dimensions;
         }
         else
         {

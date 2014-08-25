@@ -8,6 +8,7 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IClassType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IDeclaredType;
+import high.mackenzie.autumn.lang.compiler.typesystem.design.IExpressionType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IInterfaceType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IReferenceType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IReturnType;
@@ -173,23 +174,29 @@ public final class Importer
     {
         final String alias = module.program.typesystem.utils.extractTypeName(specifier);
 
+        final IExpressionType result;
+
         if (Utils.isKeyword(alias))
         {
             // Special Case: The specifier specifies a primitive-type or the void-type.
             return module.program.typesystem.utils.findType(alias, null);
         }
+        else
+        {
+            final String typename = dealisTypeName(alias);
 
-        final String typename = dealisTypeName(alias);
+            final Integer dimensions = specifier.getDimensions();
 
-        final Integer dimensions = specifier.getDimensions();
-
-        final IReturnType result = module.program.typesystem.utils.findType(typename, dimensions);
+            result = module.program.typesystem.utils.findType(typename, dimensions);
+        }
 
         module.program.checker.requireType(specifier, result);
 
+        module.program.checker.requireReturnType(specifier, result);
+
         checkAccess(specifier, result);
 
-        return result;
+        return (IReturnType) result;
     }
 
     public IVariableType resolveVariableType(final TypeSpecifier specifier)
@@ -238,6 +245,15 @@ public final class Importer
         module.program.checker.requireClassType(specifier, type);
 
         return (IClassType) type;
+    }
+
+    public IDeclaredType resolveDeclaredType(final TypeSpecifier specifier)
+    {
+        final IReturnType type = resolveReturnType(specifier);
+
+        module.program.checker.requireDeclaredType(specifier, type);
+
+        return (IDeclaredType) type;
     }
 
     public void importType(final String alias,

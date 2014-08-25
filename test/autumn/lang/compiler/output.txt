@@ -736,6 +736,10 @@ defun main (args : String[]) : void
     lambda xoo : Moo (x : int, y : int) => (1 + 2);
 
     lambda xoo : Moo (x : int, y : int, z : int) => (1 + 2);
+
+    nop;
+
+    val x = '''\t\b\n\r\f\'\"\\''';
 }
 
 defun main (aoo : int, boo : int, xoo : int, zoo : int) : void

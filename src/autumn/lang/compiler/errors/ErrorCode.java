@@ -96,6 +96,14 @@ public enum ErrorCode
      */
     EXPECTED_VARIABLE_TYPE,
     /**
+     * Meaning: A return-type was expected.
+     */
+    EXPECTED_RETURN_TYPE,
+    /**
+     * Meaning: A declared-type was expected.
+     */
+    EXPECTED_DECLARED_TYPE,
+    /**
      * Meaning: A primitive boolean or a java.lang.Boolean was expected.
      */
     EXPECTED_CONDITION,
@@ -269,4 +277,8 @@ public enum ErrorCode
      * Meaning: A variable was used outside the scope that it was declared in.
      */
     VARIABLE_OUTSIDE_OF_SCOPE,
+    /**
+     * Meaning: A string-literal contains a malformed escape-sequence.
+     */
+    MALFORMED_STRING_LITERAL,
 }

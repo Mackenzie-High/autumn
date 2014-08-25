@@ -7,7 +7,7 @@ import high.mackenzie.snowflake.ITreeNodeVisitor;
 /**
  * This class was auto-generated using the Snowflake parser-generator.
  *
- * <p>Generated On: Sat Aug 23 06:16:09 EDT 2014</p>
+ * <p>Generated On: Sat Aug 23 09:08:55 EDT 2014</p>
  */
 public abstract class AbstractVisitor implements ITreeNodeVisitor
 {
@@ -253,6 +253,7 @@ public abstract class AbstractVisitor implements ITreeNodeVisitor
         else if("SEMICOLON".equals(name)) { visit_SEMICOLON(node); }
         else if("ID".equals(name)) { visit_ID(node); }
         else if("DIGITS".equals(name)) { visit_DIGITS(node); }
+        else if("DIGIT".equals(name)) { visit_DIGIT(node); }
         else if("EXPONENT_OPT".equals(name)) { visit_EXPONENT_OPT(node); }
         else if("EXPONENT".equals(name)) { visit_EXPONENT(node); }
         else if("STRING_LITERAL".equals(name)) { visit_STRING_LITERAL(node); }
@@ -264,6 +265,8 @@ public abstract class AbstractVisitor implements ITreeNodeVisitor
         else if("TRIPLE_QUOTE".equals(name)) { visit_TRIPLE_QUOTE(node); }
         else if("NON_TRIPLE_QUOTES".equals(name)) { visit_NON_TRIPLE_QUOTES(node); }
         else if("NON_TRIPLE_QUOTE".equals(name)) { visit_NON_TRIPLE_QUOTE(node); }
+        else if("ESCAPE_SEQUENCE".equals(name)) { visit_ESCAPE_SEQUENCE(node); }
+        else if("ESCAPE_CHAR".equals(name)) { visit_ESCAPE_CHAR(node); }
         else if("WS".equals(name)) { visit_WS(node); }
         else if("COMMENT".equals(name)) { visit_COMMENT(node); }
         else if("SINGLE_LINE_COMMENT".equals(name)) { visit_SINGLE_LINE_COMMENT(node); }
@@ -297,9 +300,39 @@ public abstract class AbstractVisitor implements ITreeNodeVisitor
     }
 
     /**
+     * This method visits a parse-tree node created by rule "DIGIT".
+     */
+    protected void visit_DIGIT(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+        visitUnknown(node); // Default Behavior
+    }
+
+    /**
      * This method visits a parse-tree node created by rule "DIGITS".
      */
     protected void visit_DIGITS(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+        visitUnknown(node); // Default Behavior
+    }
+
+    /**
+     * This method visits a parse-tree node created by rule "ESCAPE_CHAR".
+     */
+    protected void visit_ESCAPE_CHAR(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+        visitUnknown(node); // Default Behavior
+    }
+
+    /**
+     * This method visits a parse-tree node created by rule "ESCAPE_SEQUENCE".
+     */
+    protected void visit_ESCAPE_SEQUENCE(ITreeNode node)
     {
         // You should *not* place your code right here. 
         // Instead, you should override this method via a subclass.

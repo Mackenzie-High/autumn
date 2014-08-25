@@ -135,12 +135,13 @@ Test Index
 . . . T0065 = Expected Class Type
 . . . T0066 = No Such Constructor
 . . Call Method
-. . . Owner - Expected Declared Type
-. . . No Such Method
+. . . T0086 = Owner - Expected Declared Type
+. . . T0087 = No Such Method
 . . Call Static Method
-. . . Owner - No Such Type
-. . . Owner - Inaccessible Type
-. . . No Such Method
+. . . T0082 = Owner - No Such Type
+. . . T0083 = Owner - Inaccessible Type
+. . . T0084 = Owner - Expected Declared Type
+. . . T0085 = No Such Method
 . . Set Field
 . . Get Field
 . . Set Static Field
@@ -148,7 +149,7 @@ Test Index
 . . Instance Of
 . . Create
 . . Ternary Conditional
-. . Expected Condition
+. . . Expected Condition
 . . Progn
 . . . Expected Non-Void Last Element
 . . List
@@ -186,10 +187,16 @@ Test Index
 . . No Test Needed = Long
 . . No Test Needed = Float
 . . No Test Needed = Double
+. . No Test Needed = Null
 . . String
-. . Null
+. . . T0077 = Malformed Escape-Sequences
 . . Class
+. . . T0078 = No Such Type
+. . . T0079 = Inaccessible Type
+. . . Expected Return Type - (impossible to test)
 . . Variable
+. . . T0080 = No Such Variable
+. . . T0081 = Variable Out of Scope
 
 
 

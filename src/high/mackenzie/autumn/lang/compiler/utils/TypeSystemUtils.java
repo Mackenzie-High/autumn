@@ -997,7 +997,7 @@ NEXT_METHOD:
         Preconditions.checkNotNull(arguments);
 
         final List<IMethod> selected = select(user,
-                                              owner.getAllVisibleMethods(),
+                                              owner.getMethods(),
                                               true,
                                               name);
 

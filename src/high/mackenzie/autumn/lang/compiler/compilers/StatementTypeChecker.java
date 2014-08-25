@@ -598,13 +598,16 @@ public final class StatementTypeChecker
     @Override
     public void visit(final ExpressionStatement object)
     {
+        /**
+         * Visit and type-check the expression itself.
+         */
         object.getExpression().accept(this);
     }
 
     @Override
     public void visit(final NopStatement object)
     {
-        // Pass
+        // Pass, because there is nothing to check.
     }
 
     @Override

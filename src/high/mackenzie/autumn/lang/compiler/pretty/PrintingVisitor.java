@@ -1253,9 +1253,11 @@ public final class PrintingVisitor
         require(object, object.getValue() != null);
         reportUnprintableNode(object, object.getValue().contains("'''") == false);
 
+        final String value = object.getValue();
+
         p.addText(object.getVerbatim() ? "@" : "");
         p.addText("'''");
-        p.addText(object.getValue());
+        p.addText(value);
         p.addText("'''");
     }
 

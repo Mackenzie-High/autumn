@@ -1,0 +1,77 @@
+module Main in execution;
+
+import execution.Helpers$StaticMethodTester;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.ArrayList;
+
+@Start
+defun main (args : String[]) : void
+{
+    val value1 = true is Boolean;
+    val value2 = 'X' is Character;
+    val value3 = 10B is Byte;
+    val value4 = 20S is Short;
+    val value5 = 30 is Integer;
+    val value6 = 40L is Long;
+    val value7 = 50.0F is Float;
+    val value8 = 60.0 is Double;
+
+    assert (call Main::unbox value1) == (class boolean);
+    assert (call Main::unbox value2) == (class char);
+    assert (call Main::unbox value3) == (class byte);
+    assert (call Main::unbox value4) == (class short);
+    assert (call Main::unbox value5) == (class int);
+    assert (call Main::unbox value6) == (class long);
+    assert (call Main::unbox value7) == (class float);
+    assert (call Main::unbox value8) == (class double);
+}
+
+defun unbox (x : boolean) : Class
+{
+    assert x == true;
+    return (class boolean);
+}
+
+defun unbox (x : char) : Class
+{
+    assert x == 'X';
+    return (class char);
+}
+
+defun unbox (x : byte) : Class
+{
+    assert x == 10B;
+    return (class byte);
+}
+
+defun unbox (x : short) : Class
+{
+    assert x == 20S;
+    return (class short);
+}
+
+defun unbox (x : int) : Class
+{
+    assert x == 30;
+    return (class int);
+}
+
+defun unbox (x : long) : Class
+{
+    assert x == 40L;
+    return (class long);
+}
+
+defun unbox (x : float) : Class
+{
+    assert x == 50.0F;
+    return (class float);
+}
+
+defun unbox (x : double) : Class
+{
+    assert x == 60.0;
+    return (class double);
+}
+

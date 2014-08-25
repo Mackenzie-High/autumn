@@ -237,6 +237,14 @@ abstract class AbstractTypeChecker
                                     final Name name,
                                     final Iterable<IExpression> arguments)
     {
+        /**
+         * Type-check the owner.
+         */
+        final IDeclaredType owner_type = module.imports.resolveDeclaredType(owner);
+
+        /**
+         * Visit and type-check the arguments.
+         */
         final List<IExpressionType> args = Lists.newLinkedList();
 
         for (IExpression arg : arguments)
@@ -245,25 +253,31 @@ abstract class AbstractTypeChecker
             args.add(program.symbols.expressions.get(arg));
         }
 
-        final IType type = module.imports.resolveReturnType(owner);
-
-        // TODO: Check that the owner is a declared type.
-
-        final IDeclaredType declared_type = (IDeclaredType) type;
-
+        /**
+         * Resolve the method overload.
+         */
         final List<IMethod> methods = program.typesystem.utils.resolveStaticMethods(module.type,
-                                                                                    declared_type,
+                                                                                    owner_type,
                                                                                     name.getName(),
                                                                                     args);
 
+        /**
+         * If no method overload could be found, issue an error.
+         */
         if (methods.isEmpty())
         {
-            program.checker.reportNoSuchMethod(operation, declared_type, name.getName(), args);
+            program.checker.reportNoSuchMethod(operation, true, owner_type, name.getName(), args);
         }
 
+        /**
+         * Remember the resolved method overload, because the code-generator will need it.
+         */
         final IMethod method = (IMethod) methods.get(0);
-
         program.symbols.calls.put(operation, method);
+
+        /**
+         * The return-type of a method-invocation is the return-type of the invoked method.
+         */
         infer(operation, method.getReturnType());
     }
 
@@ -386,6 +400,13 @@ abstract class AbstractTypeChecker
         }
     }
 
+    /**
+     * This method declares a local-variable and type-checks the declaration.
+     *
+     * @param variable is the variable to declare.
+     * @param type is the type of the new variable.
+     * @param mutable is false, iff the variable is readonly.
+     */
     protected void declareVar(final Variable variable,
                               final IExpressionType type,
                               final boolean mutable)
