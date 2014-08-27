@@ -6,7 +6,6 @@ import autumn.lang.compiler.ast.nodes.Module;
 import autumn.lang.compiler.errors.IErrorReporter;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
-import com.google.common.io.Files;
 import high.mackenzie.autumn.lang.compiler.exceptions.TypeCheckFailed;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IMethod;
 import high.mackenzie.autumn.lang.compiler.utils.Utils;
@@ -82,23 +81,23 @@ public final class ProgramCompiler
         final CompiledProgram result = new CompiledProgram(main_class, dependencies, classes);
 
         // TODO: Remove this
-        try
-        {
-            for (ClassFile klass : classes)
-            {
-                if ((new File("/home/mackenzie")).isDirectory() == false)
-                {
-                    break;
-                }
-
-                final File file = new File("/home/mackenzie/test/" + klass.name() + ".class");
-                Files.write(klass.bytecode(), file);
-            }
-        }
-        catch (Exception x)
-        {
-            // PASS
-        }
+//        try
+//        {
+//            for (ClassFile klass : classes)
+//            {
+//                if ((new File("/home/mackenzie")).isDirectory() == false)
+//                {
+//                    break;
+//                }
+//
+//                final File file = new File("/home/mackenzie/test/" + klass.name() + ".class");
+//                Files.write(klass.bytecode(), file);
+//            }
+//        }
+//        catch (Exception x)
+//        {
+//            // PASS
+//        }
 
         return result;
     }

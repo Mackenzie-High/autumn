@@ -36,6 +36,13 @@ public final class Runner
 
 
 
+
+        test("T0103", NO_SUCH_FIELD);
+        test("T0102", EXPECTED_DECLARED_TYPE);
+        test("T0101", IMPOSSIBLE_ASSIGNMENT);
+        test("T0100", ASSIGNMENT_TO_READONLY);
+        test("T0099", NO_SUCH_FIELD);
+        test("T0098", EXPECTED_DECLARED_TYPE);
         test("T0097", ASSIGNMENT_TO_READONLY);
         test("T0096", NO_SUCH_FIELD);
         test("T0095", EXPECTED_DECLARED_TYPE);

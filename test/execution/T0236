@@ -1,0 +1,32 @@
+module Main in execution;
+
+import high.mackenzie.autumn.resources.InstanceFieldTester;
+
+
+@Start
+defun main (args : String[]) : void
+{
+    # This code is used to test both set-field and get-field expressions.
+
+    val object = (new InstanceFieldTester);
+
+    (field object.value1 = true);
+    (field object.value2 = 'X');
+    (field object.value3 = 10B);
+    (field object.value4 = 20S);
+    (field object.value5 = 30);
+    (field object.value6 = 40L);
+    (field object.value7 = 50.0F);
+    (field object.value8 = 60.0);
+    (field object.value9 = "Venus");
+
+    assert (field object.value1) == true;
+    assert (field object.value2) == 'X';
+    assert (field object.value3) == 10B;
+    assert (field object.value4) == 20S;
+    assert (field object.value5) == 30;
+    assert (field object.value6) == 40L;
+    assert (field object.value7) == 50.0F;
+    assert (field object.value8) == 60.0;
+    assert (field object.value9) == "Venus";
+}

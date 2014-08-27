@@ -265,12 +265,18 @@ Test Index
 . . . T0234 = Covariant Return Types
 . . Set Static Field
 . . . T0235 = Different Types of Values - (also used to test get-static-field)
+. . . T0240 = Auto-Boxing
+. . . T0241 = Auto-Unboxing
+. . . T0242 = Auto-Widening
 . . Get Static Field
 . . . T0235 = Different Types of Values - (also used to test set-static-field)
 . . Set Field
-. . . Different Types of Values
+. . . T0236 = Different Types of Values
+. . . T0237 = Auto-Boxing
+. . . T0238 = Auto-Unboxing
+. . . T0239 = Auto-Widening
 . . Get Field
-. . . Different Types of Values
+. . . T0236 = Different Types of Values
 . . Instance-Of
 . . . T0046 = All Cases
 . . Create

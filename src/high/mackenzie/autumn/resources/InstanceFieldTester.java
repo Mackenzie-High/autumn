@@ -51,4 +51,14 @@ public final class InstanceFieldTester
      * Test Field #9.
      */
     public String value9;
+
+    /**
+     * Test Field.
+     */
+    public Object object;
+
+    /**
+     * The answer to everything.
+     */
+    public final int answer = 42;
 }

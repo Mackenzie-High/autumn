@@ -51,4 +51,9 @@ public final class StaticFieldTester
      * Test Field #9.
      */
     public static String value9;
+
+    /**
+     * Test Field.
+     */
+    public static Object object;
 }

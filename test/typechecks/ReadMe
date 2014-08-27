@@ -134,16 +134,14 @@ Test Index
 . . . T0064 = Inaccessible Type
 . . . T0065 = Expected Class Type
 . . . T0066 = No Such Constructor
-. . Call Method
-. . . T0086 = Owner - Expected Declared Type
-. . . T0087 = No Such Method
 . . Call Static Method
 . . . T0082 = Owner - No Such Type
 . . . T0083 = Owner - Inaccessible Type
 . . . T0084 = Owner - Expected Declared Type
 . . . T0085 = No Such Method
-. . Set Field
-. . Get Field
+. . Call Method
+. . . T0086 = Owner - Expected Declared Type
+. . . T0087 = No Such Method
 . . Set Static Field
 . . . T0088 = Owner - No Such Type
 . . . T0089 = Owner - Inaccessible Type
@@ -156,6 +154,14 @@ Test Index
 . . . T0094 = Owner - Inaccessible Type
 . . . T0095 = Owner - Expected Declared Type
 . . . T0096 = No Such Field
+. . Set Field
+. . . T0098 = Owner - Expected Declared Type
+. . . T0099 = No Such Field
+. . . T0100 = Final (i.e. Readonly) Field
+. . . T0101 = Impossible Assignment
+. . Get Field
+. . . T0102 = Owner - Expected Declared Type
+. . . T0103 = No Such Field
 . . Instance Of
 . . Create
 . . Ternary Conditional

@@ -268,14 +268,14 @@ public class ExpressionTypeChecker
     @Override
     public void visit(final GetStaticFieldExpression object)
     {
+        /**
+         * Resolve the field.
+         */
         final IField field = findStaticField(object, object.getOwner(), object.getName().getName());
 
-        if (field == null)
-        {
-            // TODO: error
-            throw new IllegalStateException();
-        }
-
+        /**
+         * The return-type of the expression is the type of the field.
+         */
         infer(object, field.getType());
     }
 
@@ -425,27 +425,53 @@ public class ExpressionTypeChecker
     @Override
     public void visit(final SetFieldExpression object)
     {
+        /**
+         * Visit the owner expression.
+         */
         object.getOwner().accept(this);
+
+        /**
+         * Visit the value expression.
+         */
         object.getValue().accept(this);
 
-        infer(object, program.typesystem.utils.VOID);
+        /**
+         * Resolve the field.
+         */
+        final IField field = findField(object, object.getOwner(), object.getName().getName());
 
-        findField(object, object.getOwner(), object.getName().getName());
+        /**
+         * Ensure that the field is not readonly.
+         */
+        program.checker.requireNonFinalFieldAssignment(object, field);
+
+        /**
+         * Ensure that the value can actually be assigned to the field.
+         */
+        program.checker.checkAssign(object, field.getType(), object.getValue());
+
+        /**
+         * The return-type of the expression is void.
+         */
+        infer(object, program.typesystem.utils.VOID);
     }
 
     @Override
     public void visit(final GetFieldExpression object)
     {
+        /**
+         * Visit the owner expression.
+         */
         object.getOwner().accept(this);
 
+        /**
+         * Resolve the field.
+         */
         final IField field = findField(object, object.getOwner(), object.getName().getName());
 
-        if (field == null)
-        {
-            // TODO: error
-            throw new IllegalStateException();
-        }
-
+        /**
+         * The return-type of the expression is the type of the field.
+         */
         infer(object, field.getType());
     }
 
