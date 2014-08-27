@@ -19,7 +19,6 @@ high.mackenzie.autumn
 high.mackenzie.autumn.lang.compiler.args
 high.mackenzie.autumn.lang.compiler.compilers
 high.mackenzie.autumn.lang.compiler.exceptions
-high.mackenzie.autumn.lang.compiler.optimizer
 high.mackenzie.autumn.lang.compiler.parser
 high.mackenzie.autumn.lang.compiler.pretty
 high.mackenzie.autumn.lang.compiler.typesystem

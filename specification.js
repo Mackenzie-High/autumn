@@ -1209,7 +1209,7 @@ function spec()
   "static-checks":
     [
     ],
-  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    nop;%0A}", ""],
+  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    (F::println %22Before NOP%22);%0A%0A    nop;%0A%0A    (F::println %22After NOP%22);%0A}", "Before NOP%0AAfter NOP"],
 },
 
 
@@ -2693,7 +2693,7 @@ function spec()
       ["NO_SUCH_TYPE", "The type specified by <i><i>type</i></i> must exist."],
       ["INACCESSIBLE_TYPE", "The type specified by <i><i>type</i></i> must be accessible."],
       ["EXPECTED_CLASS_TYPE", "The <i>type</i> must be a class-type."],
-      ["NO_SUCH_CONSTRUCTOR", "No accessible constructor overload will accept the given arguments."],
+      ["NO_SUCH_CONSTRUCTOR", "No acceptable constructor overload was found."],
     ],
   "example-1" : ["module Main in examples;%0A%0Atuple Pet (type : String, name : String);%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    val animal1 = (new Pet %22Sheep%22, %22Eyeball%22);%0A%0A    val animal2 = (new Pet %22German Shepherd%22, %22Jet%22);%0A%0A    val animal3 = (new Pet %22Cat%22, %22Fluffy%22);%0A%0A    (F::printlns [animal1, animal2, animal3]);%0A}", "(Sheep, Eyeball)%0A(German Shepherd, Jet)%0A(Cat, Fluffy)"],
 },
@@ -2724,7 +2724,7 @@ function spec()
       ["NO_SUCH_TYPE", "The type specified by <i><i>owner</i></i> must exist."],
       ["INACCESSIBLE_TYPE", "The type specified by <i><i>owner</i></i> must be accessible."],
       ["EXPECTED_DECLARED_TYPE", "The type specified by <i>owner</i> must be a declared-type."],
-      ["NO_SUCH_METHOD", "No acceptable method overload could be found."],
+      ["NO_SUCH_METHOD", "No acceptable method overload was found."],
     ],
   "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    (call My::printNumber 17);%0A%0A    (My::printNumber 23);%0A}%0A%0Adefun printNumber (x : int) : void%0A{%0A    (F::println %22x = %22 .. x);%0A}", "x = 17%0Ax = 23"],
 },
@@ -2753,7 +2753,7 @@ function spec()
   "static-checks":
     [
       ["EXPECTED_DECLARED_TYPE", "The type of <i>owner</i> must be a declared-type."],
-      ["NO_SUCH_METHOD", "No acceptable method overload could be found."],
+      ["NO_SUCH_METHOD", "No acceptable method overload was found."],
     ],
   "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    # Create an object.%0A    val sentence = %22Hello Alien World%22;%0A%0A    # Invoke an instance method. %0A    val word = (sentence.substring 6, 11);%0A%0A    # Print the result.%0A    (F::println %22Type of World: %22 .. word);%0A}", "Type of World: Alien"],
   "example-2" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    # Create an object.%0A    val sentence = %22Hello Home World%22;%0A%0A    # Invoke an instance method. %0A    val word = (call sentence.substring 6, 10);%0A%0A    # Print the result.%0A    (F::println %22Type of World: %22 .. word);%0A}", "Type of World: Home"],
@@ -2781,7 +2781,7 @@ function spec()
       ["NO_SUCH_TYPE", "The type specified by <i><i>owner</i></i> must exist."],
       ["INACCESSIBLE_TYPE", "The type specified by <i><i>owner</i></i> must be accessible."],
       ["EXPECTED_DECLARED_TYPE", "The type of <i>owner</i> must be a declared-type."],
-      ["NO_SUCH_FIELD", "No acceptable field could be found."],
+      ["NO_SUCH_FIELD", "No acceptable field was found."],
       ["ASSIGNMENT_TO_READONLY", "A value cannot be assigned to a final field, because it is readonly."],
       ["IMPOSSIBLE_ASSIGNMENT", "The type of the <i>value</i> must be assignable to the <i>type</i> of the selected field."],
     ],
@@ -2807,7 +2807,7 @@ function spec()
       ["NO_SUCH_TYPE", "The type specified by <i><i>owner</i></i> must exist."],
       ["INACCESSIBLE_TYPE", "The type specified by <i><i>owner</i></i> must be accessible."],
       ["EXPECTED_DECLARED_TYPE", "The type of <i>owner</i> must be a declared-type."],
-      ["NO_SUCH_FIELD", "No acceptable field could be found."],
+      ["NO_SUCH_FIELD", "No acceptable field was found."],
     ],
   "example-1" : ["module Main in examples;%0A%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    val min = (field Integer::MIN_VALUE);%0A    val max = (field Integer::MAX_VALUE);%0A%0A    (F::println %22Integer Range: [%22 .. min .. %22, %22 .. max .. %22]%22);%0A}", "Integer Range: [-2147483648, 2147483647]"],
 },
@@ -2818,19 +2818,26 @@ function spec()
   "ast" : "autumn.lang.compiler.ast.nodes.SetFieldExpression",
   "syntax":
     [
-      [0, "( <span class=\"keyword\">field</span> <i>owner</i>.<i>name</i> = <i><a href=\"TextPage.html?page=Expression\">value</a></i> )"],
+      [0, "( <span class=\"keyword\">field</span> <i><a href=\"TextPage.html?page=Expression\">owner</a></i>.<i><a href=\"ConstructPage.html?construct=Name\">name</a></i> = <i><a href=\"TextPage.html?page=Expression\">value</a></i> )"],
     ],
   "details":
     [
-      [0, "Return Type: type of <i>owner</i>"],
-      [0, "Return The <i>owner</i> is returned.."],
+      [0, "The field will be selected using the <a href=\"TextPage.html?page=Resolution\">Instance Field Resolution Algorithm</a>."],
+      [0, "Boxing of the value will be performed, when necessary."],
+      [0, "Unboxing of the value will be performed, when necessary."],
+      [0, "Coercion of the value will be performed, when necessary."],
+      [0, "Runtime Check: If <i>owner</i> is null, then a <a href=\"http://docs.oracle.com/javase/7/docs/api/java/lang/NullPointerException.html\">NullPointerException</a> will be thrown."],
+      [0, "Return Type: void"],
+      [0, "Return nothing, because the return-type is void."],
     ],
   "static-checks":
     [
-      ["EXPECTED_REFERENCE_TYPE", "The type of the <i>owner</i> must be a reference-type."],
-      ["NO_SUCH_FIELD", "No field in the <i>module</i> has the given name."],
+      ["EXPECTED_DECLARED_TYPE", "The type of <i>owner</i> must be a declared-type."],
+      ["NO_SUCH_FIELD", "No acceptable field was found."],
+      ["ASSIGNMENT_TO_READONLY", "A value cannot be assigned to a final field, because it is readonly."],
       ["IMPOSSIBLE_ASSIGNMENT", "The type of the <i>value</i> must be assignable to the <i>type</i> of the selected field."],
     ],
+  "example-1" : ["module Main in examples;%0A%0Aimport high.mackenzie.autumn.resources.InstanceFieldTester;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    # Create an object that has a mutable field. %0A    val object = (new InstanceFieldTester);%0A%0A    # Set the field.%0A    (field object.value5 = 17);%0A%0A    # Print the value stored in the field. %0A    (F::println (field object.value5));%0A%0A    # Set the field.%0A    (field object.value5 = 23);%0A%0A    # Print the value stored in the field. %0A    (F::println (field object.value5));%0A}", "17%0A23"],
 },
 
 
@@ -2839,18 +2846,20 @@ function spec()
   "ast" : "autumn.lang.compiler.ast.nodes.GetFieldExpression",
   "syntax":
     [
-      [0, "( <span class=\"keyword\">field</span> <i>owner</i>.<i>name</i> )"],
+      [0, "( <span class=\"keyword\">field</span> <i><a href=\"TextPage.html?page=Expression\">owner</a></i>.<i><a href=\"ConstructPage.html?construct=Name\">name</a></i> )"],
     ],
   "details":
     [
-      [0, "Return Type: the field's type"],
-      [0, "Return The value stored in the field is returned.."],
+      [0, "The field will be selected using the <a href=\"TextPage.html?page=Resolution\">Instance Field Resolution Algorithm</a>."],
+      [0, "Return Type: [type of the selected field]"],
+      [0, "Return the value stored in the field."],
     ],
   "static-checks":
     [
-      ["EXPECTED_REFERENCE_TYPE", "The type of the <i>owner</i> must be a reference-type."],
-      ["NO_SUCH_FIELD", "No field in the <i>module</i> has the given name."],
+      ["EXPECTED_DECLARED_TYPE", "The type of <i>owner</i> must be a declared-type."],
+      ["NO_SUCH_FIELD", "No acceptable field was found."],
     ],
+  "example-1" : ["module Main in examples;%0A%0Aimport high.mackenzie.autumn.resources.InstanceFieldTester;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    val object = (new InstanceFieldTester);%0A%0A    val value = (field object.answer);%0A%0A    (F::println %22Life and Everything = %22 .. value);%0A}", "Life and Everything = 42"],
 },
 
 
