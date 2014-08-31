@@ -154,11 +154,13 @@ public final class Visitor
         catch (FileNotFoundException ex)
         {
             System.out.println("Error - No Such File: " + src);
+            return;
         }
         catch (IOException ex)
         {
             System.out.println("Error - The source-file could not be read.");
             ex.printStackTrace(System.out);
+            return;
         }
 
         /**

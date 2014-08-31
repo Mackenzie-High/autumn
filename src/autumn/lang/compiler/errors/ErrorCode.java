@@ -138,7 +138,7 @@ public enum ErrorCode
     /**
      * Meaning: A design-type (i.e. autumn.lang.Design) was expected. // TODO: right?
      */
-    EXPECTED_DESIGN,
+    EXPECTED_PROTOTYPE_TYPE,
     /**
      * Meaning: A module-type (i.e. autumn.lang.Module) was expected. // TODO: right?
      */

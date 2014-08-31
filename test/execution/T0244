@@ -1,0 +1,9 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    assert 3 == (if (field Boolean::TRUE) then 3 else 5);
+
+    assert 5 == (if (field Boolean::FALSE) then 3 else 5);
+}

@@ -7,6 +7,7 @@ import autumn.lang.compiler.ast.nodes.DelegateStatement;
 import autumn.lang.compiler.ast.nodes.DispatchExpression;
 import autumn.lang.compiler.ast.nodes.ExceptionHandler;
 import autumn.lang.compiler.ast.nodes.GetterStatement;
+import autumn.lang.compiler.ast.nodes.LocalsExpression;
 import autumn.lang.compiler.ast.nodes.MethodStatement;
 import autumn.lang.compiler.ast.nodes.SetterStatement;
 import autumn.lang.compiler.ast.nodes.TryCatchStatement;
@@ -21,6 +22,7 @@ import high.mackenzie.autumn.lang.compiler.utils.Conversion;
 import high.mackenzie.autumn.lang.compiler.utils.MemberToHandler;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import org.objectweb.asm.tree.LabelNode;
 
 /**
@@ -88,4 +90,10 @@ public final class SymbolTable
      * This map maps a delegate-statement to the function that is invoked by the delegate.
      */
     public final Map<DelegateStatement, IMethod> delegates = Maps.newIdentityHashMap();
+
+    /**
+     * This map maps a locals-expression to the variables that are in-scope
+     * at the site of the locals-expression.
+     */
+    public final Map<LocalsExpression, Set<String>> locals = Maps.newIdentityHashMap();
 }

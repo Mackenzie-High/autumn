@@ -9,6 +9,7 @@ import autumn.lang.compiler.ast.nodes.AsOperation;
 import autumn.lang.compiler.ast.nodes.BreakStatement;
 import autumn.lang.compiler.ast.nodes.ContinueStatement;
 import autumn.lang.compiler.ast.nodes.ExceptionHandler;
+import autumn.lang.compiler.ast.nodes.InstanceOfExpression;
 import autumn.lang.compiler.ast.nodes.IsOperation;
 import autumn.lang.compiler.ast.nodes.Label;
 import autumn.lang.compiler.ast.nodes.Name;
@@ -22,6 +23,7 @@ import autumn.lang.compiler.errors.IErrorReporter;
 import autumn.util.Strings;
 import com.google.common.collect.Lists;
 import high.mackenzie.autumn.lang.compiler.exceptions.TypeCheckFailed;
+import high.mackenzie.autumn.lang.compiler.typesystem.design.IDeclaredType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IEnumType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IExpressionType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IField;
@@ -407,6 +409,34 @@ public final class StaticChecker
         report(report);
     }
 
+    /**
+     * This method ensures that a type is a prototype-type.
+     *
+     * @param construct is the construct that is performing the type-check.
+     * @param expression is the expression that must be a prototype-type.
+     */
+    public void requirePrototypeType(final IConstruct construct,
+                                     final IExpressionType type)
+    {
+        if (type.isSubtypeOf(program.typesystem.utils.PROTOTYPE))
+        {
+            return;
+        }
+
+        final ErrorCode ERROR_CODE = ErrorCode.EXPECTED_PROTOTYPE_TYPE;
+
+        final String MESSAGE = "The type of a prototype was expected.";
+
+        final ErrorReport report = new ErrorReport(construct, ERROR_CODE, MESSAGE);
+
+        report.addDetail("Actual", Utils.simpleName(type));
+
+        /**
+         * Issue the error-report to the user.
+         */
+        report(report);
+    }
+
     public void requireString(final IExpression expression)
     {
         final IType actual = program.symbols.expressions.get(expression);
@@ -648,6 +678,58 @@ public final class StaticChecker
         final String MESSAGE = "An is-conversion is not possible.";
 
         final ErrorReport report = new ErrorReport(conversion, ERROR_CODE, MESSAGE);
+
+        /**
+         * Issue the error-report to the user.
+         */
+        report(report);
+    }
+
+    /**
+     * This method reports that two operands are not compatible with each other.
+     *
+     * @param operation is the operation that owns the operands.
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     */
+    public void reportIncompatibleOperands(final IExpression operation,
+                                           final IExpressionType left,
+                                           final IExpressionType right)
+    {
+        final ErrorCode ERROR_CODE = ErrorCode.INCOMPATIBLE_OPERANDS;
+
+        final String MESSAGE = "One of the operands must be a subtype of the other.";
+
+        final ErrorReport report = new ErrorReport(operation, ERROR_CODE, MESSAGE);
+
+        report.addDetail("left.type", Utils.simpleName(left));
+
+        report.addDetail("right.type", Utils.simpleName(right));
+
+        /**
+         * Issue the error-report to the user.
+         */
+        report(report);
+    }
+
+    /**
+     * This method reports that an instance-of operation is not viable.
+     *
+     * @param operation is the instance-of operation.
+     * @param value is the static-type of the <i>value</i>.
+     * @param type is the static-type of the <i>type</i>.
+     */
+    public void reportNonViableInstanceOf(final InstanceOfExpression operation,
+                                          final IExpressionType value,
+                                          final IDeclaredType type)
+    {
+        final ErrorCode ERROR_CODE = ErrorCode.NON_VIABLE_INSTANCEOF;
+
+        final String MESSAGE = "An instance-of operation must be viable.";
+
+        final ErrorReport report = new ErrorReport(operation, ERROR_CODE, MESSAGE);
+
+        report.addDetail("Problem", Utils.simpleName(value) + " is never an instance-of " + Utils.simpleName(type));
 
         /**
          * Issue the error-report to the user.

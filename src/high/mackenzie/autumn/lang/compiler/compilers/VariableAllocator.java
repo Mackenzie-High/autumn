@@ -365,7 +365,8 @@ public final class VariableAllocator
     }
 
     /**
-     * This method creates a set containing the names of every non-temporary variable in this scope.
+     * This method creates a set containing the names of every non-temporary variable
+     * that is currently in-scope.
      *
      * @return the names of every non-temporary variable declared directly in this scope.
      */
@@ -375,7 +376,7 @@ public final class VariableAllocator
 
         for (String name : getAllVariables())
         {
-            if (isTemporary(name) == false)
+            if (isUsable(name) && !isTemporary(name))
             {
                 names.add(name);
             }

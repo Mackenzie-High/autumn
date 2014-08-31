@@ -163,9 +163,20 @@ Test Index
 . . . T0102 = Owner - Expected Declared Type
 . . . T0103 = No Such Field
 . . Instance Of
+. . . T0107 = No Such Type
+. . . T0106 = Inaccessible Type
+. . . T0104 = Expected Declared Type - owner
+. . . T0105 = Expected Declared Type - value
+. . . T0108 = Not Viable
 . . Create
+. . . T0109 = No Such Type
+. . . T0110 = Inaccessible Type
+. . . T0111 = Expected Prototype
 . . Ternary Conditional
-. . . Expected Condition
+. . . T0112 = Expected Condition
+. . . T0114 = Incompatible Operands
+. . . T0115 = Value Required - Left Operand
+. . . T0116 = Value Required - Right Operand
 . . Progn
 . . . Expected Non-Void Last Element
 . . List
@@ -188,8 +199,9 @@ Test Index
 . . . T0030 = Expected Condition - Left Operand
 . . . T0031 = Expected Condition - Right Operand
 . . Null Coalescing Operator
-. . . T0026 = Expected Reference-Type
-. . . T0027 = Neither operand type is wider than the other.
+. . . T0026 = Expected Reference-Type - Left Operand
+. . . T0113 = Expected Reference-Type - Right Operand
+. . . T0027 = Incompatible Operands
 . . As
 . . . T0034 = Impossible Conversion
 . . Is

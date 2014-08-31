@@ -27,6 +27,14 @@ public final class Runner
 
 
 
+
+
+
+        test("T0247");
+        test("T0246");
+        test("T0245");
+        test("T0244");
+        test("T0243");
         test("T0242");
         test("T0241");
         test("T0240");

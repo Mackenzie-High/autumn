@@ -9,14 +9,13 @@ import high.mackenzie.autumn.lang.compiler.typesystem.design.IConstructor;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IDeclaredType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IExpressionType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IField;
-import high.mackenzie.autumn.lang.compiler.typesystem.design.IInterfaceType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IMethod;
-import high.mackenzie.autumn.lang.compiler.typesystem.design.IReferenceType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IReturnType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IVariableType;
 import high.mackenzie.autumn.lang.compiler.utils.Conversion;
 import high.mackenzie.autumn.lang.compiler.utils.TypeSystemUtils;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -327,34 +326,24 @@ public class ExpressionTypeChecker
     @Override
     public void visit(final CreateExpression object)
     {
-        final IExpressionType type = module.imports.resolveReturnType(object.getType());
+        /**
+         * Get the type from which an instance will be created.
+         */
+        final IDeclaredType type = module.imports.resolveDeclaredType(object.getType());
 
-        if (type.isReferenceType() == false)
+        /**
+         * The type must be the type of a prototype.
+         */
+        if (type.isSubtypeOf(program.typesystem.utils.PROTOTYPE) == false)
         {
-            // TODO: error
+            // This will throw an exception.
+            program.checker.requirePrototypeType(object, type);
         }
 
-        if (((IReferenceType) type).isDeclaredType() == false)
-        {
-            // TODO: error
-        }
-
-        if (((IDeclaredType) type).isInterfaceType() == false)
-        {
-            // TODO: error
-        }
-
-        final IInterfaceType face = (IInterfaceType) type;
-
-        if (face.isSubtypeOf(program.typesystem.utils.ABSTRACT_PROTOTYPE) == false)
-        {
-            // TODO: error
-        }
-
-        // final ClassCompiler creator = new ClassCompiler(module, face, object.getLocation());
-        // program.symbols.creators.put(object, creator);
-
-        infer(object, face);
+        /**
+         * The return-type of a create-expression is the type being instantiated.
+         */
+        infer(object, type);
     }
 
     @Override
@@ -478,41 +467,108 @@ public class ExpressionTypeChecker
     @Override
     public void visit(final InstanceOfExpression object)
     {
+        /**
+         * Resolve the type.
+         */
+        final IDeclaredType type = module.imports.resolveDeclaredType(object.getType());
+
+        /**
+         * Visit the value expression.
+         */
         object.getValue().accept(this);
 
-        final IType type = module.imports.resolveReturnType(object.getType());
+        /**
+         * Get the type of the value expression.
+         */
+        final IExpressionType value = program.symbols.expressions.get(object.getValue());
 
-        if ((type instanceof IReferenceType && ((IReferenceType) type).isDeclaredType()) == false)
+        /**
+         * The type of the value expression must be a declared-type.
+         */
+        program.checker.requireDeclaredType(object, value);
+
+        /**
+         * The operation must be viable.
+         */
+        final boolean is_null = value.isNullType();
+        final boolean case1 = value.isSubtypeOf(type);
+        final boolean case2 = type.isSubtypeOf(value);
+
+        if (is_null || !(case1 || case2))
         {
-            // TODO: error
+            // This will throw an exception.
+            program.checker.reportNonViableInstanceOf(object, value, type);
         }
 
-        // TODO: Finish
+        /**
+         * The return-type of an instance-of expression is boolean.
+         */
         infer(object, program.typesystem.utils.PRIMITIVE_BOOLEAN);
     }
 
     @Override
     public void visit(final TernaryConditionalExpression object)
     {
+        /**
+         * Visit ant type-check the condition expression.
+         */
         object.getCondition().accept(this);
+
+        program.checker.checkCondition(object.getCondition());
+
+        /**
+         * Visit and type-check the true-case expression.
+         */
         object.getCaseTrue().accept(this);
+
+        // The true-case expression must produce a value.
+        program.checker.requireArguments(Collections.singleton(object.getCaseTrue()));
+
+        /**
+         * Visit and type-check the false-case expression.
+         */
         object.getCaseFalse().accept(this);
 
+        // The false-case expression must produce a value.
+        program.checker.requireArguments(Collections.singleton(object.getCaseFalse()));
+
+        /**
+         * The operands must be compatible.
+         */
         final IExpressionType left = program.symbols.expressions.get(object.getCaseTrue());
         final IExpressionType right = program.symbols.expressions.get(object.getCaseFalse());
 
-        // TODO: finish and remove
-        Preconditions.checkArgument(left.equals(right));
+        // The type of one of the operands should be wider than the other.
+        // For example:
+        //     (if Boolean then String else Object) ==> Object is Wider
+        //     (if Boolean then Object else String) ==> Object is Wider
+        // Error Case Example:
+        //     (if Boolean then Integer else Long) ==> Neither operand is wider than the other.
+        // In the error case, this variable will be assigned null.
+        final IExpressionType widest = program.typesystem.utils.widestType(left, right);
 
-        infer(object, left);
+        /**
+         * If neither operand is wider, then issue an error.
+         */
+        if (widest == null)
+        {
+            // This will throw an exception.
+            program.checker.reportIncompatibleOperands(object, left, right);
+        }
+
+        /**
+         * The return-type is the ternary-conditional-expression is the widest operand type.
+         */
+        infer(object, widest);
     }
 
     @Override
     public void visit(final LocalsExpression object)
     {
-        final IExpressionType returns = program.typesystem.utils.LOCALS_MAP;
-
-        infer(object, returns);
+        /**
+         * The return-type of a locals-expression is always LocalsMap.
+         */
+        infer(object, program.typesystem.utils.LOCALS_MAP);
     }
 
     @Override
@@ -841,7 +897,7 @@ public class ExpressionTypeChecker
         // If neither operand is wider, then issue an error.
         if (widest == null)
         {
-            program.checker.reportNoSuchBinaryOperator(object, left, right);
+            program.checker.reportIncompatibleOperands(object, left, right);
         }
 
         // A null-coalescing operator returns the widest of its operand types.

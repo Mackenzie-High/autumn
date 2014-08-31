@@ -37,6 +37,20 @@ public final class Runner
 
 
 
+
+        test("T0116", VALUE_REQUIRED);
+        test("T0115", VALUE_REQUIRED);
+        test("T0114", INCOMPATIBLE_OPERANDS);
+        test("T0113", EXPECTED_REFERENCE_TYPE);
+        test("T0112", EXPECTED_CONDITION);
+        test("T0111", EXPECTED_PROTOTYPE_TYPE);
+        test("T0110", INACCESSIBLE_TYPE);
+        test("T0109", NO_SUCH_TYPE);
+        test("T0108", NON_VIABLE_INSTANCEOF);
+        test("T0107", NO_SUCH_TYPE);
+        test("T0106", INACCESSIBLE_TYPE);
+        test("T0105", EXPECTED_DECLARED_TYPE);
+        test("T0104", EXPECTED_DECLARED_TYPE);
         test("T0103", NO_SUCH_FIELD);
         test("T0102", EXPECTED_DECLARED_TYPE);
         test("T0101", IMPOSSIBLE_ASSIGNMENT);
@@ -126,7 +140,7 @@ public final class Runner
         test("T0024", EXPECTED_REFERENCE_TYPE);
         test("T0025", EXPECTED_REFERENCE_TYPE);
         test("T0026", EXPECTED_REFERENCE_TYPE);
-        test("T0027", NO_SUCH_BINARY_OPERATOR);
+        test("T0027", INCOMPATIBLE_OPERANDS);
         test("T0028", EXPECTED_CONDITION);
         test("T0029", EXPECTED_CONDITION);
         test("T0030", EXPECTED_CONDITION);

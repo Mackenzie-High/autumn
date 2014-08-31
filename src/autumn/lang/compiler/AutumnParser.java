@@ -71,7 +71,7 @@ public final class AutumnParser
             // If a syntax-error was detected, then report it.
             if (!output.success())
             {
-                final NewlineStyles newline = NewlineStyles.fromSystem();
+                final NewlineStyles newline = NewlineStyles.fromGuess(code, NewlineStyles.fromSystem());
 
                 final LinesAndColumns finder = new LinesAndColumns(code.toCharArray(), newline);
 

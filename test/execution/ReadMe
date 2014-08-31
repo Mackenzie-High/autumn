@@ -282,10 +282,11 @@ Test Index
 . . Create
 . . . T0149 = Same Object
 . . Ternary Conditional
-. . . Primitive Boolean Condition
-. . . Boxed Boolean Condition
-. . . Primitive Operands
-. . . Object Operands
+. . . T0243 = Primitive Boolean Condition
+. . . T0244 = Boxed Boolean Condition
+. . . T0245 = Distinctly Typed Operands
+. . . T0246 = Primitive Operands
+. . . T0247 = Object Operands
 . . Progn
 . . . All Cases
 . . List
