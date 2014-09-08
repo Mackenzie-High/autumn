@@ -85,6 +85,9 @@ Test Index
 . . T0147 = Special Method - returnType() - (void)
 . Struct Definitions
 . . T0250 = Basic Test
+. . Setters - (immutable)
+. . Setters - (mutable)
+. . Getters
 . . No Elements
 . . Different Types of Elements
 . . Covariant Elements

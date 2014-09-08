@@ -1,7 +1,6 @@
 package autumn.lang;
 
 import java.io.Serializable;
-import java.util.Map;
 import java.util.SortedMap;
 import java.util.SortedSet;
 
@@ -19,7 +18,7 @@ public interface Struct<T extends Struct>
      *
      * @return the aforesaid immutable map.
      */
-    public Map<String, Class> types();
+    public SortedMap<String, Class> types();
 
     /**
      * This method creates set that contains the names of the elements in this struct.
@@ -149,10 +148,12 @@ public interface Struct<T extends Struct>
     public int hashCode();
 
     /**
-     * This method creates a string representation of this tuple.
+     * TODO
+     *
+     * This method creates a string representation of this struct.
      *
      * <p>
-     * The string representation of a tuple is a parentheses enclosed list of the values therein.
+     * The string representation of a struct is a parentheses enclosed list of the values therein.
      * <br>
      * Examples:
      * <code>
