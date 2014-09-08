@@ -1,0 +1,15 @@
+Object? = true
+Integer? = false
+String? = true
+List? = false
+
+Object? = true
+Integer? = true
+String? = false
+List? = false
+
+Object? = true
+Integer? = false
+String? = false
+List? = true
+

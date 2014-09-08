@@ -1,0 +1,26 @@
+module Main in examples;
+
+@Start
+defun main (args : String[]) : void
+{
+
+    goto ENTER;
+
+
+    # Create a nested scope.
+    {
+        val a = true;
+        val b = 'X';
+        val c = 10B;
+        val d = 20S;
+        val e = 30;
+        val f = 40L;
+        val g = 50.0F;
+        val h = 60.0;
+        val i = "Text";
+
+        marker ENTER;
+
+        (F::printlns [a, (b is int), c, d, e, f, g, h, i]);
+    }
+}
