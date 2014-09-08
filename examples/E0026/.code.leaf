@@ -3,16 +3,16 @@ module Main in examples;
 @Start
 defun main (args : String[]) : void
 {
-    val case1 = false && false;
-    val case2 = false && true;
-    val case3 = true && false;
-    val case4 = true && true;
+    val case1 = false || false;
+    val case2 = false || true;
+    val case3 = true || false;
+    val case4 = true || true;
 
     (F::println "Truth Table:");
-    (F::println "  F && F = " .. case1);
-    (F::println "  F && T = " .. case2);
-    (F::println "  T && F = " .. case3);
-    (F::println "  T && T = " .. case4);
+    (F::println "  F || F = " .. case1);
+    (F::println "  F || T = " .. case2);
+    (F::println "  T || F = " .. case3);
+    (F::println "  T || T = " .. case4);
 
     (F::println);
 
@@ -26,7 +26,7 @@ defun main (args : String[]) : void
 defun sc(left : boolean, right : boolean) : void
 {
     (F::print "  ");
-    (My::operand1 left) && (My::operand2 left);
+    (My::operand1 left) || (My::operand2 left);
     (F::println);
 }
 

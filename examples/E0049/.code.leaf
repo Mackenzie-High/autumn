@@ -3,15 +3,15 @@ module Main in examples;
 @Start
 defun main (args : String[]) : void
 {
-    for (x = 0; x < 5; x + 1)
+    for (x = 0; x < 3; x + 1)
     {
-        for (y = 0; y < 5; y + 1)
+        for (y = 0; y < 3; y + 1)
         {
-            for (z = 0; z < 5; z + 1)
+            for (z = 0; z < 3; z + 1)
             {
                 (F::println [x, y, z]);
 
-                when (x == 3 && y == 3 && z == 3) then goto END;
+                when (x == 3 && y == 2 && z == 1) then goto END;
             }
         }
     }

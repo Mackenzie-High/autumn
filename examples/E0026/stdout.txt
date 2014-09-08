@@ -1,8 +1,8 @@
 Truth Table:
-  F || F = false
-  F || T = true
-  T || F = true
-  T || T = true
+  F | F = false
+  F | T = true
+  T | F = true
+  T | T = true
 
 Short Circuit:
   LR

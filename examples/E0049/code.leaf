@@ -11,7 +11,7 @@ defun main (args : String[]) : void
             {
                 (F::println [x, y, z]);
 
-                when (x == 3 && y == 2 && z == 1) then goto END;
+                when (x == 3 & y == 2 & z == 1) then goto END;
             }
         }
     }

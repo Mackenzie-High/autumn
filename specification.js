@@ -19,10 +19,8 @@ function spec()
   [2, "<a%20href=\"ConstructPage.html?construct=Exception%20Definition\">Exception%20Definition</a>"],
   [2, "<a%20href=\"ConstructPage.html?construct=Enum%20Definition\">Enum%20Definition</a>"],
   [2, "<a%20href=\"ConstructPage.html?construct=Tuple%20Definition\">Tuple%20Definition</a>"],
+  [2, "<a%20href=\"ConstructPage.html?construct=Struct%20Definition\">Struct%20Definition</a>"],
   [2, "<a%20href=\"ConstructPage.html?construct=Functor%20Definition\">Functor%20Definition</a>"],
-  [2, "<a%20href=\"ConstructPage.html?construct=Design%20Definition\">Design%20Definition</a>"],
-  [3, "<a%20href=\"ConstructPage.html?construct=Design%20Property\">Design%20Property</a>"],
-  [3, "<a%20href=\"ConstructPage.html?construct=Design%20Method\">Design%20Method</a>"],
   [2, "<a%20href=\"ConstructPage.html?construct=Function%20Definition\">Function%20Definition</a>"],
   [1, "<b>Statements</b>"],
   [2, "<b>Flow%20Control</b>"],
@@ -54,10 +52,6 @@ function spec()
   [4, "<a%20href=\"ConstructPage.html?construct=Assume%20Statement\">Assume%20Statement</a>"],
   [2, "<b>Anonymous%20Functions</b>"],
   [3, "<a%20href=\"ConstructPage.html?construct=Delegate%20Statement\">Delegate%20Statement</a>"],
-  [2, "<b>Handler%20Binding</b>"],
-  [3, "<a%20href=\"ConstructPage.html?construct=Setter%20Statement\">Setter%20Statement</a>"],
-  [3, "<a%20href=\"ConstructPage.html?construct=Getter%20Statement\">Getter%20Statement</a>"],
-  [3, "<a%20href=\"ConstructPage.html?construct=Method%20Statement\">Method%20Statement</a>"],
   [2, "<b>Special</b>"],
   [3, "<a%20href=\"ConstructPage.html?construct=Nop%20Statement\">Nop%20Statement</a>"],
   [3, "<a%20href=\"ConstructPage.html?construct=Debug%20Statement\">Debug%20Statement</a>"],
@@ -103,8 +97,6 @@ function spec()
   [3, "<a%20href=\"ConstructPage.html?construct=Or%20Operation\">Or%20Operation</a>"],
   [3, "<a%20href=\"ConstructPage.html?construct=Xor%20Operation\">Xor%20Operation</a>"],
   [3, "<a%20href=\"ConstructPage.html?construct=Implies%20Operation\">Implies%20Operation</a>"],
-  [3, "<a%20href=\"ConstructPage.html?construct=Short-Circuit%20And%20Operation\">Short-Circuit%20And%20Operation</a>"],
-  [3, "<a%20href=\"ConstructPage.html?construct=Short-Circuit%20Or%20Operation\">Short-Circuit%20Or%20Operation</a>"],
   [3, "<a%20href=\"ConstructPage.html?construct=Null%20Coalescing%20Operation\">Null%20Coalescing%20Operation</a>"],
   [3, "<a%20href=\"ConstructPage.html?construct=As%20Operation\">As%20Operation</a>"],
   [3, "<a%20href=\"ConstructPage.html?construct=Is%20Operation\">Is%20Operation</a>"],
@@ -389,10 +381,39 @@ function spec()
       [0, "@<i>annotation<sub>1</sub></i>"],
       [0, "@<i>annotation<sub>2</sub></i>"],
       [0, "@<i>annotation<sub>n</sub></i>"],
-      [0, "<span class=\"keyword\">tuple</span> <i>name</i> ( <i>parameter<sub>1</sub></i> , ... , <i>parameter<sub>n</sub></i> ) ;"],
+      [0, "<span class=\"keyword\">tuple</span> <i><a href=\"ConstructPage.html?construct=Name\">name</a></i> ( <i><a href=\"ConstructPage.html?construct=FormalParameter\">param</a><sub>1</sub></i> , ... , <i><a href=\"ConstructPage.html?construct=FormalParameter\">param</a><sub>n</sub></i> ) ;"],
     ],
   "details":
     [
+      [0, "The new type has public-access."],
+    ],
+  "static-checks":
+    [
+      ["DUPLICATE_TYPE", "No two types can share the same descriptor."],
+    ],
+},
+
+
+"Struct Definition" : {
+  "summary" : "A struct-definition creates a new struct-type in the enclosing package.",
+  "ast" : "autumn.lang.compiler.ast.nodes.EnumDefinition",
+  "syntax":
+    [
+      [0, "@<i>annotation<sub>1</sub></i>"],
+      [0, "@<i>annotation<sub>2</sub></i>"],
+      [0, "@<i>annotation<sub>n</sub></i>"],
+      [0, "<span class=\"keyword\">struct</span> <i><a href=\"ConstructPage.html?construct=Name\">name</a></i> ( <i><a href=\"ConstructPage.html?construct=FormalParameter\">param</a><sub>1</sub></i> , ... , <i><a href=\"ConstructPage.html?construct=FormalParameter\">param</a><sub>n</sub></i> ) ;"],
+      [0, "<hr class=&#92%22syntax-hr&#92%22>"],
+      [0, "@<i>annotation<sub>1</sub></i>"],
+      [0, "@<i>annotation<sub>2</sub></i>"],
+      [0, "@<i>annotation<sub>n</sub></i>"],
+      [0, "<span class=\"keyword\">struct</span> <i><a href=\"ConstructPage.html?construct=Name\">name</a></i> ( <i><a href=\"ConstructPage.html?construct=FormalParameter\">param</a><sub>1</sub></i> , ... , <i><a href=\"ConstructPage.html?construct=FormalParameter\">param</a><sub>n</sub></i> ) <span class=\"keyword\">extends</span> <i>super<sub>1</sub></i> <b>&</b> ... <b>&</b> <i>super<sub>n</sub></i>;"],
+    ],
+  "details":
+    [
+      [0, "A struct based object is immutable by default."],
+      [1, "An mutable copy can be created by invoking mutableCopy()."],
+      [0, "In order to instantiate a struct, use a create-expression."],
       [0, "The new type has public-access."],
     ],
   "static-checks":
@@ -410,7 +431,7 @@ function spec()
       [0, "@<i>annotation<sub>1</sub></i>"],
       [0, "@<i>annotation<sub>2</sub></i>"],
       [0, "@<i>annotation<sub>n</sub></i>"],
-      [0, "<span class=\"keyword\">functor</span> <i>name</i> ( <i>parameter<sub>1</sub></i> , ... , <i>parameter<sub>n</sub></i> ) : <i>return-type</i> ;"],
+      [0, "<span class=\"keyword\">functor</span> <i><a href=\"ConstructPage.html?construct=Name\">name</a></i> ( <i><a href=\"ConstructPage.html?construct=FormalParameter\">param</a><sub>1</sub></i> , ... , <i><a href=\"ConstructPage.html?construct=FormalParameter\">param</a><sub>n</sub></i> ) : <i>return-type</i> ;"],
     ],
   "details":
     [
@@ -419,81 +440,6 @@ function spec()
   "static-checks":
     [
       ["DUPLICATE_TYPE", "No two types can share the same descriptor."],
-    ],
-},
-
-
-"Design Definition" : {
-  "summary" : "A design-definition creates a new design-type in the enclosing package.",
-  "ast" : "autumn.lang.compiler.ast.nodes.DesignDefinition",
-  "syntax":
-    [
-      [0, "@<i>annotation<sub>1</sub></i>"],
-      [0, "@<i>annotation<sub>2</sub></i>"],
-      [0, "@<i>annotation<sub>n</sub></i>"],
-      [0, "<span class=\"keyword\">design</span> <i>name</i> <span class=\"keyword\">extends</span> <i>superinterface<sub>1</sub></i> <b>&</b> ... <b>&</b> <i>superinterface<sub>n</sub></i>"],
-      [0, "{"],
-      [1, "<i>member<sub>1</sub></i>"],
-      [1, "<i>member<sub>2</sub></i>"],
-      [1, "<i>...</i>"],
-      [1, "<i>member<sub>n</sub></i>"],
-      [0, "}"],
-    ],
-  "details":
-    [
-      [0, "A design <i>member</i> can be a design-property."],
-      [0, "A design <i>member</i> can be a design-method."],
-      [0, "The new type has public-access."],
-    ],
-  "static-checks":
-    [
-      ["DUPLICATE_TYPE", "No two types can share the same descriptor."],
-      ["NO_SUCH_TYPE", "The type specified by <i><i>superinterface<sub>i</sub></i></i> must exist."],
-      ["INACCESSIBLE_TYPE", "The type specified by <i><i>superinterface<sub>i</sub></i></i> must be accessible."],
-      ["EXPECTED_DESIGN", "The type of <i><i>superinterface<sub>i</sub></i></i> must be assignable to type autumn.lang.Prototype."],
-      ["DUPLICATE_PROPERTY", "No two properties in the same design definition can share a name."],
-      ["DUPLICATE_METHOD", "No two methods in the same design definition can share a name."],
-      ["METHOD_CONFLICTS_WITH_PROPERTY", "A method and a property cannot share a name."],
-      ["COVARIANCE_VIOLATION", "If a property X overrides a property Y, then X's <i>type</i> must be assignable to Y's <i>type</i>."],
-      ["COVARIANCE_VIOLATION", "If a method X overrides a method Y, then X's <i>return-type</i> must be assignable to Y's <i>return-type</i>."],
-    ],
-},
-
-
-"Design Property" : {
-  "summary" : "A design-property defines a property within a design-definition.",
-  "ast" : "autumn.lang.compiler.ast.nodes.DesignProperty",
-  "syntax":
-    [
-      [0, "@<i>annotation<sub>1</sub></i>"],
-      [0, "@<i>annotation<sub>2</sub></i>"],
-      [0, "@<i>annotation<sub>n</sub></i>"],
-      [0, "<span class=\"keyword\">data</span> <i>name</i> : <i>type</i> ;"],
-    ],
-  "details":
-    [
-    ],
-  "static-checks":
-    [
-    ],
-},
-
-
-"Design Method" : {
-  "summary" : "A design-method defines a method within a design-definition.",
-  "ast" : "autumn.lang.compiler.ast.nodes.DesignMethod",
-  "syntax":
-    [
-      [0, "@<i>annotation<sub>1</sub></i>"],
-      [0, "@<i>annotation<sub>2</sub></i>"],
-      [0, "@<i>annotation<sub>n</sub></i>"],
-      [0, "<span class=\"keyword\">method</span> <i>name</i>  ( <i>parameter<sub>1</sub></i> , ... , <i>parameter<sub>n</sub></i> ) : <i>return-type</i> ;"],
-    ],
-  "details":
-    [
-    ],
-  "static-checks":
-    [
     ],
 },
 
@@ -506,7 +452,7 @@ function spec()
       [0, "@<i>annotation<sub>1</sub></i>"],
       [0, "@<i>annotation<sub>2</sub></i>"],
       [0, "@<i>annotation<sub>n</sub></i>"],
-      [0, "<span class=\"keyword\">defun</span> <i>name</i> ( <i>parameter<sub>1</sub></i> , ... , <i>parameter<sub>n</sub></i> ) : <i>return-type</i>"],
+      [0, "<span class=\"keyword\">defun</span> <i><a href=\"ConstructPage.html?construct=Name\">name</a></i> ( <i><a href=\"ConstructPage.html?construct=FormalParameter\">param</a><sub>1</sub></i> , ... , <i><a href=\"ConstructPage.html?construct=FormalParameter\">param</a><sub>n</sub></i> ) : <i>return-type</i>"],
       [0, "{"],
       [1, "<i>body</i>"],
       [0, "}"],
@@ -592,7 +538,7 @@ function spec()
     [
       ["EXPECTED_CONDITION", "The type of each condition must be assignable to primitive-type boolean."],
     ],
-  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    for(i = 10; i < 25; i + 1)%0A    {%0A        (My::write i);%0A    }%0A} %0A%0Adefun write(index : int) : void%0A{%0A    val case1 = index &#37; 3 == 0; // Fizz%0A    val case2 = index &#37; 5 == 0; // Buzz%0A    val case3 = case1 && case2; // Both%0A%0A    if(case3)%0A    {%0A        (F::println index .. %22 = Both%22);%0A    }%0A    elif(case2)%0A    {%0A        (F::println index .. %22 = Buzz%22);%0A    }%0A    elif(case1)%0A    {%0A        (F::println index .. %22 = Fizz%22);%0A    }%0A    else%0A    {%0A        (F::println index);%0A    }%0A}", "10 = Buzz%0A11%0A12 = Fizz%0A13%0A14%0A15 = Both%0A16%0A17%0A18 = Fizz%0A19%0A20 = Buzz%0A21 = Fizz%0A22%0A23%0A24 = Fizz"],
+  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    for(i = 10; i < 25; i + 1)%0A    {%0A        (My::write i);%0A    }%0A} %0A%0Adefun write(index : int) : void%0A{%0A    val case1 = index &#37; 3 == 0; // Fizz%0A    val case2 = index &#37; 5 == 0; // Buzz%0A    val case3 = case1 & case2;  // Both%0A%0A    if(case3)%0A    {%0A        (F::println index .. %22 = Both%22);%0A    }%0A    elif(case2)%0A    {%0A        (F::println index .. %22 = Buzz%22);%0A    }%0A    elif(case1)%0A    {%0A        (F::println index .. %22 = Fizz%22);%0A    }%0A    else%0A    {%0A        (F::println index);%0A    }%0A}", "10 = Buzz%0A11%0A12 = Fizz%0A13%0A14%0A15 = Both%0A16%0A17%0A18 = Fizz%0A19%0A20 = Buzz%0A21 = Fizz%0A22%0A23%0A24 = Fizz"],
   "example-2" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    (My::write %22Mercury%22, false);%0A    (My::write %22Venus%22, false);%0A    (My::write %22Earth%22, false);%0A    (My::write %22Mars%22, false);%0A%0A    (F::println);%0A%0A    (My::write %22Jupiter%22, true);%0A    (My::write %22Saturn%22, true);%0A    (My::write %22Uranus%22, true);%0A    (My::write %22Neptune%22, true);%0A}%0A%0Adefun write(name : String, jovian : boolean) : void%0A{%0A    if(jovian)%0A    {%0A        (F::println name .. %22 is a jovian planet.%22);%0A    }%0A    else%0A    {%0A        (F::println name .. %22 is a terrestrial planet.%22);%0A    }%0A}", "Mercury is a terrestrial planet.%0AVenus is a terrestrial planet.%0AEarth is a terrestrial planet.%0AMars is a terrestrial planet.%0A%0AJupiter is a jovian planet.%0ASaturn is a jovian planet.%0AUranus is a jovian planet.%0ANeptune is a jovian planet."],
   "example-3" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    (My::write 0);%0A    (My::write 1);%0A    (My::write 2);%0A    (My::write 3);%0A    (My::write 4);%0A    (My::write 5);%0A    (My::write 6);%0A    (My::write 7);%0A    (My::write 8);%0A    (My::write 9);%0A}%0A%0Adefun write(number : int) : void%0A{%0A    if(number &#37; 2 != 0)%0A    {%0A        (F::println number .. %22 is very odd.%22);%0A    }%0A}", "1 is very odd.%0A3 is very odd.%0A5 is very odd.%0A7 is very odd.%0A9 is very odd."],
 },
@@ -636,7 +582,7 @@ function spec()
       ["NO_SUCH_LABEL", "The <i>label</i> must be declared somewhere in the enclosing function."],
     ],
   "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    (F::println %22Virginia%22);%0A%0A    goto WEST;%0A%0A    (F::println %22Kansas%22);%0A%0A    marker WEST;%0A%0A    (F::println %22California%22);%0A}", "Virginia%0ACalifornia"],
-  "example-2" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    for (x = 0; x < 3; x + 1)%0A    {%0A        for (y = 0; y < 3; y + 1)%0A        {%0A            for (z = 0; z < 3; z + 1)%0A            {%0A                (F::println [x, y, z]);%0A%0A                when (x == 3 && y == 2 && z == 1) then goto END;%0A            }%0A        }%0A    }%0A%0A    marker END;%0A}", "[0, 0, 0]%0A[0, 0, 1]%0A[0, 0, 2]%0A[0, 1, 0]%0A[0, 1, 1]%0A[0, 1, 2]%0A[0, 2, 0]%0A[0, 2, 1]%0A[0, 2, 2]%0A[1, 0, 0]%0A[1, 0, 1]%0A[1, 0, 2]%0A[1, 1, 0]%0A[1, 1, 1]%0A[1, 1, 2]%0A[1, 2, 0]%0A[1, 2, 1]%0A[1, 2, 2]%0A[2, 0, 0]%0A[2, 0, 1]%0A[2, 0, 2]%0A[2, 1, 0]%0A[2, 1, 1]%0A[2, 1, 2]%0A[2, 2, 0]%0A[2, 2, 1]%0A[2, 2, 2]"],
+  "example-2" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    for (x = 0; x < 3; x + 1)%0A    {%0A        for (y = 0; y < 3; y + 1)%0A        {%0A            for (z = 0; z < 3; z + 1)%0A            {%0A                (F::println [x, y, z]);%0A%0A                when (x == 3 & y == 2 & z == 1) then goto END;%0A            }%0A        }%0A    }%0A%0A    marker END;%0A}", "[0, 0, 0]%0A[0, 0, 1]%0A[0, 0, 2]%0A[0, 1, 0]%0A[0, 1, 1]%0A[0, 1, 2]%0A[0, 2, 0]%0A[0, 2, 1]%0A[0, 2, 2]%0A[1, 0, 0]%0A[1, 0, 1]%0A[1, 0, 2]%0A[1, 1, 0]%0A[1, 1, 1]%0A[1, 1, 2]%0A[1, 2, 0]%0A[1, 2, 1]%0A[1, 2, 2]%0A[2, 0, 0]%0A[2, 0, 1]%0A[2, 0, 2]%0A[2, 1, 0]%0A[2, 1, 1]%0A[2, 1, 2]%0A[2, 2, 0]%0A[2, 2, 1]%0A[2, 2, 2]"],
   "example-3" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    (F::print %22This%22);%0A%0A    goto IS;%0A%0A    marker DONOT;%0A%0A    (F::print %22do not%22);%0A%0A    goto DO;%0A%0A    marker PASTA;%0A%0A    (F::print %22spaghetti%22);%0A%0A    goto CODE;%0A%0A    marker IS;%0A%0A    (F::print %22 is %22);%0A%0A    goto PASTA;%0A%0A    marker DO;%0A%0A    (F::print %22 do %22);%0A%0A    goto THIS;%0A%0A    marker CODE;%0A%0A    (F::print %22 code %22);%0A%0A    goto DONOT;%0A%0A    marker THIS;%0A%0A    (F::print %22this!!!%22);%0A}", "This is spaghetti code do not do this!!!"],
 },
 
@@ -1137,59 +1083,6 @@ function spec()
       ["INACCESSIBLE_TYPE", "The type specified by <i><i>module</i></i> must be accessible."],
       ["NO_SUCH_METHOD", "The <i>module</i> must contain exactly one function with the given <i>name</i>."],
       ["EXPECTED_MODULE", "The <i>module</i> must be a subtype of #AutumnLangModule#."],
-    ],
-},
-
-
-"Setter Statement" : {
-  "summary" : "A setter-statement sets the implementation of a propery's setter",
-  "ast" : "autumn.lang.compiler.ast.nodes.SetterStatement",
-  "syntax":
-    [
-      [0, "<span class=\"keyword\">setter</span> <i><a href=\"TextPage.html?page=Expression\">owner</a></i> . <i><a href=\"ConstructPage.html?construct=Name\">name</a></i> =&gt; <i>module</i> :: <i><span class=\"keyword\">method</span></i> ;"],
-    ],
-  "details":
-    [
-    ],
-  "static-checks":
-    [
-      ["VALUE_REQUIRED", "The type of the <i>owner</i> must be either a primitive-type or a reference-type."],
-      ["EXPECTED_DESIGN", "The type of the <i>owner</i> must be a subtype of #AutumnLangPrototype#."],
-      ["EXPECTED_MODULE", "The type of the <i>module</i> must be a subtype of #AutumnLangModule#."],
-    ],
-},
-
-
-"Getter Statement" : {
-  "summary" : "A getter-statement sets the implementation of a property's getter.",
-  "ast" : "autumn.lang.compiler.ast.nodes.GetterStatement",
-  "syntax":
-    [
-      [0, "<span class=\"keyword\">getter</span> <i><a href=\"TextPage.html?page=Expression\">owner</a></i> . <i><a href=\"ConstructPage.html?construct=Name\">name</a></i> =&gt; <i><a href=\"TextPage.html?page=Expression\">value</a></i> ;"],
-    ],
-  "details":
-    [
-    ],
-  "static-checks":
-    [
-      ["VALUE_REQUIRED", "The type of the <i>owner</i> must be either a primitive-type or a reference-type."],
-    ],
-},
-
-
-"Method Statement" : {
-  "summary" : "A method-statement sets the implmentation of a method.",
-  "ast" : "autumn.lang.compiler.ast.nodes.MethodStatement",
-  "syntax":
-    [
-      [0, "<span class=\"keyword\">method</span> <i><a href=\"TextPage.html?page=Expression\">owner</a></i> . <i><a href=\"ConstructPage.html?construct=Name\">name</a></i> ( <i>#parameter#<sub>1</sub></i> , ... , <i>#parameter#<sub>n</sub></i> ) =&gt; <i><a href=\"TextPage.html?page=Expression\">value</a></i> ;"],
-    ],
-  "details":
-    [
-    ],
-  "static-checks":
-    [
-      ["VALUE_REQUIRED", "The type of the <i>owner</i> must be either a primitive-type or a reference-type."],
     ],
 },
 
@@ -2234,21 +2127,19 @@ function spec()
     [
       [0, "Precedence: 7"],
       [0, "Associativity: Left"],
-      [0, "Predefined Overload:"],
-      [1, "(boolean & boolean) &#8614; boolean"],
-      [0, "Unboxing will be performed, if necessary."],
-      [0, "Both operands are greedily evaluated."],
-      [1, "The left-operand is evaluated first."],
-      [1, "The right-operand is evaluated second."],
+      [0, "This is a <a href=\"http://en.wikipedia.org/wiki/Short-circuit_evaluation\">short-circuit</a> operator:"],
+      [1, "The left-operand is always evaluated."],
+      [1, "The right-operand is only evaluated when the left-operand produces true."],
       [0, "Return Type: boolean"],
-      [0, "Return true when both the left-operand and the right-operand are true."],
+      [0, "Return true when both the left-operand <b>and</b> the right-operand produces true."],
     ],
   "static-checks":
     [
-      ["NO_SUCH_BINARY_OPERATOR", "None of the overloads will accept the left-operand due to its type."],
-      ["NO_SUCH_BINARY_OPERATOR", "None of the overloads will accept the right-operand due to its type."],
+      ["EXPECTED_CONDITION", "The type of the left-operand must be either boolean or <a href=\"http://docs.oracle.com/javase/7/docs/api/java/lang/Boolean.html\">Boolean</a>."],
+      ["EXPECTED_CONDITION", "The type of the right-operand must be either boolean or <a href=\"http://docs.oracle.com/javase/7/docs/api/java/lang/Boolean.html\">Boolean</a>."],
     ],
   "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    val case1 = false & false;%0A    val case2 = false & true;%0A    val case3 = true & false;%0A    val case4 = true & true;%0A%0A    (F::println %22F & F = %22 .. case1);%0A    (F::println %22F & T = %22 .. case2);%0A    (F::println %22T & F = %22 .. case3);%0A    (F::println %22T & T = %22 .. case4);%0A}", "F & F = false%0AF & T = false%0AT & F = false%0AT & T = true"],
+  "example-2" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    val case1 = false & false;%0A    val case2 = false & true;%0A    val case3 = true & false;%0A    val case4 = true & true;%0A%0A    (F::println %22Truth Table:%22);%0A    (F::println %22  F & F = %22 .. case1);%0A    (F::println %22  F & T = %22 .. case2);%0A    (F::println %22  T & F = %22 .. case3);%0A    (F::println %22  T & T = %22 .. case4);%0A%0A    (F::println);%0A%0A    (F::println %22Short Circuit:%22);%0A    (My::sc false, false);%0A    (My::sc false, true);%0A    (My::sc true, false);%0A    (My::sc true, true);%0A}%0A%0Adefun sc(left : boolean, right : boolean) : void%0A{%0A    (F::print %22  %22);%0A    (My::operand1 left) & (My::operand2 left);%0A    (F::println);%0A}%0A%0Adefun operand1(value : boolean) : boolean%0A{%0A    (F::print %22L%22);%0A    return value;%0A}%0A%0Adefun operand2(value : boolean) : boolean%0A{%0A    (F::print %22R%22);%0A    return value;%0A}", "Truth Table:%0A  F & F = false%0A  F & T = false%0A  T & F = false%0A  T & T = true%0A%0AShort Circuit:%0A  L%0A  L%0A  LR%0A  LR"],
 },
 
 
@@ -2263,21 +2154,19 @@ function spec()
     [
       [0, "Precedence: 7"],
       [0, "Associativity: Left"],
-      [0, "Predefined Overload:"],
-      [1, "(boolean | boolean) &#8614; boolean"],
-      [0, "Unboxing will be performed, if necessary."],
-      [0, "Both operands are greedily evaluated."],
-      [1, "The left-operand is evaluated first."],
-      [1, "The right-operand is evaluated second."],
+      [0, "This is a <a href=\"http://en.wikipedia.org/wiki/Short-circuit_evaluation\">short-circuit</a> operator:"],
+      [1, "The left-operand is always evaluated."],
+      [1, "The right-operand is only evaluated when the left-operand produces false."],
       [0, "Return Type: boolean"],
-      [0, "Return true when either the left-operand or the right-operand is true."],
+      [0, "Return true when either the left-operand <b>or</b> the right-operand produces true."],
     ],
   "static-checks":
     [
-      ["NO_SUCH_BINARY_OPERATOR", "None of the overloads will accept the left-operand due to its type."],
-      ["NO_SUCH_BINARY_OPERATOR", "None of the overloads will accept the right-operand due to its type."],
+      ["EXPECTED_CONDITION", "The type of the left-operand must be either boolean or <a href=\"http://docs.oracle.com/javase/7/docs/api/java/lang/Boolean.html\">Boolean</a>."],
+      ["EXPECTED_CONDITION", "The type of the right-operand must be either boolean or <a href=\"http://docs.oracle.com/javase/7/docs/api/java/lang/Boolean.html\">Boolean</a>."],
     ],
   "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    val case1 = false | false;%0A    val case2 = false | true;%0A    val case3 = true | false;%0A    val case4 = true | true;%0A%0A    (F::println %22F | F = %22 .. case1);%0A    (F::println %22F | T = %22 .. case2);%0A    (F::println %22T | F = %22 .. case3);%0A    (F::println %22T | T = %22 .. case4);%0A}", "F | F = false%0AF | T = true%0AT | F = true%0AT | T = true"],
+  "example-2" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    val case1 = false | false;%0A    val case2 = false | true;%0A    val case3 = true | false;%0A    val case4 = true | true;%0A%0A    (F::println %22Truth Table:%22);%0A    (F::println %22  F | F = %22 .. case1);%0A    (F::println %22  F | T = %22 .. case2);%0A    (F::println %22  T | F = %22 .. case3);%0A    (F::println %22  T | T = %22 .. case4);%0A%0A    (F::println);%0A%0A    (F::println %22Short Circuit:%22);%0A    (My::sc false, false);%0A    (My::sc false, true);%0A    (My::sc true, false);%0A    (My::sc true, true);%0A}%0A%0Adefun sc(left : boolean, right : boolean) : void%0A{%0A    (F::print %22  %22);%0A    (My::operand1 left) | (My::operand2 left);%0A    (F::println);%0A}%0A%0Adefun operand1(value : boolean) : boolean%0A{%0A    (F::print %22L%22);%0A    return value;%0A}%0A%0Adefun operand2(value : boolean) : boolean%0A{%0A    (F::print %22R%22);%0A    return value;%0A}", "Truth Table:%0A  F | F = false%0A  F | T = true%0A  T | F = true%0A  T | T = true%0A%0AShort Circuit:%0A  LR%0A  LR%0A  L%0A  L"],
 },
 
 
@@ -2292,9 +2181,6 @@ function spec()
     [
       [0, "Precedence: 7"],
       [0, "Associativity: Left"],
-      [0, "Predefined Overload:"],
-      [1, "(boolean ^ boolean) &#8614; boolean"],
-      [0, "Unboxing will be performed, if necessary."],
       [0, "Both operands are greedily evaluated."],
       [1, "The left-operand is evaluated first."],
       [1, "The right-operand is evaluated second."],
@@ -2303,8 +2189,8 @@ function spec()
     ],
   "static-checks":
     [
-      ["NO_SUCH_BINARY_OPERATOR", "None of the overloads will accept the left-operand due to its type."],
-      ["NO_SUCH_BINARY_OPERATOR", "None of the overloads will accept the right-operand due to its type."],
+      ["EXPECTED_CONDITION", "The type of the left-operand must be either boolean or <a href=\"http://docs.oracle.com/javase/7/docs/api/java/lang/Boolean.html\">Boolean</a>."],
+      ["EXPECTED_CONDITION", "The type of the right-operand must be either boolean or <a href=\"http://docs.oracle.com/javase/7/docs/api/java/lang/Boolean.html\">Boolean</a>."],
     ],
   "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    val case1 = false ^ false;%0A    val case2 = false ^ true;%0A    val case3 = true ^ false;%0A    val case4 = true ^ true;%0A%0A    (F::println %22F ^ F = %22 .. case1);%0A    (F::println %22F ^ T = %22 .. case2);%0A    (F::println %22T ^ F = %22 .. case3);%0A    (F::println %22T ^ T = %22 .. case4);%0A}", "F ^ F = false%0AF ^ T = true%0AT ^ F = true%0AT ^ T = false"],
 },
@@ -2321,73 +2207,19 @@ function spec()
     [
       [0, "Precedence: 7"],
       [0, "Associativity: Left"],
-      [0, "Both operands are always evaluated."],
-      [0, "The left-operand is evaluated first, then the right-operand is evalauted."],
-      [0, "Predefined Overload:"],
-      [1, "(boolean -> boolean) &#8614; boolean"],
-      [0, "Unboxing will be performed, if necessary."],
-      [0, "Both operands are greedily evaluated."],
-      [1, "The left-operand is evaluated first."],
-      [1, "The right-operand is evaluated second."],
+      [0, "This is a <a href=\"http://en.wikipedia.org/wiki/Short-circuit_evaluation\">short-circuit</a> operator:"],
+      [1, "The left-operand is always evaluated."],
+      [1, "The right-operand is only evaluated when the left-operand produces true."],
       [0, "Return Type: boolean"],
       [0, "Return true when the left-operand implies the right-operand."],
     ],
   "static-checks":
     [
-      ["NO_SUCH_BINARY_OPERATOR", "None of the overloads will accept the left-operand due to its type."],
-      ["NO_SUCH_BINARY_OPERATOR", "None of the overloads will accept the right-operand due to its type."],
+      ["EXPECTED_CONDITION", "The type of the left-operand must be either boolean or <a href=\"http://docs.oracle.com/javase/7/docs/api/java/lang/Boolean.html\">Boolean</a>."],
+      ["EXPECTED_CONDITION", "The type of the right-operand must be either boolean or <a href=\"http://docs.oracle.com/javase/7/docs/api/java/lang/Boolean.html\">Boolean</a>."],
     ],
   "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    val case1 = false -> false;%0A    val case2 = false -> true;%0A    val case3 = true -> false;%0A    val case4 = true -> true;%0A%0A    (F::println %22F -> F = %22 .. case1);%0A    (F::println %22F -> T = %22 .. case2);%0A    (F::println %22T -> F = %22 .. case3);%0A    (F::println %22T -> T = %22 .. case4);%0A}", "F -> F = true%0AF -> T = true%0AT -> F = false%0AT -> T = true"],
-},
-
-
-"Short-Circuit And Operation" : {
-  "summary" : "This operator performs a short-circuit logical-AND operation.",
-  "ast" : "autumn.lang.compiler.ast.nodes.ShortCircuitAndOperation",
-  "syntax":
-    [
-      [0, "<i><a href=\"TextPage.html?page=Expression\">left</a></i> && <i><a href=\"TextPage.html?page=Expression\">right</a></i>"],
-    ],
-  "details":
-    [
-      [0, "Precedence: 7"],
-      [0, "Associativity: Left"],
-      [0, "The left-operand is always evaluated."],
-      [0, "The right-operand is only evaluated when the left-operand produces true."],
-      [0, "Return Type: boolean"],
-      [0, "Return true when both the left-operand and the right-operand are true."],
-    ],
-  "static-checks":
-    [
-      ["EXPECTED_CONDITION", "The type of the left-operand must be either boolean or <a href=\"http://docs.oracle.com/javase/7/docs/api/java/lang/Boolean.html\">Boolean</a>."],
-      ["EXPECTED_CONDITION", "The type of the right-operand must be either boolean or <a href=\"http://docs.oracle.com/javase/7/docs/api/java/lang/Boolean.html\">Boolean</a>."],
-    ],
-  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    val case1 = false && false;%0A    val case2 = false && true;%0A    val case3 = true && false;%0A    val case4 = true && true;%0A%0A    (F::println %22Truth Table:%22);%0A    (F::println %22  F && F = %22 .. case1);%0A    (F::println %22  F && T = %22 .. case2);%0A    (F::println %22  T && F = %22 .. case3);%0A    (F::println %22  T && T = %22 .. case4);%0A%0A    (F::println);%0A%0A    (F::println %22Short Circuit:%22);%0A    (My::sc false, false);%0A    (My::sc false, true);%0A    (My::sc true, false);%0A    (My::sc true, true);%0A}%0A%0Adefun sc(left : boolean, right : boolean) : void%0A{%0A    (F::print %22  %22);%0A    (My::operand1 left) && (My::operand2 left);%0A    (F::println);%0A}%0A%0Adefun operand1(value : boolean) : boolean%0A{%0A    (F::print %22L%22);%0A    return value;%0A}%0A%0Adefun operand2(value : boolean) : boolean%0A{%0A    (F::print %22R%22);%0A    return value;%0A}", "Truth Table:%0A  F && F = false%0A  F && T = false%0A  T && F = false%0A  T && T = true%0A%0AShort Circuit:%0A  L%0A  L%0A  LR%0A  LR"],
-},
-
-
-"Short-Circuit Or Operation" : {
-  "summary" : "This operator performs a short-circuit logical-OR operation.",
-  "ast" : "autumn.lang.compiler.ast.nodes.ShortCircuitOrOperation",
-  "syntax":
-    [
-      [0, "<i><a href=\"TextPage.html?page=Expression\">left</a></i> || <i><a href=\"TextPage.html?page=Expression\">right</a></i>"],
-    ],
-  "details":
-    [
-      [0, "Precedence: 7"],
-      [0, "Associativity: Left"],
-      [0, "The left-operand is always evaluated."],
-      [0, "The right-operand is only evaluated when the left-operand produces false."],
-      [0, "Return Type: boolean"],
-      [0, "Return true when either the left-operand or the right-operand is true."],
-    ],
-  "static-checks":
-    [
-      ["EXPECTED_CONDITION", "The type of the left-operand must be either boolean or <a href=\"http://docs.oracle.com/javase/7/docs/api/java/lang/Boolean.html\">Boolean</a>."],
-      ["EXPECTED_CONDITION", "The type of the right-operand must be either boolean or <a href=\"http://docs.oracle.com/javase/7/docs/api/java/lang/Boolean.html\">Boolean</a>."],
-    ],
-  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    val case1 = false || false;%0A    val case2 = false || true;%0A    val case3 = true || false;%0A    val case4 = true || true;%0A%0A    (F::println %22Truth Table:%22);%0A    (F::println %22  F || F = %22 .. case1);%0A    (F::println %22  F || T = %22 .. case2);%0A    (F::println %22  T || F = %22 .. case3);%0A    (F::println %22  T || T = %22 .. case4);%0A%0A    (F::println);%0A%0A    (F::println %22Short Circuit:%22);%0A    (My::sc false, false);%0A    (My::sc false, true);%0A    (My::sc true, false);%0A    (My::sc true, true);%0A}%0A%0Adefun sc(left : boolean, right : boolean) : void%0A{%0A    (F::print %22  %22);%0A    (My::operand1 left) || (My::operand2 left);%0A    (F::println);%0A}%0A%0Adefun operand1(value : boolean) : boolean%0A{%0A    (F::print %22L%22);%0A    return value;%0A}%0A%0Adefun operand2(value : boolean) : boolean%0A{%0A    (F::print %22R%22);%0A    return value;%0A}", "Truth Table:%0A  F || F = false%0A  F || T = true%0A  T || F = true%0A  T || T = true%0A%0AShort Circuit:%0A  LR%0A  LR%0A  L%0A  L"],
+  "example-2" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    val case1 = false -> false;%0A    val case2 = false -> true;%0A    val case3 = true -> false;%0A    val case4 = true -> true;%0A%0A    (F::println %22Truth Table:%22);%0A    (F::println %22  F -> F = %22 .. case1);%0A    (F::println %22  F -> T = %22 .. case2);%0A    (F::println %22  T -> F = %22 .. case3);%0A    (F::println %22  T -> T = %22 .. case4);%0A%0A    (F::println);%0A%0A    (F::println %22Short Circuit:%22);%0A    (My::sc false, false);%0A    (My::sc false, true);%0A    (My::sc true, false);%0A    (My::sc true, true);%0A}%0A%0Adefun sc(left : boolean, right : boolean) : void%0A{%0A    (F::print %22  %22);%0A    (My::operand1 left) -> (My::operand2 left);%0A    (F::println);%0A}%0A%0Adefun operand1(value : boolean) : boolean%0A{%0A    (F::print %22L%22);%0A    return value;%0A}%0A%0Adefun operand2(value : boolean) : boolean%0A{%0A    (F::print %22R%22);%0A    return value;%0A}", "Truth Table:%0A  F -> F = true%0A  F -> T = true%0A  T -> F = false%0A  T -> T = true%0A%0AShort Circuit:%0A  L%0A  L%0A  LR%0A  LR"],
 },
 
 
@@ -2409,6 +2241,8 @@ function spec()
     ],
   "static-checks":
     [
+      ["EXPECTED_REFERENCE_TYPE", "The type of the left-operand must be a reference-type."],
+      ["EXPECTED_REFERENCE_TYPE", "The type of the right-operand must be a reference-type."],
       ["INCOMPATIBLE_OPERANDS", "The type of one of the operands must be a subtype of the other."],
     ],
   "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    val value1 = %22Mercury%22;%0A    val value2 = %22Venus%22;%0A    val value3 = %22Earth%22;%0A%0A    # Case: The left operand is non-null.%0A    val value4 = (value1 ?? value2) is String;%0A%0A    # Case: The left-operand is null.%0A    val value5 = (null ?? value3) is String;%0A%0A    # Case: Both operands are null.%0A    val value6 = (null ?? null) is String;%0A%0A    # Print the results.%0A    (F::println value4);%0A    (F::println value5);%0A    (F::println value6);%0A}", "Mercury%0AEarth%0Anull"],
@@ -2868,44 +2702,57 @@ function spec()
   "ast" : "autumn.lang.compiler.ast.nodes.InstanceOfExpression",
   "syntax":
     [
-      [0, "( <span class=\"keyword\">instanceof</span> <i><a href=\"TextPage.html?page=Expression\">argument</a></i> : <i>type</i> )"],
+      [0, "( <span class=\"keyword\">instanceof</span> <i><a href=\"TextPage.html?page=Expression\">value</a></i> : <i><a href=\"ConstructPage.html?construct=TypeSpecifier\">type</a></i> )"],
     ],
   "details":
     [
-      [0, "An instance-of check is is viable, iff either:"],
-      [1, "The static-type of the <i>value</i> is a subtype of the <i>type</i>."],
-      [1, "The type of the <i>type</i> is a subtype of the static-type of the <i>value</i>."],
+      [0, "An instance-of operation is viable, iff:"],
+      [1, "The type of <i>value</i> is not the null-type."],
+      [1, "and:"],
+      [2, "The type of <i>value</i> is a subtype of the type specified by <i>type</i>."],
+      [2, "The type specified  by <i>type</i> is a subtype of the type of <i>value</i>."],
       [0, "Return Type: boolean"],
-      [0, "Return Return true, iff the <i>value</i> is a subtype of the <i>type</i> at runtime.."],
+      [0, "Return Return true, iff the <i>value</i> at runtime is both non-null and a subtype of the <i>type</i>."],
     ],
   "static-checks":
     [
       ["NO_SUCH_TYPE", "The type specified by <i><i>type</i></i> must exist."],
       ["INACCESSIBLE_TYPE", "The type specified by <i><i>type</i></i> must be accessible."],
-      ["NON_VIABLE_INSTANCEOF", "The check must be viable."],
+      ["EXPECTED_DECLARED_TYPE", "The type of <i>value</i> must be a declared-type."],
+      ["EXPECTED_DECLARED_TYPE", "The type of <i>type</i> must be a declared-type."],
+      ["NON_VIABLE_INSTANCEOF", "The operation must be viable at compile-time."],
     ],
+  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    # String%0A    (My::print %22Text%22);%0A%0A    # Integer%0A    (My::print 17);%0A%0A    # List%0A    (My::print [2, 4, 6, 8]);%0A}%0A%0Adefun print(x : Object) : void%0A{%0A    (F::println %22Object? = %22  .. (instanceof x : Object));%0A    (F::println %22Integer? = %22 .. (instanceof x : Integer));%0A    (F::println %22String? = %22  .. (instanceof x : String));%0A    (F::println %22List? = %22    .. (instanceof x : List));%0A    (F::println);%0A}", "Object? = true%0AInteger? = false%0AString? = true%0AList? = false%0A%0AObject? = true%0AInteger? = true%0AString? = false%0AList? = false%0A%0AObject? = true%0AInteger? = false%0AString? = false%0AList? = true"],
 },
 
 
 "Create Expression" : {
-  "summary" : "A create-expression creates a new instance of a design.",
+  "summary" : "A create-expression performs so-called ex nihilo creation of a prototype object.",
   "ast" : "autumn.lang.compiler.ast.nodes.CreateExpression",
   "syntax":
     [
-      [0, "( <span class=\"keyword\">create</span> <i>type</i> )"],
+      [0, "( <span class=\"keyword\">create</span> <i><a href=\"ConstructPage.html?construct=TypeSpecifier\">type</a></i> )"],
     ],
   "details":
     [
-      [0, "In reality, this construct simply reads a static field in the design interface."],
+      [0, "The slots of the new object will be empty; therefore:"],
+      [1, "Properties therein will not have values, setters, or getters."],
+      [1, "Methods therein will not have handlers."],
+      [0, "Implementation Details:"],
+      [1, "A create-expression simply reads a static final field in the design interface specified by the <i>type</i>."],
+      [1, "The name of the field must be &quot;INSTANCE&quot;."],
+      [1, "The type of the field must be a subtype of the type specified by <i>type</i>."],
+      [1, "The compiler does not check these invariants."],
       [0, "Return Type: type of <i>type</i>"],
-      [0, "Return An instance of the <i>type</i> is returned.."],
+      [0, "Return the prototypical instance of the specified <i>type</i>."],
     ],
   "static-checks":
     [
       ["NO_SUCH_TYPE", "The type specified by <i><i>type</i></i> must exist."],
       ["INACCESSIBLE_TYPE", "The type specified by <i><i>type</i></i> must be accessible."],
-      ["EXPECTED_DESIGN", "The <i>type</i> must be a type that descripes a design."],
+      ["EXPECTED_PROTOTYPE_TYPE", "The type specified by <i>type</i> must be a subtype of <a href=\"http://mackenzie-high.github.io/autumn/javadoc/autumn/lang/Prototype.html\">Prototype</a>."],
     ],
+  "example-1" : ["module Main in examples;%0A%0Adesign Person%0A{%0A    data name : String;%0A%0A    data age : int;%0A%0A    method print() : void;%0A}%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    val person1 = (My::newPerson %22Alison%22, 29);%0A    val person2 = (My::newPerson %22Emma%22, 24);%0A%0A    (person1.print);%0A    (person2.print);%0A}%0A%0Adefun newPerson (name : String, age : int) : Person%0A{%0A    # Create am uninitialized  person. %0A    var p = (create Person);%0A%0A    # Bind the method handler. %0A    method p.print => My::print;%0A%0A    # Set the values of the properties. %0A    p = (p.name name);%0A    p = (p.age age); %0A%0A    return p;%0A}%0A%0Adefun print (self : Person) : void%0A{%0A    (F::println [(self.name), (self.age)]);%0A}", "[Alison, 29]%0A[Emma, 24]"],
 },
 
 
@@ -2921,22 +2768,22 @@ function spec()
       [0, "The <i>left</i> expression is only evaluated, if the <i>condition</i> produces true."],
       [0, "The <i>right</i> expression is only evaluated, if the <i>condition</i> produces false."],
       [0, "The <i>condition</i> will be unboxed, if necessary."],
-      [0, "Return Type: widest of typeof(<i>left</i>) or typeof(<i>right</i>)"],
-      [0, "Return Depending on the value produced by the <i>condition</i>, either the value of <i>left</i> or the value of <i>right</i> is returned.."],
+      [0, "Return Type: widest(typeof(<i>left</i>), typeof(<i>right</i>))"],
+      [0, "Return either the value of <i>left</i> or the value of <i>right</i>, depending on the value produced by the <i>condition</i>."],
     ],
   "static-checks":
     [
-      ["VALUE_REQUIRED", "The type of the <i>condition</i> must be either a primitive-type or a reference-type."],
+      ["EXPECTED_CONDITION", "The type of <i><i>condition</i></i> must be assignable to type boolean."],
       ["VALUE_REQUIRED", "The type of the <i>left</i> must be either a primitive-type or a reference-type."],
       ["VALUE_REQUIRED", "The type of the <i>right</i> must be either a primitive-type or a reference-type."],
-      ["EXPECTED_CONDITION", "The type of <i><i>condition</i></i> must be assignable to type boolean."],
-      ["INCOMPATIBLE_OPERANDS", "Either typeof(<i>left</i>) is a subtype of typeof(<i>right</i>) or vice versa."],
+      ["INCOMPATIBLE_OPERANDS", "The type of one of the operands must be a subtype of the other."],
     ],
+  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    (My::print %22Mercury%22, 1);%0A    (My::print %22Venus%22, 2);%0A    (My::print %22Earth%22, 3);%0A    (My::print %22Mars%22, 4);%0A%0A    (My::print %22Jupiter%22, 5);%0A    (My::print %22Saturn%22, 6);%0A    (My::print %22Uranus%22, 7);%0A    (My::print %22Neptune%22, 8);%0A}%0A%0Adefun print (planet : String, index : int) : void%0A{%0A    val type = (if index <= 4 then %22Terrestrial%22 else %22Jovian%22);%0A%0A    (F::println planet .. %22 is %22 .. type);%0A%0A    (F::println);%0A}", "Mercury is Terrestrial%0A%0AVenus is Terrestrial%0A%0AEarth is Terrestrial%0A%0AMars is Terrestrial%0A%0AJupiter is Jovian%0A%0ASaturn is Jovian%0A%0AUranus is Jovian%0A%0ANeptune is Jovian"],
 },
 
 
 "Locals Expression" : {
-  "summary" : "A locals-expression creates an object that describes the current state of the local variables in the enclosing function.",
+  "summary" : "A locals-expression creates an object that describes the local variables in the enclosing scope.",
   "ast" : "autumn.lang.compiler.ast.nodes.LocalsExpression",
   "syntax":
     [
@@ -2944,17 +2791,21 @@ function spec()
     ],
   "details":
     [
+      [0, "All user-visible variables in the enclosing scope will be captured."],
+      [1, "This includes user-visible variables in outer scopes, if any."],
+      [1, "This excludes temporary variables created by the compiler."],
       [0, "Return Type: autumn.lang.LocalsMap"],
-      [0, "Return The expression returns an object that describes the local variables.."],
+      [0, "Return an object that describes the local variables in the enclosing scope."],
     ],
   "static-checks":
     [
     ],
+  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    val city = %22London%22;%0A    val year = 2014;%0A    val primes = [2, 3, 5, 7, 11, 13, 17];%0A%0A    val map = (locals);%0A%0A    foreach (x : Local in (map.locals))%0A    {%0A        (F::println x);%0A    }%0A}", "args : String[] = [Ljava.lang.String;@94265ae%0Acity : String = London%0Aprimes : List = [2, 3, 5, 7, 11, 13, 17]%0Ayear : int = 2014"],
 },
 
 
 "Progn Expression" : {
-  "summary" : "A progn expression executes a series of expressions sequentially.",
+  "summary" : "A progn-expression executes a series of expressions sequentially.",
   "ast" : "autumn.lang.compiler.ast.nodes.PrognExpression",
   "syntax":
     [
@@ -2962,13 +2813,14 @@ function spec()
     ],
   "details":
     [
+      [0, "There must be at least one argument in the sequence."],
       [0, "Return Type: type of <i><a href=\"TextPage.html?page=Expression\">argument</a><sub>n</sub></i>"],
-      [0, "Return The value that the last argument produces will be returned.."],
+      [0, "Return the value produced by the last argument."],
     ],
   "static-checks":
     [
-      ["VALUE_REQUIRED", "The type of each <i>argument</i> must be either a primitive-type or a reference-type."],
     ],
+  "example-1" : ["module Main in examples;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    val value = (progn (F::println %22X%22), %0A                       (F::println %22Y%22), %0A                       (F::println %22Z%22),%0A                       1010);%0A%0A    (F::println %22value = %22 .. value);%0A}", "X%0AY%0AZ%0Avalue = 1010"],
 },
 
 

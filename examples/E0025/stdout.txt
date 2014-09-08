@@ -1,8 +1,8 @@
 Truth Table:
-  F && F = false
-  F && T = false
-  T && F = false
-  T && T = true
+  F & F = false
+  F & T = false
+  T & F = false
+  T & T = true
 
 Short Circuit:
   L
