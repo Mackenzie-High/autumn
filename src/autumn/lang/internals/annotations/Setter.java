@@ -5,7 +5,11 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 /**
- * This annotation indicates that a bytecode-level method is a property's setter.
+ * This annotation indicates that a bytecode-level method is a setter.
+ *
+ * <p>
+ * This annotation is used inside of structs.
+ * </p>
  *
  * @author Mackenzie High
  */

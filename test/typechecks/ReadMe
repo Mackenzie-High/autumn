@@ -15,27 +15,15 @@ Test Index
 . Enum Definitions
 . . T0049 = Duplicate Type
 . . T0050 = Duplicate Constant
-. Design Definitions
+. Struct Definitions
 . . Duplicate Type
-. . Bad Annotation List
-. . Bad Name
-. . No Such Superinterface Type
-. . Duplicate Direct Superinterface
-. . Duplicate Property
-. . Duplicate Method
-. . Non-Covariant Property Override
-. . Non-Covariant Method Override
-. . Method Overrides 'Final' Method
-. Property
-. . Bad Annotation List
-. . Bad Name
-. . No Such Type
-. Method
-. . Bad Annotation List
-. . Bad Name
-. . No Such Type - Parameter
-. . No Such Type - Return Type
-. . Duplicate Parameter
+. . No Such Supertype
+. . Inaccessible Supertype
+. . Duplicate Direct Supertype
+. . Duplicate Element
+. . Element Covariance Violation
+. . Circular Inheritance - Direct
+. . Circular Inheritance - Indirect
 . Function Definitions
 . . Inaccessible Parameter Type
 . . Inaccessible Return Type
@@ -186,18 +174,24 @@ Test Index
 . . . T0023 = No Such Method
 . . Binary Operators Generally
 . . . T0022 = No Such Method
-. . . Identity Equality Operation
-. . . . T0024 = Expected Reference Type - Left Operand
-. . . . T0025 = Expected Reference Type - Right Operand
-. . . Identity Inequality Operation
-. . . . T0032 = Expected Reference Type - Left Operand
-. . . . T0033 = Expected Reference Type - Right Operand
-. . Short Circuit AND Operator
+. . Identity Equality Operation
+. . . T0024 = Expected Reference Type - Left Operand
+. . . T0025 = Expected Reference Type - Right Operand
+. . Identity Inequality Operation
+. . . T0032 = Expected Reference Type - Left Operand
+. . . T0033 = Expected Reference Type - Right Operand
+. . And Operator
 . . . T0028 = Expected Condition - Left Operand
 . . . T0029 = Expected Condition - Right Operand
-. . Short Circuit OR Operator
+. . Or Operator
 . . . T0030 = Expected Condition - Left Operand
 . . . T0031 = Expected Condition - Right Operand
+. . Xor Operator
+. . . T0117 = Expected Condition - Left Operand
+. . . T0118 = Expected Condition - Right Operand
+. . Implies Operator
+. . . T0119 = Expected Condition - Left Operand
+. . . T0120 = Expected Condition - Right Operand
 . . Null Coalescing Operator
 . . . T0026 = Expected Reference-Type - Left Operand
 . . . T0113 = Expected Reference-Type - Right Operand

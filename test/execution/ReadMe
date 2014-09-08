@@ -83,23 +83,16 @@ Test Index
 . . T0145 = Special Method - parameterTypes() - (empty)
 . . T0146 = Special Method - returnType() - (non void)
 . . T0147 = Special Method - returnType() - (void)
-. Design Definitions
-. . Reflective Testing of the Design's Class
-. . T0148 = Nullary Constructor
-. . T0150 = Special Method - copy() // TODO
-. . T0151 = Special Method - copy() // TODO: bridges
-. . Special Method - members()
-. . T0152 = Properties - (no setters, no getters)
-. . Inherited Properties
-. . Covariant Properties
-. . T0159 = Method Call - (no arguments)
-. . T0157 = Method Call - (single argument)
-. . T0158 = Method Call - (multiple arguments)
-. . Inherited Methods
-. . Covariant Methods
-. . Special Method - equals(Object) - (default)
-. . Special Method - hashCode() - (default)
-. . Special Method - toString() - (default)
+. Struct Definitions
+. . T0250 = Basic Test
+. . No Elements
+. . Different Types of Elements
+. . Covariant Elements
+. . Subtyping
+. . Special Method - mutableCopy()
+. . Special Method - immutableCopy()
+. . Special Method - copy() - (immutable tuple)
+. . Special Method - copy() - (mutable tuple)
 . Functions
 . . Reflective Testing of the Reflective Method Object
 . . Recursive Generator
@@ -216,13 +209,14 @@ Test Index
 . . Return Void
 . . Return Value = T0053    # TODO: Add auto-boxing
 . . Recur
-. . . T0067 = Nullary Method
-. . . Unary Method
+. . . T0067 = Nullary Function
+. . . Unary Function
 . . . Multiple Parameter Method
 . . . Void Method
 . . . Non-Void method
 . . . Auto-Boxing of Arguments
 . . . Auto-Unboxing of Arguments
+. . . Auto-Widening of Arguments
 . . Yield Void
 . . . Reentry Locations
 . . . Arguments
@@ -287,6 +281,8 @@ Test Index
 . . . T0245 = Distinctly Typed Operands
 . . . T0246 = Primitive Operands
 . . . T0247 = Object Operands
+. . Locals
+. . . T0249 = All Cases
 . . Progn
 . . . All Cases
 . . List
@@ -308,12 +304,13 @@ Test Index
 . . T0090 = Less Operator
 . . T0091 = Greater-Equals Operator
 . . T0092 = Less-Equals Operator
-. . T0093 = AND Operator
-. . T0094 = OR Operator
+. . T0093 = AND Operator - (eager)
+. . T0097 = AND Operator - (short circuit)
+. . T0094 = OR Operator - (eager)
+. . T0098 = OR Operator - (short circuit)
 . . T0095 = XOR Operator
-. . T0096 = Implies Operator
-. . T0097 = Short-Circuit AND Operator
-. . T0098 = Short-Circuit OR Operator
+. . T0096 = Implies Operator - (eager)
+. . T0248 = Implies Operator - (short circuit)
 . . T0043 = Null Coalescing Operator
 . . As
 . . . T0044 = Operand-Stack Leakage

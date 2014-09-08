@@ -73,19 +73,7 @@ public class AbstractAstVisitor
     }
 
     @Override
-    public void visit(DesignDefinition object)
-    {
-        throw new UnsupportedOperationException("This should never happen.");
-    }
-
-    @Override
-    public void visit(DesignProperty object)
-    {
-        throw new UnsupportedOperationException("This should never happen.");
-    }
-
-    @Override
-    public void visit(DesignMethod object)
+    public void visit(StructDefinition object)
     {
         throw new UnsupportedOperationException("This should never happen.");
     }
@@ -590,18 +578,6 @@ public class AbstractAstVisitor
 
     @Override
     public void visit(ImpliesOperation object)
-    {
-        throw new UnsupportedOperationException("This should never happen.");
-    }
-
-    @Override
-    public void visit(ShortCircuitAndOperation object)
-    {
-        throw new UnsupportedOperationException("This should never happen.");
-    }
-
-    @Override
-    public void visit(ShortCircuitOrOperation object)
     {
         throw new UnsupportedOperationException("This should never happen.");
     }

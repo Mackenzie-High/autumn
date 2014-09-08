@@ -1,10 +1,8 @@
 package high.mackenzie.autumn.lang.compiler.compilers;
 
 import autumn.lang.compiler.ClassFile;
-import autumn.lang.compiler.ast.nodes.DesignDefinition;
-import autumn.lang.compiler.ast.nodes.DesignMethod;
-import autumn.lang.compiler.ast.nodes.DesignProperty;
 import autumn.lang.compiler.ast.nodes.FormalParameter;
+import autumn.lang.compiler.ast.nodes.StructDefinition;
 import autumn.lang.compiler.ast.nodes.TypeSpecifier;
 import autumn.lang.internals.annotations.Getter;
 import autumn.lang.internals.annotations.Setter;
@@ -33,18 +31,18 @@ import org.objectweb.asm.tree.InsnNode;
 import org.objectweb.asm.tree.MethodNode;
 
 /**
- * An instance of this class controls the compilation of a design-definition.
+ * An instance of this class controls the compilation of a struct-definition.
  *
  * @author Mackenzie High
  */
-public class DesignCompiler
+public class StructCompiler
         implements ICompiler
 {
     private final ProgramCompiler program;
 
     private final ModuleCompiler module;
 
-    private final DesignDefinition node;
+    private final StructDefinition node;
 
     public CustomDeclaredType type;
 
@@ -58,8 +56,8 @@ public class DesignCompiler
      * @param module is the module being compiled.
      * @param node is the AST representation of the design.
      */
-    public DesignCompiler(final ModuleCompiler module,
-                          final DesignDefinition node)
+    public StructCompiler(final ModuleCompiler module,
+                          final StructDefinition node)
     {
         Preconditions.checkNotNull(module);
         Preconditions.checkNotNull(node);
@@ -153,60 +151,56 @@ public class DesignCompiler
     @Override
     public void performTypeInitialization()
     {
-        final List<IInterfaceType> superinterfaces = Lists.newLinkedList();
+        final List<IInterfaceType> supers = Lists.newLinkedList();
 
-        superinterfaces.add(program.typesystem.utils.PROTOTYPE);
+        supers.add(program.typesystem.utils.STRUCT);
 
-        for (TypeSpecifier face : node.getSuperinterfaces())
+        for (TypeSpecifier face : node.getSupers())
         {
-            superinterfaces.add(module.imports.resolveInterfaceType(face));
+            supers.add(module.imports.resolveInterfaceType(face));
         }
 
         final List<IMethod> methods = Lists.newLinkedList();
 
-        for (DesignProperty property : node.getProperties())
+        for (FormalParameter element : node.getElements().getParameters())
         {
-            initProperty(methods, property);
-        }
-
-        for (DesignMethod method : node.getMethods())
-        {
-            initMethod(methods, method);
+            initElement(methods, element);
         }
 
         /**
-         * Initialize the type that represents the design being compiled.
+         * Initialize the type that represents the struct being compiled.
          */
         this.type.setModifiers(Opcodes.ACC_PUBLIC + Opcodes.ACC_ABSTRACT + Opcodes.ACC_INTERFACE);
         this.type.setSuperclass(program.typesystem.utils.OBJECT);
-        this.type.setSuperinterfaces(superinterfaces);
+        this.type.setSuperinterfaces(supers);
         this.type.setFields(ImmutableList.<IField>of());
         this.type.setMethods(ImmutableList.copyOf(methods));
     }
 
     /**
-     * This method performs type-initialization of a property.
+     * This method performs type-initialization of a element.
      *
-     * @param methods is the mutable collection of methods in the design's type.
-     * @param property is the property whose type-system representation will be created.
+     * @param methods is the mutable collection of methods in the struct's type.
+     * @param element is the element whose type-system representation will be created.
      */
-    private void initProperty(final Collection<IMethod> methods,
-                              final DesignProperty property)
+    private void initElement(final Collection<IMethod> methods,
+                             final FormalParameter element)
     {
-        final IVariableType ptype = module.imports.resolveVariableType(property.getType());
+        final IVariableType ptype = module.imports.resolveVariableType(element.getType());
 
-        initGetter(methods, property, ptype);
-        initSetter(methods, property, ptype);
+        initGetter(methods, element, ptype);
+        initSetter(methods, element, ptype);
     }
 
     /**
-     * This method performs type-initialization of a property's getter.
+     * This method performs type-initialization of a element's getter.
      *
-     * @param methods is the mutable collection of methods in the design's type.
-     * @param property is the property whose getter's type-system representation will be created.
+     * @param methods is the mutable collection of methods in the struct's type.
+     * @param element is the element whose getter's type-system representation will be created.
+     * @param ptype is the type of the value stored in the element.
      */
     private void initGetter(final Collection<IMethod> methods,
-                            final DesignProperty property,
+                            final FormalParameter element,
                             final IVariableType ptype)
     {
         /**
@@ -214,7 +208,6 @@ public class DesignCompiler
          */
         final List<IAnnotation> annotations = Lists.newLinkedList();
         annotations.add(module.anno_utils.typeOf(Getter.class));
-        annotations.addAll(module.anno_utils.typesOf(property.getAnnotations()));
 
         /**
          * Create the type-system representation of the getter itself.
@@ -223,22 +216,23 @@ public class DesignCompiler
         cm.setOwner(type);
         cm.setAnnotations(annotations);
         cm.setModifiers(Opcodes.ACC_PUBLIC + Opcodes.ACC_ABSTRACT);
-        cm.setName(property.getName().getName());
+        cm.setName(element.getVariable().getName());
         cm.setParameters(Lists.<IFormalParameter>newLinkedList());
         cm.setReturnType(ptype);
-        cm.setThrowsClause(Lists.<IClassType>newArrayList(program.typesystem.utils.THROWABLE));
+        cm.setThrowsClause(ImmutableList.<IClassType>of());
 
         methods.add(cm);
     }
 
     /**
-     * This method performs type-initialization of a property's setter.
+     * This method performs type-initialization of a element's setter.
      *
-     * @param methods is the mutable collection of methods in the design's type.
-     * @param property is the property whose setter's type-system representation will be created.
+     * @param methods is the mutable collection of methods in the struct's type.
+     * @param element is the element whose setter's type-system representation will be created.
+     * @param ptype is the type of the value stored in the element.
      */
     private void initSetter(final Collection<IMethod> methods,
-                            final DesignProperty property,
+                            final FormalParameter property,
                             final IVariableType ptype)
     {
         /**
@@ -246,7 +240,6 @@ public class DesignCompiler
          */
         final List<IAnnotation> annotations = Lists.newLinkedList();
         annotations.add(module.anno_utils.typeOf(Setter.class));
-        annotations.addAll(module.anno_utils.typesOf(property.getAnnotations()));
 
         /**
          * Create the type-system representation of the setter's only formal-parameter.
@@ -262,56 +255,10 @@ public class DesignCompiler
         cm.setOwner(type);
         cm.setAnnotations(annotations);
         cm.setModifiers(Opcodes.ACC_PUBLIC + Opcodes.ACC_ABSTRACT);
-        cm.setName(property.getName().getName());
+        cm.setName(property.getVariable().getName());
         cm.setParameters(ImmutableList.<IFormalParameter>of(param));
         cm.setReturnType(type);
-        cm.setThrowsClause(Lists.<IClassType>newArrayList(program.typesystem.utils.THROWABLE));
-
-        methods.add(cm);
-    }
-
-    /**
-     * This method performs type-initialization of a method.
-     *
-     * @param methods is the mutable collection of methods in the design's type.
-     * @param method is the method whose type-system representation will be created.
-     */
-    private void initMethod(final Collection<IMethod> methods,
-                            final DesignMethod method)
-    {
-        /**
-         * Create the type-system representations of the method's annotations.
-         */
-        final List<IAnnotation> annotations = Lists.newLinkedList();
-        annotations.addAll(module.anno_utils.typesOf(method.getAnnotations()));
-
-        /**
-         * Create the type-system representation of the method's formal-parameters.
-         */
-        final List<IFormalParameter> params = Lists.newLinkedList();
-
-        for (FormalParameter formal : method.getParameters().getParameters())
-        {
-            final IVariableType ftype = module.imports.resolveVariableType(formal.getType());
-
-            final CustomFormalParameter param = new CustomFormalParameter();
-            param.setAnnotations(ImmutableList.<IAnnotation>of());
-            param.setType(ftype);
-
-            params.add(param);
-        }
-
-        /**
-         * Create the type-system representation of the method itself.
-         */
-        final CustomMethod cm = new CustomMethod(type.getTypeFactory(), false);
-        cm.setOwner(type);
-        cm.setAnnotations(annotations);
-        cm.setModifiers(Opcodes.ACC_PUBLIC + Opcodes.ACC_ABSTRACT);
-        cm.setName(method.getName().getName());
-        cm.setParameters(ImmutableList.<IFormalParameter>copyOf(params));
-        cm.setReturnType(module.imports.resolveReturnType(method.getReturnType()));
-        cm.setThrowsClause(Lists.<IClassType>newArrayList(program.typesystem.utils.THROWABLE));
+        cm.setThrowsClause(ImmutableList.<IClassType>of());
 
         methods.add(cm);
     }

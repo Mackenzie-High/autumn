@@ -377,7 +377,7 @@ public final class FunctionCompiler
         instructions.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL, owner, name, desc));
 
         // Restore each variable.
-        final List<String> reversed = Lists.newLinkedList(allocator.getAllVariables());
+        final List<String> reversed = Lists.newLinkedList(allocator.getVariables());
         Collections.reverse(reversed);
         for (String variable : reversed)
         {

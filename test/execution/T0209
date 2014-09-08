@@ -17,7 +17,7 @@ defun main (args : String[]) : void
 
         when (i == 3) then redo;
     }
-    while (i < 5 & (My::moo list, i))
+    while ((My::moo list, i) & i < 5)
 
     assert list == [-1, 2, -2, -3, 4, -4, 5];
 }

@@ -38,6 +38,10 @@ public final class Runner
 
 
 
+        test("T0120", EXPECTED_CONDITION);
+        test("T0119", EXPECTED_CONDITION);
+        test("T0118", EXPECTED_CONDITION);
+        test("T0117", EXPECTED_CONDITION);
         test("T0116", VALUE_REQUIRED);
         test("T0115", VALUE_REQUIRED);
         test("T0114", INCOMPATIBLE_OPERANDS);

@@ -9,7 +9,7 @@ defun main (args : String[]) : void
 
     var i = 1;
 
-    until (i == 5 & (My::moo list, i))
+    until ((My::moo list, i) & i == 5)
     {
         (list.add -i);
 

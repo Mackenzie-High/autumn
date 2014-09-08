@@ -1,15 +1,6 @@
 module Main in execution;
 
-design Person
-{
-    data name : String;
-
-    data age : int;
-
-    method speak(text : String) : void;
-}
-
-
+struct Person (name : String);
 
 @Start
 defun main (args : String[]) : void

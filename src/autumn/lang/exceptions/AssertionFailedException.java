@@ -2,7 +2,6 @@ package autumn.lang.exceptions;
 
 import com.google.common.base.Preconditions;
 import high.mackenzie.autumn.resources.Finished;
-import java.io.File;
 
 /**
  * This type of exception is thrown by assert-statements, when a required condition does not hold.
@@ -16,7 +15,7 @@ public class AssertionFailedException
     /**
      * This is the path to the source-code file that contains the assertion.
      */
-    private final File file;
+    private final String file;
 
     /**
      * This is the index of the line that contains the assertion.
@@ -39,7 +38,7 @@ public class AssertionFailedException
         Preconditions.checkNotNull(file);
         Preconditions.checkNotNull(message);
 
-        this.file = new File(file);
+        this.file = file;
         this.line = line;
     }
 
@@ -56,7 +55,7 @@ public class AssertionFailedException
 
         Preconditions.checkNotNull(file);
 
-        this.file = new File(file);
+        this.file = file;
         this.line = line;
     }
 
@@ -65,7 +64,7 @@ public class AssertionFailedException
      *
      * @return the path to the file that contains the assertion.
      */
-    public File file()
+    public String file()
     {
         return file;
     }

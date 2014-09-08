@@ -662,6 +662,8 @@ public final class StatementCodeGenerator
         // LDC function                                                     - Load the name of the handler function.
         // INVOKESTATIC Helpers.setter(Prototype, String, Module, String)   - Bind the handler to a modified copy of the owner.
         // STORE owner                                                      - Place the modified copy into the variable.
+        //
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         function.vars.load(object.getOwner().getName());
 
@@ -700,6 +702,8 @@ public final class StatementCodeGenerator
         // LDC function                                                     - Load the name of the handler function.
         // INVOKESTATIC Helpers.getter(Prototype, String, Module, String)   - Bind the handler to a modified copy of the owner.
         // STORE owner                                                      - Place the modified copy into the variable.
+        //
+        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         function.vars.load(object.getOwner().getName());
 
@@ -740,6 +744,8 @@ public final class StatementCodeGenerator
         // LDC function                                                     - Load the name of the handler function.
         // INVOKESTATIC Helpers.method(Prototype, String, Module, String)   - Bind the handler to a modified copy of the owner.
         // STORE owner                                                      - Place the modified copy into the variable.
+        //
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         function.vars.load(object.getOwner().getName());
 
@@ -811,18 +817,14 @@ public final class StatementCodeGenerator
     @Override
     public void visit(final DebugStatement object)
     {
-        String owner;
-        String name;
-        String desc;
-
         code.add(new LdcInsnNode(object.getLocation().getFile().toString()));
         code.add(new LdcInsnNode(object.getLocation().getLine()));
         code.add(new LdcInsnNode(object.getLocation().getColumn()));
-        super.loadLocalsMap(object.getLocation());
+        super.loadLocalsMap(object.getLocation(), allocator.getVariables());
 
-        owner = Utils.internalName(program.typesystem.utils.HELPERS);
-        name = "debug";
-        desc = "(Ljava/lang/String;IILautumn/lang/LocalsMap;)V";
+        final String owner = Utils.internalName(program.typesystem.utils.HELPERS);
+        final String name = "debug";
+        final String desc = "(Ljava/lang/String;IILautumn/lang/LocalsMap;)V";
         code.add(new MethodInsnNode(Opcodes.INVOKESTATIC, owner, name, desc));
     }
 
@@ -1182,7 +1184,7 @@ public final class StatementCodeGenerator
         code.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL, owner, name, desc));
 
         // Store each variable.
-        for (String variable : function.allocator.getAllVariables())
+        for (String variable : function.allocator.getVariables())
         {
             // Skip parameters, because they are unique to each invocation.
             if (function.allocator.isParameter(variable))

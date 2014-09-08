@@ -2,7 +2,6 @@ package high.mackenzie.autumn.lang.compiler.compilers;
 
 import autumn.lang.compiler.ClassFile;
 import autumn.lang.compiler.ast.nodes.AnnotationDefinition;
-import autumn.lang.compiler.ast.nodes.DesignDefinition;
 import autumn.lang.compiler.ast.nodes.EnumDefinition;
 import autumn.lang.compiler.ast.nodes.ExceptionDefinition;
 import autumn.lang.compiler.ast.nodes.FormalParameter;
@@ -12,6 +11,7 @@ import autumn.lang.compiler.ast.nodes.ImportDirective;
 import autumn.lang.compiler.ast.nodes.Module;
 import autumn.lang.compiler.ast.nodes.ModuleDirective;
 import autumn.lang.compiler.ast.nodes.Name;
+import autumn.lang.compiler.ast.nodes.StructDefinition;
 import autumn.lang.compiler.ast.nodes.TupleDefinition;
 import autumn.lang.compiler.ast.nodes.TypeSpecifier;
 import com.google.common.collect.ImmutableList;
@@ -89,7 +89,7 @@ public final class ModuleCompiler
 
     public final List<FunctorCompiler> functors = Lists.newLinkedList();
 
-    public final List<DesignCompiler> designs = Lists.newLinkedList();
+    public final List<StructCompiler> structs = Lists.newLinkedList();
 
     public final List<FunctionCompiler> functions = Lists.newLinkedList();
 
@@ -149,9 +149,9 @@ public final class ModuleCompiler
             functors.add(new FunctorCompiler(this, x));
         }
 
-        for (DesignDefinition x : node.getDesigns())
+        for (StructDefinition x : node.getStructs())
         {
-            designs.add(new DesignCompiler(this, x));
+            structs.add(new StructCompiler(this, x));
         }
 
         for (FunctionDefinition x : node.getFunctions())
@@ -191,7 +191,7 @@ public final class ModuleCompiler
             classes.add(x.build());
         }
 
-        for (DesignCompiler x : designs)
+        for (StructCompiler x : structs)
         {
             classes.add(x.build());
             classes.add(x.klass.build());
@@ -935,7 +935,7 @@ public final class ModuleCompiler
         result.addAll(enums);
         result.addAll(tuples);
         result.addAll(functors);
-        result.addAll(designs);
+        result.addAll(structs);
         result.addAll(functions);
 
         return result;

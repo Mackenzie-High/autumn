@@ -52,14 +52,14 @@ struct Module
   doc These are the tuples declared directly within this module. 
   data tuples : ConstructList<TupleDefinition> = { new ConstructList() };
 
+  doc These are the structs declared directly within this module. 
+  data structs : ConstructList<StructDefinition> = { new ConstructList() };
+
   doc These are the functors declared directly within this module. 
   data functors : ConstructList<FunctorDefinition> = { new ConstructList() };
 
   doc These are the enums declared directly within this module. 
   data enums : ConstructList<EnumDefinition> = { new ConstructList() };
-
-  doc These are the designs declared directly within this module. 
-  data designs : ConstructList<DesignDefinition> = { new ConstructList() };
 
   doc These are the functions declared directly within this module. 
   data functions : ConstructList<FunctionDefinition> = { new ConstructList() };
@@ -237,8 +237,8 @@ end
 # Designs --> Definition
 ###################################################################################################
 
-doc An instance of this class is an AST node that represents the definition of a design-type.
-struct DesignDefinition
+doc An instance of this class is an AST node that represents the definition of a struct-type.
+struct StructDefinition
   implement IAnnotated;
   implement IDocumented;
 
@@ -251,67 +251,11 @@ struct DesignDefinition
   doc This is the simple name of the new type.
   data name : Name;
 
-  doc These are the direct superinterfaces of the new type.
-  data superinterfaces : ConstructList<TypeSpecifier> = { new ConstructList() };
+  doc These are the direct supertypes of the new type.
+  data supers : ConstructList<TypeSpecifier> = { new ConstructList() };
 
-  doc These are the properties declared directly within this definition.
-  data properties : ConstructList<DesignProperty> = { new ConstructList<DesignProperty>() };
-
-  doc These are the methods declared directly within this definition.
-  data methods : ConstructList<DesignMethod> = { new ConstructList<DesignMethod>() };
-
-  doc This is the source-location information regarding this construct.
-  data location : SourceLocation = { new SourceLocation() };
-end
-
-###################################################################################################
-# Designs --> Property
-###################################################################################################
-
-doc An instance of this class is an AST node that represents the declaration of a property within a design.
-struct DesignProperty
-  implement IAnnotated;
-  implement IDocumented;
-
-  doc This is the doc-comment applied directly to the property.
-  data comment : DocComment = { new DocComment() };
-
-  doc These are the annotations applied directly to the property. 
-  data annotations : AnnotationList = { new AnnotationList() };
-
-  doc This is the name of the property. 
-  data name : Name;
-
-  doc This is the type of the data that can be stored in the property at runtime.
-  data type : TypeSpecifier;
-
-  doc This is the source-location information regarding this construct.
-  data location : SourceLocation = { new SourceLocation() };
-end
-
-###################################################################################################
-# Designs --> Method
-###################################################################################################
-
-doc An instance of this class is an AST node that represents the declaration of a method within a design.
-struct DesignMethod
-  implement IAnnotated;
-  implement IDocumented;
-
-  doc This is the doc-comment applied directly to the method.
-  data comment : DocComment = { new DocComment() };
-
-  doc These are the annotations applied directly to the declaration. 
-  data annotations : AnnotationList = { new AnnotationList() };
-
-  doc This is the name of the method.
-  data name : Name;
-
-  doc These are the formal parameters of the method. 
-  data parameters : FormalParameterList;
-
-  doc This is the type of value that the method can return, or the void type, if the method does not return a value. 
-  data return_type : TypeSpecifier;
+  doc These are the entries in the new type. 
+  data elements : FormalParameterList;
 
   doc This is the source-location information regarding this construct.
   data location : SourceLocation = { new SourceLocation() };
@@ -1770,42 +1714,6 @@ end
 
 doc An instance of this class is an AST node that represents the logical-implication operator.
 struct ImpliesOperation
-  implement IBinaryOperation;
-
-  doc This expression produces the operation's left-operand.
-  data left_operand : IExpression;
-
-  doc This expression produces the operation's right-operand.
-  data right_operand : IExpression;
-
-  doc This is the source-location information regarding this construct.
-  data location : SourceLocation = { new SourceLocation() };
-end
-
-###################################################################################################
-# Operators --> Short-Circuit Logical-AND
-###################################################################################################
-
-doc An instance of this class is an AST node that represents the short-circuit logical-AND operator.
-struct ShortCircuitAndOperation
-  implement IBinaryOperation;
-
-  doc This expression produces the operation's left-operand.
-  data left_operand : IExpression;
-
-  doc This expression produces the operation's right-operand.
-  data right_operand : IExpression;
-
-  doc This is the source-location information regarding this construct.
-  data location : SourceLocation = { new SourceLocation() };
-end
-
-###################################################################################################
-# Operators --> Short-Circuit Logical-OR
-###################################################################################################
-
-doc An instance of this class is an AST node that represents the short-circuit logical-OR operator.
-struct ShortCircuitOrOperation
   implement IBinaryOperation;
 
   doc This expression produces the operation's left-operand.

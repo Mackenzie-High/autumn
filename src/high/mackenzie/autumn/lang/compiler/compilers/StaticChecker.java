@@ -410,15 +410,15 @@ public final class StaticChecker
     }
 
     /**
-     * This method ensures that a type is a prototype-type.
+     * This method ensures that a type is a struct-type.
      *
      * @param construct is the construct that is performing the type-check.
-     * @param expression is the expression that must be a prototype-type.
+     * @param expression is the expression that must be a struct-type.
      */
-    public void requirePrototypeType(final IConstruct construct,
+    public void requireStructType(final IConstruct construct,
                                      final IExpressionType type)
     {
-        if (type.isSubtypeOf(program.typesystem.utils.PROTOTYPE))
+        if (type.isSubtypeOf(program.typesystem.utils.STRUCT))
         {
             return;
         }
@@ -1105,7 +1105,7 @@ public final class StaticChecker
         result.append(Utils.simpleName(owner));
         result.append(dot);
         result.append(name);
-        result.append(Strings.stringify(args, "(", ", ", ")"));
+        result.append(Strings.str(args, "(", ", ", ")"));
 
         return result.toString();
     }

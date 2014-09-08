@@ -187,54 +187,16 @@ rule functor_definition
 }
 
 ###################################################################################################
-# Designs --> Definition
+# Struct --> Definition
 ###################################################################################################
 
-rule design_definition
+rule struct_definition
 {
   # Get the AST builder.
   builder : TreeBuilder = call Utils.builder();
 
   # Create the AST node.
-  call builder.createDefinitionDesign();
-
-  # Set the source-location information.
-  call Utils.setSourceLocation($node);
-
-  # Merge the upper stack with the next lower stack.
-  call builder.popStack();
-}
-
-###################################################################################################
-# Designs --> Property
-###################################################################################################
-
-rule property
-{
-  # Get the AST builder.
-  builder : TreeBuilder = call Utils.builder();
-
-  # Create the AST node.
-  call builder.createDefinitionDesignProperty();
-
-  # Set the source-location information.
-  call Utils.setSourceLocation($node);
-
-  # Merge the upper stack with the next lower stack.
-  call builder.popStack();
-}
-
-###################################################################################################
-# Designs --> Method
-###################################################################################################
-
-rule method
-{
-  # Get the AST builder.
-  builder : TreeBuilder = call Utils.builder();
-
-  # Create the AST node.
-  call builder.createDefinitionDesignMethod();
+  call builder.createDefinitionStruct();
 
   # Set the source-location information.
   call Utils.setSourceLocation($node);
@@ -904,63 +866,6 @@ rule recur_statement
 }
 
 ###################################################################################################
-# Statements --> Setter
-###################################################################################################
-
-rule setter_statement
-{
-  # Get the AST builder.
-  builder : TreeBuilder = call Utils.builder();
-
-  # Create the AST node.
-  call builder.createStatementSetter();
-
-  # Set the source-location information.
-  call Utils.setSourceLocation($node);
-
-  # Merge the upper stack with the next lower stack.
-  call builder.popStack();
-}
-
-###################################################################################################
-# Statements --> Getter
-###################################################################################################
-
-rule getter_statement
-{
-  # Get the AST builder.
-  builder : TreeBuilder = call Utils.builder();
-
-  # Create the AST node.
-  call builder.createStatementGetter();
-
-  # Set the source-location information.
-  call Utils.setSourceLocation($node);
-
-  # Merge the upper stack with the next lower stack.
-  call builder.popStack();
-}
-
-###################################################################################################
-# Statements --> Method
-###################################################################################################
-
-rule method_statement
-{
-  # Get the AST builder.
-  builder : TreeBuilder = call Utils.builder();
-
-  # Create the AST node.
-  call builder.createStatementMethod();
-
-  # Set the source-location information.
-  call Utils.setSourceLocation($node);
-
-  # Merge the upper stack with the next lower stack.
-  call builder.popStack();
-}
-
-###################################################################################################
 # Expressions --> Datums --> Boolean
 ###################################################################################################
 
@@ -1497,38 +1402,6 @@ rule implies_operation
 
   # Create the AST node.
   call builder.createOperationImplies();
-
-  # Set the source-location information.
-  call Utils.setSourceLocation($node);
-}
-
-###################################################################################################
-# Expressions --> Operators --> Short-Circuit Logical-AND
-###################################################################################################
-
-rule short_circuit_and_operation
-{
-  # Get the AST builder.
-  builder : TreeBuilder = call Utils.builder();
-
-  # Create the AST node.
-  call builder.createOperationShortCircuitAnd();
-
-  # Set the source-location information.
-  call Utils.setSourceLocation($node);
-}
-
-###################################################################################################
-# Expressions --> Operators --> Short-Circuit Logical-OR
-###################################################################################################
-
-rule short_circuit_or_operation
-{
-  # Get the AST builder.
-  builder : TreeBuilder = call Utils.builder();
-
-  # Create the AST node.
-  call builder.createOperationShortCircuitOr();
 
   # Set the source-location information.
   call Utils.setSourceLocation($node);

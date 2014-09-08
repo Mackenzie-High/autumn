@@ -30,6 +30,9 @@ public final class Runner
 
 
 
+        test("T0250");
+        test("T0249");
+        test("T0248");
         test("T0247");
         test("T0246");
         test("T0245");
@@ -118,18 +121,11 @@ public final class Runner
         test("T0162");
         test("T0161");
         test("T0160");
-        test("T0159");
-        test("T0158");
-        test("T0157");
         test("T0156");
         test("T0155");
         test("T0154");
         test("T0153");
-        test("T0152");
-        test("T0151");
-        test("T0150");
         test("T0149");
-        test("T0148");
         test("T0147");
         test("T0146");
         test("T0145");

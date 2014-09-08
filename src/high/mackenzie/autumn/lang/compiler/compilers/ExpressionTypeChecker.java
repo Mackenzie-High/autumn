@@ -4,6 +4,7 @@ import autumn.lang.compiler.ast.commons.IExpression;
 import autumn.lang.compiler.ast.nodes.*;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IClassType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IConstructor;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IDeclaredType;
@@ -17,9 +18,10 @@ import high.mackenzie.autumn.lang.compiler.utils.Conversion;
 import high.mackenzie.autumn.lang.compiler.utils.TypeSystemUtils;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 /**
- * An instance of this class can perform type usage checking on an expression.
+ * An instance of this class performs type usage checking on an expression.
  *
  * @author Mackenzie High
  */
@@ -332,12 +334,12 @@ public class ExpressionTypeChecker
         final IDeclaredType type = module.imports.resolveDeclaredType(object.getType());
 
         /**
-         * The type must be the type of a prototype.
+         * The type must be the type of a struct.
          */
-        if (type.isSubtypeOf(program.typesystem.utils.PROTOTYPE) == false)
+        if (type.isSubtypeOf(program.typesystem.utils.STRUCT) == false)
         {
             // This will throw an exception.
-            program.checker.requirePrototypeType(object, type);
+            program.checker.requireStructType(object, type);
         }
 
         /**
@@ -565,6 +567,30 @@ public class ExpressionTypeChecker
     @Override
     public void visit(final LocalsExpression object)
     {
+        /**
+         * Get the names of the variables that will be captured.
+         */
+        final Set<String> visible = Sets.newTreeSet();
+
+        for (String variable : allocator.getVariables())
+        {
+            // The variable must be in-scope.
+            final boolean usable = allocator.isUsable(variable);
+
+            // The variable cannot be a temporary.
+            final boolean non_temp = !allocator.isTemporary(variable);
+
+            if (usable && non_temp)
+            {
+                visible.add(variable);
+            }
+        }
+
+        /**
+         * The code-generator will needs the names of the variables to capture.
+         */
+        program.symbols.locals.put(object, visible);
+
         /**
          * The return-type of a locals-expression is always LocalsMap.
          */
@@ -812,44 +838,16 @@ public class ExpressionTypeChecker
     @Override
     public void visit(final AndOperation object)
     {
-        // Visit the operands and perform type-checking.
-        binaryOperation(object, "and",
-                        object.getLeftOperand(),
-                        object.getRightOperand());
+        // Visit and type-check the operands.
+        condition(object.getLeftOperand());
+        condition(object.getRightOperand());
+
+        // This type of operator always returns a boolean value.
+        infer(object, program.typesystem.utils.PRIMITIVE_BOOLEAN);
     }
 
     @Override
     public void visit(final OrOperation object)
-    {
-        // Visit the operands and perform type-checking.
-        binaryOperation(object,
-                        "or",
-                        object.getLeftOperand(),
-                        object.getRightOperand());
-    }
-
-    @Override
-    public void visit(final XorOperation object)
-    {
-        // Visit the operands and perform type-checking.
-        binaryOperation(object,
-                        "xor",
-                        object.getLeftOperand(),
-                        object.getRightOperand());
-    }
-
-    @Override
-    public void visit(final ImpliesOperation object)
-    {
-        // Visit the operands and perform type-checking.
-        binaryOperation(object,
-                        "implies",
-                        object.getLeftOperand(),
-                        object.getRightOperand());
-    }
-
-    @Override
-    public void visit(final ShortCircuitAndOperation object)
     {
         // Visit and type-check the operands.
         condition(object.getLeftOperand());
@@ -860,7 +858,18 @@ public class ExpressionTypeChecker
     }
 
     @Override
-    public void visit(final ShortCircuitOrOperation object)
+    public void visit(final XorOperation object)
+    {
+        // Visit and type-check the operands.
+        condition(object.getLeftOperand());
+        condition(object.getRightOperand());
+
+        // This type of operator always returns a boolean value.
+        infer(object, program.typesystem.utils.PRIMITIVE_BOOLEAN);
+    }
+
+    @Override
+    public void visit(final ImpliesOperation object)
     {
         // Visit and type-check the operands.
         condition(object.getLeftOperand());

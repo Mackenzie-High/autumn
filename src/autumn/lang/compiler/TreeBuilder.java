@@ -238,6 +238,7 @@ public final class TreeBuilder
      * <li> TupleDefinition </li>
      * <li> FunctorDefinition </li>
      * <li> EnumDefinition </li>
+     * <li> StructDefinition </li>
      * <li> FunctionDefinition </li>
      * </ul>
      * </p>
@@ -265,7 +266,7 @@ public final class TreeBuilder
 
         final LinkedList<EnumDefinition> enum_definitions = Lists.newLinkedList();
 
-        final LinkedList<DesignDefinition> design_definitions = Lists.newLinkedList();
+        final LinkedList<StructDefinition> struct_definitions = Lists.newLinkedList();
 
         final LinkedList<FunctionDefinition> function_definitions = Lists.newLinkedList();
 
@@ -316,11 +317,11 @@ public final class TreeBuilder
 
                 enum_definitions.addFirst(definition);
             }
-            else if (member instanceof DesignDefinition)
+            else if (member instanceof StructDefinition)
             {
-                final DesignDefinition definition = (DesignDefinition) member;
+                final StructDefinition definition = (StructDefinition) member;
 
-                design_definitions.addFirst(definition);
+                struct_definitions.addFirst(definition);
             }
             else if (member instanceof FunctionDefinition)
             {
@@ -342,7 +343,7 @@ public final class TreeBuilder
         module = module.setTuples((new ConstructList()).addAll(tuple_definitions));
         module = module.setFunctors((new ConstructList()).addAll(functor_definitions));
         module = module.setEnums((new ConstructList()).addAll(enum_definitions));
-        module = module.setDesigns((new ConstructList()).addAll(design_definitions));
+        module = module.setStructs((new ConstructList()).addAll(struct_definitions));
         module = module.setFunctions((new ConstructList()).addAll(function_definitions));
 
         // Push the AST node onto the stack.
@@ -674,21 +675,17 @@ public final class TreeBuilder
     }
 
     /**
-     * This method creates a design-definition.
+     * This method creates a struct-definition.
      *
      * <p>
      * <b>Precondition of the Stack</b>
      * <ul>
-     * <li> member[n] : Design-Member </li>
-     * <li> member[.] : Design-Member </li>
-     * <li> member[2] : Design-Member </li>
-     * <li> member[1] : Design-Member </li>
-     * <li> member[0] : Design-Member </li>
      * <li> supertype[m] : TypeSpecifier </li>
      * <li> supertype[.] : TypeSpecifier </li>
      * <li> supertype[2] : TypeSpecifier </li>
      * <li> supertype[1] : TypeSpecifier </li>
      * <li> supertype[0] : TypeSpecifier </li>
+     * <li> elements : FormalParameterList </li>
      * <li> name : Name </li>
      * <li> annotations : AnnotationList </li>
      * <li> comment : DocComment </li>
@@ -706,39 +703,23 @@ public final class TreeBuilder
      * A design-member may be either a design-method or design-property.
      * </p>
      */
-    public void createDefinitionDesign()
+    public void createDefinitionStruct()
     {
-        Preconditions.checkState(stack.size() >= 3);
+        Preconditions.checkState(stack.size() >= 4);
 
         // Get the pieces off of the stack.
 
-        final LinkedList<DesignProperty> properties = Lists.newLinkedList();
-
-        final LinkedList<DesignMethod> methods = Lists.newLinkedList();
-
         final LinkedList<TypeSpecifier> supers = Lists.newLinkedList();
 
-        while (stack.size() > 3)
+        while (stack.size() > 4)
         {
             final IConstruct x = stack.pop();
 
-            if (x instanceof TypeSpecifier)
-            {
-                supers.add(0, (TypeSpecifier) x);
-            }
-            else if (x instanceof DesignProperty)
-            {
-                properties.add(0, (DesignProperty) x);
-            }
-            else if (x instanceof DesignMethod)
-            {
-                methods.add(0, (DesignMethod) x);
-            }
-            else
-            {
-                throw new ClassCastException();
-            }
+            supers.add(0, (TypeSpecifier) x);
         }
+
+        final FormalParameterList elements = (FormalParameterList) stack.pop();
+
         final Name name = (Name) stack.pop();
 
         final AnnotationList annotations = (AnnotationList) stack.pop();
@@ -746,104 +727,14 @@ public final class TreeBuilder
         final DocComment comment = (DocComment) stack.pop();
 
         // Create the AST node.
-        DesignDefinition node = new DesignDefinition();
+        StructDefinition node = new StructDefinition();
 
         // Initialize the AST node.
         node = node.setComment(comment);
         node = node.setAnnotations(annotations);
         node = node.setName(name);
-        node = node.setSuperinterfaces((new ConstructList<TypeSpecifier>()).addAll(supers));
-        node = node.setProperties((new ConstructList<DesignProperty>()).addAll(properties));
-        node = node.setMethods((new ConstructList<DesignMethod>()).addAll(methods));
-
-        // Push the AST node onto the stack.
-        stack.push(node);
-
-        assert stack.size() == 1;
-    }
-
-    /**
-     * This method creates a design-property.
-     *
-     * <p>
-     * <b>Precondition of the Stack</b>
-     * <ul>
-     * <li> type : TypeSpecifier </li>
-     * <li> name : Name </li>
-     * <li> annotations : AnnotationList </li>
-     * <li> comment : DocComment </li>
-     * </ul>
-     * </p>
-     *
-     * <p>
-     * <b>Postcondition of the Stack</b>
-     * <ul>
-     * <li> result : DesignProperty </li>
-     * </ul>
-     * </p>
-     */
-    public void createDefinitionDesignProperty()
-    {
-        Preconditions.checkState(stack.size() == 4);
-
-        // Pop the pieces off of the stack.
-        final TypeSpecifier type = (TypeSpecifier) stack.pop();
-        final Name name = (Name) stack.pop();
-        final AnnotationList annotations = (AnnotationList) stack.pop();
-        final DocComment comment = (DocComment) stack.pop();
-
-        // Create the AST node.
-        DesignProperty node = new DesignProperty();
-        node = node.setComment(comment);
-        node = node.setAnnotations(annotations);
-        node = node.setName(name);
-        node = node.setType(type);
-
-        // Push the AST node onto the stack.
-        stack.push(node);
-
-        assert stack.size() == 1;
-    }
-
-    /**
-     * This method creates a design-method.
-     *
-     * <p>
-     * <b>Precondition of the Stack</b>
-     * <ul>
-     * <li> returns : TypeSpecifier </li>
-     * <li> formals : FormalParameterList </li>
-     * <li> name : Name </li>
-     * <li> annotations : AnnotationList </li>
-     * <li> comment : DocComment </li>
-     * </ul>
-     * </p>
-     *
-     * <p>
-     * <b>Postcondition of the Stack</b>
-     * <ul>
-     * <li> result : DesignMethod </li>
-     * </ul>
-     * </p>
-     */
-    public void createDefinitionDesignMethod()
-    {
-        Preconditions.checkState(stack.size() == 5);
-
-        // Pop the pieces off of the stack.
-        final TypeSpecifier returns = (TypeSpecifier) stack.pop();
-        final FormalParameterList formals = (FormalParameterList) stack.pop();
-        final Name name = (Name) stack.pop();
-        final AnnotationList annotations = (AnnotationList) stack.pop();
-        final DocComment comment = (DocComment) stack.pop();
-
-        // Create the AST node.
-        DesignMethod node = new DesignMethod();
-        node = node.setComment(comment);
-        node = node.setAnnotations(annotations);
-        node = node.setName(name);
-        node = node.setParameters(formals);
-        node = node.setReturnType(returns);
+        node = node.setSupers((new ConstructList<TypeSpecifier>()).addAll(supers));
+        node = node.setElements(elements);
 
         // Push the AST node onto the stack.
         stack.push(node);
@@ -2171,56 +2062,6 @@ public final class TreeBuilder
     public void createOperationNullCoalescing()
     {
         createBinaryOperation(new NullCoalescingOperation());
-    }
-
-    /**
-     * This method creates a short-circuit AND-operation.
-     *
-     * <p>
-     * <b>Precondition of the Stack</b>
-     * <ul>
-     * <li> right-operand : IExpression </li>
-     * <li> left-operand : IExpression </li>
-     * <li> ..... </li>
-     * </ul>
-     * </p>
-     *
-     * <p>
-     * <b>Postcondition of the Stack</b>
-     * <ul>
-     * <li> result : ShortCircuitAndOperation </li>
-     * <li> ..... </li>
-     * </ul>
-     * </p>
-     */
-    public void createOperationShortCircuitAnd()
-    {
-        createBinaryOperation(new ShortCircuitAndOperation());
-    }
-
-    /**
-     * This method creates a short-circuit OR-operation.
-     *
-     * <p>
-     * <b>Precondition of the Stack</b>
-     * <ul>
-     * <li> right-operand : IExpression </li>
-     * <li> left-operand : IExpression </li>
-     * <li> ..... </li>
-     * </ul>
-     * </p>
-     *
-     * <p>
-     * <b>Postcondition of the Stack</b>
-     * <ul>
-     * <li> result : ShortCircuitOrOperation </li>
-     * <li> ..... </li>
-     * </ul>
-     * </p>
-     */
-    public void createOperationShortCircuitOr()
-    {
-        createBinaryOperation(new ShortCircuitOrOperation());
     }
 
     /**

@@ -66,7 +66,6 @@ public final class AutumnParserTest
 //        catch (Exception ex)
 //        {
 //        }
-        //
 
         assertEquals(output, results);
 

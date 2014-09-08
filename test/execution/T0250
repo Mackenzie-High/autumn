@@ -1,0 +1,14 @@
+module Main in execution;
+
+struct Person (name : String, age : int);
+
+@Start
+defun main (args : String[]) : void
+{
+    var p = (create Person);
+    p = (p.name "Emma");
+    p = (p.age 24);
+
+    assert (p.name) == "Emma";
+    assert (p.age) == 24;
+}

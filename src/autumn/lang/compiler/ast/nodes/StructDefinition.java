@@ -47,23 +47,24 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 
 /**
- * An instance of this class is an AST node that represents the declaration of a property within a design.
+ * An instance of this class is an AST node that represents the definition of a struct-type.
  * 
  * <p> 
  * <table border="1">
  *     <tr> <td> <b>Property Name</b> </td> <td> <b>Property Description</b> </td> </tr>
- *     <tr> <td> <code>comment</code> </td> <td>This is the doc-comment applied directly to the property.</td> </tr>
- *     <tr> <td> <code>annotations</code> </td> <td>These are the annotations applied directly to the property.</td> </tr>
- *     <tr> <td> <code>name</code> </td> <td>This is the name of the property.</td> </tr>
- *     <tr> <td> <code>type</code> </td> <td>This is the type of the data that can be stored in the property at runtime.</td> </tr>
+ *     <tr> <td> <code>comment</code> </td> <td>This is the doc-comment applied directly to the definition.</td> </tr>
+ *     <tr> <td> <code>annotations</code> </td> <td>These are the annotations applied directly to the definition.</td> </tr>
+ *     <tr> <td> <code>name</code> </td> <td>This is the simple name of the new type.</td> </tr>
+ *     <tr> <td> <code>supers</code> </td> <td>These are the direct supertypes of the new type.</td> </tr>
+ *     <tr> <td> <code>elements</code> </td> <td>These are the entries in the new type.</td> </tr>
  *     <tr> <td> <code>location</code> </td> <td>This is the source-location information regarding this construct.</td> </tr>
  * </table>
  * </p>
  * 
- * <p> This file was auto-generated on (Sat Aug 23 10:55:08 EDT 2014).</p>
+ * <p> This file was auto-generated on (Sun Sep 07 00:40:15 EDT 2014).</p>
  */
 @SuppressWarnings("unchecked")
-public final class DesignProperty extends Object implements IAnnotated, IDocumented
+public final class StructDefinition extends Object implements IAnnotated, IDocumented
 {
     private DocComment comment = new DocComment();
 
@@ -71,7 +72,9 @@ public final class DesignProperty extends Object implements IAnnotated, IDocumen
 
     private Name name;
 
-    private TypeSpecifier type;
+    private ConstructList<TypeSpecifier> supers = new ConstructList();
+
+    private FormalParameterList elements;
 
     private SourceLocation location = new SourceLocation();
 
@@ -81,9 +84,9 @@ public final class DesignProperty extends Object implements IAnnotated, IDocumen
      * @param value is the new value of property <code>comment</code>.
      * @return a copy of this object with property <code>comment</code> set to value.
      */
-    public DesignProperty setComment(final DocComment value)
+    public StructDefinition setComment(final DocComment value)
     {
-        final DesignProperty result = this.copy();
+        final StructDefinition result = this.copy();
         result.comment = value;
         return result;
     }
@@ -105,9 +108,9 @@ public final class DesignProperty extends Object implements IAnnotated, IDocumen
      * @param value is the new value of property <code>annotations</code>.
      * @return a copy of this object with property <code>annotations</code> set to value.
      */
-    public DesignProperty setAnnotations(final AnnotationList value)
+    public StructDefinition setAnnotations(final AnnotationList value)
     {
-        final DesignProperty result = this.copy();
+        final StructDefinition result = this.copy();
         result.annotations = value;
         return result;
     }
@@ -129,9 +132,9 @@ public final class DesignProperty extends Object implements IAnnotated, IDocumen
      * @param value is the new value of property <code>name</code>.
      * @return a copy of this object with property <code>name</code> set to value.
      */
-    public DesignProperty setName(final Name value)
+    public StructDefinition setName(final Name value)
     {
-        final DesignProperty result = this.copy();
+        final StructDefinition result = this.copy();
         result.name = value;
         return result;
     }
@@ -150,24 +153,48 @@ public final class DesignProperty extends Object implements IAnnotated, IDocumen
     /**
      * Setter.
      * 
-     * @param value is the new value of property <code>type</code>.
-     * @return a copy of this object with property <code>type</code> set to value.
+     * @param value is the new value of property <code>supers</code>.
+     * @return a copy of this object with property <code>supers</code> set to value.
      */
-    public DesignProperty setType(final TypeSpecifier value)
+    public StructDefinition setSupers(final ConstructList<TypeSpecifier> value)
     {
-        final DesignProperty result = this.copy();
-        result.type = value;
+        final StructDefinition result = this.copy();
+        result.supers = value;
         return result;
     }
 
     /**
      * Getter.
      * 
-     * @return the value of property <code>type</code>.
+     * @return the value of property <code>supers</code>.
      */
-    public TypeSpecifier getType()
+    public ConstructList<TypeSpecifier> getSupers()
     {
-        final TypeSpecifier value = this.type;
+        final ConstructList<TypeSpecifier> value = this.supers;
+        return value;
+    }
+
+    /**
+     * Setter.
+     * 
+     * @param value is the new value of property <code>elements</code>.
+     * @return a copy of this object with property <code>elements</code> set to value.
+     */
+    public StructDefinition setElements(final FormalParameterList value)
+    {
+        final StructDefinition result = this.copy();
+        result.elements = value;
+        return result;
+    }
+
+    /**
+     * Getter.
+     * 
+     * @return the value of property <code>elements</code>.
+     */
+    public FormalParameterList getElements()
+    {
+        final FormalParameterList value = this.elements;
         return value;
     }
 
@@ -177,9 +204,9 @@ public final class DesignProperty extends Object implements IAnnotated, IDocumen
      * @param value is the new value of property <code>location</code>.
      * @return a copy of this object with property <code>location</code> set to value.
      */
-    public DesignProperty setLocation(final SourceLocation value)
+    public StructDefinition setLocation(final SourceLocation value)
     {
-        final DesignProperty result = this.copy();
+        final StructDefinition result = this.copy();
         result.location = value;
         return result;
     }
@@ -201,17 +228,19 @@ public final class DesignProperty extends Object implements IAnnotated, IDocumen
      * @param comment is the value for property <code>comment</code>.
      * @param annotations is the value for property <code>annotations</code>.
      * @param name is the value for property <code>name</code>.
-     * @param type is the value for property <code>type</code>.
+     * @param supers is the value for property <code>supers</code>.
+     * @param elements is the value for property <code>elements</code>.
      * @param location is the value for property <code>location</code>.
      * @return a new instance of this class.
      */
-    public static DesignProperty create(DocComment comment, AnnotationList annotations, Name name, TypeSpecifier type, SourceLocation location)
+    public static StructDefinition create(DocComment comment, AnnotationList annotations, Name name, ConstructList<TypeSpecifier> supers, FormalParameterList elements, SourceLocation location)
     {
-        DesignProperty object = new DesignProperty();
+        StructDefinition object = new StructDefinition();
         object = object.setComment(comment);
         object = object.setAnnotations(annotations);
         object = object.setName(name);
-        object = object.setType(type);
+        object = object.setSupers(supers);
+        object = object.setElements(elements);
         object = object.setLocation(location);
         return object;
     }
@@ -231,13 +260,14 @@ public final class DesignProperty extends Object implements IAnnotated, IDocumen
      * 
      * @return a shallow copy of this object.
      */
-    public DesignProperty copy()
+    public StructDefinition copy()
     {
-        final DesignProperty result = new DesignProperty();
+        final StructDefinition result = new StructDefinition();
         result.comment = this.comment;
         result.annotations = this.annotations;
         result.name = this.name;
-        result.type = this.type;
+        result.supers = this.supers;
+        result.elements = this.elements;
         result.location = this.location;
         return result;
     }
@@ -258,7 +288,8 @@ public final class DesignProperty extends Object implements IAnnotated, IDocumen
         map.put("comment", this.getComment());
         map.put("annotations", this.getAnnotations());
         map.put("name", this.getName());
-        map.put("type", this.getType());
+        map.put("supers", this.getSupers());
+        map.put("elements", this.getElements());
         map.put("location", this.getLocation());
 
         return map;

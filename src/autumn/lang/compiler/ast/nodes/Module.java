@@ -57,15 +57,15 @@ import java.util.TreeSet;
  *     <tr> <td> <code>annotations</code> </td> <td>These are the annotations declared directly within this module.</td> </tr>
  *     <tr> <td> <code>exceptions</code> </td> <td>These are the exceptions declared directly within this module.</td> </tr>
  *     <tr> <td> <code>tuples</code> </td> <td>These are the tuples declared directly within this module.</td> </tr>
+ *     <tr> <td> <code>structs</code> </td> <td>These are the structs declared directly within this module.</td> </tr>
  *     <tr> <td> <code>functors</code> </td> <td>These are the functors declared directly within this module.</td> </tr>
  *     <tr> <td> <code>enums</code> </td> <td>These are the enums declared directly within this module.</td> </tr>
- *     <tr> <td> <code>designs</code> </td> <td>These are the designs declared directly within this module.</td> </tr>
  *     <tr> <td> <code>functions</code> </td> <td>These are the functions declared directly within this module.</td> </tr>
  *     <tr> <td> <code>location</code> </td> <td>This is the source-location information regarding this construct.</td> </tr>
  * </table>
  * </p>
  * 
- * <p> This file was auto-generated on (Sat Aug 23 10:55:08 EDT 2014).</p>
+ * <p> This file was auto-generated on (Sun Sep 07 00:40:15 EDT 2014).</p>
  */
 @SuppressWarnings("unchecked")
 public final class Module extends Object implements IConstruct
@@ -80,11 +80,11 @@ public final class Module extends Object implements IConstruct
 
     private ConstructList<TupleDefinition> tuples = new ConstructList();
 
+    private ConstructList<StructDefinition> structs = new ConstructList();
+
     private ConstructList<FunctorDefinition> functors = new ConstructList();
 
     private ConstructList<EnumDefinition> enums = new ConstructList();
-
-    private ConstructList<DesignDefinition> designs = new ConstructList();
 
     private ConstructList<FunctionDefinition> functions = new ConstructList();
 
@@ -213,6 +213,30 @@ public final class Module extends Object implements IConstruct
     /**
      * Setter.
      * 
+     * @param value is the new value of property <code>structs</code>.
+     * @return a copy of this object with property <code>structs</code> set to value.
+     */
+    public Module setStructs(final ConstructList<StructDefinition> value)
+    {
+        final Module result = this.copy();
+        result.structs = value;
+        return result;
+    }
+
+    /**
+     * Getter.
+     * 
+     * @return the value of property <code>structs</code>.
+     */
+    public ConstructList<StructDefinition> getStructs()
+    {
+        final ConstructList<StructDefinition> value = this.structs;
+        return value;
+    }
+
+    /**
+     * Setter.
+     * 
      * @param value is the new value of property <code>functors</code>.
      * @return a copy of this object with property <code>functors</code> set to value.
      */
@@ -255,30 +279,6 @@ public final class Module extends Object implements IConstruct
     public ConstructList<EnumDefinition> getEnums()
     {
         final ConstructList<EnumDefinition> value = this.enums;
-        return value;
-    }
-
-    /**
-     * Setter.
-     * 
-     * @param value is the new value of property <code>designs</code>.
-     * @return a copy of this object with property <code>designs</code> set to value.
-     */
-    public Module setDesigns(final ConstructList<DesignDefinition> value)
-    {
-        final Module result = this.copy();
-        result.designs = value;
-        return result;
-    }
-
-    /**
-     * Getter.
-     * 
-     * @return the value of property <code>designs</code>.
-     */
-    public ConstructList<DesignDefinition> getDesigns()
-    {
-        final ConstructList<DesignDefinition> value = this.designs;
         return value;
     }
 
@@ -338,14 +338,14 @@ public final class Module extends Object implements IConstruct
      * @param annotations is the value for property <code>annotations</code>.
      * @param exceptions is the value for property <code>exceptions</code>.
      * @param tuples is the value for property <code>tuples</code>.
+     * @param structs is the value for property <code>structs</code>.
      * @param functors is the value for property <code>functors</code>.
      * @param enums is the value for property <code>enums</code>.
-     * @param designs is the value for property <code>designs</code>.
      * @param functions is the value for property <code>functions</code>.
      * @param location is the value for property <code>location</code>.
      * @return a new instance of this class.
      */
-    public static Module create(ConstructList<ModuleDirective> module_directives, ConstructList<ImportDirective> import_directives, ConstructList<AnnotationDefinition> annotations, ConstructList<ExceptionDefinition> exceptions, ConstructList<TupleDefinition> tuples, ConstructList<FunctorDefinition> functors, ConstructList<EnumDefinition> enums, ConstructList<DesignDefinition> designs, ConstructList<FunctionDefinition> functions, SourceLocation location)
+    public static Module create(ConstructList<ModuleDirective> module_directives, ConstructList<ImportDirective> import_directives, ConstructList<AnnotationDefinition> annotations, ConstructList<ExceptionDefinition> exceptions, ConstructList<TupleDefinition> tuples, ConstructList<StructDefinition> structs, ConstructList<FunctorDefinition> functors, ConstructList<EnumDefinition> enums, ConstructList<FunctionDefinition> functions, SourceLocation location)
     {
         Module object = new Module();
         object = object.setModuleDirectives(module_directives);
@@ -353,9 +353,9 @@ public final class Module extends Object implements IConstruct
         object = object.setAnnotations(annotations);
         object = object.setExceptions(exceptions);
         object = object.setTuples(tuples);
+        object = object.setStructs(structs);
         object = object.setFunctors(functors);
         object = object.setEnums(enums);
-        object = object.setDesigns(designs);
         object = object.setFunctions(functions);
         object = object.setLocation(location);
         return object;
@@ -384,9 +384,9 @@ public final class Module extends Object implements IConstruct
         result.annotations = this.annotations;
         result.exceptions = this.exceptions;
         result.tuples = this.tuples;
+        result.structs = this.structs;
         result.functors = this.functors;
         result.enums = this.enums;
-        result.designs = this.designs;
         result.functions = this.functions;
         result.location = this.location;
         return result;
@@ -410,9 +410,9 @@ public final class Module extends Object implements IConstruct
         map.put("annotations", this.getAnnotations());
         map.put("exceptions", this.getExceptions());
         map.put("tuples", this.getTuples());
+        map.put("structs", this.getStructs());
         map.put("functors", this.getFunctors());
         map.put("enums", this.getEnums());
-        map.put("designs", this.getDesigns());
         map.put("functions", this.getFunctions());
         map.put("location", this.getLocation());
 

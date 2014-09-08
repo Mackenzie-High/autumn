@@ -1,0 +1,49 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    # Create the variables that will be captured.
+    val prime1 = 13;
+    val prime2 = 17;
+    val prime3 = 23;
+    val primes = [prime1, prime2, prime3];
+
+    # Variables in nested scope should be ignored.
+    {
+        val odd = 3;
+    }
+
+    # Temporary variables should be ignored.
+    # A temporary variable is created by a foreach-loop to store the iterator.
+    foreach (x : Object in primes)
+    {
+        nop;
+    }
+
+    # Capture the local variables.
+    # Captured Variables: args
+    #                     prime1
+    #                     prime2
+    #                     prime3
+    #                     primes
+    #
+    val map = (locals);
+
+    assert ((map.locals).size) == 5;
+
+    assert (map.typeOf "args") == (class String[]);
+    assert (map.typeOf "prime1") == (class int);
+    assert (map.typeOf "prime2") == (class int);
+    assert (map.typeOf "prime3") == (class int);
+    assert (map.typeOf "primes") == (class List);
+
+    assert (map.valueOf "prime1") == prime1;
+    assert (map.valueOf "prime2") == prime2;
+    assert (map.valueOf "prime3") == prime3;
+    assert (map.valueOf "primes") == primes;
+
+    assert ((map.file).contains "T0249");
+    assert (map.line) == 31;
+    assert (map.column) == 16;
+}

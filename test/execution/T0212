@@ -13,7 +13,7 @@ defun main (args : String[]) : void
 
         x = x + 1;
 
-        when (i == 3 && x < 5) then redo;
+        when (i == 3 & x < 5) then redo;
 
         x = 0;
     }

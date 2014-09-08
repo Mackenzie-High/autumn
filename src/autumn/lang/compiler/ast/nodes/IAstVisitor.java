@@ -49,7 +49,7 @@ import java.util.TreeSet;
 /**
  * An instance of this interface is a visitor that can visit the nodes in an Autumn abstract-syntax-tree.
  * 
- * <p> This file was auto-generated on (Sat Aug 23 10:55:09 EDT 2014).</p>
+ * <p> This file was auto-generated on (Sun Sep 07 00:40:15 EDT 2014).</p>
  */
 public interface IAstVisitor
 {
@@ -110,25 +110,11 @@ public interface IAstVisitor
     public void visit(final EnumDefinition object);
 
     /**
-     * This method visits an object of type <code>DesignDefinition</code>.
+     * This method visits an object of type <code>StructDefinition</code>.
      * 
      * @param object is the object to visit.
      */
-    public void visit(final DesignDefinition object);
-
-    /**
-     * This method visits an object of type <code>DesignProperty</code>.
-     * 
-     * @param object is the object to visit.
-     */
-    public void visit(final DesignProperty object);
-
-    /**
-     * This method visits an object of type <code>DesignMethod</code>.
-     * 
-     * @param object is the object to visit.
-     */
-    public void visit(final DesignMethod object);
+    public void visit(final StructDefinition object);
 
     /**
      * This method visits an object of type <code>FunctionDefinition</code>.
@@ -717,20 +703,6 @@ public interface IAstVisitor
      * @param object is the object to visit.
      */
     public void visit(final ImpliesOperation object);
-
-    /**
-     * This method visits an object of type <code>ShortCircuitAndOperation</code>.
-     * 
-     * @param object is the object to visit.
-     */
-    public void visit(final ShortCircuitAndOperation object);
-
-    /**
-     * This method visits an object of type <code>ShortCircuitOrOperation</code>.
-     * 
-     * @param object is the object to visit.
-     */
-    public void visit(final ShortCircuitOrOperation object);
 
     /**
      * This method visits an object of type <code>NullCoalescingOperation</code>.

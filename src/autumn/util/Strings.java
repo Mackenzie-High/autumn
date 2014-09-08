@@ -1,6 +1,7 @@
 package autumn.util;
 
 import com.google.common.base.Preconditions;
+import com.google.common.collect.Lists;
 import java.util.List;
 
 /**
@@ -224,21 +225,50 @@ public final class Strings
         return result.toString();
     }
 
+    /**
+     * This method pads the beginning of a string with zeros, if needed.
+     *
+     * @param string is the string to possibly pad.
+     * @param length is the desired minimum length of the result.
+     * @return the padded string.
+     */
     public static String zfill(final CharSequence string,
                                final int length)
     {
         return padStart(string, '0', length);
     }
 
-    public static String stringify(final List<?> elements,
-                                   final String prefix,
-                                   final String separator,
-                                   final String suffix)
+    /**
+     * This method creates the string representation of a value.
+     *
+     * @param value is the value itself.
+     * @return value.toString(), if the value is not null; otherwise return "null".
+     */
+    public static String str(final Object value)
     {
-        Preconditions.checkNotNull(elements);
+        return "" + value;
+    }
+
+    /**
+     * This method creates a string representation for an iterable.
+     *
+     * @param iterable is the iterable itself.
+     * @param prefix is a string to prepend onto the result.
+     * @param separator is the substring used to separate elements in the result.
+     * @param suffix is a string to append onto the result.
+     * @return the aforedescribed result.
+     */
+    public static String str(final Iterable<?> iterable,
+                             final String prefix,
+                             final String separator,
+                             final String suffix)
+    {
+        Preconditions.checkNotNull(iterable);
         Preconditions.checkNotNull(prefix);
         Preconditions.checkNotNull(separator);
         Preconditions.checkNotNull(suffix);
+
+        final List<?> elements = Lists.newArrayList(iterable);
 
         final StringBuilder result = new StringBuilder();
 

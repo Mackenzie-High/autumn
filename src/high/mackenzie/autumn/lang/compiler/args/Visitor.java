@@ -1,6 +1,8 @@
 package high.mackenzie.autumn.lang.compiler.args;
 
 import autumn.lang.compiler.Autumn;
+import autumn.lang.exceptions.AssertionFailedException;
+import autumn.lang.exceptions.AssumptionFailedException;
 import com.google.common.collect.Lists;
 import com.google.common.io.Resources;
 import high.mackenzie.autumn.Main;
@@ -182,7 +184,21 @@ public final class Visitor
         }
         catch (InvocationTargetException ex)
         {
-            ex.printStackTrace(System.out);
+            if (ex.getCause() instanceof AssertionFailedException)
+            {
+                System.out.println("Assertion Failed:");
+                System.out.println("  File: " + ((AssertionFailedException) ex.getCause()).file());
+                System.out.println("  Line: " + ((AssertionFailedException) ex.getCause()).line());
+            }
+
+            if (ex.getCause() instanceof AssumptionFailedException)
+            {
+                System.out.println("Assertion Failed:");
+                System.out.println("  File: " + ((AssumptionFailedException) ex.getCause()).file());
+                System.out.println("  Line: " + ((AssumptionFailedException) ex.getCause()).line());
+            }
+
+            ex.getCause().printStackTrace(System.out);
         }
         catch (IllegalAccessException ex)
         {

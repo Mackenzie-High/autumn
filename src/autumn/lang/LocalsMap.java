@@ -153,12 +153,35 @@ public final class LocalsMap
      * This method retrieves the static-type of a variable that is described herein.
      *
      * @param variable is the name of the variable.
-     * @return the static-type of the variable; or null, if the variable does not exist.
+     * @return the static-type of the variable.
+     * @throws IllegalArgumentException if the named variable does not exist.
      */
     public Class typeOf(final String variable)
     {
+        Preconditions.checkNotNull(variable);
+
         final Local local = get(variable);
 
-        return local == null ? null : local.type();
+        Preconditions.checkArgument(local != null, "No Such Variable: " + variable);
+
+        return local.type();
+    }
+
+    /**
+     * This method retrieves the value stored in a variable that is described herein.
+     *
+     * @param variable is the name of the variable.
+     * @return the value stored of the variable.
+     * @throws IllegalArgumentException if the named variable does not exist.
+     */
+    public Object valueOf(final String variable)
+    {
+        Preconditions.checkNotNull(variable);
+
+        final Local local = get(variable);
+
+        Preconditions.checkArgument(local != null, "No Such Variable: " + variable);
+
+        return local.value();
     }
 }

@@ -7,7 +7,7 @@ defun main (args : String[]) : void
 {
     var list = (new LinkedList);
 
-    for(i = 1; i < 5 & (My::moo list, i); i + 0)
+    for(i = 1; (My::moo list, i) & i < 5; i + 0)
     {
         (list.add -i);
 

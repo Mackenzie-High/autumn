@@ -5,7 +5,7 @@ import autumn.lang.Functor;
 import autumn.lang.Local;
 import autumn.lang.LocalsMap;
 import autumn.lang.Module;
-import autumn.lang.Prototype;
+import autumn.lang.Struct;
 import autumn.lang.Tuple;
 import autumn.lang.annotations.Start;
 import autumn.lang.compiler.ast.nodes.Name;
@@ -138,7 +138,7 @@ public final class TypeSystemUtils
 
     public final IInterfaceType FUNCTOR;
 
-    public final IInterfaceType PROTOTYPE;
+    public final IInterfaceType STRUCT;
 
     public final IInterfaceType MODULE;
 
@@ -234,7 +234,7 @@ public final class TypeSystemUtils
 
         this.FUNCTOR = (IInterfaceType) factory.fromClass(Functor.class);
 
-        this.PROTOTYPE = (IInterfaceType) factory.fromClass(Prototype.class);
+        this.STRUCT = (IInterfaceType) factory.fromClass(Struct.class);
 
         this.MODULE = (IInterfaceType) factory.fromClass(Module.class);
 

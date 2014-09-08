@@ -268,7 +268,7 @@ public interface Tuple<T extends Tuple>
     public int compareTo(Tuple other);
 
     /**
-     * This method determines whether this tuple equals another given tuple.
+     * This method determines whether this tuple equals another object.
      *
      * <p>
      * Equality Rules:

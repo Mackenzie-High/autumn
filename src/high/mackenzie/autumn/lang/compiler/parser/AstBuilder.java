@@ -275,7 +275,7 @@ public final class AstBuilder extends AbstractVisitor
      * {inheritDoc} 
      */
     @Override
-    public void visit_design_definition(final ITreeNode $node)
+    public void visit_struct_definition(final ITreeNode $node)
     {
         final int $stack_size = $stack.size();
 
@@ -287,53 +287,7 @@ public final class AstBuilder extends AbstractVisitor
 
         final TreeBuilder builder = Utils.builder();
 
-        builder.createDefinitionDesign();
-
-        Utils.setSourceLocation($node);
-
-        builder.popStack();
-    }
-
-    /**
-     * {inheritDoc} 
-     */
-    @Override
-    public void visit_property(final ITreeNode $node)
-    {
-        final int $stack_size = $stack.size();
-
-        visitUnknown($node);
-
-        final int $change = $stack.size() - $stack_size;
-
-        assert $change >= 0;
-
-        final TreeBuilder builder = Utils.builder();
-
-        builder.createDefinitionDesignProperty();
-
-        Utils.setSourceLocation($node);
-
-        builder.popStack();
-    }
-
-    /**
-     * {inheritDoc} 
-     */
-    @Override
-    public void visit_method(final ITreeNode $node)
-    {
-        final int $stack_size = $stack.size();
-
-        visitUnknown($node);
-
-        final int $change = $stack.size() - $stack_size;
-
-        assert $change >= 0;
-
-        final TreeBuilder builder = Utils.builder();
-
-        builder.createDefinitionDesignMethod();
+        builder.createDefinitionStruct();
 
         Utils.setSourceLocation($node);
 
@@ -1164,75 +1118,6 @@ public final class AstBuilder extends AbstractVisitor
      * {inheritDoc} 
      */
     @Override
-    public void visit_setter_statement(final ITreeNode $node)
-    {
-        final int $stack_size = $stack.size();
-
-        visitUnknown($node);
-
-        final int $change = $stack.size() - $stack_size;
-
-        assert $change >= 0;
-
-        final TreeBuilder builder = Utils.builder();
-
-        builder.createStatementSetter();
-
-        Utils.setSourceLocation($node);
-
-        builder.popStack();
-    }
-
-    /**
-     * {inheritDoc} 
-     */
-    @Override
-    public void visit_getter_statement(final ITreeNode $node)
-    {
-        final int $stack_size = $stack.size();
-
-        visitUnknown($node);
-
-        final int $change = $stack.size() - $stack_size;
-
-        assert $change >= 0;
-
-        final TreeBuilder builder = Utils.builder();
-
-        builder.createStatementGetter();
-
-        Utils.setSourceLocation($node);
-
-        builder.popStack();
-    }
-
-    /**
-     * {inheritDoc} 
-     */
-    @Override
-    public void visit_method_statement(final ITreeNode $node)
-    {
-        final int $stack_size = $stack.size();
-
-        visitUnknown($node);
-
-        final int $change = $stack.size() - $stack_size;
-
-        assert $change >= 0;
-
-        final TreeBuilder builder = Utils.builder();
-
-        builder.createStatementMethod();
-
-        Utils.setSourceLocation($node);
-
-        builder.popStack();
-    }
-
-    /**
-     * {inheritDoc} 
-     */
-    @Override
     public void visit_boolean_datum(final ITreeNode $node)
     {
         final int $stack_size = $stack.size();
@@ -1917,48 +1802,6 @@ public final class AstBuilder extends AbstractVisitor
         final TreeBuilder builder = Utils.builder();
 
         builder.createOperationImplies();
-
-        Utils.setSourceLocation($node);
-    }
-
-    /**
-     * {inheritDoc} 
-     */
-    @Override
-    public void visit_short_circuit_and_operation(final ITreeNode $node)
-    {
-        final int $stack_size = $stack.size();
-
-        visitUnknown($node);
-
-        final int $change = $stack.size() - $stack_size;
-
-        assert $change >= 0;
-
-        final TreeBuilder builder = Utils.builder();
-
-        builder.createOperationShortCircuitAnd();
-
-        Utils.setSourceLocation($node);
-    }
-
-    /**
-     * {inheritDoc} 
-     */
-    @Override
-    public void visit_short_circuit_or_operation(final ITreeNode $node)
-    {
-        final int $stack_size = $stack.size();
-
-        visitUnknown($node);
-
-        final int $change = $stack.size() - $stack_size;
-
-        assert $change >= 0;
-
-        final TreeBuilder builder = Utils.builder();
-
-        builder.createOperationShortCircuitOr();
 
         Utils.setSourceLocation($node);
     }

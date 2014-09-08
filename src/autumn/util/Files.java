@@ -147,6 +147,13 @@ public final class Files
         return null;
     }
 
+    public static String readText(final File file,
+                                  final Charset charset)
+            throws IOException
+    {
+        return null;
+    }
+
     public static byte[] readBytes(final File file)
             throws IOException
     {

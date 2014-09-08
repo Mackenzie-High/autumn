@@ -82,6 +82,30 @@ tuple Person (name : String, age : int);
 tuple Person (name : String, age : int, income : long);
 
 '' This is a doc-comment.
+@Anno19
+@Anno20
+@Anno21
+struct Person (name : String, age : int);
+
+'' This is a doc-comment.
+@Anno19
+@Anno20
+@Anno21
+struct Person (name : String, age : int) extends Human;
+
+'' This is a doc-comment.
+@Anno19
+@Anno20
+@Anno21
+struct Person (name : String, age : int) extends Human & Taxable;
+
+'' This is a doc-comment.
+@Anno19
+@Anno20
+@Anno21
+struct Person (name : String, age : int) extends Human & Taxable & Employable;
+
+'' This is a doc-comment.
 @Anno07
 @Anno08
 @Anno09
@@ -101,42 +125,6 @@ functor Function2 (x : byte, y : short) : boolean;
 @Anno08
 @Anno09
 functor Function3 (x : byte, y : short, z : int) : boolean;
-
-'' This is a doc-comment.
-@Anno19
-@Anno20
-@Anno21
-design Person extends Creature & Employable & Taxable
-{
-    '' This is a doc-comment.
-    @Anno22
-    @Anno23
-    @Anno24
-    data name : String;
-
-    @Anno25
-    @Anno26
-    @Anno27
-    data age : int;
-
-    '' This is a doc-comment.
-    @Anno28
-    @Anno29
-    method move () : void;
-
-    @Anno28
-    @Anno29
-    method speak (message : String) : void;
-
-    @Anno28
-    @Anno29
-    method speak (message : String, count : int) : void;
-}
-
-design Employee
-{
-    data salary : int;
-}
 
 '' This is a doc-comment.
 @Anno37
@@ -286,9 +274,9 @@ defun main (args : String[]) : void
 
     val xoo = ((((12 > 34) > 56) > 78) > 90);
 
-    val xoo = ((((12 && 34) && 56) && 78) && 90);
+    val xoo = ((((12 & 34) & 56) & 78) & 90);
 
-    val xoo = ((((12 || 34) || 56) || 78) || 90);
+    val xoo = ((((12 | 34) | 56) | 78) | 90);
 
     val xoo = ((((12 & 34) & 56) & 78) & 90);
 
@@ -334,15 +322,15 @@ defun main (args : String[]) : void
 
     val xoo = ((12 - 34) < (56 - 78));
 
-    val xoo = ((12 == 34) && (56 == 78));
+    val xoo = ((12 == 34) & (56 == 78));
 
-    val xoo = ((12 == 34) && (56 == 78));
+    val xoo = ((12 == 34) & (56 == 78));
 
-    val xoo = ((12 == 34) && (56 == 78));
+    val xoo = ((12 == 34) & (56 == 78));
 
-    val xoo = ((12 == 34) && (56 == 78));
+    val xoo = ((12 == 34) & (56 == 78));
 
-    val xoo = ((12 == 34) && (56 == 78));
+    val xoo = ((12 == 34) & (56 == 78));
 
     val xoo = ((12 & 34) ?? (56 & 78));
 
@@ -378,11 +366,11 @@ defun main (args : String[]) : void
 
     var xoo = ((((((((1 < 2) > 3) <= 4) >= 5) != 6) == 7) !== 8) === 9);
 
-    var xoo = (((((1 && 2) || 3) & 4) | 5) ^ 6);
+    var xoo = (((((1 & 2) | 3) & 4) | 5) ^ 6);
 
-    var xoo = (((((1 ^ 2) | 3) & 4) || 5) && 6);
+    var xoo = (((((1 ^ 2) | 3) & 4) | 5) & 6);
 
-    var xoo = (((((1 ^ 2) | 3) & 4) || 5) -> 6);
+    var xoo = (((((1 ^ 2) | 3) & 4) | 5) -> 6);
 
     var xoo = ((12 as String) is Object);
 
@@ -582,18 +570,6 @@ defun main (args : String[]) : void
     let xoo = (12 + 34);
 
     let xoo = (13 + 17);
-
-    nop;
-
-    setter goo.boo => Boo::moo;
-
-    nop;
-
-    getter goo.boo => Boo::moo;
-
-    nop;
-
-    method goo.boo => Boo::moo;
 
     nop;
 

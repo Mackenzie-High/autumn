@@ -196,10 +196,11 @@ public final class PrintingVisitor
         require(object, object.getImportDirectives());
         require(object, object.getModuleDirectives());
         require(object, object.getAnnotations());
-        require(object, object.getDesigns());
+        require(object, object.getExceptions());
         require(object, object.getEnums());
-        require(object, object.getExceptions());
-        require(object, object.getExceptions());
+        require(object, object.getTuples());
+        require(object, object.getStructs());
+        require(object, object.getFunctors());
         require(object, object.getFunctions());
 
         for (ModuleDirective x : object.getModuleDirectives())
@@ -244,14 +245,14 @@ public final class PrintingVisitor
 
         p.addEmptyLine();
 
-        for (FunctorDefinition x : object.getFunctors())
+        for (StructDefinition x : object.getStructs())
         {
             x.accept(this);
         }
 
         p.addEmptyLine();
 
-        for (DesignDefinition x : object.getDesigns())
+        for (FunctorDefinition x : object.getFunctors())
         {
             x.accept(this);
         }
@@ -435,104 +436,30 @@ public final class PrintingVisitor
     }
 
     @Override
-    public void visit(final DesignDefinition object)
+    public void visit(final StructDefinition object)
     {
         record(object);
         require(object, object.getComment());
         require(object, object.getAnnotations());
         require(object, object.getName());
-        require(object, object.getSuperinterfaces());
-        require(object, object.getProperties());
+        require(object, object.getElements());
+        require(object, object.getSupers());
 
         object.getComment().accept(this);
 
         object.getAnnotations().accept(this);
 
         p.addLine();
-        p.addText("design ");
-        object.getName().accept(this);
-
-        if (object.getSuperinterfaces().isEmpty() == false)
-        {
-            p.addText(" extends ");
-        }
-
-        int count = 0;
-
-        for (TypeSpecifier supertype : object.getSuperinterfaces())
-        {
-            ++count;
-
-            supertype.accept(this);
-
-            if (count < object.getSuperinterfaces().size())
-            {
-                p.addText(" & ");
-            }
-        }
-
-        p.addOpeningBracket();
-        {
-            for (DesignProperty x : object.getProperties())
-            {
-                x.accept(this);
-            }
-
-            for (DesignMethod x : object.getMethods())
-            {
-                x.accept(this);
-            }
-        }
-        p.removeEmptyLines();
-        p.addClosingBracket();
-
-        p.addEmptyLine();
-    }
-
-    @Override
-    public void visit(final DesignProperty object)
-    {
-        record(object);
-        require(object, object.getComment());
-        require(object, object.getAnnotations());
-        require(object, object.getName());
-        require(object, object.getType());
-
-        object.getComment().accept(this);
-
-        object.getAnnotations().accept(this);
-
-        p.addLine();
-        p.addText("data ");
-        object.getName().accept(this);
-        p.addText(" : ");
-        object.getType().accept(this);
-        p.addText(";");
-
-        p.addEmptyLine();
-    }
-
-    @Override
-    public void visit(final DesignMethod object)
-    {
-        record(object);
-        require(object, object.getComment());
-        require(object, object.getAnnotations());
-        require(object, object.getName());
-        require(object, object.getParameters());
-        require(object, object.getReturnType());
-
-        object.getComment().accept(this);
-
-        object.getAnnotations().accept(this);
-
-        p.addLine();
-        p.addText("method ");
+        p.addText("struct ");
         object.getName().accept(this);
         p.addText(" ");
-        object.getParameters().accept(this);
-        p.addText(" : ");
-        object.getReturnType().accept(this);
+        object.getElements().accept(this);
+
+        if (object.getSupers().isEmpty() == false)
+        {
+            this.printList(" extends ", object.getSupers(), " & ", "");
+        }
+
         p.addText(";");
 
         p.addEmptyLine();
@@ -1585,18 +1512,6 @@ public final class PrintingVisitor
     public void visit(final ImpliesOperation object)
     {
         visitBinaryOperation("->", object);
-    }
-
-    @Override
-    public void visit(final ShortCircuitAndOperation object)
-    {
-        visitBinaryOperation("&&", object);
-    }
-
-    @Override
-    public void visit(final ShortCircuitOrOperation object)
-    {
-        visitBinaryOperation("||", object);
     }
 
     @Override

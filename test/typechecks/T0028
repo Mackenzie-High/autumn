@@ -3,5 +3,5 @@ module * in typechecks;
 @Start
 defun main (args : String[]) : void
 {
-    2 && true;
+    2 & true;
 }

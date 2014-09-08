@@ -3,16 +3,12 @@ package high.mackenzie.autumn.lang.compiler.compilers;
 import autumn.lang.compiler.ast.nodes.Variable;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import high.mackenzie.autumn.lang.compiler.typesystem.TypeFactory;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IExpressionType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IVariableType;
 import high.mackenzie.autumn.lang.compiler.utils.Utils;
-import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -75,7 +71,7 @@ public final class VariableAllocator
         public final VarTypes form;
 
         /**
-         * This field indicates the name of this local variable .
+         * This field indicates the name of this local variable.
          */
         public final String name;
 
@@ -128,6 +124,13 @@ public final class VariableAllocator
     public static final Map<String, IType> lang_testing_info = Maps.newTreeMap();
 
     /**
+     * This is the current level of scope nesting.
+     * Each time a scope is entered, this is incremented.
+     * Each time a scope is exited, this is decremented.
+     */
+    private int level = 0;
+
+    /**
      * This is a counter used to allocate local-variable addresses within an activation-record.
      */
     private int addresses = 0;
@@ -141,6 +144,11 @@ public final class VariableAllocator
      * These are the allocated variables.
      */
     private final Map<String, VarInfo> variables = Maps.newTreeMap();
+
+    /**
+     * This flag will become true, when variable declaration is complete.
+     */
+    private boolean all_declared = false;
 
     /**
      * Sole Constructor.
@@ -160,6 +168,14 @@ public final class VariableAllocator
      */
     public void enterScope()
     {
+        Preconditions.checkState(all_declared == false);
+
+        // The nesting distance is increasing.
+        ++level;
+
+        /**
+         * Grab a lock on every variable that was already declared.
+         */
         for (VarInfo variable : variables.values())
         {
             variable.locks = variable.locks == 0 ? 0 : variable.locks + 1;
@@ -171,20 +187,34 @@ public final class VariableAllocator
      */
     public void exitScope()
     {
+        Preconditions.checkState(all_declared == false);
+
+        // The nesting distance is decreasing.
+        --level;
+
+        /**
+         * Release the locks that were grabbed, when the scope was entered.
+         */
         for (VarInfo variable : variables.values())
         {
             variable.locks = variable.locks == 0 ? 0 : variable.locks - 1;
         }
+
+        // If the outermost scope has been exited, then all variables are declared.
+        all_declared = all_declared || level == 0;
     }
 
     /**
-     * This method determines whether a particular variable is in scope.
+     * This method determines whether a particular variable is in-scope.
      *
      * @param name is the name of the variable.
      * @return true, iff the variable is usable in the current scope.
+     * @throws IllegalStateException if variable declaration already completed.
      */
     public boolean isUsable(final String name)
     {
+        Preconditions.checkState(all_declared == false);
+
         final VarInfo variable = findVar(name);
 
         return variable.locks >= 1;
@@ -195,14 +225,15 @@ public final class VariableAllocator
      *
      * @param variable is an AST-node that represents the variable to declare.
      * @param type is the proposed static-type of the variable.
+     * @return true, if declaration was successful.
      * @throws IllegalStateException if any non-parameter locals were already declared.
      */
-    public void declareParameter(final Variable variable,
-                                 final IExpressionType type)
+    public boolean declareParameter(final Variable variable,
+                                    final IExpressionType type)
     {
         Preconditions.checkState(!non_parameters_declared);
 
-        declare(VarTypes.PARAM, variable.getName(), type);
+        return declare(VarTypes.PARAM, variable.getName(), type);
     }
 
     /**
@@ -303,7 +334,7 @@ public final class VariableAllocator
      *
      * @param name is the name of the variable.
      * @return the address of the variable.
-     * @throws IllegalArgumentException if the variable was not previously declared in this scope.
+     * @throws IllegalArgumentException if the variable was not previously declared.
      */
     public int addressOf(final String name)
     {
@@ -337,9 +368,9 @@ public final class VariableAllocator
     }
 
     /**
-     * This method creates a set containing the names of every variable in this exact scope.
+     * This method creates a set containing the names of every declared variable.
      *
-     * @return the names of every variable declared directly in this scope.
+     * @return the names of the declared variables.
      */
     public Set<String> getVariables()
     {
@@ -348,65 +379,6 @@ public final class VariableAllocator
         names.addAll(variables.keySet());
 
         return names;
-    }
-
-    /**
-     * This method creates a set containing the names of every variable in this scope.
-     *
-     * @return the names of every variable declared in this scope.
-     */
-    public Set<String> getAllVariables()
-    {
-        final Set<String> names = Sets.newTreeSet();
-
-        names.addAll(variables.keySet());
-
-        return names;
-    }
-
-    /**
-     * This method creates a set containing the names of every non-temporary variable
-     * that is currently in-scope.
-     *
-     * @return the names of every non-temporary variable declared directly in this scope.
-     */
-    public Set<String> getAllVisibleVariables()
-    {
-        final Set<String> names = Sets.newTreeSet();
-
-        for (String name : getAllVariables())
-        {
-            if (isUsable(name) && !isTemporary(name))
-            {
-                names.add(name);
-            }
-        }
-
-        return names;
-    }
-
-    /**
-     * This method performs all necessary static type-checking of a variable declaration.
-     *
-     * @param variable is the variable being declared.
-     * @param type is the static-type of the variable.
-     * @return true, if the declaration should fail.
-     */
-    private boolean checkDeclare(final String variable,
-                                 final IExpressionType type)
-    {
-        Preconditions.checkNotNull(variable);
-        Preconditions.checkNotNull(type);
-
-        if (isDeclared(variable))
-        {
-        }
-
-        if (!type.isPrimitiveType() && !type.isReferenceType())
-        {
-        }
-
-        return false;
     }
 
     /**
@@ -422,9 +394,9 @@ public final class VariableAllocator
                             final IExpressionType type)
     {
         /**
-         * Variables in the same function cannot share a name.
+         * A variable cannot be declared twice.
          */
-        if (checkDeclare(variable, type))
+        if (isDeclared(variable))
         {
             return false;
         }
@@ -456,12 +428,14 @@ public final class VariableAllocator
         variables.put(variable, info);
         lang_testing_info.put(variable, type);
 
-        // The variable was successfully allocated.
+        /**
+         * The variable was successfully allocated.
+         */
         return true;
     }
 
     /**
-     * This method searches for a variable that is visible from within this scope.
+     * This method searches for a variable that was already declared.
      *
      * @param name is the name of the variable to search for.
      * @return the information regarding the sought after variable,
@@ -473,37 +447,6 @@ public final class VariableAllocator
     }
 
     /**
-     * This method returns strings which describe the variables accessible within this scope.
-     *
-     * <p>
-     * The strings are sorted lexicographically.
-     * </p>
-     *
-     * <p>
-     * <b>Format:</b>
-     * <b>depth</b> <i>00000</i>
-     * <b>address</b> <i>00000</i>
-     * <i>form</i>
-     * <i>name</i> <b>:</b> <i>type</i>
-     * </p>
-     *
-     * @return the aforedescribed list of strings.
-     */
-    public List<String> description()
-    {
-        final List<String> result = Lists.newLinkedList();
-
-        for (VarInfo info : variables.values())
-        {
-            result.add(info.toString());
-        }
-
-        Collections.sort(result);
-
-        return result;
-    }
-
-    /**
      * This method should be invoked after all local variables are allocated by this object.
      * This method ensures the the ending state of this object is correct.
      *
@@ -511,47 +454,11 @@ public final class VariableAllocator
      */
     public void checkExitStatus()
     {
+        Preconditions.checkState(all_declared);
+
         for (VarInfo info : variables.values())
         {
             Preconditions.checkState(info.locks == 0, "A variable is still in-scope.");
-        }
-    }
-
-    public static void main(String[] args)
-    {
-        VariableAllocator s = new VariableAllocator(0);
-
-        final TypeFactory f = new TypeFactory();
-
-        Variable v;
-
-        v = new Variable();
-        v = v.setName("m");
-        s.declareVar(v, f.getLong());
-
-        v = new Variable();
-        v = v.setName("b");
-        s.declareVar(v, f.getInt());
-
-        v = new Variable();
-        v = v.setName("c");
-        s.declareVar(v, f.getInt());
-
-        v = new Variable();
-        v = v.setName("x");
-        s.declareVar(v, f.getInt());
-
-        v = new Variable();
-        v = v.setName("y");
-        s.declareVar(v, f.getInt());
-
-        v = new Variable();
-        v = v.setName("z");
-        s.declareVar(v, (IExpressionType) f.fromClass(String.class));
-
-        for (String info : s.description())
-        {
-            System.out.println(info);
         }
     }
 }
