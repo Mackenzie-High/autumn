@@ -186,7 +186,7 @@ public enum ErrorCode
     /**
      * Meaning: A superinterface was specified more than once.
      */
-    DUPLICATE_SUPERINTERFACE,
+    DUPLICATE_SUPERTYPE,
     /**
      * Meaning: A module contains more than one module-directive.
      */
@@ -289,4 +289,8 @@ public enum ErrorCode
      * Meaning: A value cannot be assigned to a readonly variable or field.
      */
     ASSIGNMENT_TO_READONLY,
+    /**
+     * Meaning: A record can only declare an element once per definition.
+     */
+    DUPLICATE_ELEMENT,
 }

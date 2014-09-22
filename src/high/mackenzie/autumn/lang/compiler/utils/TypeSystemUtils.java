@@ -5,6 +5,7 @@ import autumn.lang.Functor;
 import autumn.lang.Local;
 import autumn.lang.LocalsMap;
 import autumn.lang.Module;
+import autumn.lang.Record;
 import autumn.lang.Struct;
 import autumn.lang.Tuple;
 import autumn.lang.annotations.Start;
@@ -12,7 +13,9 @@ import autumn.lang.compiler.ast.nodes.Name;
 import autumn.lang.compiler.ast.nodes.TypeSpecifier;
 import autumn.lang.internals.AbstractDelegate;
 import autumn.lang.internals.AbstractModule;
+import autumn.lang.internals.AbstractRecord;
 import autumn.lang.internals.AbstractStaticFunctor;
+import autumn.lang.internals.AbstractStruct;
 import autumn.lang.internals.AbstractTuple;
 import autumn.lang.internals.ArgumentStack;
 import autumn.lang.internals.Conversions;
@@ -20,8 +23,6 @@ import autumn.lang.internals.Helpers;
 import autumn.lang.internals.ModuleDelegate;
 import autumn.lang.internals.Operators;
 import autumn.lang.internals.YieldState;
-import autumn.lang.internals.proto.AbstractPrototype;
-import autumn.lang.internals.proto.MetaPrototype;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
@@ -138,13 +139,13 @@ public final class TypeSystemUtils
 
     public final IInterfaceType FUNCTOR;
 
+    public final IInterfaceType RECORD;
+
     public final IInterfaceType STRUCT;
 
     public final IInterfaceType MODULE;
 
     public final IClassType MODULE_DELEGATE;
-
-    public final IClassType ACTIONS;
 
     public final IClassType ABSTRACT_MODULE;
 
@@ -152,11 +153,11 @@ public final class TypeSystemUtils
 
     public final IClassType ABSTRACT_TUPLE;
 
-    public final IClassType ABSTRACT_PROTOTYPE;
+    public final IClassType ABSTRACT_STRUCT;
+
+    public final IClassType ABSTRACT_RECORD;
 
     public final IClassType ABSTRACT_STATIC_FUNCTOR;
-
-    public final IClassType META_PROTOTYPE;
 
     public final IClassType HELPERS;
 
@@ -226,6 +227,8 @@ public final class TypeSystemUtils
 
         this.TUPLE = (IInterfaceType) factory.fromClass(Tuple.class);
 
+        this.RECORD = (IInterfaceType) factory.fromClass(Record.class);
+
         this.LIST = (IInterfaceType) factory.fromClass(List.class);
 
         this.ITERABLE = (IInterfaceType) factory.fromClass(Iterable.class);
@@ -240,17 +243,15 @@ public final class TypeSystemUtils
 
         this.MODULE_DELEGATE = (IClassType) factory.fromClass(ModuleDelegate.class);
 
-        this.ACTIONS = (IClassType) factory.fromClass(AbstractPrototype.Actions.class);
-
         this.ABSTRACT_TUPLE = (IClassType) factory.fromClass(AbstractTuple.class);
+
+        this.ABSTRACT_STRUCT = (IClassType) factory.fromClass(AbstractStruct.class);
+
+        this.ABSTRACT_RECORD = (IClassType) factory.fromClass(AbstractRecord.class);
 
         this.ABSTRACT_MODULE = (IClassType) factory.fromClass(AbstractModule.class);
 
         this.ABSTRACT_DELEGATE = (IClassType) factory.fromClass(AbstractDelegate.class);
-
-        this.ABSTRACT_PROTOTYPE = (IClassType) factory.fromClass(AbstractPrototype.class);
-
-        this.META_PROTOTYPE = (IClassType) factory.fromClass(MetaPrototype.class);
 
         this.ABSTRACT_STATIC_FUNCTOR = (IClassType) factory.fromClass(AbstractStaticFunctor.class);
 
@@ -645,8 +646,8 @@ public final class TypeSystemUtils
 
         assert left.getName().equals(right.getName());
 
-        final List<IFormalParameter> left_params = left.getFormalParameters();
-        final List<IFormalParameter> right_params = right.getFormalParameters();
+        final List<IFormalParameter> left_params = left.getParameters();
+        final List<IFormalParameter> right_params = right.getParameters();
 
         /**
          * Parameter Count Comparison
@@ -740,14 +741,14 @@ public final class TypeSystemUtils
 NEXT_METHOD:
         for (IInvokableMember method : members)
         {
-            if (method.getFormalParameters().size() != arguments.size())
+            if (method.getParameters().size() != arguments.size())
             {
                 continue;
             }
 
             for (int i = 0; i < arguments.size(); i++)
             {
-                final IType parameter = method.getFormalParameters().get(i).getType();
+                final IType parameter = method.getParameters().get(i).getType();
 
                 final IType argument = arguments.get(i);
 
@@ -1299,6 +1300,33 @@ NEXT_METHOD:
         for (T element : list)
         {
             if (element.getName().equals(name) && element.getDescriptor().equals(descriptor))
+            {
+                return element;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * This method searches through a list for a specific method or constructor.
+     *
+     * @param list is a list of methods and/or constructors.
+     * @param name is the name of the element to find.
+     * @return the found element; or null, if no such element exists.
+     */
+    public static <T extends IInvokableMember> T find(final Iterable<? extends T> list,
+                                                      final String name)
+    {
+        Preconditions.checkNotNull(list);
+        Preconditions.checkNotNull(name);
+
+        Preconditions.checkNotNull(list);
+        Preconditions.checkNotNull(name);
+
+        for (T element : list)
+        {
+            if (element.getName().equals(name))
             {
                 return element;
             }

@@ -4,24 +4,22 @@ import autumn.lang.compiler.ClassFile;
 import autumn.lang.compiler.ast.nodes.FormalParameter;
 import autumn.lang.compiler.ast.nodes.TupleDefinition;
 import autumn.lang.internals.Helpers;
-import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 import high.mackenzie.autumn.lang.compiler.typesystem.CustomConstructor;
 import high.mackenzie.autumn.lang.compiler.typesystem.CustomDeclaredType;
 import high.mackenzie.autumn.lang.compiler.typesystem.CustomFormalParameter;
 import high.mackenzie.autumn.lang.compiler.typesystem.CustomMethod;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IConstructor;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IFormalParameter;
+import high.mackenzie.autumn.lang.compiler.typesystem.design.IInterfaceType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IMethod;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IVariableType;
+import high.mackenzie.autumn.lang.compiler.utils.BridgeMethod;
 import high.mackenzie.autumn.lang.compiler.utils.TypeSystemUtils;
 import high.mackenzie.autumn.lang.compiler.utils.Utils;
-import java.lang.reflect.Modifier;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.ClassNode;
@@ -39,19 +37,31 @@ import org.objectweb.asm.tree.TypeInsnNode;
 import org.objectweb.asm.tree.VarInsnNode;
 
 /**
- * An instance of this class is a compiler that compiles a tuple-definition.
+ * An instance of this class controls the compilation of a tuple-definition.
  *
  * @author Mackenzie High
  */
 public final class TupleCompiler
         implements ICompiler
 {
+    /**
+     * An instance of this class represents an element in the tuple.
+     */
     private static class Element
     {
-        public int index;
+        /**
+         * This is the index of the element within the tuple's definition.
+         */
+        public final int index;
 
+        /**
+         * This is the name of the element.
+         */
         public final String name;
 
+        /**
+         * This is the static-type of the element as declared in the tuple's definition.
+         */
         public final IVariableType type;
 
         /**
@@ -65,18 +75,36 @@ public final class TupleCompiler
                        final String name,
                        final IVariableType type)
         {
+            assert index >= 0;
+            assert name != null;
+            assert type != null;
+
             this.index = index;
             this.name = name;
             this.type = type;
         }
     }
 
+    /**
+     * Essentially, this is the program that is being compiled.
+     */
     public final ProgramCompiler program;
 
+    /**
+     * Essentially, this is the enclosing module that is also being compiled.
+     */
     public final ModuleCompiler module;
 
+    /**
+     * This is the Abstract-Syntax-Tree representation of the tuple's definition.
+     */
     public final TupleDefinition node;
 
+    /**
+     * This will be the type-system representation of the tuple's definition.
+     *
+     * This field will be initialized during the type-declaration compiler pass.
+     */
     public CustomDeclaredType type;
 
     /**
@@ -84,17 +112,33 @@ public final class TupleCompiler
      */
     private CustomConstructor ctor;
 
+    /**
+     * These objects represent the elements of the tuple.
+     */
     private final List<Element> elements = Lists.newLinkedList();
+
+    /**
+     * These objects will simplify the creation of bridge methods.
+     *
+     * The elements of this list will be created during the type-initialization compiler pass.
+     *
+     * These objects will be used to generate the bytecode representations of the bridge methods.
+     */
+    private final List<BridgeMethod> bridges = Lists.newLinkedList();
 
     /**
      * Sole Constructor.
      *
-     * @param module is the module that contains the enum being compiled.
-     * @param node is the AST node that represents the enum being compiled.
+     * @param module is the module that contains the tuple being compiled.
+     * @param node is the AST node that represents the tuple being compiled.
      */
     public TupleCompiler(final ModuleCompiler module,
                          final TupleDefinition node)
     {
+        assert module != null;
+        assert node != null;
+        assert module.tuples.contains(node);
+
         this.program = module.program;
         this.module = module;
         this.node = node;
@@ -102,6 +146,10 @@ public final class TupleCompiler
 
     /**
      * This method gets the name of a field that stores an element.
+     *
+     * <p>
+     * This method is needed in order to prevent name collisions with special fields.
+     * </p>
      *
      * @param element is the name of the element.
      * @return the name of the field that stores the value of the element.
@@ -132,28 +180,28 @@ public final class TupleCompiler
         // Create the field that indicates whether the tuple is mutable.
         // Tuples are immutable, by default.
         fields.add(new FieldNode(Opcodes.ACC_PRIVATE,
-                                 "mutable",
+                                 "MUTABLE",
                                  "Z",
                                  null,
                                  false));
 
         // Create the field that stores the names of the elements.
         fields.add(new FieldNode(Opcodes.ACC_PRIVATE + Opcodes.ACC_STATIC + Opcodes.ACC_FINAL,
-                                 "keys",
+                                 "KEYS",
                                  "Ljava/util/List;",
                                  null,
                                  null));
 
         // Create the field that stores the types of the elements.
         fields.add(new FieldNode(Opcodes.ACC_PRIVATE + Opcodes.ACC_STATIC + Opcodes.ACC_FINAL,
-                                 "types",
-                                 "Ljava/util/List;",
+                                 "TYPES",
+                                 "Ljava/util/Map;",
                                  null,
                                  null));
 
         // Create the field that stores the instance() tuple.
         fields.add(new FieldNode(Opcodes.ACC_PRIVATE + Opcodes.ACC_STATIC + Opcodes.ACC_FINAL,
-                                 "instance",
+                                 "INSTANCE",
                                  type.getDescriptor(),
                                  null,
                                  null));
@@ -190,9 +238,9 @@ public final class TupleCompiler
 
             clazz.methods.add(this.generateMethodIsMutable());
 
-            clazz.methods.add(this.generateMethodMutableCopy());
+            clazz.methods.add(this.generateMethodMutable());
 
-            clazz.methods.add(this.generateMethodImmutableCopy());
+            clazz.methods.add(this.generateMethodImmutable());
 
             clazz.methods.add(this.generateMethodGet());
 
@@ -223,6 +271,9 @@ public final class TupleCompiler
         return file;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void performTypeDeclaration()
     {
@@ -244,6 +295,9 @@ public final class TupleCompiler
         this.type = program.typesystem.typefactory().newClassType(descriptor);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void performTypeInitialization()
     {
@@ -301,9 +355,6 @@ public final class TupleCompiler
 
         /**
          * Now we need to generate bridge methods.
-         * The Tuple interface defines methods that return the Tuple interface-type.
-         * However, we would like for those methods to return the type of the tuple being compiled.
-         * This makes the return-type of these methods more specific, which is useful.
          */
         typeofBridgeMethods();
     }
@@ -392,56 +443,90 @@ public final class TupleCompiler
         return method;
     }
 
+    /**
+     * This method creates the type-system representations of the bridge methods.
+     */
     private void typeofBridgeMethods()
     {
-        final Set<String> done = Sets.newTreeSet();
+        final IInterfaceType RECORD = program.typesystem.utils.RECORD;
 
-        final List<IMethod> methods = Lists.newLinkedList();
+        final IInterfaceType TUPLE = program.typesystem.utils.TUPLE;
 
-        for (IMethod method : type.getAllVisibleMethods())
-        {
-            // A method needs a bridge method, if its return-type is Tuple.
-            // This is because the user expects the method to return the type of this tuple.
-            // However, the Tuple type is merely an interface type.
-            final boolean needs_bridge_method = method
-                    .getReturnType()
-                    .equals(program.typesystem.utils.TUPLE);
+        /**
+         * Method: bind(SpecialMethods)
+         */
+        bridges.add(new BridgeMethod(type,
+                                     type,
+                                     TypeSystemUtils.find(RECORD.getAllVisibleMethods(),
+                                                          "bind")));
 
-            // The method may be declared in multiple interfaces.
-            // However, we only need to generate the bridge method once.
-            final boolean not_done = !done.contains(method.getNamePlusDescriptor());
+        /**
+         * Method: set(String, Object)
+         */
+        bridges.add(new BridgeMethod(type,
+                                     type,
+                                     TypeSystemUtils.find(type.getAllVisibleMethods(),
+                                                          "set",
+                                                          "(Ljava/lang/String;Ljava/lang/Object;)" + RECORD.getDescriptor())));
 
-            if (needs_bridge_method && not_done)
-            {
-                // Generate the type of the bridge method.
-                methods.add(typeofBridgeMethod(method));
+        /**
+         * Method: set(int, Object)
+         */
+        bridges.add(new BridgeMethod(type,
+                                     type,
+                                     TypeSystemUtils.find(type.getAllVisibleMethods(),
+                                                          "set",
+                                                          "(ILjava/lang/Object;)" + TUPLE.getDescriptor())));
 
-                done.add(method.getNamePlusDescriptor());
-            }
-        }
+        /**
+         * Method: keys()
+         */
+        bridges.add(new BridgeMethod(type,
+                                     program.typesystem.utils.LIST,
+                                     TypeSystemUtils.find(type.getAllVisibleMethods(),
+                                                          "keys",
+                                                          "()Ljava/util/Collection;")));
 
-        // Add the types of the bridge methods to the list of methods defined in the tuple.
-        methods.addAll(type.getMethods());
-        type.setMethods(methods);
+        /**
+         * Method: mutable()
+         */
+        bridges.add(new BridgeMethod(type,
+                                     type,
+                                     TypeSystemUtils.find(type.getAllVisibleMethods(),
+                                                          "mutable",
+                                                          "()" + RECORD.getDescriptor())));
+
+        /**
+         * Method: immutable()
+         */
+        bridges.add(new BridgeMethod(type,
+                                     type,
+                                     TypeSystemUtils.find(RECORD.getAllVisibleMethods(),
+                                                          "immutable",
+                                                          "()" + RECORD.getDescriptor())));
+
+        /**
+         * Method: copy()
+         */
+        bridges.add(new BridgeMethod(type,
+                                     type,
+                                     TypeSystemUtils.find(RECORD.getAllVisibleMethods(),
+                                                          "copy",
+                                                          "()" + RECORD.getDescriptor())));
+
+        /**
+         * Method: clear()
+         */
+        bridges.add(new BridgeMethod(type,
+                                     type,
+                                     TypeSystemUtils.find(TUPLE.getMethods(),
+                                                          "clear",
+                                                          "()" + TUPLE.getDescriptor())));
     }
 
-    private IMethod typeofBridgeMethod(final IMethod method)
-    {
-        assert method.getReturnType().equals(program.typesystem.utils.TUPLE);
-
-        final CustomMethod bridge = new CustomMethod(type.getTypeFactory(), false);
-
-        bridge.setAnnotations(new LinkedList(method.getAnnotations()));
-        bridge.setModifiers(method.getModifiers());
-        bridge.setName(method.getName());
-        bridge.setOwner(type);
-        bridge.setParameters(method.getFormalParameters());
-        bridge.setReturnType(type); // More Specific than autumn.lang.Tuple
-        bridge.setThrowsClause(method.getThrowsClause());
-
-        return bridge;
-    }
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void performTypeStructureChecking()
     {
@@ -450,24 +535,40 @@ public final class TupleCompiler
         // 2. Element types must be non-void and non-null.
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void performTypeUsageChecking()
     {
         // Pass
     }
 
+    /**
+     * This method generates the bytecode representations of the fields that store the elements.
+     *
+     * @return the generated bytecode.
+     */
     private List<FieldNode> generateElementFields()
     {
         final List<FieldNode> fields = Lists.newLinkedList();
 
+        /**
+         * Generate one field for each element.
+         */
         for (FormalParameter element : node.getElements().getParameters())
         {
+            // The field is private, because element's are accessed via getters and setters.
             final int access = Opcodes.ACC_PRIVATE;
 
+            // The name of the field will be given a prefix.
+            // This prevents name collisions with special fields.
             final String name = nameOfField(element.getVariable().getName());
 
+            // The descriptor describes the static-type of the element.
             final String desc = module.imports.resolveVariableType(element.getType()).getDescriptor();
 
+            // Create the bytecode representation of the field.
             final FieldNode field = new FieldNode(access, name, desc, null, null);
 
             fields.add(field);
@@ -488,6 +589,14 @@ public final class TupleCompiler
      */
     private MethodNode generateCtor()
     {
+        // The generated constructor must do the following:
+        // . invoke super()
+        // . for each parameter [p]:
+        // . . transfer [p] into the field that will store [p].
+        // . return
+        //
+        //////////////////////////////////////////////////////////
+
         final MethodNode method = Utils.bytecodeOf(module, ctor);
 
         /**
@@ -500,6 +609,8 @@ public final class TupleCompiler
                                                    "()V"));
 
 
+        // Skip the first memory address (i.e. address zero),
+        // because that is where 'this' is automatically stored.
         int address = 1;
 
         /**
@@ -508,9 +619,7 @@ public final class TupleCompiler
         for (Element element : elements)
         {
             final String owner = Utils.internalName(type);
-
             final String name = nameOfField(element.name);
-
             final String desc = element.type.getDescriptor();
 
             method.instructions.add(new VarInsnNode(Opcodes.ALOAD, 0)); // Load 'this'
@@ -542,17 +651,65 @@ public final class TupleCompiler
                                                  null,
                                                  new String[0]);
 
-        initListOfKeys(clinit.instructions);
-        initListOfTypes(clinit.instructions);
+        /**
+         * Initialize the TYPES field.
+         */
+        initMapOfTypes(clinit.instructions);
+
+        /**
+         * Initialize the INSTANCE field.
+         */
         initInstance(clinit.instructions);
 
+        /**
+         * Exit the static constructor.
+         */
         clinit.instructions.add(new InsnNode(Opcodes.RETURN));
 
         return clinit;
     }
 
     /**
-     * This method generates bytecode that initializes the field containing the list of keys.
+     * This method generates bytecode that initializes the field that stores the map of types.
+     *
+     * @param code is the bytecode being generated.
+     */
+    private void initMapOfTypes(final InsnList code)
+    {
+        /**
+         * Create a list object containing the name of each element (i.e. keys).
+         */
+        initListOfKeys(code);
+
+        /**
+         * Push the list of keys onto the operand-stack.
+         */
+        code.add(new FieldInsnNode(Opcodes.GETSTATIC,
+                                   Utils.internalName(type),
+                                   "KEYS",
+                                   "Ljava/util/List;"));
+
+        /**
+         * Create a list object containing the type of each element (i.e. values ).
+         */
+        createListOfTypes(code);
+
+        /**
+         * Create a map object from the two lists.
+         */
+        Utils.createImmutableMap(code);
+
+        /**
+         * Place the map object into the field that will store it for later use.
+         */
+        code.add(new FieldInsnNode(Opcodes.PUTSTATIC,
+                                   Utils.internalName(type),
+                                   "TYPES",
+                                   "Ljava/util/Map;"));
+    }
+
+    /**
+     * This method generates bytecode that initializes the field that stores the list of keys.
      *
      * @param code is the bytecode being generated.
      */
@@ -579,7 +736,7 @@ public final class TupleCompiler
         cmp.compile(elements);
 
         /**
-         * Generate the bytecode that makes the mutable list be immutable.
+         * Make the list immutable.
          */
         Utils.makeListImmutable(code);
 
@@ -588,16 +745,16 @@ public final class TupleCompiler
          */
         code.add(new FieldInsnNode(Opcodes.PUTSTATIC,
                                    Utils.internalName(type),
-                                   "keys",
+                                   "KEYS",
                                    "Ljava/util/List;"));
     }
 
     /**
-     * This method generates bytecode that initializes the field containing the list of types.
+     * This method generates bytecode that creates a list containing the types.
      *
      * @param code is the bytecode being generated.
      */
-    private void initListOfTypes(final InsnList code)
+    private void createListOfTypes(final InsnList code)
     {
         final CollectionCompiler<Element> cmp = new CollectionCompiler<Element>()
         {
@@ -618,19 +775,6 @@ public final class TupleCompiler
          * Generate the bytecode that creates a mutable list containing the keys.
          */
         cmp.compile(elements);
-
-        /**
-         * Generate the bytecode that makes the mutable list be immutable.
-         */
-        Utils.makeListImmutable(code);
-
-        /**
-         * Assign the immutable list to the field.
-         */
-        code.add(new FieldInsnNode(Opcodes.PUTSTATIC,
-                                   Utils.internalName(type),
-                                   "types",
-                                   "Ljava/util/List;"));
     }
 
     /**
@@ -674,99 +818,29 @@ public final class TupleCompiler
          */
         code.add(new FieldInsnNode(Opcodes.PUTSTATIC,
                                    Utils.internalName(type),
-                                   "instance",
+                                   "INSTANCE",
                                    type.getDescriptor()));
     }
 
     /**
-     * This method generates the bridge methods for methods that return Tuple.
+     * This method generates the bytecode representations of the bridge methods.
      *
-     * <p>
-     * Some methods return autumn.lang.Tuple rather than the tuple-type itself.
-     * As a result, bridge methods must be generated that return the tuple-type.
-     * The bridge methods simply invoke the non-bridge method and cast the result.
-     * </p>
-     *
-     * @return the generated bridge methods.
+     * @return the generated methods.
      */
     private List<MethodNode> generateBridgeMethods()
     {
-        final Set<String> done = Sets.newTreeSet();
-
         final List<MethodNode> result = Lists.newLinkedList();
 
-        for (IMethod method : type.getAllVisibleMethods())
+        for (BridgeMethod bridge : bridges)
         {
-            final boolean not_done = !done.contains(method.getNamePlusDescriptor());
-
-            final boolean returns_tuple = method.getReturnType().equals(program.typesystem.utils.TUPLE);
-
-            final boolean non_static = !Modifier.isStatic(method.getModifiers());
-
-            if (not_done && returns_tuple && non_static)
-            {
-                result.add(this.generateBridgeMethod(method));
-                done.add(method.getNamePlusDescriptor());
-            }
+            result.add(bridge.compile(module));
         }
 
         return result;
     }
 
     /**
-     * This method generates the bridge method for a method that returns Tuple.
-     *
-     * @param method is the method that needs a bridge method that returns a more specific type.
-     * @return the generated bridge method.
-     */
-    private MethodNode generateBridgeMethod(final IMethod method)
-    {
-        Preconditions.checkNotNull(method);
-
-        assert method.getReturnType().equals(program.typesystem.utils.TUPLE);
-
-        final MethodNode bridge = Utils.bytecodeOf(module, method);
-
-        // Remove the abstract and final modifiers.
-        bridge.access = bridge.access & (~Opcodes.ACC_ABSTRACT);
-        bridge.access = bridge.access & (~Opcodes.ACC_FINAL);
-
-        // Add the bridge flag.
-        bridge.access = bridge.access | Opcodes.ACC_BRIDGE;
-
-        // Change the return-type.
-        bridge.desc = method.getParameterListDescriptor() + type.getDescriptor();
-
-        // Load 'this'
-        bridge.instructions.add(new VarInsnNode(Opcodes.ALOAD, 0));
-
-        int address = 1;
-
-        // Load the arguments.
-        for (IFormalParameter param : method.getFormalParameters())
-        {
-            bridge.instructions.add(Utils.selectLoadVarInsn(param.getType(), address));
-
-            address += Utils.sizeof(param.getType());
-        }
-
-        // Invoke the non-bridge method.
-        bridge.instructions.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL,
-                                                   Utils.internalName(type.getSuperclass()),
-                                                   method.getName(),
-                                                   method.getParameterListDescriptor() + program.typesystem.utils.TUPLE.getDescriptor()));
-
-        // Cast the result produced by the non-bridge method to the tuple-type.
-        bridge.instructions.add(new TypeInsnNode(Opcodes.CHECKCAST, Utils.internalName(type)));
-
-        // Return the result.
-        bridge.instructions.add(new InsnNode(Opcodes.ARETURN));
-
-        return bridge;
-    }
-
-    /**
-     * This method generates the bytecode of the instance() method.
+     * This method generates the bytecode representation of the instance() method.
      *
      * @return the generated method.
      */
@@ -785,7 +859,7 @@ public final class TupleCompiler
          */
         method.instructions.add(new FieldInsnNode(Opcodes.GETSTATIC,
                                                   Utils.internalName(type),
-                                                  "instance",
+                                                  "INSTANCE",
                                                   type.getDescriptor()));
 
         method.instructions.add(new InsnNode(Opcodes.ARETURN));
@@ -794,7 +868,7 @@ public final class TupleCompiler
     }
 
     /**
-     * This method generates the bytecode of the set(int, Object) method.
+     * This method generates the bytecode representation of the set(int, Object) method.
      *
      * @return the generated method.
      */
@@ -917,7 +991,7 @@ public final class TupleCompiler
     }
 
     /**
-     * This method generates the bytecode of the get(int) method.
+     * This method generates the bytecode representation of the get(int) method.
      *
      * @return the generated method.
      */
@@ -1019,7 +1093,7 @@ public final class TupleCompiler
     }
 
     /**
-     * This method generates the bytecode of the isMutable() method.
+     * This method generates the bytecode representation of the isMutable() method.
      *
      * @return the generated method.
      */
@@ -1039,7 +1113,7 @@ public final class TupleCompiler
         method.instructions.add(new VarInsnNode(Opcodes.ALOAD, 0)); // Load 'this'
         method.instructions.add(new FieldInsnNode(Opcodes.GETFIELD,
                                                   Utils.internalName(type),
-                                                  "mutable",
+                                                  "MUTABLE",
                                                   "Z"));
 
         /**
@@ -1051,16 +1125,16 @@ public final class TupleCompiler
     }
 
     /**
-     * This method generates the bytecode of the immutableCopy() method.
+     * This method generates the bytecode representation of the immutable() method.
      *
      * @return the generated method.
      */
-    private MethodNode generateMethodImmutableCopy()
+    private MethodNode generateMethodImmutable()
     {
         final MethodNode method = Utils.bytecodeOf(module,
                                                    TypeSystemUtils.find(type.getAllVisibleMethods(),
-                                                                        "immutableCopy",
-                                                                        "()Lautumn/lang/Tuple;"));
+                                                                        "immutable",
+                                                                        "()" + program.typesystem.utils.RECORD.getDescriptor()));
 
         // Remove the abstract modifier.
         method.access = method.access & (~Opcodes.ACC_ABSTRACT);
@@ -1109,16 +1183,16 @@ public final class TupleCompiler
     }
 
     /**
-     * This method generates the bytecode of the mutableCopy() method.
+     * This method generates the bytecode representation of the mutable() method.
      *
      * @return the generated method.
      */
-    private MethodNode generateMethodMutableCopy()
+    private MethodNode generateMethodMutable()
     {
         final MethodNode method = Utils.bytecodeOf(module,
                                                    TypeSystemUtils.find(type.getAllVisibleMethods(),
-                                                                        "mutableCopy",
-                                                                        "()Lautumn/lang/Tuple;"));
+                                                                        "mutable",
+                                                                        "()" + program.typesystem.utils.RECORD.getDescriptor()));
 
         // Remove the abstract modifier.
         method.access = method.access & (~Opcodes.ACC_ABSTRACT);
@@ -1129,7 +1203,7 @@ public final class TupleCompiler
         method.instructions.add(new VarInsnNode(Opcodes.ALOAD, 0)); // Load 'this'
         method.instructions.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL,
                                                    Utils.internalName(type),
-                                                   "immutableCopy",
+                                                   "immutable",
                                                    "()" + type.getDescriptor()));
 
         /**
@@ -1144,7 +1218,7 @@ public final class TupleCompiler
         method.instructions.add(new LdcInsnNode(true));
         method.instructions.add(new FieldInsnNode(Opcodes.PUTFIELD,
                                                   Utils.internalName(type),
-                                                  "mutable",
+                                                  "MUTABLE",
                                                   "Z"));
 
         /**
@@ -1157,7 +1231,7 @@ public final class TupleCompiler
     }
 
     /**
-     * This method generates the bytecode of the types() method.
+     * This method generates the bytecode representation of the types() method.
      *
      * @return the generated method.
      */
@@ -1166,7 +1240,7 @@ public final class TupleCompiler
         final MethodNode method = Utils.bytecodeOf(module,
                                                    TypeSystemUtils.find(type.getAllVisibleMethods(),
                                                                         "types",
-                                                                        "()Ljava/util/List;"));
+                                                                        "()Ljava/util/Map;"));
 
         // Remove the abstract modifier.
         method.access = method.access & (~Opcodes.ACC_ABSTRACT);
@@ -1176,8 +1250,8 @@ public final class TupleCompiler
          */
         method.instructions.add(new FieldInsnNode(Opcodes.GETSTATIC,
                                                   Utils.internalName(type),
-                                                  "types",
-                                                  "Ljava/util/List;"));
+                                                  "TYPES",
+                                                  "Ljava/util/Map;"));
 
         method.instructions.add(new InsnNode(Opcodes.ARETURN));
 
@@ -1185,7 +1259,7 @@ public final class TupleCompiler
     }
 
     /**
-     * This method generates the bytecode of the keys() method.
+     * This method generates the bytecode representation of the keys() method.
      *
      * @return the generated method.
      */
@@ -1194,7 +1268,7 @@ public final class TupleCompiler
         final MethodNode method = Utils.bytecodeOf(module,
                                                    TypeSystemUtils.find(type.getAllVisibleMethods(),
                                                                         "keys",
-                                                                        "()Ljava/util/List;"));
+                                                                        "()Ljava/util/Collection;"));
 
         // Remove the abstract modifier.
         method.access = method.access & (~Opcodes.ACC_ABSTRACT);
@@ -1204,7 +1278,7 @@ public final class TupleCompiler
          */
         method.instructions.add(new FieldInsnNode(Opcodes.GETSTATIC,
                                                   Utils.internalName(type),
-                                                  "keys",
+                                                  "KEYS",
                                                   "Ljava/util/List;"));
 
         method.instructions.add(new InsnNode(Opcodes.ARETURN));
@@ -1213,7 +1287,15 @@ public final class TupleCompiler
     }
 
     /**
-     * This method generates a getter method.
+     * This method generates the bytecode representation of a setter method.
+     *
+     * <p>
+     * A setter method must obtain a modifiable variant of the tuple.
+     * In other words, the setter must copy the tuple, if it is immutable.
+     * Then the setter must set the field in the tuple to the new value.
+     * Finally, the setter must return the modified tuple.
+     * Take note, the returned tuple may not be the original tuple.
+     * </p>
      *
      * @return the generated method.
      */
@@ -1261,6 +1343,20 @@ public final class TupleCompiler
         return method;
     }
 
+    /**
+     * This method generates bytecode that creates a modifiable variant of the tuple.
+     *
+     * <p>
+     * This method expects that the tuple object is the topmost element of the operand-stack.
+     * </p>
+     *
+     * <p>
+     * If the tuple is immutable, then it will be copied.
+     * If the tuple is mutable, then the tuple will be unchanged.
+     * </p>
+     *
+     * @param code is the bytecode being generated.
+     */
     private void loadModifiableVariant(final InsnList code)
     {
         // Generated Bytecode:
@@ -1275,7 +1371,7 @@ public final class TupleCompiler
         // @ELSE
         //
         // ALOAD 0
-        // INVOKEVIRTUAL this.immutableCopy()
+        // INVOKEVIRTUAL this.immutable()
         //
         // @END
         //
@@ -1288,7 +1384,7 @@ public final class TupleCompiler
         code.add(new VarInsnNode(Opcodes.ALOAD, 0)); // Load 'this'
         code.add(new FieldInsnNode(Opcodes.GETFIELD,
                                    Utils.internalName(type),
-                                   "mutable",
+                                   "MUTABLE",
                                    "Z"));
 
         code.add(new JumpInsnNode(Utils.IF_FALSE, ELSE));
@@ -1301,14 +1397,18 @@ public final class TupleCompiler
         code.add(new VarInsnNode(Opcodes.ALOAD, 0)); // Load 'this'
         code.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL,
                                     Utils.internalName(type),
-                                    "immutableCopy",
+                                    "immutable",
                                     "()" + type.getDescriptor()));
 
         code.add(END);
     }
 
     /**
-     * This method generates a getter method.
+     * This method generates the bytecode representation of a getter method.
+     *
+     * <p>
+     * A getter method simply read the field that stores the element and then returns the result.
+     * </p>
      *
      * @return the generated method.
      */

@@ -416,7 +416,7 @@ public final class StaticChecker
      * @param expression is the expression that must be a struct-type.
      */
     public void requireStructType(final IConstruct construct,
-                                     final IExpressionType type)
+                                  final IExpressionType type)
     {
         if (type.isSubtypeOf(program.typesystem.utils.STRUCT))
         {
@@ -1147,7 +1147,7 @@ public final class StaticChecker
     }
 
     /**
-     * This method reports that an an assignment is not to a readonly field.
+     * This method reports that an assignment is not to a readonly field.
      *
      * @param site is the construct that is performing the assignment.
      * @param field is the field being assigned to.
@@ -1169,6 +1169,52 @@ public final class StaticChecker
         final String dot = Modifier.isStatic(field.getModifiers()) ? "::" : ".";
 
         report.addDetail("Field", Utils.simpleName(field.getOwner()) + dot + field.getName());
+
+        /**
+         * Issue the error-report to the user.
+         */
+        report(report);
+    }
+
+    /**
+     * This method reports that a direct supertype appeared twice in a type declaration.
+     *
+     * @param site is the struct that declares the same supertype twice.
+     * @param type is the supertype that is declared twice.
+     */
+    public void reportDuplicateDirectSupertype(final IConstruct site,
+                                               final IExpressionType type)
+    {
+        final ErrorCode ERROR_CODE = ErrorCode.DUPLICATE_SUPERTYPE;
+
+        final String MESSAGE = "A supertype can appear only once in an extends-clause.";
+
+        final ErrorReport report = new ErrorReport(site, ERROR_CODE, MESSAGE);
+
+        report.addDetail("Super Type", Utils.sourceName(type));
+
+        /**
+         * Issue the error-report to the user.
+         */
+        report(report);
+    }
+
+    /**
+     * This method reports that a struct or tuple contains a duplicate element.
+     *
+     * @param site is the record that declares the same entry twice.
+     * @param element is the name of the duplicated element.
+     */
+    public void reportDuplicateElement(final IConstruct site,
+                                             final Variable element)
+    {
+        final ErrorCode ERROR_CODE = ErrorCode.DUPLICATE_ELEMENT;
+
+        final String MESSAGE = "A record can only declare an element once per definition";
+
+        final ErrorReport report = new ErrorReport(site, ERROR_CODE, MESSAGE);
+
+        report.addDetail("Element", element.getName());
 
         /**
          * Issue the error-report to the user.

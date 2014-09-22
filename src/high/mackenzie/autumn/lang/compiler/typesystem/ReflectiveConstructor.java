@@ -112,7 +112,7 @@ public class ReflectiveConstructor
      * {@inheritDoc}
      */
     @Override
-    public List<IFormalParameter> getFormalParameters()
+    public List<IFormalParameter> getParameters()
     {
         final List<IFormalParameter> result = Lists.newLinkedList();
 

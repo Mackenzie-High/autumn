@@ -93,18 +93,39 @@ public final class Bitwise
         return ~bits;
     }
 
+    /**
+     * This method performs a bitwise logical-AND.
+     *
+     * @param left is the left operand.
+     * @param left is the right operand.
+     * @return the result.
+     */
     public static long and(final long left,
                            final long right)
     {
         return left & right;
     }
 
+    /**
+     * This method performs a bitwise logical-OR.
+     *
+     * @param left is the left operand.
+     * @param left is the right operand.
+     * @return the result.
+     */
     public static long or(final long left,
                           final long right)
     {
         return left | right;
     }
 
+    /**
+     * This method performs a bitwise logical-XOR.
+     *
+     * @param left is the left operand.
+     * @param left is the right operand.
+     * @return the result.
+     */
     public static long xor(final long left,
                            final long right)
     {

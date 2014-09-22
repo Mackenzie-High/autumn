@@ -6,7 +6,7 @@ tuple Person (name : String, age : int);
 defun main (args : String[]) : void
 {
     # Create a mutable tuple.
-    val p1 = ((new Person "Emma", 24).mutableCopy);
+    val p1 = ((new Person "Emma", 24).mutable);
 
     assert (p1.isMutable);
     assert (p1.isMutable) ^ (p1.isImmutable);
@@ -16,7 +16,7 @@ defun main (args : String[]) : void
 
 
     # Create an immutable copy of the mutable tuple.
-    val p2 = (p1.immutableCopy);
+    val p2 = (p1.immutable);
 
     assert (p2.isImmutable);
     assert (p2.isMutable) ^ (p2.isImmutable);
@@ -26,7 +26,7 @@ defun main (args : String[]) : void
 
 
     # Create an immutable copy of the immutable tuple.
-    val p3 = (p2.immutableCopy);
+    val p3 = (p2.immutable);
 
     assert (p3.isImmutable);
     assert (p3.isMutable) ^ (p3.isImmutable);

@@ -75,7 +75,7 @@ public final class StructAnalyzer
         /**
          * If the method takes parameters, then it is not a getter.
          */
-        if (method.getFormalParameters().isEmpty() == false)
+        if (method.getParameters().isEmpty() == false)
         {
             return;
         }

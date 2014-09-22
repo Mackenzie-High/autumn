@@ -764,7 +764,7 @@ public final class Utils
     /**
      * This method generates bytecode that makes a list immutable.
      *
-     * @param code is the list of bytecode instruction to append the instruction onto.
+     * @param code is the list of bytecode instructions to append the instructions onto.
      */
     public static void makeListImmutable(final InsnList code)
     {
@@ -774,6 +774,26 @@ public final class Utils
                      List.class,
                      "newImmutableList",
                      Iterable.class);
+    }
+
+    /**
+     * This method generates bytecode that creates an immutable map from two lists.
+     *
+     * <p>
+     * The map will preserve the order of the keys.
+     * </p>
+     *
+     * @param code is the list of bytecode instructions to append the instructions onto.
+     */
+    public static void createImmutableMap(final InsnList code)
+    {
+        Utils.invoke(code,
+                     Opcodes.INVOKESTATIC,
+                     Helpers.class,
+                     Map.class,
+                     "newImmutableMap",
+                     List.class,
+                     List.class);
     }
 
     /**

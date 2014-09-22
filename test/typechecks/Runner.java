@@ -37,7 +37,11 @@ public final class Runner
 
 
 
-
+        test("T0125", DUPLICATE_ELEMENT);
+        test("T0124", DUPLICATE_SUPERTYPE);
+        test("T0123", INACCESSIBLE_TYPE);
+        test("T0122", NO_SUCH_TYPE);
+        test("T0121", DUPLICATE_TYPE);
         test("T0120", EXPECTED_CONDITION);
         test("T0119", EXPECTED_CONDITION);
         test("T0118", EXPECTED_CONDITION);

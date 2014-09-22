@@ -204,7 +204,7 @@ public final class FunctionCompiler
             /**
              * Allocate the formal-parameter local variables.
              */
-            for (int i = 0; i < type.getFormalParameters().size(); i++)
+            for (int i = 0; i < type.getParameters().size(); i++)
             {
                 allocator.declareParameter(param_vars.get(i), param_types.get(i));
             }

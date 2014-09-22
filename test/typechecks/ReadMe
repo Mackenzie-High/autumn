@@ -16,11 +16,11 @@ Test Index
 . . T0049 = Duplicate Type
 . . T0050 = Duplicate Constant
 . Struct Definitions
-. . Duplicate Type
-. . No Such Supertype
-. . Inaccessible Supertype
-. . Duplicate Direct Supertype
-. . Duplicate Element
+. . T0121 = Duplicate Type
+. . T0122 = No Such Supertype
+. . T0123 = Inaccessible Supertype
+. . T0124 = Duplicate Direct Supertype
+. . T0125 = Duplicate Element
 . . Element Covariance Violation
 . . Circular Inheritance - Direct
 . . Circular Inheritance - Indirect

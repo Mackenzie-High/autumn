@@ -44,7 +44,7 @@ public interface IConstructor
      * {@inheritDoc}
      */
     @Override
-    public List<IFormalParameter> getFormalParameters();
+    public List<IFormalParameter> getParameters();
 
     /**
      * {@inheritDoc}

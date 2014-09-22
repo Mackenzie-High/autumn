@@ -13,7 +13,6 @@ import high.mackenzie.autumn.lang.compiler.typesystem.design.IMethod;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.ITypeFactory;
 import high.mackenzie.autumn.resources.Finished;
 import java.util.Collection;
-import java.util.List;
 
 /**
  * An instance of this class represents a declared type.
@@ -244,7 +243,7 @@ public final class CustomDeclaredType
      *
      * @param annotations are the annotations to directly apply to this type.
      */
-    public void setAnnotations(final List<IAnnotation> annotations)
+    public void setAnnotations(final Collection<IAnnotation> annotations)
     {
         this.annotations = ImmutableList.copyOf(annotations);
     }
@@ -254,7 +253,7 @@ public final class CustomDeclaredType
      *
      * @param constructors are the constructors declared directly within this type.
      */
-    public void setConstructors(final List<IConstructor> constructors)
+    public void setConstructors(final Collection<IConstructor> constructors)
     {
         this.constructors = ImmutableList.copyOf(constructors);
     }
@@ -264,7 +263,7 @@ public final class CustomDeclaredType
      *
      * @param fields are the fields declared directly within this type.
      */
-    public void setFields(final List<IField> fields)
+    public void setFields(final Collection<IField> fields)
     {
         this.fields = ImmutableList.copyOf(fields);
     }
@@ -274,7 +273,7 @@ public final class CustomDeclaredType
      *
      * @param methods are the methods declared directly within this type.
      */
-    public void setMethods(final List<IMethod> methods)
+    public void setMethods(final Collection<IMethod> methods)
     {
         this.methods = ImmutableList.copyOf(methods);
     }
@@ -306,7 +305,7 @@ public final class CustomDeclaredType
      *
      * @param superinterfaces are the direct superinterfaces of this type.
      */
-    public void setSuperinterfaces(final List<IInterfaceType> superinterfaces)
+    public void setSuperinterfaces(final Collection<IInterfaceType> superinterfaces)
     {
         this.superinterfaces = ImmutableList.copyOf(superinterfaces);
     }

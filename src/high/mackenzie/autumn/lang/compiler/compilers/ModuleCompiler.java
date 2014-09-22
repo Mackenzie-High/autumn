@@ -478,7 +478,7 @@ public final class ModuleCompiler
         code.add(new LdcInsnNode(function.type.getName()));
 
         // Load Argument #3.
-        params.compile(function.type.getFormalParameters());
+        params.compile(function.type.getParameters());
 
         // Load Argument #4.
         code.add(Utils.ldcClass(function.type.getReturnType()));
@@ -578,14 +578,14 @@ public final class ModuleCompiler
 
 
             // Pop the arguments off of the argument-stack and push them onto the operand-stack.
-            for (int i = 0; i < function.type.getFormalParameters().size(); i++)
+            for (int i = 0; i < function.type.getParameters().size(); i++)
             {
                 // Load the argument-stack onto the operand-stack.
                 // The return-value of the function will need pushed onto the argument-stack later.
                 code.add(new VarInsnNode(Opcodes.ALOAD, 2));
 
                 final IExpressionType param = (IExpressionType) function.type
-                        .getFormalParameters()
+                        .getParameters()
                         .get(i)
                         .getType();
 

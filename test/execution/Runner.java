@@ -30,7 +30,7 @@ public final class Runner
 
 
 
-        test("T0250");
+//        test("T0250");
         test("T0249");
         test("T0248");
         test("T0247");
@@ -125,7 +125,7 @@ public final class Runner
         test("T0155");
         test("T0154");
         test("T0153");
-        test("T0149");
+//        test("T0149");
         test("T0147");
         test("T0146");
         test("T0145");

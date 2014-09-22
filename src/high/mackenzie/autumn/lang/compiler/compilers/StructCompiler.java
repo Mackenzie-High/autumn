@@ -4,11 +4,13 @@ import autumn.lang.compiler.ClassFile;
 import autumn.lang.compiler.ast.nodes.FormalParameter;
 import autumn.lang.compiler.ast.nodes.StructDefinition;
 import autumn.lang.compiler.ast.nodes.TypeSpecifier;
+import autumn.lang.compiler.ast.nodes.Variable;
 import autumn.lang.internals.annotations.Getter;
 import autumn.lang.internals.annotations.Setter;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import high.mackenzie.autumn.lang.compiler.typesystem.CustomDeclaredType;
 import high.mackenzie.autumn.lang.compiler.typesystem.CustomFormalParameter;
 import high.mackenzie.autumn.lang.compiler.typesystem.CustomMethod;
@@ -269,6 +271,61 @@ public class StructCompiler
     @Override
     public void performTypeStructureChecking()
     {
+//        /**
+//         * Duplicate direct supertypes are forbidden.
+//         */
+//        this.detectDuplicateSupers();
+//
+//        /**
+//         * An element can only be declared once per definition.
+//         */
+//        this.detectDuplicateElements();
+    }
+
+    private void detectDuplicateSupers()
+    {
+        final List<IInterfaceType> duplicated = Lists.newArrayList(type.getSuperinterfaces());
+
+        assert duplicated.size() == node.getSupers().size();
+
+        // Remove one unique direct superinterface.
+        for (IInterfaceType supertype : Sets.newHashSet(type.getAllSuperinterfaces()))
+        {
+            duplicated.remove(supertype);
+        }
+
+        // Now, only the duplicates remain, if any.
+        for (IInterfaceType supertype : duplicated)
+        {
+            // This will throw an exception.
+            program.checker.reportDuplicateDirectSupertype(node, supertype);
+        }
+    }
+
+    private void detectDuplicateElements()
+    {
+
+        final List<Variable> duplicated = Lists.newLinkedList();
+
+        for (FormalParameter element : node.getElements().getParameters())
+        {
+            duplicated.add(element.getVariable());
+        }
+
+        assert duplicated.size() == node.getSupers().size();
+
+        // Remove one unique occurrence of each element.
+        for (IInterfaceType supertype : Sets.newHashSet(type.getAllSuperinterfaces()))
+        {
+            duplicated.remove(supertype);
+        }
+
+        // Now, only the duplicates remain, if any.
+        for (Variable element : duplicated)
+        {
+            // This will throw an exception.
+            program.checker.reportDuplicateElement(node, element);
+        }
     }
 
     /**

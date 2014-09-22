@@ -47,7 +47,7 @@ public abstract class AbstractInvokableMember
 
         result.append('(');
 
-        for (IFormalParameter param : this.getFormalParameters())
+        for (IFormalParameter param : this.getParameters())
         {
             result.append(param.getType().getDescriptor());
         }

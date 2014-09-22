@@ -7,7 +7,6 @@ import high.mackenzie.autumn.lang.compiler.typesystem.design.IDeclaredType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.ITypeFactory;
 import high.mackenzie.autumn.resources.Finished;
 import java.util.Collection;
-import java.util.List;
 
 /**
  * This class provides a partial implementation of the IMember interface.
@@ -91,7 +90,7 @@ public abstract class AbstractCustomMember
      *
      * @param annotations are the annotations applied directly to this member.
      */
-    public void setAnnotations(final List<IAnnotation> annotations)
+    public void setAnnotations(final Collection<IAnnotation> annotations)
     {
         this.annotations = ImmutableList.copyOf(annotations);
     }

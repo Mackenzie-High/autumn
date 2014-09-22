@@ -226,7 +226,7 @@ public class ReflectiveDeclaredTypeTest
         {
             checkFormalParameter(reflective.getParameterAnnotations()[i],
                                  reflective.getParameterTypes()[i],
-                                 ctor.getFormalParameters().get(i));
+                                 ctor.getParameters().get(i));
         }
 
         // Check Return-Type
@@ -269,7 +269,7 @@ public class ReflectiveDeclaredTypeTest
         {
             checkFormalParameter(reflective.getParameterAnnotations()[i],
                                  reflective.getParameterTypes()[i],
-                                 method.getFormalParameters().get(i));
+                                 method.getParameters().get(i));
         }
 
         // Check Return-Type

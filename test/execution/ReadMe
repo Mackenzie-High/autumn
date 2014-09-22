@@ -61,8 +61,8 @@ Test Index
 . . T0121 = Special Method - types()
 . . T0122 = Special Method - instance()
 . . T0123 = Special Method - size() and isEmpty()
-. . T0129 = Special Method - mutableCopy()
-. . T0130 = Special Method - immutableCopy()
+. . T0129 = Special Method - mutable()
+. . T0130 = Special Method - immutable()
 . . T0138 = Special Method - copy() - (immutable tuple)
 . . T0139 = Special Method - copy() - (mutable tuple)
 . . Special Method - equals(Object)
@@ -74,15 +74,6 @@ Test Index
 . . Special Method - assign(Tuple)
 . . Special Method - iterator()
 . . Special Method - listIterator()
-. Functor Definition
-. . Reflective Testing of the Functor's Class
-. . Functor Usage
-. . T0143 = Very Basic Functor Usage
-. . T0142 = Special Method - inner()
-. . T0144 = Special Method - parameterTypes() - (non empty)
-. . T0145 = Special Method - parameterTypes() - (empty)
-. . T0146 = Special Method - returnType() - (non void)
-. . T0147 = Special Method - returnType() - (void)
 . Struct Definitions
 . . T0250 = Basic Test
 . . Setters - (immutable)
@@ -92,10 +83,19 @@ Test Index
 . . Different Types of Elements
 . . Covariant Elements
 . . Subtyping
-. . Special Method - mutableCopy()
-. . Special Method - immutableCopy()
+. . Special Method - mutable()
+. . Special Method - immutable()
 . . Special Method - copy() - (immutable tuple)
 . . Special Method - copy() - (mutable tuple)
+. Functor Definition
+. . Reflective Testing of the Functor's Class
+. . Functor Usage
+. . T0143 = Very Basic Functor Usage
+. . T0142 = Special Method - inner()
+. . T0144 = Special Method - parameterTypes() - (non empty)
+. . T0145 = Special Method - parameterTypes() - (empty)
+. . T0146 = Special Method - returnType() - (non void)
+. . T0147 = Special Method - returnType() - (void)
 . Functions
 . . Reflective Testing of the Reflective Method Object
 . . Recursive Generator

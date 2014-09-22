@@ -48,7 +48,7 @@ public interface IMethod
      * {@inheritDoc}
      */
     @Override
-    public List<IFormalParameter> getFormalParameters();
+    public List<IFormalParameter> getParameters();
 
     /**
      * {@inheritDoc}

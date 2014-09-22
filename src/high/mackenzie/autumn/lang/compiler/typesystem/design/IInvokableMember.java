@@ -25,7 +25,7 @@ public interface IInvokableMember
      *
      * @return an immutable list containing the method's formal-parameters.
      */
-    public List<IFormalParameter> getFormalParameters();
+    public List<IFormalParameter> getParameters();
 
     /**
      * This method returns the method's throws-clause.

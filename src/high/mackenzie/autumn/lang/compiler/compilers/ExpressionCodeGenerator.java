@@ -153,7 +153,7 @@ public class ExpressionCodeGenerator
          */
         for (int i = 0; i < args.size(); i++)
         {
-            final IType parameter = method.getFormalParameters().get(i).getType();
+            final IType parameter = method.getParameters().get(i).getType();
             final IType argument = program.symbols.expressions.get(args.get(i));
 
             // Generate the argument's bytecode.
@@ -535,7 +535,7 @@ public class ExpressionCodeGenerator
 
         for (int i = 0; i < arguments.size(); i++)
         {
-            final IType parameter = method.getFormalParameters().get(i).getType();
+            final IType parameter = method.getParameters().get(i).getType();
             final IType argument = program.symbols.expressions.get(arguments.get(i));
 
             // Generate the argument's bytecode.
@@ -608,7 +608,7 @@ public class ExpressionCodeGenerator
 
         for (int i = 0; i < arguments.size(); i++)
         {
-            final IType parameter = method.getFormalParameters().get(i).getType();
+            final IType parameter = method.getParameters().get(i).getType();
             final IType argument = program.symbols.expressions.get(arguments.get(i));
 
             // Generate the argument's bytecode.

@@ -13,7 +13,7 @@ tuple T (a : boolean,
 @Start
 defun main (args : String[]) : void
 {
-    val t = ((T::instance).mutableCopy);
+    val t = ((T::instance).mutable);
 
     assert (t.isMutable);
 

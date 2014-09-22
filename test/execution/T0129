@@ -16,7 +16,7 @@ defun main (args : String[]) : void
 
 
     # Convert the immutable tuple to a mutable tuple.
-    val p2 = (p1.mutableCopy);
+    val p2 = (p1.mutable);
 
     assert (p2.isMutable);
     assert (p2.isMutable) ^ (p2.isImmutable);

@@ -64,8 +64,8 @@ public final class GetterList
                 assert type.isSubtypeOf(right.getOwner());
                 assert property.equals(left.getName());
                 assert property.equals(right.getName());
-                assert left.getFormalParameters().isEmpty();
-                assert right.getFormalParameters().isEmpty();
+                assert left.getParameters().isEmpty();
+                assert right.getParameters().isEmpty();
 
                 final IType left_type = left.getReturnType();
                 final IType right_type = right.getReturnType();

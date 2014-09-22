@@ -43,7 +43,7 @@ public abstract class AbstractCustomInvokableMember
      * {@inheritDoc}
      */
     @Override
-    public List<IFormalParameter> getFormalParameters()
+    public List<IFormalParameter> getParameters()
     {
         return ImmutableList.copyOf(parameters);
     }
@@ -115,7 +115,7 @@ public abstract class AbstractCustomInvokableMember
 
         result.append('(');
 
-        for (IFormalParameter param : this.getFormalParameters())
+        for (IFormalParameter param : this.getParameters())
         {
             result.append(param.getType().getDescriptor());
         }

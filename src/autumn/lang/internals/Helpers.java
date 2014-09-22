@@ -2,17 +2,15 @@ package autumn.lang.internals;
 
 import autumn.lang.Delegate;
 import autumn.lang.LocalsMap;
-import autumn.lang.Method;
 import autumn.lang.Module;
-import autumn.lang.Property;
-import autumn.lang.Prototype;
 import autumn.util.F;
-import autumn.util.proto.Proto;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 /**
  * This class contains utility methods that allow the compiler to generate simpler bytecode.
@@ -75,6 +73,37 @@ public final class Helpers
     }
 
     /**
+     * This method creates a new immutable-map from an two iterables.
+     *
+     * <p>
+     * The new map will preserve iteration order.
+     * </p>
+     *
+     * @param keys are the keys of the new map in iteration order.
+     * @param values are the values of the new map in iteration order.
+     * @return the new immutable list.
+     * @throws NullPointerException if the keys is null.
+     * @throws NullPointerException if the values is null.
+     * @throws IllegalArgumentException if keys.size() != values.size().
+     */
+    public static <K, V> Map<K, V> newImmutableMap(final List<K> keys,
+                                                   final List<V> values)
+    {
+        Preconditions.checkNotNull(keys);
+        Preconditions.checkNotNull(values);
+        Preconditions.checkArgument(keys.size() == values.size());
+
+        final Map<K, V> map = Maps.newLinkedHashMap();
+
+        for (int i = 0; i < keys.size(); i++)
+        {
+            map.put(keys.get(i), values.get(i));
+        }
+
+        return Collections.unmodifiableMap(map);
+    }
+
+    /**
      * This method is invoked by debug-statements in order to implement breakpoints.
      *
      * @param file is the file that contains the breakpoint.
@@ -92,96 +121,6 @@ public final class Helpers
         locals.print();
 
         F.readln();
-    }
-
-    /**
-     * This method is invoked by a setter-statement.
-     *
-     * @param owner is the object that contains the property.
-     * @param name is the name of the property.
-     * @param module is the module that contains the handler function.
-     * @param function is the name of the handler function.
-     * @return a modified copy of the prototype.
-     */
-    public static Prototype setter(final Prototype owner,
-                                   final String name,
-                                   final Module module,
-                                   final String function)
-    {
-        Preconditions.checkNotNull(owner);
-        Preconditions.checkNotNull(name);
-        Preconditions.checkNotNull(module);
-        Preconditions.checkNotNull(function);
-
-        final Delegate handler = Helpers.delegate(module, function);
-
-        final Property property = Proto.property(owner, name);
-
-        final Property modified = property.setSetter(handler);
-
-        final Prototype copy = modified.owner();
-
-        return copy;
-    }
-
-    /**
-     * This method is invoked by a getter-statement.
-     *
-     * @param owner is the object that contains the property.
-     * @param name is the name of the property.
-     * @param module is the module that contains the handler function.
-     * @param function is the name of the handler function.
-     * @return a modified copy of the prototype.
-     */
-    public static Prototype getter(final Prototype owner,
-                                   final String name,
-                                   final Module module,
-                                   final String function)
-    {
-        Preconditions.checkNotNull(owner);
-        Preconditions.checkNotNull(name);
-        Preconditions.checkNotNull(module);
-        Preconditions.checkNotNull(function);
-
-        final Delegate handler = Helpers.delegate(module, function);
-
-        final Property property = Proto.property(owner, name);
-
-        final Property modified = property.setGetter(handler);
-
-        final Prototype copy = modified.owner();
-
-        return copy;
-    }
-
-    /**
-     * This method is invoked by a method-statement.
-     *
-     * @param owner is the object that contains the method.
-     * @param key is the name + parameter-list-descriptor of the method.
-     * @param module is the module that contains the handler function.
-     * @param function is the name of the handler function.
-     * @return a modified copy of the prototype.
-     */
-    public static Prototype method(final Prototype owner,
-                                   final String key,
-                                   final Module module,
-                                   final String function)
-    {
-        Preconditions.checkNotNull(owner);
-        Preconditions.checkNotNull(key);
-        Preconditions.checkNotNull(module);
-        Preconditions.checkNotNull(function);
-
-        final Delegate handler = Helpers.delegate(module, function);
-
-        final Method method = Proto.method(owner, key);
-
-        final Method modified = method.setHandler(handler);
-
-        final Prototype copy = modified.owner();
-
-        return copy;
     }
 
     /**

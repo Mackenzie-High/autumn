@@ -6,7 +6,7 @@ tuple T (x : int);
 defun main (args : String[]) : void
 {
     val p = (new T 123);
-    val x = (p.mutableCopy);
+    val x = (p.mutable);
     val y = (x.copy);
 
     assert x == y;

@@ -13,7 +13,7 @@ tuple T (a : boolean,
 @Start
 defun main (args : String[]) : void
 {
-    var t = ((T::instance).mutableCopy);
+    var t = ((T::instance).mutable);
 
     val first = t;
 

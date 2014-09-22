@@ -2,7 +2,6 @@ package high.mackenzie.autumn.lang.compiler.compilers;
 
 import autumn.lang.compiler.ast.nodes.TypeSpecifier;
 import autumn.util.functors.Predicate;
-import autumn.util.proto.ProtoMap;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
@@ -68,6 +67,7 @@ public final class Importer
         importClass(autumn.util.F.class);
         importClass(autumn.util.Files.class);
         importClass(autumn.util.Predicates.class);
+        importClass(autumn.util.Records.class);
         importClass(autumn.util.Reflect.class);
         importClass(autumn.util.Strings.class);
         importClass(autumn.util.Threads.class);
@@ -80,9 +80,6 @@ public final class Importer
         importClass(autumn.util.test.TestResults.class);
         importClass(autumn.util.test.Tester.class);
         importClass(autumn.util.test.UnitTester.class);
-
-        // autumn.util.proto
-        importClass(ProtoMap.class);
 
         // autumn.util.functors
         importClass(Predicate.class);

@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Stack;
 
@@ -104,11 +105,11 @@ public final class Files
      * @param data is value to assign to the text file.
      * @throws IOException if something goes wrong.
      */
-    public static void write(final File file,
-                             final CharSequence data)
+    public static void writeText(final File file,
+                                 final CharSequence data)
             throws IOException
     {
-        write(file, data, Charset.defaultCharset());
+        writeText(file, data, Charset.defaultCharset());
     }
 
     /**
@@ -119,12 +120,27 @@ public final class Files
      * @param charset is the encoding to use.
      * @throws IOException if something goes wrong.
      */
-    public static void write(final File file,
-                             final CharSequence data,
-                             final Charset charset)
+    public static void writeText(final File file,
+                                 final CharSequence data,
+                                 final Charset charset)
             throws IOException
     {
         com.google.common.io.Files.write(data, file, charset);
+    }
+
+    /**
+     * This method sets the contents of a text file.
+     *
+     * @param file is the path to the text file.
+     * @param lines are the lines of data to assign to the text file.
+     * @param charset is the encoding to use.
+     * @throws IOException if something goes wrong.
+     */
+    public static void writeLines(final File file,
+                                  final Iterable<? extends CharSequence> lines,
+                                  final Charset charset)
+            throws IOException
+    {
     }
 
     /**
@@ -134,11 +150,24 @@ public final class Files
      * @param data is value to assign to the binary file.
      * @throws IOException if something goes wrong.
      */
-    public static void write(final File file,
-                             final byte[] data)
+    public static void writeBytes(final File file,
+                                  final byte[] data)
             throws IOException
     {
         com.google.common.io.Files.write(data, file);
+    }
+
+    public static String readLines(final File file)
+            throws IOException
+    {
+        return null;
+    }
+
+    public static String readLines(final File file,
+                                   final Charset charset)
+            throws IOException
+    {
+        return null;
     }
 
     public static String readText(final File file)
@@ -155,6 +184,54 @@ public final class Files
     }
 
     public static byte[] readBytes(final File file)
+            throws IOException
+    {
+        return null;
+    }
+
+    /**
+     * This map writes a zip file.
+     *
+     * <p>
+     * Each entry in the map describes an entry in the zip-file.
+     * Each key is the path to the entry within the zip-file.
+     * Each value is the content to place in the zip-file entry.
+     * </p>
+     *
+     * <p>
+     * This method is intended for writing small zip-files.
+     * Large zip files should be created using the Java zip-file API.
+     * </p>
+     *
+     * @param file is the output path.
+     * @param map describes the contents of the zip-file.
+     * @throws IOException if something goes wrong.
+     */
+    public static void writeZipMap(final File file,
+                                   final Map<String, byte[]> map)
+            throws IOException
+    {
+    }
+
+    /**
+     * This method reads a zip file.
+     *
+     * <p>
+     * Each entry in the returned map describes an entry in the zip-file.
+     * Each key is the path to the entry within the zip-file.
+     * Each value is the content to place in the zip-file entry.
+     * </p>
+     *
+     * <p>
+     * This method is intended for reading small zip-files.
+     * Large zip files should be created using the Java zip-file API.
+     * </p>
+     *
+     * @param file is the path to the zip-file to read.
+     * @return a map that describes the zip-file.
+     * @throws IOException if something goes wrong.
+     */
+    public static Map<String, byte[]> readZipMap(final File file)
             throws IOException
     {
         return null;

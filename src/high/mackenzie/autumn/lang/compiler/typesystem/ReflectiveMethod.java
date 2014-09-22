@@ -118,7 +118,7 @@ public final class ReflectiveMethod
      * {@inheritDoc}
      */
     @Override
-    public List<IFormalParameter> getFormalParameters()
+    public List<IFormalParameter> getParameters()
     {
         final List<IFormalParameter> result = Lists.newLinkedList();
 

@@ -2,8 +2,6 @@ package high.mackenzie.autumn.lang.compiler.compilers;
 
 import autumn.lang.compiler.ClassFile;
 import autumn.lang.compiler.ast.nodes.SourceLocation;
-import autumn.lang.internals.proto.AbstractPrototype;
-import autumn.lang.internals.proto.MetaPrototype;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
@@ -23,7 +21,6 @@ import java.util.Map.Entry;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.ClassNode;
-import org.objectweb.asm.tree.FieldInsnNode;
 import org.objectweb.asm.tree.FieldNode;
 import org.objectweb.asm.tree.InsnList;
 import org.objectweb.asm.tree.InsnNode;
@@ -115,7 +112,7 @@ public final class KlassCompiler
         clazz.visibleAnnotations = Lists.newLinkedList();
         clazz.access = Opcodes.ACC_FINAL + Opcodes.ACC_SYNTHETIC;
         clazz.name = name();
-        clazz.superName = Utils.internalName(program.typesystem.utils.ABSTRACT_PROTOTYPE);
+//        clazz.superName = Utils.internalName(program.typesystem.utils.ABSTRACT_PROTOTYPE);
         clazz.interfaces = Lists.newArrayList(Utils.internalName(type));
         clazz.fields.addAll(fields);
         clazz.methods.addAll(methods);
@@ -141,11 +138,7 @@ public final class KlassCompiler
     {
         final int access = Opcodes.ACC_PRIVATE + Opcodes.ACC_STATIC + Opcodes.ACC_FINAL;
 
-        final String descriptor = program.typesystem
-                .typefactory()
-                .fromClass(MetaPrototype.class)
-                .getDescriptor();
-
+        final String descriptor = "";
         final FieldNode field = new FieldNode(access, "klass", descriptor, null, null);
 
         return field;
@@ -168,11 +161,11 @@ public final class KlassCompiler
         /**
          * Create the MetaPrototype object.
          */
-        ctor.instructions.add(new TypeInsnNode(Opcodes.NEW, Utils.internalName(program.typesystem.utils.META_PROTOTYPE)));
+//        ctor.instructions.add(new TypeInsnNode(Opcodes.NEW, Utils.internalName(program.typesystem.utils.META_PROTOTYPE)));
         ctor.instructions.add(new InsnNode(Opcodes.DUP));
         Utils.invoke(ctor.instructions,
                      Opcodes.INVOKESPECIAL,
-                     MetaPrototype.class,
+                     Class.class,
                      void.class,
                      "<init>");
 
@@ -210,12 +203,10 @@ public final class KlassCompiler
         /**
          * Put the MetaPrototype object into the 'klass' field.
          */
-        ctor.instructions.add(new FieldInsnNode(Opcodes.PUTSTATIC,
-                                                name(),
-                                                "klass",
-                                                program.typesystem.utils.META_PROTOTYPE.getDescriptor()));
-
-
+//        ctor.instructions.add(new FieldInsnNode(Opcodes.PUTSTATIC,
+//                                                name(),
+//                                                "klass",
+//                                                program.typesystem.utils.META_PROTOTYPE.getDescriptor()));
         ctor.instructions.add(new InsnNode(Opcodes.RETURN));
 
         return ctor;
@@ -260,7 +251,7 @@ public final class KlassCompiler
         code.add(Utils.ldcClass(returns));
         Utils.invoke(code,
                      Opcodes.INVOKEVIRTUAL,
-                     MetaPrototype.class,
+                     Class.class,
                      void.class,
                      "newProperty",
                      String.class,
@@ -325,7 +316,7 @@ public final class KlassCompiler
         code.add(Utils.ldcClass(returns));
         Utils.invoke(code,
                      Opcodes.INVOKEVIRTUAL,
-                     MetaPrototype.class,
+                     Class.class,
                      void.class,
                      "newMethod",
                      String.class,
@@ -360,7 +351,7 @@ public final class KlassCompiler
             }
         };
 
-        cmp.compile(method.getFormalParameters());
+        cmp.compile(method.getParameters());
     }
 
     /**
@@ -391,16 +382,16 @@ public final class KlassCompiler
 
         ctor.instructions.add(new VarInsnNode(Opcodes.ALOAD, 0));
 
-        ctor.instructions.add(new FieldInsnNode(Opcodes.GETSTATIC, name(),
-                                                "klass",
-                                                program.typesystem.utils.META_PROTOTYPE.getDescriptor()));
+//        ctor.instructions.add(new FieldInsnNode(Opcodes.GETSTATIC, name(),
+//                                                "klass",
+//                                                program.typesystem.utils.META_PROTOTYPE.getDescriptor()));
 
         Utils.invoke(ctor.instructions,
                      Opcodes.INVOKESPECIAL,
-                     AbstractPrototype.class,
+                     Class.class,
                      void.class,
                      "<init>",
-                     MetaPrototype.class);
+                     Class.class);
 
         ctor.instructions.add(new InsnNode(Opcodes.RETURN));
 
@@ -418,7 +409,7 @@ public final class KlassCompiler
 
         ctor.access = Opcodes.ACC_PRIVATE + Opcodes.ACC_SYNTHETIC;
         ctor.name = "<init>";
-        ctor.desc = "(" + program.typesystem.utils.ABSTRACT_PROTOTYPE.getDescriptor() + ")V";
+//        ctor.desc = "(" + program.typesystem.utils.ABSTRACT_PROTOTYPE.getDescriptor() + ")V";
         ctor.exceptions = ImmutableList.of();
 
         // Generated Bytecode:
@@ -434,10 +425,10 @@ public final class KlassCompiler
 
         Utils.invoke(ctor.instructions,
                      Opcodes.INVOKESPECIAL,
-                     AbstractPrototype.class,
+                     Class.class,
                      void.class,
                      "<init>",
-                     AbstractPrototype.class);
+                     Class.class);
 
         ctor.instructions.add(new InsnNode(Opcodes.RETURN));
 
@@ -477,14 +468,14 @@ public final class KlassCompiler
 
         method.instructions.add(new VarInsnNode(Opcodes.ALOAD, 0));
 
-        method.instructions.add(new MethodInsnNode(Opcodes.INVOKESPECIAL,
-                                                   name(),
-                                                   "<init>",
-                                                   "(" + program.typesystem.utils.ABSTRACT_PROTOTYPE.getDescriptor() + ")V"));
+//        method.instructions.add(new MethodInsnNode(Opcodes.INVOKESPECIAL,
+//                                                   name(),
+//                                                   "<init>",
+////                                                   "(" + program.typesystem.utils.ABSTRACT_PROTOTYPE.getDescriptor() + ")V"));
 
-        method.instructions.add(new InsnNode(Opcodes.ARETURN));
+//        method.instructions.add(new InsnNode(Opcodes.ARETURN));
 
-        return method;
+        return null;
     }
 
     /**
@@ -498,7 +489,7 @@ public final class KlassCompiler
 
         method.access = Opcodes.ACC_PUBLIC + Opcodes.ACC_FINAL + Opcodes.ACC_BRIDGE;
         method.name = "copy";
-        method.desc = "()" + program.typesystem.utils.ABSTRACT_PROTOTYPE.getDescriptor();
+//        method.desc = "()" + program.typesystem.utils.ABSTRACT_PROTOTYPE.getDescriptor();
         method.exceptions = ImmutableList.of();
 
         // Generated Bytecode:
@@ -597,13 +588,13 @@ public final class KlassCompiler
         final MethodNode method = Utils.bytecodeOf(module, setter_type);
         clazz.methods.add(method);
 
-        final IVariableType argument = setter_type.getFormalParameters().get(0).getType();
+        final IVariableType argument = setter_type.getParameters().get(0).getType();
 
         final String parameter_desc = argument.isReferenceType()
                 ? "Ljava/lang/Object;"
                 : argument.getDescriptor();
 
-        final String desc = "(" + program.typesystem.utils.ABSTRACT_PROTOTYPE.getDescriptor() + "I" + parameter_desc + ")" + program.typesystem.utils.ABSTRACT_PROTOTYPE.getDescriptor();
+//        final String desc = "(" + program.typesystem.utils.ABSTRACT_PROTOTYPE.getDescriptor() + "I" + parameter_desc + ")" + program.typesystem.utils.ABSTRACT_PROTOTYPE.getDescriptor();
 
         // Remove the abstract modifier.
         method.access = Opcodes.ACC_PUBLIC + Opcodes.ACC_FINAL;
@@ -624,10 +615,10 @@ public final class KlassCompiler
 
         method.instructions.add(Utils.selectLoadVarInsn(argument, 1));
 
-        method.instructions.add(new MethodInsnNode(Opcodes.INVOKESTATIC,
-                                                   Utils.internalName(program.typesystem.utils.ACTIONS),
-                                                   "set",
-                                                   desc));
+//        method.instructions.add(new MethodInsnNode(Opcodes.INVOKESTATIC,
+//                                                   Utils.internalName(program.typesystem.utils.ACTIONS),
+//                                                   "set",
+//                                                   desc));
 
         method.instructions.add(new InsnNode(Opcodes.ARETURN));
     }
@@ -652,7 +643,7 @@ public final class KlassCompiler
                 ? "Ljava/lang/Object;"
                 : getter_type.getReturnType().getDescriptor();
 
-        final String desc = "(" + program.typesystem.utils.ABSTRACT_PROTOTYPE.getDescriptor() + "I)" + return_desc;
+        final String desc = "I)" + return_desc;
 
         // Remove the abstract modifier.
         method.access = Opcodes.ACC_PUBLIC + Opcodes.ACC_FINAL;
@@ -679,10 +670,10 @@ public final class KlassCompiler
 
         method.instructions.add(new LdcInsnNode(index));
 
-        method.instructions.add(new MethodInsnNode(Opcodes.INVOKESTATIC,
-                                                   Utils.internalName(program.typesystem.utils.ACTIONS),
-                                                   name,
-                                                   desc));
+//        method.instructions.add(new MethodInsnNode(Opcodes.INVOKESTATIC,
+//                                                   Utils.internalName(program.typesystem.utils.ACTIONS),
+//                                                   name,
+//                                                   desc));
 
         if (getter_type.getReturnType().isReferenceType())
         {
@@ -773,7 +764,7 @@ public final class KlassCompiler
 
         int address = 1; // offset due to 'this'
 
-        for (IFormalParameter formal : method_type.getFormalParameters())
+        for (IFormalParameter formal : method_type.getParameters())
         {
             method.instructions.add(new InsnNode(Opcodes.DUP));
 
@@ -786,10 +777,10 @@ public final class KlassCompiler
 
         method.instructions.add(new InsnNode(Opcodes.DUP_X2));
 
-        method.instructions.add(new MethodInsnNode(Opcodes.INVOKESTATIC,
-                                                   Utils.internalName(program.typesystem.utils.ACTIONS),
-                                                   "invoke",
-                                                   "(" + program.typesystem.utils.ABSTRACT_PROTOTYPE.getDescriptor() + "I" + program.typesystem.utils.ARGUMENT_STACK.getDescriptor() + ")V"));
+//        method.instructions.add(new MethodInsnNode(Opcodes.INVOKESTATIC,
+//                                                   Utils.internalName(program.typesystem.utils.ACTIONS),
+//                                                   "invoke",
+//                                                   "(" + program.typesystem.utils.ABSTRACT_PROTOTYPE.getDescriptor() + "I" + program.typesystem.utils.ARGUMENT_STACK.getDescriptor() + ")V"));
 
         if (method_type.getReturnType().isPrimitiveType())
         {
@@ -866,7 +857,7 @@ public final class KlassCompiler
 
         int address = 1; // offset due to 'this'
 
-        for (IFormalParameter formal : bridge.getFormalParameters())
+        for (IFormalParameter formal : bridge.getParameters())
         {
             method.instructions.add(Utils.selectLoadVarInsn(formal.getType(), address));
 

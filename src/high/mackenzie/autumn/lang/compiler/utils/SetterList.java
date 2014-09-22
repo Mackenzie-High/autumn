@@ -66,13 +66,13 @@ public final class SetterList
                 assert right.getReturnType().equals(right.getOwner());
                 assert property.equals(left.getName());
                 assert property.equals(right.getName());
-                assert left.getFormalParameters().size() == 1;
-                assert right.getFormalParameters().size() == 1;
+                assert left.getParameters().size() == 1;
+                assert right.getParameters().size() == 1;
                 assert type.isSubtypeOf(left.getReturnType());
                 assert type.isSubtypeOf(right.getReturnType());
 
-                final IType left_type = left.getFormalParameters().get(0).getType();
-                final IType right_type = right.getFormalParameters().get(0).getType();
+                final IType left_type = left.getParameters().get(0).getType();
+                final IType right_type = right.getParameters().get(0).getType();
 
                 return left_type.isSubtypeOf(right_type);
             }

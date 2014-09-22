@@ -1,6 +1,5 @@
 package autumn.util.ds;
 
-import java.math.BigInteger;
 import java.util.Map;
 
 /**
@@ -10,13 +9,36 @@ import java.util.Map;
  */
 public interface Counter<T>
 {
+    /**
+     * This method adds the value to the total.
+     *
+     * @param value is the value to count.
+     */
     public void add(T value);
 
-    public void remove(T value);
+    /**
+     * This method subtracts the value from the total.
+     *
+     * @param value is the value to subtract.
+     */
+    public void subtract(T value);
 
-    public BigInteger count(T value);
+    /**
+     * This method counts the number of times that a particular value was encountered.
+     *
+     * @param value is the value to count.
+     * @return the number of times the value was added to this counter.
+     */
+    public int count(T value);
 
-    public BigInteger total();
-
-    public Map<T, BigInteger> toMap();
+    /**
+     * This method creates map that maps a value to the number of times it was counted.
+     *
+     * <p>
+     * A count may be negative, if more subtractions occurred than additions.
+     * </p>
+     *
+     * @return the aforesaid map that is backed by this counter.
+     */
+    public Map<T, Integer> toMap();
 }

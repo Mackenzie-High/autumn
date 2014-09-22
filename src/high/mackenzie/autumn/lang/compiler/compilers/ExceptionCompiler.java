@@ -222,7 +222,7 @@ final class ExceptionCompiler
 
             // Load each actual-parameter onto the operand-stack.
             int offset = 1; // skip 'this'
-            for (IFormalParameter param : ctor.getFormalParameters())
+            for (IFormalParameter param : ctor.getParameters())
             {
                 m.instructions.add(Utils.selectLoadVarInsn(param.getType(), offset));
                 offset = offset + Utils.sizeof(param.getType());
@@ -298,7 +298,7 @@ final class ExceptionCompiler
             custom.setAnnotations(ImmutableList.<IAnnotation>of());
             custom.setModifiers(ctor.getModifiers());
             custom.setName(ctor.getName());
-            custom.setParameters(ctor.getFormalParameters());
+            custom.setParameters(ctor.getParameters());
             custom.setReturnType(ctor.getReturnType());
             custom.setThrowsClause(ctor.getThrowsClause());
 
