@@ -36,9 +36,9 @@ public final class StructElement
      * @param name is the element's name.
      * @param value is the element's static-type.
      */
-    public StructElement(final IInterfaceType owner,
-                         final String name,
-                         final IVariableType value)
+    StructElement(final IInterfaceType owner,
+                  final String name,
+                  final IVariableType value)
     {
         Preconditions.checkNotNull(owner);
         Preconditions.checkNotNull(name);

@@ -24,8 +24,8 @@ public final class StructElementList
      *
      * @param name is the name of the element.
      */
-    public StructElementList(final String name,
-                             final Iterable<StructElement> unsorted)
+    StructElementList(final String name,
+                      final Iterable<StructElement> unsorted)
     {
         Preconditions.checkNotNull(name);
         Preconditions.checkNotNull(unsorted);
