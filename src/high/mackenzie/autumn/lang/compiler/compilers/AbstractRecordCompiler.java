@@ -15,6 +15,9 @@ import high.mackenzie.autumn.lang.compiler.typesystem.design.IInterfaceType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IMethod;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IVariableType;
 import high.mackenzie.autumn.lang.compiler.utils.BridgeMethod;
+import high.mackenzie.autumn.lang.compiler.utils.CovarianceViolation;
+import high.mackenzie.autumn.lang.compiler.utils.RecordAnalyzer;
+import high.mackenzie.autumn.lang.compiler.utils.RecordElementList;
 import high.mackenzie.autumn.lang.compiler.utils.TypeSystemUtils;
 import high.mackenzie.autumn.lang.compiler.utils.Utils;
 import java.util.Collections;
@@ -37,8 +40,13 @@ import org.objectweb.asm.tree.TypeInsnNode;
 import org.objectweb.asm.tree.VarInsnNode;
 
 /**
+ * This class generalizes the compilation of struct-definitions and tuple-definitions.
  *
- * @author mackenzie
+ * <p>
+ * Note: Design-definitions are technically records, but they are compiled very differently.
+ * </p>
+ *
+ * @author Mackenzie High
  */
 public class AbstractRecordCompiler
         implements ICompiler
@@ -124,6 +132,13 @@ public class AbstractRecordCompiler
      * These objects will be used to generate the bytecode representations of the bridge methods.
      */
     private final List<BridgeMethod> bridges = Lists.newLinkedList();
+
+    /**
+     * This object is used to infer inherited elements and detect problems related thereto.
+     *
+     * This field will be initialized during the type-initialization compiler pass.
+     */
+    private RecordAnalyzer analyzer;
 
     /**
      * Sole Constructor.
@@ -344,7 +359,7 @@ public class AbstractRecordCompiler
         methods.add(this.typeofInstance());
 
         /**
-         * Create the getter and setter methods for each element in the tuple.
+         * Create the getter and setter methods for each element declared directly in the record.
          */
         for (Element entry : node.getElements().getElements())
         {
@@ -373,7 +388,14 @@ public class AbstractRecordCompiler
         /**
          * Now we need to generate bridge methods.
          */
-        typeofBridgeMethods();
+        typeofBridgeSpecialMethods();
+
+        /**
+         * Detect all the elements in the new record.
+         * Some of the elements are declared directly in the definition.
+         * Other elements may be inherited from supertypes.
+         */
+        this.analyzer = new RecordAnalyzer(type);
     }
 
     /**
@@ -477,7 +499,7 @@ public class AbstractRecordCompiler
     /**
      * This method creates the type-system representations of the bridge methods.
      */
-    private void typeofBridgeMethods()
+    private void typeofBridgeSpecialMethods()
     {
         final IInterfaceType RECORD = program.typesystem.utils.RECORD;
 
@@ -488,15 +510,6 @@ public class AbstractRecordCompiler
                                      type,
                                      TypeSystemUtils.find(RECORD.getAllVisibleMethods(),
                                                           "bind")));
-
-        /**
-         * Method: set(String, Object)
-         */
-        bridges.add(new BridgeMethod(type,
-                                     type,
-                                     TypeSystemUtils.find(type.getAllVisibleMethods(),
-                                                          "set",
-                                                          "(Ljava/lang/String;Ljava/lang/Object;)" + RECORD.getDescriptor())));
 
         /**
          * Method: set(int, Object)
@@ -533,15 +546,6 @@ public class AbstractRecordCompiler
                                      TypeSystemUtils.find(RECORD.getAllVisibleMethods(),
                                                           "copy",
                                                           "()" + RECORD.getDescriptor())));
-
-        /**
-         * Method: clear()
-         */
-        bridges.add(new BridgeMethod(type,
-                                     type,
-                                     TypeSystemUtils.find(RECORD.getMethods(),
-                                                          "clear",
-                                                          "()" + RECORD.getDescriptor())));
     }
 
     /**
@@ -553,6 +557,19 @@ public class AbstractRecordCompiler
         // TODO:
         // 1. No duplicate elements.
         // 2. Element types must be non-void and non-null.
+
+        /**
+         * Detect and report any covariance violations.
+         */
+        for (RecordElementList element : analyzer.elements.values())
+        {
+            final List<CovarianceViolation> violations = element.detectCovarianceViolations();
+
+            if (violations.isEmpty() == false)
+            {
+                // TODO: error
+            }
+        }
     }
 
     /**
@@ -1198,6 +1215,47 @@ public class AbstractRecordCompiler
      */
     private MethodNode generateMethodImmutable()
     {
+        // Generated Bytecode:
+        //
+        // NEW *type*              - Create a new uninitialized object of this record-type.
+        // DUP                     - Duplicate the object-reference to the uninitialized object.
+        //
+        // ALOAD this              - Load 'this' onto the operand-stack.
+        // GETFIELD this.field[0]  - Load value in field #0 onto the operand-stack.
+        //
+        // ALOAD this              - Load 'this' onto the operand-stack.
+        // GETFIELD this.field[1]  - Load value in field #1 onto the operand-stack.
+        //
+        // ALOAD this              - Load 'this' onto the operand-stack.
+        // GETFIELD this.field[2]  - Load value in field #2 onto the operand-stack.
+        //
+        // ...
+        //
+        // ALOAD this              - Load 'this' onto the operand-stack.
+        // GETFIELD this.field[n]  - Load value in field #n onto the operand-stack.
+        //
+        // INVOKESPECIAL <init>    - Invoke the only ctor that the uninitialized object has.
+        //                         - The constructor takes the previous field values as arguments.
+        //                         - Essentially, we are simply copying the 'this' object.
+        //                         - However, the ctor does *not* copy the special method bindings.
+        //                         - So, we still need to do that.
+        //
+        // NOTE                    - The uninitialized object is now initialized.
+        //                         - A reference to that object is on the top of the operand-stack.
+        //
+        // NOTE                    - Now, we need to manually copy the special-method bindings.
+        //                         - The bindings are stored in a special field named BINDINGS.
+        //
+        // DUP                     - Duplicate the aforesaid object-reference.
+        // ALOAD this              - Load the 'this' reference onto the operand-stack.
+        // GETFIELD this.BINDINGS  - Get the value in the 'this' object in the BINDINGS field.
+        // PUTFIELD copy.BINDINGS  - Set the value of the BINDINGS field in the 'copy' object.
+        //
+        // ARETURN copy            - Return the copy object.
+        //
+        ////////////////////////////////////////////////////////////////////////////////////////////
+
+
         final MethodNode method = Utils.bytecodeOf(module,
                                                    TypeSystemUtils.find(type.getAllVisibleMethods(),
                                                                         "immutable",
@@ -1239,6 +1297,22 @@ public class AbstractRecordCompiler
                                                    Utils.internalName(type),
                                                    "<init>",
                                                    ctor.getDescriptor()));
+
+        /**
+         * Copy the special-methods field manually.
+         *
+         * Be sure to leave a reference to the copy of the record on the operand-stack.
+         */
+        method.instructions.add(new InsnNode(Opcodes.DUP));
+        method.instructions.add(new VarInsnNode(Opcodes.ALOAD, 0)); // Load 'this'
+        method.instructions.add(new FieldInsnNode(Opcodes.GETFIELD,
+                                                  Utils.internalName(type),
+                                                  "BINDINGS",
+                                                  program.typesystem.utils.SPECIAL_METHODS.getDescriptor()));
+        method.instructions.add(new FieldInsnNode(Opcodes.PUTFIELD,
+                                                  Utils.internalName(type),
+                                                  "BINDINGS",
+                                                  program.typesystem.utils.SPECIAL_METHODS.getDescriptor()));
 
         /**
          * Return the copy.

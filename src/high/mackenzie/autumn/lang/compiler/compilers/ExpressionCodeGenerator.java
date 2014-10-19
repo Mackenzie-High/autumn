@@ -1,5 +1,6 @@
 package high.mackenzie.autumn.lang.compiler.compilers;
 
+import autumn.lang.annotations.InferReturnType;
 import autumn.lang.compiler.ast.commons.ConstructList;
 import autumn.lang.compiler.ast.commons.IBinaryOperation;
 import autumn.lang.compiler.ast.commons.IExpression;
@@ -18,6 +19,7 @@ import high.mackenzie.autumn.lang.compiler.typesystem.design.IReturnType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IVariableType;
 import high.mackenzie.autumn.lang.compiler.utils.Conversion;
+import high.mackenzie.autumn.lang.compiler.utils.TypeSystemUtils;
 import high.mackenzie.autumn.lang.compiler.utils.Utils;
 import java.util.Iterator;
 import java.util.List;
@@ -170,6 +172,27 @@ public class ExpressionCodeGenerator
                                     Utils.internalName(method.getOwner()),
                                     method.getName(),
                                     method.getDescriptor()));
+
+        /**
+         * Downcast the return-value, if the return-type is inferred.
+         */
+        if (TypeSystemUtils.isAnnotationPresent(method, InferReturnType.class))
+        {
+            if (method.getParameters().isEmpty())
+            {
+                // Pass, there should not be a @InferReturnType annotation on the method.
+            }
+            else if (program.symbols.expressions.get(args.get(0)).isReferenceType() == false)
+            {
+                // Pass, there should not be a @InferReturnType annotation on the method.
+            }
+            else
+            {
+                final IReferenceType type = (IReferenceType) program.symbols.expressions.get(args.get(0));
+
+                code.add(new TypeInsnNode(Opcodes.CHECKCAST, Utils.internalName(type)));
+            }
+        }
     }
 
     /**

@@ -92,16 +92,16 @@ public final class SpecialMethods
 
     public TypedFunctor getEquals()
     {
-        return compare;
+        return equals;
     }
 
     public TypedFunctor getHashCode()
     {
-        return compare;
+        return hash;
     }
 
     public TypedFunctor getToString()
     {
-        return compare;
+        return string;
     }
 }

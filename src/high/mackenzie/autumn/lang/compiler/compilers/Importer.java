@@ -1,6 +1,11 @@
 package high.mackenzie.autumn.lang.compiler.compilers;
 
 import autumn.lang.compiler.ast.nodes.TypeSpecifier;
+import autumn.util.functors.MethodCompareTo;
+import autumn.util.functors.MethodEquals;
+import autumn.util.functors.MethodHashCode;
+import autumn.util.functors.MethodIterator;
+import autumn.util.functors.MethodToString;
 import autumn.util.functors.Predicate;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
@@ -91,6 +96,11 @@ public final class Importer
 
         // autumn.util.functors
         importClass(Predicate.class);
+        importClass(MethodCompareTo.class);
+        importClass(MethodEquals.class);
+        importClass(MethodHashCode.class);
+        importClass(MethodIterator.class);
+        importClass(MethodToString.class);
 
 
         // java.lang

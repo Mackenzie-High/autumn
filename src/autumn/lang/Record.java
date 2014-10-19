@@ -231,6 +231,7 @@ public interface Record
      * </p>
      *
      * @return an iterator over this object.
+     * @throws autumn.lang.exceptions.CheckedException in order to propagate checked exceptions.
      */
     @Override
     public Iterator iterator();
@@ -252,6 +253,7 @@ public interface Record
      * @param other is the other record itself.
      * @return an integer indicating the relationship of this record to the other record.
      * @throws UnsupportedOperationException if a comparison could not be performed.
+     * @throws autumn.lang.exceptions.CheckedException in order to propagate checked exceptions.
      */
     @Override
     public int compareTo(Record other);
@@ -277,6 +279,7 @@ public interface Record
      *
      * @param other is a value that may be equal to this object.
      * @return true, iff this record equals the given value.
+     * @throws autumn.lang.exceptions.CheckedException in order to propagate checked exceptions.
      */
     @Override
     public boolean equals(Object other);
@@ -289,6 +292,7 @@ public interface Record
      * </p>
      *
      * @return <code> keys().hashCode() xor values().hashCode(), by default </code>
+     * @throws autumn.lang.exceptions.CheckedException in order to propagate checked exceptions.
      */
     @Override
     public int hashCode();
@@ -305,6 +309,7 @@ public interface Record
      * </p>
      *
      * @return the generated string.
+     * @throws autumn.lang.exceptions.CheckedException in order to propagate checked exceptions.
      */
     @Override
     public String toString();

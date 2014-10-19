@@ -46,21 +46,16 @@ Test Index
 . . T0127 = Setters - (mutable)
 . . T0117 = Getters
 . . T0251 - Special Method - bind(SpecialMethods)
-. . Special Method - bindings()
-. . T0135 = Special Method - set(String, Object) - (element exists, immutable tuple)
-. . T0137 = Special Method - set(String, Object) - (element exists, mutable tuple)
-. . T0136 = Special Method - set(String, Object) - (no such element)
+. . T0252 = Special Method - bindings()
 . . T0132 = Special Method - set(int, Object) - (index OK, immutable tuple)
 . . T0133 = Special Method - set(int, Object) - (index OK, mutable tuple)
 . . T0134 = Special Method - set(int, Object) - (index Out-Of-Bounds)
-. . T0124 = Special Method - get(String) - (element exists)
-. . T0125 = Special Method - get(String) - (no such element)
 . . T0115 = Special Method - get(int) - (index OK)
 . . T0116 = Special Method - get(int) - (index Out-Of-Bounds)
-. . T0118 = Special Method - toString()
-. . T0119 = Special Method - values()
+. . T0118 = Special Method - toString() - default behavior
 . . T0120 = Special Method - keys()
 . . T0121 = Special Method - types()
+. . T0119 = Special Method - values()
 . . T0122 = Special Method - instance()
 . . T0123 = Special Method - size() and isEmpty()
 . . T0129 = Special Method - mutable()
@@ -70,11 +65,8 @@ Test Index
 . . Special Method - equals(Object)
 . . Special Method - hashCode()
 . . Special Method - toString()
-. . Special Method - compareTo(Object)
-. . Special Method - compareTo(Tuple)
-. . Special Method - assign(Tuple)
+. . Special Method - compareTo(Record)
 . . Special Method - iterator()
-. . Special Method - listIterator()
 . Struct Definitions
 . . T0250 = Basic Test
 . . Setters - (immutable)
@@ -207,9 +199,6 @@ Test Index
 . . . With Message
 . . Nop = No Test Needed
 . . Expression = No Test Needed
-. . Setter
-. . Getter
-. . Method
 . . Return Void
 . . Return Value = T0053    # TODO: Add auto-boxing
 . . Recur
@@ -254,6 +243,7 @@ Test Index
 . . . T0228 = Auto-Widening
 . . . T0226 = Auto-Boxing
 . . . T0227 = Auto-Unboxing
+. . . T0253 = Infer Return Type
 . . Call Method
 . . . T0229 = Different Types of Arguments
 . . . T0233 = Resolution Order
@@ -277,8 +267,6 @@ Test Index
 . . . T0236 = Different Types of Values
 . . Instance-Of
 . . . T0046 = All Cases
-. . Create
-. . . T0149 = Same Object
 . . Ternary Conditional
 . . . T0243 = Primitive Boolean Condition
 . . . T0244 = Boxed Boolean Condition

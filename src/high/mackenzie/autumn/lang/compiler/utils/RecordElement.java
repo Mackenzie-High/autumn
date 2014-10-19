@@ -3,21 +3,21 @@ package high.mackenzie.autumn.lang.compiler.utils;
 import autumn.lang.internals.annotations.Getter;
 import autumn.lang.internals.annotations.Setter;
 import com.google.common.base.Preconditions;
-import high.mackenzie.autumn.lang.compiler.typesystem.design.IInterfaceType;
+import high.mackenzie.autumn.lang.compiler.typesystem.design.IDeclaredType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IMethod;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IVariableType;
 
 /**
- * An instance of this class describes an element in a struct.
+ * An instance of this class describes an element in a record.
  *
  * @author Mackenzie High
  */
-public final class StructElement
+public final class RecordElement
 {
     /**
      * This is the type of the element's owner.
      */
-    public final IInterfaceType owner;
+    public final IDeclaredType owner;
 
     /**
      * This is the name of the element.
@@ -36,7 +36,7 @@ public final class StructElement
      * @param name is the element's name.
      * @param value is the element's static-type.
      */
-    StructElement(final IInterfaceType owner,
+    RecordElement(final IDeclaredType owner,
                   final String name,
                   final IVariableType value)
     {
@@ -50,7 +50,7 @@ public final class StructElement
     }
 
     /**
-     * This method searches for a setter method within the struct-type.
+     * This method searches for a setter method within the record-type.
      *
      * @return the setter related to the element.
      */
@@ -60,7 +60,7 @@ public final class StructElement
     }
 
     /**
-     * This method searches for a getter method within the struct-type.
+     * This method searches for a getter method within the record-type.
      *
      * @return the getter related to the element.
      */
@@ -70,7 +70,7 @@ public final class StructElement
     }
 
     /**
-     * This method searches for a method within the struct-type.
+     * This method searches for a method within the record-type.
      *
      * @param annotation is applied to the method to find.
      * @return the getter or setter related to the element.
@@ -78,7 +78,7 @@ public final class StructElement
     public IMethod findMethod(final Class annotation)
     {
         /**
-         * Iterate over each method declared directly within the struct-type.
+         * Iterate over each method declared directly within the record-type.
          */
         for (IMethod method : owner.getMethods())
         {
@@ -92,7 +92,7 @@ public final class StructElement
 
             /**
              * Skip the method, if it is not a getter.
-             * Remember, there is also a setter in the struct-type.
+             * Remember, there is also a setter in the record-type.
              */
             if (TypeSystemUtils.isAnnotationPresent(method, annotation))
             {

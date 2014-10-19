@@ -4,7 +4,7 @@ import autumn.lang.internals.annotations.Getter;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import high.mackenzie.autumn.lang.compiler.typesystem.design.IInterfaceType;
+import high.mackenzie.autumn.lang.compiler.typesystem.design.IDeclaredType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IMethod;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IVariableType;
 import java.util.Collections;
@@ -13,29 +13,29 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 /**
- * An instance of this class is used to analyze a struct-type.
+ * An instance of this class is used to analyze a record-type.
  *
  * @author Mackenzie High
  */
-public final class StructAnalyzer
+public final class RecordAnalyzer
 {
     /**
-     * This is the type of the struct.
+     * This is the type of the record.
      */
-    public final IInterfaceType type;
+    public final IDeclaredType type;
 
     /**
      * This map maps the name of an element to objects that describe
      * the declarations of the element.
      */
-    public final Map<String, StructElementList> elements;
+    public final Map<String, RecordElementList> elements;
 
     /**
      * Sole Constructor.
      *
-     * @param type is the type of the struct.
+     * @param type is the type of the record.
      */
-    public StructAnalyzer(final IInterfaceType type)
+    public RecordAnalyzer(final IDeclaredType type)
     {
         Preconditions.checkNotNull(type);
 
@@ -45,14 +45,14 @@ public final class StructAnalyzer
     }
 
     /**
-     * This method finds all the elements in the struct.
+     * This method finds all the elements in the record.
      *
      * @return a map that maps the name of an element to objects
      * that represent the declarations of the elements.
      */
-    private Map<String, Set<StructElement>> findElements()
+    private Map<String, Set<RecordElement>> findElements()
     {
-        final Map<String, Set<StructElement>> map = Maps.newTreeMap();
+        final Map<String, Set<RecordElement>> map = Maps.newTreeMap();
 
         for (IMethod method : type.getAllVisibleMethods())
         {
@@ -69,7 +69,7 @@ public final class StructAnalyzer
      * @param map is the map to add an entry to.
      * @param method is possibly a getter.
      */
-    private void add(final Map<String, Set<StructElement>> map,
+    private void add(final Map<String, Set<RecordElement>> map,
                      final IMethod method)
     {
         /**
@@ -93,14 +93,14 @@ public final class StructAnalyzer
          */
         final String name = method.getName();
         final IVariableType value = (IVariableType) method.getReturnType();
-        final StructElement element = new StructElement(type, name, value);
+        final RecordElement element = new RecordElement(type, name, value);
 
         /**
          * Create a map entry for elements with the given name.
          */
         if (map.containsKey(name) == false)
         {
-            map.put(name, Sets.<StructElement>newHashSet());
+            map.put(name, Sets.<RecordElement>newHashSet());
         }
 
         /**
@@ -110,22 +110,22 @@ public final class StructAnalyzer
     }
 
     /**
-     * This method creates a map that maps the name of an element to its overrides.
+     * This method creates a map that maps the name of an element to a list of its overrides.
      *
      * @param map is the basis for the new map.
      * @return an immutable map as described above.
      */
-    private Map<String, StructElementList> createMap(final Map<String, Set<StructElement>> map)
+    private Map<String, RecordElementList> createMap(final Map<String, Set<RecordElement>> map)
     {
-        final Map<String, StructElementList> result = Maps.newTreeMap();
+        final Map<String, RecordElementList> result = Maps.newTreeMap();
 
-        for (Entry<String, Set<StructElement>> entry : map.entrySet())
+        for (Entry<String, Set<RecordElement>> entry : map.entrySet())
         {
             final String name = entry.getKey();
 
-            final Set<StructElement> unsorted = entry.getValue();
+            final Set<RecordElement> unsorted = entry.getValue();
 
-            final StructElementList sorted = new StructElementList(name, unsorted);
+            final RecordElementList sorted = new RecordElementList(name, unsorted);
 
             result.put(name, sorted);
         }

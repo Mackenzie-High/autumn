@@ -29,7 +29,9 @@ public final class Runner
 
 
 
-
+        test("T0253");
+        test("T0252");
+        test("T0251");
         test("T0250");
         test("T0249");
         test("T0248");
@@ -125,7 +127,6 @@ public final class Runner
         test("T0155");
         test("T0154");
         test("T0153");
-//        test("T0149");
         test("T0147");
         test("T0146");
         test("T0145");
@@ -136,9 +137,6 @@ public final class Runner
         test("T0140");
         test("T0139");
         test("T0138");
-        test("T0137");
-        test("T0136");
-        test("T0135");
         test("T0134");
         test("T0133");
         test("T0132");
@@ -147,8 +145,6 @@ public final class Runner
         test("T0128");
         test("T0127");
         test("T0126");
-        test("T0125");
-        test("T0124");
         test("T0123");
         test("T0122");
         test("T0121");

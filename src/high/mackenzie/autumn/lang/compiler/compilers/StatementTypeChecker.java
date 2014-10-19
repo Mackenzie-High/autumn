@@ -15,7 +15,6 @@ import high.mackenzie.autumn.lang.compiler.typesystem.design.IClassType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IExpressionType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IMethod;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IReferenceType;
-import high.mackenzie.autumn.lang.compiler.typesystem.design.IReturnType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IVariableType;
 import high.mackenzie.autumn.lang.compiler.utils.MemberToHandler;
@@ -766,7 +765,7 @@ public final class StatementTypeChecker
     {
         object.getValue().accept(this);
 
-        final IReturnType value = (IReturnType) program.symbols.expressions.get(object.getValue());
+        final IExpressionType value = program.symbols.expressions.get(object.getValue());
 
         if (value.isSubtypeOf(function.type.getReturnType()) == false)
         {
@@ -808,7 +807,7 @@ public final class StatementTypeChecker
     {
         object.getValue().accept(this);
 
-        final IReturnType value = (IReturnType) program.symbols.expressions.get(object.getValue());
+        final IExpressionType value = program.symbols.expressions.get(object.getValue());
 
         if (value.isSubtypeOf(function.type.getReturnType()) == false)
         {
