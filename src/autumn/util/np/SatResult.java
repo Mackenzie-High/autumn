@@ -1,9 +1,9 @@
 package autumn.util.np;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.TreeMap;
 
 /**
  * An instance of this class is the output of a 2-SAT or 3-SAT solver.
@@ -12,7 +12,7 @@ import java.util.TreeMap;
  */
 public final class SatResult
 {
-    private final Map<String, Boolean> assignments;
+    private final Map<Object, Boolean> assignments;
 
     /**
      * Sole Constructor.
@@ -21,11 +21,11 @@ public final class SatResult
      * which will produce a satisfiable result; or null,
      * if the expression is unsatisfiable.
      */
-    public SatResult(final Map<String, Boolean> assignments)
+    public SatResult(final Map<Object, Boolean> assignments)
     {
         this.assignments = assignments == null
                 ? null
-                : Collections.unmodifiableSortedMap(new TreeMap(assignments));
+                : Collections.unmodifiableMap(new HashMap(assignments));
     }
 
     /**
@@ -44,7 +44,7 @@ public final class SatResult
      * @return the proof, if the expression is satisfiable;
      * or null, if the expression is unsatisfiable.
      */
-    public Map<String, Boolean> proof()
+    public Map<Object, Boolean> proof()
     {
         return assignments;
     }
@@ -61,7 +61,7 @@ public final class SatResult
 
         final StringBuilder result = new StringBuilder();
 
-        for (Entry<String, Boolean> entry : assignments.entrySet())
+        for (Entry<Object, Boolean> entry : assignments.entrySet())
         {
             final String prefix = entry.getValue() ? "T" : "F";
 

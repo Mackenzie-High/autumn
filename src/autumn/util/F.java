@@ -1,6 +1,7 @@
 package autumn.util;
 
 import autumn.lang.Functor;
+import autumn.lang.exceptions.CheckedException;
 import autumn.lang.internals.ArgumentStack;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Iterators;
@@ -37,6 +38,32 @@ public final class F
     private F()
     {
         // Pass, because this is merely a static utility class.
+    }
+
+    /**
+     * This method rethrows an exception quietly.
+     *
+     * <p>
+     * If the exception is checked, then it will be wrapped in a CheckedException object
+     * and then rethrown; otherwise, the exception will simply be rethrown immediately.
+     * </p>
+     *
+     * @param problem is the exception to rethrow.
+     */
+    public static void rethrow(final Throwable problem)
+    {
+        if (problem instanceof RuntimeException)
+        {
+            throw (RuntimeException) problem;
+        }
+        else if (problem instanceof Error)
+        {
+            throw (Error) problem;
+        }
+        else
+        {
+            throw new CheckedException(problem);
+        }
     }
 
     /**

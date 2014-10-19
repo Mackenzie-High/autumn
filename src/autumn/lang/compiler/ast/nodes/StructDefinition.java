@@ -25,6 +25,7 @@ import autumn.lang.compiler.ast.commons.IConversionOperation;
 import autumn.lang.compiler.ast.commons.IDirective;
 import autumn.lang.compiler.ast.commons.IDocumented;
 import autumn.lang.compiler.ast.commons.IExpression;
+import autumn.lang.compiler.ast.commons.IRecord;
 import autumn.lang.compiler.ast.commons.IStatement;
 import autumn.lang.compiler.ast.commons.IUnaryOperation;
 import autumn.lang.compiler.ast.literals.ByteLiteral;
@@ -61,10 +62,10 @@ import java.util.TreeSet;
  * </table>
  * </p>
  * 
- * <p> This file was auto-generated on (Sun Sep 07 00:40:15 EDT 2014).</p>
+ * <p> This file was auto-generated on (Sun Oct 12 04:29:02 EDT 2014).</p>
  */
 @SuppressWarnings("unchecked")
-public final class StructDefinition extends Object implements IAnnotated, IDocumented
+public final class StructDefinition extends Object implements IAnnotated, IDocumented, IRecord
 {
     private DocComment comment = new DocComment();
 
@@ -74,7 +75,7 @@ public final class StructDefinition extends Object implements IAnnotated, IDocum
 
     private ConstructList<TypeSpecifier> supers = new ConstructList();
 
-    private FormalParameterList elements;
+    private ElementList elements;
 
     private SourceLocation location = new SourceLocation();
 
@@ -180,7 +181,7 @@ public final class StructDefinition extends Object implements IAnnotated, IDocum
      * @param value is the new value of property <code>elements</code>.
      * @return a copy of this object with property <code>elements</code> set to value.
      */
-    public StructDefinition setElements(final FormalParameterList value)
+    public StructDefinition setElements(final ElementList value)
     {
         final StructDefinition result = this.copy();
         result.elements = value;
@@ -192,9 +193,9 @@ public final class StructDefinition extends Object implements IAnnotated, IDocum
      * 
      * @return the value of property <code>elements</code>.
      */
-    public FormalParameterList getElements()
+    public ElementList getElements()
     {
-        final FormalParameterList value = this.elements;
+        final ElementList value = this.elements;
         return value;
     }
 
@@ -233,7 +234,7 @@ public final class StructDefinition extends Object implements IAnnotated, IDocum
      * @param location is the value for property <code>location</code>.
      * @return a new instance of this class.
      */
-    public static StructDefinition create(DocComment comment, AnnotationList annotations, Name name, ConstructList<TypeSpecifier> supers, FormalParameterList elements, SourceLocation location)
+    public static StructDefinition create(DocComment comment, AnnotationList annotations, Name name, ConstructList<TypeSpecifier> supers, ElementList elements, SourceLocation location)
     {
         StructDefinition object = new StructDefinition();
         object = object.setComment(comment);

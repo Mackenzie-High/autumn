@@ -15,18 +15,17 @@ defun main (args : String[]) : void
 {
     val t = (new T true, 'X', 10B, 20S, 30, 40L, 50.0F, 60.0, "Venus");
 
-    val expected = (new HashMap);
-    (expected.put "a", (class boolean));
-    (expected.put "b", (class char));
-    (expected.put "c", (class byte));
-    (expected.put "d", (class short));
-    (expected.put "e", (class int));
-    (expected.put "f", (class long));
-    (expected.put "g", (class float));
-    (expected.put "h", (class double));
-    (expected.put "i", (class String));
+    val expected = [(class boolean),
+                    (class char),
+                    (class byte),
+                    (class short),
+                    (class int),
+                    (class long),
+                    (class float),
+                    (class double),
+                    (class String)];
 
-    # The types() method should create a map containing the types of the elements.
+    # The types() method should create a list containing the types of the elements.
     assert expected == (t.types);
 
     # The types() method should cache the list.

@@ -149,6 +149,25 @@ rule enum_definition
 }
 
 ###################################################################################################
+# Design --> Definition
+###################################################################################################
+
+rule design_definition
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createDefinitionDesign();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+
+  # Merge the upper stack with the next lower stack.
+  call builder.popStack();
+}
+
+###################################################################################################
 # Tuple --> Definition
 ###################################################################################################
 
@@ -168,25 +187,6 @@ rule tuple_definition
 }
 
 ###################################################################################################
-# Functor --> Definition
-###################################################################################################
-
-rule functor_definition
-{
-  # Get the AST builder.
-  builder : TreeBuilder = call Utils.builder();
-
-  # Create the AST node.
-  call builder.createDefinitionFunctor();
-
-  # Set the source-location information.
-  call Utils.setSourceLocation($node);
-
-  # Merge the upper stack with the next lower stack.
-  call builder.popStack();
-}
-
-###################################################################################################
 # Struct --> Definition
 ###################################################################################################
 
@@ -197,6 +197,26 @@ rule struct_definition
 
   # Create the AST node.
   call builder.createDefinitionStruct();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+
+  # Merge the upper stack with the next lower stack.
+  call builder.popStack();
+}
+
+
+###################################################################################################
+# Functor --> Definition
+###################################################################################################
+
+rule functor_definition
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createDefinitionFunctor();
 
   # Set the source-location information.
   call Utils.setSourceLocation($node);
@@ -1627,25 +1647,6 @@ rule instanceof_expression
 }
 
 ###################################################################################################
-# Expressions --> Object Orientation --> Create
-###################################################################################################
-
-rule create_expression
-{
-  # Get the AST builder.
-  builder : TreeBuilder = call Utils.builder();
-
-  # Create the AST node.
-  call builder.createExpressionCreate();
-
-  # Set the source-location information.
-  call Utils.setSourceLocation($node);
-
-  # Merge the upper stack with the next lower stack.
-  call builder.popStack();
-}
-
-###################################################################################################
 # Expressions --> List Literal
 ###################################################################################################
 
@@ -1930,6 +1931,44 @@ rule label
 
   # Set the source-location information.
   call Utils.setSourceLocation($node);
+}
+
+###################################################################################################
+# Components --> Element List
+###################################################################################################
+
+rule elements
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createComponentElementList();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+
+  # Merge the upper stack with the next lower stack.
+  call builder.popStack();
+}
+
+###################################################################################################
+# Components --> Formal Parameter
+###################################################################################################
+
+rule element
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createComponentElement();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+
+  # Merge the upper stack with the next lower stack.
+  call builder.popStack();
 }
 
 ###################################################################################################

@@ -409,34 +409,6 @@ public final class StaticChecker
         report(report);
     }
 
-    /**
-     * This method ensures that a type is a struct-type.
-     *
-     * @param construct is the construct that is performing the type-check.
-     * @param expression is the expression that must be a struct-type.
-     */
-    public void requireStructType(final IConstruct construct,
-                                  final IExpressionType type)
-    {
-        if (type.isSubtypeOf(program.typesystem.utils.STRUCT))
-        {
-            return;
-        }
-
-        final ErrorCode ERROR_CODE = ErrorCode.EXPECTED_PROTOTYPE_TYPE;
-
-        final String MESSAGE = "The type of a prototype was expected.";
-
-        final ErrorReport report = new ErrorReport(construct, ERROR_CODE, MESSAGE);
-
-        report.addDetail("Actual", Utils.simpleName(type));
-
-        /**
-         * Issue the error-report to the user.
-         */
-        report(report);
-    }
-
     public void requireString(final IExpression expression)
     {
         final IType actual = program.symbols.expressions.get(expression);
@@ -1206,7 +1178,7 @@ public final class StaticChecker
      * @param element is the name of the duplicated element.
      */
     public void reportDuplicateElement(final IConstruct site,
-                                             final Variable element)
+                                       final Variable element)
     {
         final ErrorCode ERROR_CODE = ErrorCode.DUPLICATE_ELEMENT;
 

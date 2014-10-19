@@ -21,9 +21,18 @@ Test Index
 . . T0123 = Inaccessible Supertype
 . . T0124 = Duplicate Direct Supertype
 . . T0125 = Duplicate Element
-. . Element Covariance Violation
+. . Element - Covariance Violation
+. . Element - No Such Type
+. . Element - Inaccessible Type
+. . Element - Expected Variable-Type
 . . Circular Inheritance - Direct
 . . Circular Inheritance - Indirect
+. Tuple Definitions
+. . Duplicate Type
+. . Duplicate Element
+. . Element - No Such Type
+. . Element - Inaccessible Type
+. . Element - Expected Variable-Type
 . Function Definitions
 . . Inaccessible Parameter Type
 . . Inaccessible Return Type

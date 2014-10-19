@@ -7,13 +7,17 @@ package autumn.lang;
  */
 public final class SpecialMethods
 {
-    private final Functor compare;
+    public static final SpecialMethods EMPTY = new SpecialMethods(null, null, null, null, null);
 
-    private final Functor equals;
+    private final TypedFunctor iterator;
 
-    private final Functor hash;
+    private final TypedFunctor compare;
 
-    private final Functor string;
+    private final TypedFunctor equals;
+
+    private final TypedFunctor hash;
+
+    private final TypedFunctor string;
 
     /**
      * Constructor.
@@ -23,67 +27,80 @@ public final class SpecialMethods
      * @param hash is the hashCode() handler.
      * @param string is the toString() handler.
      */
-    public SpecialMethods()
+    public static SpecialMethods instance()
     {
-        this(null, null, null, null);
+        return EMPTY;
     }
 
     /**
      * Constructor.
      *
+     * @param iterator is the iterator() handler.
      * @param compare is the compareTo(Object) handler.
      * @param equals is the equals(Object) handler.
      * @param hash is the hashCode() handler.
      * @param string is the toString() handler.
      */
-    private SpecialMethods(final Functor compare,
-                           final Functor equals,
-                           final Functor hash,
-                           final Functor string)
+    private SpecialMethods(final TypedFunctor iterator,
+                           final TypedFunctor compare,
+                           final TypedFunctor equals,
+                           final TypedFunctor hash,
+                           final TypedFunctor string)
     {
         super();
+        this.iterator = iterator;
         this.compare = compare;
         this.equals = equals;
         this.hash = hash;
         this.string = string;
     }
 
-    public SpecialMethods setCompareTo(final Functor handler)
+    public SpecialMethods setIterator(final TypedFunctor handler)
     {
-        return new SpecialMethods(handler, equals, hash, string);
+        return new SpecialMethods(handler, compare, equals, hash, string);
     }
 
-    public SpecialMethods setEquals(final Functor handler)
+    public SpecialMethods setCompareTo(final TypedFunctor handler)
     {
-        return new SpecialMethods(compare, handler, hash, string);
+        return new SpecialMethods(iterator, handler, equals, hash, string);
     }
 
-    public SpecialMethods setHashCode(final Functor handler)
+    public SpecialMethods setEquals(final TypedFunctor handler)
     {
-        return new SpecialMethods(compare, equals, handler, string);
+        return new SpecialMethods(iterator, compare, handler, hash, string);
     }
 
-    public SpecialMethods setToString(final Functor handler)
+    public SpecialMethods setHashCode(final TypedFunctor handler)
     {
-        return new SpecialMethods(compare, equals, hash, handler);
+        return new SpecialMethods(iterator, compare, equals, handler, string);
     }
 
-    public Functor getCompareTo()
+    public SpecialMethods setToString(final TypedFunctor handler)
+    {
+        return new SpecialMethods(iterator, compare, equals, hash, handler);
+    }
+
+    public TypedFunctor getIterator()
+    {
+        return iterator;
+    }
+
+    public TypedFunctor getCompareTo()
     {
         return compare;
     }
 
-    public Functor getEquals()
+    public TypedFunctor getEquals()
     {
         return compare;
     }
 
-    public Functor getHashCode()
+    public TypedFunctor getHashCode()
     {
         return compare;
     }
 
-    public Functor getToString()
+    public TypedFunctor getToString()
     {
         return compare;
     }

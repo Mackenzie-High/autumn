@@ -5,6 +5,7 @@ import autumn.lang.compiler.ast.commons.IBinaryOperation;
 import autumn.lang.compiler.ast.commons.IConstruct;
 import autumn.lang.compiler.ast.commons.IConversionOperation;
 import autumn.lang.compiler.ast.commons.IExpression;
+import autumn.lang.compiler.ast.commons.IRecord;
 import autumn.lang.compiler.ast.commons.IStatement;
 import autumn.lang.compiler.ast.commons.IUnaryOperation;
 import autumn.lang.compiler.ast.nodes.*;
@@ -198,8 +199,9 @@ public final class PrintingVisitor
         require(object, object.getAnnotations());
         require(object, object.getExceptions());
         require(object, object.getEnums());
-        require(object, object.getTuples());
+        require(object, object.getDesigns());
         require(object, object.getStructs());
+        require(object, object.getTuples());
         require(object, object.getFunctors());
         require(object, object.getFunctions());
 
@@ -232,6 +234,13 @@ public final class PrintingVisitor
         p.addEmptyLine();
 
         for (EnumDefinition x : object.getEnums())
+        {
+            x.accept(this);
+        }
+
+        p.addEmptyLine();
+
+        for (DesignDefinition x : object.getDesigns())
         {
             x.accept(this);
         }
@@ -362,26 +371,21 @@ public final class PrintingVisitor
     }
 
     @Override
+    public void visit(final DesignDefinition object)
+    {
+        visitRecord("design", object);
+    }
+
+    @Override
     public void visit(final TupleDefinition object)
     {
-        record(object);
-        require(object, object.getComment());
-        require(object, object.getAnnotations());
-        require(object, object.getName());
-        require(object, object.getElements());
+        visitRecord("tuple", object);
+    }
 
-        object.getComment().accept(this);
-
-        object.getAnnotations().accept(this);
-
-        p.addLine();
-        p.addText("tuple ");
-        object.getName().accept(this);
-        p.addText(" ");
-        object.getElements().accept(this);
-        p.addText(";");
-
-        p.addEmptyLine();
+    @Override
+    public void visit(final StructDefinition object)
+    {
+        visitRecord("struct", object);
     }
 
     @Override
@@ -429,36 +433,6 @@ public final class PrintingVisitor
         p.addText(" ");
 
         printList("(", object.getConstants(), ", ", ")");
-
-        p.addText(";");
-
-        p.addEmptyLine();
-    }
-
-    @Override
-    public void visit(final StructDefinition object)
-    {
-        record(object);
-        require(object, object.getComment());
-        require(object, object.getAnnotations());
-        require(object, object.getName());
-        require(object, object.getElements());
-        require(object, object.getSupers());
-
-        object.getComment().accept(this);
-
-        object.getAnnotations().accept(this);
-
-        p.addLine();
-        p.addText("struct ");
-        object.getName().accept(this);
-        p.addText(" ");
-        object.getElements().accept(this);
-
-        if (object.getSupers().isEmpty() == false)
-        {
-            this.printList(" extends ", object.getSupers(), " & ", "");
-        }
 
         p.addText(";");
 
@@ -1295,19 +1269,6 @@ public final class PrintingVisitor
     }
 
     @Override
-    public void visit(final CreateExpression object)
-    {
-        record(object);
-        require(object, object.getType());
-
-        p.addText("(create ");
-
-        object.getType().accept(this);
-
-        p.addText(")");
-    }
-
-    @Override
     public void visit(final CallMethodExpression object)
     {
         record(object);
@@ -1611,18 +1572,6 @@ public final class PrintingVisitor
     }
 
     @Override
-    public void visit(final FormalParameter object)
-    {
-        record(object);
-        require(object, object.getVariable());
-        require(object, object.getType());
-
-        object.getVariable().accept(this);
-        p.addText(" : ");
-        object.getType().accept(this);
-    }
-
-    @Override
     public void visit(final AnnotationList object)
     {
         record(object);
@@ -1632,6 +1581,18 @@ public final class PrintingVisitor
         {
             x.accept(this);
         }
+    }
+
+    @Override
+    public void visit(final FormalParameter object)
+    {
+        record(object);
+        require(object, object.getVariable());
+        require(object, object.getType());
+
+        object.getVariable().accept(this);
+        p.addText(" : ");
+        object.getType().accept(this);
     }
 
     @Override
@@ -1651,6 +1612,43 @@ public final class PrintingVisitor
                 param.accept(this);
 
                 if (count < object.getParameters().size())
+                {
+                    p.addText(", ");
+                }
+            }
+        }
+        p.addText(")");
+    }
+
+    @Override
+    public void visit(final Element object)
+    {
+        record(object);
+        require(object, object.getName());
+        require(object, object.getType());
+
+        object.getName().accept(this);
+        p.addText(" : ");
+        object.getType().accept(this);
+    }
+
+    @Override
+    public void visit(final ElementList object)
+    {
+        record(object);
+        require(object, object.getElements());
+
+        p.addText("(");
+        {
+            int count = 0;
+
+            for (Element element : object.getElements())
+            {
+                ++count;
+
+                element.accept(this);
+
+                if (count < object.getElements().size())
                 {
                     p.addText(", ");
                 }
@@ -1686,6 +1684,43 @@ public final class PrintingVisitor
     public void visit(final SourceLocation object)
     {
         // Do Nothing
+    }
+
+    /**
+     * This method generalizes the visitation of a record definition.
+     *
+     * @param keyword specifies the type of record definition (e.g. tuple, struct, design).
+     * @param object is the definition itself.
+     */
+    private void visitRecord(final String keyword,
+                             final IRecord object)
+    {
+        record(object);
+        require(object, object.getComment());
+        require(object, object.getAnnotations());
+        require(object, object.getName());
+        require(object, object.getElements());
+        require(object, object.getSupers());
+
+        object.getComment().accept(this);
+
+        object.getAnnotations().accept(this);
+
+        p.addLine();
+        p.addText(keyword);
+        p.addText(" ");
+        object.getName().accept(this);
+        p.addText(" ");
+        object.getElements().accept(this);
+
+        if (object.getSupers().isEmpty() == false)
+        {
+            this.printList(" is ", object.getSupers(), " & ", "");
+        }
+
+        p.addText(";");
+
+        p.addEmptyLine();
     }
 
     /**

@@ -25,6 +25,7 @@ import autumn.lang.compiler.ast.commons.IConversionOperation;
 import autumn.lang.compiler.ast.commons.IDirective;
 import autumn.lang.compiler.ast.commons.IDocumented;
 import autumn.lang.compiler.ast.commons.IExpression;
+import autumn.lang.compiler.ast.commons.IRecord;
 import autumn.lang.compiler.ast.commons.IStatement;
 import autumn.lang.compiler.ast.commons.IUnaryOperation;
 import autumn.lang.compiler.ast.literals.ByteLiteral;
@@ -56,8 +57,9 @@ import java.util.TreeSet;
  *     <tr> <td> <code>import_directives</code> </td> <td>These are the import-directives that are directly within this module.</td> </tr>
  *     <tr> <td> <code>annotations</code> </td> <td>These are the annotations declared directly within this module.</td> </tr>
  *     <tr> <td> <code>exceptions</code> </td> <td>These are the exceptions declared directly within this module.</td> </tr>
- *     <tr> <td> <code>tuples</code> </td> <td>These are the tuples declared directly within this module.</td> </tr>
+ *     <tr> <td> <code>designs</code> </td> <td>These are the designs declared directly within this module.</td> </tr>
  *     <tr> <td> <code>structs</code> </td> <td>These are the structs declared directly within this module.</td> </tr>
+ *     <tr> <td> <code>tuples</code> </td> <td>These are the tuples declared directly within this module.</td> </tr>
  *     <tr> <td> <code>functors</code> </td> <td>These are the functors declared directly within this module.</td> </tr>
  *     <tr> <td> <code>enums</code> </td> <td>These are the enums declared directly within this module.</td> </tr>
  *     <tr> <td> <code>functions</code> </td> <td>These are the functions declared directly within this module.</td> </tr>
@@ -65,7 +67,7 @@ import java.util.TreeSet;
  * </table>
  * </p>
  * 
- * <p> This file was auto-generated on (Sun Sep 07 00:40:15 EDT 2014).</p>
+ * <p> This file was auto-generated on (Sun Oct 12 04:29:02 EDT 2014).</p>
  */
 @SuppressWarnings("unchecked")
 public final class Module extends Object implements IConstruct
@@ -78,9 +80,11 @@ public final class Module extends Object implements IConstruct
 
     private ConstructList<ExceptionDefinition> exceptions = new ConstructList();
 
-    private ConstructList<TupleDefinition> tuples = new ConstructList();
+    private ConstructList<DesignDefinition> designs = new ConstructList();
 
     private ConstructList<StructDefinition> structs = new ConstructList();
+
+    private ConstructList<TupleDefinition> tuples = new ConstructList();
 
     private ConstructList<FunctorDefinition> functors = new ConstructList();
 
@@ -189,24 +193,24 @@ public final class Module extends Object implements IConstruct
     /**
      * Setter.
      * 
-     * @param value is the new value of property <code>tuples</code>.
-     * @return a copy of this object with property <code>tuples</code> set to value.
+     * @param value is the new value of property <code>designs</code>.
+     * @return a copy of this object with property <code>designs</code> set to value.
      */
-    public Module setTuples(final ConstructList<TupleDefinition> value)
+    public Module setDesigns(final ConstructList<DesignDefinition> value)
     {
         final Module result = this.copy();
-        result.tuples = value;
+        result.designs = value;
         return result;
     }
 
     /**
      * Getter.
      * 
-     * @return the value of property <code>tuples</code>.
+     * @return the value of property <code>designs</code>.
      */
-    public ConstructList<TupleDefinition> getTuples()
+    public ConstructList<DesignDefinition> getDesigns()
     {
-        final ConstructList<TupleDefinition> value = this.tuples;
+        final ConstructList<DesignDefinition> value = this.designs;
         return value;
     }
 
@@ -231,6 +235,30 @@ public final class Module extends Object implements IConstruct
     public ConstructList<StructDefinition> getStructs()
     {
         final ConstructList<StructDefinition> value = this.structs;
+        return value;
+    }
+
+    /**
+     * Setter.
+     * 
+     * @param value is the new value of property <code>tuples</code>.
+     * @return a copy of this object with property <code>tuples</code> set to value.
+     */
+    public Module setTuples(final ConstructList<TupleDefinition> value)
+    {
+        final Module result = this.copy();
+        result.tuples = value;
+        return result;
+    }
+
+    /**
+     * Getter.
+     * 
+     * @return the value of property <code>tuples</code>.
+     */
+    public ConstructList<TupleDefinition> getTuples()
+    {
+        final ConstructList<TupleDefinition> value = this.tuples;
         return value;
     }
 
@@ -337,23 +365,25 @@ public final class Module extends Object implements IConstruct
      * @param import_directives is the value for property <code>import_directives</code>.
      * @param annotations is the value for property <code>annotations</code>.
      * @param exceptions is the value for property <code>exceptions</code>.
-     * @param tuples is the value for property <code>tuples</code>.
+     * @param designs is the value for property <code>designs</code>.
      * @param structs is the value for property <code>structs</code>.
+     * @param tuples is the value for property <code>tuples</code>.
      * @param functors is the value for property <code>functors</code>.
      * @param enums is the value for property <code>enums</code>.
      * @param functions is the value for property <code>functions</code>.
      * @param location is the value for property <code>location</code>.
      * @return a new instance of this class.
      */
-    public static Module create(ConstructList<ModuleDirective> module_directives, ConstructList<ImportDirective> import_directives, ConstructList<AnnotationDefinition> annotations, ConstructList<ExceptionDefinition> exceptions, ConstructList<TupleDefinition> tuples, ConstructList<StructDefinition> structs, ConstructList<FunctorDefinition> functors, ConstructList<EnumDefinition> enums, ConstructList<FunctionDefinition> functions, SourceLocation location)
+    public static Module create(ConstructList<ModuleDirective> module_directives, ConstructList<ImportDirective> import_directives, ConstructList<AnnotationDefinition> annotations, ConstructList<ExceptionDefinition> exceptions, ConstructList<DesignDefinition> designs, ConstructList<StructDefinition> structs, ConstructList<TupleDefinition> tuples, ConstructList<FunctorDefinition> functors, ConstructList<EnumDefinition> enums, ConstructList<FunctionDefinition> functions, SourceLocation location)
     {
         Module object = new Module();
         object = object.setModuleDirectives(module_directives);
         object = object.setImportDirectives(import_directives);
         object = object.setAnnotations(annotations);
         object = object.setExceptions(exceptions);
-        object = object.setTuples(tuples);
+        object = object.setDesigns(designs);
         object = object.setStructs(structs);
+        object = object.setTuples(tuples);
         object = object.setFunctors(functors);
         object = object.setEnums(enums);
         object = object.setFunctions(functions);
@@ -383,8 +413,9 @@ public final class Module extends Object implements IConstruct
         result.import_directives = this.import_directives;
         result.annotations = this.annotations;
         result.exceptions = this.exceptions;
-        result.tuples = this.tuples;
+        result.designs = this.designs;
         result.structs = this.structs;
+        result.tuples = this.tuples;
         result.functors = this.functors;
         result.enums = this.enums;
         result.functions = this.functions;
@@ -409,8 +440,9 @@ public final class Module extends Object implements IConstruct
         map.put("import_directives", this.getImportDirectives());
         map.put("annotations", this.getAnnotations());
         map.put("exceptions", this.getExceptions());
-        map.put("tuples", this.getTuples());
+        map.put("designs", this.getDesigns());
         map.put("structs", this.getStructs());
+        map.put("tuples", this.getTuples());
         map.put("functors", this.getFunctors());
         map.put("enums", this.getEnums());
         map.put("functions", this.getFunctions());

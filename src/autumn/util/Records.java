@@ -1,18 +1,19 @@
 package autumn.util;
 
-import autumn.lang.Functor;
 import autumn.lang.Record;
+import autumn.lang.RecordEntry;
 import autumn.lang.SpecialMethods;
-import autumn.lang.Struct;
-import autumn.lang.Tuple;
 import autumn.lang.TypedFunctor;
+import autumn.lang.annotations.InferReturnType;
 import com.google.common.base.Preconditions;
-import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
+import java.util.NoSuchElementException;
+import java.util.SortedMap;
 
 /**
  * This class provides static utility methods for working with tuples.
@@ -21,6 +22,234 @@ import java.util.Set;
  */
 public final class Records
 {
+    /**
+     * This method sets the value of each element to its default value.
+     *
+     * <p>
+     * This method does not affect the special-method bindings.
+     * </p>
+     *
+     * @return this object, if this record is mutable; otherwise, return a modified copy thereof.
+     */
+    @InferReturnType
+    public static <T extends Record> T clear(final T self)
+    {
+        return self.isMutable() ? clearThis(self) : clearCopy(self);
+    }
+
+    /**
+     * This method clears the elements of this mutable tuple.
+     *
+     * @return this object.
+     */
+    private static <T extends Record> T clearThis(final T self)
+    {
+        final List<Class> types = self.types();
+
+        for (int i = 0; i < self.size(); i++)
+        {
+            self.set(i, F.defaultValue(types.get(i)));
+        }
+
+        return self;
+    }
+
+    /**
+     * This method creates an immutable tuple that is a cleared copy of this tuple.
+     *
+     * @return a copy of this tuple.
+     */
+    private static <T extends Record> T clearCopy(final T self)
+    {
+        // This object is an immutable tuple.
+        // Create a mutable copy of this tuple.
+        // Clear the mutable copy.
+        // Return an immutable copy of the cleared mutable tuple.
+        return (T) clear(self.mutable()).immutable();
+    }
+
+    /**
+     * This method creates an object that represents an entry in this record.
+     *
+     * @param index is the index of the element to assign the value to.
+     * @return an object that describes the specified entry.
+     * @throws IndexOutOfBoundsException if the index is out-of-bounds.
+     */
+    public static RecordEntry find(final Record self,
+                                   final int index)
+    {
+        return new RecordEntry()
+        {
+            private String key = null;
+
+            @Override
+            public Record record()
+            {
+                return self;
+            }
+
+            @Override
+            public String key()
+            {
+                if (key == null)
+                {
+                    key = self.keys().get(index);
+                }
+
+                return key;
+            }
+
+            @Override
+            public Class type()
+            {
+                return self.types().get(index);
+            }
+
+            @Override
+            public Object value()
+            {
+                return self.get(index);
+            }
+
+            @Override
+            public Record clear()
+            {
+                return self.set(index, F.defaultValue(type()));
+            }
+
+            @Override
+            public Record set(Object value)
+            {
+                return self.set(index, value);
+            }
+
+            @Override
+            public boolean isMutable()
+            {
+                return self.isMutable();
+            }
+
+            @Override
+            public boolean isImmutable()
+            {
+                return self.isImmutable();
+            }
+
+            @Override
+            public String toString()
+            {
+                return "" + value();
+            }
+        };
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public static RecordEntry find(final Record self,
+                                   final String key)
+    {
+        Preconditions.checkNotNull(key);
+
+        final int index = self.keys().indexOf(key);
+
+        final RecordEntry result = find(self, index);
+
+        return result;
+    }
+
+    /**
+     * This method assigns a new value to a specific element.
+     *
+     * <p>
+     * Auto-unboxing will be performed, if necessary.
+     * However, the unboxed value will not be auto-widened.
+     * </p>
+     *
+     * <p>
+     * This is a linear-time operation in the worst case.
+     * </p>
+     *
+     * @param key is the name of the element to assign the value to.
+     * @param value is the new value.
+     * @return this object, if this record is mutable; otherwise, return a modified copy thereof.
+     * @throws NullPointerException if the key is null.
+     * @throws NoSuchElementException if the key does not refer to an actual element.
+     * @throws ClassCastException if the object is not of an acceptable type.
+     */
+    @InferReturnType
+    public static <T extends Record> T set(final T self,
+                                           final String key,
+                                           final Object value)
+    {
+        Preconditions.checkNotNull(key);
+
+        final int index = self.keys().indexOf(key);
+
+        if (index < 0)
+        {
+            throw new NoSuchElementException("Key: " + key);
+        }
+
+        final Record result = self.set(index, value);
+
+        return (T) result;
+    }
+
+    /**
+     * This method retrieves the value of a specific element.
+     *
+     * <p>
+     * This is a linear-time operation in the worst case.
+     * </p>
+     *
+     * @param key is the name of the element to retrieve.
+     * @return the value of the element.
+     * @throws NullPointerException if the key is null.
+     * @throws NoSuchElementException if no element is identified by the given key.
+     */
+    public static Object get(final Record self,
+                             final String key)
+    {
+        Preconditions.checkNotNull(key);
+
+        final int index = self.keys().indexOf(key);
+
+        if (index < 0)
+        {
+            throw new NoSuchElementException("Key: " + key);
+        }
+
+        final Object result = self.get(index);
+
+        return result;
+    }
+
+    /**
+     * This method redefines the iterator() method.
+     *
+     * <p>
+     * If the handler is null, the method will revert to its default behavior.
+     * </p>
+     *
+     * @param owner is the object whose method will be redefined.
+     * @param handler is the new implementation of the method.
+     * @return the modified object, if it is mutable; otherwise, return a modified copy thereof.
+     * @throws NullPointerException if owner is null.
+     */
+    @InferReturnType
+    public static <T extends Record> T bindIter(final T owner,
+                                                final TypedFunctor handler)
+    {
+        Preconditions.checkNotNull(owner);
+
+        final SpecialMethods methods = owner.bindings().setIterator(handler);
+
+        final T result = (T) owner.bind(methods);
+
+        return result;
+    }
+
     /**
      * This method redefines the compareTo(Object) method.
      *
@@ -33,12 +262,13 @@ public final class Records
      * @return the modified object, if it is mutable; otherwise, return a modified copy thereof.
      * @throws NullPointerException if owner is null.
      */
+    @InferReturnType
     public static <T extends Record> T bindCompare(final T owner,
                                                    final TypedFunctor handler)
     {
         Preconditions.checkNotNull(owner);
 
-        final SpecialMethods methods = new SpecialMethods().setCompareTo(handler);
+        final SpecialMethods methods = owner.bindings().setCompareTo(handler);
 
         final T result = (T) owner.bind(methods);
 
@@ -57,10 +287,11 @@ public final class Records
      * @return the modified object, if it is mutable; otherwise, return a modified copy thereof.
      * @throws NullPointerException if owner is null.
      */
+    @InferReturnType
     public static <T extends Record> T bindEquals(final T owner,
-                                                  final Functor handler)
+                                                  final TypedFunctor handler)
     {
-        final SpecialMethods methods = new SpecialMethods().setEquals(handler);
+        final SpecialMethods methods = owner.bindings().setEquals(handler);
 
         final T result = (T) owner.bind(methods);
 
@@ -78,10 +309,11 @@ public final class Records
      * @param handler is the new implementation of the method.
      * @return the modified object, if it is mutable; otherwise, return a modified copy thereof.
      */
+    @InferReturnType
     public static <T extends Record> T bindHash(final T owner,
-                                                final Functor handler)
+                                                final TypedFunctor handler)
     {
-        final SpecialMethods methods = new SpecialMethods().setHashCode(handler);
+        final SpecialMethods methods = owner.bindings().setHashCode(handler);
 
         final T result = (T) owner.bind(methods);
 
@@ -99,10 +331,11 @@ public final class Records
      * @param handler is the new implementation of the method.
      * @return the modified object, if it is mutable; otherwise, return a modified copy thereof.
      */
+    @InferReturnType
     public static <T extends Record> T bindStr(final T owner,
-                                               final Functor handler)
+                                               final TypedFunctor handler)
     {
-        final SpecialMethods methods = new SpecialMethods().setToString(handler);
+        final SpecialMethods methods = owner.bindings().setToString(handler);
 
         final T result = (T) owner.bind(methods);
 
@@ -137,6 +370,7 @@ public final class Records
      * @param NullPointerException if the assignee is null.
      * @param NullPointerException if the value is null.
      */
+    @InferReturnType
     public static <T extends Record> T assign(final T assignee,
                                               final Map<String, Object> value)
     {
@@ -147,7 +381,7 @@ public final class Records
 
         for (String key : value.keySet())
         {
-            record = (T) record.set(key, value.get(key));
+            record = (T) Records.set(record, key, value.get(key));
         }
 
         return record;
@@ -162,29 +396,14 @@ public final class Records
      * @param NullPointerException if the assignee is null.
      * @param NullPointerException if the value is null.
      */
+    @InferReturnType
     public static <T extends Record> T assign(final T assignee,
                                               final Record value)
     {
         Preconditions.checkNotNull(assignee, "The assignee cannot be null.");
         Preconditions.checkNotNull(value, "The value cannot be null.");
 
-        return assign(assignee, value.toMap());
-    }
-
-    public static List<String> linearize(final Struct struct)
-    {
-        Preconditions.checkNotNull(struct);
-
-        return null;
-    }
-
-    public static Set<Object> enumerate(final Tuple tuple)
-    {
-        return null;
-    }
-
-    public static void visit(final Struct root)
-    {
+        return assign(assignee, entryMap(value));
     }
 
     /**
@@ -198,32 +417,34 @@ public final class Records
         Preconditions.checkNotNull(record);
 
         // This algorithm could be replaced in the future.
-        final boolean answer = Sets.newHashSet(record.types().values()).size() <= 1;
+        final boolean answer = Sets.newHashSet(record.types()).size() <= 1;
 
         return answer;
     }
 
     /**
-     * This method creates a list of the types of the elements in a tuple.
+     * This method creates a map that maps the entry-names to entry-values.
      *
-     * <p>
-     * Element[i] of the returned list is the static-type of the element[i] of the tuple.
-     * </p>
-     *
-     * @param tuple is the tuple itself.
-     * @return an immutable list containing the types of the elements in the tuple.
+     * @param record is the record that will be converted to a map.
+     * @return a map representation of the record.
      */
-    public static List<Class> types(final Tuple tuple)
+    public static Map<String, Object> entryMap(final Record record)
     {
-        Preconditions.checkNotNull(tuple);
+        Preconditions.checkNotNull(record);
 
-        final List<Class> result = Lists.newLinkedList();
+        final SortedMap<String, Object> map = Maps.newTreeMap();
 
-        for (String key : tuple.keys())
+        final Collection<String> keys = record.keys();
+
+        final List<Object> values = record.values();
+
+        int i = 0;
+
+        for (String key : keys)
         {
-            result.add(tuple.types().get(key));
+            map.put(key, values.get(i++));
         }
 
-        return Collections.unmodifiableList(result);
+        return Collections.unmodifiableSortedMap(map);
     }
 }

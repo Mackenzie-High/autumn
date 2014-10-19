@@ -7,7 +7,7 @@ import java.util.NavigableSet;
  *
  * @author Mackenzie High
  */
-public interface MutableNavigableSet<E>
+public interface MutableSortedSet<E>
         extends MutableSet<E>,
                 NavigableSet<E>
 {
@@ -17,5 +17,5 @@ public interface MutableNavigableSet<E>
      * @return an immutable copy of this object.
      */
     @Override
-    public ImmutableNavigableSet<E> immutable();
+    public ImmutableSortedSet<E> immutable();
 }

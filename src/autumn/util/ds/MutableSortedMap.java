@@ -7,7 +7,7 @@ import java.util.NavigableMap;
  *
  * @author Mackenzie High
  */
-public interface MutableNavigableMap<K, V>
+public interface MutableSortedMap<K, V>
         extends MutableMap<K, V>,
                 NavigableMap<K, V>
 {
@@ -17,5 +17,5 @@ public interface MutableNavigableMap<K, V>
      * @return an immutable copy of this object.
      */
     @Override
-    public ImmutableNavigableMap<K, V> immutable();
+    public ImmutableSortedMap<K, V> immutable();
 }

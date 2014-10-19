@@ -2,6 +2,7 @@ package high.mackenzie.autumn.lang.compiler.compilers;
 
 import autumn.lang.compiler.ClassFile;
 import autumn.lang.compiler.ast.nodes.AnnotationDefinition;
+import autumn.lang.compiler.ast.nodes.DesignDefinition;
 import autumn.lang.compiler.ast.nodes.EnumDefinition;
 import autumn.lang.compiler.ast.nodes.ExceptionDefinition;
 import autumn.lang.compiler.ast.nodes.FormalParameter;
@@ -83,13 +84,15 @@ public final class ModuleCompiler
 
     public final List<ExceptionCompiler> exceptions = Lists.newLinkedList();
 
+    public final List<DesignCompiler> designs = Lists.newLinkedList();
+
+    public final List<StructCompiler> structs = Lists.newLinkedList();
+
     public final List<TupleCompiler> tuples = Lists.newLinkedList();
 
     public final List<EnumCompiler> enums = Lists.newLinkedList();
 
     public final List<FunctorCompiler> functors = Lists.newLinkedList();
-
-    public final List<StructCompiler> structs = Lists.newLinkedList();
 
     public final List<FunctionCompiler> functions = Lists.newLinkedList();
 
@@ -139,6 +142,16 @@ public final class ModuleCompiler
             enums.add(new EnumCompiler(this, x));
         }
 
+        for (DesignDefinition x : node.getDesigns())
+        {
+            designs.add(new DesignCompiler(this, x));
+        }
+
+        for (StructDefinition x : node.getStructs())
+        {
+            structs.add(new StructCompiler(this, x));
+        }
+
         for (TupleDefinition x : node.getTuples())
         {
             tuples.add(new TupleCompiler(this, x));
@@ -147,11 +160,6 @@ public final class ModuleCompiler
         for (FunctorDefinition x : node.getFunctors())
         {
             functors.add(new FunctorCompiler(this, x));
-        }
-
-        for (StructDefinition x : node.getStructs())
-        {
-            structs.add(new StructCompiler(this, x));
         }
 
         for (FunctionDefinition x : node.getFunctions())
@@ -181,6 +189,16 @@ public final class ModuleCompiler
             classes.add(x.build());
         }
 
+        for (DesignCompiler x : designs)
+        {
+            classes.add(x.build());
+        }
+
+        for (StructCompiler x : structs)
+        {
+            classes.add(x.build());
+        }
+
         for (TupleCompiler x : tuples)
         {
             classes.add(x.build());
@@ -189,12 +207,6 @@ public final class ModuleCompiler
         for (FunctorCompiler x : functors)
         {
             classes.add(x.build());
-        }
-
-        for (StructCompiler x : structs)
-        {
-            classes.add(x.build());
-            classes.add(x.klass.build());
         }
 
         classes.add(buildModule());

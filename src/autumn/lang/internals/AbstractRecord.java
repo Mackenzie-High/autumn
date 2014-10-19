@@ -2,16 +2,58 @@ package autumn.lang.internals;
 
 import autumn.lang.Record;
 import autumn.lang.SpecialMethods;
+import autumn.lang.TypedFunctor;
+import autumn.util.Functors;
+import autumn.util.Records;
+import autumn.util.Strings;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import java.util.Collection;
-import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.SortedMap;
 
 /**
  * This class provides a partial implementation of the Record.
+ *
+ * <p>
+ * A subclass must provide a single constructor.
+ * The constructor takes one parameter for each element in the record.
+ * The constructor simply copies its parameters into the appropriate elements.
+ * The new record must be immutable.
+ * </p>
+ *
+ * <p>
+ * A subclass needs to implement the following methods:
+ * <ul>
+ * <li>static method instance() - Returns an immutable empty instance.</li>
+ * <li>bind(SpecialMethods)</li>
+ * <li>bindings()</li>
+ * <li>isStruct()</li>
+ * <li>isTuple()</li>
+ * <li>isMutable()</li>
+ * <li>mutable()</li>
+ * <li>immutable()</li>
+ * <li>keys()</li>
+ * <li>types()</li>
+ * <li>values()</li>
+ * <li>set(int, Object)</li>
+ * <li>get(int)</li>
+ * </ul>
+ * </p>
+ *
+ * <p>
+ * A subclass must provide bridge methods for every method herein that returns a Record.
+ * The return-type of the bridge method must be the subclass itself.
+ * For example in a subclass T, method copy() : Record should have a bridge method copy() : T.
+ * <br>
+ * <ul>
+ * <li>bind(SpecialMethods)</li>
+ * <li>clear()</li>
+ * <li>set(int, Object)</li>
+ * <li>set(String, Object)</li>
+ * <li>copy()</li>
+ * <li>immutable()</li>
+ * <li>mutable()</li>
+ * </ul>
+ * </p>
  *
  * @author Mackenzie High
  */
@@ -22,105 +64,74 @@ public abstract class AbstractRecord
      * {@inheritDoc}
      */
     @Override
-    public abstract Collection<String> keys();
+    public abstract Record bind(final SpecialMethods methods);
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public abstract Collection<Object> values();
+    public abstract SpecialMethods bindings();
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public abstract Map<String, Class> types();
+    public abstract List<String> keys();
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Record bind(SpecialMethods methods)
-    {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+    public abstract List<Class> types();
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Record clear()
-    {
-        return this.isMutable() ? clearThis() : clearCopy();
-    }
+    public abstract List<Object> values();
 
     /**
-     * This method clears the elements of this mutable tuple.
-     *
-     * @return this object.
+     * {@inheritDoc}
      */
-    private Record clearThis()
-    {
-        final Map<String, Class> types = types();
-
-        for (String key : keys())
-        {
-            final Class type = types.get(key);
-
-            if (boolean.class.equals(type))
-            {
-                set(key, false);
-            }
-            else if (char.class.equals(type))
-            {
-                set(key, (char) 0);
-            }
-            else if (byte.class.equals(type))
-            {
-                set(key, (byte) 0);
-            }
-            else if (short.class.equals(type))
-            {
-                set(key, (short) 0);
-            }
-            else if (int.class.equals(type))
-            {
-                set(key, (int) 0);
-            }
-            else if (long.class.equals(type))
-            {
-                set(key, (long) 0);
-            }
-            else if (float.class.equals(type))
-            {
-                set(key, (float) 0);
-            }
-            else if (double.class.equals(type))
-            {
-                set(key, (double) 0);
-            }
-            else
-            {
-                set(key, null);
-            }
-        }
-
-        return this;
-    }
+    @Override
+    public abstract Record immutable();
 
     /**
-     * This method creates an immutable tuple that is a cleared copy of this tuple.
-     *
-     * @return a copy of this tuple.
+     * {@inheritDoc}
      */
-    private Record clearCopy()
-    {
-        // This object is an immutable tuple.
-        // Create a mutable copy of this tuple.
-        // Clear the mutable copy.
-        // Return an immutable copy of the cleared mutable tuple.
-        return this.mutable().clear().immutable();
-    }
+    @Override
+    public abstract Record mutable();
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public abstract boolean isStruct();
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public abstract boolean isTuple();
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public abstract boolean isMutable();
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public abstract Record set(int index,
+                               Object value);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public abstract Object get(int index);
 
     /**
      * {@inheritDoc}
@@ -153,28 +164,6 @@ public abstract class AbstractRecord
      * {@inheritDoc}
      */
     @Override
-    public final Map<String, Object> toMap()
-    {
-        final SortedMap<String, Object> map = Maps.newTreeMap();
-
-        final Collection<String> keys = keys();
-
-        final List<Object> values = Lists.newArrayList(values());
-
-        int i = 0;
-
-        for (String key : keys)
-        {
-            map.put(key, values.get(i++));
-        }
-
-        return Collections.unmodifiableSortedMap(map);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public Record copy()
     {
         return isMutable() ? mutable() : immutable();
@@ -186,7 +175,15 @@ public abstract class AbstractRecord
     @Override
     public final int compareTo(final Record other)
     {
-        throw new UnsupportedOperationException("Not supported yet.");
+        if (bindings().getCompareTo() == null)
+        {
+            throw new UnsupportedOperationException("compareTo(Record)");
+        }
+        else
+        {
+            return (Integer) Functors.quietlyApply(bindings().getCompareTo(),
+                                                   Lists.newArrayList(this, other));
+        }
     }
 
     /**
@@ -195,15 +192,32 @@ public abstract class AbstractRecord
     @Override
     public final boolean equals(final Object other)
     {
-        // TODO
-        if (other instanceof Record)
+        if (bindings().getEquals() != null)
         {
-            return toMap().equals(((Record) other).toMap());
+            return (Boolean) Functors.quietlyApply(bindings().getEquals(),
+                                                   Lists.newArrayList(this, other));
         }
-        else
+
+        if (this == null)
         {
             return false;
         }
+
+        if (this == other)
+        {
+            return true;
+        }
+
+        if (other instanceof Record == false)
+        {
+            return false;
+        }
+
+        final Record record = (Record) other;
+
+        final boolean answer = Records.entryMap(this).equals(Records.entryMap(record));
+
+        return answer;
     }
 
     /**
@@ -212,6 +226,50 @@ public abstract class AbstractRecord
     @Override
     public final int hashCode()
     {
-        return toMap().hashCode(); // TODO
+        if (bindings().getHashCode() == null)
+        {
+            return Records.entryMap(this).hashCode();
+        }
+        else
+        {
+            return (Integer) Functors.quietlyApply(bindings().getHashCode(),
+                                                   Lists.newArrayList(this));
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final Iterator<Object> iterator()
+    {
+        final TypedFunctor method = bindings().getToString();
+
+        if (method != null)
+        {
+            return (Iterator) Functors.quietlyApply(method, Lists.newArrayList(this));
+        }
+        else
+        {
+            return values().iterator();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final String toString()
+    {
+        final TypedFunctor method = bindings().getToString();
+
+        if (method != null)
+        {
+            return Functors.quietlyApply(method, Lists.newArrayList(this)) + "";
+        }
+        else
+        {
+            return Strings.str(values(), "(", ", ", ")");
+        }
     }
 }

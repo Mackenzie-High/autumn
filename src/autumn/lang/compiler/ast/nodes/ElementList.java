@@ -25,6 +25,7 @@ import autumn.lang.compiler.ast.commons.IConversionOperation;
 import autumn.lang.compiler.ast.commons.IDirective;
 import autumn.lang.compiler.ast.commons.IDocumented;
 import autumn.lang.compiler.ast.commons.IExpression;
+import autumn.lang.compiler.ast.commons.IRecord;
 import autumn.lang.compiler.ast.commons.IStatement;
 import autumn.lang.compiler.ast.commons.IUnaryOperation;
 import autumn.lang.compiler.ast.literals.ByteLiteral;
@@ -47,46 +48,46 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 
 /**
- * An instance of this class is an AST node that represents an expression that creates a new object from a design or interface.
+ * An instance of this class is an AST node that represents a list of elements.
  * 
  * <p> 
  * <table border="1">
  *     <tr> <td> <b>Property Name</b> </td> <td> <b>Property Description</b> </td> </tr>
- *     <tr> <td> <code>type</code> </td> <td>This is the type to instantiate.</td> </tr>
+ *     <tr> <td> <code>elements</code> </td> <td>These are the elements themselves.</td> </tr>
  *     <tr> <td> <code>location</code> </td> <td>This is the source-location information regarding this construct.</td> </tr>
  * </table>
  * </p>
  * 
- * <p> This file was auto-generated on (Sun Sep 07 00:40:15 EDT 2014).</p>
+ * <p> This file was auto-generated on (Sun Oct 12 04:29:03 EDT 2014).</p>
  */
 @SuppressWarnings("unchecked")
-public final class CreateExpression extends Object implements IExpression
+public final class ElementList extends Object implements IConstruct
 {
-    private TypeSpecifier type;
+    private ConstructList<Element> elements = new ConstructList();
 
     private SourceLocation location = new SourceLocation();
 
     /**
      * Setter.
      * 
-     * @param value is the new value of property <code>type</code>.
-     * @return a copy of this object with property <code>type</code> set to value.
+     * @param value is the new value of property <code>elements</code>.
+     * @return a copy of this object with property <code>elements</code> set to value.
      */
-    public CreateExpression setType(final TypeSpecifier value)
+    public ElementList setElements(final ConstructList<Element> value)
     {
-        final CreateExpression result = this.copy();
-        result.type = value;
+        final ElementList result = this.copy();
+        result.elements = value;
         return result;
     }
 
     /**
      * Getter.
      * 
-     * @return the value of property <code>type</code>.
+     * @return the value of property <code>elements</code>.
      */
-    public TypeSpecifier getType()
+    public ConstructList<Element> getElements()
     {
-        final TypeSpecifier value = this.type;
+        final ConstructList<Element> value = this.elements;
         return value;
     }
 
@@ -96,9 +97,9 @@ public final class CreateExpression extends Object implements IExpression
      * @param value is the new value of property <code>location</code>.
      * @return a copy of this object with property <code>location</code> set to value.
      */
-    public CreateExpression setLocation(final SourceLocation value)
+    public ElementList setLocation(final SourceLocation value)
     {
-        final CreateExpression result = this.copy();
+        final ElementList result = this.copy();
         result.location = value;
         return result;
     }
@@ -117,14 +118,14 @@ public final class CreateExpression extends Object implements IExpression
     /**
      * This method creates a new instance of this class.
      * 
-     * @param type is the value for property <code>type</code>.
+     * @param elements is the value for property <code>elements</code>.
      * @param location is the value for property <code>location</code>.
      * @return a new instance of this class.
      */
-    public static CreateExpression create(TypeSpecifier type, SourceLocation location)
+    public static ElementList create(ConstructList<Element> elements, SourceLocation location)
     {
-        CreateExpression object = new CreateExpression();
-        object = object.setType(type);
+        ElementList object = new ElementList();
+        object = object.setElements(elements);
         object = object.setLocation(location);
         return object;
     }
@@ -144,10 +145,10 @@ public final class CreateExpression extends Object implements IExpression
      * 
      * @return a shallow copy of this object.
      */
-    public CreateExpression copy()
+    public ElementList copy()
     {
-        final CreateExpression result = new CreateExpression();
-        result.type = this.type;
+        final ElementList result = new ElementList();
+        result.elements = this.elements;
         result.location = this.location;
         return result;
     }
@@ -165,7 +166,7 @@ public final class CreateExpression extends Object implements IExpression
     public Map<String, Object> toMap()
     {
         final Map<String, Object> map = new TreeMap<String, Object>();
-        map.put("type", this.getType());
+        map.put("elements", this.getElements());
         map.put("location", this.getLocation());
 
         return map;

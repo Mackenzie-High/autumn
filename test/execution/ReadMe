@@ -45,6 +45,8 @@ Test Index
 . . T0126 = Setters - (immutable)
 . . T0127 = Setters - (mutable)
 . . T0117 = Getters
+. . T0251 - Special Method - bind(SpecialMethods)
+. . Special Method - bindings()
 . . T0135 = Special Method - set(String, Object) - (element exists, immutable tuple)
 . . T0137 = Special Method - set(String, Object) - (element exists, mutable tuple)
 . . T0136 = Special Method - set(String, Object) - (no such element)
@@ -68,7 +70,6 @@ Test Index
 . . Special Method - equals(Object)
 . . Special Method - hashCode()
 . . Special Method - toString()
-. . T0131 = Special Method - toMap()
 . . Special Method - compareTo(Object)
 . . Special Method - compareTo(Tuple)
 . . Special Method - assign(Tuple)

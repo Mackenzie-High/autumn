@@ -131,9 +131,9 @@ public final class ThreeSat
         }
     }
 
-    private final Map<String, Integer> variables = Maps.newTreeMap();
+    private final Map<Object, Integer> variables = Maps.newHashMap();
 
-    private final Map<Integer, String> indexes = Maps.newTreeMap();
+    private final Map<Integer, Object> indexes = Maps.newTreeMap();
 
     private final List<Clause> expression = Lists.newArrayList();
 
@@ -142,10 +142,10 @@ public final class ThreeSat
     /**
      * This method adds a variable to this 3-SAT expression.
      *
-     * @param name is the name of the new variable.
+     * @param name is an object that represents the variable (usually its name).
      * @return the index of the new variable.
      */
-    public int addVariable(final String name)
+    public int addVariable(final Object name)
     {
         if (variables.containsKey(name) == false)
         {
@@ -220,7 +220,9 @@ public final class ThreeSat
                    final int X,
                    final int Y)
     {
-        expression.add(new Clause(R, X, Y));
+        addClause(-R, X, Y);
+        addClause(R, -X);
+        addClause(R, -Y);
     }
 
     /**
@@ -247,6 +249,18 @@ public final class ThreeSat
                     final int X,
                     final int Y)
     {
+    }
+
+    /**
+     * Adds Constraint: X nand Y
+     *
+     * @param X is the index of the left-operand variable.
+     * @param Y is the index of the right-operand variable.
+     */
+    public void nand(final int X,
+                     final int Y)
+    {
+        addClause(-X, -Y);
     }
 
     /**
@@ -361,13 +375,13 @@ public final class ThreeSat
      * @param values are assignments to the variables in the expression.
      * @return a map that maps the name of a variable to its assigned value.
      */
-    private Map<String, Boolean> proof(final boolean[] values)
+    private Map<Object, Boolean> proof(final boolean[] values)
     {
-        final Map<String, Boolean> proof = Maps.newTreeMap();
+        final Map<Object, Boolean> proof = Maps.newHashMap();
 
         for (Integer index : indexes.keySet())
         {
-            final String variable = indexes.get(index);
+            final Object variable = indexes.get(index);
 
             proof.put(variable, values[index - 1]);
         }

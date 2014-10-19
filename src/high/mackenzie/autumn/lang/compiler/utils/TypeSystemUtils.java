@@ -6,8 +6,7 @@ import autumn.lang.Local;
 import autumn.lang.LocalsMap;
 import autumn.lang.Module;
 import autumn.lang.Record;
-import autumn.lang.Struct;
-import autumn.lang.Tuple;
+import autumn.lang.SpecialMethods;
 import autumn.lang.annotations.Start;
 import autumn.lang.compiler.ast.nodes.Name;
 import autumn.lang.compiler.ast.nodes.TypeSpecifier;
@@ -15,8 +14,6 @@ import autumn.lang.internals.AbstractDelegate;
 import autumn.lang.internals.AbstractModule;
 import autumn.lang.internals.AbstractRecord;
 import autumn.lang.internals.AbstractStaticFunctor;
-import autumn.lang.internals.AbstractStruct;
-import autumn.lang.internals.AbstractTuple;
 import autumn.lang.internals.ArgumentStack;
 import autumn.lang.internals.Conversions;
 import autumn.lang.internals.Helpers;
@@ -129,8 +126,6 @@ public final class TypeSystemUtils
 
     public final IAnnotationType START;
 
-    public final IInterfaceType TUPLE;
-
     public final IInterfaceType LIST;
 
     public final IInterfaceType ITERABLE;
@@ -141,8 +136,6 @@ public final class TypeSystemUtils
 
     public final IInterfaceType RECORD;
 
-    public final IInterfaceType STRUCT;
-
     public final IInterfaceType MODULE;
 
     public final IClassType MODULE_DELEGATE;
@@ -150,10 +143,6 @@ public final class TypeSystemUtils
     public final IClassType ABSTRACT_MODULE;
 
     public final IClassType ABSTRACT_DELEGATE;
-
-    public final IClassType ABSTRACT_TUPLE;
-
-    public final IClassType ABSTRACT_STRUCT;
 
     public final IClassType ABSTRACT_RECORD;
 
@@ -168,6 +157,8 @@ public final class TypeSystemUtils
     public final IClassType CONVERSIONS;
 
     public final IClassType OPERATORS;
+
+    public final IClassType SPECIAL_METHODS;
 
     public final IClassType LOCALS_MAP;
 
@@ -225,8 +216,6 @@ public final class TypeSystemUtils
 
         this.STRING = (IClassType) factory.fromClass(String.class);
 
-        this.TUPLE = (IInterfaceType) factory.fromClass(Tuple.class);
-
         this.RECORD = (IInterfaceType) factory.fromClass(Record.class);
 
         this.LIST = (IInterfaceType) factory.fromClass(List.class);
@@ -237,15 +226,9 @@ public final class TypeSystemUtils
 
         this.FUNCTOR = (IInterfaceType) factory.fromClass(Functor.class);
 
-        this.STRUCT = (IInterfaceType) factory.fromClass(Struct.class);
-
         this.MODULE = (IInterfaceType) factory.fromClass(Module.class);
 
         this.MODULE_DELEGATE = (IClassType) factory.fromClass(ModuleDelegate.class);
-
-        this.ABSTRACT_TUPLE = (IClassType) factory.fromClass(AbstractTuple.class);
-
-        this.ABSTRACT_STRUCT = (IClassType) factory.fromClass(AbstractStruct.class);
 
         this.ABSTRACT_RECORD = (IClassType) factory.fromClass(AbstractRecord.class);
 
@@ -266,6 +249,8 @@ public final class TypeSystemUtils
         this.CONVERSIONS = (IClassType) factory.fromClass(Conversions.class);
 
         this.OPERATORS = (IClassType) factory.fromClass(Operators.class);
+
+        this.SPECIAL_METHODS = (IClassType) factory.fromClass(SpecialMethods.class);
 
         this.LOCALS_MAP = (IClassType) factory.fromClass(LocalsMap.class);
 

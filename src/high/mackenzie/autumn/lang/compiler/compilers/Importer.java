@@ -38,22 +38,24 @@ public final class Importer
         this.module = module;
 
         // autumn.lang
+        importClass(autumn.lang.Copyable.class);
         importClass(autumn.lang.Delegate.class);
         importClass(autumn.lang.Functor.class);
+        importClass(autumn.lang.Immutable.class);
         importClass(autumn.lang.Local.class);
         importClass(autumn.lang.LocalsMap.class);
-        importClass(autumn.lang.Member.class);
-        importClass(autumn.lang.Method.class);
         importClass(autumn.lang.Module.class);
-        importClass(autumn.lang.Property.class);
-        importClass(autumn.lang.Prototype.class);
+        importClass(autumn.lang.Mutable.class);
+        importClass(autumn.lang.Record.class);
+        importClass(autumn.lang.RecordEntry.class);
+        importClass(autumn.lang.SpecialMethods.class);
         importClass(autumn.lang.StaticFunctor.class);
-        importClass(autumn.lang.Tuple.class);
         importClass(autumn.lang.TypedFunctor.class);
 
         // autumn.lang.annotations
         importClass(autumn.lang.annotations.Clinit.class);
         importClass(autumn.lang.annotations.Hide.class);
+        importClass(autumn.lang.annotations.InferReturnType.class);
         importClass(autumn.lang.annotations.Once.class);
         importClass(autumn.lang.annotations.Start.class);
         importClass(autumn.lang.annotations.Sync.class);
@@ -61,11 +63,17 @@ public final class Importer
         // autumn.lang.compiler
         importClass(autumn.lang.compiler.Autumn.class);
 
+        // autumn.lang.exceptions
+        importClass(autumn.lang.exceptions.AssertionFailedException.class);
+        importClass(autumn.lang.exceptions.AssumptionFailedException.class);
+        importClass(autumn.lang.exceptions.CheckedException.class);
+
         // autumn.util
         importClass(autumn.util.Bitwise.class);
         importClass(autumn.util.DS.class);
         importClass(autumn.util.F.class);
         importClass(autumn.util.Files.class);
+        importClass(autumn.util.Functors.class);
         importClass(autumn.util.Predicates.class);
         importClass(autumn.util.Records.class);
         importClass(autumn.util.Reflect.class);

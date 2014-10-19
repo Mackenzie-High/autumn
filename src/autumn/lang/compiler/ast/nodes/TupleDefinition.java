@@ -25,6 +25,7 @@ import autumn.lang.compiler.ast.commons.IConversionOperation;
 import autumn.lang.compiler.ast.commons.IDirective;
 import autumn.lang.compiler.ast.commons.IDocumented;
 import autumn.lang.compiler.ast.commons.IExpression;
+import autumn.lang.compiler.ast.commons.IRecord;
 import autumn.lang.compiler.ast.commons.IStatement;
 import autumn.lang.compiler.ast.commons.IUnaryOperation;
 import autumn.lang.compiler.ast.literals.ByteLiteral;
@@ -55,15 +56,16 @@ import java.util.TreeSet;
  *     <tr> <td> <code>comment</code> </td> <td>This is the doc-comment applied directly to the definition.</td> </tr>
  *     <tr> <td> <code>annotations</code> </td> <td>These are the annotations applied directly to the definition.</td> </tr>
  *     <tr> <td> <code>name</code> </td> <td>This is the simple name of the new type.</td> </tr>
- *     <tr> <td> <code>elements</code> </td> <td>These are the formal-parameters of the tuple constructor.</td> </tr>
+ *     <tr> <td> <code>elements</code> </td> <td>These are the entries in the new type.</td> </tr>
+ *     <tr> <td> <code>supers</code> </td> <td>These are the direct supertypes of the new type.</td> </tr>
  *     <tr> <td> <code>location</code> </td> <td>This is the source-location information regarding this construct.</td> </tr>
  * </table>
  * </p>
  * 
- * <p> This file was auto-generated on (Sun Sep 07 00:40:15 EDT 2014).</p>
+ * <p> This file was auto-generated on (Sun Oct 12 04:29:02 EDT 2014).</p>
  */
 @SuppressWarnings("unchecked")
-public final class TupleDefinition extends Object implements IAnnotated, IDocumented
+public final class TupleDefinition extends Object implements IAnnotated, IDocumented, IRecord
 {
     private DocComment comment = new DocComment();
 
@@ -71,7 +73,9 @@ public final class TupleDefinition extends Object implements IAnnotated, IDocume
 
     private Name name;
 
-    private FormalParameterList elements;
+    private ElementList elements;
+
+    private ConstructList<TypeSpecifier> supers = new ConstructList();
 
     private SourceLocation location = new SourceLocation();
 
@@ -153,7 +157,7 @@ public final class TupleDefinition extends Object implements IAnnotated, IDocume
      * @param value is the new value of property <code>elements</code>.
      * @return a copy of this object with property <code>elements</code> set to value.
      */
-    public TupleDefinition setElements(final FormalParameterList value)
+    public TupleDefinition setElements(final ElementList value)
     {
         final TupleDefinition result = this.copy();
         result.elements = value;
@@ -165,9 +169,33 @@ public final class TupleDefinition extends Object implements IAnnotated, IDocume
      * 
      * @return the value of property <code>elements</code>.
      */
-    public FormalParameterList getElements()
+    public ElementList getElements()
     {
-        final FormalParameterList value = this.elements;
+        final ElementList value = this.elements;
+        return value;
+    }
+
+    /**
+     * Setter.
+     * 
+     * @param value is the new value of property <code>supers</code>.
+     * @return a copy of this object with property <code>supers</code> set to value.
+     */
+    public TupleDefinition setSupers(final ConstructList<TypeSpecifier> value)
+    {
+        final TupleDefinition result = this.copy();
+        result.supers = value;
+        return result;
+    }
+
+    /**
+     * Getter.
+     * 
+     * @return the value of property <code>supers</code>.
+     */
+    public ConstructList<TypeSpecifier> getSupers()
+    {
+        final ConstructList<TypeSpecifier> value = this.supers;
         return value;
     }
 
@@ -202,16 +230,18 @@ public final class TupleDefinition extends Object implements IAnnotated, IDocume
      * @param annotations is the value for property <code>annotations</code>.
      * @param name is the value for property <code>name</code>.
      * @param elements is the value for property <code>elements</code>.
+     * @param supers is the value for property <code>supers</code>.
      * @param location is the value for property <code>location</code>.
      * @return a new instance of this class.
      */
-    public static TupleDefinition create(DocComment comment, AnnotationList annotations, Name name, FormalParameterList elements, SourceLocation location)
+    public static TupleDefinition create(DocComment comment, AnnotationList annotations, Name name, ElementList elements, ConstructList<TypeSpecifier> supers, SourceLocation location)
     {
         TupleDefinition object = new TupleDefinition();
         object = object.setComment(comment);
         object = object.setAnnotations(annotations);
         object = object.setName(name);
         object = object.setElements(elements);
+        object = object.setSupers(supers);
         object = object.setLocation(location);
         return object;
     }
@@ -238,6 +268,7 @@ public final class TupleDefinition extends Object implements IAnnotated, IDocume
         result.annotations = this.annotations;
         result.name = this.name;
         result.elements = this.elements;
+        result.supers = this.supers;
         result.location = this.location;
         return result;
     }
@@ -259,6 +290,7 @@ public final class TupleDefinition extends Object implements IAnnotated, IDocume
         map.put("annotations", this.getAnnotations());
         map.put("name", this.getName());
         map.put("elements", this.getElements());
+        map.put("supers", this.getSupers());
         map.put("location", this.getLocation());
 
         return map;

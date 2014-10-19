@@ -10,12 +10,6 @@ import autumn.lang.compiler.ast.nodes.*;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-import high.mackenzie.autumn.lang.compiler.exceptions.BadGetterAssignment;
-import high.mackenzie.autumn.lang.compiler.exceptions.BadMethodAssignment;
-import high.mackenzie.autumn.lang.compiler.exceptions.BadSetterAssignment;
-import high.mackenzie.autumn.lang.compiler.exceptions.NoSuchHandlerFunction;
-import high.mackenzie.autumn.lang.compiler.exceptions.NoSuchProperty;
-import high.mackenzie.autumn.lang.compiler.exceptions.PrototypeExpected;
 import high.mackenzie.autumn.lang.compiler.exceptions.TypeCheckFailed;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IClassType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IExpressionType;
@@ -28,8 +22,6 @@ import high.mackenzie.autumn.lang.compiler.utils.MemberToHandler;
 import high.mackenzie.autumn.lang.compiler.utils.TopoSorter;
 import java.util.List;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.objectweb.asm.tree.LabelNode;
 
 /**
@@ -433,142 +425,142 @@ public final class StatementTypeChecker
     @Override
     public void visit(final SetterStatement object)
     {
-        /**
-         * Get the type of the prototype object.
-         */
-        final IVariableType owner = function.allocator.typeOf(object.getOwner().getName());
-
-        /**
-         * Get the type of the module that contains the handler function.
-         */
-        final IClassType mule = module.imports.resolveModuleType(object.getModule());
-
-        /**
-         * Create the mapping between the setter and the handler function.
-         */
-        try
-        {
-            final MemberToHandler mapping = MemberToHandler.forSetter(owner,
-                                                                      object.getName().getName(),
-                                                                      mule,
-                                                                      object.getMethod().getName());
-
-            /**
-             * Record the mapping, because the code-generator will need it.
-             */
-            program.symbols.setters.put(object, mapping);
-        }
-        catch (PrototypeExpected ex)
-        {
-            // TODO
-            Logger.getLogger(StatementTypeChecker.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        catch (NoSuchProperty ex)
-        {
-            Logger.getLogger(StatementTypeChecker.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        catch (NoSuchHandlerFunction ex)
-        {
-            Logger.getLogger(StatementTypeChecker.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        catch (BadSetterAssignment ex)
-        {
-            Logger.getLogger(StatementTypeChecker.class.getName()).log(Level.SEVERE, null, ex);
-        }
+//        /**
+//         * Get the type of the prototype object.
+//         */
+//        final IVariableType owner = function.allocator.typeOf(object.getOwner().getName());
+//
+//        /**
+//         * Get the type of the module that contains the handler function.
+//         */
+//        final IClassType mule = module.imports.resolveModuleType(object.getModule());
+//
+//        /**
+//         * Create the mapping between the setter and the handler function.
+//         */
+//        try
+//        {
+//            final MemberToHandler mapping = MemberToHandler.forSetter(owner,
+//                                                                      object.getName().getName(),
+//                                                                      mule,
+//                                                                      object.getMethod().getName());
+//
+//            /**
+//             * Record the mapping, because the code-generator will need it.
+//             */
+//            program.symbols.setters.put(object, mapping);
+//        }
+//        catch (PrototypeExpected ex)
+//        {
+//            // TODO
+//            Logger.getLogger(StatementTypeChecker.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//        catch (NoSuchProperty ex)
+//        {
+//            Logger.getLogger(StatementTypeChecker.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//        catch (NoSuchHandlerFunction ex)
+//        {
+//            Logger.getLogger(StatementTypeChecker.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//        catch (BadSetterAssignment ex)
+//        {
+//            Logger.getLogger(StatementTypeChecker.class.getName()).log(Level.SEVERE, null, ex);
+//        }
     }
 
     @Override
     public void visit(final GetterStatement object)
     {
-        /**
-         * Get the type of the prototype object.
-         */
-        final IVariableType owner = function.allocator.typeOf(object.getOwner().getName());
-
-        /**
-         * Get the type of the module that contains the handler function.
-         */
-        final IClassType mule = module.imports.resolveModuleType(object.getModule());
-
-        /**
-         * Create the mapping between the setter and the handler function.
-         */
-        try
-        {
-            final MemberToHandler mapping = MemberToHandler.forGetter(owner,
-                                                                      object.getName().getName(),
-                                                                      mule,
-                                                                      object.getMethod().getName());
-
-            /**
-             * Record the mapping, because the code-generator will need it.
-             */
-            program.symbols.getters.put(object, mapping);
-        }
-        catch (PrototypeExpected ex)
-        {
-            // TODO
-            Logger.getLogger(StatementTypeChecker.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        catch (NoSuchProperty ex)
-        {
-            Logger.getLogger(StatementTypeChecker.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        catch (NoSuchHandlerFunction ex)
-        {
-            Logger.getLogger(StatementTypeChecker.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        catch (BadGetterAssignment ex)
-        {
-            Logger.getLogger(StatementTypeChecker.class.getName()).log(Level.SEVERE, null, ex);
-        }
+//        /**
+//         * Get the type of the prototype object.
+//         */
+//        final IVariableType owner = function.allocator.typeOf(object.getOwner().getName());
+//
+//        /**
+//         * Get the type of the module that contains the handler function.
+//         */
+//        final IClassType mule = module.imports.resolveModuleType(object.getModule());
+//
+//        /**
+//         * Create the mapping between the setter and the handler function.
+//         */
+//        try
+//        {
+//            final MemberToHandler mapping = MemberToHandler.forGetter(owner,
+//                                                                      object.getName().getName(),
+//                                                                      mule,
+//                                                                      object.getMethod().getName());
+//
+//            /**
+//             * Record the mapping, because the code-generator will need it.
+//             */
+//            program.symbols.getters.put(object, mapping);
+//        }
+//        catch (PrototypeExpected ex)
+//        {
+//            // TODO
+//            Logger.getLogger(StatementTypeChecker.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//        catch (NoSuchProperty ex)
+//        {
+//            Logger.getLogger(StatementTypeChecker.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//        catch (NoSuchHandlerFunction ex)
+//        {
+//            Logger.getLogger(StatementTypeChecker.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//        catch (BadGetterAssignment ex)
+//        {
+//            Logger.getLogger(StatementTypeChecker.class.getName()).log(Level.SEVERE, null, ex);
+//        }
     }
 
     @Override
     public void visit(final MethodStatement object)
     {
-        /**
-         * Get the type of the prototype object.
-         */
-        final IVariableType owner = function.allocator.typeOf(object.getOwner().getName());
-
-        /**
-         * Get the type of the module that contains the handler function.
-         */
-        final IClassType mule = module.imports.resolveModuleType(object.getModule());
-
-        /**
-         * Create the mapping between the setter and the handler function.
-         */
-        try
-        {
-            final MemberToHandler mapping = MemberToHandler.forMethod(owner,
-                                                                      object.getName().getName(),
-                                                                      mule,
-                                                                      object.getMethod().getName());
-
-            /**
-             * Record the mapping, because the code-generator will need it.
-             */
-            program.symbols.methods.put(object, mapping);
-        }
-        catch (PrototypeExpected ex)
-        {
-            // TODO
-            Logger.getLogger(StatementTypeChecker.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        catch (NoSuchProperty ex)
-        {
-            Logger.getLogger(StatementTypeChecker.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        catch (NoSuchHandlerFunction ex)
-        {
-            Logger.getLogger(StatementTypeChecker.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        catch (BadMethodAssignment ex)
-        {
-            Logger.getLogger(StatementTypeChecker.class.getName()).log(Level.SEVERE, null, ex);
-        }
+//        /**
+//         * Get the type of the prototype object.
+//         */
+//        final IVariableType owner = function.allocator.typeOf(object.getOwner().getName());
+//
+//        /**
+//         * Get the type of the module that contains the handler function.
+//         */
+//        final IClassType mule = module.imports.resolveModuleType(object.getModule());
+//
+//        /**
+//         * Create the mapping between the setter and the handler function.
+//         */
+//        try
+//        {
+//            final MemberToHandler mapping = MemberToHandler.forMethod(owner,
+//                                                                      object.getName().getName(),
+//                                                                      mule,
+//                                                                      object.getMethod().getName());
+//
+//            /**
+//             * Record the mapping, because the code-generator will need it.
+//             */
+//            program.symbols.methods.put(object, mapping);
+//        }
+//        catch (PrototypeExpected ex)
+//        {
+//            // TODO
+//            Logger.getLogger(StatementTypeChecker.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//        catch (NoSuchProperty ex)
+//        {
+//            Logger.getLogger(StatementTypeChecker.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//        catch (NoSuchHandlerFunction ex)
+//        {
+//            Logger.getLogger(StatementTypeChecker.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//        catch (BadMethodAssignment ex)
+//        {
+//            Logger.getLogger(StatementTypeChecker.class.getName()).log(Level.SEVERE, null, ex);
+//        }
     }
 
     @Override

@@ -12,9 +12,9 @@ public interface ImmutableList<E>
                 List<E>
 {
     /**
-     * This method creates a new mutator that can be used to create a modified copy of this object.
+     * This method creates an mutable copy of this object.
      *
-     * @return a new mutator object.
+     * @return a mutable copy of this object.
      */
     @Override
     public MutableList<E> mutable();

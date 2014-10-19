@@ -25,6 +25,7 @@ import autumn.lang.compiler.ast.commons.IConversionOperation;
 import autumn.lang.compiler.ast.commons.IDirective;
 import autumn.lang.compiler.ast.commons.IDocumented;
 import autumn.lang.compiler.ast.commons.IExpression;
+import autumn.lang.compiler.ast.commons.IRecord;
 import autumn.lang.compiler.ast.commons.IStatement;
 import autumn.lang.compiler.ast.commons.IUnaryOperation;
 import autumn.lang.compiler.ast.literals.ByteLiteral;
@@ -49,7 +50,7 @@ import java.util.TreeSet;
 /**
  * An instance of this interface is a visitor that can visit the nodes in an Autumn abstract-syntax-tree.
  * 
- * <p> This file was auto-generated on (Sun Sep 07 00:40:15 EDT 2014).</p>
+ * <p> This file was auto-generated on (Sun Oct 12 04:29:03 EDT 2014).</p>
  */
 public interface IAstVisitor
 {
@@ -89,13 +90,6 @@ public interface IAstVisitor
     public void visit(final ExceptionDefinition object);
 
     /**
-     * This method visits an object of type <code>TupleDefinition</code>.
-     * 
-     * @param object is the object to visit.
-     */
-    public void visit(final TupleDefinition object);
-
-    /**
      * This method visits an object of type <code>FunctorDefinition</code>.
      * 
      * @param object is the object to visit.
@@ -108,6 +102,20 @@ public interface IAstVisitor
      * @param object is the object to visit.
      */
     public void visit(final EnumDefinition object);
+
+    /**
+     * This method visits an object of type <code>DesignDefinition</code>.
+     * 
+     * @param object is the object to visit.
+     */
+    public void visit(final DesignDefinition object);
+
+    /**
+     * This method visits an object of type <code>TupleDefinition</code>.
+     * 
+     * @param object is the object to visit.
+     */
+    public void visit(final TupleDefinition object);
 
     /**
      * This method visits an object of type <code>StructDefinition</code>.
@@ -509,13 +517,6 @@ public interface IAstVisitor
     public void visit(final NewExpression object);
 
     /**
-     * This method visits an object of type <code>CreateExpression</code>.
-     * 
-     * @param object is the object to visit.
-     */
-    public void visit(final CreateExpression object);
-
-    /**
      * This method visits an object of type <code>CallMethodExpression</code>.
      * 
      * @param object is the object to visit.
@@ -773,6 +774,20 @@ public interface IAstVisitor
      * @param object is the object to visit.
      */
     public void visit(final Namespace object);
+
+    /**
+     * This method visits an object of type <code>ElementList</code>.
+     * 
+     * @param object is the object to visit.
+     */
+    public void visit(final ElementList object);
+
+    /**
+     * This method visits an object of type <code>Element</code>.
+     * 
+     * @param object is the object to visit.
+     */
+    public void visit(final Element object);
 
     /**
      * This method visits an object of type <code>FormalParameterList</code>.

@@ -1,116 +1,166 @@
 package autumn.lang;
 
-import java.io.Serializable;
-import java.util.Collection;
-import java.util.Map;
+import high.mackenzie.autumn.resources.Finished;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * An instance of this interface is a user-defined key-value mapping data-structure.
+ *
+ * <p>
+ * This interface only defines the minimum required functionality.
+ * Convenience functions are provided by class autumn.util.Records and class autumn.util.F.
+ * </p>
  *
  * <p>
  * Subtypes of this interface should provide covariant overrides of the following methods:
  * <ul>
  * <li> bind(SpecialMethods) </li>
  * <li> set(String, Object) </li>
- * <li> clear() </li>
  * <li> copy() </li>
  * <li> immutable() </li>
  * <li> mutable() </li>
  * </ul>
  * </p>
  *
+ * <p>
+ * <b>Warning:</p>
+ * You should redefine the compareTo(), equals(Object), hashCode(), toString() methods,
+ * if the record is recursively in any way; otherwise, a stack-overflow may occur when
+ * invoking the any of those methods.
+ * </p>
+ *
  * @author Mackenzie High
  */
+@Finished("2014/10/18")
 public interface Record
         extends Copyable,
                 Mutable,
                 Immutable,
-                Comparable<Record>,
-                Serializable
+                Iterable,
+                Comparable<Record>
 {
     /**
-     * This method sets the handlers of the special methods herein.
+     * This method determines whether this object was created from a struct-definition.
      *
-     * @param methods provides handlers for special methods.
-     * @return this object, if this record is mutable; otherwise, returned a modified copy thereof.
+     * @return true, if this object is an instance of a struct.
+     */
+    public boolean isStruct();
+
+    /**
+     * This method determines whether this object was created from a tuple-definition.
+     *
+     * @return true, if this object is an instance of a tuple.
+     */
+    public boolean isTuple();
+
+    /**
+     * This method allows you to change the behavior of the special methods.
+     *
+     * <p>
+     * Special Methods:
+     * <ul>
+     * <li>iterator()</li>
+     * <li>compareTo(Record)</li>
+     * <li>equals(Object)</li>
+     * <li>hashCode()</li>
+     * <li>toString()</li>
+     * </ul>
+     * </p>
+     *
+     * @param methods provides handlers for the special methods herein.
+     * @return this object, if this record is mutable; otherwise, return a modified copy thereof.
+     * @throws NullPointerException if methods is null.
      */
     public Record bind(SpecialMethods methods);
 
     /**
-     * This method creates a collection that contains the names of the elements in this record.
+     * This method retrieves the special methods herein.
      *
-     * @return the aforedescribed immutable collection.
+     * @return the special-method bindings.
      */
-    public Collection<String> keys();
+    public SpecialMethods bindings();
 
     /**
-     * This method creates a collection containing the value of each element in this record.
-     *
-     * @return the aforedescribed immutable collection.
-     */
-    public Collection<Object> values();
-
-    /**
-     * This method creates a map that maps the name of an element to its static-type.
-     *
-     * @return the aforesaid immutable map.
-     */
-    public Map<String, Class> types();
-
-    /**
-     * This method sets the value of each element to its default value.
+     * This method retrieves a list that contains the names of the elements in this record.
      *
      * <p>
-     * This method does not affect the special-method bindings.
+     * This is a constant-time operation.
      * </p>
      *
-     * @return this object, if this record is mutable; otherwise, return a modified copy thereof.
+     * @return the aforedescribed immutable list.
      */
-    public Record clear();
+    public List<String> keys();
 
     /**
-     * This method assigns a new value to the element at a given index.
+     * This method creates a new list containing the type of each element in this record.
+     *
+     * <p>
+     * This is a constant-time operation.
+     * </p>
+     *
+     * @return the aforedescribed immutable list.
+     */
+    public List<Class> types();
+
+    /**
+     * This method creates a new list containing the value of each element in this record.
+     *
+     * <p>
+     * This is a linear-time operation.
+     * </p>
+     *
+     * <p>
+     * The new collection is <b>not</b> backed by this object.
+     * </p>
+     *
+     * @return the aforedescribed immutable list.
+     */
+    public List<Object> values();
+
+    /**
+     * This method assigns a new value to a specific element.
      *
      * <p>
      * Auto-unboxing will be performed, if necessary.
      * However, the unboxed value will not be auto-widened.
      * </p>
      *
-     * @param key is the name of the element to assign the value to.
+     * @param index is the index of the element to assign the value to.
      * @param value is the new value.
-     * @return this object, if this record is mutable; otherwise, returned a modified copy thereof.
-     * @throws NoSuchElementException if the key does not refer to an actual element.
+     * @return this object, if this record is mutable; otherwise, return a modified copy thereof.
+     * @throws IndexOutOfBoundsException if the index is out-of-bounds.
      * @throws ClassCastException if the object is not of an acceptable type.
      */
-    public Record set(String index,
+    public Record set(int index,
                       Object value);
 
     /**
-     * This method retrieves the value of an element at a given key.
+     * This method retrieves the value of a specific element.
      *
-     * @param key is the key of the element to retrieve.
+     * @param index is the index of the element to assign the value to.
      * @return the value of the element.
-     * @throws NullPointerException if the key is null.
-     * @throws NoSuchElementException if no element is identified by the given key.
+     * @throws IndexOutOfBoundsException if the index is out-of-bounds.
      */
-    public Object get(String key);
-
-    /**
-     * This method creates a Map representation of this record.
-     *
-     * @return an immutable map containing the key-value mappings of this record.
-     */
-    public Map<String, Object> toMap();
+    public Object get(int index);
 
     /**
      * This method counts the elements in this record.
+     *
+     * <p>
+     * This is a constant-time operation.
+     * </p>
      *
      * @return <code> key().size() </code>
      */
     public int size();
 
     /**
-     * This method determines whether this tuple is empty.
+     * This method determines whether this record is empty.
+     *
+     * <p>
+     * This is a constant-time operation.
+     * </p>
      *
      * @return true, iff the size() of this tuple is zero.
      */
@@ -119,15 +169,25 @@ public interface Record
     /**
      * This method determines whether this record is mutable.
      *
+     * <p>
+     * This is a constant-time operation.
+     * </p>
+     *
      * @return <code> ! isReadonly() </code>
      */
+    @Override
     public boolean isMutable();
 
     /**
      * This method determines whether this record is immutable.
      *
+     * <p>
+     * This is a constant-time operation.
+     * </p>
+     *
      * @return <code> ! isMutable() </code>
      */
+    @Override
     public boolean isImmutable();
 
     /**
@@ -160,29 +220,38 @@ public interface Record
     public Record mutable();
 
     /**
-     * TODO
-     *
-     * This method compares this tuple to another given tuple.
+     * This method creates an iterator over the values in this record.
      *
      * <p>
-     * Tuples are compared based on the following information.
-     * Firstly, tuples are compared based on their length.
-     * Shorter tuples are less-than longer tuples.
-     * Secondly, tuples are compared based on their keys.
-     * Since each key is a string, it can be compared to the equally index key in other.
-     * This enforces a sort of lexicographic order.
-     * Thirdly, the tuples are compared based on their comparable values at equal indexes.
-     * If none of the values are comparable, then an IllegalStateException is thrown.
-     * The exception should include an informative error message.
+     * This method's behavior can be redefined using a special-method handler.
      * </p>
      *
      * <p>
-     * This method's default behavior can be replaced by binding a method handler to the object.
+     * By, default this method simply creates an iterator over the values() in this record.
      * </p>
      *
-     * @param other is the other tuple itself.
-     * @return an integer indicating the relationship of this tuple to the other tuple.
-     * @throws IllegalStateException if this method is not supported by this instance.
+     * @return an iterator over this object.
+     */
+    @Override
+    public Iterator iterator();
+
+    /**
+     * This method compares this record to another given record.
+     *
+     * <p>
+     * This method's behavior can be redefined using a special-method handler.
+     * </p>
+     *
+     * <p>
+     * By default, records are compared based on there mutually comparable values(). <br>
+     * The two records must have exactly the same keys().
+     * </ol>
+     *
+     * </p>
+     *
+     * @param other is the other record itself.
+     * @return an integer indicating the relationship of this record to the other record.
+     * @throws UnsupportedOperationException if a comparison could not be performed.
      */
     @Override
     public int compareTo(Record other);
@@ -191,21 +260,23 @@ public interface Record
      * This method determines whether this record equals another object.
      *
      * <p>
-     * Equality Rules:
+     * Default Equality Rules:
      * <ol>
+     * <li>If other is null, then return false.</li>
      * <li>If this is the same object as other, then return true.</li>
      * <li>If other is not a Record, return false.</i>
-     * <li>If this.size() != other.size(), return false.</li>
-     * <li>Return this.keys().equals(other.keys()) && this.values().equals(other.values()).</li>
+     * <li>If this.keys() is not equal to other.keys(), then return false.</li>
+     * <li>If this.values() is not equal to other.values(), then return false.</li>
+     * <li>Return true.</li>
      * </ol>
      * </p>
      *
      * <p>
-     * This method's default behavior can be replaced by binding a method handler to the object.
+     * This method's behavior can be redefined using a special-method handler.
      * </p>
      *
-     * @param other is the other tuple itself.
-     * @return true, iff this record equals the other object.
+     * @param other is a value that may be equal to this object.
+     * @return true, iff this record equals the given value.
      */
     @Override
     public boolean equals(Object other);
@@ -214,11 +285,27 @@ public interface Record
      * This method computes a hash-code for this record.
      *
      * <p>
-     * This method's default behavior can be replaced by binding a method handler to the object.
+     * This method's behavior can be redefined using a special-method handler.
      * </p>
      *
-     * @return <code> this.toMap().hashCode() </code>
+     * @return <code> keys().hashCode() xor values().hashCode(), by default </code>
      */
     @Override
     public int hashCode();
+
+    /**
+     * This method creates a string representation of this object.
+     *
+     * <p>
+     * This method's behavior can be redefined using a special-method handler.
+     * </p>
+     *
+     * <p>
+     * By default, a record's string representation is a parentheses enclosed list of its values().
+     * </p>
+     *
+     * @return the generated string.
+     */
+    @Override
+    public String toString();
 }

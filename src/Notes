@@ -1,5 +1,7 @@
 
 Notes:
+. Allow auto downcast in assignment via special syntax, due to the lack of generics.
+. Allow loading of class files and resource files by class Autumn.
 . Should the methods in the Module interface be renamed?
 . The util framework will be added in a later release version.
 . Class names that start with AutumnSynthetic are reserved for the compiler.

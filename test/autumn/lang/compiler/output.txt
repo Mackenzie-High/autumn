@@ -61,49 +61,58 @@ enum City (Paris);
 enum City (Moscow, Geneva, Turin);
 
 '' This is a doc-comment.
-@Anno07
-@Anno08
-@Anno09
-tuple Person ();
-
-@Anno07
-@Anno08
-@Anno09
-tuple Person (name : String);
-
-@Anno07
-@Anno08
-@Anno09
-tuple Person (name : String, age : int);
-
-@Anno07
-@Anno08
-@Anno09
-tuple Person (name : String, age : int, income : long);
+@Anno01
+@Anno02
+@Anno03
+design Person (name : String, age : int);
 
 '' This is a doc-comment.
-@Anno19
-@Anno20
-@Anno21
+@Anno01
+@Anno02
+@Anno03
+design Person (name : String, age : int) is Taxable;
+
+'' This is a doc-comment.
+@Anno01
+@Anno02
+@Anno03
+design Person (name : String, age : int) is Taxable & Citizen;
+
+'' This is a doc-comment.
+@Anno01
+@Anno02
+@Anno03
+tuple Person (name : String, age : int);
+
+'' This is a doc-comment.
+@Anno01
+@Anno02
+@Anno03
+tuple Person (name : String, age : int) is Taxable;
+
+'' This is a doc-comment.
+@Anno01
+@Anno02
+@Anno03
+tuple Person (name : String, age : int) is Taxable & Citizen;
+
+'' This is a doc-comment.
+@Anno01
+@Anno02
+@Anno03
 struct Person (name : String, age : int);
 
 '' This is a doc-comment.
-@Anno19
-@Anno20
-@Anno21
-struct Person (name : String, age : int) extends Human;
+@Anno01
+@Anno02
+@Anno03
+struct Person (name : String, age : int) is Taxable;
 
 '' This is a doc-comment.
-@Anno19
-@Anno20
-@Anno21
-struct Person (name : String, age : int) extends Human & Taxable;
-
-'' This is a doc-comment.
-@Anno19
-@Anno20
-@Anno21
-struct Person (name : String, age : int) extends Human & Taxable & Employable;
+@Anno01
+@Anno02
+@Anno03
+struct Person (name : String, age : int) is Taxable & Citizen;
 
 '' This is a doc-comment.
 @Anno07
@@ -449,10 +458,6 @@ defun main (args : String[]) : void
     nop;
 
     val xoo = (instanceof (12 + 34) : String);
-
-    nop;
-
-    val xoo = (create String);
 
     nop;
 

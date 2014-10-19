@@ -55,7 +55,19 @@ public class AbstractAstVisitor
     }
 
     @Override
+    public void visit(DesignDefinition object)
+    {
+        throw new UnsupportedOperationException("This should never happen.");
+    }
+
+    @Override
     public void visit(TupleDefinition object)
+    {
+        throw new UnsupportedOperationException("This should never happen.");
+    }
+
+    @Override
+    public void visit(StructDefinition object)
     {
         throw new UnsupportedOperationException("This should never happen.");
     }
@@ -68,12 +80,6 @@ public class AbstractAstVisitor
 
     @Override
     public void visit(EnumDefinition object)
-    {
-        throw new UnsupportedOperationException("This should never happen.");
-    }
-
-    @Override
-    public void visit(StructDefinition object)
     {
         throw new UnsupportedOperationException("This should never happen.");
     }
@@ -415,12 +421,6 @@ public class AbstractAstVisitor
     }
 
     @Override
-    public void visit(CreateExpression object)
-    {
-        throw new UnsupportedOperationException("This should never happen.");
-    }
-
-    @Override
     public void visit(CallMethodExpression object)
     {
         throw new UnsupportedOperationException("This should never happen.");
@@ -626,6 +626,18 @@ public class AbstractAstVisitor
 
     @Override
     public void visit(Namespace object)
+    {
+        throw new UnsupportedOperationException("This should never happen.");
+    }
+
+    @Override
+    public void visit(ElementList object)
+    {
+        throw new UnsupportedOperationException("This should never happen.");
+    }
+
+    @Override
+    public void visit(Element object)
     {
         throw new UnsupportedOperationException("This should never happen.");
     }

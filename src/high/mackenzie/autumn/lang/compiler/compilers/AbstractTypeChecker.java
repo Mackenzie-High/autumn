@@ -1,5 +1,6 @@
 package high.mackenzie.autumn.lang.compiler.compilers;
 
+import autumn.lang.annotations.InferReturnType;
 import autumn.lang.compiler.ast.commons.IBinaryOperation;
 import autumn.lang.compiler.ast.commons.IExpression;
 import autumn.lang.compiler.ast.commons.IUnaryOperation;
@@ -16,6 +17,7 @@ import high.mackenzie.autumn.lang.compiler.typesystem.design.IField;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IMethod;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IReturnType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IType;
+import high.mackenzie.autumn.lang.compiler.utils.TypeSystemUtils;
 import java.util.Collections;
 import java.util.List;
 
@@ -276,9 +278,23 @@ abstract class AbstractTypeChecker
         program.symbols.calls.put(operation, method);
 
         /**
-         * The return-type of a method-invocation is the return-type of the invoked method.
+         * The return-type of a method-invocation is usually the return-type of the invoked method.
+         * However, sometimes the return-type of the method-invocation is inferred.
+         *
+         * Note: We cannot infer the return-type when there are no arguments, even if requested.
          */
-        infer(operation, method.getReturnType());
+        if (method.getParameters().isEmpty())
+        {
+            infer(operation, method.getReturnType());
+        }
+        else if (TypeSystemUtils.isAnnotationPresent(method, InferReturnType.class))
+        {
+            infer(operation, args.get(0));
+        }
+        else
+        {
+            infer(operation, method.getReturnType());
+        }
     }
 
     /**

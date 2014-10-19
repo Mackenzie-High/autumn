@@ -326,29 +326,6 @@ public class ExpressionTypeChecker
     }
 
     @Override
-    public void visit(final CreateExpression object)
-    {
-        /**
-         * Get the type from which an instance will be created.
-         */
-        final IDeclaredType type = module.imports.resolveDeclaredType(object.getType());
-
-        /**
-         * The type must be the type of a struct.
-         */
-        if (type.isSubtypeOf(program.typesystem.utils.STRUCT) == false)
-        {
-            // This will throw an exception.
-            program.checker.requireStructType(object, type);
-        }
-
-        /**
-         * The return-type of a create-expression is the type being instantiated.
-         */
-        infer(object, type);
-    }
-
-    @Override
     public void visit(final CallMethodExpression object)
     {
         /**

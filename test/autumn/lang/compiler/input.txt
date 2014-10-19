@@ -82,32 +82,69 @@ enum City ( Moscow , Geneva , Turin ) ;
 
 
 
+
+
 '' This is a doc-comment.
-@Anno07
-@Anno08
-@Anno09
-tuple Person ( ) ;
+@Anno01
+@Anno02
+@Anno03
+design Person ( name : String , age : int ) ;
+
+'' This is a doc-comment.
+@Anno01
+@Anno02
+@Anno03
+design Person ( name : String , age : int ) is Taxable ;
+
+'' This is a doc-comment.
+@Anno01
+@Anno02
+@Anno03
+design Person ( name : String , age : int ) is Taxable & Citizen ;
 
 
 
-@Anno07
-@Anno08
-@Anno09
-tuple Person ( name : String ) ;
-
-
-
-@Anno07
-@Anno08
-@Anno09
+'' This is a doc-comment.
+@Anno01
+@Anno02
+@Anno03
 tuple Person ( name : String , age : int ) ;
 
+'' This is a doc-comment.
+@Anno01
+@Anno02
+@Anno03
+tuple Person ( name : String , age : int ) is Taxable ;
+
+'' This is a doc-comment.
+@Anno01
+@Anno02
+@Anno03
+tuple Person ( name : String , age : int ) is Taxable & Citizen ;
 
 
-@Anno07
-@Anno08
-@Anno09
-tuple Person ( name : String , age : int , income : long ) ;
+
+
+
+'' This is a doc-comment.
+@Anno01
+@Anno02
+@Anno03
+struct Person ( name : String , age : int ) ;
+
+'' This is a doc-comment.
+@Anno01
+@Anno02
+@Anno03
+struct Person ( name : String , age : int ) is Taxable ;
+
+'' This is a doc-comment.
+@Anno01
+@Anno02
+@Anno03
+struct Person ( name : String , age : int ) is Taxable & Citizen ;
+
+
 
 
 
@@ -139,36 +176,6 @@ functor Function2 ( x : byte, y : short ) : boolean ;
 functor Function3 ( x : byte, y : short, z : int ) : boolean ;
 
 
-
-'' This is a doc-comment.
-@Anno19
-@Anno20
-@Anno21
-struct Person ( name : String , age : int ) ;
-
-
-
-'' This is a doc-comment.
-@Anno19
-@Anno20
-@Anno21
-struct Person ( name : String , age : int ) extends Human ;
-
-
-
-'' This is a doc-comment.
-@Anno19
-@Anno20
-@Anno21
-struct Person ( name : String , age : int ) extends Human & Taxable ;
-
-
-
-'' This is a doc-comment.
-@Anno19
-@Anno20
-@Anno21
-struct Person ( name : String , age : int ) extends Human & Taxable & Employable ;
 
 
 
@@ -391,10 +398,6 @@ defun main (args : String[]) : void
     nop;
 
     val xoo = ( instanceof 12 + 34 : String ) ;
-
-    nop;
-
-    val xoo = ( create String ) ;
 
     nop;
 

@@ -1,7 +1,6 @@
 package high.mackenzie.autumn.lang.compiler.utils;
 
 import autumn.lang.Module;
-import autumn.lang.Prototype;
 import com.google.common.base.Preconditions;
 import high.mackenzie.autumn.lang.compiler.exceptions.BadGetterAssignment;
 import high.mackenzie.autumn.lang.compiler.exceptions.BadMethodAssignment;
@@ -39,7 +38,7 @@ public final class MemberToHandler
         Preconditions.checkNotNull(member);
         Preconditions.checkNotNull(handler);
 
-        assert member.getOwner().isSubtypeOf(member.getOwner().getTypeFactory().fromClass(Prototype.class));
+        //assert member.getOwner().isSubtypeOf(member.getOwner().getTypeFactory().fromClass(Prototype.class));
         assert handler.getOwner().isSubtypeOf(handler.getOwner().getTypeFactory().fromClass(Module.class));
 
         this.member = member;
@@ -200,10 +199,10 @@ public final class MemberToHandler
             // TODO: error - prototype expected
         }
 
-        if (owner.isSubtypeOf(owner.getTypeFactory().fromClass(Prototype.class)) == false)
-        {
-            // TODO: error - prototype expected
-        }
+//        if (owner.isSubtypeOf(owner.getTypeFactory().fromClass(Prototype.class)) == false)
+//        {
+//            // TODO: error - prototype expected
+//        }
 
         return new Design((IInterfaceType) owner);
     }
