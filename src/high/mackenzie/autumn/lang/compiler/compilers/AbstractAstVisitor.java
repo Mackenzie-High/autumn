@@ -115,6 +115,12 @@ public class AbstractAstVisitor
     }
 
     @Override
+    public void visit(BranchStatement object)
+    {
+        throw new UnsupportedOperationException("This should never happen.");
+    }
+
+    @Override
     public void visit(ForeverStatement object)
     {
         throw new UnsupportedOperationException("This should never happen.");
@@ -200,24 +206,6 @@ public class AbstractAstVisitor
 
     @Override
     public void visit(DelegateStatement object)
-    {
-        throw new UnsupportedOperationException("This should never happen.");
-    }
-
-    @Override
-    public void visit(SetterStatement object)
-    {
-        throw new UnsupportedOperationException("This should never happen.");
-    }
-
-    @Override
-    public void visit(GetterStatement object)
-    {
-        throw new UnsupportedOperationException("This should never happen.");
-    }
-
-    @Override
-    public void visit(MethodStatement object)
     {
         throw new UnsupportedOperationException("This should never happen.");
     }
@@ -386,6 +374,12 @@ public class AbstractAstVisitor
 
     @Override
     public void visit(ListExpression object)
+    {
+        throw new UnsupportedOperationException("This should never happen.");
+    }
+
+    @Override
+    public void visit(ListComprehensionExpression object)
     {
         throw new UnsupportedOperationException("This should never happen.");
     }

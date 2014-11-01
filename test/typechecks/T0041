@@ -1,4 +1,4 @@
 module * in typechecks;
 
-exception Moo extends Throwable;
-exception Moo extends Throwable;
+exception Moo is Throwable;
+exception Moo is Throwable;

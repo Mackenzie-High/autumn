@@ -8,7 +8,7 @@ import autumn.lang.compiler.ast.nodes.StructDefinition;
  * @author Mackenzie High
  */
 public class StructCompiler
-        extends AbstractRecordCompiler
+        extends AbstractStructTupleCompiler
 {
     /**
      * Sole Constructor.

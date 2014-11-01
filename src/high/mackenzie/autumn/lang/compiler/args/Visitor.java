@@ -3,12 +3,13 @@ package high.mackenzie.autumn.lang.compiler.args;
 import autumn.lang.compiler.Autumn;
 import autumn.lang.exceptions.AssertionFailedException;
 import autumn.lang.exceptions.AssumptionFailedException;
+import autumn.util.test.TestResults;
 import com.google.common.collect.Lists;
 import com.google.common.io.Resources;
 import high.mackenzie.autumn.Main;
 import high.mackenzie.autumn.resources.Finished;
 import high.mackenzie.snowflake.ITreeNode;
-import java.io.FileNotFoundException;
+import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
@@ -24,21 +25,29 @@ import java.util.LinkedList;
 public final class Visitor
         extends AbstractVisitor
 {
+    private static interface Invokable
+    {
+        public void invoke()
+                throws ClassNotFoundException,
+                       NoSuchMethodException,
+                       InvocationTargetException,
+                       IllegalAccessException;
+    }
+
     private static final String HELP = "/high/mackenzie/autumn/resources/help.txt";
 
     private static final String LICENSE = "/high/mackenzie/autumn/resources/license.txt";
 
     private static final String VERSION = "/high/mackenzie/autumn/resources/version.txt";
 
-    /**
-     * This is the path to the file to execute, if any.
-     */
-    private String src = null;
+    private String name;
+
+    private static final Autumn cmp = new Autumn();
 
     /**
      * These are the command-line arguments to pass to the interpreted program.
      */
-    private final LinkedList<String> args = Lists.newLinkedList();
+    private static final LinkedList<String> args = Lists.newLinkedList();
 
     /**
      * This field is used to temporarily store a single argument.
@@ -50,6 +59,112 @@ public final class Visitor
         for (ITreeNode kid : node.children())
         {
             visit(kid);
+        }
+    }
+
+    /**
+     * This method resolves the project folder.
+     *
+     * <p>
+     * Imagine that you try to run an Autumn project from somewhere deep within the project.
+     * Autumn must resolve the outer most folder in the project folder.
+     * That is precisely what this method does.
+     * </p>
+     *
+     * @return the resolved project folder.
+     */
+    private static File resolveProject()
+    {
+        File p = new File(System.getProperty("user.dir"));
+
+        while (isProject(p) == false && p.getParent() != null)
+        {
+            p = p.getParentFile();
+        }
+
+        return p;
+    }
+
+    /**
+     * This method determines whether a folder is a project folder.
+     *
+     * @param folder is a possible project folder.
+     * @return true, iff the file represents a project folder.
+     */
+    private static boolean isProject(final File folder)
+    {
+        return folder.isDirectory()
+               && !folder.isHidden()
+               && new File(folder, "src").exists()
+               && new File(folder, "lib").exists()
+               && new File(folder, "test").exists();
+    }
+
+    /**
+     * This method generalizes the running of a project.
+     *
+     * <p>
+     * This method alleviates the need for separate complex methods
+     * for running, testing, and debugging Autumn programs.
+     * </p>
+     *
+     * @param function is used to invoke the appropriate method in the Autumn object.
+     */
+    private static void run(final Invokable function)
+    {
+        /**
+         * Load the project.
+         */
+        try
+        {
+            final File project = resolveProject();
+
+            cmp.loadProject(project);
+        }
+        catch (IOException ex)
+        {
+            System.out.println("The project coult not be loaded.");
+            ex.printStackTrace(System.out);
+        }
+
+        /**
+         * Execute the script.
+         */
+        try
+        {
+            function.invoke();
+        }
+        catch (ClassNotFoundException ex)
+        {
+            System.out.println("The main-class could not be found.");
+            ex.printStackTrace(System.out);
+        }
+        catch (NoSuchMethodException ex)
+        {
+            System.out.println("The main(String[]) function could not be found.");
+            ex.printStackTrace(System.out);
+        }
+        catch (InvocationTargetException ex)
+        {
+            if (ex.getCause() instanceof AssertionFailedException)
+            {
+                System.out.println("Assertion Failed:");
+                System.out.println("  File: " + ((AssertionFailedException) ex.getCause()).file());
+                System.out.println("  Line: " + ((AssertionFailedException) ex.getCause()).line());
+            }
+
+            if (ex.getCause() instanceof AssumptionFailedException)
+            {
+                System.out.println("Assertion Failed:");
+                System.out.println("  File: " + ((AssumptionFailedException) ex.getCause()).file());
+                System.out.println("  Line: " + ((AssumptionFailedException) ex.getCause()).line());
+            }
+
+            ex.getCause().printStackTrace(System.out);
+        }
+        catch (IllegalAccessException ex)
+        {
+            ex.printStackTrace(System.out);
         }
     }
 
@@ -132,76 +247,115 @@ public final class Visitor
     {
         visitChildren(node);
 
-        final Autumn cmp = new Autumn();
+        final Invokable function = new Invokable()
+        {
+            @Override
+            public void invoke()
+                    throws ClassNotFoundException,
+                           NoSuchMethodException,
+                           InvocationTargetException,
+                           IllegalAccessException
+            {
+                /**
+                 * Run the program.
+                 */
+                cmp.run(args);
+            }
+        };
 
-        /**
-         * Read the source-file or jar-file.
-         */
+        run(function);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void visit_case_debug(final ITreeNode node)
+    {
+        visitChildren(node);
+
+        final Invokable function = new Invokable()
+        {
+            @Override
+            public void invoke()
+                    throws ClassNotFoundException,
+                           NoSuchMethodException,
+                           InvocationTargetException,
+                           IllegalAccessException
+            {
+                /**
+                 * Enter debug mode.
+                 */
+                Autumn.enableDebugger();
+                Autumn.enableAssume();
+
+                /**
+                 * Run the program.
+                 */
+                cmp.run(args);
+            }
+        };
+
+        run(function);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void visit_case_test(final ITreeNode node)
+    {
+        visitChildren(node);
+
+        final Invokable function = new Invokable()
+        {
+            @Override
+            public void invoke()
+                    throws ClassNotFoundException,
+                           NoSuchMethodException,
+                           InvocationTargetException,
+                           IllegalAccessException
+            {
+                final TestResults results = cmp.test();
+
+                results.print(System.out);
+            }
+        };
+
+        run(function);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void visit_case_doc(final ITreeNode node)
+    {
+        visitChildren(node);
+
+        System.out.println("Document");
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void visit_case_create(final ITreeNode node)
+    {
+        visitChildren(node);
+
         try
         {
-            /**
-             * Compiled Autumn program are contained in jar-files.
-             * So, we simply need to load them, as though they are part of a library.
-             * On the other hand, Autumn scripts need to be parsed and then compiled.
-             */
-            if (src.toLowerCase().endsWith(".jar"))
-            {
-                cmp.loadFile(src);
-            }
-            else
-            {
-                cmp.srcFile(src);
-            }
-        }
-        catch (FileNotFoundException ex)
-        {
-            System.out.println("Error - No Such File: " + src);
-            return;
+            final File userdir = new File(System.getProperty("user.dir"));
+
+            System.out.println("Current Directory = " + userdir);
+            System.out.println("Project Name = " + name);
+
+            Autumn.createProject(userdir, name);
         }
         catch (IOException ex)
         {
-            System.out.println("Error - The source-file could not be read.");
-            ex.printStackTrace(System.out);
-            return;
-        }
-
-        /**
-         * Execute the script.
-         */
-        try
-        {
-            cmp.run(args);
-        }
-        catch (ClassNotFoundException ex)
-        {
-            System.out.println("The main-class could not be found.");
-            ex.printStackTrace(System.out);
-        }
-        catch (NoSuchMethodException ex)
-        {
-            System.out.println("The main(String[]) function could not be found.");
-            ex.printStackTrace(System.out);
-        }
-        catch (InvocationTargetException ex)
-        {
-            if (ex.getCause() instanceof AssertionFailedException)
-            {
-                System.out.println("Assertion Failed:");
-                System.out.println("  File: " + ((AssertionFailedException) ex.getCause()).file());
-                System.out.println("  Line: " + ((AssertionFailedException) ex.getCause()).line());
-            }
-
-            if (ex.getCause() instanceof AssumptionFailedException)
-            {
-                System.out.println("Assertion Failed:");
-                System.out.println("  File: " + ((AssumptionFailedException) ex.getCause()).file());
-                System.out.println("  Line: " + ((AssumptionFailedException) ex.getCause()).line());
-            }
-
-            ex.getCause().printStackTrace(System.out);
-        }
-        catch (IllegalAccessException ex)
-        {
+            System.out.println("Error - The project could not be created.");
             ex.printStackTrace(System.out);
         }
     }
@@ -210,14 +364,11 @@ public final class Visitor
      * {@inheritDoc}
      */
     @Override
-    public void visit_src(final ITreeNode node)
+    public void visit_name(final ITreeNode node)
     {
         visitChildren(node);
 
-        src = argument;
-
-        // Remove the src file from the list of arguments.
-        args.remove();
+        name = args.get(0).trim();
     }
 
     /**

@@ -183,6 +183,9 @@ struct FunctorDefinition
   doc This is the return-type of the functor. 
   data return_type : TypeSpecifier;
 
+  doc (optional) This is the direct superclass of the new type.
+  data superclass : TypeSpecifier;
+
   doc This is the source-location information regarding this construct.
   data location : SourceLocation = { new SourceLocation() };
 end
@@ -394,6 +397,27 @@ struct MarkerStatement
 
   doc This label identifies the marked location. 
   data label : Label;
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Statements - Branch
+###################################################################################################
+
+doc An instance of this class is an AST node that represents a branch-statement.
+struct BranchStatement
+  implement IStatement;
+
+  doc This is the expression whose value is used to select the label to branch to. 
+  data index : IExpression;
+
+  doc These are the labels that indicate where to jump to, excluding the default-case. 
+  data labels : ConstructList<Label> = { new ConstructList() };
+
+  doc This is the label that indicates where to jump to, if the index is out-of-bounds. 
+  data default_label : Label;
 
   doc This is the source-location information regarding this construct.
   data location : SourceLocation = { new SourceLocation() };
@@ -641,8 +665,8 @@ struct LambdaStatement
   doc This is the type of the new lambda.
   data type : TypeSpecifier;
 
-  doc These are the formal-parameters of the anonymous function.
-  data parameters : FormalParameterList;
+  doc These are the formal-parameter variables of the anonymous function.
+  data parameters : ConstructList<Variable> = {new ConstructList() };
 
   doc This is the expression that is evaluated whenever the anonymous function is invoked. 
   data body : IExpression;
@@ -670,78 +694,6 @@ struct DelegateStatement
 
   doc This is the name of the static method to invoke. 
   data method : Name = { null };
-
-  doc This is the source-location information regarding this construct.
-  data location : SourceLocation = { new SourceLocation() };
-end
-
-###################################################################################################
-# Statements --> Setter
-###################################################################################################
-
-doc An instance of this class is an AST node that represents a statement that binds the implementation of a property's setter to an object.
-struct SetterStatement
-  implement IStatement;
-
-  doc This is the mutable variable that contains the object.
-  data owner : Variable;
-
-  doc This is the name of the property. 
-  data name : Name;
-
-  doc This is the type of the module that contains the implementation method. 
-  data module : TypeSpecifier;
-
-  doc This is the name of the implementation method. 
-  data method : Name;
-
-  doc This is the source-location information regarding this construct.
-  data location : SourceLocation = { new SourceLocation() };
-end
-
-###################################################################################################
-# Statements --> Getter
-###################################################################################################
-
-doc An instance of this class is an AST node that represents a statement that binds the implementation of a property's getter to an object.
-struct GetterStatement
-  implement IStatement;
-
-  doc This is the mutable variable that contains the object.
-  data owner : Variable;
-
-  doc This is the name of the property. 
-  data name : Name;
-
-  doc This is the type of the module that contains the implementation method. 
-  data module : TypeSpecifier;
-
-  doc This is the name of the implementation method. 
-  data method : Name;
-
-  doc This is the source-location information regarding this construct.
-  data location : SourceLocation = { new SourceLocation() };
-end
-
-###################################################################################################
-# Statements --> Method
-###################################################################################################
-
-doc An instance of this class is an AST node that represents a statement that binds the implementation of a method to an object.
-struct MethodStatement
-  implement IStatement;
-
-  doc This is the mutable variable that contains the object.
-  data owner : Variable;
-
-  doc This is the name of the method. 
-  data name : Name;
-
-  doc This is the type of the module that contains the implementation method. 
-  data module : TypeSpecifier;
-
-  doc This is the name of the implementation method. 
-  data method : Name;
 
   doc This is the source-location information regarding this construct.
   data location : SourceLocation = { new SourceLocation() };
@@ -1156,10 +1108,37 @@ struct PrognExpression
 end
 
 ###################################################################################################
+# Expressions --> List Comprehension
+###################################################################################################
+
+doc An instance of this class is an AST node that represents a list comprehension.
+struct ListComprehensionExpression
+  implement IExpression;
+
+  doc This is the expression that transforms the value produced by the iterator. 
+  data modifier : IExpression;
+
+  doc This is the variable that will store values produced by the iterator. 
+  data variable : Variable;
+
+  doc This is the static-type of the variable. 
+  data type : TypeSpecifier;
+
+  doc This expression produces the iterable that will be iterated over. 
+  data iterable : IExpression;
+
+  doc (optional) This expression is used to determine whether an element should be skipped or not. 
+  data condition : IExpression;
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
 # Expressions --> Literal List
 ###################################################################################################
 
-doc An instance of this class is an AST node that represents a literal linked-list data-structure.
+doc An instance of this class is an AST node that represents a literal list data-structure.
 struct ListExpression
   implement IExpression;
 

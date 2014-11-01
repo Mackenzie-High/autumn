@@ -358,6 +358,34 @@ public final class DS
     }
 
     /**
+     * This method creates an immutable copy of a given mutable collection data-structure.
+     *
+     * @param <T> is the type of the elements in the data-structure.
+     * @param mutable is the mutable data-structure.
+     * @return an immutable copy of the mutable data-structure.
+     */
+    public static <T> Collection<T> immutable(final Collection<? extends T> mutable)
+    {
+        Preconditions.checkNotNull(mutable);
+
+        return Collections.unmodifiableCollection(new ArrayList<T>(mutable));
+    }
+
+    /**
+     * This method creates an immutable copy of a given mutable list data-structure.
+     *
+     * @param <T> is the type of the elements in the data-structure.
+     * @param mutable is the mutable data-structure.
+     * @return an immutable copy of the mutable data-structure.
+     */
+    public static <T> List<T> immutable(final List<? extends T> mutable)
+    {
+        Preconditions.checkNotNull(mutable);
+
+        return Collections.unmodifiableList(new ArrayList<T>(mutable));
+    }
+
+    /**
      * This method creates an immutable copy of a given mutable set data-structure.
      *
      * @param <T> is the type of the elements in the data-structure.
@@ -378,39 +406,11 @@ public final class DS
      * @param mutable is the mutable data-structure.
      * @return an immutable copy of the mutable data-structure.
      */
-    public static <T> Set<T> immutable(final NavigableSet<? extends T> mutable)
+    public static <T> SortedSet<T> immutable(final NavigableSet<? extends T> mutable)
     {
         Preconditions.checkNotNull(mutable);
 
-        return Collections.unmodifiableSet(new TreeSet<T>(mutable));
-    }
-
-    /**
-     * This method creates an immutable copy of a given mutable list data-structure.
-     *
-     * @param <T> is the type of the elements in the data-structure.
-     * @param mutable is the mutable data-structure.
-     * @return an immutable copy of the mutable data-structure.
-     */
-    public static <T> List<T> immutable(final List<? extends T> mutable)
-    {
-        Preconditions.checkNotNull(mutable);
-
-        return Collections.unmodifiableList(new ArrayList<T>(mutable));
-    }
-
-    /**
-     * This method creates an immutable copy of a given mutable collection data-structure.
-     *
-     * @param <T> is the type of the elements in the data-structure.
-     * @param mutable is the mutable data-structure.
-     * @return an immutable copy of the mutable data-structure.
-     */
-    public static <T> Collection<T> immutable(final Collection<? extends T> mutable)
-    {
-        Preconditions.checkNotNull(mutable);
-
-        return Collections.unmodifiableCollection(new ArrayList<T>(mutable));
+        return Collections.unmodifiableSortedSet(new TreeSet<T>(mutable));
     }
 
     /**
@@ -436,11 +436,12 @@ public final class DS
      * @param mutable is the mutable data-structure.
      * @return an immutable copy of the mutable data-structure.
      */
-    public static <K, V> Map<K, V> immutable(final NavigableMap<? extends K, ? extends V> mutable)
+    public static <K, V> SortedMap<K, V> immutable(
+            final NavigableMap<? extends K, ? extends V> mutable)
     {
         Preconditions.checkNotNull(mutable);
 
-        return Collections.unmodifiableMap(new TreeMap<K, V>(mutable));
+        return Collections.unmodifiableSortedMap(new TreeMap<K, V>(mutable));
     }
 
     /**
@@ -1083,5 +1084,44 @@ public final class DS
         }
 
         return false;
+    }
+
+    /**
+     * This method finds the longest-common-subsequence between two sequences.
+     *
+     * @param sequence1 is the first sequence.
+     * @param seqeunce2 is the second sequence.
+     * @return the longest-common-subsequence between the two sequences.
+     */
+    public static <T> List<T> longestCommonSubsequence(final Iterable<T> sequence1,
+                                                       final Iterable<T> seqeunce2)
+    {
+        return null;
+    }
+
+    /**
+     * This method finds the common prefix of two sequences.
+     *
+     * @param sequence1 is the first sequence.
+     * @param sequence2 is the second sequence.
+     * @return the prefix that the two sequences share.
+     */
+    public static <T> List<T> commonPrefix(final Iterable<T> sequence1,
+                                           final Iterable<T> sequence2)
+    {
+        return null;
+    }
+
+    /**
+     * This method finds the common suffix of two sequences.
+     *
+     * @param sequence1 is the first sequence.
+     * @param sequence2 is the second sequence.
+     * @return the suffix that the two sequences share.
+     */
+    public static <T> List<T> commonSuffix(final List<T> sequence1,
+                                           final List<T> sequence2)
+    {
+        return null;
     }
 }

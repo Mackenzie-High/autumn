@@ -5,12 +5,14 @@ import autumn.lang.compiler.ast.nodes.*;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import high.mackenzie.autumn.lang.compiler.exceptions.TypeCheckFailed;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IClassType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IConstructor;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IDeclaredType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IExpressionType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IField;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IMethod;
+import high.mackenzie.autumn.lang.compiler.typesystem.design.IReferenceType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IReturnType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IVariableType;
@@ -195,6 +197,56 @@ public class ExpressionTypeChecker
 
         // Type-check the elements.
         program.checker.requireArguments(object.getElements());
+    }
+
+    @Override
+    public void visit(final ListComprehensionExpression object)
+    {
+        /**
+         * Type-check the iterable.
+         */
+        object.getIterable().accept(this);
+        program.checker.requireIterable(object.getIterable());
+
+        try
+        {
+            /**
+             * A list-comprehension defines a nested scope that covers modifier and condition.
+             */
+            allocator.enterScope();
+
+            /**
+             * Declare the variable and type-check the type.
+             */
+            final Variable variable = object.getVariable();
+            final IReferenceType type = function.module.imports.resolveReferenceType(object.getType());
+            super.declareVar(variable, type, false);
+
+            /**
+             * Type-check the modifier.
+             */
+            object.getModifier().accept(this);
+            program.checker.requireNonVoid(object.getModifier());
+
+            /**
+             * Type-check the condition.
+             */
+            if (object.getCondition() != null)
+            {
+                condition(object.getCondition());
+            }
+        }
+        catch (TypeCheckFailed ex)
+        {
+            throw ex;
+        }
+        finally
+        {
+            /**
+             * This must always be done; otherwise, the scope management could get messed up.
+             */
+            allocator.exitScope();
+        }
     }
 
     @Override

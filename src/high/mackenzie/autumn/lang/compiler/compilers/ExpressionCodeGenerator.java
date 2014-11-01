@@ -445,6 +445,14 @@ public class ExpressionCodeGenerator
     }
 
     @Override
+    public void visit(final ListComprehensionExpression object)
+    {
+        /**
+         *
+         */
+    }
+
+    @Override
     public void visit(final DispatchExpression object)
     {
         throw new UnsupportedOperationException("This will be supported in the future.");

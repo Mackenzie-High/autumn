@@ -58,11 +58,12 @@ import java.util.TreeSet;
  *     <tr> <td> <code>name</code> </td> <td>This is the simple name of the new type.</td> </tr>
  *     <tr> <td> <code>parameters</code> </td> <td>These are the formal-parameters of the functor.</td> </tr>
  *     <tr> <td> <code>return_type</code> </td> <td>This is the return-type of the functor.</td> </tr>
+ *     <tr> <td> <code>superclass</code> </td> <td>(optional) This is the direct superclass of the new type.</td> </tr>
  *     <tr> <td> <code>location</code> </td> <td>This is the source-location information regarding this construct.</td> </tr>
  * </table>
  * </p>
  * 
- * <p> This file was auto-generated on (Sun Oct 12 04:29:02 EDT 2014).</p>
+ * <p> This file was auto-generated on (Sat Nov 01 12:16:03 EDT 2014).</p>
  */
 @SuppressWarnings("unchecked")
 public final class FunctorDefinition extends Object implements IAnnotated, IDocumented
@@ -76,6 +77,8 @@ public final class FunctorDefinition extends Object implements IAnnotated, IDocu
     private FormalParameterList parameters;
 
     private TypeSpecifier return_type;
+
+    private TypeSpecifier superclass;
 
     private SourceLocation location = new SourceLocation();
 
@@ -202,6 +205,30 @@ public final class FunctorDefinition extends Object implements IAnnotated, IDocu
     /**
      * Setter.
      * 
+     * @param value is the new value of property <code>superclass</code>.
+     * @return a copy of this object with property <code>superclass</code> set to value.
+     */
+    public FunctorDefinition setSuperclass(final TypeSpecifier value)
+    {
+        final FunctorDefinition result = this.copy();
+        result.superclass = value;
+        return result;
+    }
+
+    /**
+     * Getter.
+     * 
+     * @return the value of property <code>superclass</code>.
+     */
+    public TypeSpecifier getSuperclass()
+    {
+        final TypeSpecifier value = this.superclass;
+        return value;
+    }
+
+    /**
+     * Setter.
+     * 
      * @param value is the new value of property <code>location</code>.
      * @return a copy of this object with property <code>location</code> set to value.
      */
@@ -231,10 +258,11 @@ public final class FunctorDefinition extends Object implements IAnnotated, IDocu
      * @param name is the value for property <code>name</code>.
      * @param parameters is the value for property <code>parameters</code>.
      * @param return_type is the value for property <code>return_type</code>.
+     * @param superclass is the value for property <code>superclass</code>.
      * @param location is the value for property <code>location</code>.
      * @return a new instance of this class.
      */
-    public static FunctorDefinition create(DocComment comment, AnnotationList annotations, Name name, FormalParameterList parameters, TypeSpecifier return_type, SourceLocation location)
+    public static FunctorDefinition create(DocComment comment, AnnotationList annotations, Name name, FormalParameterList parameters, TypeSpecifier return_type, TypeSpecifier superclass, SourceLocation location)
     {
         FunctorDefinition object = new FunctorDefinition();
         object = object.setComment(comment);
@@ -242,6 +270,7 @@ public final class FunctorDefinition extends Object implements IAnnotated, IDocu
         object = object.setName(name);
         object = object.setParameters(parameters);
         object = object.setReturnType(return_type);
+        object = object.setSuperclass(superclass);
         object = object.setLocation(location);
         return object;
     }
@@ -269,6 +298,7 @@ public final class FunctorDefinition extends Object implements IAnnotated, IDocu
         result.name = this.name;
         result.parameters = this.parameters;
         result.return_type = this.return_type;
+        result.superclass = this.superclass;
         result.location = this.location;
         return result;
     }
@@ -291,6 +321,7 @@ public final class FunctorDefinition extends Object implements IAnnotated, IDocu
         map.put("name", this.getName());
         map.put("parameters", this.getParameters());
         map.put("return_type", this.getReturnType());
+        map.put("superclass", this.getSuperclass());
         map.put("location", this.getLocation());
 
         return map;

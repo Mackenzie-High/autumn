@@ -1,6 +1,6 @@
 module Main in execution;
 
-exception Moo extends execution.Helpers$TestException;
+exception Moo is execution.Helpers$TestException;
 
 @Start
 defun main (args : String[]) : void

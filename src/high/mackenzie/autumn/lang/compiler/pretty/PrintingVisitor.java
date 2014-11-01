@@ -363,7 +363,7 @@ public final class PrintingVisitor
         p.addLine();
         p.addText("exception ");
         object.getName().accept(this);
-        p.addText(" extends ");
+        p.addText(" is ");
         object.getSuperclass().accept(this);
         p.addText(";");
 
@@ -409,6 +409,13 @@ public final class PrintingVisitor
         object.getParameters().accept(this);
         p.addText(" : ");
         object.getReturnType().accept(this);
+
+        if (object.getSuperclass() != null)
+        {
+            p.addText(" is ");
+            object.getSuperclass().accept(this);
+        }
+
         p.addText(";");
 
         p.addEmptyLine();
@@ -535,6 +542,27 @@ public final class PrintingVisitor
         p.addLine();
         p.addText("marker ");
         object.getLabel().accept(this);
+        p.addText(";");
+        p.addEmptyLine();
+    }
+
+    @Override
+    public void visit(final BranchStatement object)
+    {
+        record(object);
+        require(object, object.getIndex());
+        require(object, object.getLabels());
+        require(object, object.getDefaultLabel());
+
+        p.addLine();
+        p.addText("branch ");
+        p.addText("(");
+        object.getIndex().accept(this);
+        p.addText(")");
+        p.addText(" ");
+        printList("(", object.getLabels(), ", ", ")");
+        p.addText(" default ");
+        object.getDefaultLabel().accept(this);
         p.addText(";");
         p.addEmptyLine();
     }
@@ -770,7 +798,7 @@ public final class PrintingVisitor
         p.addText(" : ");
         object.getType().accept(this);
         p.addText(" ");
-        object.getParameters().accept(this);
+        printList("(", object.getParameters(), ", ", ")");
         p.addText(" => ");
         object.getBody().accept(this);
         p.addText(";");
@@ -793,66 +821,6 @@ public final class PrintingVisitor
         object.getType().accept(this);
         p.addText(" => ");
         printStaticMemberAccess(object.getOwner(), object.getMethod());
-        p.addText(";");
-        p.addEmptyLine();
-    }
-
-    @Override
-    public void visit(final SetterStatement object)
-    {
-        record(object);
-        require(object, object.getOwner());
-        require(object, object.getName());
-        require(object, object.getModule());
-        require(object, object.getMethod());
-
-        p.addLine();
-        p.addText("setter ");
-        object.getOwner().accept(this);
-        p.addText(".");
-        object.getName().accept(this);
-        p.addText(" => ");
-        printStaticMemberAccess(object.getModule(), object.getMethod());
-        p.addText(";");
-        p.addEmptyLine();
-    }
-
-    @Override
-    public void visit(final GetterStatement object)
-    {
-        record(object);
-        require(object, object.getOwner());
-        require(object, object.getName());
-        require(object, object.getModule());
-        require(object, object.getMethod());
-
-        p.addLine();
-        p.addText("getter ");
-        object.getOwner().accept(this);
-        p.addText(".");
-        object.getName().accept(this);
-        p.addText(" => ");
-        printStaticMemberAccess(object.getModule(), object.getMethod());
-        p.addText(";");
-        p.addEmptyLine();
-    }
-
-    @Override
-    public void visit(final MethodStatement object)
-    {
-        record(object);
-        require(object, object.getOwner());
-        require(object, object.getName());
-        require(object, object.getModule());
-        require(object, object.getMethod());
-
-        p.addLine();
-        p.addText("method ");
-        object.getOwner().accept(this);
-        p.addText(".");
-        object.getName().accept(this);
-        p.addText(" => ");
-        printStaticMemberAccess(object.getModule(), object.getMethod());
         p.addText(";");
         p.addEmptyLine();
     }
@@ -1197,6 +1165,33 @@ public final class PrintingVisitor
         require(object, object.getElements());
 
         printList("[ ", object.getElements(), ", ", " ]");
+    }
+
+    @Override
+    public void visit(final ListComprehensionExpression object)
+    {
+        record(object);
+        require(object, object.getModifier());
+        require(object, object.getVariable());
+        require(object, object.getType());
+        require(object, object.getIterable());
+
+        p.addText("[");
+        object.getModifier().accept(this);
+        p.addText(" for ");
+        object.getVariable().accept(this);
+        p.addText(" : ");
+        object.getType().accept(this);
+        p.addText(" in ");
+        object.getIterable().accept(this);
+
+        if (object.getCondition() != null)
+        {
+            p.addText(" if ");
+            object.getCondition().accept(this);
+        }
+
+        p.addText("]");
     }
 
     @Override

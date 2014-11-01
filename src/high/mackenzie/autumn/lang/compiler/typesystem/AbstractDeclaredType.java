@@ -34,7 +34,7 @@ public abstract class AbstractDeclaredType
     /**
      * Sole Constructor.
      *
-     * @param factory type-factory that is used to access types. 
+     * @param factory type-factory that is used to access types.
      * @param descriptor is the type-descriptor of the new type.
      */
     public AbstractDeclaredType(final ITypeFactory factory,

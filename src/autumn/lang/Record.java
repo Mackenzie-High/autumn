@@ -244,8 +244,9 @@ public interface Record
      * </p>
      *
      * <p>
-     * By default, records are compared based on there mutually comparable values(). <br>
-     * The two records must have exactly the same keys().
+     * By default, records are compared based on the natural ordering of their values().
+     * If the other object is null, then this object is object is greater.
+     * If the other object is non-null, then the two records must have exactly the same keys().
      * </ol>
      *
      * </p>

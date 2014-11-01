@@ -15,4 +15,12 @@ public interface ImmutableSortedSet<E>
      */
     @Override
     public MutableSortedSet<E> mutable();
+
+    /**
+     * This method creates an functional copy of this object.
+     *
+     * @return a functional copy of this object.
+     */
+    @Override
+    public FunctionalSortedSet<E> functional();
 }

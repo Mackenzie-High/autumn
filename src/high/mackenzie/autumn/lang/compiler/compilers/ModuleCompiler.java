@@ -772,14 +772,29 @@ public final class ModuleCompiler
 
         final String module_descriptor = processModuleDirective(directive);
 
+        /**
+         * Ensure that the type was not already declared elsewhere.
+         */
+        final Name module_name = node.getModuleDirectives().asMutableList().get(0).getName();
+
+        program.checker.requireNonDuplicateType(module_name, module_descriptor);
+
+        /**
+         * Declare the module's type.
+         */
         this.type = program.typesystem.typefactory().newClassType(module_descriptor);
 
+        /**
+         * Declare all the designs, structs, tuples, etc that are defined in the module.
+         */
         for (ICompiler x : compilers())
         {
             x.performTypeDeclaration();
         }
 
-        // Process the import directives.
+        /**
+         * Process the import directives.
+         */
         loadImports();
     }
 
@@ -945,9 +960,10 @@ public final class ModuleCompiler
         result.addAll(annotations);
         result.addAll(exceptions);
         result.addAll(enums);
+        result.addAll(designs);
+        result.addAll(structs);
         result.addAll(tuples);
         result.addAll(functors);
-        result.addAll(structs);
         result.addAll(functions);
 
         return result;

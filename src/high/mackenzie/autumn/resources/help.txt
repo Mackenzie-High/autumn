@@ -17,9 +17,27 @@ limitations under the License.
 
 How to Use:
 
-    To run an Autumn script:
+    To create a project folder in the current directory:
 
-        autumn run <input-file> <argument-0> <argument-1> ... <argument-n>
+        autumn create <name>
+
+    To run a project:
+
+        autumn run <argument-0> <argument-1> ... <argument-n>
+
+        Note: The current directory must be an project folder.
+
+    To debug a project:
+
+        autumn debug <argument-0> <argument-1> ... <argument-n>
+
+        Note: The current directory must be an project folder.
+
+    To test a project:
+
+        autumn test
+
+        Note: The current directory must be an project folder.
 
     To print the version:
 
@@ -34,5 +52,4 @@ How to Use:
         autumn license
 
 
-Have a great day!
-Jesus loves you!
+Have a great day and remember that Jesus loves you!

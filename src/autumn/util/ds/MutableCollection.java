@@ -16,4 +16,11 @@ public interface MutableCollection<E>
      * @return an immutable copy of this object.
      */
     public ImmutableCollection<E> immutable();
+
+    /**
+     * This method creates an functional copy of this object.
+     *
+     * @return a functional copy of this object.
+     */
+    public FunctionalCollection<E> functional();
 }

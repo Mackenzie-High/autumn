@@ -1,0 +1,29 @@
+module Main in execution;
+
+tuple Human  (name : String, age : int);
+tuple Person (name : String, age : int);
+
+
+@Start
+defun main (args : String[]) : void
+{
+    var p1 = (new Person "Avril", 30);
+    var p2 = (new Person "Avril", 30);
+    var p3 = (new Person "Emma",  24);
+    var p4 = (new Human  "Emma",  24);
+
+    # An object is never equal to null.
+    assert p1 != null;
+
+    # An object is always equal to itself.
+    assert p1 == p1;
+
+    # A record can only be equal to another record.
+    assert p1 != "Avril";
+
+    # A record is equal to another record, if their keys() and values are equal.
+    assert p1 == p2;
+    assert p1 != p3;
+    assert p1 != p4;
+    assert p3 == p4;
+}

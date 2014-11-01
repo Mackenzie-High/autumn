@@ -1,0 +1,22 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    assert (My::tester -2) == 23;
+    assert (My::tester -1) == 23;
+    assert (My::tester  0) == 23;
+    assert (My::tester  1) == 23;
+    assert (My::tester  2) == 23;
+}
+
+defun tester (x : int) : int
+{
+    branch (x) () default CASE_ELSE;
+
+        assert false;
+
+    marker CASE_ELSE;
+
+        return 23;
+}

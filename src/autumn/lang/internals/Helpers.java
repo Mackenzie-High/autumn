@@ -3,6 +3,7 @@ package autumn.lang.internals;
 import autumn.lang.Delegate;
 import autumn.lang.LocalsMap;
 import autumn.lang.Module;
+import autumn.lang.compiler.Autumn;
 import autumn.util.F;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
@@ -116,6 +117,11 @@ public final class Helpers
                              final int column,
                              final LocalsMap locals)
     {
+        if (Autumn.isDebugOn() == false)
+        {
+            return;
+        }
+
         System.out.println();
         System.out.printf("Breakpoint Hit: line = %d, column = %d, file = %s\n", line, column, file);
         locals.print();
@@ -157,6 +163,20 @@ public final class Helpers
         if (index < 0 || index >= size)
         {
             throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
+        }
+    }
+
+    /**
+     * This method ensures that its argument is not null.
+     *
+     * @param value is the value that may be null.
+     * @throws NullPointerException if value is null.
+     */
+    public static void requireNonNull(final Object value)
+    {
+        if (value == null)
+        {
+            throw new NullPointerException();
         }
     }
 }

@@ -1,0 +1,9 @@
+module MainTest in #PACKAGE#;
+
+@Test
+defun test1 (test : TestCase) : void
+{
+    (test.describe "This is just an example test case");
+
+    assert 1 != 2;
+}

@@ -505,6 +505,29 @@ public final class AstBuilder extends AbstractVisitor
      * {inheritDoc} 
      */
     @Override
+    public void visit_branch_statement(final ITreeNode $node)
+    {
+        final int $stack_size = $stack.size();
+
+        visitUnknown($node);
+
+        final int $change = $stack.size() - $stack_size;
+
+        assert $change >= 0;
+
+        final TreeBuilder builder = Utils.builder();
+
+        builder.createStatementBranch();
+
+        Utils.setSourceLocation($node);
+
+        builder.popStack();
+    }
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
     public void visit_assert_statement(final ITreeNode $node)
     {
         final int $stack_size = $stack.size();
@@ -2093,6 +2116,29 @@ public final class AstBuilder extends AbstractVisitor
         final TreeBuilder builder = Utils.builder();
 
         builder.createExpressionInstanceOf();
+
+        Utils.setSourceLocation($node);
+
+        builder.popStack();
+    }
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_list_comprehension_expression(final ITreeNode $node)
+    {
+        final int $stack_size = $stack.size();
+
+        visitUnknown($node);
+
+        final int $change = $stack.size() - $stack_size;
+
+        assert $change >= 0;
+
+        final TreeBuilder builder = Utils.builder();
+
+        builder.createExpressionListComprehension();
 
         Utils.setSourceLocation($node);
 

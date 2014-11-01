@@ -1,0 +1,26 @@
+
+
+
+. autumn.util.Strings
+. . escape(CharSequence) - Null Argument
+. . escape(CharSequence) - Normal Case
+..
+. . unescape(CharSequence) - Null Argument
+. . unescape(CharSequence) - Normal Case
+..
+. . padStart(CharSequence, char, int) - Null Argument
+. . padStart(CharSequence, char, int) - Negative Length Argument
+. . padStart(CharSequence, char, int) - Normal Case
+..
+. . padEnd(CharSequence, char, int) - Null Argument
+. . padEnd(CharSequence, char, int) - Negative Length Argument
+. . padEnd(CharSequence, char, int) - Normal Case
+..
+. . zfill(CharSequence, int) - Null Argument
+. . zfill(CharSequence, int) - Negative Length Argument
+. . zfill(CharSequence, int) - Normal Case
+..
+
+
+
+. T0001 = high.mackenzie.autumn.util.ds.ConcreteFunctionalList

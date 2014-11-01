@@ -34,8 +34,7 @@ public final class MethodToString
      *
      * @param self is the object whose string representation will be created.
      */
-    public void invoke(final Object self,
-                       final Object other)
+    public String invoke(final Object self)
             throws Throwable
     {
         // Get the stack that is associated with this thread.
@@ -47,8 +46,14 @@ public final class MethodToString
         // Invoke the inner functor.
         inner().apply(stack);
 
+        // Get the result off of the stack.
+        final Object result = stack.peekO();
+
         // Clear the stack in order to prevent unexpected bugs.
         stack.clear();
+
+        // Ensure that the result is of the expected type.
+        return "" + result;
     }
 
     /**

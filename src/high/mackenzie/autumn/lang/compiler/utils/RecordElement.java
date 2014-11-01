@@ -1,23 +1,21 @@
 package high.mackenzie.autumn.lang.compiler.utils;
 
-import autumn.lang.internals.annotations.Getter;
-import autumn.lang.internals.annotations.Setter;
-import com.google.common.base.Preconditions;
-import high.mackenzie.autumn.lang.compiler.typesystem.design.IDeclaredType;
-import high.mackenzie.autumn.lang.compiler.typesystem.design.IMethod;
+import com.google.common.collect.Sets;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IVariableType;
+import java.util.Collections;
+import java.util.Set;
 
 /**
- * An instance of this class describes an element in a record.
+ * An instance of this class represents an element in a record-type.
  *
  * @author Mackenzie High
  */
 public final class RecordElement
 {
     /**
-     * This is the type of the element's owner.
+     * This is a description of the record that contains the element.
      */
-    public final IDeclaredType owner;
+    public final RecordAnalyzer2 record;
 
     /**
      * This is the name of the element.
@@ -25,86 +23,252 @@ public final class RecordElement
     public final String name;
 
     /**
-     * This is the type of the value stored in the element.
+     * This is a cache for type() in order to improve performance.
      */
-    public final IVariableType value;
+    private IVariableType memoized_type;
+
+    /**
+     * This is a cache for setter() in order to improve performance.
+     */
+    private SetterMethod memoized_setter;
+
+    /**
+     * This is a cache for getter() in order to improve performance.
+     */
+    private GetterMethod memoized_getter;
 
     /**
      * Sole Constructor.
      *
-     * @param owner is the type of the element's owner.
-     * @param name is the element's name.
-     * @param value is the element's static-type.
+     * @param record is a description of the record-type.
+     * @param name is the name of the element.
      */
-    RecordElement(final IDeclaredType owner,
-                  final String name,
-                  final IVariableType value)
+    public RecordElement(final RecordAnalyzer2 record,
+                         final String name)
     {
-        Preconditions.checkNotNull(owner);
-        Preconditions.checkNotNull(name);
-        Preconditions.checkNotNull(value);
-
-        this.owner = owner;
+        this.record = record;
         this.name = name;
-        this.value = value;
     }
 
     /**
-     * This method searches for a setter method within the record-type.
+     * This method determines the most specific type of the element.
      *
-     * @return the setter related to the element.
-     */
-    public IMethod setter()
-    {
-        return findMethod(Setter.class);
-    }
-
-    /**
-     * This method searches for a getter method within the record-type.
+     * <p>
+     * This will become the type of the field that actually stores the element's value.
+     * </p>
      *
-     * @return the getter related to the element.
+     * @return the type of the field.
      */
-    public IMethod getter()
-    {
-        return findMethod(Getter.class);
-    }
-
-    /**
-     * This method searches for a method within the record-type.
-     *
-     * @param annotation is applied to the method to find.
-     * @return the getter or setter related to the element.
-     */
-    public IMethod findMethod(final Class annotation)
+    public IVariableType type()
     {
         /**
-         * Iterate over each method declared directly within the record-type.
+         * If this method was already invoked, then return the memoized result.
          */
-        for (IMethod method : owner.getMethods())
+        if (memoized_type != null)
         {
-            /**
-             * Skip the method, if the name does not match.
-             */
-            if (name.equals(method.getName()) == false)
-            {
-                continue;
-            }
-
-            /**
-             * Skip the method, if it is not a getter.
-             * Remember, there is also a setter in the record-type.
-             */
-            if (TypeSystemUtils.isAnnotationPresent(method, annotation))
-            {
-                continue;
-            }
-
-            /**
-             * The method was found, so return it.
-             */
-            return method;
+            return memoized_type;
         }
 
-        throw new RuntimeException("This should never happen.");
+        /**
+         * Search for the return-type of the most specific getter.
+         */
+        for (GetterMethod getter : record.getters)
+        {
+            /**
+             * If the getter is for a different element, skip it.
+             */
+            if (getter.name.equals(name) == false)
+            {
+                continue;
+            }
+
+            /**
+             * If we have no idea what the type is supposed to be, use the first possible type.
+             */
+            memoized_type = memoized_type == null ? getter.returns : memoized_type;
+
+            /**
+             * If this getter returns a more specific type, then use its return-type.
+             */
+            memoized_type = getter.returns.isSubtypeOf(memoized_type) ? getter.returns : memoized_type;
+        }
+
+        /**
+         * Return the return-type of the most specific getter method.
+         */
+        return memoized_type;
+    }
+
+    /**
+     * This method determines which setter method is the most specific.
+     *
+     * <p>
+     * This setter method is the one that bridge methods will invoke.
+     * </p>
+     *
+     * @return a description of the primary setter method.
+     */
+    public SetterMethod setter()
+    {
+        /**
+         * If this method was already invoked, then return the memoized result.
+         */
+        if (memoized_setter != null)
+        {
+            return memoized_setter;
+        }
+
+        /**
+         * Search for the primary setter.
+         */
+        for (SetterMethod setter : record.setters)
+        {
+            /**
+             * The primary setter must share its name with this element.
+             */
+            if (setter.name.equals(name) == false)
+            {
+                continue;
+            }
+
+            /**
+             * The primary setter must be a direct member of the record.
+             */
+            if (setter.owner.equals(record.type) == false)
+            {
+                continue;
+            }
+
+            /**
+             * The return-type of the primary setter must be the type of the record.
+             */
+            if (setter.returns.equals(record.type) == false)
+            {
+                continue;
+            }
+
+            /**
+             * The primary setter must take the most specific type of this element as its argument.
+             */
+            if (type().equals(setter.parameter) == false)
+            {
+                continue;
+            }
+
+            /**
+             * The primary setter has been found.
+             */
+            memoized_setter = setter;
+            break;
+        }
+
+        assert memoized_setter != null;
+
+        return memoized_setter;
+    }
+
+    /**
+     * This method determines which getter method is the most specific.
+     *
+     * <p>
+     * This setter method is the one that bridge methods will invoke.
+     * </p>
+     *
+     * @return a description of the primary getter method.
+     */
+    public GetterMethod getter()
+    {
+        /**
+         * If this method was already invoked, then return the memoized result.
+         */
+        if (memoized_getter != null)
+        {
+            return memoized_getter;
+        }
+
+        /**
+         * Search for the primary setter.
+         */
+        for (GetterMethod getter : record.getters)
+        {
+            /**
+             * The primary getter must share its name with this element.
+             */
+            if (getter.name.equals(name) == false)
+            {
+                continue;
+            }
+
+            /**
+             * The primary getter must be a direct member of the record.
+             */
+            if (getter.owner.equals(record.type) == false)
+            {
+                continue;
+            }
+
+            /**
+             * The return-type of the primary getter must be most specific type of the element.
+             */
+            if (type().equals(getter.returns) == false)
+            {
+                continue;
+            }
+
+            /**
+             * The primary getter has been found.
+             */
+            memoized_getter = getter;
+            break;
+        }
+
+        assert memoized_getter != null;
+
+        return memoized_getter;
+    }
+
+    /**
+     * This method finds the setter methods that simply invoke the primary setter method.
+     *
+     * @return an immutable set containing the bridge setters.
+     */
+    public Set<SetterMethod> bridgeSetters()
+    {
+        final Set<SetterMethod> bridges = Sets.newHashSet();
+
+        for (SetterMethod setter : record.setters)
+        {
+            final boolean inheritance = !setter.returns.equals(record.type);
+
+            final boolean covariance = setter.returns.equals(record.type)
+                                       && !setter().parameter.equals(setter.parameter);
+
+            if (setter.owner.equals(record.type) && setter.name.equals(name) && (inheritance || covariance))
+            {
+                bridges.add(setter);
+            }
+        }
+
+        return Collections.unmodifiableSet(bridges);
+    }
+
+    /**
+     * This method finds the getter methods that simply invoke the primary getter method.
+     *
+     * @return an immutable set containing the bridge getters.
+     */
+    public Set<GetterMethod> bridgeGetters()
+    {
+        final Set<GetterMethod> bridges = Sets.newHashSet();
+
+        for (GetterMethod getter : record.getters)
+        {
+            if (getter.owner.equals(record.type) && getter.name.equals(name) && !getter.returns.equals(getter().returns))
+            {
+                bridges.add(getter);
+            }
+        }
+
+        return Collections.unmodifiableSet(bridges);
     }
 }

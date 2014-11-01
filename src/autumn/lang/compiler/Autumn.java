@@ -480,7 +480,7 @@ public final class Autumn
     }
 
     /**
-     * This method loads a jar-file library.
+     * This method loads a library jar-file or class-file.
      *
      * @param path is the path to where the jar-file is located.
      */
@@ -496,7 +496,7 @@ public final class Autumn
     }
 
     /**
-     * This method loads a jar-file library.
+     * This method loads a library jar-file or class-file.
      *
      * @param path is the path to where the jar-file is located.
      */
@@ -509,7 +509,7 @@ public final class Autumn
     }
 
     /**
-     * This method loads a jar-file library.
+     * This method loads a library jar-file or class-file.
      *
      * @param path is the path to where the jar-file is located.
      */
@@ -522,7 +522,7 @@ public final class Autumn
     }
 
     /**
-     * This method loads a jar-file library.
+     * This method loads a library jar-file or class-file.
      *
      * @param path is the path to where the jar-file is located.
      */
@@ -532,5 +532,130 @@ public final class Autumn
         Preconditions.checkNotNull(path);
 
         loadFile(path);
+    }
+
+    /**
+     * This method creates a new project folder in a specified directory.
+     *
+     * @param folder is the directory where the new project folder will be created.
+     * @param name is the name of the new project.
+     * @throws IllegalArgumentException if the name is not a valid name in Autumn.
+     * @throws IllegalArgumentException if a folder with the given name already exists.
+     * @throws IOException if name cannot be the name of a folder.
+     * @throws IOException if the project folder cannot be created.
+     */
+    public static void createProject(final File folder,
+                                     final String name)
+            throws IOException
+    {
+        Preconditions.checkNotNull(folder);
+        Preconditions.checkNotNull(name);
+        Preconditions.checkArgument(name.matches("[A-Za-z_$][A-Za-z_$0-9]*"),
+                                    "The name of a project folder must be a valid Autumn name: " + name);
+
+        URL url;
+        String code;
+
+        /**
+         * Create the project folder itself.
+         */
+        final File project = new File(folder, name);
+        project.mkdirs();
+
+        /**
+         * Create the project/src directory.
+         */
+        final File src = new File(project, "src");
+        src.mkdirs();
+
+        /**
+         * Create the project/test directory.
+         */
+        final File test = new File(project, "test");
+        test.mkdirs();
+
+        /**
+         * Create the project/lib directory.
+         */
+        final File lib = new File(project, "lib");
+        lib.mkdirs();
+
+        /**
+         * Create the project/data directory.
+         */
+        final File data = new File(project, "data");
+        data.mkdirs();
+
+        /**
+         * Create the project/src/project directory.
+         */
+        final File src_project_package = new File(src, name);
+        src_project_package.mkdirs();
+
+        /**
+         * Create the project/src/project/Main.leaf file.
+         */
+        url = Resources.getResource(Autumn.class, "/high/mackenzie/autumn/resources/default-src-main.leaf");
+        code = Resources.toString(url, Charset.defaultCharset());
+        code = code.replace("#PACKAGE#", name);
+
+        final File src_main = new File(src_project_package, "Main.leaf");
+        Files.write(code, src_main, Charset.defaultCharset());
+
+        /**
+         * Create the project/test/project directory.
+         */
+        final File test_project_package = new File(test, name);
+        test_project_package.mkdirs();
+
+        /**
+         * Create the project/test/project/Main.leaf file.
+         */
+        url = Resources.getResource(Autumn.class, "/high/mackenzie/autumn/resources/default-test-main.leaf");
+        code = Resources.toString(url, Charset.defaultCharset());
+        code = code.replace("#PACKAGE#", name);
+
+        final File test_main = new File(test_project_package, "Main.leaf");
+        Files.write(code, test_main, Charset.defaultCharset());
+
+    }
+
+    /**
+     * This method loads all the source-files and library-files associated with a project.
+     *
+     * @param folder is the path to the project-directory.
+     * @throws IOException if the folder does not exist.
+     * @throws IOException if the files cannot be read.
+     */
+    public void loadProject(final File folder)
+            throws IOException
+    {
+        /**
+         * Load all the source code files.
+         */
+        final File src = new File(folder, "src");
+
+        for (File file : F.iter(autumn.util.Files.iterFiles(src, true)))
+        {
+            if (file.getPath().endsWith(".leaf") && !file.isHidden())
+            {
+                srcFile(file);
+            }
+        }
+
+        /**
+         * Load all the test files.
+         */
+        final File test = new File(folder, "test");
+
+        for (File file : F.iter(autumn.util.Files.iterFiles(test, true)))
+        {
+            if (file.getPath().endsWith(".leaf") && !file.isHidden())
+            {
+                srcFile(file);
+            }
+        }
+
+        // TODO: load resources, libs, etc
     }
 }

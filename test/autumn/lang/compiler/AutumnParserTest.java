@@ -58,6 +58,8 @@ public final class AutumnParserTest
 
         final String results = pretty.toString().trim();
 
+//        System.out.println(results);
+
 //        try
 //        {
 //            Files.write(results, new File("/home/mackenzie/test/results"), Charset.defaultCharset());

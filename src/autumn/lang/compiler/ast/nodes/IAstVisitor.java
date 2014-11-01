@@ -50,7 +50,7 @@ import java.util.TreeSet;
 /**
  * An instance of this interface is a visitor that can visit the nodes in an Autumn abstract-syntax-tree.
  * 
- * <p> This file was auto-generated on (Sun Oct 12 04:29:03 EDT 2014).</p>
+ * <p> This file was auto-generated on (Sat Nov 01 12:16:03 EDT 2014).</p>
  */
 public interface IAstVisitor
 {
@@ -160,6 +160,13 @@ public interface IAstVisitor
     public void visit(final MarkerStatement object);
 
     /**
+     * This method visits an object of type <code>BranchStatement</code>.
+     * 
+     * @param object is the object to visit.
+     */
+    public void visit(final BranchStatement object);
+
+    /**
      * This method visits an object of type <code>ForeverStatement</code>.
      * 
      * @param object is the object to visit.
@@ -263,27 +270,6 @@ public interface IAstVisitor
      * @param object is the object to visit.
      */
     public void visit(final DelegateStatement object);
-
-    /**
-     * This method visits an object of type <code>SetterStatement</code>.
-     * 
-     * @param object is the object to visit.
-     */
-    public void visit(final SetterStatement object);
-
-    /**
-     * This method visits an object of type <code>GetterStatement</code>.
-     * 
-     * @param object is the object to visit.
-     */
-    public void visit(final GetterStatement object);
-
-    /**
-     * This method visits an object of type <code>MethodStatement</code>.
-     * 
-     * @param object is the object to visit.
-     */
-    public void visit(final MethodStatement object);
 
     /**
      * This method visits an object of type <code>SequenceStatement</code>.
@@ -473,6 +459,13 @@ public interface IAstVisitor
      * @param object is the object to visit.
      */
     public void visit(final PrognExpression object);
+
+    /**
+     * This method visits an object of type <code>ListComprehensionExpression</code>.
+     * 
+     * @param object is the object to visit.
+     */
+    public void visit(final ListComprehensionExpression object);
 
     /**
      * This method visits an object of type <code>ListExpression</code>.

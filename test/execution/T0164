@@ -1,7 +1,7 @@
 module Main in execution;
 
 @Alien
-exception Venus extends Exception;
+exception Venus is Exception;
 
 annotation Alien;
 

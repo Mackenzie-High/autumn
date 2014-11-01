@@ -1,6 +1,25 @@
 package high.mackenzie.autumn.lang.compiler.compilers;
 
 import autumn.lang.compiler.ast.nodes.TypeSpecifier;
+import autumn.util.ds.Counter;
+import autumn.util.ds.FunctionalCollection;
+import autumn.util.ds.FunctionalList;
+import autumn.util.ds.FunctionalMap;
+import autumn.util.ds.FunctionalSet;
+import autumn.util.ds.FunctionalSortedMap;
+import autumn.util.ds.FunctionalSortedSet;
+import autumn.util.ds.ImmutableCollection;
+import autumn.util.ds.ImmutableMap;
+import autumn.util.ds.ImmutableSet;
+import autumn.util.ds.ImmutableSortedMap;
+import autumn.util.ds.ImmutableSortedSet;
+import autumn.util.ds.MutableCollection;
+import autumn.util.ds.MutableList;
+import autumn.util.ds.MutableMap;
+import autumn.util.ds.MutableSet;
+import autumn.util.ds.MutableSortedMap;
+import autumn.util.ds.MutableSortedSet;
+import autumn.util.ds.SparseArray;
 import autumn.util.functors.MethodCompareTo;
 import autumn.util.functors.MethodEquals;
 import autumn.util.functors.MethodHashCode;
@@ -8,6 +27,7 @@ import autumn.util.functors.MethodIterator;
 import autumn.util.functors.MethodToString;
 import autumn.util.functors.Predicate;
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IClassType;
@@ -85,6 +105,28 @@ public final class Importer
         importClass(autumn.util.Strings.class);
         importClass(autumn.util.Threads.class);
 
+        // autumn.util.ds
+        importClass(Counter.class);
+        importClass(FunctionalCollection.class);
+        importClass(FunctionalList.class);
+        importClass(FunctionalMap.class);
+        importClass(FunctionalSet.class);
+        importClass(FunctionalSortedMap.class);
+        importClass(FunctionalSortedSet.class);
+        importClass(ImmutableCollection.class);
+        importClass(ImmutableList.class);
+        importClass(ImmutableMap.class);
+        importClass(ImmutableSet.class);
+        importClass(ImmutableSortedMap.class);
+        importClass(ImmutableSortedSet.class);
+        importClass(MutableCollection.class);
+        importClass(MutableList.class);
+        importClass(MutableMap.class);
+        importClass(MutableSet.class);
+        importClass(MutableSortedMap.class);
+        importClass(MutableSortedSet.class);
+        importClass(SparseArray.class);
+
         // autumn.util.test
         importClass(autumn.util.test.MalformedTestException.class);
         importClass(autumn.util.test.Test.class);
@@ -128,7 +170,9 @@ public final class Importer
         importClass(java.lang.Short.class);
         importClass(java.lang.String.class);
         importClass(java.lang.StringBuilder.class);
+        importClass(java.lang.System.class);
         importClass(java.lang.Throwable.class);
+        importClass(java.lang.UnsupportedOperationException.class);
 
         // java.math
         importClass(java.math.BigInteger.class);

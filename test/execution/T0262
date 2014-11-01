@@ -1,0 +1,23 @@
+module Main in execution;
+
+tuple Person (name : String);
+
+
+@Start
+defun main (args : String[]) : void
+{
+    delegate method : MethodToString => My::handler;
+
+    val p = (new Person "Molly");
+
+    assert (p.toString) == "(Molly)";
+
+    val q = (Records::bindStr p, method);
+
+    assert (q.toString) == "Name = Molly";
+}
+
+defun handler (self : Person) : String
+{
+    return "Name = " .. (self.name);
+}

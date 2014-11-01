@@ -1,0 +1,13 @@
+module Main in execution;
+
+import high.mackenzie.autumn.resources.Parent;
+
+tuple Person (name : String, children : List) is Parent;
+
+@Start
+defun main (args : String[]) : void
+{
+    var p = (new Person "Mom", ["Jet", "Fluffy"]);
+
+
+}

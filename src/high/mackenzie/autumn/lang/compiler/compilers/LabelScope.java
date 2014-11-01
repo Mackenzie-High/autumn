@@ -1,6 +1,8 @@
 package high.mackenzie.autumn.lang.compiler.compilers;
 
+import autumn.lang.compiler.ast.nodes.BranchStatement;
 import autumn.lang.compiler.ast.nodes.GotoStatement;
+import autumn.lang.compiler.ast.nodes.Label;
 import autumn.lang.compiler.ast.nodes.MarkerStatement;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
@@ -12,6 +14,14 @@ import org.objectweb.asm.tree.LabelNode;
 
 /**
  * An instance of this class controls the allocation of location labels.
+ *
+ * <p>
+ * This class also performs the checking of marker, goto, and branch statements.
+ * Since a label can be declared at a point its usage, multiple compiler passes are needed.
+ * However, we can get around that need by deferring the checking until the end of one pass.
+ * In particular, we simply defer the checking until the end of the type-usage-checking pass.
+ * Then, the label declarations and usages can be checked all at once.
+ * </p>
  *
  * @author Mackenzie High
  */
@@ -37,6 +47,11 @@ public final class LabelScope
      * These are the marker-statements in this scope.
      */
     private final List<MarkerStatement> markers = Lists.newLinkedList();
+
+    /**
+     * These are the branch-statements in this scope.
+     */
+    private final List<BranchStatement> branches = Lists.newLinkedList();
 
     /**
      * Sole Constructor.
@@ -83,6 +98,22 @@ public final class LabelScope
     }
 
     /**
+     * This method defers checking of a branch-statement.
+     *
+     * <p>
+     * Deferring checking alleviates the need for yet another compiler pass.
+     * </p>
+     *
+     * @param statement is the marker-statement itself.
+     */
+    public void defer(final BranchStatement statement)
+    {
+        Preconditions.checkNotNull(statement);
+
+        branches.add(statement);
+    }
+
+    /**
      * This method performs the checking of goto-statements and marker-statements that was deferred.
      */
     public void check()
@@ -95,6 +126,11 @@ public final class LabelScope
         for (GotoStatement x : jumps)
         {
             checkGoto(x);
+        }
+
+        for (BranchStatement x : branches)
+        {
+            checkBranch(x);
         }
     }
 
@@ -119,6 +155,28 @@ public final class LabelScope
         else
         {
             program.checker.reportUndeclaredLabel(statement.getLabel());
+        }
+    }
+
+    private void checkBranch(final BranchStatement statement)
+    {
+        /**
+         * Each of the case labels must be declared in the enclosing function.
+         */
+        for (Label label : statement.getLabels())
+        {
+            if (labels.containsKey(label.getName()) == false)
+            {
+                program.checker.reportUndeclaredLabel(statement.getDefaultLabel());
+            }
+        }
+
+        /**
+         * The label of the default-case must be declared in the enclosing function.
+         */
+        if (labels.containsKey(statement.getDefaultLabel().getName()) == false)
+        {
+            program.checker.reportUndeclaredLabel(statement.getDefaultLabel());
         }
     }
 

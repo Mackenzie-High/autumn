@@ -378,6 +378,25 @@ rule marker_statement
 }
 
 ###################################################################################################
+# Statements --> Branch
+###################################################################################################
+
+rule branch_statement
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createStatementBranch();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+
+  # Merge the upper stack with the next lower stack.
+  call builder.popStack();
+}
+
+###################################################################################################
 # Statements --> Exception Handling --> Assert
 ###################################################################################################
 
@@ -1638,6 +1657,25 @@ rule instanceof_expression
 
   # Create the AST node.
   call builder.createExpressionInstanceOf();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+
+  # Merge the upper stack with the next lower stack.
+  call builder.popStack();
+}
+
+###################################################################################################
+# Expressions --> List Comprehension
+###################################################################################################
+
+rule list_comprehension_expression
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createExpressionListComprehension();
 
   # Set the source-location information.
   call Utils.setSourceLocation($node);

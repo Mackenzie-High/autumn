@@ -21,7 +21,7 @@ Test Index
 . . Special Method - moduleInvokeFunction(int, ArgumentStack)
 . . Delegates
 . . . T0078 = Metadata    // TODO: fix
-. . . T0079 = Invocation  // TODO: fix
+. . . Invocation  // TODO: fix
 . Annotation Definitions
 . . T0140 = Reflective Testing of the Annotation's Class
 . . T0141 = Usage of a Defined Annotation
@@ -39,13 +39,19 @@ Test Index
 . . T0168 = Special Method - valueOf(String) - Null Argument
 . . T0169 = Special Method - valueOf(String) - No Such Enum Constant
 . . T0166 = Special Method - values()
+. Design Definitions
+. . T0279 = Reflective Testing of the Tuple's Class                  // TODO: finish
+. . 280 = Inherited Elements                                         // TODO: finish
+. . Covariant Elements
 . Tuple Definitions
 . . T0128 = Reflective Testing of the Tuple's Class                  // TODO: finish
 . . T0114 = Sole Constructor
 . . T0126 = Setters - (immutable)
 . . T0127 = Setters - (mutable)
 . . T0117 = Getters
+. . T0271 - Special Method - isStruct() and isTuple()
 . . T0251 - Special Method - bind(SpecialMethods)
+. . T0267 - Special Method - bind(SpecialMethods) - null argument
 . . T0252 = Special Method - bindings()
 . . T0132 = Special Method - set(int, Object) - (index OK, immutable tuple)
 . . T0133 = Special Method - set(int, Object) - (index OK, mutable tuple)
@@ -62,11 +68,19 @@ Test Index
 . . T0130 = Special Method - immutable()
 . . T0138 = Special Method - copy() - (immutable tuple)
 . . T0139 = Special Method - copy() - (mutable tuple)
-. . Special Method - equals(Object)
-. . Special Method - hashCode()
-. . Special Method - toString()
-. . Special Method - compareTo(Record)
-. . Special Method - iterator()
+. . T0260 = Special Method - compareTo(Record) - default behavior - comparison possible
+. . T0261 = Special Method - compareTo(Record) - default behavior - non-comparable element
+. . T0256 = Special Method - equals(Object)    - default behavior
+. . T0257 = Special Method - hashCode()        - default behavior
+. . T0258 = Special Method - toString()        - default behavior
+. . T0259 = Special Method - iterator()        - default behavior
+. . T0266 = Special Method - compareTo(Record) - custom behavior
+. . T0265 = Special Method - equals(Object)    - custom behavior
+. . T0263 = Special Method - hashCode()        - custom behavior
+. . T0262 = Special Method - toString()        - custom behavior
+. . T0264 = Special Method - iterator()        - custom behavior
+. . T0254 - Inheritance of Elements                           // TODO: finish
+. . T0255 = Covariant Elements                                // TODO: finish
 . Struct Definitions
 . . T0250 = Basic Test
 . . Setters - (immutable)
@@ -74,12 +88,16 @@ Test Index
 . . Getters
 . . No Elements
 . . Different Types of Elements
-. . Covariant Elements
-. . Subtyping
+. . T0272 - Special Method - isStruct() and isTuple()
+. . T0268 = Special Method - keys()
+. . T0269 = Special Method - types()
+. . T0270 = Special Method - values()
 . . Special Method - mutable()
 . . Special Method - immutable()
-. . Special Method - copy() - (immutable tuple)
-. . Special Method - copy() - (mutable tuple)
+. . Special Method - copy() - (immutable struct)
+. . Special Method - copy() - (mutable struct)
+. . Covariant Elements
+. . Subtyping
 . Functor Definition
 . . Reflective Testing of the Functor's Class
 . . Functor Usage
@@ -109,6 +127,13 @@ Test Index
 . . . T0113 = Basic Functionality (also used to test marker)
 . . Marker
 . . . T0113 = Basic Functionality (also used to test goto)
+. . Branch
+. . . T0273 = Index - int
+. . . T0274 = Index - Unboxing
+. . . T0275 = Index - Auto-Widening
+. . . T0276 = Jump Backward
+. . . T0277 = Only the Default Case
+. . . T0278 = Only One Case
 . . While
 . . . T0007 = Primitive Boolean Condition
 . . . T0008 = Boxed Boolean Condition

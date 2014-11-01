@@ -37,6 +37,21 @@ public final class Runner
 
 
 
+
+
+
+        test("T0137", EXPECTED_CONDITION);
+        test("T0136", VARIABLE_OUTSIDE_OF_SCOPE);
+        test("T0135", NO_SUCH_VARIABLE);
+        test("T0134", EXPECTED_ITERABLE);
+        test("T0133", EXPECTED_REFERENCE_TYPE);
+        test("T0132", INACCESSIBLE_TYPE);
+        test("T0131", NO_SUCH_TYPE);
+        test("T0130", DUPLICATE_VARIABLE);
+        test("T0129", VALUE_REQUIRED);
+        test("T0128", NO_SUCH_LABEL);
+        test("T0127", NO_SUCH_LABEL);
+        test("T0126", EXPECTED_INTEGER);
         test("T0125", DUPLICATE_ELEMENT);
         test("T0124", DUPLICATE_SUPERTYPE);
         test("T0123", INACCESSIBLE_TYPE);
@@ -51,9 +66,6 @@ public final class Runner
         test("T0114", INCOMPATIBLE_OPERANDS);
         test("T0113", EXPECTED_REFERENCE_TYPE);
         test("T0112", EXPECTED_CONDITION);
-        test("T0111", EXPECTED_PROTOTYPE_TYPE);
-        test("T0110", INACCESSIBLE_TYPE);
-        test("T0109", NO_SUCH_TYPE);
         test("T0108", NON_VIABLE_INSTANCEOF);
         test("T0107", NO_SUCH_TYPE);
         test("T0106", INACCESSIBLE_TYPE);

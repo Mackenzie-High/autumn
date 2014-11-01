@@ -73,6 +73,18 @@ public final class ConstructList<T extends IConstruct>
     }
 
     /**
+     * This method retrieves the element at a given index.
+     *
+     * @param index is the index of the element to retrieve.
+     * @return the element at the given index.
+     * @throws IndexOutOfBoundsException if the index is out-of-bounds.
+     */
+    public T get(final int index)
+    {
+        return this.elements.get(index);
+    }
+
+    /**
      * This method computes the number of elements in this list.
      *
      * @return the size of this list.

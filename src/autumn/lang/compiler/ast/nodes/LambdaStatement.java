@@ -55,13 +55,13 @@ import java.util.TreeSet;
  *     <tr> <td> <b>Property Name</b> </td> <td> <b>Property Description</b> </td> </tr>
  *     <tr> <td> <code>variable</code> </td> <td>This is the variable that the new lambda will be assigned to.</td> </tr>
  *     <tr> <td> <code>type</code> </td> <td>This is the type of the new lambda.</td> </tr>
- *     <tr> <td> <code>parameters</code> </td> <td>These are the formal-parameters of the anonymous function.</td> </tr>
+ *     <tr> <td> <code>parameters</code> </td> <td>These are the formal-parameter variables of the anonymous function.</td> </tr>
  *     <tr> <td> <code>body</code> </td> <td>This is the expression that is evaluated whenever the anonymous function is invoked.</td> </tr>
  *     <tr> <td> <code>location</code> </td> <td>This is the source-location information regarding this construct.</td> </tr>
  * </table>
  * </p>
  * 
- * <p> This file was auto-generated on (Sun Oct 12 04:29:03 EDT 2014).</p>
+ * <p> This file was auto-generated on (Sat Nov 01 12:16:03 EDT 2014).</p>
  */
 @SuppressWarnings("unchecked")
 public final class LambdaStatement extends Object implements IStatement
@@ -70,7 +70,7 @@ public final class LambdaStatement extends Object implements IStatement
 
     private TypeSpecifier type;
 
-    private FormalParameterList parameters;
+    private ConstructList<Variable> parameters = new ConstructList();
 
     private IExpression body;
 
@@ -130,7 +130,7 @@ public final class LambdaStatement extends Object implements IStatement
      * @param value is the new value of property <code>parameters</code>.
      * @return a copy of this object with property <code>parameters</code> set to value.
      */
-    public LambdaStatement setParameters(final FormalParameterList value)
+    public LambdaStatement setParameters(final ConstructList<Variable> value)
     {
         final LambdaStatement result = this.copy();
         result.parameters = value;
@@ -142,9 +142,9 @@ public final class LambdaStatement extends Object implements IStatement
      * 
      * @return the value of property <code>parameters</code>.
      */
-    public FormalParameterList getParameters()
+    public ConstructList<Variable> getParameters()
     {
-        final FormalParameterList value = this.parameters;
+        final ConstructList<Variable> value = this.parameters;
         return value;
     }
 
@@ -206,7 +206,7 @@ public final class LambdaStatement extends Object implements IStatement
      * @param location is the value for property <code>location</code>.
      * @return a new instance of this class.
      */
-    public static LambdaStatement create(Variable variable, TypeSpecifier type, FormalParameterList parameters, IExpression body, SourceLocation location)
+    public static LambdaStatement create(Variable variable, TypeSpecifier type, ConstructList<Variable> parameters, IExpression body, SourceLocation location)
     {
         LambdaStatement object = new LambdaStatement();
         object = object.setVariable(variable);

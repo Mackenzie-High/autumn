@@ -34,7 +34,7 @@ public final class MethodHashCode
      *
      * @param self is the object whose hash-code will be computed.
      */
-    public void invoke(final Object self)
+    public int invoke(final Object self)
             throws Throwable
     {
         // Get the stack that is associated with this thread.
@@ -46,8 +46,13 @@ public final class MethodHashCode
         // Invoke the inner functor.
         inner().apply(stack);
 
+        // Get the result off of the stack.
+        final int result = stack.peekI();
+
         // Clear the stack in order to prevent unexpected bugs.
         stack.clear();
+
+        return result;
     }
 
     /**

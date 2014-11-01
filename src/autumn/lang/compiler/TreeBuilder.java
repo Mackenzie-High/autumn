@@ -732,6 +732,7 @@ public final class TreeBuilder
      * <p>
      * <b>Precondition of the Stack</b>
      * <ul>
+     * <li> superclass : TypeSpecifier </li>
      * <li> return-type : TypeSpecifier </li>
      * <li> parameters : FormalParameterList </li>
      * <li> name : Name </li>
@@ -749,9 +750,10 @@ public final class TreeBuilder
      */
     public void createDefinitionFunctor()
     {
-        Preconditions.checkState(stack.size() == 5);
+        Preconditions.checkState(stack.size() == 5 || stack.size() == 6);
 
         // Get the pieces off of the stack.
+        final TypeSpecifier superclass = (TypeSpecifier) (stack.size() == 6 ? stack.pop() : null);
         final TypeSpecifier returns = (TypeSpecifier) stack.pop();
         final FormalParameterList parameters = (FormalParameterList) stack.pop();
         final Name name = (Name) stack.pop();
@@ -767,6 +769,7 @@ public final class TreeBuilder
         node = node.setName(name);
         node = node.setParameters(parameters);
         node = node.setReturnType(returns);
+        node = node.setSuperclass(superclass);
 
         // Push the AST node onto the stack.
         stack.push(node);
@@ -996,6 +999,60 @@ public final class TreeBuilder
 
         // Initialize the AST node.
         node = node.setLabel((Label) stack.pop());
+
+        // Push the AST node onto the stack.
+        stack.push(node);
+
+        assert stack.size() == 1;
+    }
+
+    /**
+     * This method creates a branch-statement.
+     *
+     * <p>
+     * <b>Precondition of the Stack</b>
+     * <ul>
+     * <li> default-label : Label </li>
+     * <li> label[n] : Label </li>
+     * <li> label[.] : Label </li>
+     * <li> label[3] : Label </li>
+     * <li> label[2] : Label </li>
+     * <li> label[1] : Label </li>
+     * <li> label[0] : Label </li>
+     * <li> index : IExpression </li>
+     * </ul>
+     * </p>
+     *
+     * <p>
+     * <b>Postcondition of the Stack</b>
+     * <ul>
+     * <li> result : BranchStatement </li>
+     * </ul>
+     * </p>
+     */
+    public void createStatementBranch()
+    {
+        Preconditions.checkState(stack.size() >= 2);
+
+        // Get the pieces off fo the stack.
+        final Label default_label = (Label) stack.pop();
+
+        final LinkedList<Label> labels = Lists.newLinkedList();
+
+        while (stack.size() > 1)
+        {
+            labels.addFirst((Label) stack.pop());
+        }
+
+        final IExpression index = (IExpression) stack.pop();
+
+        // Create the AST node.
+        BranchStatement node = new BranchStatement();
+
+        // Initialize the AST node.
+        node = node.setIndex(index);
+        node = node.setLabels(new ConstructList(labels));
+        node = node.setDefaultLabel(default_label);
 
         // Push the AST node onto the stack.
         stack.push(node);
@@ -1660,123 +1717,6 @@ public final class TreeBuilder
         // Initialize the AST node.
         node = node.setValue((IExpression) stack.pop());
         node = node.setVariable((Variable) stack.pop());
-
-        // Push the AST node onto the stack.
-        stack.push(node);
-
-        assert stack.size() == 1;
-    }
-
-    /**
-     * This method creates a setter-statement.
-     *
-     * <p>
-     * <b>Precondition of the Stack</b>
-     * <ul>
-     * <li> name : Name </li>
-     * <li> module : TypeSpecifier </li>
-     * <li> name : Name </li>
-     * <li> owner : Variable </li>
-     * </ul>
-     * </p>
-     *
-     * <p>
-     * <b>Postcondition of the Stack</b>
-     * <ul>
-     * <li> result : SetterStatement </li>
-     * </ul>
-     * </p>
-     */
-    public void createStatementSetter()
-    {
-        Preconditions.checkState(stack.size() == 4);
-
-        // Create the AST node.
-        SetterStatement node = new SetterStatement();
-
-        // Initialize the AST node.
-        node = node.setMethod((Name) stack.pop());
-        node = node.setModule((TypeSpecifier) stack.pop());
-        node = node.setName((Name) stack.pop());
-        node = node.setOwner((Variable) stack.pop());
-
-        // Push the AST node onto the stack.
-        stack.push(node);
-
-        assert stack.size() == 1;
-    }
-
-    /**
-     * This method creates a getter-statement.
-     *
-     * <p>
-     * <b>Precondition of the Stack</b>
-     * <ul>
-     * <li> name : Name </li>
-     * <li> module : TypeSpecifier </li>
-     * <li> name : Name </li>
-     * <li> owner : Variable </li>
-     * </ul>
-     * </p>
-     *
-     * <p>
-     * <b>Postcondition of the Stack</b>
-     * <ul>
-     * <li> result : GetterStatement </li>
-     * </ul>
-     * </p>
-     */
-    public void createStatementGetter()
-    {
-        Preconditions.checkState(stack.size() == 4);
-
-        // Create the AST node.
-        GetterStatement node = new GetterStatement();
-
-        // Initialize the AST node.
-        node = node.setMethod((Name) stack.pop());
-        node = node.setModule((TypeSpecifier) stack.pop());
-        node = node.setName((Name) stack.pop());
-        node = node.setOwner((Variable) stack.pop());
-
-        // Push the AST node onto the stack.
-        stack.push(node);
-
-        assert stack.size() == 1;
-    }
-
-    /**
-     * This method creates a method-statement.
-     *
-     * <p>
-     * <b>Precondition of the Stack</b>
-     * <ul>
-     * <li> name : Name </li>
-     * <li> module : TypeSpecifier </li>
-     * <li> name : Name </li>
-     * <li> owner : Variable </li>
-     * </ul>
-     * </p>
-     *
-     * <p>
-     * <b>Postcondition of the Stack</b>
-     * <ul>
-     * <li> result : MethodStatement </li>
-     * </ul>
-     * </p>
-     */
-    public void createStatementMethod()
-    {
-        Preconditions.checkState(stack.size() == 4);
-
-        // Create the AST node.
-        MethodStatement node = new MethodStatement();
-
-        // Initialize the AST node.
-        node = node.setMethod((Name) stack.pop());
-        node = node.setModule((TypeSpecifier) stack.pop());
-        node = node.setName((Name) stack.pop());
-        node = node.setOwner((Variable) stack.pop());
 
         // Push the AST node onto the stack.
         stack.push(node);
@@ -3101,13 +3041,67 @@ public final class TreeBuilder
     }
 
     /**
+     * This method creates a list-comprehension-expression.
+     *
+     * <p>
+     * <b>Precondition of the Stack</b>
+     * <ul>
+     * <li> condition : IExpression </li>
+     * <li> iterable : IExpression </li>
+     * <li> type : TypeSpecifier </li>
+     * <li> variable : Variable </li>
+     * <li> modifier : IExpression </li>
+     * </ul>
+     * </p>
+     *
+     * <p>
+     * The <i>condition</i> is optional.
+     * </p>
+     *
+     * <p>
+     * <b>Postcondition of the Stack</b>
+     * <ul>
+     * <li> result : ListComprehensionExpression </li>
+     * </ul>
+     * </p>
+     */
+    public void createExpressionListComprehension()
+    {
+        Preconditions.checkState(stack.size() == 4 || stack.size() == 5);
+
+        // Get the pieces off of the stack.
+        final IExpression condition = (IExpression) (stack.size() == 5 ? stack.pop() : null);
+        final IExpression iterable = (IExpression) stack.pop();
+        final TypeSpecifier type = (TypeSpecifier) stack.pop();
+        final Variable variable = (Variable) stack.pop();
+        final IExpression modifier = (IExpression) stack.pop();
+
+        // Create the AST node.
+        ListComprehensionExpression node = new ListComprehensionExpression();
+        node = node.setCondition(condition);
+        node = node.setIterable(iterable);
+        node = node.setType(type);
+        node = node.setVariable(variable);
+        node = node.setModifier(modifier);
+
+        // Push the AST node onto the stack.
+        stack.push(node);
+
+        assert stack.size() == 1;
+    }
+
+    /**
      * This method creates a lambda-statement.
      *
      * <p>
      * <b>Precondition of the Stack</b>
      * <ul>
      * <li> body : IExpression </li>
-     * <li> formals : FormalParameterList </li>
+     * <li> formal[n] : Variable </li>
+     * <li> formal[3] : Variable </li>
+     * <li> formal[2] : Variable </li>
+     * <li> formal[1] : Variable </li>
+     * <li> formal[0] : Variable </li>
      * <li> type : TypeSpecifier </li>
      * <li> variable : Variable </li>
      * </ul>
@@ -3122,12 +3116,20 @@ public final class TreeBuilder
      */
     public void createStatementLambda()
     {
-        Preconditions.checkState(stack.size() == 4);
+        Preconditions.checkState(stack.size() >= 3);
 
         // Get the pieces off of the stack.
         final IExpression body = (IExpression) stack.pop();
-        final FormalParameterList formals = (FormalParameterList) stack.pop();
+
+        final LinkedList<Variable> formals = Lists.newLinkedList();
+
+        while (stack.size() != 2)
+        {
+            formals.addFirst((Variable) stack.pop());
+        }
+
         final TypeSpecifier type = (TypeSpecifier) stack.pop();
+
         final Variable variable = (Variable) stack.pop();
 
         // Create the AST node.
@@ -3135,7 +3137,7 @@ public final class TreeBuilder
 
         // Initialize the AST node.
         node = node.setVariable(variable);
-        node = node.setParameters(formals);
+        node = node.setParameters(new ConstructList(formals));
         node = node.setType(type);
         node = node.setBody(body);
 

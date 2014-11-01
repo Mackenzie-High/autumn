@@ -8,7 +8,7 @@ import autumn.lang.compiler.ast.nodes.TupleDefinition;
  * @author Mackenzie High
  */
 public final class TupleCompiler
-        extends AbstractRecordCompiler
+        extends AbstractStructTupleCompiler
 {
     /**
      * Sole Constructor.

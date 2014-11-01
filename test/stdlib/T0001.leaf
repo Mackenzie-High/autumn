@@ -1,0 +1,74 @@
+module Main in tests;
+
+import high.mackenzie.autumn.util.ds.ConcreteFunctionalList;
+
+
+@Start
+defun main(args : String[]) : void
+{
+    var list = (new ConcreteFunctionalList) is FunctionalList;
+
+    assert (list.size) == 0;
+    assert (list.isEmpty) == true;
+
+    list = (list.add "A");
+    list = (list.add "B");
+    list = (list.add "C");
+    list = (list.add "D");
+    list = (list.add "E");
+
+    assert "[A, B, C, D, E]" == (list.toString);
+
+    assert (list.size) == 5;
+    assert (list.isEmpty) == false;
+
+    //assert (list.equals list) == true;
+    //assert (list.equals null) == false;
+    //assert (list.equals 5) == false;
+    //assert (list.equals ["A", "B", "C", "D", "X"]) == false;
+    //assert (list.equals ["A", "B", "C", "D", "E"]) == true;
+
+    assert (list.mutable)   != null;
+    assert (list.immutable) != null;
+
+    assert (list.contains "A") == true;
+    assert (list.contains "B") == true;
+    assert (list.contains "C") == true;
+    assert (list.contains "D") == true;
+    assert (list.contains "E") == true;
+
+    assert (list.contains "X") == false;
+    assert (list.contains "Y") == false;
+    assert (list.contains "Z") == false;
+
+    assert (list.containsAll ["A", "B", "C"]) == true;
+    assert (list.containsAll ["A", "X", "Y"]) == false;
+
+    assert (list.containsAny ["A", "B", "C"]) == true;
+    assert (list.containsAny ["A", "X", "Y"]) == true;
+    assert (list.containsAny ["X", "Y", "Z"]) == false;
+
+    assert (list.first) == "A";
+    assert (list.last)  == "E";
+
+    assert (list.get 0) == "A";
+    assert (list.get 1) == "B";
+    assert (list.get 2) == "C";
+    assert (list.get 3) == "D";
+    assert (list.get 4) == "E";
+
+    list = (list.set 0, "X");
+    list = (list.set 2, "Y");
+    list = (list.set 4, "Z");
+
+    assert "[X, B, Y, D, Z]" == (list.toString);
+
+    assert (list.size) == 5;
+    assert (list.isEmpty) == false;
+
+    // TODO: test add(int, Object)
+    //            addAll(int, Iterable)
+    //            remove(int)
+    //            removeFirst()
+    //            removeLast();
+}

@@ -1,0 +1,13 @@
+module Main in execution;
+
+struct Person (name : String);
+
+@Start
+defun main (args : String[]) : void
+{
+    var p = (new Person "Molly");
+
+    assert (p.isTuple) == false;
+
+    assert (p.isStruct) == true;
+}

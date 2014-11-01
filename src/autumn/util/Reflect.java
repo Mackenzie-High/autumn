@@ -27,8 +27,8 @@ public final class Reflect
      * @return the found field.
      * @throws NoSuchFieldException if the method could not be found.
      */
-    public static Field getConstructor(final Class owner,
-                                       final String name)
+    public static Field getField(final Class owner,
+                                 final String name)
             throws NoSuchFieldException
     {
         Preconditions.checkNotNull(owner);

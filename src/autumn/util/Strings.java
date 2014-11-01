@@ -239,6 +239,29 @@ public final class Strings
     }
 
     /**
+     * This method creates a string that is another string repeated zero or more times.
+     *
+     * @param string is the string to repeat.
+     * @param times is the number of times to repeat the string.
+     * @return the aforedescribed string.
+     */
+    public static String repeat(final CharSequence string,
+                                final int times)
+    {
+        Preconditions.checkNotNull(string, "string");
+        Preconditions.checkArgument(times >= 0, "times");
+
+        final StringBuilder result = new StringBuilder();
+
+        for (int i = 0; i < times; i++)
+        {
+            result.append(string);
+        }
+
+        return string.toString();
+    }
+
+    /**
      * This method creates the string representation of a value.
      *
      * @param value is the value itself.
@@ -291,5 +314,107 @@ public final class Strings
         result.append(suffix);
 
         return result.toString();
+    }
+
+    /**
+     * This method finds the longest-common-substring in two strings.
+     *
+     * @param string1 is the first string.
+     * @param string2 is the second string.
+     * @return the longest-common-substring in the two strings.
+     */
+    public static String longestCommonSubstring(final CharSequence string1,
+                                                final CharSequence string2)
+    {
+        return null; // TODO - dynamic programming
+    }
+
+    /**
+     * This method determines whether a string value is either null or the empty string.
+     *
+     * @param string is the value to check.
+     * @return true, iff the argument is null or the empty string.
+     */
+    public static boolean isNullOrEmpty(final CharSequence string)
+    {
+        return string == null || string.length() == 0;
+    }
+
+    /**
+     * This method finds the common prefix of two strings.
+     *
+     * @param string1 is the first string.
+     * @param string2 is the second string.
+     * @return the prefix that string1 and string2 share.
+     */
+    public static String commonPrefix(final CharSequence string1,
+                                      final CharSequence string2)
+    {
+        Preconditions.checkNotNull(string1, "string1");
+        Preconditions.checkNotNull(string1, "string2");
+
+        final StringBuilder common = new StringBuilder();
+
+        for (int i = 0; i < string1.length() && i < string2.length(); i++)
+        {
+            if (string1.charAt(i) == string2.charAt(i))
+            {
+                common.append(string1.charAt(i));
+            }
+            else
+            {
+                break;
+            }
+        }
+
+        return common.toString();
+    }
+
+    /**
+     * This method finds the common suffix of two strings.
+     *
+     * @param string1 is the first string.
+     * @param string2 is the second string.
+     * @return the suffix that string1 and string2 share.
+     */
+    public static String commonSuffix(final CharSequence string1,
+                                      final CharSequence string2)
+    {
+        Preconditions.checkNotNull(string1, "string1");
+        Preconditions.checkNotNull(string1, "string2");
+
+        final StringBuilder common = new StringBuilder();
+
+        for (int i = 1; string1.length() - i >= 0 && string2.length() - i >= 0; i++)
+        {
+            if (string1.charAt(string1.length() - i) == string2.charAt(string2.length() - i))
+            {
+                common.append(string1.charAt(i));
+            }
+            else
+            {
+                break;
+            }
+        }
+
+        return common.reverse().toString();
+    }
+
+    /**
+     * This method computes the Levenshtein distance between two strings.
+     *
+     * <p>
+     * This is a string similarity algorithm.
+     * The more similar the two strings are, the lower the Levenshtein distance.
+     * </p>
+     *
+     * @param string1 is the first string.
+     * @param string2 is the second string.
+     * @return the Levenshtein distance between the two strings.
+     */
+    public static int levenshteinDistance(final String string1,
+                                          final String string2)
+    {
+        return 0;
     }
 }

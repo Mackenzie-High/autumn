@@ -1,0 +1,22 @@
+module Main in execution;
+
+tuple Value (x : int);
+
+
+@Start
+defun main (args : String[]) : void
+{
+    delegate method : MethodEquals => My::handler;
+
+    var p = (new Value 100);
+    var q = (new Value 200);
+
+    p = (Records::bindCompare p, method);
+
+    assert (p.compareTo q) == 317;
+}
+
+defun handler (self : Value, other : Object) : int
+{
+    return (self.x) + ((other is Value).x) + 17;
+}

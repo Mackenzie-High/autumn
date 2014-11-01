@@ -1,6 +1,10 @@
 
 Notes:
-. Allow auto downcast in assignment via special syntax, due to the lack of generics.
+. Remember to add line-number-nodes to the bytecode.
+. Double check the grammar again for consistency.
+. . Why does "assert" take an expression, yet "if" takes a paren-condition?
+. . Should there be another keyword in branch-statements.
+. . . Example: branch (x) to () default CASE_ELSE;
 . Allow loading of class files and resource files by class Autumn.
 . Should the methods in the Module interface be renamed?
 . The util framework will be added in a later release version.

@@ -1,6 +1,6 @@
 module Main in execution;
 
-exception Moo extends Throwable;
+exception Moo is Throwable;
 
 @Start
 defun main (args : String[]) : void

@@ -48,6 +48,10 @@ Test Index
 . . . T0021 = Undeclared Label
 . . Marker
 . . . T0020 = Duplicate Label
+. . Branch
+. . . T0126 = Expected Integer - Index
+. . . T0127 = Undeclared Label - Non-Default
+. . . T0128 = Undeclared Label - Default
 . . While
 . . . T0003 = Expected Condition
 . . Until
@@ -70,7 +74,7 @@ Test Index
 . . . T0054 = Expected Reference-Type
 . . . T0055 = Expected Iterable
 . . . T0067 = Variable Out of Scope - (in iterable)
-. . . T0067 = Variable Out of Scope - (outside of loop)
+. . . T0068 = Variable Out of Scope - (outside of loop)
 . . Break
 . . . T0060 = Outside of Loop
 . . Continue
@@ -178,6 +182,16 @@ Test Index
 . . . Expected Non-Void Last Element
 . . List
 . . . T0036 = Expected Non-Void Elements
+. . List Comprehension
+. . . T0129 = Expected Non-Void Modifier
+. . . T0130 = Duplicate Variable
+. . . T0131 = No Such Type
+. . . T0132 = Inaccessible Type
+. . . T0133 = Expected Reference-Type
+. . . T0134 = Expected Iterable
+. . . T0135 = Variable Out of Scope - (in iterable)
+. . . T0136 = Variable Out of Scope - (outside of loop)
+. . . T0137 = Expected Condition
 . Operators
 . . Unary Operators Generally
 . . . T0023 = No Such Method

@@ -3,8 +3,8 @@ package autumn.lang.internals;
 import autumn.lang.Record;
 import autumn.lang.SpecialMethods;
 import autumn.lang.TypedFunctor;
+import autumn.util.F;
 import autumn.util.Functors;
-import autumn.util.Records;
 import autumn.util.Strings;
 import com.google.common.collect.Lists;
 import java.util.Iterator;
@@ -46,9 +46,7 @@ import java.util.List;
  * <br>
  * <ul>
  * <li>bind(SpecialMethods)</li>
- * <li>clear()</li>
  * <li>set(int, Object)</li>
- * <li>set(String, Object)</li>
  * <li>copy()</li>
  * <li>immutable()</li>
  * <li>mutable()</li>
@@ -175,15 +173,47 @@ public abstract class AbstractRecord
     @Override
     public final int compareTo(final Record other)
     {
-        if (bindings().getCompareTo() == null)
-        {
-            throw new UnsupportedOperationException("compareTo(Record)");
-        }
-        else
+        if (bindings().getCompareTo() != null)
         {
             return (Integer) Functors.quietlyApply(bindings().getCompareTo(),
                                                    Lists.newArrayList(this, other));
         }
+        else if (other == null)
+        {
+            return 1; // Null is always less than an object.
+        }
+        else if (keys().equals(other.keys()) == false)
+        {
+            throw new UnsupportedOperationException();
+        }
+        else
+        {
+            for (int i = 0; i < size(); i++)
+            {
+                try
+                {
+                    final Comparable operand1 = (Comparable) this.get(i);
+                    final Comparable operand2 = (Comparable) other.get(i);
+
+                    final int relationship = F.compare(operand1, operand2);
+
+                    if (relationship < 0)
+                    {
+                        return -1;
+                    }
+                    else if (relationship > 0)
+                    {
+                        return 1;
+                    }
+                }
+                catch (ClassCastException ex)
+                {
+                    throw new UnsupportedOperationException(ex);
+                }
+            }
+        }
+
+        return 0;
     }
 
     /**
@@ -192,10 +222,13 @@ public abstract class AbstractRecord
     @Override
     public final boolean equals(final Object other)
     {
-        if (bindings().getEquals() != null)
+        final TypedFunctor method = bindings().getEquals();
+
+        if (method != null)
         {
-            return (Boolean) Functors.quietlyApply(bindings().getEquals(),
-                                                   Lists.newArrayList(this, other));
+            final Object self = this;
+
+            return (Boolean) Functors.quietlyApply(method, Lists.newArrayList(self, other));
         }
 
         if (this == null)
@@ -215,7 +248,7 @@ public abstract class AbstractRecord
 
         final Record record = (Record) other;
 
-        final boolean answer = Records.entryMap(this).equals(Records.entryMap(record));
+        final boolean answer = keys().equals(record.keys()) && values().equals(record.values());
 
         return answer;
     }
@@ -226,14 +259,17 @@ public abstract class AbstractRecord
     @Override
     public final int hashCode()
     {
-        if (bindings().getHashCode() == null)
+        final TypedFunctor method = bindings().getHashCode();
+
+        if (method == null)
         {
-            return Records.entryMap(this).hashCode();
+            return keys().hashCode() ^ values().hashCode();
         }
         else
         {
-            return (Integer) Functors.quietlyApply(bindings().getHashCode(),
-                                                   Lists.newArrayList(this));
+            final Object self = this;
+
+            return (Integer) Functors.quietlyApply(method, Lists.newArrayList(self));
         }
     }
 
@@ -243,11 +279,13 @@ public abstract class AbstractRecord
     @Override
     public final Iterator<Object> iterator()
     {
-        final TypedFunctor method = bindings().getToString();
+        final TypedFunctor method = bindings().getIterator();
 
         if (method != null)
         {
-            return (Iterator) Functors.quietlyApply(method, Lists.newArrayList(this));
+            final Object self = this;
+
+            return (Iterator) Functors.quietlyApply(method, Lists.newArrayList(self));
         }
         else
         {
@@ -265,11 +303,17 @@ public abstract class AbstractRecord
 
         if (method != null)
         {
-            return Functors.quietlyApply(method, Lists.newArrayList(this)) + "";
+            final Object self = this;
+
+            final List<Object> arguments = Lists.newArrayList(self);
+
+            return "" + Functors.quietlyApply(method, arguments);
         }
         else
         {
-            return Strings.str(values(), "(", ", ", ")");
+            final String result = Strings.str(values(), "(", ", ", ")");
+
+            return result;
         }
     }
 }

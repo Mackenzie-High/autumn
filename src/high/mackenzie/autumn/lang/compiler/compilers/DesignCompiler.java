@@ -2,15 +2,23 @@ package high.mackenzie.autumn.lang.compiler.compilers;
 
 import autumn.lang.compiler.ClassFile;
 import autumn.lang.compiler.ast.commons.IRecord;
-import autumn.lang.compiler.ast.nodes.Element;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
-import high.mackenzie.autumn.lang.compiler.typesystem.CustomDeclaredType;
+import high.mackenzie.autumn.lang.compiler.typesystem.design.IConstructor;
+import high.mackenzie.autumn.lang.compiler.typesystem.design.IInterfaceType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IMethod;
+import high.mackenzie.autumn.lang.compiler.typesystem.design.IVariableType;
+import high.mackenzie.autumn.lang.compiler.utils.BridgeMethod;
+import high.mackenzie.autumn.lang.compiler.utils.GetterMethod;
+import high.mackenzie.autumn.lang.compiler.utils.RecordElement;
+import high.mackenzie.autumn.lang.compiler.utils.SetterMethod;
+import high.mackenzie.autumn.lang.compiler.utils.TypeSystemUtils;
 import high.mackenzie.autumn.lang.compiler.utils.Utils;
 import java.util.List;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.ClassNode;
+import org.objectweb.asm.tree.MethodNode;
 
 /**
  * An instance of this class controls the compilation of a design-definition.
@@ -18,30 +26,8 @@ import org.objectweb.asm.tree.ClassNode;
  * @author Mackenzie High
  */
 public class DesignCompiler
-        implements ICompiler
+        extends AbstractRecordCompiler
 {
-    /**
-     * Essentially, this is the program that is being compiled.
-     */
-    public final ProgramCompiler program;
-
-    /**
-     * Essentially, this is the enclosing module that is also being compiled.
-     */
-    public final ModuleCompiler module;
-
-    /**
-     * This is the Abstract-Syntax-Tree representation of the design's definition.
-     */
-    public final IRecord node;
-
-    /**
-     * This will be the type-system representation of the design's definition.
-     *
-     * This field will be initialized during the type-declaration compiler pass.
-     */
-    public CustomDeclaredType type;
-
     /**
      * Sole Constructor.
      *
@@ -51,103 +37,45 @@ public class DesignCompiler
     public DesignCompiler(final ModuleCompiler module,
                           final IRecord node)
     {
+        super(module, node);
+
         assert module != null;
         assert node != null;
         assert module.tuples.contains(node);
-
-        this.program = module.program;
-        this.module = module;
-        this.node = node;
     }
 
+    /**
+     * A design-type never has a constructor, because design-types compiles to an interface.
+     *
+     * @return null.
+     */
     @Override
-    public void performTypeDeclaration()
+    protected IConstructor typeofCtor()
     {
-        /**
-         * Determine the descriptor of the tuple.
-         */
-        final String namespace = module.type.getNamespace().replace('.', '/');
-        final String name = node.getName().getName();
-        final String descriptor = "L" + namespace + '/' + name + ';';
-
-        /**
-         * Ensure that the type was not already declared elsewhere.
-         */
-        program.checker.requireNonDuplicateType(node.getName(), descriptor);
-
-        /**
-         * Declare the tuple.
-         */
-        this.type = program.typesystem.typefactory().newClassType(descriptor);
+        return null;
     }
 
+    /**
+     * A design-type never has an instance() method, because design-types compiles to an interface.
+     *
+     * @return null.
+     */
     @Override
-    public void performTypeInitialization()
+    protected IMethod typeofInstance()
     {
-        /**
-         * Set the type's modifier flags to public and final.
-         */
-        type.setModifiers(Opcodes.ACC_PUBLIC + Opcodes.ACC_ABSTRACT + Opcodes.ACC_INTERFACE);
-
-        /**
-         * Set the superclass of the tuple's type.
-         */
-//        type.setSuperclass(program.typesystem.utils.ABSTRACT_RECORD);
-        /**
-         * Add the types of the methods defined in the tuple to the tuple's type.
-         */
-        final List<IMethod> methods = Lists.newLinkedList();
-
-        /**
-         * Create the getter and setter methods for each element in the tuple.
-         */
-        for (Element entry : node.getElements().getElements())
-        {
-//            final String element_name = entry.getName().getName();
-//
-//            final IVariableType element_type = module.imports.resolveVariableType(entry.getType());
-//
-//            final AbstractRecordCompiler.ElementInfo element = new AbstractRecordCompiler.ElementInfo(elements.size(), element_name, element_type);
-//
-//            // Hold onto the type of the element for later use in other methods.
-//            elements.add(element);
-//
-//            /**
-//             * Each element has an associated getter method and a setter method.
-//             */
-//            methods.add(typeofSetter(element));
-//            methods.add(typeofGetter(element));
-        }
-
-        /**
-         * Now we have generated the types of the methods in the tuple.
-         * However, we still need to add the generated method types to the tuple's type.
-         */
-        type.setMethods(methods);
-
-        /**
-         * Now we need to generate bridge methods.
-         */
-//        typeofBridgeMethods();
+        return null;
     }
 
-    @Override
-    public void performTypeStructureChecking()
-    {
-        // TODO
-    }
-
-    @Override
-    public void performTypeUsageChecking()
-    {
-        // Pass
-    }
-
+    /**
+     * This method generates the compiled class-file.
+     *
+     * @return the compiled class-file.
+     */
     public ClassFile build()
     {
-        final String tuple_internal_name = Utils.internalName(type);
+        final String internal_name = Utils.internalName(type);
 
-        final String tuple_source_name = Utils.sourceName(type);
+        final String source_name = Utils.sourceName(type);
 
         /**
          * Create the bytecode representation of the tuple itself.
@@ -155,21 +83,43 @@ public class DesignCompiler
         final ClassNode clazz = new ClassNode();
         {
             clazz.version = Opcodes.V1_6;
-            clazz.visibleAnnotations = Lists.newLinkedList();
+            clazz.visibleAnnotations = module.anno_utils.compileAnnotationList(type.getAnnotations());
             clazz.access = type.getModifiers();
-            clazz.name = tuple_internal_name;
+            clazz.name = internal_name;
             clazz.superName = Utils.internalName(type.getSuperclass());
-            clazz.interfaces = Lists.newLinkedList();
-            clazz.fields = Lists.newArrayList();
+            clazz.fields = ImmutableList.of();
             clazz.methods = Lists.newLinkedList();
             clazz.sourceFile = String.valueOf(node.getLocation().getFile());
 
-//
-//            for (ElementInfo element : elements)
-//            {
-//                clazz.methods.add(this.generateSetter(element));
-//                clazz.methods.add(this.generateGetter(element));
-//            }
+            /**
+             * The record may implement zero or more designs, as specified by the user.
+             */
+            for (IInterfaceType superinterface : type.getSuperinterfaces())
+            {
+                clazz.interfaces.add(Utils.internalName(superinterface));
+            }
+
+            /**
+             * Generate the special methods.
+             */
+            clazz.methods.add(this.generateMethodMutable());
+            clazz.methods.add(this.generateMethodImmutable());
+            clazz.methods.add(this.generateMethodSet());
+            clazz.methods.add(this.generateMethodBind());
+
+            /**
+             * Generate all the bridge methods.
+             */
+            clazz.methods.addAll(this.generateBridgeMethods());
+
+            /**
+             * Generate all the setters and getters.
+             */
+            for (RecordElement element : analyzer.elements.values())
+            {
+                clazz.methods.add(this.generateSetter(element.setter()));
+                clazz.methods.add(this.generateGetter(element.getter()));
+            }
         }
 
         /**
@@ -182,8 +132,175 @@ public class DesignCompiler
         /**
          * Create the class-file object that will store the emitted bytecode.
          */
-        final ClassFile file = new ClassFile(tuple_source_name, bytecode);
+        final ClassFile file = new ClassFile(source_name, bytecode);
 
         return file;
+    }
+
+    /**
+     * This method generates the bytecode representations of the bridge methods.
+     *
+     * @return the generated methods.
+     */
+    private List<MethodNode> generateBridgeMethods()
+    {
+        final List<MethodNode> result = Lists.newLinkedList();
+
+        for (BridgeMethod bridge : bridges)
+        {
+            result.add(bridge.compileAbstract(module));
+        }
+
+        return result;
+    }
+
+    /**
+     * This method generates the bytecode representation of the set(int, Object) method.
+     *
+     * @return the generated method.
+     */
+    private MethodNode generateMethodSet()
+    {
+        final MethodNode method = Utils.bytecodeOf(module,
+                                                   TypeSystemUtils.find(type.getAllVisibleMethods(),
+                                                                        "set",
+                                                                        "(ILjava/lang/Object;)" + program.typesystem.utils.RECORD.getDescriptor()));
+
+        // Add the ABSTRACT modifier.
+        method.access = method.access | Opcodes.ACC_ABSTRACT;
+
+        return method;
+    }
+
+    /**
+     * This method generates the bytecode representation of the immutable() method.
+     *
+     * @return the generated method.
+     */
+    private MethodNode generateMethodImmutable()
+    {
+        final MethodNode method = Utils.bytecodeOf(module,
+                                                   TypeSystemUtils.find(type.getAllVisibleMethods(),
+                                                                        "immutable",
+                                                                        "()" + program.typesystem.utils.RECORD.getDescriptor()));
+
+        // Add the ABSTRACT modifier.
+        method.access = method.access | Opcodes.ACC_ABSTRACT;
+
+        return method;
+    }
+
+    /**
+     * This method generates the bytecode representation of the mutable() method.
+     *
+     * @return the generated method.
+     */
+    private MethodNode generateMethodMutable()
+    {
+        final MethodNode method = Utils.bytecodeOf(module,
+                                                   TypeSystemUtils.find(type.getAllVisibleMethods(),
+                                                                        "mutable",
+                                                                        "()" + program.typesystem.utils.RECORD.getDescriptor()));
+
+        // Add the ABSTRACT modifier.
+        method.access = method.access | Opcodes.ACC_ABSTRACT;
+
+        return method;
+    }
+
+    /**
+     * This method generates the bytecode representation of the bind(SpecialMethods) method.
+     *
+     * @return the generated method.
+     */
+    public MethodNode generateMethodBind()
+    {
+        final IInterfaceType RECORD = program.typesystem.utils.RECORD;
+
+        /**
+         * Get partial bytecode representation of the bindings() method.
+         */
+        final MethodNode method = Utils.bytecodeOf(module,
+                                                   TypeSystemUtils.find(type.getAllVisibleMethods(),
+                                                                        "bind",
+                                                                        "(" + program.typesystem.utils.SPECIAL_METHODS + ")" + RECORD.getDescriptor()));
+
+        // Add the ABSTRACT modifier.
+        method.access = method.access | Opcodes.ACC_ABSTRACT;
+
+        return method;
+    }
+
+    /**
+     * This method generates the bytecode representation of a setter method.
+     *
+     * <p>
+     * A setter method must obtain a modifiable variant of the tuple.
+     * In other words, the setter must copy the tuple, if it is immutable.
+     * Then the setter must set the field in the tuple to the new value.
+     * Finally, the setter must return the modified tuple.
+     * Take note, the returned tuple may not be the original tuple.
+     * </p>
+     *
+     * @param element is an object that describes the element.
+     * @return the generated method.
+     */
+    private MethodNode generateSetter(final SetterMethod element)
+    {
+        /**
+         * Get the static-type of the element.
+         */
+        final IVariableType element_type = typeOfElement(element.name);
+
+        final MethodNode method = Utils.bytecodeOf(module,
+                                                   TypeSystemUtils.find(type.getMethods(),
+                                                                        element.name,
+                                                                        "(" + element_type.getDescriptor() + ")" + type.getDescriptor()));
+
+        // Add the ABSTRACT modifier.
+        method.access = method.access | Opcodes.ACC_ABSTRACT;
+
+        return method;
+    }
+
+    /**
+     * This method generates the bytecode representation of a getter method.
+     *
+     * <p>
+     * A getter method simply read the field that stores the element and then returns the result.
+     * </p>
+     *
+     * @param element is an object that describes the element.
+     * @return the generated method.
+     */
+    private MethodNode generateGetter(final GetterMethod element)
+    {
+        /**
+         * Get the static-type of the element.
+         */
+        final IVariableType element_type = typeOfElement(element.name);
+
+        final MethodNode method = Utils.bytecodeOf(module,
+                                                   TypeSystemUtils.find(type.getMethods(),
+                                                                        element.name,
+                                                                        "()" + element_type.getDescriptor()));
+
+        // Add the ABSTRACT modifier.
+        method.access = method.access | Opcodes.ACC_ABSTRACT;
+
+        return method;
+    }
+
+    /**
+     * This method retrieves the static-type of an element given the element's name.
+     *
+     * @param key is the name of the element.
+     * @return the most-specific static-type of the element.
+     */
+    private IVariableType typeOfElement(final String key)
+    {
+        final IVariableType result = analyzer.elements.get(key).type();
+
+        return result;
     }
 }
