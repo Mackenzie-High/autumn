@@ -10,13 +10,6 @@ About:
 ------
 + Autumn is a multi-paradigm dynamically compiled statically-typed programming language for the JVM.
 + Autumn is licensed under the terms of the [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0) license. 
-+ Notable Features:
-.. * Autumn can use libraries written in Java.
-.. * Autumn promotes immutability by providing purely functional data-strucutures and custom data-types.
-+ Paradigms:
-.. * Imperative
-.. * Procedural
-.. * Functional
 
 Quick Links:
 ------------
