@@ -3121,13 +3121,6 @@ public final class TreeBuilder
         // Get the pieces off of the stack.
         final IExpression body = (IExpression) stack.pop();
 
-        final LinkedList<Variable> formals = Lists.newLinkedList();
-
-        while (stack.size() != 2)
-        {
-            formals.addFirst((Variable) stack.pop());
-        }
-
         final TypeSpecifier type = (TypeSpecifier) stack.pop();
 
         final Variable variable = (Variable) stack.pop();
@@ -3137,7 +3130,6 @@ public final class TreeBuilder
 
         // Initialize the AST node.
         node = node.setVariable(variable);
-        node = node.setParameters(new ConstructList(formals));
         node = node.setType(type);
         node = node.setBody(body);
 
@@ -3756,8 +3748,10 @@ public final class TreeBuilder
      * <li> result : Annotation </li>
      * </ul>
      * </p>
+     *
+     * @param value is the value to store in the annotation.
      */
-    public void createComponentAnnotation()
+    public void createComponentAnnotation(final String value)
     {
         Preconditions.checkState(stack.size() == 1);
 
@@ -3767,6 +3761,7 @@ public final class TreeBuilder
         // Create the AST node.
         Annotation node = new Annotation();
         node = node.setType(type);
+        node = node.setValue(value);
 
         // Push the AST node onto the stack.
         stack.push(node);

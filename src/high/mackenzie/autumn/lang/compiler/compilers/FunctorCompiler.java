@@ -16,7 +16,11 @@ import high.mackenzie.autumn.lang.compiler.typesystem.design.IFormalParameter;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IInterfaceType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IMethod;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IVariableType;
+import high.mackenzie.autumn.lang.compiler.utils.BridgeMethod;
+import high.mackenzie.autumn.lang.compiler.utils.FunctorAnalyzer;
+import high.mackenzie.autumn.lang.compiler.utils.TypeSystemUtils;
 import high.mackenzie.autumn.lang.compiler.utils.Utils;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import org.objectweb.asm.ClassWriter;
@@ -55,6 +59,8 @@ public final class FunctorCompiler
     private CustomMethod invoke;
 
     private final List<IVariableType> parameters = Lists.newLinkedList();
+
+    private FunctorAnalyzer analyzer;
 
     /**
      * Sole Constructor.
@@ -101,6 +107,7 @@ public final class FunctorCompiler
             clazz.methods.add(this.generateMethodInvoke());
             clazz.methods.add(this.generateMethodParameterTypes());
             clazz.methods.add(this.generateMethodReturnType());
+            clazz.methods.addAll(generateBridgeMethods());
         }
 
         /**
@@ -149,14 +156,31 @@ public final class FunctorCompiler
     public void performTypeInitialization()
     {
         /**
+         * Create the type-system representations of the annotation-list.
+         */
+        type.setAnnotations(module.anno_utils.typesOf(node.getAnnotations()));
+
+        /**
+         * Check the list of annotations.
+         */
+        program.checker.checkAnnotations(node.getAnnotations(), type.getAnnotations());
+
+        /**
          * Set the type's modifier flags.
          */
-        type.setModifiers(Opcodes.ACC_PUBLIC + Opcodes.ACC_FINAL);
+        type.setModifiers(Opcodes.ACC_PUBLIC);
 
         /**
          * Set the superclass of the functor's type.
          */
-        type.setSuperclass(program.typesystem.utils.ABSTRACT_STATIC_FUNCTOR);
+        if (node.getSuperclass() == null)
+        {
+            type.setSuperclass(program.typesystem.utils.ABSTRACT_STATIC_FUNCTOR);
+        }
+        else
+        {
+            type.setSuperclass(module.imports.resolveClassType(node.getSuperclass()));
+        }
 
         /**
          * Add the constructor to the type.
@@ -175,7 +199,23 @@ public final class FunctorCompiler
     @Override
     public void performTypeStructureChecking()
     {
-        // Pass, because nostructure needs checked.
+        /**
+         * Prevent circular inheritance.
+         */
+        if (TypeSystemUtils.detectCircularInheritance(type))
+        {
+            program.checker.reportCircularInheritance(node, type);
+        }
+
+        /**
+         * The superclass must be a subtype of Functor.
+         */
+        program.checker.requireFunctor(node.getSuperclass(), type.getSuperclass());
+
+        /**
+         * Create an object that will be used to find problem with the functor-type.
+         */
+        this.analyzer = new FunctorAnalyzer(program.typesystem.utils, type);
     }
 
     /**
@@ -196,7 +236,7 @@ public final class FunctorCompiler
     {
         ctor = new CustomConstructor(type.getTypeFactory());
 
-        final IInterfaceType FUNCTOR = program.typesystem.utils.FUNCTOR;
+        final IInterfaceType FUNCTOR = program.typesystem.utils.TYPED_FUNCTOR;
 
         final IFormalParameter formal = program.typesystem.utils.formal(FUNCTOR);
 
@@ -239,7 +279,7 @@ public final class FunctorCompiler
          */
         invoke.setOwner(type);
         invoke.setAnnotations(new LinkedList());
-        invoke.setModifiers(Opcodes.ACC_PUBLIC + Opcodes.ACC_FINAL);
+        invoke.setModifiers(Opcodes.ACC_PUBLIC);
         invoke.setName("invoke");
         invoke.setParameters(formals);
         invoke.setReturnType(module.imports.resolveReturnType(node.getReturnType()));
@@ -263,9 +303,9 @@ public final class FunctorCompiler
         method.instructions.add(new VarInsnNode(Opcodes.ALOAD, 0)); // Load 'this'
         method.instructions.add(new VarInsnNode(Opcodes.ALOAD, 1)); // Load param[0]
         method.instructions.add(new MethodInsnNode(Opcodes.INVOKESPECIAL,
-                                                   Utils.internalName(program.typesystem.utils.ABSTRACT_STATIC_FUNCTOR),
+                                                   Utils.internalName(type.getSuperclass()),
                                                    "<init>",
-                                                   "(Lautumn/lang/Functor;)V"));
+                                                   "(Lautumn/lang/TypedFunctor;)V"));
 
         /**
          * Return from the constructor.
@@ -421,5 +461,22 @@ public final class FunctorCompiler
         }
 
         return method;
+    }
+
+    /**
+     * This method generates the bytecode representations of the bridge invoke(*) methods.
+     *
+     * @return the bytecode of the methods.
+     */
+    private List<MethodNode> generateBridgeMethods()
+    {
+        final List<MethodNode> methods = Lists.newLinkedList();
+
+        for (BridgeMethod bridge : analyzer.bridges())
+        {
+            methods.add(bridge.compile(module));
+        }
+
+        return Collections.unmodifiableList(methods);
     }
 }

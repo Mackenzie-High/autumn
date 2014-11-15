@@ -1,42 +1,106 @@
 
 
-
-
 Test Index
+. Modules
+. . Duplicate Type
+. . Illegal Package - autumn
+. . Illegal Package - java
 . Annotation Definitions
 . . T0039 = Duplicate Type
+. . T0150 = Duplicate Annotation
 . Exception Definitions
 . . T0041 = Duplicate Type
+. . T0151 = Duplicate Annotation
 . . T0043 = Superclass - No Such Type
 . . T0044 = Superclass - Inaccessible Type
+. . T0138 = Superclass - Expected Class Type
 . . T0042 = Superclass - Expected Throwable
 . . T0045 = Circular Inheritance - Direct
 . . T0046 = Circular Inheritance - Indirect
 . Enum Definitions
 . . T0049 = Duplicate Type
-. . T0050 = Duplicate Constant
+. . T0152 = Duplicate Annotation
+. . T0050 = Element - Duplicate
+. . Element - Illegal Name
+. Design Definitions
+. . T0168 = Duplicate Type
+. . T0153 = Duplicate Annotation
+. . T0170 = Super - No Such Type
+. . T0171 = Super - Inaccessible
+. . T0178 = Super - Duplicate Direct Supertype
+. . T0181 = Super - Expected Interface-Type - Encountered Void+ Type
+. . T0173 = Super - Expected Interface-Type - Encountered Primitive Type
+. . T0172 = Super - Expected Interface-Type - Encountered Class Type
+. . T0180 = Super - Expected Design-Type
+. . T0174 = Element - Duplicate
+. . T0175 = Element - No Such Type
+. . T0176 = Element - Inaccessible Type
+. . T0177 = Element - Expected Variable-Type
+. . T0179 = Element - Covariance Violation
+. . Element - Illegal Name
+. . T0162 = Circular Inheritance - Direct
+. . T0163 = Circular Inheritance - Indirect
 . Struct Definitions
 . . T0121 = Duplicate Type
-. . T0122 = No Such Supertype
-. . T0123 = Inaccessible Supertype
-. . T0124 = Duplicate Direct Supertype
+. . T0155 = Duplicate Annotation
+. . T0122 = Super - No Such Type
+. . T0123 = Super - Inaccessible
+. . T0124 = Super - Duplicate Direct Supertype
+. . Super - Expected Interface-Type
+. . Super - Expected Design-Type
 . . T0125 = Duplicate Element
 . . Element - Covariance Violation
 . . Element - No Such Type
 . . Element - Inaccessible Type
 . . Element - Expected Variable-Type
-. . Circular Inheritance - Direct
-. . Circular Inheritance - Indirect
+. . T0164 = Circular Inheritance - Direct
 . Tuple Definitions
-. . Duplicate Type
-. . Duplicate Element
+. . T0169 = Duplicate Type
+. . Duplicate Annotation
+. . Super - No Such Type
+. . Super - Inaccessible
+. . Super - Expected Interface-Type
+. . Super - Expected Design-Type
+. . Super - Duplicate Direct Supertype
+. . Element - Duplicate
 . . Element - No Such Type
 . . Element - Inaccessible Type
 . . Element - Expected Variable-Type
+. . T0166 = Circular Inheritance - Direct
+. . Total Ordering Required
+. Functor Definitions
+. . T0139 = Duplicate Type
+. . T0156 = Duplicate Annotation
+. . T0140 = Superclass - No Such Type
+. . T0141 = Superclass - Inaccessible Type
+. . T0142 = Superclass - Expected Class Type
+. . T0143 = Superclass - Expected Functor Type
+. . T0144 = Parameter - No Such Type
+. . T0145 = Parameter - Inaccessible Type
+. . T0146 = Parameter - Expected Variable Type
+. . T0147 = Returns - No Such Type
+. . T0148 = Returns - Inaccessible Type
+. . Returns - Expected Return Type
+. . T0149 = Circular Inheritance
+. . Covariance Violation - Different Number of Formals
+. . Covariance Violation - Non Covariant Parameters
+. . Covariance Violation - Non Covariant Return Type
 . Function Definitions
-. . Inaccessible Parameter Type
-. . Inaccessible Return Type
 . . Duplicate Function
+. . T0157 = Duplicate Annotation
+. . Name - Illegal - instance
+. . Name - Illegal - module info
+. . T0182 = Parameter - No Such Type
+. . T0183 = Parameter - Inaccessible Type
+. . T0184 = Parameter - Expected Variable Type
+. . T0185 = Returns - No Such Type
+. . T0186 = Returns - Inaccessible Type
+. . Returns - Expected Return Type - (impossible to test)
+. . Wrong Signature for Annotation - @Once
+. . Wrong Signature for Annotation - @Setup
+. . Wrong Signature for Annotation - @Start
+. . Wrong Signature for Annotation - @Test
+. . Too Many Starts
 . .
 . Statements
 . . If-Elif-Else
@@ -108,12 +172,21 @@ Test Index
 . . . T0075 = Variable Out of Scope - (in outer scope)
 . . . T0076 = Variable Out of Scope - (in equally nested scope)
 . . Expression
-. . Setter
-. . . No Such Variable
-. . Getter
-. . . No Such Variable
-. . Method
-. . . No Such Variable
+. . Delegate
+. . . Duplicate Variable Declaration
+. . . Type - No Such Type
+. . . Type - Inaccessible Type
+. . . Type - Expected Functor Type
+. . . Owner - No Such Type
+. . . Owner - Inaccessible Type
+. . . Owner - Expected Module Type
+. . . No Such Method
+. . Lambda
+. . . Duplicate Variable Declaration
+. . . Type - No Such Type
+. . . Type - Inaccessible Type
+. . . Type - Expected Functor Type
+. . . Returns - Wrong Type
 . . Return Void
 . . . Wrong Type
 . . Return Value
@@ -125,11 +198,8 @@ Test Index
 . . Yield Value
 . . . Wrong Type
 . Expressions
-. . Delegate
-. . . Owner - No Such Type
-. . . Owner - Inaccessible Type
-. . . No Such Method
 . . Dispatch
+. . . No Such Method
 . . New
 . . . T0063 = No Such Type
 . . . T0064 = Inaccessible Type
@@ -181,17 +251,17 @@ Test Index
 . . Progn
 . . . Expected Non-Void Last Element
 . . List
-. . . T0036 = Expected Non-Void Elements
+. . . T0036 = Value Required
 . . List Comprehension
-. . . T0129 = Expected Non-Void Modifier
+. . . T0129 = Modifier - Value Required
 . . . T0130 = Duplicate Variable
 . . . T0131 = No Such Type
 . . . T0132 = Inaccessible Type
 . . . T0133 = Expected Reference-Type
 . . . T0134 = Expected Iterable
+. . . T0137 = Expected Condition
 . . . T0135 = Variable Out of Scope - (in iterable)
 . . . T0136 = Variable Out of Scope - (outside of loop)
-. . . T0137 = Expected Condition
 . Operators
 . . Unary Operators Generally
 . . . T0023 = No Such Method
@@ -220,6 +290,8 @@ Test Index
 . . . T0113 = Expected Reference-Type - Right Operand
 . . . T0027 = Incompatible Operands
 . . As
+. . . T0158 = No Such Type
+. . . T0159 = Inaccessible Type
 . . . T0034 = Impossible Conversion
 . . Is
 . . . T0035 = Impossible Conversion
@@ -242,7 +314,6 @@ Test Index
 . . Variable
 . . . T0080 = No Such Variable
 . . . T0081 = Variable Out of Scope
-
 
 
 

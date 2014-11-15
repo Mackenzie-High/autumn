@@ -1,0 +1,10 @@
+module Main in typechecks;
+
+annotation Anno;
+
+@Anno
+@Anno
+defun main (args : String) : void
+{
+    nop;
+}

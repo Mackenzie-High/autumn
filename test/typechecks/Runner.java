@@ -39,7 +39,51 @@ public final class Runner
 
 
 
-
+        test("T0186", INACCESSIBLE_TYPE);
+        test("T0185", NO_SUCH_TYPE);
+        test("T0184", EXPECTED_VARIABLE_TYPE);
+        test("T0183", INACCESSIBLE_TYPE);
+        test("T0182", NO_SUCH_TYPE);
+        test("T0181", EXPECTED_INTERFACE_TYPE);
+        test("T0180", EXPECTED_DESIGN_TYPE);
+        test("T0179", COVARIANCE_VIOLATION);
+        test("T0178", DUPLICATE_SUPERTYPE);
+        test("T0177", EXPECTED_VARIABLE_TYPE);
+        test("T0176", INACCESSIBLE_TYPE);
+        test("T0175", NO_SUCH_TYPE);
+        test("T0174", DUPLICATE_ELEMENT);
+        test("T0173", EXPECTED_INTERFACE_TYPE);
+        test("T0172", EXPECTED_INTERFACE_TYPE);
+        test("T0171", INACCESSIBLE_TYPE);
+        test("T0170", NO_SUCH_TYPE);
+        test("T0169", DUPLICATE_TYPE);
+        test("T0168", DUPLICATE_TYPE);
+        test("T0163", CIRCULAR_INHERITANCE);
+        test("T0162", CIRCULAR_INHERITANCE);
+        test("T0161", INACCESSIBLE_TYPE);
+        test("T0160", NO_SUCH_TYPE);
+        test("T0159", INACCESSIBLE_TYPE);
+        test("T0158", NO_SUCH_TYPE);
+        test("T0157", DUPLICATE_ANNOTATION);
+        test("T0156", DUPLICATE_ANNOTATION);
+        test("T0155", DUPLICATE_ANNOTATION);
+        test("T0154", DUPLICATE_ANNOTATION);
+        test("T0153", DUPLICATE_ANNOTATION);
+        test("T0152", DUPLICATE_ANNOTATION);
+        test("T0151", DUPLICATE_ANNOTATION);
+        test("T0150", DUPLICATE_ANNOTATION);
+        test("T0149", CIRCULAR_INHERITANCE);
+        test("T0148", INACCESSIBLE_TYPE);
+        test("T0147", NO_SUCH_TYPE);
+        test("T0146", EXPECTED_VARIABLE_TYPE);
+        test("T0145", INACCESSIBLE_TYPE);
+        test("T0144", NO_SUCH_TYPE);
+        test("T0143", EXPECTED_FUNCTOR_TYPE);
+        test("T0142", EXPECTED_CLASS_TYPE);
+        test("T0141", INACCESSIBLE_TYPE);
+        test("T0140", NO_SUCH_TYPE);
+        test("T0139", DUPLICATE_TYPE);
+        test("T0138", EXPECTED_CLASS_TYPE);
         test("T0137", EXPECTED_CONDITION);
         test("T0136", VARIABLE_OUTSIDE_OF_SCOPE);
         test("T0135", NO_SUCH_VARIABLE);
@@ -209,6 +253,8 @@ public final class Runner
     {
         try
         {
+
+
             final String path = "/typechecks/" + test;
 
             final URL url = Resources.getResource(Runner.class, path);
@@ -221,7 +267,7 @@ public final class Runner
 
             final BasicErrorReporter reporter = new BasicErrorReporter(stream);
 
-            final AutumnParser parser = new AutumnParser(reporter);
+            final AutumnParser parser = new AutumnParser(new BasicErrorReporter());
 
             final Module module = parser.parse(code, new File(path));
 

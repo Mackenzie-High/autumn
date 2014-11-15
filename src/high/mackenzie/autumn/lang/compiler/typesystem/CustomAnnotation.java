@@ -1,6 +1,8 @@
 package high.mackenzie.autumn.lang.compiler.typesystem;
 
+import autumn.util.Reflect;
 import com.google.common.base.Preconditions;
+import com.google.common.base.Strings;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IAnnotation;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IAnnotationType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.ITypeFactory;
@@ -24,6 +26,8 @@ public final class CustomAnnotation
 {
     private final Annotation annotation;
 
+    private final String value;
+
     private final IAnnotationType definition;
 
     /**
@@ -31,15 +35,18 @@ public final class CustomAnnotation
      *
      * @param annotation is the annotation that the new object will represent,
      * or null, if the new object is not backed by a real annotation.
+     * @param value is the value stored in the annotation, or null, if no such value exists.
      * @param definition is the type of the annotation's definition.
      */
     public CustomAnnotation(final Annotation annotation,
+                            final String value,
                             final IAnnotationType definition)
     {
         Preconditions.checkNotNull(definition);
 
         this.annotation = annotation;
         this.definition = definition;
+        this.value = Strings.nullToEmpty(value);
     }
 
     /**
@@ -55,6 +62,15 @@ public final class CustomAnnotation
      * {@inheritDoc}
      */
     @Override
+    public String getAnnotationValue()
+    {
+        return value;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Annotation toAnnotation()
     {
         return annotation;
@@ -63,7 +79,7 @@ public final class CustomAnnotation
     /**
      * This method creates a new IAnnotation from an actual annotation.
      *
-     * @param factory type-factory that is used to access types. 
+     * @param factory type-factory that is used to access types.
      * @param annotation is the actual annotation.
      * @return the type-system representation of the annotation.
      */
@@ -77,7 +93,9 @@ public final class CustomAnnotation
 
         final IAnnotationType type = (IAnnotationType) factory.fromClass(clazz);
 
-        final IAnnotation result = new CustomAnnotation(annotation, type);
+        final String value = Reflect.getAnnotationValue(annotation);
+
+        final IAnnotation result = new CustomAnnotation(annotation, value, type);
 
         return result;
     }

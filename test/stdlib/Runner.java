@@ -106,7 +106,8 @@ public final class Runner
 
                 System.out.println("Assertion Failed!");
                 System.out.println("  File: " + afe.file());
-                System.out.println("  Line #" + afe.line());
+                System.out.println("  Line: #" + afe.line());
+                System.out.println("  Message: " + afe.getMessage());
                 afe.printStackTrace(System.out);
             }
             else

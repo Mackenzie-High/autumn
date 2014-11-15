@@ -10,6 +10,7 @@ import high.mackenzie.autumn.lang.compiler.typesystem.design.IClassType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IDeclaredType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IMethod;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IType;
+import high.mackenzie.autumn.lang.compiler.typesystem.design.IVariableType;
 import high.mackenzie.autumn.lang.compiler.utils.Utils;
 import java.util.List;
 import java.util.Stack;
@@ -82,6 +83,11 @@ public final class StatementCodeGenerator
         //
         //////////////////////////////////////////////////////////////////////////////////////////
 
+        /**
+         * Embed the line number in the bytecode for debugging purposes.
+         */
+        Utils.addLineNumber(code, object);
+
         final LabelNode END = new LabelNode();
 
         // Put all the conditional cases into a single list.
@@ -121,6 +127,11 @@ public final class StatementCodeGenerator
         // @END
         /////////////////////////////////////////
 
+        /**
+         * Embed the line number in the bytecode for debugging purposes.
+         */
+        Utils.addLineNumber(code, object);
+
         final LabelNode END = new LabelNode();
 
         compileCondition(object.getCondition());
@@ -138,6 +149,11 @@ public final class StatementCodeGenerator
         //
         ////////////////////////////////////
 
+        /**
+         * Embed the line number in the bytecode for debugging purposes.
+         */
+        Utils.addLineNumber(code, object);
+
         final String name = object.getLabel().getName();
 
         final LabelNode node = function.labels.nodeOf(name);
@@ -153,6 +169,11 @@ public final class StatementCodeGenerator
         // @LABEL
         //
         ////////////////////////////////////
+
+        /**
+         * Embed the line number in the bytecode for debugging purposes.
+         */
+        Utils.addLineNumber(code, object);
 
         final String name = object.getLabel().getName();
 
@@ -171,6 +192,11 @@ public final class StatementCodeGenerator
         // TABLESWITCH label[0] , ... , label[n]   - Generate a jump-table.
         //
         ////////////////////////////////////////////////////////////////////////////////////////
+
+        /**
+         * Embed the line number in the bytecode for debugging purposes.
+         */
+        Utils.addLineNumber(code, object);
 
         /**
          * Before we can generate any bytecode, we must convert the labels to ASM labels.
@@ -222,6 +248,11 @@ public final class StatementCodeGenerator
         //
         ///////////////////////////////////////////////////////////////////////////////////////////
 
+        /**
+         * Embed the line number in the bytecode for debugging purposes.
+         */
+        Utils.addLineNumber(code, object);
+
         final LabelNode BREAK = new LabelNode();
         final LabelNode CONTINUE = new LabelNode();
         final LabelNode REDO = new LabelNode();
@@ -261,6 +292,11 @@ public final class StatementCodeGenerator
         //
         ///////////////////////////////////////////////////////////////////////////////////////////
 
+        /**
+         * Embed the line number in the bytecode for debugging purposes.
+         */
+        Utils.addLineNumber(code, object);
+
         final LabelNode BREAK = new LabelNode();
         final LabelNode CONTINUE = new LabelNode();
         final LabelNode REDO = new LabelNode();
@@ -299,6 +335,11 @@ public final class StatementCodeGenerator
         // @BREAK            - This is where break-statements jump to.
         //
         ///////////////////////////////////////////////////////////////////////////////////////////
+
+        /**
+         * Embed the line number in the bytecode for debugging purposes.
+         */
+        Utils.addLineNumber(code, object);
 
         final LabelNode BREAK = new LabelNode();
         final LabelNode CONTINUE = new LabelNode();
@@ -340,6 +381,11 @@ public final class StatementCodeGenerator
         //
         ///////////////////////////////////////////////////////////////////////////////////////////
 
+        /**
+         * Embed the line number in the bytecode for debugging purposes.
+         */
+        Utils.addLineNumber(code, object);
+
         final LabelNode BREAK = new LabelNode();
         final LabelNode CONTINUE = new LabelNode();
         final LabelNode REDO = new LabelNode();
@@ -376,6 +422,11 @@ public final class StatementCodeGenerator
         // @BREAK             - This is where break-statements jump to.
         //
         ///////////////////////////////////////////////////////////////////////////////////////////
+
+        /**
+         * Embed the line number in the bytecode for debugging purposes.
+         */
+        Utils.addLineNumber(code, object);
 
         final LabelNode BREAK = new LabelNode();
         final LabelNode CONTINUE = new LabelNode();
@@ -428,6 +479,11 @@ public final class StatementCodeGenerator
         // @BREAK               - This is where break-statements jump to.
         //
         ///////////////////////////////////////////////////////////////////////////////////////////
+
+        /**
+         * Embed the line number in the bytecode for debugging purposes.
+         */
+        Utils.addLineNumber(code, object);
 
         final LabelNode BREAK = new LabelNode();
         final LabelNode CONTINUE = new LabelNode();
@@ -493,6 +549,11 @@ public final class StatementCodeGenerator
         // ASTORE iterator                      - Clear the iterator temporary variable.
         //
         //////////////////////////////////////////////////////////////////////////
+
+        /**
+         * Embed the line number in the bytecode for debugging purposes.
+         */
+        Utils.addLineNumber(code, object);
 
         final IDeclaredType type = (IDeclaredType) function.module.imports.resolveVariableType(object.getType());
 
@@ -571,6 +632,11 @@ public final class StatementCodeGenerator
         //
         ////////////////////////////////////////////////////
 
+        /**
+         * Embed the line number in the bytecode for debugging purposes.
+         */
+        Utils.addLineNumber(code, object);
+
         final LabelNode BREAK = break_labels.peek();
 
         code.add(new JumpInsnNode(Opcodes.GOTO, BREAK));
@@ -584,6 +650,11 @@ public final class StatementCodeGenerator
         // GOTO @CONTINUE
         //
         ////////////////////////////////////////////////////
+
+        /**
+         * Embed the line number in the bytecode for debugging purposes.
+         */
+        Utils.addLineNumber(code, object);
 
         final LabelNode CONTINUE = continue_labels.peek();
 
@@ -599,6 +670,12 @@ public final class StatementCodeGenerator
         //
         ////////////////////////////////////////////////////
 
+        /**
+         * Embed the line number in the bytecode for debugging purposes.
+         */
+        Utils.addLineNumber(code, object);
+
+
         final LabelNode REDO = redo_labels.peek();
 
         code.add(new JumpInsnNode(Opcodes.GOTO, REDO));
@@ -607,6 +684,11 @@ public final class StatementCodeGenerator
     @Override
     public void visit(final VarStatement object)
     {
+        /**
+         * Embed the line number in the bytecode for debugging purposes.
+         */
+        Utils.addLineNumber(code, object);
+
         final String name = object.getVariable().getName();
 
         object.getValue().accept(this);
@@ -617,6 +699,11 @@ public final class StatementCodeGenerator
     @Override
     public void visit(final ValStatement object)
     {
+        /**
+         * Embed the line number in the bytecode for debugging purposes.
+         */
+        Utils.addLineNumber(code, object);
+
         final String name = object.getVariable().getName();
 
         object.getValue().accept(this);
@@ -627,6 +714,11 @@ public final class StatementCodeGenerator
     @Override
     public void visit(final LetStatement object)
     {
+        /**
+         * Embed the line number in the bytecode for debugging purposes.
+         */
+        Utils.addLineNumber(code, object);
+
         final String name_of_variable = object.getVariable().getName();
 
         final IType type_of_variable = function.allocator.typeOf(name_of_variable);
@@ -644,7 +736,39 @@ public final class StatementCodeGenerator
     @Override
     public void visit(final LambdaStatement object)
     {
-        throw new UnsupportedOperationException("This will be supported in the future.");
+        /**
+         * Embed the line number in the bytecode for debugging purposes.
+         */
+        Utils.addLineNumber(code, object);
+
+        final LambdaCompiler lambda = program.symbols.lambdas.get(object);
+
+        lambda.load(code);
+
+        for (String variable : function.vars.allocator().getVariables())
+        {
+            if (variable.equals(object.getVariable().getName()))
+            {
+                continue;
+            }
+
+            final IVariableType variable_type = function.allocator.typeOf(variable);
+
+            code.add(new InsnNode(Opcodes.DUP));
+
+            code.add(new LdcInsnNode(variable));
+
+            function.vars.load(variable);
+
+            program.typesystem.utils.autoboxToObject(code, variable_type);
+
+            code.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL,
+                                        Utils.internalName(program.typesystem.utils.ABSTRACT_LAMBDA),
+                                        "capture",
+                                        "(Ljava/lang/String;Ljava/lang/Object;)V"));
+        }
+
+        function.vars.store(object.getVariable().getName());
     }
 
     @Override
@@ -665,6 +789,11 @@ public final class StatementCodeGenerator
         // STORE variable                                 - Place the wrapped delegate object into the variable.
         //
         ////////////////////////////////////////////////////////////////////////////////////////////
+
+        /**
+         * Embed the line number in the bytecode for debugging purposes.
+         */
+        Utils.addLineNumber(code, object);
 
         code.add(new TypeInsnNode(Opcodes.NEW, Utils.internalName(functor)));
 
@@ -688,7 +817,7 @@ public final class StatementCodeGenerator
         code.add(new MethodInsnNode(Opcodes.INVOKESPECIAL,
                                     Utils.internalName(functor),
                                     "<init>",
-                                    "(Lautumn/lang/Functor;)V"));
+                                    "(Lautumn/lang/TypedFunctor;)V"));
 
         function.vars.store(object.getVariable().getName());
     }
@@ -696,6 +825,11 @@ public final class StatementCodeGenerator
     @Override
     public void visit(final SequenceStatement object)
     {
+        /**
+         * Embed the line number in the bytecode for debugging purposes.
+         */
+        Utils.addLineNumber(code, object);
+
         final int break_count = break_labels.size();
 
         for (IStatement s : object.getElements())
@@ -718,6 +852,11 @@ public final class StatementCodeGenerator
         //
         ///////////////////////////////////////////////////////////////////////////////////
 
+        /**
+         * Embed the line number in the bytecode for debugging purposes.
+         */
+        Utils.addLineNumber(code, object);
+
         object.getExpression().accept(this);
 
         final IType type = program.symbols.expressions.get(object.getExpression());
@@ -733,12 +872,22 @@ public final class StatementCodeGenerator
         //
         //////////////////////////////////////
 
+        /**
+         * Embed the line number in the bytecode for debugging purposes.
+         */
+        Utils.addLineNumber(code, object);
+
         code.add(new InsnNode(Opcodes.NOP));
     }
 
     @Override
     public void visit(final DebugStatement object)
     {
+        /**
+         * Embed the line number in the bytecode for debugging purposes.
+         */
+        Utils.addLineNumber(code, object);
+
         code.add(new LdcInsnNode(object.getLocation().getFile().toString()));
         code.add(new LdcInsnNode(object.getLocation().getLine()));
         code.add(new LdcInsnNode(object.getLocation().getColumn()));
@@ -753,6 +902,11 @@ public final class StatementCodeGenerator
     @Override
     public void visit(final TryCatchStatement object)
     {
+        /**
+         * Embed the line number in the bytecode for debugging purposes.
+         */
+        Utils.addLineNumber(code, object);
+
         final List<ExceptionHandler> handlers = program.symbols.handlers.get(object);
 
         /**
@@ -802,6 +956,11 @@ public final class StatementCodeGenerator
                                           final ExceptionHandler handler)
     {
         /**
+         * Embed the line number in the bytecode for debugging purposes.
+         */
+        Utils.addLineNumber(code, handler);
+
+        /**
          * This is the name of the variable that will contain the exception object.
          */
         final String variable = handler.getVariable().getName();
@@ -837,6 +996,11 @@ public final class StatementCodeGenerator
     @Override
     public void visit(final ThrowStatement object)
     {
+        /**
+         * Embed the line number in the bytecode for debugging purposes.
+         */
+        Utils.addLineNumber(code, object);
+
         object.getValue().accept(this);
 
         code.add(new InsnNode(Opcodes.ATHROW));
@@ -845,6 +1009,11 @@ public final class StatementCodeGenerator
     @Override
     public void visit(final AssertStatement object)
     {
+        /**
+         * Embed the line number in the bytecode for debugging purposes.
+         */
+        Utils.addLineNumber(code, object);
+
         final String descriptor;
 
         final LabelNode END = new LabelNode();
@@ -885,6 +1054,11 @@ public final class StatementCodeGenerator
     @Override
     public void visit(final AssumeStatement object)
     {
+        /**
+         * Embed the line number in the bytecode for debugging purposes.
+         */
+        Utils.addLineNumber(code, object);
+
         // TODO: These need to be disablable.
 
         final String descriptor;
@@ -927,9 +1101,15 @@ public final class StatementCodeGenerator
     @Override
     public void visit(final ReturnVoidStatement object)
     {
+        /**
+         * Embed the line number in the bytecode for debugging purposes.
+         */
+        Utils.addLineNumber(code, object);
+
         // Conditionally save the state of the function's local-variables.
         if (function.isGenerator())
         {
+            saveReentryIndex(-1);
             saveState();
         }
 
@@ -939,9 +1119,15 @@ public final class StatementCodeGenerator
     @Override
     public void visit(final ReturnValueStatement object)
     {
+        /**
+         * Embed the line number in the bytecode for debugging purposes.
+         */
+        Utils.addLineNumber(code, object);
+
         // Conditionally save the state of the function's local-variables.
         if (function.isGenerator())
         {
+            saveReentryIndex(-1);
             saveState();
         }
 
@@ -958,6 +1144,11 @@ public final class StatementCodeGenerator
     @Override
     public void visit(final RecurStatement object)
     {
+        /**
+         * Embed the line number in the bytecode for debugging purposes.
+         */
+        Utils.addLineNumber(code, object);
+
         int i = 0;
 
         // Evaluate the arguments and store them in the parameter variables.
@@ -988,6 +1179,11 @@ public final class StatementCodeGenerator
     public void visit(final YieldVoidStatement object)
     {
         /**
+         * Embed the line number in the bytecode for debugging purposes.
+         */
+        Utils.addLineNumber(code, object);
+
+        /**
          * This label marks the location where code will be reentered.
          */
         final LabelNode label = program.symbols.yields.get(object);
@@ -1008,6 +1204,11 @@ public final class StatementCodeGenerator
     @Override
     public void visit(final YieldValueStatement object)
     {
+        /**
+         * Embed the line number in the bytecode for debugging purposes.
+         */
+        Utils.addLineNumber(code, object);
+
         /**
          * This label marks the location where code will be reentered.
          */
@@ -1040,7 +1241,34 @@ public final class StatementCodeGenerator
      */
     private void saveReentryIndex(final IStatement yield)
     {
+
         assert function.isGenerator();
+
+        /**
+         * This label marks the location where code will be reentered.
+         */
+        final LabelNode label = program.symbols.yields.get(yield);
+
+        /**
+         * Compute the reentry index.
+         */
+        final int index = function.yields.indexOf(label);
+
+        /**
+         * Generate the bytecode to save the reentry index.
+         */
+        saveReentryIndex(index);
+    }
+
+    /**
+     * This method generates bytecode that causes a generator function to save the reentry index.
+     *
+     * @param index is the reentry index to save.
+     */
+    private void saveReentryIndex(final int index)
+    {
+        assert function.isGenerator();
+        assert index >= -1;
 
         String owner;
         String name;
@@ -1050,11 +1278,6 @@ public final class StatementCodeGenerator
          * This is the field that stores the state of the method, between invocations.
          */
         final FieldNode field = function.yieldField();
-
-        /**
-         * This label marks the location where code will be reentered.
-         */
-        final LabelNode label = program.symbols.yields.get(yield);
 
         // Load the yield-state object onto the operand-stack.
         owner = Utils.internalName(function.module.type);
@@ -1066,7 +1289,6 @@ public final class StatementCodeGenerator
         code.add(new InsnNode(Opcodes.DUP));
 
         // Load the reentry index onto the operand-stack, if necessary.
-        final int index = function.yields.indexOf(label);
         code.add(new LdcInsnNode(index));
 
         // Set the reentry index.

@@ -1,6 +1,6 @@
 package autumn.util.functors;
 
-import autumn.lang.Functor;
+import autumn.lang.TypedFunctor;
 import autumn.lang.internals.AbstractStaticFunctor;
 import autumn.lang.internals.ArgumentStack;
 import com.google.common.collect.ImmutableList;
@@ -24,7 +24,7 @@ public final class MethodCompareTo
      *
      * @param inner is the functor that provides the actual functionality.
      */
-    public MethodCompareTo(final Functor inner)
+    public MethodCompareTo(final TypedFunctor inner)
     {
         super(inner);
     }

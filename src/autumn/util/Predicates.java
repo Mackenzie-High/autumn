@@ -1,9 +1,11 @@
 package autumn.util;
 
-import autumn.lang.Functor;
+import autumn.lang.TypedFunctor;
 import autumn.lang.internals.ArgumentStack;
 import autumn.util.functors.Predicate;
 import com.google.common.base.Objects;
+import com.google.common.collect.ImmutableList;
+import java.util.List;
 
 /**
  * This class provides static utility methods for creating commonly used predicates.
@@ -13,7 +15,7 @@ import com.google.common.base.Objects;
 public final class Predicates
 {
     private static abstract class PredicateImp
-            implements Functor
+            implements TypedFunctor
     {
         public abstract boolean invoke(final Object argument);
 
@@ -24,6 +26,18 @@ public final class Predicates
             final Object argument = stack.popO();
 
             stack.push(invoke(argument));
+        }
+
+        @Override
+        public List<Class> parameterTypes()
+        {
+            return ImmutableList.<Class>of(Object.class);
+        }
+
+        @Override
+        public Class returnType()
+        {
+            return boolean.class;
         }
     }
 

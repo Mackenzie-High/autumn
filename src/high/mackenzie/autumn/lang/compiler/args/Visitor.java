@@ -155,7 +155,7 @@ public final class Visitor
 
             if (ex.getCause() instanceof AssumptionFailedException)
             {
-                System.out.println("Assertion Failed:");
+                System.out.println("Assumption Failed:");
                 System.out.println("  File: " + ((AssumptionFailedException) ex.getCause()).file());
                 System.out.println("  Line: " + ((AssumptionFailedException) ex.getCause()).line());
             }

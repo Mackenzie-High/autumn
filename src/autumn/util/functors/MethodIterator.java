@@ -1,6 +1,6 @@
 package autumn.util.functors;
 
-import autumn.lang.Functor;
+import autumn.lang.TypedFunctor;
 import autumn.lang.internals.AbstractStaticFunctor;
 import autumn.lang.internals.ArgumentStack;
 import com.google.common.collect.ImmutableList;
@@ -25,7 +25,7 @@ public final class MethodIterator
      *
      * @param inner is the functor that provides the actual functionality.
      */
-    public MethodIterator(final Functor inner)
+    public MethodIterator(final TypedFunctor inner)
     {
         super(inner);
     }

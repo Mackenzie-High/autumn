@@ -6,6 +6,7 @@ import autumn.lang.compiler.ast.commons.IStatement;
 import autumn.lang.compiler.ast.nodes.DelegateStatement;
 import autumn.lang.compiler.ast.nodes.DispatchExpression;
 import autumn.lang.compiler.ast.nodes.ExceptionHandler;
+import autumn.lang.compiler.ast.nodes.LambdaStatement;
 import autumn.lang.compiler.ast.nodes.LocalsExpression;
 import autumn.lang.compiler.ast.nodes.TryCatchStatement;
 import autumn.lang.compiler.ast.nodes.TypeSpecifier;
@@ -55,7 +56,7 @@ public final class SymbolTable
 
     public final Map<TryCatchStatement, List<ExceptionHandler>> handlers = Maps.newIdentityHashMap();
 
-    public final Map<DispatchExpression, List<IMethod>> dispatches = Maps.newIdentityHashMap();
+    public final Map<DispatchExpression, DispatchCompiler> dispatches = Maps.newIdentityHashMap();
 
     /**
      * This map maps a statement that uses a label to the bytecode representation of the label.
@@ -77,4 +78,6 @@ public final class SymbolTable
      * at the site of the locals-expression.
      */
     public final Map<LocalsExpression, Set<String>> locals = Maps.newIdentityHashMap();
+
+    public final Map<LambdaStatement, LambdaCompiler> lambdas = Maps.newHashMap();
 }

@@ -13,6 +13,7 @@ import high.mackenzie.autumn.lang.compiler.typesystem.design.IMethod;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.ITypeFactory;
 import high.mackenzie.autumn.resources.Finished;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * An instance of this class represents a declared type.
@@ -132,7 +133,7 @@ public final class CustomDeclaredType
      * {@inheritDoc}
      */
     @Override
-    public Collection<IAnnotation> getAnnotations()
+    public List<IAnnotation> getAnnotations()
     {
         return ImmutableList.copyOf(annotations);
     }

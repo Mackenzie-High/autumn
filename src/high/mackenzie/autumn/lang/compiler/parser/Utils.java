@@ -9,6 +9,7 @@ import autumn.lang.compiler.ast.literals.IntLiteral;
 import autumn.lang.compiler.ast.literals.LongLiteral;
 import autumn.lang.compiler.ast.literals.ShortLiteral;
 import autumn.lang.compiler.ast.nodes.Name;
+import autumn.util.Strings;
 import high.mackenzie.autumn.resources.Finished;
 import high.mackenzie.snowflake.ITreeNode;
 import high.mackenzie.snowflake.LinesAndColumns;
@@ -180,6 +181,26 @@ public final class Utils
     public static DoubleLiteral extractDoubleValue(final ITreeNode node)
     {
         return new DoubleLiteral(removeWS(node));
+    }
+
+    public static String extractAnnotationValue(final ITreeNode node)
+    {
+        final ITreeNode annotation_value = TreeNode.find(node, "annotation_value");
+
+        if (annotation_value == null)
+        {
+            return null;
+        }
+
+        final String text = annotation_value.text().trim();
+
+        final String modified = text.startsWith("\"") || text.startsWith("'")
+                ? text.substring(1, text.length() - 1)
+                : text;
+
+        final String escaped = Strings.escape(modified);
+
+        return escaped;
     }
 
     public static String extractCommentLine(final ITreeNode node)

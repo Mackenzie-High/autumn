@@ -7,6 +7,7 @@ import high.mackenzie.autumn.lang.compiler.typesystem.design.IDeclaredType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.ITypeFactory;
 import high.mackenzie.autumn.resources.Finished;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * This class provides a partial implementation of the IMember interface.
@@ -50,7 +51,7 @@ public abstract class AbstractCustomMember
      * {@inheritDoc}
      */
     @Override
-    public Collection<IAnnotation> getAnnotations()
+    public List<IAnnotation> getAnnotations()
     {
         return annotations;
     }

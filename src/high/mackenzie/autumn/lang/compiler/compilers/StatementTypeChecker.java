@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package high.mackenzie.autumn.lang.compiler.compilers;
 
 import autumn.lang.compiler.ast.commons.IExpression;
@@ -383,46 +379,44 @@ public final class StatementTypeChecker
     @Override
     public void visit(final LambdaStatement object)
     {
-//        /**
-//         * Get the type of the lambda.
-//         */
-//        final IClassType functor_type = module.imports.resolveClassType(object.getType());
-//
-//        /**
-//         * Declare the lambda variable.
-//         */
-//        super.declareVar(object.getVariable(), functor_type, false);
-//
-//        try
-//        {
-//            /**
-//             * A lambda-statement defines a nested scope that covers its parameters and body.
-//             */
-//            allocator.enterScope();
-//
-//            /**
-//             * Declare the parameters.
-//             */
-//            for (Variable param : object.getParameters())
-//            {
-//                final IVariableType param_type = null;
-//
-//                super.declareVar(param, param_type, false);
-//            }
-//
-//
-//        }
-//        catch (TypeCheckFailed ex)
-//        {
-//            throw ex;
-//        }
-//        finally
-//        {
-//            /**
-//             * This must always be done; otherwise, the scope management could get messed up.
-//             */
-//            allocator.exitScope();
-//        }
+        /**
+         * Get the type of the lambda.
+         */
+        final IClassType functor_type = module.imports.resolveClassType(object.getType());
+
+        /**
+         * Declare the lambda variable.
+         */
+        super.declareVar(object.getVariable(), program.typesystem.utils.ABSTRACT_LAMBDA, false);
+
+        try
+        {
+            /**
+             * A lambda-statement defines a nested scope that covers its parameters and body.
+             */
+            allocator.enterScope();
+
+            /**
+             * Create the lambda itself.
+             */
+            final LambdaCompiler lambda = new LambdaCompiler(function, object);
+
+            /**
+             * Save the lambda-compiler, because it will generate the lambda's bytecode later.
+             */
+            program.symbols.lambdas.put(object, lambda);
+        }
+        catch (TypeCheckFailed ex)
+        {
+            throw ex;
+        }
+        finally
+        {
+            /**
+             * This must always be done; otherwise, the scope management could get messed up.
+             */
+            allocator.exitScope();
+        }
     }
 
     @Override

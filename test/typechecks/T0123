@@ -2,4 +2,4 @@ module Main in typechecks;
 
 import typechecks.inaccessible.InaccessibleClass;
 
-struct Person () is InaccessibleClass;
+struct Person () extends InaccessibleClass;

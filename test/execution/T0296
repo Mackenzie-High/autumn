@@ -1,0 +1,13 @@
+module Main in execution;
+
+
+@Start
+defun main (args : String[]) : void
+{
+    val input1 = ["A", "B", "C"];
+    val input2 = ["X", "Y", "Z"];
+
+    val output = [x for x : String in input1 if (([x .. y for y : String in input2].contains "BX") == false)];
+
+    assert output == ["A", "C"];
+}

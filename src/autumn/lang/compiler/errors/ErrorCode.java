@@ -108,6 +108,10 @@ public enum ErrorCode
      */
     EXPECTED_DECLARED_TYPE,
     /**
+     * Meaning: A design-type was expected.
+     */
+    EXPECTED_DESIGN_TYPE,
+    /**
      * Meaning: A primitive boolean or a java.lang.Boolean was expected.
      */
     EXPECTED_CONDITION,
@@ -130,7 +134,7 @@ public enum ErrorCode
     /**
      * Meaning: A functor (i.e. autumn.lang.Functor) was expected.
      */
-    EXPECTED_FUNCTOR,
+    EXPECTED_FUNCTOR_TYPE,
     /**
      * Meaning: A tuple (i.e. autumn.lang.Tuple) was expected.
      */
@@ -293,4 +297,8 @@ public enum ErrorCode
      * Meaning: A record can only declare an element once per definition.
      */
     DUPLICATE_ELEMENT,
+    /**
+     * Meaning: An annotation that cannot be used by Autumn was encountered.
+     */
+    UNUSABLE_ANNOTATION,
 }

@@ -1,7 +1,7 @@
 package high.mackenzie.autumn.lang.compiler.typesystem.design;
 
 import high.mackenzie.autumn.resources.Finished;
-import java.util.Collection;
+import java.util.List;
 
 /**
  * An instance of this interface is a member (ie sub-part) of a
@@ -26,7 +26,7 @@ public interface IMember
      * @return an immutable collection containing the annotations that are applied to the member.
      */
     @Override
-    public Collection<IAnnotation> getAnnotations();
+    public List<IAnnotation> getAnnotations();
 
     /**
      * This method returns the modifiers that are applied to the member.

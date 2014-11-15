@@ -1,0 +1,39 @@
+module Main in execution;
+
+exception Expected extends RuntimeException;
+
+@Start
+defun main (args : String[]) : void
+{
+    assert (My::moo) == 17;
+    assert (My::moo) == 23;
+
+    try
+    {
+        (My::moo);
+
+        assert false;
+    }
+    catch (ex : Expected)
+    {
+        nop;
+    }
+
+    assert (My::moo) == 17;
+    assert (My::moo) == 23;
+}
+
+defun moo () : int
+{
+    var x = 17;
+
+    yield x;
+
+    x = x + 6;
+
+    yield x;
+
+    throw (new Expected);
+
+    yield 100;
+}

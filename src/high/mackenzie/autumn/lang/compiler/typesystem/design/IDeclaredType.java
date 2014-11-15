@@ -52,7 +52,7 @@ public interface IDeclaredType
      * {@inheritDoc}
      */
     @Override
-    public Collection<IAnnotation> getAnnotations();
+    public List<IAnnotation> getAnnotations();
 
     /**
      * This method returns the modifiers that are applied to this type.
@@ -149,6 +149,7 @@ public interface IDeclaredType
      *
      * @return true, if and only if, this object is the type of an annotation-definition.
      */
+    @Override
     public boolean isAnnotationType();
 
     /**
@@ -156,6 +157,7 @@ public interface IDeclaredType
      *
      * @return true, if and only if, this object is the type of an class-definition.
      */
+    @Override
     public boolean isClassType();
 
     /**
@@ -163,6 +165,7 @@ public interface IDeclaredType
      *
      * @return true, if and only if, this object is the type of an enum-definition.
      */
+    @Override
     public boolean isEnumType();
 
     /**
@@ -170,6 +173,7 @@ public interface IDeclaredType
      *
      * @return true, if and only if, this object is the type of an interface-definition.
      */
+    @Override
     public boolean isInterfaceType();
 
     /**

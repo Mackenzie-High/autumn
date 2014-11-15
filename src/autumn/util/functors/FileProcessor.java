@@ -1,6 +1,6 @@
 package autumn.util.functors;
 
-import autumn.lang.Functor;
+import autumn.lang.TypedFunctor;
 import autumn.lang.internals.AbstractStaticFunctor;
 import autumn.lang.internals.ArgumentStack;
 import com.google.common.collect.ImmutableList;
@@ -20,7 +20,7 @@ public final class FileProcessor
      *
      * @param inner is the functor that provides the actual functionality.
      */
-    public FileProcessor(final Functor inner)
+    public FileProcessor(final TypedFunctor inner)
     {
         super(inner);
     }

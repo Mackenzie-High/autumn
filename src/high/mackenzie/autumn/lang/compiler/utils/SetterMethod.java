@@ -110,7 +110,7 @@ public final class SetterMethod
     @Override
     public String toString()
     {
-        return "setter " + Utils.simpleName(owner) + "." + name + "(" + Utils.simpleName(parameter) + ") = " + Utils.simpleName(returns);
+        return "setter " + Utils.simpleName(owner) + "." + name + "(" + Utils.simpleName(parameter) + ") : " + Utils.simpleName(returns);
     }
 
     /**
@@ -170,11 +170,103 @@ public final class SetterMethod
     /**
      * If this setter is a bridge-method, this method determines which setter to invoke.
      *
-     * @return setter method that this setter method invokes at runtime,
-     * if this setter method is a bridge method; otherwise, return null.
+     * @return setter method that this setter method invokes at runtime.
      */
-    public SetterMethod computeBridge()
+    public IMethod findBridgeTarget()
     {
-        return null;
+        /**
+         * If this setter method is the target, it should cannot target itself.
+         */
+        assert returns.equals(owner) == false;
+
+        IMethod result = null;
+
+        final IMethod self = this.findSelf();
+
+        for (IMethod method : owner.getMethods())
+        {
+            if (method == self)
+            {
+                continue;
+            }
+
+            final boolean match1 = method.getName().equals(name);
+
+            final boolean match2 = method.getReturnType().equals(owner);
+
+            final boolean match3 = method.getParameters().size() == 1;
+
+            final boolean matches = match1 && match2 && match3 && match3;
+
+            if (matches && result == null)
+            {
+                result = method;
+                continue;
+            }
+
+            if (matches == false || result == null)
+            {
+                continue;
+            }
+
+            final IVariableType other_parameter = method.getParameters().get(0).getType();
+
+            final IVariableType result_parameter = result.getParameters().get(0).getType();
+
+            final boolean subtype = other_parameter.isSubtypeOf(result_parameter);
+
+            final boolean equals = other_parameter.equals(result_parameter);
+
+            final boolean proper_subtype = subtype && !equals;
+
+            /**
+             * If the method is more specific than the previous result, use the new result.
+             */
+            if (proper_subtype)
+            {
+                result = method;
+            }
+        }
+
+        /**
+         * This method should only be invoked, when the result is known to exist.
+         */
+        assert result != null;
+
+        return result;
+    }
+
+    /**
+     * This method retrieves the type-system representation of this method.
+     *
+     * @return the member of the owner-type that represents this setter method.
+     */
+    public IMethod findSelf()
+    {
+        IMethod result = null;
+
+        for (IMethod method : owner.getMethods())
+        {
+            final boolean match1 = method.getName().equals(name);
+
+            final boolean match2 = method.getReturnType().equals(returns);
+
+            final boolean match3 = method.getParameters().size() == 1;
+
+            final boolean match4 = match3 && method.getParameters().get(0).getType().equals(parameter);
+
+            if (match1 && match2 && match3 && match4)
+            {
+                result = method;
+                break;
+            }
+        }
+
+        /**
+         * This method should only be invoked, when the result is known to exist.
+         */
+        assert result != null;
+
+        return result;
     }
 }

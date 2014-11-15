@@ -6,8 +6,10 @@ import high.mackenzie.autumn.lang.compiler.typesystem.TypeFactory;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.ITypeFactory;
 import high.mackenzie.autumn.lang.compiler.utils.TypeSystemUtils;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
 import org.objectweb.asm.Type;
@@ -171,5 +173,61 @@ public final class Reflect
         final boolean result = utils.assign(input, output) != null;
 
         return result;
+    }
+
+    /**
+     * This method retrieves the value stored in an Autumn style annotation.
+     *
+     * @param annotation is the annotation that contains the value to return.
+     * @return the value stored in the value() element, if any such value exists.
+     */
+    public static String getAnnotationValue(final Annotation annotation)
+    {
+        Preconditions.checkNotNull(annotation);
+
+        try
+        {
+            final Method method = annotation.annotationType().getDeclaredMethod("value");
+
+            /**
+             * We are only want to read the value(), if it is a String.
+             */
+            if (method.getReturnType().equals(String.class) == false)
+            {
+                return null;
+            }
+
+            /**
+             * Invoke the value() method in order to retrieve the value.
+             */
+            final String value = (String) method.invoke(annotation);
+
+            /**
+             * Return the string value that is stored in the annotation.
+             */
+            return value;
+        }
+        catch (NoSuchMethodException ex)
+        {
+            /**
+             * If the annotation does not have a value() method,
+             * then it obviously does not contain a value.
+             */
+            return null;
+        }
+        catch (IllegalAccessException ex)
+        {
+            /**
+             * If we cannot access the value(), we will simply ignore it.
+             */
+            return null;
+        }
+        catch (InvocationTargetException ex)
+        {
+            /**
+             * This should never happen, but just in case, simply ignore the value().
+             */
+            return null;
+        }
     }
 }

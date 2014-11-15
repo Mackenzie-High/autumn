@@ -1,5 +1,6 @@
 package high.mackenzie.autumn.lang.compiler.typesystem;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IAnnotation;
@@ -73,7 +74,7 @@ public class ReflectiveDeclaredType
      * {@inheritDoc}
      */
     @Override
-    public Collection<IAnnotation> getAnnotations()
+    public List<IAnnotation> getAnnotations()
     {
         final List result = Lists.newLinkedList();
 
@@ -84,7 +85,7 @@ public class ReflectiveDeclaredType
             result.add(annotation);
         }
 
-        return ImmutableSet.copyOf(result);
+        return ImmutableList.copyOf(result);
     }
 
     /**

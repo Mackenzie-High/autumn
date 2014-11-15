@@ -189,6 +189,16 @@ final class EnumCompiler
     public void performTypeInitialization()
     {
         /**
+         * Create the type-system representations of the annotation-list.
+         */
+        type.setAnnotations(module.anno_utils.typesOf(node.getAnnotations()));
+
+        /**
+         * Check the list of annotations.
+         */
+        program.checker.checkAnnotations(node.getAnnotations(), type.getAnnotations());
+
+        /**
          * Create the type-system representations of the enum-constant's field.
          */
         final List<IField> constants = Lists.newLinkedList();

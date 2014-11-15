@@ -1,5 +1,6 @@
 package high.mackenzie.autumn.lang.compiler.utils;
 
+import autumn.lang.compiler.ast.commons.IConstruct;
 import autumn.lang.internals.Helpers;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
@@ -28,7 +29,9 @@ import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.FieldInsnNode;
 import org.objectweb.asm.tree.InsnList;
 import org.objectweb.asm.tree.InsnNode;
+import org.objectweb.asm.tree.LabelNode;
 import org.objectweb.asm.tree.LdcInsnNode;
+import org.objectweb.asm.tree.LineNumberNode;
 import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 import org.objectweb.asm.tree.TypeInsnNode;
@@ -808,5 +811,53 @@ public final class Utils
                                     "autumn/lang/internals/ArgumentStack",
                                     "getThreadStack",
                                     "()Lautumn/lang/internals/ArgumentStack;"));
+    }
+
+    /**
+     * This method adds a LineNumberNode to a list of bytecode instructions.
+     *
+     * @param code is the bytecode being generated.
+     * @param construct is the construct that provides the line number.
+     */
+    public static void addLineNumber(final InsnList code,
+                                     final IConstruct construct)
+    {
+        if (construct.getLocation() == null)
+        {
+            return;
+        }
+
+        final LabelNode label = new LabelNode();
+
+        code.add(label);
+        code.add(new LineNumberNode(construct.getLocation().getLine(), label));
+    }
+
+    /**
+     * This method conditionally generates a checked-cast instruction.
+     *
+     * <p>
+     * In other words, this method will not generate a clearly unnecessary cast.
+     * </p>
+     *
+     * @param value is the type of the value being cast.
+     * @param type is the type to cast the value to.
+     * @return the generated instruction.
+     */
+    public static AbstractInsnNode conditionalCast(final IExpressionType value,
+                                                   final IExpressionType type)
+    {
+        if (value.isReferenceType() == false || type.isReferenceType() == false)
+        {
+            return new InsnNode(Opcodes.NOP);
+        }
+        else if (value.isSubtypeOf(type))
+        {
+            return new InsnNode(Opcodes.NOP);
+        }
+        else
+        {
+            return new TypeInsnNode(Opcodes.CHECKCAST, Utils.internalName((IReferenceType) type));
+        }
     }
 }

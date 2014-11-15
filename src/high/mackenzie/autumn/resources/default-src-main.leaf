@@ -1,4 +1,4 @@
-module Main in #PACKAGE#;
+module Main in program;
 
 @Start
 defun main (args : String[]) : void

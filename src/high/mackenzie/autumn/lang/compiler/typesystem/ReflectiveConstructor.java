@@ -67,7 +67,7 @@ public class ReflectiveConstructor
      * {@inheritDoc}
      */
     @Override
-    public Collection<IAnnotation> getAnnotations()
+    public List<IAnnotation> getAnnotations()
     {
         final List result = Lists.newLinkedList();
 
@@ -78,7 +78,7 @@ public class ReflectiveConstructor
             result.add(annotation);
         }
 
-        return ImmutableSet.copyOf(result);
+        return ImmutableList.copyOf(result);
     }
 
     /**

@@ -1,0 +1,3 @@
+module Main in typechecks;
+
+exception Problem extends List;

@@ -1,7 +1,9 @@
 
 This package contains tests that test the different language constructs.
 
-"= N =" means the test is not done yet.
+Notes:
+. "= N =" means the test is not done yet.
+. You can use T0000 during debugging.
 
 TODO:
 . Remove T0059
@@ -27,6 +29,7 @@ Test Index
 . . T0141 = Usage of a Defined Annotation
 . . T0160 = Annotation Applied to Itself
 . . T0161 = Annotations Applied to an Annotation
+. . T0287 = Usage of an Defined Annotation - With Value
 . Exception Definitions
 . . T0164 = Applied Annotations are Present
 . . T0163 = Inherited Constructors
@@ -41,7 +44,7 @@ Test Index
 . . T0166 = Special Method - values()
 . Design Definitions
 . . T0279 = Reflective Testing of the Tuple's Class                  // TODO: finish
-. . 280 = Inherited Elements                                         // TODO: finish
+. . T0280 = Inherited Elements                                       // TODO: finish
 . . Covariant Elements
 . Tuple Definitions
 . . T0128 = Reflective Testing of the Tuple's Class                  // TODO: finish
@@ -63,6 +66,7 @@ Test Index
 . . T0121 = Special Method - types()
 . . T0119 = Special Method - values()
 . . T0122 = Special Method - instance()
+. . T0290 = Special Method - create()
 . . T0123 = Special Method - size() and isEmpty()
 . . T0129 = Special Method - mutable()
 . . T0130 = Special Method - immutable()
@@ -100,21 +104,28 @@ Test Index
 . . Subtyping
 . Functor Definition
 . . Reflective Testing of the Functor's Class
-. . Functor Usage
 . . T0143 = Very Basic Functor Usage
+. . T0286 = Functor Usage
 . . T0142 = Special Method - inner()
 . . T0144 = Special Method - parameterTypes() - (non empty)
 . . T0145 = Special Method - parameterTypes() - (empty)
 . . T0146 = Special Method - returnType() - (non void)
 . . T0147 = Special Method - returnType() - (void)
+. . T0283 = Simple Inheritance
+. . TO284 = Covariance - Return Type
+. . T0285 = Covariance - Parameters
 . Functions
 . . Reflective Testing of the Reflective Method Object
-. . Recursive Generator
+. . T0289 = Generator - Basic
+. . Generator - Recursive
+. . T0288 = Generator - Throws Exception
 . . T0064 = Checked Exceptions
 . . Annotation Lists
 . . Parameter Lists
 . . T0063 = Return Types                   # TODO: Add array return-types to the test.
 . Statements
+. . Nop = No Test Needed
+. . Expression = No Test Needed
 . . Sequence
 . . . T0110 = All Cases
 . . If-Elif-Else
@@ -222,8 +233,16 @@ Test Index
 . . Assume
 . . . No Message
 . . . With Message
-. . Nop = No Test Needed
-. . Expression = No Test Needed
+. . Delegate
+. . . Checked Exceptions
+. . . T0153 = No Parameters
+. . . T0154 = Single Parameter
+. . . T0155 = Multiple Parameters
+. . . T0156 = Different Types of Parameters
+. . . Different Types of Return-Types
+. . . Operand-Stack Leakage
+. . Lambda
+. . . T0282 = Basic  // TODO: finish
 . . Return Void
 . . Return Value = T0053    # TODO: Add auto-boxing
 . . Recur
@@ -246,16 +265,12 @@ Test Index
 . . . T0070 = Auto-Boxing
 . . . T0071 = Auto-Unboxing
 . Expressions
-. . Delegate
-. . . Checked Exceptions
-. . . T0153 = No Parameters
-. . . T0154 = Single Parameter
-. . . T0155 = Multiple Parameters
-. . . T0156 = Different Types of Parameters
-. . . Different Types of Return-Types
-. . . Operand-Stack Leakage
 . . Dispatch
+. . . T0301 = Very Basic Usage
 . . . Resolution Order
+. . . Null Argument
+. . . Primitive Argument
+. . . Infer Return Type
 . . New
 . . . T0213 = Different Types of Arguments
 . . . T0214 = Resolution Order
@@ -302,8 +317,19 @@ Test Index
 . . . T0249 = All Cases
 . . Progn
 . . . All Cases
-. . List
+. . List Literals
 . . . T0058 = All Cases
+. . List Comprehensions
+. . . T0291 = Basic Usage
+. . . T0292 = Conditional
+. . . T0293 = Auto-Boxing of Modifier
+. . . T0300 = Auto-Unboxing of Condition
+. . . T0294 = Nested in Iterable
+. . . T0295 = Nested in Modifier
+. . . T0296 = Nested in Condition
+. . . T0297 = Wrong Type from Iterable
+. . . T0298 = Iterable is Null
+. . . T0299 = Operand Stack Leakage
 . Operators
 . . T0100 = Operator Unboxing
 . . T0109 = Operator Primitive-To-Primitive Coercion

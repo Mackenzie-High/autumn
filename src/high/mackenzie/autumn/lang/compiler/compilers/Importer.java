@@ -283,9 +283,20 @@ public final class Importer
 
     public IInterfaceType resolveInterfaceType(final TypeSpecifier specifier)
     {
-        // TODO: error if non-vartype
+        final IReturnType type = resolveReturnType(specifier);
 
-        return (IInterfaceType) resolveReturnType(specifier);
+        module.program.checker.requireInterfaceType(specifier, type);
+
+        return (IInterfaceType) type;
+    }
+
+    public IInterfaceType resolveDesignType(final TypeSpecifier specifier)
+    {
+        final IReturnType type = resolveReturnType(specifier);
+
+        module.program.checker.requireDesignType(specifier, type);
+
+        return (IInterfaceType) type;
     }
 
     public IReferenceType resolveReferenceType(final TypeSpecifier specifier)

@@ -41,7 +41,6 @@ public class DesignCompiler
 
         assert module != null;
         assert node != null;
-        assert module.tuples.contains(node);
     }
 
     /**
@@ -62,6 +61,17 @@ public class DesignCompiler
      */
     @Override
     protected IMethod typeofInstance()
+    {
+        return null;
+    }
+
+    /**
+     * A design-type never has an create() method, because design-types compiles to an interface.
+     *
+     * @return null.
+     */
+    @Override
+    protected IMethod typeofCreate()
     {
         return null;
     }
@@ -146,9 +156,40 @@ public class DesignCompiler
     {
         final List<MethodNode> result = Lists.newLinkedList();
 
-        for (BridgeMethod bridge : bridges)
+        /**
+         * Generate the bridge methods related to predefined methods.
+         */
+        for (BridgeMethod bridge : special_bridges)
         {
             result.add(bridge.compileAbstract(module));
+        }
+
+        /**
+         * Generate the bridge methods related to elements.
+         */
+        for (RecordElement element : analyzer.elements().values())
+        {
+            /**
+             * Generate the bridge getter methods.
+             */
+            for (GetterMethod getter : element.bridgeGetters())
+            {
+                final BridgeMethod bridge = new BridgeMethod(getter.findSelf(),
+                                                             getter.findBridgeTarget());
+
+                result.add(bridge.compileAbstract(module));
+            }
+
+            /**
+             * Generate the bridge setter methods.
+             */
+            for (SetterMethod setter : element.bridgeSetters())
+            {
+                final BridgeMethod bridge = new BridgeMethod(setter.findSelf(),
+                                                             setter.findBridgeTarget());
+
+                result.add(bridge.compileAbstract(module));
+            }
         }
 
         return result;

@@ -55,13 +55,12 @@ import java.util.TreeSet;
  *     <tr> <td> <b>Property Name</b> </td> <td> <b>Property Description</b> </td> </tr>
  *     <tr> <td> <code>variable</code> </td> <td>This is the variable that the new lambda will be assigned to.</td> </tr>
  *     <tr> <td> <code>type</code> </td> <td>This is the type of the new lambda.</td> </tr>
- *     <tr> <td> <code>parameters</code> </td> <td>These are the formal-parameter variables of the anonymous function.</td> </tr>
  *     <tr> <td> <code>body</code> </td> <td>This is the expression that is evaluated whenever the anonymous function is invoked.</td> </tr>
  *     <tr> <td> <code>location</code> </td> <td>This is the source-location information regarding this construct.</td> </tr>
  * </table>
  * </p>
  * 
- * <p> This file was auto-generated on (Sat Nov 01 12:16:03 EDT 2014).</p>
+ * <p> This file was auto-generated on (Sat Nov 08 20:19:20 EST 2014).</p>
  */
 @SuppressWarnings("unchecked")
 public final class LambdaStatement extends Object implements IStatement
@@ -69,8 +68,6 @@ public final class LambdaStatement extends Object implements IStatement
     private Variable variable;
 
     private TypeSpecifier type;
-
-    private ConstructList<Variable> parameters = new ConstructList();
 
     private IExpression body;
 
@@ -127,30 +124,6 @@ public final class LambdaStatement extends Object implements IStatement
     /**
      * Setter.
      * 
-     * @param value is the new value of property <code>parameters</code>.
-     * @return a copy of this object with property <code>parameters</code> set to value.
-     */
-    public LambdaStatement setParameters(final ConstructList<Variable> value)
-    {
-        final LambdaStatement result = this.copy();
-        result.parameters = value;
-        return result;
-    }
-
-    /**
-     * Getter.
-     * 
-     * @return the value of property <code>parameters</code>.
-     */
-    public ConstructList<Variable> getParameters()
-    {
-        final ConstructList<Variable> value = this.parameters;
-        return value;
-    }
-
-    /**
-     * Setter.
-     * 
      * @param value is the new value of property <code>body</code>.
      * @return a copy of this object with property <code>body</code> set to value.
      */
@@ -201,17 +174,15 @@ public final class LambdaStatement extends Object implements IStatement
      * 
      * @param variable is the value for property <code>variable</code>.
      * @param type is the value for property <code>type</code>.
-     * @param parameters is the value for property <code>parameters</code>.
      * @param body is the value for property <code>body</code>.
      * @param location is the value for property <code>location</code>.
      * @return a new instance of this class.
      */
-    public static LambdaStatement create(Variable variable, TypeSpecifier type, ConstructList<Variable> parameters, IExpression body, SourceLocation location)
+    public static LambdaStatement create(Variable variable, TypeSpecifier type, IExpression body, SourceLocation location)
     {
         LambdaStatement object = new LambdaStatement();
         object = object.setVariable(variable);
         object = object.setType(type);
-        object = object.setParameters(parameters);
         object = object.setBody(body);
         object = object.setLocation(location);
         return object;
@@ -237,7 +208,6 @@ public final class LambdaStatement extends Object implements IStatement
         final LambdaStatement result = new LambdaStatement();
         result.variable = this.variable;
         result.type = this.type;
-        result.parameters = this.parameters;
         result.body = this.body;
         result.location = this.location;
         return result;
@@ -258,7 +228,6 @@ public final class LambdaStatement extends Object implements IStatement
         final Map<String, Object> map = new TreeMap<String, Object>();
         map.put("variable", this.getVariable());
         map.put("type", this.getType());
-        map.put("parameters", this.getParameters());
         map.put("body", this.getBody());
         map.put("location", this.getLocation());
 

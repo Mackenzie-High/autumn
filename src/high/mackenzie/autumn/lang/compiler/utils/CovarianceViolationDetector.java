@@ -22,7 +22,7 @@ import java.util.Set;
  *
  * @author Mackenzie High
  */
-public final class CovarianceViolationDetector
+final class CovarianceViolationDetector
 {
     /**
      * This method detects the covariance-violations in a given record-type.
@@ -30,15 +30,15 @@ public final class CovarianceViolationDetector
      * @param record is a representation of the record-type.
      * @return an immutable set containing descriptions of the violation.
      */
-    public static Set<CovarianceViolation2> detect(final RecordAnalyzer2 record)
+    public static Set<CovarianceViolation> detect(final RecordAnalyzer record)
     {
-        final Set<CovarianceViolation2> violations = Sets.newHashSet();
+        final Set<CovarianceViolation> violations = Sets.newHashSet();
 
-        for (SetterMethod setter1 : record.setters())
+        for (SetterMethod setter1 : record.setters)
         {
-            for (SetterMethod setter2 : record.setters())
+            for (SetterMethod setter2 : record.setters)
             {
-                final CovarianceViolation2 violation = detect(setter1, setter2);
+                final CovarianceViolation violation = detect(setter1, setter2);
 
                 if (violation != null)
                 {
@@ -57,8 +57,8 @@ public final class CovarianceViolationDetector
      * @param setter2 is the description of a setter method.
      * @return a non-null value, iff a violation exists.
      */
-    private static CovarianceViolation2 detect(final SetterMethod setter1,
-                                               final SetterMethod setter2)
+    private static CovarianceViolation detect(final SetterMethod setter1,
+                                              final SetterMethod setter2)
     {
         /**
          * Two setters can only conflict, if they set the same element.
@@ -89,6 +89,6 @@ public final class CovarianceViolationDetector
             return null;
         }
 
-        return new CovarianceViolation2(setter1, setter2);
+        return new CovarianceViolation(setter1, setter2);
     }
 }

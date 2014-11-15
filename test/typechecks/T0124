@@ -2,4 +2,4 @@ module Main in typechecks;
 
 struct Taxable ();
 
-struct Person () is Taxable & Taxable;
+struct Person () extends Taxable & Taxable;

@@ -41,7 +41,7 @@ public interface StaticFunctor
      *
      * @return the inner functor.
      */
-    public Functor inner();
+    public TypedFunctor inner();
 
     /**
      * {@inheritDoc}

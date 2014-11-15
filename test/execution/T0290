@@ -1,0 +1,37 @@
+module Main in execution;
+
+tuple T (a : boolean,
+         b : char,
+         c : byte,
+         d : short,
+         e : int,
+         f : long,
+         g : float,
+         h : double,
+         i : String);
+
+@Start
+defun main (args : String[]) : void
+{
+    val t = (T::create);
+
+    # The tuple's elements should all be set to their default values.
+    assert (t.a) == false;
+    assert (t.b) == 0C;
+    assert (t.c) == 0B;
+    assert (t.d) == 0S;
+    assert (t.e) == 0;
+    assert (t.f) == 0L;
+    assert (t.g) == 0.0F;
+    assert (t.h) == 0.0;
+    assert (t.i) == null;
+
+    # The size of the tuple should *not* be zero.
+    assert 9 == (t.size);
+
+    # The tuple should be mutable.
+    assert (t.isMutable) == true;
+
+    # The create() method should never return the same object.
+    assert (T::create) !== (T::create);
+}

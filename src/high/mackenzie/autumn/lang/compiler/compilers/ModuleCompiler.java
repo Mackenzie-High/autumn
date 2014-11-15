@@ -68,6 +68,8 @@ public final class ModuleCompiler
 
     public final Module node;
 
+    private ModuleDirective module_directive;
+
     public CustomDeclaredType type;
 
     public AnnotationUtils anno_utils;
@@ -296,7 +298,6 @@ public final class ModuleCompiler
         name = "instance";
         desc = type.getDescriptor();
         m.instructions.add(new FieldInsnNode(Opcodes.PUTSTATIC, owner, name, desc));
-
 
         for (FieldNode field : yields)
         {
@@ -804,6 +805,19 @@ public final class ModuleCompiler
     @Override
     public void performTypeInitialization()
     {
+        /**
+         * Create the type-system representations of the annotation-list.
+         */
+        type.setAnnotations(anno_utils.typesOf(module_directive.getAnnotations()));
+
+        /**
+         * Check the list of annotations.
+         */
+        program.checker.checkAnnotations(module_directive.getAnnotations(), type.getAnnotations());
+
+        /**
+         * Initialize the module's type.
+         */
         this.type.setModifiers(Opcodes.ACC_PUBLIC + Opcodes.ACC_FINAL);
         this.type.setSuperclass(program.typesystem.utils.ABSTRACT_MODULE);
         this.type.setSuperinterfaces(ImmutableList.<IInterfaceType>of());
@@ -913,7 +927,7 @@ public final class ModuleCompiler
 
     private String processModuleDirective(final ModuleDirective directive)
     {
-        // TODO: Handle annotations on the directive
+        this.module_directive = directive;
 
         // This is the name of the package that the module resides in.
         final StringBuilder module_package = new StringBuilder();
@@ -927,7 +941,7 @@ public final class ModuleCompiler
 
         // This is the name of the module, excluding the name of the enclosing package.
         final String module_name = directive.getName() == null
-                ? createNameForAnonymousModule(module_package.toString())
+                ? createNameForAnonymousModule()
                 : directive.getName().getName();
 
         // Remember the full name of the module for later use.
@@ -943,7 +957,7 @@ public final class ModuleCompiler
      *
      * @return a name for the module that is being compiled.
      */
-    private String createNameForAnonymousModule(final String namespace)
+    private String createNameForAnonymousModule()
     {
         return "Module$" + index;
     }

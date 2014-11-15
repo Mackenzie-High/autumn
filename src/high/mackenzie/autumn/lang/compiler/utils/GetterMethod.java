@@ -96,7 +96,7 @@ public final class GetterMethod
     @Override
     public String toString()
     {
-        return "getter " + Utils.simpleName(owner) + "." + name + "() = " + Utils.simpleName(returns);
+        return "getter " + Utils.simpleName(owner) + "." + name + "() : " + Utils.simpleName(returns);
     }
 
     /**
@@ -143,5 +143,96 @@ public final class GetterMethod
          * None of the method declarations in the owner describe the getter method.
          */
         return false;
+    }
+
+    /**
+     * This method retrieves the type-system representation of this method.
+     *
+     * @return the member of the owner-type that represents this getter method.
+     */
+    public IMethod findSelf()
+    {
+        IMethod result = null;
+
+        for (IMethod method : owner.getMethods())
+        {
+            final boolean match1 = method.getName().equals(name);
+
+            final boolean match2 = method.getReturnType().equals(returns);
+
+            final boolean match3 = method.getParameters().isEmpty();
+
+
+            if (match1 && match2 && match3)
+            {
+                result = method;
+                break;
+            }
+        }
+
+        /**
+         * This method should only be invoked, when the result is known to exist.
+         */
+        assert result != null;
+
+        return result;
+    }
+
+    /**
+     * If this getter is a bridge-method, this method determines which getter to invoke.
+     *
+     * @return getter method that this getter method invokes at runtime.
+     */
+    public IMethod findBridgeTarget()
+    {
+        IMethod result = null;
+
+        final IMethod self = this.findSelf();
+
+        for (IMethod method : owner.getMethods())
+        {
+            if (method == self)
+            {
+                continue;
+            }
+
+            final boolean match1 = method.getName().equals(name);
+
+            final boolean match2 = method.getParameters().isEmpty();
+
+            final boolean matches = match1 && match2;
+
+            if (matches && result == null)
+            {
+                result = method;
+                continue;
+            }
+
+            if (matches == false || result == null)
+            {
+                continue;
+            }
+
+            final boolean subtype = method.getReturnType().isSubtypeOf(result.getReturnType());
+
+            final boolean equals = method.getReturnType().equals(result.getReturnType());
+
+            final boolean proper_subtype = subtype && !equals;
+
+            /**
+             * If the method is more specific than the previous result, use the new result.
+             */
+            if (proper_subtype)
+            {
+                result = method;
+            }
+        }
+
+        /**
+         * This method should only be invoked, when the result is known to exist.
+         */
+        assert result != null;
+
+        return result;
     }
 }

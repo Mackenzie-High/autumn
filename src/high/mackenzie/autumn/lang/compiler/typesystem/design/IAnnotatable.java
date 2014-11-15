@@ -1,7 +1,7 @@
 package high.mackenzie.autumn.lang.compiler.typesystem.design;
 
 import high.mackenzie.autumn.resources.Finished;
-import java.util.Collection;
+import java.util.List;
 
 /**
  * An instance of this interface is an entity that can have annotations applied thereto.
@@ -14,8 +14,8 @@ public interface IAnnotatable
     /**
      * This method returns the annotations that are directly applied to this entity.
      *
-     * @return an immutable collection containing the annotations that are applied to this entity,
-     * or an empty immutable collection, if no annotations are applied to this entity.
+     * @return an immutable list containing the annotations that are applied to this entity,
+     * or an empty immutable list, if no annotations are applied to this entity.
      */
-    public Collection<IAnnotation> getAnnotations();
+    public List<IAnnotation> getAnnotations();
 }

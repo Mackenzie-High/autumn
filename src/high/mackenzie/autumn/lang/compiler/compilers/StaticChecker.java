@@ -5,9 +5,12 @@ import autumn.lang.compiler.ast.commons.IConstruct;
 import autumn.lang.compiler.ast.commons.IExpression;
 import autumn.lang.compiler.ast.commons.IStatement;
 import autumn.lang.compiler.ast.commons.IUnaryOperation;
+import autumn.lang.compiler.ast.nodes.Annotation;
+import autumn.lang.compiler.ast.nodes.AnnotationList;
 import autumn.lang.compiler.ast.nodes.AsOperation;
 import autumn.lang.compiler.ast.nodes.BreakStatement;
 import autumn.lang.compiler.ast.nodes.ContinueStatement;
+import autumn.lang.compiler.ast.nodes.Element;
 import autumn.lang.compiler.ast.nodes.ExceptionHandler;
 import autumn.lang.compiler.ast.nodes.InstanceOfExpression;
 import autumn.lang.compiler.ast.nodes.IsOperation;
@@ -22,7 +25,9 @@ import autumn.lang.compiler.errors.ErrorReport;
 import autumn.lang.compiler.errors.IErrorReporter;
 import autumn.util.Strings;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import high.mackenzie.autumn.lang.compiler.exceptions.TypeCheckFailed;
+import high.mackenzie.autumn.lang.compiler.typesystem.design.IAnnotation;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IDeclaredType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IEnumType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IExpressionType;
@@ -31,10 +36,12 @@ import high.mackenzie.autumn.lang.compiler.typesystem.design.IMethod;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IReferenceType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IReturnType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IType;
-import high.mackenzie.autumn.lang.compiler.typesystem.design.IVariableType;
+import high.mackenzie.autumn.lang.compiler.utils.CovarianceViolation;
+import high.mackenzie.autumn.lang.compiler.utils.TypeSystemUtils;
 import high.mackenzie.autumn.lang.compiler.utils.Utils;
 import java.lang.reflect.Modifier;
 import java.util.List;
+import java.util.Set;
 
 /**
  * An instance of this class provides methods which check for and report static type errors.
@@ -170,6 +177,74 @@ public final class StaticChecker
     }
 
     /**
+     * This method ensures that an annotation-list is valid.
+     *
+     * @param site is the Abstract-Syntax-Tree annotation-list.
+     * @param annotations is the type-system representation of the annotation-list.
+     */
+    public void checkAnnotations(final AnnotationList site,
+                                 final List<IAnnotation> annotations)
+    {
+        assert site.getAnnotations().size() == annotations.size();
+
+        final Set<IType> types = Sets.newHashSet();
+
+        /**
+         * Check for duplicate annotations.
+         */
+        for (IAnnotation anno : annotations)
+        {
+            if (types.contains(anno.getAnnotationType()))
+            {
+                this.reportDuplicateAnnotation(site, anno);
+            }
+            else
+            {
+                types.add(anno.getAnnotationType());
+            }
+        }
+
+        /**
+         * Check the validity of the annotation assignments.
+         */
+        for (int i = 0; i < site.getAnnotations().size(); i++)
+        {
+            //checkAnnotation(site.getAnnotations().get(i), annotations.get(i));
+        }
+    }
+
+    /**
+     * This method checks an annotation-value assignment.
+     *
+     * @param site is the Abstract-Syntax-Tree annotation.
+     * @param annotation is the type-system representation of the annotation.
+     */
+    private void checkAnnotation(final Annotation site,
+                                 final IAnnotation annotation)
+    {
+        final IMethod method = TypeSystemUtils.find(annotation.getAnnotationType().getMethods(),
+                                                    "value");
+
+        /**
+         * 1. If a value is being assigned to the annotation, then it must have a value() method.
+         * 2. Annotations written in Java *may* have too many methods.
+         * 3. Autumn based annotations always have exactly one method.
+         */
+        if (site.getValue() != null && annotation.getAnnotationType().getMethods().size() != 1)
+        {
+            reportUnusableAnnotation(site, annotation);
+        }
+
+        /**
+         * The return-type of the value() method must return a String.
+         */
+        if (method != null && !method.getReturnType().equals(program.typesystem.utils.STRING))
+        {
+            reportUnusableAnnotation(site, annotation);
+        }
+    }
+
+    /**
      * This method ensures that an expression's static-type is a subtype of the expected type.
      *
      * @param expression is the expression to check.
@@ -288,7 +363,7 @@ public final class StaticChecker
     public void requireVariableType(final IConstruct construct,
                                     final IExpressionType type)
     {
-        if (type instanceof IVariableType)
+        if (type.isPrimitiveType() || type.isReferenceType())
         {
             return;
         }
@@ -374,6 +449,58 @@ public final class StaticChecker
         final ErrorCode ERROR_CODE = ErrorCode.EXPECTED_CLASS_TYPE;
 
         final String MESSAGE = "A class-type was expected.";
+
+        final ErrorReport report = new ErrorReport(construct, ERROR_CODE, MESSAGE);
+
+        /**
+         * Issue the error-report to the user.
+         */
+        report(report);
+    }
+
+    /**
+     * This method ensures that a type is an interface-type.
+     *
+     * @param construct is the construct that is performing the type-check.
+     * @param expression is the expression that must be an interface-type.
+     */
+    public void requireInterfaceType(final IConstruct construct,
+                                     final IExpressionType type)
+    {
+        if (type.isReferenceType() && ((IReferenceType) type).isInterfaceType())
+        {
+            return;
+        }
+
+        final ErrorCode ERROR_CODE = ErrorCode.EXPECTED_INTERFACE_TYPE;
+
+        final String MESSAGE = "An interface-type was expected.";
+
+        final ErrorReport report = new ErrorReport(construct, ERROR_CODE, MESSAGE);
+
+        /**
+         * Issue the error-report to the user.
+         */
+        report(report);
+    }
+
+    /**
+     * This method ensures that a type is a design-type.
+     *
+     * @param construct is the construct that is performing the type-check.
+     * @param expression is the expression that must be a design-type.
+     */
+    public void requireDesignType(final IConstruct construct,
+                                  final IExpressionType type)
+    {
+        if (type.isReferenceType() && ((IReferenceType) type).isInterfaceType() && type.isSubtypeOf(program.typesystem.utils.RECORD))
+        {
+            return;
+        }
+
+        final ErrorCode ERROR_CODE = ErrorCode.EXPECTED_DESIGN_TYPE;
+
+        final String MESSAGE = "A design-type was expected.";
 
         final ErrorReport report = new ErrorReport(construct, ERROR_CODE, MESSAGE);
 
@@ -515,6 +642,32 @@ public final class StaticChecker
         final ErrorCode ERROR_CODE = ErrorCode.EXPECTED_THROWABLE;
 
         final String MESSAGE = "A java.lang.Throwable was expected.";
+
+        final ErrorReport report = new ErrorReport(specifier, ERROR_CODE, MESSAGE);
+
+        /**
+         * Issue the error-report to the user.
+         */
+        report(report);
+    }
+
+    /**
+     * This method ensures that a type-specifier specifies a functor-type.
+     *
+     * @param specifier must specify a functor-type.
+     * @param type must be a subtype of Functor.
+     */
+    public void requireFunctor(final TypeSpecifier specifier,
+                               final IType type)
+    {
+        if (type.isSubtypeOf(program.typesystem.utils.ABSTRACT_STATIC_FUNCTOR))
+        {
+            return;
+        }
+
+        final ErrorCode ERROR_CODE = ErrorCode.EXPECTED_FUNCTOR_TYPE;
+
+        final String MESSAGE = "An autumn.lang.Functor was expected.";
 
         final ErrorReport report = new ErrorReport(specifier, ERROR_CODE, MESSAGE);
 
@@ -1172,21 +1325,90 @@ public final class StaticChecker
     }
 
     /**
-     * This method reports that a struct or tuple contains a duplicate element.
+     * This method reports that a design/struct/tuple contains a duplicate element.
      *
-     * @param site is the record that declares the same entry twice.
-     * @param element is the name of the duplicated element.
+     * @param element is one of the duplicates.
      */
-    public void reportDuplicateElement(final IConstruct site,
-                                       final Variable element)
+    public void reportDuplicateElement(final Element element)
     {
         final ErrorCode ERROR_CODE = ErrorCode.DUPLICATE_ELEMENT;
 
         final String MESSAGE = "A record can only declare an element once per definition";
 
+        final ErrorReport report = new ErrorReport(element, ERROR_CODE, MESSAGE);
+
+        report.addDetail("Element", element.getName().getName());
+
+        /**
+         * Issue the error-report to the user.
+         */
+        report(report);
+    }
+
+    /**
+     * This method reports a duplicate annotation in an annotation-list.
+     *
+     * @param annotations is the list of annotations.
+     * @param annotation is the duplicate annotation.
+     */
+    public void reportDuplicateAnnotation(final AnnotationList annotations,
+                                          final IAnnotation annotation)
+    {
+        final ErrorCode ERROR_CODE = ErrorCode.DUPLICATE_ANNOTATION;
+
+        final String MESSAGE = "An annotation can only occur once in a list of annotations.";
+
+        final ErrorReport report = new ErrorReport(annotations, ERROR_CODE, MESSAGE);
+
+        report.addDetail("Type", Utils.sourceName(annotation.getAnnotationType()));
+
+        /**
+         * Issue the error-report to the user.
+         */
+        report(report);
+    }
+
+    /**
+     * This method reports that an annotation cannot be used by Autumn.
+     *
+     * @param site is the annotation's AST node.
+     * @param type is the type of the annotation.
+     */
+    public void reportUnusableAnnotation(final Annotation site,
+                                         final IAnnotation type)
+    {
+        final ErrorCode ERROR_CODE = ErrorCode.UNUSABLE_ANNOTATION;
+
+        final String MESSAGE = "An unusable annotation was encountered.";
+
         final ErrorReport report = new ErrorReport(site, ERROR_CODE, MESSAGE);
 
-        report.addDetail("Element", element.getName());
+        report.addDetail("Type", Utils.sourceName(type.getAnnotationType()));
+
+        /**
+         * Issue the error-report to the user.
+         */
+        report(report);
+    }
+
+    /**
+     * This method reports that an element in a design/struct/tuple cannot override another.
+     *
+     * @param site is the AST node of the definition.
+     * @param violation describes the covariance violation.
+     */
+    public void reportCovarianceViolation(final IConstruct site,
+                                          final CovarianceViolation violation)
+    {
+        final ErrorCode ERROR_CODE = ErrorCode.COVARIANCE_VIOLATION;
+
+        final String MESSAGE = "A covariance violation was encountered.";
+
+        final ErrorReport report = new ErrorReport(site, ERROR_CODE, MESSAGE);
+
+        report.addDetail("Element", violation.lower.name);
+        report.addDetail("Upper", Utils.sourceName(violation.upper.parameter));
+        report.addDetail("Lower", Utils.sourceName(violation.lower.parameter));
 
         /**
          * Issue the error-report to the user.

@@ -24,6 +24,7 @@ import java.util.List;
  * A subclass needs to implement the following methods:
  * <ul>
  * <li>static method instance() - Returns an immutable empty instance.</li>
+ * <li>static method create() - Returns a mutable empty instance.</li>
  * <li>bind(SpecialMethods)</li>
  * <li>bindings()</li>
  * <li>isStruct()</li>

@@ -27,8 +27,30 @@ public final class Runner
 
 
 
+        test("T0000");
 
-        test("T0281");
+
+
+        test("T0301");
+        test("T0300");
+        test("T0299");
+        test("T0298");
+        test("T0297");
+        test("T0296");
+        test("T0295");
+        test("T0294");
+        test("T0293");
+        test("T0292");
+        test("T0291");
+        test("T0290");
+        test("T0289");
+        test("T0288");
+        test("T0287");
+        test("T0286");
+        test("T0285");
+        test("T0284");
+        test("T0283");
+        test("T0282");
         test("T0280");
         test("T0279");
         test("T0278");
@@ -347,7 +369,8 @@ public final class Runner
 
                 System.out.println("Assertion Failed!");
                 System.out.println("  File: " + afe.file());
-                System.out.println("  Line #" + afe.line());
+                System.out.println("  Line: #" + afe.line());
+                System.out.println("  Message: " + afe.getMessage());
                 afe.printStackTrace(System.out);
             }
             else

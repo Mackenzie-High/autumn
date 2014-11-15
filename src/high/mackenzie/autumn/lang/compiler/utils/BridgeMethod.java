@@ -1,14 +1,13 @@
 package high.mackenzie.autumn.lang.compiler.utils;
 
-import com.google.common.collect.Lists;
+import com.google.common.base.Preconditions;
 import high.mackenzie.autumn.lang.compiler.compilers.ModuleCompiler;
 import high.mackenzie.autumn.lang.compiler.typesystem.CustomDeclaredType;
 import high.mackenzie.autumn.lang.compiler.typesystem.CustomMethod;
-import high.mackenzie.autumn.lang.compiler.typesystem.design.IFormalParameter;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IMethod;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IReferenceType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IReturnType;
-import java.util.List;
+import high.mackenzie.autumn.lang.compiler.typesystem.design.IVariableType;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.InsnNode;
 import org.objectweb.asm.tree.MethodInsnNode;
@@ -24,26 +23,17 @@ import org.objectweb.asm.tree.VarInsnNode;
 public final class BridgeMethod
 {
     /**
-     * This is the type-system representation of the actual method definition.
-     */
-    public final IMethod target;
-
-    /**
      * This is the type-system representation of the bridge method definition.
      */
-    public final CustomMethod bridge;
+    public final IMethod caller;
 
     /**
-     * This is the return-type of the bridge definition.
+     * This is the type-system representation of the actual method definition.
      */
-    public final IReturnType returns;
+    public final IMethod callee;
 
     /**
-     * Sole Constructor.
-     *
-     * <p>
-     * The bridge method definition will be added to the owner.
-     * </p>
+     * Constructor.
      *
      * @param owner is the owner of the bridge definition.
      * @param returns is the return-type of the bridge method definition.
@@ -53,27 +43,36 @@ public final class BridgeMethod
                         final IReturnType returns,
                         final IMethod target)
     {
-        this.target = target;
-        this.returns = returns;
-
         /**
          * Create the type-system representation of the bridge method.
          */
-        bridge = new CustomMethod(target.getOwner().getTypeFactory(), false);
-        bridge.setAnnotations(target.getAnnotations());
-        bridge.setModifiers(target.getModifiers());
-        bridge.setName(target.getName());
-        bridge.setOwner(owner);
-        bridge.setParameters(target.getParameters());
-        bridge.setReturnType(returns);
-        bridge.setThrowsClause(target.getThrowsClause());
+        CustomMethod builder = new CustomMethod(returns.getTypeFactory(), false);
+        builder.setAnnotations(target.getAnnotations());
+        builder.setModifiers(target.getModifiers());
+        builder.setName(target.getName());
+        builder.setOwner(owner);
+        builder.setParameters(target.getParameters());
+        builder.setReturnType(returns);
+        builder.setThrowsClause(target.getThrowsClause());
 
-        /**
-         * Add the bridge method to the owner.
-         */
-        final List<IMethod> methods = Lists.newLinkedList(owner.getMethods());
-        methods.add(bridge);
-        owner.setMethods(methods);
+        this.caller = builder;
+        this.callee = target;
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param bridge is the bridge method.
+     * @param target is the method that the bridge method invokes.
+     */
+    public BridgeMethod(final IMethod bridge,
+                        final IMethod target)
+    {
+        Preconditions.checkNotNull(bridge);
+        Preconditions.checkNotNull(target);
+
+        this.caller = bridge;
+        this.callee = target;
     }
 
     /**
@@ -84,9 +83,9 @@ public final class BridgeMethod
      */
     public MethodNode compile(final ModuleCompiler module)
     {
-        assert bridge.getReturnType().isReferenceType();
+        assert caller.getReturnType().isReferenceType();
 
-        final MethodNode method = Utils.bytecodeOf(module, bridge);
+        final MethodNode method = Utils.bytecodeOf(module, caller);
 
         // Remove the abstract and final modifiers.
         method.access = method.access & (~Opcodes.ACC_ABSTRACT);
@@ -96,7 +95,7 @@ public final class BridgeMethod
         method.access = method.access | Opcodes.ACC_BRIDGE;
 
         // Change the return-type.
-        method.desc = bridge.getDescriptor();
+        method.desc = caller.getDescriptor();
 
         // Load 'this'
         method.instructions.add(new VarInsnNode(Opcodes.ALOAD, 0));
@@ -104,22 +103,28 @@ public final class BridgeMethod
         int address = 1;
 
         // Load the arguments.
-        for (IFormalParameter param : bridge.getParameters())
+        for (int i = 0; i < caller.getParameters().size(); i++)
         {
-            method.instructions.add(Utils.selectLoadVarInsn(param.getType(), address));
+            final IVariableType argument_type = caller.getParameters().get(i).getType();
 
-            address += Utils.sizeof(param.getType());
+            final IVariableType parameter_type = callee.getParameters().get(i).getType();
+
+            method.instructions.add(Utils.selectLoadVarInsn(argument_type, address));
+
+            method.instructions.add(Utils.conditionalCast(argument_type, parameter_type));
+
+            address += Utils.sizeof(argument_type);
         }
 
         // Invoke the non-bridge method.
-        method.instructions.add(new MethodInsnNode(target.getOwner().isInterfaceType() ? Opcodes.INVOKEINTERFACE : Opcodes.INVOKEVIRTUAL,
-                                                   Utils.internalName(target.getOwner()),
-                                                   target.getName(),
-                                                   target.getDescriptor()));
+        method.instructions.add(new MethodInsnNode(callee.getOwner().isInterfaceType() ? Opcodes.INVOKEINTERFACE : Opcodes.INVOKEVIRTUAL,
+                                                   Utils.internalName(callee.getOwner()),
+                                                   callee.getName(),
+                                                   callee.getDescriptor()));
 
         // Cast the result produced by the non-bridge method to the appropriate type.
         method.instructions.add(new TypeInsnNode(Opcodes.CHECKCAST,
-                                                 Utils.internalName((IReferenceType) bridge.getReturnType())));
+                                                 Utils.internalName((IReferenceType) caller.getReturnType())));
 
         // Return the result.
         method.instructions.add(new InsnNode(Opcodes.ARETURN));
@@ -135,9 +140,9 @@ public final class BridgeMethod
      */
     public MethodNode compileAbstract(final ModuleCompiler module)
     {
-        assert bridge.getReturnType().isReferenceType();
+        assert caller.getReturnType().isReferenceType();
 
-        final MethodNode method = Utils.bytecodeOf(module, bridge);
+        final MethodNode method = Utils.bytecodeOf(module, caller);
 
         // Add the abstract and final modifiers.
         method.access = method.access | Opcodes.ACC_ABSTRACT;
@@ -146,7 +151,7 @@ public final class BridgeMethod
         method.access = method.access | Opcodes.ACC_BRIDGE;
 
         // Change the return-type.
-        method.desc = bridge.getDescriptor();
+        method.desc = caller.getDescriptor();
 
         return method;
     }

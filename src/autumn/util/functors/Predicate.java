@@ -1,6 +1,6 @@
 package autumn.util.functors;
 
-import autumn.lang.Functor;
+import autumn.lang.TypedFunctor;
 import autumn.lang.internals.AbstractStaticFunctor;
 import autumn.lang.internals.ArgumentStack;
 import com.google.common.collect.ImmutableList;
@@ -10,10 +10,10 @@ import java.util.List;
  *
  * @author mackenzie
  */
-public final class Predicate
+public class Predicate
         extends AbstractStaticFunctor
 {
-    public Predicate(final Functor functor)
+    public Predicate(final TypedFunctor functor)
     {
         super(functor);
     }

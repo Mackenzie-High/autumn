@@ -7,10 +7,12 @@ import autumn.lang.LocalsMap;
 import autumn.lang.Module;
 import autumn.lang.Record;
 import autumn.lang.SpecialMethods;
+import autumn.lang.TypedFunctor;
 import autumn.lang.annotations.Start;
 import autumn.lang.compiler.ast.nodes.Name;
 import autumn.lang.compiler.ast.nodes.TypeSpecifier;
 import autumn.lang.internals.AbstractDelegate;
+import autumn.lang.internals.AbstractLambda;
 import autumn.lang.internals.AbstractModule;
 import autumn.lang.internals.AbstractRecord;
 import autumn.lang.internals.AbstractStaticFunctor;
@@ -23,6 +25,7 @@ import autumn.lang.internals.YieldState;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import high.mackenzie.autumn.lang.compiler.typesystem.CustomFormalParameter;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IAnnotatable;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IAnnotation;
@@ -53,6 +56,7 @@ import java.math.BigInteger;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.InsnList;
@@ -144,6 +148,8 @@ public final class TypeSystemUtils
 
     public final IClassType ABSTRACT_DELEGATE;
 
+    public final IClassType ABSTRACT_LAMBDA;
+
     public final IClassType ABSTRACT_RECORD;
 
     public final IClassType ABSTRACT_STATIC_FUNCTOR;
@@ -163,6 +169,8 @@ public final class TypeSystemUtils
     public final IClassType LOCALS_MAP;
 
     public final IClassType LOCAL;
+
+    public final IInterfaceType TYPED_FUNCTOR;
 
     /**
      * Sole Constructor.
@@ -226,6 +234,8 @@ public final class TypeSystemUtils
 
         this.FUNCTOR = (IInterfaceType) factory.fromClass(Functor.class);
 
+        this.TYPED_FUNCTOR = (IInterfaceType) factory.fromClass(TypedFunctor.class);
+
         this.MODULE = (IInterfaceType) factory.fromClass(Module.class);
 
         this.MODULE_DELEGATE = (IClassType) factory.fromClass(ModuleDelegate.class);
@@ -235,6 +245,8 @@ public final class TypeSystemUtils
         this.ABSTRACT_MODULE = (IClassType) factory.fromClass(AbstractModule.class);
 
         this.ABSTRACT_DELEGATE = (IClassType) factory.fromClass(AbstractDelegate.class);
+
+        this.ABSTRACT_LAMBDA = (IClassType) factory.fromClass(AbstractLambda.class);
 
         this.ABSTRACT_STATIC_FUNCTOR = (IClassType) factory.fromClass(AbstractStaticFunctor.class);
 
@@ -1409,5 +1421,46 @@ NEXT_METHOD:
         }
 
         return result;
+    }
+
+    /**
+     * This method determines whether this class or any of its parents inherit from themselves.
+     *
+     * @param base is the most specific type.
+     * @return true, iff circular inheritance is present.
+     */
+    public static boolean detectCircularInheritance(final IDeclaredType base)
+    {
+        final Set<IType> set = Sets.newHashSet();
+
+        set.add(base);
+
+        /**
+         * Detect circular inheritance due to a superclass.
+         */
+        IClassType p = base.getSuperclass();
+
+        while ("Ljava/lang/Object;".equals(p.getDescriptor()) == false)
+        {
+            if (set.contains(p))
+            {
+                return true;
+            }
+            else
+            {
+                set.add(p);
+                p = p.getSuperclass();
+            }
+        }
+
+        /**
+         * Detect circular inheritance due to superinterfaces.
+         */
+        if (base.getAllSuperinterfaces().contains(base))
+        {
+            return true;
+        }
+
+        return false;
     }
 }

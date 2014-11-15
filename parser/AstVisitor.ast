@@ -1829,8 +1829,11 @@ rule annotation
   # Get the AST builder.
   builder : TreeBuilder = call Utils.builder();
 
+  # Get the value to store in the annotation.
+  value : String = call Utils.extractAnnotationValue($node);
+
   # Create the AST node.
-  call builder.createComponentAnnotation();
+  call builder.createComponentAnnotation(value);
 
   # Set the source-location information.
   call Utils.setSourceLocation($node);

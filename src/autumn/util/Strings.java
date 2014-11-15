@@ -162,6 +162,10 @@ public final class Strings
             {
                 result.append("\\00000");
             }
+            else
+            {
+                result.append(chr);
+            }
         }
 
         return result.toString();

@@ -1,0 +1,19 @@
+module Main in execution;
+
+design M (x : Object);
+
+struct S (x : String) extends M;
+
+
+@Start
+defun main (args : String[]) : void
+{
+    var p = (S::create) is S;
+    var q = p is M;
+
+    (p.x "moo");
+
+    (q.x "boo");
+
+    assert (p.x) == "boo";
+}

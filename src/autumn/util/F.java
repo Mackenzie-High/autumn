@@ -8,7 +8,6 @@ import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.AbstractList;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.Iterator;
@@ -257,19 +256,19 @@ public final class F
         return Double.parseDouble(readln());
     }
 
-    public static List<Integer> range(final int start)
+    public static Iterable<Integer> range(final int end)
     {
-        return range(start, Integer.MAX_VALUE, 1);
+        return range(0, end, 1);
     }
 
-    public static List<Integer> range(final int start,
-                                      final int end)
+    public static Iterable<Integer> range(final int start,
+                                          final int end)
     {
         return range(start, end, 1);
     }
 
     /**
-     * This method creates a list of the integers in a discrete range.
+     * This method creates an iterable that iterates over the integers in a discrete range.
      *
      * @param start is the inclusive lowest value in the range.
      * @param end is the inclusive highest value in the range.
@@ -277,28 +276,45 @@ public final class F
      * @return a lazy list of integers.
      * @throws IllegalArgumentException if end is less-than start.
      */
-    public static List<Integer> range(final int start,
-                                      final int end,
-                                      final int step)
+    public static Iterable<Integer> range(final int start,
+                                          final int end,
+                                          final int step)
     {
         // TODO: test
 
-        Preconditions.checkArgument(start >= end);
+        Preconditions.checkArgument(start <= end);
 
-        final int size = (start - end) / step;
-
-        return new AbstractList<Integer>()
+        return new Iterable<Integer>()
         {
             @Override
-            public Integer get(int index)
+            public Iterator<Integer> iterator()
             {
-                return start + index * step;
-            }
+                return new Iterator<Integer>()
+                {
+                    private int index = start;
 
-            @Override
-            public int size()
-            {
-                return size;
+                    @Override
+                    public boolean hasNext()
+                    {
+                        return index <= end;
+                    }
+
+                    @Override
+                    public Integer next()
+                    {
+                        final int result = index;
+
+                        index = index + step;
+
+                        return result;
+                    }
+
+                    @Override
+                    public void remove()
+                    {
+                        throw new UnsupportedOperationException("Sorry, you cannot remove a number from the number line.");
+                    }
+                };
             }
         };
     }

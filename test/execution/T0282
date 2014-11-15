@@ -1,0 +1,12 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    var a = 13;
+    var b = 17;
+
+    lambda p : Predicate => true;
+
+    (F::println (p.closure));
+}

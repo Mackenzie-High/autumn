@@ -14,7 +14,6 @@ import high.mackenzie.autumn.lang.compiler.typesystem.design.IField;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IMethod;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IReferenceType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IReturnType;
-import high.mackenzie.autumn.lang.compiler.typesystem.design.IType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IVariableType;
 import high.mackenzie.autumn.lang.compiler.utils.Conversion;
 import high.mackenzie.autumn.lang.compiler.utils.TypeSystemUtils;
@@ -203,6 +202,11 @@ public class ExpressionTypeChecker
     public void visit(final ListComprehensionExpression object)
     {
         /**
+         * A list-comprehension returns type java.util.List.
+         */
+        infer(object, program.typesystem.utils.LIST);
+
+        /**
          * Type-check the iterable.
          */
         object.getIterable().accept(this);
@@ -252,26 +256,25 @@ public class ExpressionTypeChecker
     @Override
     public void visit(final DispatchExpression object)
     {
-        final List<IType> args = Lists.newLinkedList();
-
+        /**
+         * Visit and type-check the expressions that produce the arguments.
+         */
         for (IExpression arg : object.getArguments())
         {
             arg.accept(this);
-            args.add(program.symbols.expressions.get(arg));
         }
 
-        final List<IMethod> methods = program.typesystem.utils.resolveMethods(module.type,
-                                                                              module.type,
-                                                                              object.getName().getName(),
-                                                                              args);
+        final DispatchCompiler cmp = new DispatchCompiler(module,
+                                                          function.instructions,
+                                                          allocator,
+                                                          function.vars,
+                                                          object.getName().getName(),
+                                                          object.getArguments().asMutableList());
 
-        if (methods.isEmpty())
-        {
-            // TODO: Compile Error
-            throw new RuntimeException("No Such Method: " + object.getName().getName() + args.toString());
-        }
+        cmp.resolve();
+        cmp.check();
 
-        program.symbols.dispatches.put(object, methods);
+        program.symbols.dispatches.put(object, cmp);
         infer(object, program.typesystem.utils.OBJECT);
     }
 

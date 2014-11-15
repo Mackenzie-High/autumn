@@ -4,6 +4,7 @@
 @Anno1
 @Anno2
 @Anno3
+@Author = "Hello \n World"
 module * in program;
 module * in program.xoo;
 module * in program.xoo.moo;
@@ -37,12 +38,12 @@ annotation Anno17;
 @Anno04A
 @Anno05A
 @Anno06A
-exception Goo is Boo;
+exception Goo extends Boo;
 
 @Anno04B
 @Anno05B
 @Anno06B
-exception Goo is Boo;
+exception Goo extends Boo;
 
 '' This is a doc-comment.
 @Anno04B
@@ -70,13 +71,13 @@ design Person (name : String, age : int);
 @Anno01
 @Anno02
 @Anno03
-design Person (name : String, age : int) is Taxable;
+design Person (name : String, age : int) extends Taxable;
 
 '' This is a doc-comment.
 @Anno01
 @Anno02
 @Anno03
-design Person (name : String, age : int) is Taxable & Citizen;
+design Person (name : String, age : int) extends Taxable & Citizen;
 
 '' This is a doc-comment.
 @Anno01
@@ -88,13 +89,13 @@ tuple Person (name : String, age : int);
 @Anno01
 @Anno02
 @Anno03
-tuple Person (name : String, age : int) is Taxable;
+tuple Person (name : String, age : int) extends Taxable;
 
 '' This is a doc-comment.
 @Anno01
 @Anno02
 @Anno03
-tuple Person (name : String, age : int) is Taxable & Citizen;
+tuple Person (name : String, age : int) extends Taxable & Citizen;
 
 '' This is a doc-comment.
 @Anno01
@@ -106,13 +107,13 @@ struct Person (name : String, age : int);
 @Anno01
 @Anno02
 @Anno03
-struct Person (name : String, age : int) is Taxable;
+struct Person (name : String, age : int) extends Taxable;
 
 '' This is a doc-comment.
 @Anno01
 @Anno02
 @Anno03
-struct Person (name : String, age : int) is Taxable & Citizen;
+struct Person (name : String, age : int) extends Taxable & Citizen;
 
 '' This is a doc-comment.
 @Anno07
@@ -139,7 +140,7 @@ functor Function3 (x : byte, y : short, z : int) : boolean;
 @Anno07
 @Anno08
 @Anno09
-functor FilePredicate (value : File) : boolean is Predicate;
+functor FilePredicate (value : File) : boolean extends Predicate;
 
 '' This is a doc-comment.
 @Anno37
@@ -732,13 +733,13 @@ defun main (args : String[]) : void
 
     nop;
 
-    lambda xoo : Moo () => (1 + 2);
+    lambda xoo : Moo => (1 + 2);
 
-    lambda xoo : Moo (x) => (1 + 2);
+    lambda xoo : Moo => (1 + 2);
 
-    lambda xoo : Moo (x, y) => (1 + 2);
+    lambda xoo : Moo => (1 + 2);
 
-    lambda xoo : Moo (x, y, z) => (1 + 2);
+    lambda xoo : Moo => (1 + 2);
 
     nop;
 

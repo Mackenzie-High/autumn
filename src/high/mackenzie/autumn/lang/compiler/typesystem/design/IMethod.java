@@ -24,7 +24,7 @@ public interface IMethod
      * {@inheritDoc}
      */
     @Override
-    public Collection<IAnnotation> getAnnotations();
+    public List<IAnnotation> getAnnotations();
 
     /**
      * {@inheritDoc}

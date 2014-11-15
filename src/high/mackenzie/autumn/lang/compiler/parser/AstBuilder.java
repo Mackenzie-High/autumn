@@ -2324,7 +2324,9 @@ public final class AstBuilder extends AbstractVisitor
 
         final TreeBuilder builder = Utils.builder();
 
-        builder.createComponentAnnotation();
+        final String value = Utils.extractAnnotationValue($node);
+
+        builder.createComponentAnnotation(value);
 
         Utils.setSourceLocation($node);
 

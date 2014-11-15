@@ -2,6 +2,7 @@ package high.mackenzie.autumn.lang.compiler.typesystem.design;
 
 import high.mackenzie.autumn.resources.Finished;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * An instance of this interface is type of an enumeration.
@@ -22,7 +23,7 @@ public interface IEnumType
      * {@inheritDoc}
      */
     @Override
-    public Collection<IAnnotation> getAnnotations();
+    public List<IAnnotation> getAnnotations();
 
     /**
      * {@inheritDoc}

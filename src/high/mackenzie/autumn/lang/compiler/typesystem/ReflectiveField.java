@@ -1,7 +1,7 @@
 package high.mackenzie.autumn.lang.compiler.typesystem;
 
 import com.google.common.base.Preconditions;
-import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IAnnotation;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IDeclaredType;
@@ -12,7 +12,6 @@ import high.mackenzie.autumn.lang.compiler.typesystem.design.IVariableType;
 import high.mackenzie.autumn.resources.Finished;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -66,7 +65,7 @@ public final class ReflectiveField
      * {@inheritDoc}
      */
     @Override
-    public Collection<IAnnotation> getAnnotations()
+    public List<IAnnotation> getAnnotations()
     {
         final List result = Lists.newLinkedList();
 
@@ -77,7 +76,7 @@ public final class ReflectiveField
             result.add(annotation);
         }
 
-        return ImmutableSet.copyOf(result);
+        return ImmutableList.copyOf(result);
     }
 
     /**

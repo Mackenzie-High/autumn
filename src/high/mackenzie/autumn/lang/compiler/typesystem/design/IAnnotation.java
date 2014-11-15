@@ -32,4 +32,17 @@ public interface IAnnotation
      * object can be found.
      */
     public IAnnotationType getAnnotationType();
+
+    /**
+     * This method retrieves the value stored in the annotation, if it has a value.
+     *
+     * <p>
+     * In terms of Java based code, the value is stored in an annotation-element named "value".
+     * The return-type of the element must be String.
+     * If no such element exists, then the annotation does not have a value.
+     * </p>
+     *
+     * @return the value in the annotation.
+     */
+    public String getAnnotationValue();
 }

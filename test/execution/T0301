@@ -1,0 +1,56 @@
+module Main in execution;
+
+
+@Start
+defun main (args : String[]) : void
+{
+    var value = null as Object;
+
+    value = [];
+    assert (dispatch moo value) == "list";
+
+    value = (new HashSet);
+    assert (dispatch moo value) == "collection";
+
+    value = 3;
+    assert (dispatch moo value) == "integer";
+
+    value = 7L;
+    assert (dispatch moo value) == "long";
+
+    value = 9.0;
+    assert (dispatch moo value) == "number";
+
+    value = "Venus";
+    assert (dispatch moo value) == "object";
+}
+
+defun moo (x : List) : String
+{
+    return "list";
+}
+
+defun moo (x : Collection) : String
+{
+    return "collection";
+}
+
+defun moo (x : Integer) : String
+{
+    return "integer";
+}
+
+defun moo (x : Long) : String
+{
+    return "long";
+}
+
+defun moo (x : Number) : String
+{
+    return "number";
+}
+
+defun moo (x : Object) : String
+{
+    return "object";
+}

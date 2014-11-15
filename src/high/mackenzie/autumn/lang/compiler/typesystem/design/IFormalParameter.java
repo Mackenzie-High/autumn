@@ -1,7 +1,7 @@
 package high.mackenzie.autumn.lang.compiler.typesystem.design;
 
 import high.mackenzie.autumn.resources.Finished;
-import java.util.Collection;
+import java.util.List;
 
 /**
  * An instance of this interface is the type of a formal parameter.
@@ -16,7 +16,7 @@ public interface IFormalParameter
      * {@inheritDoc}
      */
     @Override
-    public Collection<IAnnotation> getAnnotations();
+    public List<IAnnotation> getAnnotations();
 
     /**
      * This method returns the type of value that this formal-parameter can accept.

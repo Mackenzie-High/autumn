@@ -2,4 +2,4 @@ module * in typechecks;
 
 import typechecks.inaccessible.InaccessibleClass;
 
-exception Moo is InaccessibleClass;
+exception Moo extends InaccessibleClass;

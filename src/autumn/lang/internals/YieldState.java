@@ -1,6 +1,5 @@
 package autumn.lang.internals;
 
-import com.google.common.base.Preconditions;
 import high.mackenzie.autumn.resources.Finished;
 
 /**
@@ -56,8 +55,6 @@ public final class YieldState
      */
     public void setIndex(final int index)
     {
-        Preconditions.checkArgument(index >= 0);
-
         this.index = index;
     }
 

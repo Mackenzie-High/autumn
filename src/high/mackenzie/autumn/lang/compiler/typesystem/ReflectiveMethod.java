@@ -73,7 +73,7 @@ public final class ReflectiveMethod
      * {@inheritDoc}
      */
     @Override
-    public Collection<IAnnotation> getAnnotations()
+    public List<IAnnotation> getAnnotations()
     {
         final List result = Lists.newLinkedList();
 
@@ -84,7 +84,7 @@ public final class ReflectiveMethod
             result.add(annotation);
         }
 
-        return ImmutableSet.copyOf(result);
+        return ImmutableList.copyOf(result);
     }
 
     /**

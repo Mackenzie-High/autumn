@@ -15,7 +15,7 @@ public final class RecordElement
     /**
      * This is a description of the record that contains the element.
      */
-    public final RecordAnalyzer2 record;
+    public final RecordAnalyzer record;
 
     /**
      * This is the name of the element.
@@ -43,7 +43,7 @@ public final class RecordElement
      * @param record is a description of the record-type.
      * @param name is the name of the element.
      */
-    public RecordElement(final RecordAnalyzer2 record,
+    public RecordElement(final RecordAnalyzer record,
                          final String name)
     {
         this.record = record;
@@ -238,12 +238,7 @@ public final class RecordElement
 
         for (SetterMethod setter : record.setters)
         {
-            final boolean inheritance = !setter.returns.equals(record.type);
-
-            final boolean covariance = setter.returns.equals(record.type)
-                                       && !setter().parameter.equals(setter.parameter);
-
-            if (setter.owner.equals(record.type) && setter.name.equals(name) && (inheritance || covariance))
+            if (setter.owner.equals(record.type) && setter.name.equals(name) && !setter.returns.equals(record.type))
             {
                 bridges.add(setter);
             }

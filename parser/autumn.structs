@@ -665,9 +665,6 @@ struct LambdaStatement
   doc This is the type of the new lambda.
   data type : TypeSpecifier;
 
-  doc These are the formal-parameter variables of the anonymous function.
-  data parameters : ConstructList<Variable> = {new ConstructList() };
-
   doc This is the expression that is evaluated whenever the anonymous function is invoked. 
   data body : IExpression;
   
@@ -1807,6 +1804,9 @@ struct Annotation
   
   doc This is the type of the instantiated annotation definition.
   data type : TypeSpecifier;
+
+  doc This is the value stored in the annotation. 
+  data value : String = { null };
 
   doc This is the source-location information regarding this construct.
   data location : SourceLocation = { new SourceLocation() };

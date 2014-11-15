@@ -1,0 +1,13 @@
+module Main in execution;
+
+
+@Start
+defun main (args : String[]) : void
+{
+    val input1 = ["A", "B", "C"];
+    val input2 = ["X", "Y", "Z"];
+
+    val output = [[x .. y for y : String in input2] for x : String in input1];
+
+    assert output == [["AX", "AY", "AZ"], ["BX", "BY", "BZ"], ["CX", "CY", "CZ"]];
+}

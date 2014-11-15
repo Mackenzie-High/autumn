@@ -1,0 +1,11 @@
+module Main in execution;
+
+
+@Start
+defun main (args : String[]) : void
+{
+    val input = ["X", "Y", "Z"];
+    val output = ["X" .. x for x : String in input];
+
+    assert output == ["XX", "XY", "XZ"];
+}

@@ -1,7 +1,7 @@
 package autumn.lang.internals;
 
-import autumn.lang.Functor;
 import autumn.lang.StaticFunctor;
+import autumn.lang.TypedFunctor;
 import com.google.common.base.Preconditions;
 
 /**
@@ -12,7 +12,7 @@ import com.google.common.base.Preconditions;
 public abstract class AbstractStaticFunctor
         implements StaticFunctor
 {
-    private final Functor inner;
+    private final TypedFunctor inner;
 
     /**
      * Sole Constructor.
@@ -20,7 +20,7 @@ public abstract class AbstractStaticFunctor
      * @param inner is the inner() functor.
      * @throws NullPointerException.
      */
-    public AbstractStaticFunctor(final Functor inner)
+    public AbstractStaticFunctor(final TypedFunctor inner)
     {
         Preconditions.checkNotNull(inner);
 
@@ -31,7 +31,7 @@ public abstract class AbstractStaticFunctor
      * {@inheritDoc}
      */
     @Override
-    public final Functor inner()
+    public final TypedFunctor inner()
     {
         return inner;
     }

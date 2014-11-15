@@ -1,4 +1,4 @@
-module MainTest in #PACKAGE#;
+module MainTest in program;
 
 @Test
 defun test1 (test : TestCase) : void

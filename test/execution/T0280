@@ -3,7 +3,7 @@ module Main in execution;
 
 design Person (name : String, age : int);
 
-design Employee () is Person;
+design Employee () extends Person;
 
 
 @Start

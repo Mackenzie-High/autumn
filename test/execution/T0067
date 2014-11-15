@@ -36,8 +36,11 @@ defun main (args : String[]) : void
 defun F01() : List
 {
     val list = (new LinkedList);
-    yield list;
-    return list;
+
+    forever
+    {
+        yield list;
+    }
 }
 
 defun F02 () : int

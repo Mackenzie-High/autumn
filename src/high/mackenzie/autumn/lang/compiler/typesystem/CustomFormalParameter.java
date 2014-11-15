@@ -6,7 +6,6 @@ import high.mackenzie.autumn.lang.compiler.typesystem.design.IAnnotation;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IFormalParameter;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IVariableType;
 import high.mackenzie.autumn.resources.Finished;
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -26,7 +25,7 @@ public final class CustomFormalParameter
      * {@inheritDoc}
      */
     @Override
-    public Collection<IAnnotation> getAnnotations()
+    public List<IAnnotation> getAnnotations()
     {
         return ImmutableList.copyOf(annotations);
     }

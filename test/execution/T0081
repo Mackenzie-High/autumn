@@ -1,7 +1,7 @@
 module Main in execution;
 
-exception Boo is RuntimeException;
-exception Moo is RuntimeException;
+exception Boo extends RuntimeException;
+exception Moo extends RuntimeException;
 
 @Start
 defun main (args : String[]) : void

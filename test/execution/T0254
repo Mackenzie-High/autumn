@@ -2,7 +2,7 @@ module Main in execution;
 
 design Parent (name : String, children : Collection);
 
-tuple Person (name : String, children : Collection) is Parent;
+tuple Person (name : String, children : Collection) extends Parent;
 
 @Start
 defun main (args : String[]) : void

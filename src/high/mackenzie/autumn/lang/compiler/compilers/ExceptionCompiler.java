@@ -5,7 +5,6 @@ import autumn.lang.compiler.ast.nodes.ExceptionDefinition;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 import high.mackenzie.autumn.lang.compiler.typesystem.CustomConstructor;
 import high.mackenzie.autumn.lang.compiler.typesystem.CustomDeclaredType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IAnnotation;
@@ -16,11 +15,11 @@ import high.mackenzie.autumn.lang.compiler.typesystem.design.IFormalParameter;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IInterfaceType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IMethod;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IType;
+import high.mackenzie.autumn.lang.compiler.utils.TypeSystemUtils;
 import high.mackenzie.autumn.lang.compiler.utils.Utils;
 import high.mackenzie.autumn.resources.Finished;
 import java.lang.reflect.Modifier;
 import java.util.List;
-import java.util.Set;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.ClassNode;
@@ -161,7 +160,7 @@ final class ExceptionCompiler
     @Override
     public void performTypeInitialization()
     {
-        final IType supertype = module.imports.resolveReturnType(node.getSuperclass());
+        final IType supertype = module.imports.resolveClassType(node.getSuperclass());
 
         this.type.setAnnotations(module.anno_utils.typesOf(node.getAnnotations()));
         this.type.setModifiers(Opcodes.ACC_PUBLIC);
@@ -170,6 +169,11 @@ final class ExceptionCompiler
         this.type.setFields(ImmutableList.<IField>of());
         this.type.setConstructors(ImmutableList.<IConstructor>of());
         this.type.setMethods(ImmutableList.<IMethod>of());
+
+        /**
+         * Check the list of annotations.
+         */
+        program.checker.checkAnnotations(node.getAnnotations(), type.getAnnotations());
 
         // Note: The constructors will be inferred after all types are partially initialized.
         //       An exception-type may infer contructors from a type being created simultaneously.
@@ -184,16 +188,18 @@ final class ExceptionCompiler
     @Override
     public void performTypeStructureChecking()
     {
-        final IType supertype = module.imports.resolveReturnType(node.getSuperclass());
-
-        // If circular inheritance was allowed to exist, bad things would happen.
-        if (detectCircularInheritance())
+        /**
+         * If circular inheritance exists, bad things will happen.
+         */
+        if (TypeSystemUtils.detectCircularInheritance(type))
         {
             program.checker.reportCircularInheritance(node, type);
         }
 
-        // The superclass must be a subtype of Throwable.
-        program.checker.requireThrowable(node.getSuperclass(), supertype);
+        /**
+         * The superclass must be a subtype of Throwable.
+         */
+        program.checker.requireThrowable(node.getSuperclass(), type.getSuperclass());
     }
 
     /**
@@ -237,35 +243,6 @@ final class ExceptionCompiler
             // Return.
             m.instructions.add(new InsnNode(Opcodes.RETURN));
         }
-    }
-
-    /**
-     * This method determines whether this class or any of its parents inherit from themselves.
-     *
-     * @return true, iff circular inheritance is present.
-     */
-    private boolean detectCircularInheritance()
-    {
-        final Set<IType> set = Sets.newHashSet();
-
-        set.add(type);
-
-        IClassType p = type.getSuperclass();
-
-        while ("Ljava/lang/Object;".equals(p.getDescriptor()) == false)
-        {
-            if (set.contains(p))
-            {
-                return true;
-            }
-            else
-            {
-                set.add(p);
-                p = p.getSuperclass();
-            }
-        }
-
-        return false;
     }
 
     /**

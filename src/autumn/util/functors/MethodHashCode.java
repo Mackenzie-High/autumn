@@ -1,6 +1,6 @@
 package autumn.util.functors;
 
-import autumn.lang.Functor;
+import autumn.lang.TypedFunctor;
 import autumn.lang.internals.AbstractStaticFunctor;
 import autumn.lang.internals.ArgumentStack;
 import com.google.common.collect.ImmutableList;
@@ -24,7 +24,7 @@ public final class MethodHashCode
      *
      * @param inner is the functor that provides the actual functionality.
      */
-    public MethodHashCode(final Functor inner)
+    public MethodHashCode(final TypedFunctor inner)
     {
         super(inner);
     }

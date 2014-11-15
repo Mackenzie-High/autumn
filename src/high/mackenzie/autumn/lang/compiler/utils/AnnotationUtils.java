@@ -3,6 +3,7 @@ package high.mackenzie.autumn.lang.compiler.utils;
 import autumn.lang.compiler.ast.nodes.Annotation;
 import autumn.lang.compiler.ast.nodes.AnnotationList;
 import com.google.common.base.Preconditions;
+import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import high.mackenzie.autumn.lang.compiler.compilers.ModuleCompiler;
@@ -20,6 +21,9 @@ import org.objectweb.asm.tree.AnnotationNode;
  */
 public final class AnnotationUtils
 {
+    /**
+     * Essentially, this is the enclosing module that is bing compiled.
+     */
     private final ModuleCompiler module;
 
     /**
@@ -52,7 +56,9 @@ public final class AnnotationUtils
 
         final AnnotationNode node = new AnnotationNode(descriptor);
 
-        node.values = ImmutableList.of();
+        final String value = Strings.nullToEmpty(annotation.getAnnotationValue());
+
+        node.values = ImmutableList.of("value", value);
 
         return node;
     }
@@ -93,8 +99,6 @@ public final class AnnotationUtils
      */
     public List<IAnnotation> typesOf(final AnnotationList annotations)
     {
-        // TODO: check for duplicate annotations
-
         Preconditions.checkNotNull(annotations);
 
         final List<IAnnotation> result = Lists.newLinkedList();
@@ -131,7 +135,9 @@ public final class AnnotationUtils
             return null;
         }
 
-        final IAnnotation result = new CustomAnnotation(null, (IAnnotationType) type);
+        final String value = annotation.getValue();
+
+        final IAnnotation result = new CustomAnnotation(null, value, (IAnnotationType) type);
 
         return result;
     }
@@ -151,7 +157,7 @@ public final class AnnotationUtils
                 .typefactory()
                 .fromClass(type);
 
-        final IAnnotation result = new CustomAnnotation(null, annotation_type);
+        final IAnnotation result = new CustomAnnotation(null, null, annotation_type);
 
         return result;
     }

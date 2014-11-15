@@ -317,17 +317,6 @@ public final class PrintingVisitor
     }
 
     @Override
-    public void visit(final Annotation object)
-    {
-        record(object);
-        require(object, object.getType());
-
-        p.addLine();
-        p.addText("@");
-        object.getType().accept(this);
-    }
-
-    @Override
     public void visit(final AnnotationDefinition object)
     {
         record(object);
@@ -363,7 +352,7 @@ public final class PrintingVisitor
         p.addLine();
         p.addText("exception ");
         object.getName().accept(this);
-        p.addText(" is ");
+        p.addText(" extends ");
         object.getSuperclass().accept(this);
         p.addText(";");
 
@@ -412,7 +401,7 @@ public final class PrintingVisitor
 
         if (object.getSuperclass() != null)
         {
-            p.addText(" is ");
+            p.addText(" extends ");
             object.getSuperclass().accept(this);
         }
 
@@ -797,8 +786,6 @@ public final class PrintingVisitor
         object.getVariable().accept(this);
         p.addText(" : ");
         object.getType().accept(this);
-        p.addText(" ");
-        printList("(", object.getParameters(), ", ", ")");
         p.addText(" => ");
         object.getBody().accept(this);
         p.addText(";");
@@ -1579,15 +1566,24 @@ public final class PrintingVisitor
     }
 
     @Override
-    public void visit(final FormalParameter object)
+    public void visit(final Annotation object)
     {
         record(object);
-        require(object, object.getVariable());
         require(object, object.getType());
 
-        object.getVariable().accept(this);
-        p.addText(" : ");
+        p.addLine();
+        p.addText("@");
         object.getType().accept(this);
+
+        if (object.getValue() != null)
+        {
+            final String unescaped = autumn.util.Strings.unescape(object.getValue());
+
+            p.addText(" = ");
+            p.addText("\"");
+            p.addText(unescaped);
+            p.addText("\"");
+        }
     }
 
     @Override
@@ -1613,6 +1609,18 @@ public final class PrintingVisitor
             }
         }
         p.addText(")");
+    }
+
+    @Override
+    public void visit(final FormalParameter object)
+    {
+        record(object);
+        require(object, object.getVariable());
+        require(object, object.getType());
+
+        object.getVariable().accept(this);
+        p.addText(" : ");
+        object.getType().accept(this);
     }
 
     @Override
@@ -1710,7 +1718,7 @@ public final class PrintingVisitor
 
         if (object.getSupers().isEmpty() == false)
         {
-            this.printList(" is ", object.getSupers(), " & ", "");
+            this.printList(" extends ", object.getSupers(), " & ", "");
         }
 
         p.addText(";");
