@@ -1,0 +1,40 @@
+module Main in examples;
+
+@Start
+defun main (args : String[]) : void
+{
+    var value = null as Object;
+
+    value = 231C % 83C;
+    (F::println "char = " .. value);
+
+    value = 32B % 3B;
+    (F::println "byte = " .. value);
+
+    value = 32S % 3S;
+    (F::println "short = " .. value);
+
+    value = 32 % 3;
+    (F::println "int = " .. value);
+
+    value = 32L % 3L;
+    (F::println "long = " .. value);
+
+    value = 32.0F % 3.0F;
+    (F::println "float = " .. value);
+
+    value = 32.0 % 3.0;
+    (F::println "double = " .. value);
+
+    value = (F::big 32) % (F::big 3);
+    (F::println "BigInteger = " .. value);
+
+    value = (F::big 32.0) % (F::big 3.0);
+    (F::println "BigDecimal = " .. value);
+}
+
+
+
+
+ 
+

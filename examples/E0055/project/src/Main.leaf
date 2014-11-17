@@ -1,0 +1,28 @@
+module Main in examples;
+
+
+enum City ( Paris, London, Rome );
+
+
+@Start
+defun main (args : String[]) : void
+{
+    (My::print (City::valueOf "Paris"));
+
+    (My::print (City::valueOf "London"));
+
+    (My::print (City::valueOf "Rome"));
+}
+
+
+defun print (constant : Enum) : void
+{
+    (F::println "Name: " .. (constant.name));
+    (F::println "Ordinal: " .. (constant.ordinal));
+    (F::println);
+}
+
+
+
+ 
+

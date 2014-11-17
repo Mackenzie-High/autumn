@@ -1,0 +1,15 @@
+module Main in examples;
+
+@Start
+defun main (args : String[]) : void
+{
+    val value = 'A' .. 'u' .. 116C .. 117C .. 'm' .. 'n';
+
+    (F::println value);
+}
+
+
+
+
+ 
+
