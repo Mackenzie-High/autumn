@@ -1,6 +1,5 @@
 package high.mackenzie.autumn.util.ds;
 
-import autumn.util.ds.FunctionalSortedMap;
 import autumn.util.ds.ImmutableSortedMap;
 import autumn.util.ds.MutableSortedMap;
 import java.util.AbstractMap;
@@ -19,14 +18,14 @@ public final class ConcreteMutableSortedMap<K, V>
         extends AbstractMap<K, V>
         implements MutableSortedMap<K, V>
 {
-    private FunctionalSortedMap<K, V> map;
+    private FunctionalTreeMap<K, V> map;
 
     /**
      * Sole Constructor.
      *
      * @param map is the wrapped map.
      */
-    public ConcreteMutableSortedMap(final FunctionalSortedMap<K, V> map)
+    public ConcreteMutableSortedMap(final FunctionalTreeMap<K, V> map)
     {
         assert map != null;
 
@@ -40,15 +39,6 @@ public final class ConcreteMutableSortedMap<K, V>
     public ImmutableSortedMap<K, V> immutable()
     {
         throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public FunctionalSortedMap<K, V> functional()
-    {
-        return map;
     }
 
     /**

@@ -1,9 +1,12 @@
 package autumn.lang.internals;
 
 import autumn.lang.Lambda;
+import autumn.util.Strings;
 import com.google.common.base.Preconditions;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -11,6 +14,7 @@ import java.util.Map;
  * @author mackenzie
  */
 public abstract class AbstractLambda
+        extends AbstractTypedFunctor
         implements Lambda
 {
     private final Map<String, Object> closure = Maps.newTreeMap();
@@ -147,5 +151,28 @@ public abstract class AbstractLambda
         map.putAll(closure);
 
         return Collections.unmodifiableMap(map);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final String toString()
+    {
+        final StringBuilder string = new StringBuilder();
+
+        final List<String> params = Lists.newLinkedList();
+
+        for (Class param : parameterTypes())
+        {
+            params.add(param.getSimpleName());
+        }
+
+        string.append("lambda ");
+        string.append(Strings.str(params, "(", ", ", ")"));
+        string.append(" : ");
+        string.append(returnType().getSimpleName());
+
+        return string.toString();
     }
 }

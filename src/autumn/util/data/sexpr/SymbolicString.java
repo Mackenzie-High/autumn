@@ -1,32 +1,19 @@
 package autumn.util.data.sexpr;
 
 /**
+ * An instance of this interface is a symbol that represents a string.
  *
- * @author mackenzie
+ * @author Mackenzie High
  */
-public class SymbolicString
-        implements Symbol
+public interface SymbolicString
+        extends Symbol,
+                CharSequence
 {
-    public SymbolicString set(final String value)
-    {
-        return null;
-    }
-
-    @Override
-    public boolean isAtom()
-    {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public boolean isList()
-    {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public boolean isString()
-    {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+    /**
+     * This method determines whether this string matches a given regular expression.
+     *
+     * @param regex is the regular expression.
+     * @return true, iff this string matches the regular expression.
+     */
+    public boolean matches(final String regex);
 }

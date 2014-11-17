@@ -3,6 +3,9 @@ package autumn.util;
 import autumn.lang.Functor;
 import autumn.lang.exceptions.CheckedException;
 import autumn.lang.internals.ArgumentStack;
+import autumn.util.data.json.Json;
+import autumn.util.data.json.JsonValue;
+import autumn.util.functors.Predicate;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
@@ -1229,6 +1232,56 @@ public final class F
     }
 
     /**
+     * This method converts a number to a BigDecimal.
+     *
+     * @param value is the value to convert.
+     * @return the value as a big-decimal.
+     * @throws NullPointerException if the value is null.
+     * @throws IllegalArgumentException if the number could not be converted.
+     */
+    public static BigDecimal big(final Number value)
+    {
+        Preconditions.checkNotNull(value);
+
+        if (value instanceof Byte)
+        {
+            return new BigDecimal(value.byteValue());
+        }
+        else if (value instanceof Short)
+        {
+            return new BigDecimal(value.shortValue());
+        }
+        else if (value instanceof Integer)
+        {
+            return new BigDecimal(value.intValue());
+        }
+        else if (value instanceof Long)
+        {
+            return new BigDecimal(value.longValue());
+        }
+        else if (value instanceof Float)
+        {
+            return new BigDecimal(value.floatValue());
+        }
+        else if (value instanceof Double)
+        {
+            return new BigDecimal(value.doubleValue());
+        }
+        else if (value instanceof BigInteger)
+        {
+            return new BigDecimal((BigInteger) value);
+        }
+        else if (value instanceof BigDecimal)
+        {
+            return (BigDecimal) value;
+        }
+        else
+        {
+            throw new IllegalArgumentException("Unrecognized Number: " + value);
+        }
+    }
+
+    /**
      * This method returns the default value of a given type.
      *
      * <p>
@@ -1347,5 +1400,172 @@ public final class F
         {
             return ((Comparable) left).compareTo(right);
         }
+    }
+
+    /**
+     * This method calculates the sum of a set of values.
+     *
+     * @param values are the values to sum.
+     * @return the sum of the values.
+     */
+    public static BigDecimal sum(final Iterable<Number> values)
+    {
+        BigDecimal total = BigDecimal.ZERO;
+
+        for (Number value : values)
+        {
+            total = total.add(F.big(value));
+        }
+
+        return total;
+    }
+
+    /**
+     * This method calculates the average of a set of values.
+     *
+     * @param values are the values to average.
+     * @return the average of the values.
+     */
+    public static BigDecimal average(final Iterable<Number> values)
+    {
+        BigDecimal total = BigDecimal.ZERO;
+
+        long count = 0;
+
+        for (Number value : values)
+        {
+            total = total.add(F.big(value));
+            ++count;
+        }
+
+        final BigDecimal result = total.divide(new BigDecimal(count));
+
+        return result;
+    }
+
+    /**
+     * This method searches for the minimum value in a set of values.
+     *
+     * @param values are the values to search through.
+     * @return the minimum value in the group.
+     */
+    public static Comparable minimum(final Iterable<Comparable> values)
+    {
+        Comparable least = null;
+
+        for (Comparable value : values)
+        {
+            value = compare(value, least) < 0 ? value : least;
+        }
+
+        return least;
+    }
+
+    /**
+     * This method searches for the maximum value in a set of values.
+     *
+     * @param values are the values to search through.
+     * @return the maximum value in the group.
+     */
+    public static Comparable maximum(final Iterable<Comparable> values)
+    {
+        Comparable greatest = null;
+
+        for (Comparable value : values)
+        {
+            value = compare(value, greatest) > 0 ? value : greatest;
+        }
+
+        return greatest;
+    }
+
+    /**
+     * This method determines whether any of the values in an iterable match a predicate.
+     *
+     * @param values are the values to check.
+     * @param condition is the condition that may match one of the values.
+     * @return true, iff at least one of the values matches the predicate.
+     */
+    public static boolean any(final Iterable<?> values,
+                              final Predicate condition)
+            throws Throwable
+    {
+        for (Object value : values)
+        {
+            if (condition.invoke(value))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * This method determines whether all of the values in an iterable match a predicate.
+     *
+     * @param values are the values to check.
+     * @param condition is the condition that may match the values.
+     * @return true, iff all of the values match the predicate.
+     */
+    public static boolean all(final Iterable<?> values,
+                              final Predicate condition)
+            throws Throwable
+    {
+        for (Object value : values)
+        {
+            if (condition.invoke(value) == false)
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * This method counts the the values that match a predicate
+     *
+     * @param values are the values to check.
+     * @param condition is the condition that may match some of the values.
+     * @return the number of values (may be zero) that match the predicate.
+     */
+    public static int count(final Iterable<?> values,
+                            final Predicate condition)
+            throws Throwable
+    {
+        int count = 0;
+
+        for (Object value : values)
+        {
+            if (condition.invoke(value))
+            {
+                ++count;
+            }
+        }
+
+        return count;
+    }
+
+    /**
+     * This method decodes the textual representation of a JSON value.
+     *
+     * @param value is the textual representation of the JSON value.
+     * @return the object tree representation of the JSON value.
+     */
+    public static JsonValue json(final String value)
+    {
+        return Json.parse(value);
+    }
+
+    /**
+     * This method encodes the textual representation of a JSON value.
+     *
+     * @param input is the object tree representation of the JSON value.
+     * @return the textual representation of the JSON value.
+     */
+    public static String json(final JsonValue value)
+    {
+        return value.toString();
     }
 }

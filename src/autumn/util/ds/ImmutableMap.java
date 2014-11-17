@@ -16,11 +16,4 @@ public interface ImmutableMap<K, V>
      * @return a mutable copy of this object.
      */
     public MutableMap<K, V> mutable();
-
-    /**
-     * This method creates an functional copy of this object.
-     *
-     * @return a functional copy of this object.
-     */
-    public FunctionalMap<K, V> functional();
 }

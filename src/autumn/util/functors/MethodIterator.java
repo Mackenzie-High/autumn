@@ -17,7 +17,7 @@ import java.util.List;
  *
  * @author Mackenzie High
  */
-public final class MethodIterator
+public class MethodIterator
         extends AbstractStaticFunctor
 {
     /**

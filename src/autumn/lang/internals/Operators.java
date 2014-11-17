@@ -839,6 +839,50 @@ public final class Operators
      * @param right is the right-operand.
      * @return <code>left equals right</code>
      */
+    public static boolean equals(final BigInteger left,
+                                 final BigInteger right)
+    {
+        return Objects.equal(left, right);
+    }
+
+    /**
+     * Equality Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return <code>left equals right</code>
+     */
+    public static boolean equals(final BigDecimal left,
+                                 final BigDecimal right)
+    {
+        if (left == null && right == null)
+        {
+            return true;
+        }
+        else if (left != null && right == null)
+        {
+            return false;
+        }
+        else if (left == null && right != null)
+        {
+            return false;
+        }
+        else
+        {
+            assert left != null;
+            assert right != null;
+
+            return left.compareTo(right) == 0;
+        }
+    }
+
+    /**
+     * Equality Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return <code>left equals right</code>
+     */
     public static boolean equals(final Object left,
                                  final Object right)
     {
@@ -954,12 +998,56 @@ public final class Operators
      *
      * @param left is the left-operand.
      * @param right is the right-operand.
+     * @return <code>left equals right</code>
+     */
+    public static boolean notEquals(final BigInteger left,
+                                    final BigInteger right)
+    {
+        return Objects.equal(left, right) == false;
+    }
+
+    /**
+     * Inequality Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return <code>left equals right</code>
+     */
+    public static boolean notEquals(final BigDecimal left,
+                                    final BigDecimal right)
+    {
+        if (left == null && right == null)
+        {
+            return false;
+        }
+        else if (left != null && right == null)
+        {
+            return true;
+        }
+        else if (left == null && right != null)
+        {
+            return true;
+        }
+        else
+        {
+            assert left != null;
+            assert right != null;
+
+            return left.compareTo(right) != 0;
+        }
+    }
+
+    /**
+     * Inequality Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
      * @return <code>left != right</code>
      */
     public static boolean notEquals(final Object left,
                                     final Object right)
     {
-        return !Objects.equal(left, right);
+        return Objects.equal(left, right) == false;
     }
 
     /**

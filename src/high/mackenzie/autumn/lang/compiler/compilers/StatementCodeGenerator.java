@@ -10,7 +10,6 @@ import high.mackenzie.autumn.lang.compiler.typesystem.design.IClassType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IDeclaredType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IMethod;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IType;
-import high.mackenzie.autumn.lang.compiler.typesystem.design.IVariableType;
 import high.mackenzie.autumn.lang.compiler.utils.Utils;
 import java.util.List;
 import java.util.Stack;
@@ -743,38 +742,23 @@ public final class StatementCodeGenerator
 
         final LambdaCompiler lambda = program.symbols.lambdas.get(object);
 
+        /**
+         * Create a new instance of the lambda.
+         * Capture the local variables.
+         * Load the lambda onto the operand-stack.
+         */
         lambda.load(code);
 
-        for (String variable : function.vars.allocator().getVariables())
-        {
-            if (variable.equals(object.getVariable().getName()))
-            {
-                continue;
-            }
-
-            final IVariableType variable_type = function.allocator.typeOf(variable);
-
-            code.add(new InsnNode(Opcodes.DUP));
-
-            code.add(new LdcInsnNode(variable));
-
-            function.vars.load(variable);
-
-            program.typesystem.utils.autoboxToObject(code, variable_type);
-
-            code.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL,
-                                        Utils.internalName(program.typesystem.utils.ABSTRACT_LAMBDA),
-                                        "capture",
-                                        "(Ljava/lang/String;Ljava/lang/Object;)V"));
-        }
-
+        /**
+         * Place the lambda object into the variable that will store it.
+         */
         function.vars.store(object.getVariable().getName());
     }
 
     @Override
     public void visit(final DelegateStatement object)
     {
-        final IClassType functor = module.imports.resolveModuleType(object.getType());
+        final IClassType functor = module.imports.resolveFunctorType(object.getType());
 
         final IMethod handler = program.symbols.delegates.get(object);
 

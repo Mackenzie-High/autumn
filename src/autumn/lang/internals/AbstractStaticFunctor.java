@@ -2,7 +2,10 @@ package autumn.lang.internals;
 
 import autumn.lang.StaticFunctor;
 import autumn.lang.TypedFunctor;
+import autumn.util.Strings;
 import com.google.common.base.Preconditions;
+import com.google.common.collect.Lists;
+import java.util.List;
 
 /**
  * This class provides a partial implementation of the StaticFunctor interface.
@@ -10,6 +13,7 @@ import com.google.common.base.Preconditions;
  * @author Mackenzie High
  */
 public abstract class AbstractStaticFunctor
+        extends AbstractTypedFunctor
         implements StaticFunctor
 {
     private final TypedFunctor inner;
@@ -44,5 +48,28 @@ public abstract class AbstractStaticFunctor
             throws Throwable
     {
         inner().apply(stack);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final String toString()
+    {
+        final StringBuilder string = new StringBuilder();
+
+        final List<String> params = Lists.newLinkedList();
+
+        for (Class param : parameterTypes())
+        {
+            params.add(param.getSimpleName());
+        }
+
+        string.append("functor ");
+        string.append(Strings.str(params, "(", ", ", ")"));
+        string.append(" : ");
+        string.append(returnType().getSimpleName());
+
+        return string.toString();
     }
 }

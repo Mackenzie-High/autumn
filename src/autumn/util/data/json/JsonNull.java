@@ -5,6 +5,7 @@ package autumn.util.data.json;
  *
  * @author Mackenzie High
  */
-public final class JsonNull
+public interface JsonNull
+        extends JsonValue
 {
 }

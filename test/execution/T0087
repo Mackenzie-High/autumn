@@ -47,6 +47,29 @@ defun main (args : String[]) : void
     assert (3.0 == 3.0) == T;
     assert (3.0 == 2.0) == F;
 
+    // BigInteger
+    assert ((new BigInteger "2") == (new BigInteger "3")) == F;
+    assert ((new BigInteger "3") == (new BigInteger "3")) == T;
+    assert ((new BigInteger "3") == (new BigInteger "2")) == F;
+
+    // BigInteger - null
+    assert (null == (new BigInteger "3")) == F;
+    assert ((new BigInteger "3") == null) == F;
+
+    // BigInteger
+    assert ((new BigDecimal 2) == (new BigDecimal 3)) == F;
+    assert ((new BigDecimal 3) == (new BigDecimal 3)) == T;
+    assert ((new BigDecimal 3) == (new BigDecimal 2)) == F;
+
+    // BigInteger - Avoid the Weird Behavior of equals(Object)
+    assert ((new BigDecimal "2") == (new BigDecimal "3.00")) == F;
+    assert ((new BigDecimal "3") == (new BigDecimal "3.00")) == T;
+    assert ((new BigDecimal "3") == (new BigDecimal "2.00")) == F;
+
+    // BigDecimal - null
+    assert (null == (new BigInteger "3")) == F;
+    assert ((new BigInteger "3") == null) == F;
+
     // Object - Neither operand is null.
     assert ("Hello" == "Hello") == T;
     assert ("Hello" == "World") == F;

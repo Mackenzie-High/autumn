@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Stack;
@@ -157,10 +158,10 @@ public final class Files
         com.google.common.io.Files.write(data, file);
     }
 
-    public static String readLines(final File file)
+    public static List<String> readLines(final File file)
             throws IOException
     {
-        return null;
+        return com.google.common.io.Files.readLines(file, Charset.defaultCharset());
     }
 
     public static String readLines(final File file,

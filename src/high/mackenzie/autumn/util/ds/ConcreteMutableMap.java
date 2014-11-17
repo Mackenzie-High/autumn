@@ -1,6 +1,5 @@
 package high.mackenzie.autumn.util.ds;
 
-import autumn.util.ds.FunctionalMap;
 import autumn.util.ds.ImmutableMap;
 import autumn.util.ds.MutableMap;
 import java.util.AbstractMap;
@@ -15,9 +14,9 @@ public final class ConcreteMutableMap<K, V>
         extends AbstractMap<K, V>
         implements MutableMap<K, V>
 {
-    private final FunctionalMap<K, V> map;
+    private final FunctionalTreeMap<K, V> map;
 
-    public ConcreteMutableMap(final FunctionalMap<K, V> map)
+    public ConcreteMutableMap(final FunctionalTreeMap<K, V> map)
     {
         this.map = map;
 
@@ -30,15 +29,6 @@ public final class ConcreteMutableMap<K, V>
     public ImmutableMap<K, V> immutable()
     {
         return map.immutable();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public FunctionalMap<K, V> functional()
-    {
-        return map;
     }
 
     /**

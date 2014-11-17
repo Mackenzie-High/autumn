@@ -1,6 +1,5 @@
 package high.mackenzie.autumn.util.ds;
 
-import autumn.util.ds.FunctionalList;
 import autumn.util.ds.ImmutableList;
 import autumn.util.ds.MutableList;
 import java.util.AbstractList;
@@ -38,15 +37,6 @@ public final class ConcreteMutableList<E>
     public ImmutableList<E> immutable()
     {
         return list.immutable();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public FunctionalList<E> functional()
-    {
-        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     /**

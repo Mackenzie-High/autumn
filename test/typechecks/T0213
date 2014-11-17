@@ -1,0 +1,14 @@
+module Main in typechecks;
+
+@Start
+defun main (args : String[]) : void
+{
+    val p = 5;
+
+    delegate p : Predicate => Main::moo;
+}
+
+defun moo (value : Object) : boolean
+{
+    return false;
+}

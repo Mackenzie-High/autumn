@@ -1,0 +1,3 @@
+module Main in typechecks;
+
+struct Person (name : void);

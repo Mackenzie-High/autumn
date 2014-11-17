@@ -1,39 +1,29 @@
 package autumn.util.data.json;
 
-import java.io.Serializable;
-import java.util.Iterator;
+import java.util.List;
 
 /**
- * An instance of this class is an immutable JSON array/list.
+ * An instance of this class is a mutable JSON array/list.
  *
  * @author Mackenzie High
  */
-public final class JsonArray
-        implements Iterable<JsonValue>,
-                   Serializable
-// TODO: should this implement the FunctionalList interface?
+public interface JsonArray
+        extends JsonValue,
+                List<JsonValue>
 {
-    public JsonArray()
-    {
-    }
+    /**
+     * This method retrieves the first element in this list.
+     *
+     * @return the first element herein.
+     * @throws NoSuchElementException if this list is empty.
+     */
+    public JsonValue first();
 
-    public JsonArray(final JsonTypeSystem design)
-    {
-    }
-
-    public JsonArray set(final Iterable<? extends JsonValue> elements)
-    {
-        return null;
-    }
-
-    public JsonValue get(int index)
-    {
-        return null;
-    }
-
-    @Override
-    public Iterator<JsonValue> iterator()
-    {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+    /**
+     * This method retrieves the last element in this list.
+     *
+     * @return the last element herein.
+     * @throws NoSuchElementException if this list is empty.
+     */
+    public JsonValue last();
 }

@@ -134,7 +134,7 @@ public enum ErrorCode
     /**
      * Meaning: A functor (i.e. autumn.lang.Functor) was expected.
      */
-    EXPECTED_FUNCTOR_TYPE,
+    EXPECTED_DEFINED_FUNCTOR_TYPE,
     /**
      * Meaning: A tuple (i.e. autumn.lang.Tuple) was expected.
      */
@@ -146,7 +146,7 @@ public enum ErrorCode
     /**
      * Meaning: A module-type (i.e. autumn.lang.Module) was expected. // TODO: right?
      */
-    EXPECTED_MODULE,
+    EXPECTED_MODULE_TYPE,
     /**
      * Meaning: The static-type of an expression was void were it is not allowed.
      */

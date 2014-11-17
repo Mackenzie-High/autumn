@@ -16,7 +16,7 @@ import java.util.List;
  *
  * @author Mackenzie High
  */
-public final class MethodHashCode
+public class MethodHashCode
         extends AbstractStaticFunctor
 {
     /**

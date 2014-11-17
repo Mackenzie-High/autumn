@@ -2,12 +2,6 @@ package high.mackenzie.autumn.lang.compiler.compilers;
 
 import autumn.lang.compiler.ast.nodes.TypeSpecifier;
 import autumn.util.ds.Counter;
-import autumn.util.ds.FunctionalCollection;
-import autumn.util.ds.FunctionalList;
-import autumn.util.ds.FunctionalMap;
-import autumn.util.ds.FunctionalSet;
-import autumn.util.ds.FunctionalSortedMap;
-import autumn.util.ds.FunctionalSortedSet;
 import autumn.util.ds.ImmutableCollection;
 import autumn.util.ds.ImmutableMap;
 import autumn.util.ds.ImmutableSet;
@@ -67,6 +61,7 @@ public final class Importer
         importClass(autumn.lang.Delegate.class);
         importClass(autumn.lang.Functor.class);
         importClass(autumn.lang.Immutable.class);
+        importClass(autumn.lang.Lambda.class);
         importClass(autumn.lang.Local.class);
         importClass(autumn.lang.LocalsMap.class);
         importClass(autumn.lang.Module.class);
@@ -105,14 +100,17 @@ public final class Importer
         importClass(autumn.util.Strings.class);
         importClass(autumn.util.Threads.class);
 
+        // autumn.util.data.json
+        importClass(autumn.util.data.json.Json.class);
+        importClass(autumn.util.data.json.JsonArray.class);
+        importClass(autumn.util.data.json.JsonBoolean.class);
+        importClass(autumn.util.data.json.JsonMap.class);
+        importClass(autumn.util.data.json.JsonNull.class);
+        importClass(autumn.util.data.json.JsonNumber.class);
+        importClass(autumn.util.data.json.JsonValue.class);
+
         // autumn.util.ds
         importClass(Counter.class);
-        importClass(FunctionalCollection.class);
-        importClass(FunctionalList.class);
-        importClass(FunctionalMap.class);
-        importClass(FunctionalSet.class);
-        importClass(FunctionalSortedMap.class);
-        importClass(FunctionalSortedSet.class);
         importClass(ImmutableCollection.class);
         importClass(ImmutableList.class);
         importClass(ImmutableMap.class);
@@ -233,18 +231,18 @@ public final class Importer
     {
         final String alias = module.program.typesystem.utils.extractTypeName(specifier);
 
+        final Integer dimensions = specifier.getDimensions();
+
         final IExpressionType result;
 
         if (Utils.isKeyword(alias))
         {
             // Special Case: The specifier specifies a primitive-type or the void-type.
-            return module.program.typesystem.utils.findType(alias, null);
+            return module.program.typesystem.utils.findType(alias, dimensions);
         }
         else
         {
             final String typename = dealisTypeName(alias);
-
-            final Integer dimensions = specifier.getDimensions();
 
             result = module.program.typesystem.utils.findType(typename, dimensions);
         }
@@ -269,16 +267,20 @@ public final class Importer
 
     public IClassType resolveModuleType(final TypeSpecifier specifier)
     {
-        // TODO: error if non-vartype
+        final IReturnType type = resolveReturnType(specifier);
 
-        return (IClassType) resolveReturnType(specifier);
+        module.program.checker.requireModule(specifier, type);
+
+        return (IClassType) type;
     }
 
     public IClassType resolveFunctorType(final TypeSpecifier specifier)
     {
-        // TODO: error if non-vartype
+        final IReturnType type = resolveReturnType(specifier);
 
-        return (IClassType) resolveReturnType(specifier);
+        module.program.checker.requireDefinedFunctor(specifier, type);
+
+        return (IClassType) type;
     }
 
     public IInterfaceType resolveInterfaceType(final TypeSpecifier specifier)

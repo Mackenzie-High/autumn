@@ -11,6 +11,27 @@ public interface Lambda
         extends TypedFunctor
 {
     /**
+     * This method retrieves the path to the file that contains the lambda.
+     *
+     * @return the path to the source code file.
+     */
+    public String file();
+
+    /**
+     * This method retrieves the line-number where the lambda is located.
+     *
+     * @return the aforedescribed line-number.
+     */
+    public int line();
+
+    /**
+     * This method retrieves the column-number where the lambda is located.
+     *
+     * @return the aforedescribed column-number.
+     */
+    public int column();
+
+    /**
      * This method is invoked to capture the state of a variable.
      *
      * @param name is the name of the variable.

@@ -21,7 +21,6 @@ import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.FieldInsnNode;
 import org.objectweb.asm.tree.FieldNode;
-import org.objectweb.asm.tree.InsnList;
 import org.objectweb.asm.tree.InsnNode;
 import org.objectweb.asm.tree.JumpInsnNode;
 import org.objectweb.asm.tree.LabelNode;
@@ -29,7 +28,6 @@ import org.objectweb.asm.tree.LdcInsnNode;
 import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 import org.objectweb.asm.tree.TableSwitchInsnNode;
-import org.objectweb.asm.tree.TryCatchBlockNode;
 import org.objectweb.asm.tree.TypeInsnNode;
 
 /**
@@ -38,56 +36,18 @@ import org.objectweb.asm.tree.TypeInsnNode;
  * @author Mackenzie High
  */
 public final class FunctionCompiler
+        extends AbstractFunctionCompiler
         implements ICompiler
 {
-    /**
-     * This object represents the program that contains the function.
-     *
-     * More specifically, this is the compiler that is compiling the program.
-     */
-    public final ProgramCompiler program;
-
-    /**
-     * This object represents the module that contains the function.
-     *
-     * More specifically, this is the compiler that is compiling the module.
-     */
-    public final ModuleCompiler module;
-
     /**
      * This is the Abstract-Syntax-Tree representation of the function.
      */
     public final FunctionDefinition node;
 
     /**
-     * These are the bytecode declarations of the try-catch blocks in the function.
-     */
-    public final List<TryCatchBlockNode> trycatches = Lists.newLinkedList();
-
-    /**
-     * These are the bytecode instructions that constitute the body of the function.
-     */
-    public final InsnList instructions = new InsnList();
-
-    /**
      * This is the type-system representation of the function.
      */
     public final CustomMethod type;
-
-    /**
-     * This object manages the allocation of local variables.
-     */
-    public final VariableAllocator allocator;
-
-    /**
-     * This object simplifies the generation of bytecode that manipulates local variables.
-     */
-    public final VariableManipulator vars;
-
-    /**
-     * This object manages the allocation of user-visible labels in the function.
-     */
-    public final LabelScope labels;
 
     /**
      * This is field-node represents the field that stores the state of the function
@@ -124,14 +84,11 @@ public final class FunctionCompiler
     public FunctionCompiler(final ModuleCompiler module,
                             final FunctionDefinition node)
     {
-        this.program = module.program;
-        this.module = module;
+        super(module, new VariableAllocator(0));
+
         this.node = node;
 
         this.type = new CustomMethod(module.program.typesystem.typefactory(), false);
-        this.allocator = new VariableAllocator(0);
-        this.vars = new VariableManipulator(allocator, this.instructions);
-        this.labels = new LabelScope(program);
     }
 
     /**
@@ -212,7 +169,7 @@ public final class FunctionCompiler
              */
             for (int i = 0; i < type.getParameters().size(); i++)
             {
-                allocator.declareParameter(param_vars.get(i), param_types.get(i));
+                allocator.declareParameter(param_vars.get(i).getName(), param_types.get(i));
             }
 
             /**

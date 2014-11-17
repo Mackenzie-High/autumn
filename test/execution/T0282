@@ -7,6 +7,4 @@ defun main (args : String[]) : void
     var b = 17;
 
     lambda p : Predicate => true;
-
-    (F::println (p.closure));
 }

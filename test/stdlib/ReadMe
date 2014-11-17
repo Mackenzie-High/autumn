@@ -1,25 +1,39 @@
 
 
+. autumn.util.F
+. . T0003 = sum (Iterable) - Normal Case
+..
+. . T0004 = average (Iterable) - Normal Case
+..
+. . T0005 = count (Iterable, Predicate) - Normal Case
+..
+. . T0006 = any (Iterable, Predicate) - Normal Case
+..
+. . T0007 = all (Iterable, Predicate) - Normal Case
+
 
 . autumn.util.Strings
-. . escape(CharSequence) - Null Argument
-. . escape(CharSequence) - Normal Case
+. . escape (CharSequence) - Null Argument
+. . escape (CharSequence) - Normal Case
 ..
-. . unescape(CharSequence) - Null Argument
-. . unescape(CharSequence) - Normal Case
+. . unescape (CharSequence) - Null Argument
+. . unescape (CharSequence) - Normal Case
 ..
-. . padStart(CharSequence, char, int) - Null Argument
-. . padStart(CharSequence, char, int) - Negative Length Argument
-. . padStart(CharSequence, char, int) - Normal Case
+. . padStart (CharSequence, char, int) - Null Argument
+. . padStart (CharSequence, char, int) - Negative Length Argument
+. . padStart (CharSequence, char, int) - Normal Case
 ..
-. . padEnd(CharSequence, char, int) - Null Argument
-. . padEnd(CharSequence, char, int) - Negative Length Argument
-. . padEnd(CharSequence, char, int) - Normal Case
+. . padEnd (CharSequence, char, int) - Null Argument
+. . padEnd (CharSequence, char, int) - Negative Length Argument
+. . padEnd (CharSequence, char, int) - Normal Case
 ..
-. . zfill(CharSequence, int) - Null Argument
-. . zfill(CharSequence, int) - Negative Length Argument
-. . zfill(CharSequence, int) - Normal Case
-..
+. . zfill (CharSequence, int) - Null Argument
+. . zfill (CharSequence, int) - Negative Length Argument
+. . zfill (CharSequence, int) - Normal Case
+
+
+. autumn.util.data.json.Json
+. . T0002 = parse(String) - Normal Case   // TODO : Finish
 
 
 

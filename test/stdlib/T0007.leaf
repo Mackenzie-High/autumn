@@ -1,0 +1,13 @@
+module Main in tests;
+
+@Start
+defun main(args : String[]) : void
+{
+    val list1 = [1, 2, 3, 2, 4, 2, 5];
+    val list2 = [1, 7, 3, 7, 4, 7, 5];
+
+    lambda p : Predicate => ($1 is Integer) < 7;
+
+    assert (F::all list1, p) == true;
+    assert (F::all list2, p) == false;
+}

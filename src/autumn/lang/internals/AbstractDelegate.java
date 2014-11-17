@@ -14,7 +14,7 @@ import java.util.Arrays;
  */
 @Finished("2014/07/12")
 public abstract class AbstractDelegate
-        extends AbstractFunctor
+        extends AbstractTypedFunctor
         implements Delegate
 {
     private Method cache;

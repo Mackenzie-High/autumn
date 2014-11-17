@@ -20,8 +20,8 @@ public final class Events
      * @param name is the name of the global variable.
      * @param handler is the functor that will be invoked whenever the variable is set.
      */
-    public static void bind(final String name,
-                            final TypedFunctor handler)
+    public void bind(final String name,
+                     final TypedFunctor handler)
     {
     }
 
@@ -38,28 +38,28 @@ public final class Events
      *
      * @param module is the module that contains the event-handler functions.
      */
-    public static void bindAll(final Module module)
+    public void bindAll(final Module module)
     {
         Preconditions.checkNotNull(module);
     }
 
-    public static void setInterval(final String name,
-                                   final long millis)
+    public void setInterval(final String name,
+                            final long millis)
     {
     }
 
-    public static long getInterval(final String name)
+    public long getInterval(final String name)
     {
         return 0;
     }
 
-    public static Thread run(final String name)
+    public Thread run(final String name)
     {
         return null;
     }
 
-    public static void fire(final String name,
-                            final Object argument)
+    public void fire(final String name,
+                     final Object argument)
     {
     }
 }

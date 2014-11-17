@@ -107,7 +107,7 @@ public final class JsonTypeSystem
     {
     }
 
-    public void check(final JsonObject value)
+    public void check(final JsonMap value)
     {
     }
 }

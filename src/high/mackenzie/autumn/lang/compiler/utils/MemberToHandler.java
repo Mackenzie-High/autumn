@@ -63,14 +63,12 @@ public final class MemberToHandler
 
         if (overloads.isEmpty())
         {
-            // TODO: error
-            throw new RuntimeException(Utils.simpleName(owner) + "::" + name);
+            return null;
         }
 
         if (overloads.size() > 1)
         {
-            // TODO: error
-            throw new RuntimeException(Utils.simpleName(owner) + "::" + name);
+            return null;
         }
 
         final IMethod handler = overloads.get(0);

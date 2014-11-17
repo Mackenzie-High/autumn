@@ -1,6 +1,5 @@
 package high.mackenzie.autumn.lang.compiler.compilers;
 
-import autumn.lang.compiler.ast.nodes.Variable;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import com.google.common.collect.Maps;
@@ -223,43 +222,43 @@ public final class VariableAllocator
     /**
      * This method declares and allocates a new local-variable that is a parameter.
      *
-     * @param variable is an AST-node that represents the variable to declare.
+     * @param variable is the name of the variable to declare.
      * @param type is the proposed static-type of the variable.
      * @return true, if declaration was successful.
      * @throws IllegalStateException if any non-parameter locals were already declared.
      */
-    public boolean declareParameter(final Variable variable,
+    public boolean declareParameter(final String variable,
                                     final IExpressionType type)
     {
         Preconditions.checkState(!non_parameters_declared);
 
-        return declare(VarTypes.PARAM, variable.getName(), type);
+        return declare(VarTypes.PARAM, variable, type);
     }
 
     /**
      * This method declares and allocates a new local-variable.
      *
-     * @param variable is an AST-node that represents the variable to declare.
+     * @param variable is the name of the variable to declare.
      * @param type is the proposed static-type of the variable.
      * @return true, if declaration was successful.
      */
-    public boolean declareVar(final Variable variable,
+    public boolean declareVar(final String variable,
                               final IExpressionType type)
     {
-        return declare(VarTypes.VAR, variable.getName(), type);
+        return declare(VarTypes.VAR, variable, type);
     }
 
     /**
      * This method declares and allocates a new local-variable that is readonly.
      *
-     * @param variable is an AST-node that represents the variable to declare.
+     * @param variable is the name of the variable to declare.
      * @param type is the proposed static-type of the variable.
      * @return true, if declaration was successful.
      */
-    public boolean declareVal(final Variable variable,
+    public boolean declareVal(final String variable,
                               final IExpressionType type)
     {
-        return declare(VarTypes.VAL, variable.getName(), type);
+        return declare(VarTypes.VAL, variable, type);
     }
 
     /**

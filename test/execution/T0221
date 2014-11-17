@@ -8,4 +8,6 @@ defun main (args : String[]) : void
     assert ((class int).getName) == "int";
 
     assert ((class String).getName) == "java.lang.String";
+
+    assert ((class String[][][]).getName) == "[[[Ljava.lang.String;";
 }

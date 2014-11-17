@@ -24,6 +24,8 @@ public final class Runner
 
     private static int failed_count;
 
+    private static Set<ErrorCode> actual;
+
     /**
      * This method runs tests to determine whether the language's is type-checks work.
      * The results of the tests will be printed to STDOUT.
@@ -38,7 +40,40 @@ public final class Runner
 
 
 
-
+        //test("T0220", NO_SUCH_METHOD);
+        test("T0219", EXPECTED_MODULE_TYPE);
+        test("T0218", INACCESSIBLE_TYPE);
+        test("T0217", NO_SUCH_TYPE);
+        test("T0216", EXPECTED_DEFINED_FUNCTOR_TYPE);
+        test("T0215", INACCESSIBLE_TYPE);
+        test("T0214", NO_SUCH_TYPE);
+        test("T0213", DUPLICATE_VARIABLE);
+        //test("T0212", DUPLICATE_VARIABLE);
+        test("T0211", WRONG_TYPE);
+        test("T0210", WRONG_TYPE);
+        test("T0209", EXPECTED_DEFINED_FUNCTOR_TYPE);
+        test("T0208", INACCESSIBLE_TYPE);
+        test("T0207", NO_SUCH_TYPE);
+        test("T0206", DUPLICATE_VARIABLE);
+        test("T0205", COVARIANCE_VIOLATION);
+        test("T0204", EXPECTED_VARIABLE_TYPE);
+        test("T0203", INACCESSIBLE_TYPE);
+        test("T0202", NO_SUCH_TYPE);
+        test("T0201", DUPLICATE_ELEMENT);
+        test("T0200", DUPLICATE_SUPERTYPE);
+        test("T0199", EXPECTED_DESIGN_TYPE);
+        test("T0198", EXPECTED_INTERFACE_TYPE);
+        test("T0197", INACCESSIBLE_TYPE);
+        test("T0196", NO_SUCH_TYPE);
+        test("T0195", EXPECTED_VARIABLE_TYPE);
+        test("T0194", INACCESSIBLE_TYPE);
+        test("T0193", NO_SUCH_TYPE);
+        test("T0192", EXPECTED_DESIGN_TYPE);
+        test("T0191", EXPECTED_INTERFACE_TYPE);
+        test("T0190", WRONG_TYPE);
+        test("T0189", WRONG_TYPE);
+        test("T0188", EXPECTED_VOID);
+        test("T0187", EXPECTED_VOID);
         test("T0186", INACCESSIBLE_TYPE);
         test("T0185", NO_SUCH_TYPE);
         test("T0184", EXPECTED_VARIABLE_TYPE);
@@ -78,7 +113,7 @@ public final class Runner
         test("T0146", EXPECTED_VARIABLE_TYPE);
         test("T0145", INACCESSIBLE_TYPE);
         test("T0144", NO_SUCH_TYPE);
-        test("T0143", EXPECTED_FUNCTOR_TYPE);
+        test("T0143", EXPECTED_DEFINED_FUNCTOR_TYPE);
         test("T0142", EXPECTED_CLASS_TYPE);
         test("T0141", INACCESSIBLE_TYPE);
         test("T0140", NO_SUCH_TYPE);
@@ -232,7 +267,7 @@ public final class Runner
         {
             if (singleTest(test, errors) == FAILED)
             {
-                System.out.println("Test Failed: " + test + "!!!!!");
+                System.out.println("Test Failed: " + test + "!!!!! - " + actual);
                 ++failed_count;
                 return;
             }
@@ -286,7 +321,7 @@ public final class Runner
 
             final Set<ErrorCode> expected = ImmutableSet.copyOf(Arrays.asList(errors));
 
-            final Set<ErrorCode> actual = ImmutableSet.copyOf(reporter.codes());
+            actual = ImmutableSet.copyOf(reporter.codes());
 
             return expected.equals(actual) ? PASSED : FAILED;
         }

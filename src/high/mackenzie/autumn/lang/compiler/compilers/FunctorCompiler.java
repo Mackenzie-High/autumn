@@ -210,7 +210,7 @@ public final class FunctorCompiler
         /**
          * The superclass must be a subtype of Functor.
          */
-        program.checker.requireFunctor(node.getSuperclass(), type.getSuperclass());
+        program.checker.requireDefinedFunctor(node.getSuperclass(), type.getSuperclass());
 
         /**
          * Create an object that will be used to find problem with the functor-type.
@@ -236,9 +236,9 @@ public final class FunctorCompiler
     {
         ctor = new CustomConstructor(type.getTypeFactory());
 
-        final IInterfaceType FUNCTOR = program.typesystem.utils.TYPED_FUNCTOR;
+        final IInterfaceType TYPED_FUNCTOR = program.typesystem.utils.TYPED_FUNCTOR;
 
-        final IFormalParameter formal = program.typesystem.utils.formal(FUNCTOR);
+        final IFormalParameter formal = program.typesystem.utils.formal(TYPED_FUNCTOR);
 
         ctor.setOwner(type);
         ctor.setAnnotations(new LinkedList());

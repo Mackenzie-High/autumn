@@ -18,12 +18,4 @@ public interface ImmutableList<E>
      */
     @Override
     public MutableList<E> mutable();
-
-    /**
-     * This method creates an functional copy of this object.
-     *
-     * @return a functional copy of this object.
-     */
-    @Override
-    public FunctionalList<E> functional();
 }

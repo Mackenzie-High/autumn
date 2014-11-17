@@ -1,0 +1,3 @@
+module Main in typechecks;
+
+tuple Employee () extends ThisTypeDoesNotExist;

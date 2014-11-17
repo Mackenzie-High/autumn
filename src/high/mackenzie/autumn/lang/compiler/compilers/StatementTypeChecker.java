@@ -29,9 +29,13 @@ public final class StatementTypeChecker
 {
     private int loop_nesting_level = 0;
 
+    private final FunctionCompiler function;
+
     public StatementTypeChecker(final FunctionCompiler function)
     {
         super(function, function.allocator);
+
+        this.function = function;
     }
 
     @Override
@@ -387,7 +391,7 @@ public final class StatementTypeChecker
         /**
          * Declare the lambda variable.
          */
-        super.declareVar(object.getVariable(), program.typesystem.utils.ABSTRACT_LAMBDA, false);
+        super.declareVar(object.getVariable(), functor_type, false);
 
         try
         {
@@ -400,6 +404,11 @@ public final class StatementTypeChecker
              * Create the lambda itself.
              */
             final LambdaCompiler lambda = new LambdaCompiler(function, object);
+
+            /**
+             * Visit and type-check the lambda's body.
+             */
+            lambda.performTypeUsageChecking();
 
             /**
              * Save the lambda-compiler, because it will generate the lambda's bytecode later.
@@ -429,6 +438,11 @@ public final class StatementTypeChecker
         final IClassType owner_type = module.imports.resolveModuleType(object.getOwner());
 
         final IMethod handler = MemberToHandler.findHandler(owner_type, name);
+
+        if (handler == null)
+        {
+            // TODO
+        }
 
         super.declareVar(object.getVariable(), functor_type, false);
 
@@ -627,23 +641,24 @@ public final class StatementTypeChecker
     @Override
     public void visit(final ReturnVoidStatement object)
     {
-        if (function.isReturnTypeVoid() == false)
-        {
-            // Error
-        }
+        /**
+         * Only a function whose return-type is void can contain a return-void statement.
+         */
+        program.checker.requireVoid(object, function.type.getReturnType());
     }
 
     @Override
     public void visit(final ReturnValueStatement object)
     {
+        /**
+         * Visit and type-check the expression that produces the value to return.
+         */
         object.getValue().accept(this);
 
-        final IExpressionType value = program.symbols.expressions.get(object.getValue());
-
-        if (value.isSubtypeOf(function.type.getReturnType()) == false)
-        {
-            // Error
-        }
+        /**
+         * The type of the expression must be assignable to the return-type of the function.
+         */
+        program.checker.checkReturn(object, function.type.getReturnType(), object.getValue());
     }
 
     @Override
@@ -663,10 +678,10 @@ public final class StatementTypeChecker
     @Override
     public void visit(final YieldVoidStatement object)
     {
-        if (function.isReturnTypeVoid() == false)
-        {
-            // Error
-        }
+        /**
+         * Only a function whose return-type is void can contain a yield-void statement.
+         */
+        program.checker.requireVoid(object, function.type.getReturnType());
 
         final LabelNode reentry = new LabelNode();
 
@@ -678,14 +693,15 @@ public final class StatementTypeChecker
     @Override
     public void visit(final YieldValueStatement object)
     {
+        /**
+         * Visit and type-check the expression that produces the value to return.
+         */
         object.getValue().accept(this);
 
-        final IExpressionType value = program.symbols.expressions.get(object.getValue());
-
-        if (value.isSubtypeOf(function.type.getReturnType()) == false)
-        {
-            // Error
-        }
+        /**
+         * The type of the expression must be assignable to the return-type of the function.
+         */
+        program.checker.checkReturn(object, function.type.getReturnType(), object.getValue());
 
         final LabelNode reentry = new LabelNode();
 

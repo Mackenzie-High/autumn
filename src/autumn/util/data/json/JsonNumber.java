@@ -8,56 +8,41 @@ import java.math.BigInteger;
  *
  * @author Mackenzie High
  */
-public final class JsonNumber
+public interface JsonNumber
+        extends JsonValue
 {
-    public void set(final String value)
-    {
-    }
+    /**
+     * This method gets the value of this number.
+     *
+     * @return the value of this number.
+     */
+    public int asInt();
 
-    public void set(final long value)
-    {
-    }
+    /**
+     * This method gets the value of this number.
+     *
+     * @return the value of this number.
+     */
+    public long asLong();
 
-    public void set(final double value)
-    {
-    }
+    /**
+     * This method gets the value of this number.
+     *
+     * @return the value of this number.
+     */
+    public double asDouble();
 
-    public void set(final BigInteger value)
-    {
-    }
+    /**
+     * This method gets the value of this number.
+     *
+     * @return the value of this number.
+     */
+    public BigInteger asBigInteger();
 
-    public void set(final BigDecimal value)
-    {
-    }
-
-    public int asInt()
-    {
-        return 0;
-    }
-
-    public long asLong()
-    {
-        return 0;
-    }
-
-    public int asDouble()
-    {
-        return 0;
-    }
-
-    public int asBigInteger()
-    {
-        return 0;
-    }
-
-    public int asBigDecimal()
-    {
-        return 0;
-    }
-
-    @Override
-    public String toString()
-    {
-        return "";
-    }
+    /**
+     * This method gets the value of this number.
+     *
+     * @return the value of this number.
+     */
+    public BigDecimal asBigDecimal();
 }

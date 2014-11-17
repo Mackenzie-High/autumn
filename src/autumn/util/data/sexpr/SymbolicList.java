@@ -1,90 +1,50 @@
 package autumn.util.data.sexpr;
 
-import com.google.common.collect.ImmutableList;
 import java.util.List;
 
 /**
- * An instance of this class is a list of symbolic-expressions.
+ * An instance of this interface is a list of symbolic-expressions.
  *
- * @author mackenzie
+ * @author Mackenzie High
  */
-public final class SymbolicList
-        implements Symbol
+public interface SymbolicList
+        extends Symbol,
+                List<Symbol>
 {
-    private static enum Types
-    {
-        PAREN,
-        BRACE,
-        BRACKET,
-    }
-
-    private final Types type;
-
-    private final List<Symbol> elements;
+    /**
+     * This method determines whether this list is bounded by parentheses.
+     *
+     * @return true, iff this is a parentheses based list.
+     */
+    public boolean isParenList();
 
     /**
-     * Sole Constructor.
+     * This method determines whether this list is bounded by curly-brackets.
      *
-     * @param type is the type of the opening and closing characters.
-     * @param elements are the elements in the list.
+     * @return true, iff this is a curly-bracket based list.
      */
-    private SymbolicList(final Types type,
-                         final Iterable<Symbol> elements)
-    {
-        this.type = type;
-        this.elements = ImmutableList.copyOf(elements);
-    }
+    public boolean isCurlyList();
 
-    public static SymbolicList create(final Iterable<Symbol> elements)
-    {
-        return new SymbolicList(Types.PAREN, elements);
-    }
+    /**
+     * This method determines whether this list is bounded by square-brackets.
+     *
+     * @return true, iff this is a square-bracket based list.
+     */
+    public boolean isSquareList();
 
-    public SymbolicList asParenList()
-    {
-        return null;
-    }
+    /**
+     * This method retrieves the first element in this list.
+     *
+     * @return the first element herein.
+     * @throws NoSuchElementException if this list is empty.
+     */
+    public Symbol first();
 
-    public SymbolicList asBracketList()
-    {
-        return null;
-    }
-
-    public SymbolicList asBraceList()
-    {
-        return null;
-    }
-
-    public boolean isParenList()
-    {
-        return false;
-    }
-
-    public boolean isBracketList()
-    {
-        return false;
-    }
-
-    public boolean isBraceList()
-    {
-        return false;
-    }
-
-    @Override
-    public boolean isAtom()
-    {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public boolean isList()
-    {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public boolean isString()
-    {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+    /**
+     * This method retrieves the last element in this list.
+     *
+     * @return the last element herein.
+     * @throws NoSuchElementException if this list is empty.
+     */
+    public Symbol last();
 }

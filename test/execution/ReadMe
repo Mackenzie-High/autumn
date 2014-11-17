@@ -241,8 +241,20 @@ Test Index
 . . . T0156 = Different Types of Parameters
 . . . Different Types of Return-Types
 . . . Operand-Stack Leakage
+. . . Special Method - toString()
 . . Lambda
-. . . T0282 = Basic  // TODO: finish
+. . . Reflective Testing of the Lambda's Type
+. . . T0282 = Basic                                       // TODO: finish
+. . . Multiple Lambdas in the Same Function
+. . . T0307 = Checked Exceptions
+. . . T0304 = Different Types of Arguments
+. . . T0305 = Different Types of Captured Variables
+. . . T0308 = Operand Stack Leakage
+. . . T0306 = Special Method - file() & line() & column()
+. . . T0302 = Special Method - returnType()
+. . . T0303 = Special Method - parameterTypes()
+. . . Special Method - closure()
+. . . T0308 = Special Method - toString()
 . . Return Void
 . . Return Value = T0053    # TODO: Add auto-boxing
 . . Recur

@@ -18,12 +18,4 @@ public interface MutableSortedMap<K, V>
      */
     @Override
     public ImmutableSortedMap<K, V> immutable();
-
-    /**
-     * This method creates an functional copy of this object.
-     *
-     * @return a functional copy of this object.
-     */
-    @Override
-    public FunctionalSortedMap<K, V> functional();
 }

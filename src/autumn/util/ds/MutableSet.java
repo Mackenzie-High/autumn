@@ -18,12 +18,4 @@ public interface MutableSet<E>
      */
     @Override
     public ImmutableSet<E> immutable();
-
-    /**
-     * This method creates an functional copy of this object.
-     *
-     * @return a functional copy of this object.
-     */
-    @Override
-    public FunctionalSet<E> functional();
 }

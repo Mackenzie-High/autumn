@@ -45,18 +45,25 @@ public class ExpressionTypeChecker
     protected final VariableAllocator allocator;
 
     /**
+     * Essentially, this is the enclosing function that is being compiled.
+     */
+    protected final AbstractFunctionCompiler function;
+
+    /**
      * Sole Constructor.
      *
      * @param function is the function being compiled.
      * @param allocator manages the allocation of local variables.
      */
-    public ExpressionTypeChecker(final FunctionCompiler function,
+    public ExpressionTypeChecker(final AbstractFunctionCompiler function,
                                  final VariableAllocator allocator)
     {
         super(function);
 
         Preconditions.checkNotNull(function);
         Preconditions.checkNotNull(allocator);
+
+        this.function = function;
 
         this.allocator = allocator;
 
@@ -72,6 +79,15 @@ public class ExpressionTypeChecker
         this.IDENTITY_INEQUALITY = TypeSystemUtils.find(OPERATORS.getMethods(),
                                                         "identityNotEquals",
                                                         "(Ljava/lang/Object;Ljava/lang/Object;)Z");
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AbstractFunctionCompiler function()
+    {
+        return function;
     }
 
     @Override
@@ -223,7 +239,7 @@ public class ExpressionTypeChecker
              * Declare the variable and type-check the type.
              */
             final Variable variable = object.getVariable();
-            final IReferenceType type = function.module.imports.resolveReferenceType(object.getType());
+            final IReferenceType type = module.imports.resolveReferenceType(object.getType());
             super.declareVar(variable, type, false);
 
             /**
@@ -265,9 +281,8 @@ public class ExpressionTypeChecker
         }
 
         final DispatchCompiler cmp = new DispatchCompiler(module,
-                                                          function.instructions,
                                                           allocator,
-                                                          function.vars,
+                                                          function().vars,
                                                           object.getName().getName(),
                                                           object.getArguments().asMutableList());
 

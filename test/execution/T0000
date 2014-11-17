@@ -1,19 +1,13 @@
 module Main in execution;
 
-design M (x : Object);
-
-struct S (x : String) extends M;
-
+functor Moo (x : int, y : int) : int;
 
 @Start
 defun main (args : String[]) : void
 {
-    var p = (S::create) is S;
-    var q = p is M;
+    val x = 17;
 
-    (p.x "moo");
+    lambda p : Moo => $1 + $2 + x;
 
-    (q.x "boo");
-
-    assert (p.x) == "boo";
+    assert (p.invoke 100, 3) == 120;
 }

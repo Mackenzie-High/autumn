@@ -657,7 +657,7 @@ public final class StaticChecker
      * @param specifier must specify a functor-type.
      * @param type must be a subtype of Functor.
      */
-    public void requireFunctor(final TypeSpecifier specifier,
+    public void requireDefinedFunctor(final TypeSpecifier specifier,
                                final IType type)
     {
         if (type.isSubtypeOf(program.typesystem.utils.ABSTRACT_STATIC_FUNCTOR))
@@ -665,11 +665,63 @@ public final class StaticChecker
             return;
         }
 
-        final ErrorCode ERROR_CODE = ErrorCode.EXPECTED_FUNCTOR_TYPE;
+        final ErrorCode ERROR_CODE = ErrorCode.EXPECTED_DEFINED_FUNCTOR_TYPE;
 
         final String MESSAGE = "An autumn.lang.Functor was expected.";
 
         final ErrorReport report = new ErrorReport(specifier, ERROR_CODE, MESSAGE);
+
+        /**
+         * Issue the error-report to the user.
+         */
+        report(report);
+    }
+
+    /**
+     * This method ensures that a type-specifier specifies a module-type.
+     *
+     * @param specifier must specify a module-type.
+     * @param type must be a subtype of Module.
+     */
+    public void requireModule(final TypeSpecifier specifier,
+                              final IType type)
+    {
+        if (type.isSubtypeOf(program.typesystem.utils.MODULE))
+        {
+            return;
+        }
+
+        final ErrorCode ERROR_CODE = ErrorCode.EXPECTED_MODULE_TYPE;
+
+        final String MESSAGE = "An autumn.lang.Module was expected.";
+
+        final ErrorReport report = new ErrorReport(specifier, ERROR_CODE, MESSAGE);
+
+        /**
+         * Issue the error-report to the user.
+         */
+        report(report);
+    }
+
+    /**
+     * This method ensures that a type is the void-type.
+     *
+     * @param site is the location of the type-check.
+     * @param type must be the void-type.
+     */
+    public void requireVoid(final IConstruct site,
+                            final IType type)
+    {
+        if (type.equals(program.typesystem.utils.VOID))
+        {
+            return;
+        }
+
+        final ErrorCode ERROR_CODE = ErrorCode.EXPECTED_VOID;
+
+        final String MESSAGE = "Type void was expected.";
+
+        final ErrorReport report = new ErrorReport(site, ERROR_CODE, MESSAGE);
 
         /**
          * Issue the error-report to the user.
@@ -1264,6 +1316,43 @@ public final class StaticChecker
         final ErrorReport report = new ErrorReport(site, ERROR_CODE, MESSAGE);
 
         report.addDetail("Assignment", Utils.simpleName(target) + " (Target) = " + Utils.simpleName(etype) + " (Value)");
+
+        /**
+         * Issue the error-report to the user.
+         */
+        report(report);
+    }
+
+    /**
+     * This method ensures that an expression is returnable given a function's return-type.
+     *
+     * <p>
+     * This method takes into account boxing, unboxing, and coercion.
+     * </p>
+     *
+     * @param site is the construct that is performing the return.
+     * @param target is the return-type of the function.
+     * @param expression is the expression that produces the value to return.
+     */
+    public void checkReturn(final IConstruct site,
+                            final IExpressionType target,
+                            final IExpression expression)
+    {
+        final IExpressionType etype = program.symbols.expressions.get(expression);
+
+        if (program.typesystem.utils.assign(etype, target) != null)
+        {
+            return; // OK
+        }
+
+        final ErrorCode ERROR_CODE = ErrorCode.WRONG_TYPE;
+
+        final String MESSAGE = "The value being returned must be assignable to the return-type.";
+
+        final ErrorReport report = new ErrorReport(site, ERROR_CODE, MESSAGE);
+
+        report.addDetail("Return Type", Utils.simpleName(target));
+        report.addDetail("Actual Type", Utils.simpleName(etype));
 
         /**
          * Issue the error-report to the user.

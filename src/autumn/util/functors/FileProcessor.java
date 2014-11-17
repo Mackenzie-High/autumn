@@ -12,7 +12,7 @@ import java.util.List;
  *
  * @author Mackenzie High
  */
-public final class FileProcessor
+public class FileProcessor
         extends AbstractStaticFunctor
 {
     /**

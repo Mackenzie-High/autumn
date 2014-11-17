@@ -156,7 +156,15 @@ public final class Utils
     {
         Preconditions.checkNotNull(type);
 
-        assert type.isNullType() == false;
+        if (type.isNullType())
+        {
+            return "null";
+        }
+
+        if (type.isVoidType())
+        {
+            return "void";
+        }
 
         final String source = sourceName(type);
 
@@ -584,7 +592,7 @@ public final class Utils
         // If the type is a reference-type, then downcast the value.
         if (type.isReferenceType())
         {
-            final String cast = Utils.internalName((IDeclaredType) type);
+            final String cast = Utils.internalName((IReferenceType) type);
             code.add(new TypeInsnNode(Opcodes.CHECKCAST, cast));
         }
     }

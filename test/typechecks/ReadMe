@@ -1,4 +1,8 @@
 
+// Notes:
+// . How does the compiler handle void[] as a return-type?
+
+
 
 Test Index
 . Modules
@@ -8,6 +12,8 @@ Test Index
 . Annotation Definitions
 . . T0039 = Duplicate Type
 . . T0150 = Duplicate Annotation
+. Annotation Usages
+. .
 . Exception Definitions
 . . T0041 = Duplicate Type
 . . T0151 = Duplicate Annotation
@@ -21,7 +27,6 @@ Test Index
 . . T0049 = Duplicate Type
 . . T0152 = Duplicate Annotation
 . . T0050 = Element - Duplicate
-. . Element - Illegal Name
 . Design Definitions
 . . T0168 = Duplicate Type
 . . T0153 = Duplicate Annotation
@@ -46,26 +51,27 @@ Test Index
 . . T0122 = Super - No Such Type
 . . T0123 = Super - Inaccessible
 . . T0124 = Super - Duplicate Direct Supertype
-. . Super - Expected Interface-Type
-. . Super - Expected Design-Type
-. . T0125 = Duplicate Element
+. . T0191 = Super - Expected Interface-Type
+. . T0192 = Super - Expected Design-Type
+. . T0125 = Element - Duplicate
+. . T0193 = Element - No Such Type
+. . T0194 = Element - Inaccessible Type
+. . T0195 = Element - Expected Variable-Type
 . . Element - Covariance Violation
-. . Element - No Such Type
-. . Element - Inaccessible Type
-. . Element - Expected Variable-Type
 . . T0164 = Circular Inheritance - Direct
 . Tuple Definitions
 . . T0169 = Duplicate Type
 . . Duplicate Annotation
-. . Super - No Such Type
-. . Super - Inaccessible
-. . Super - Expected Interface-Type
-. . Super - Expected Design-Type
-. . Super - Duplicate Direct Supertype
-. . Element - Duplicate
-. . Element - No Such Type
-. . Element - Inaccessible Type
-. . Element - Expected Variable-Type
+. . T0196 = Super - No Such Type
+. . T0197 = Super - Inaccessible
+. . T0198 = Super - Expected Interface-Type
+. . T0199 = Super - Expected Design-Type
+. . T0200 = Super - Duplicate Direct Supertype
+. . T0201 = Element - Duplicate
+. . T0202 = Element - No Such Type
+. . T0203 = Element - Inaccessible Type
+. . T0204 = Element - Expected Variable-Type
+. . T0205 = Element - Covariance Violation
 . . T0166 = Circular Inheritance - Direct
 . . Total Ordering Required
 . Functor Definitions
@@ -173,30 +179,36 @@ Test Index
 . . . T0076 = Variable Out of Scope - (in equally nested scope)
 . . Expression
 . . Delegate
-. . . Duplicate Variable Declaration
-. . . Type - No Such Type
-. . . Type - Inaccessible Type
-. . . Type - Expected Functor Type
-. . . Owner - No Such Type
-. . . Owner - Inaccessible Type
-. . . Owner - Expected Module Type
-. . . No Such Method
+. . . T0213 = Duplicate Variable Declaration
+. . . T0214 = Type - No Such Type
+. . . T0215 = Type - Inaccessible Type
+. . . T0216 = Type - Expected Functor Type
+. . . T0217 = Owner - No Such Type
+. . . T0218 = Owner - Inaccessible Type
+. . . T0219 = Owner - Expected Module Type
+. . . T0220 = No Such Method
+. . . Overloaded Method
+. . . Incompatible Method - Return Type
+. . . Incompatible Method - Parameter Type
 . . Lambda
-. . . Duplicate Variable Declaration
-. . . Type - No Such Type
-. . . Type - Inaccessible Type
-. . . Type - Expected Functor Type
-. . . Returns - Wrong Type
+. . . T0206 = Duplicate Variable Declaration
+. . . T0207 = Type - No Such Type
+. . . T0208 = Type - Inaccessible Type
+. . . T0209 = Type - Expected Functor Type
+. . . T0210 = Returns - Wrong Type - Non Void
+. . . T0211 = Returns - Wrong Type - Non Void
+. . . T0212 = Conflict with Predefined Variable - $0
+. . . Conflict with Predefined Variable - $1 to $9
 . . Return Void
-. . . Wrong Type
+. . . T0187 = Expected Void
 . . Return Value
-. . . Wrong Type
+. . . T0189 = Wrong Type
+. . Yield Void
+. . . T0188 = Expected Void
+. . Yield Value
+. . . T0190 = Wrong Type
 . . Recur
 . . . Recur in Generator Function
-. . Yield Void
-. . . Wrong Type
-. . Yield Value
-. . . Wrong Type
 . Expressions
 . . Dispatch
 . . . No Such Method

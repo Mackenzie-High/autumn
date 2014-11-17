@@ -2,6 +2,7 @@ package high.mackenzie.autumn.lang.compiler.utils;
 
 import autumn.lang.Delegate;
 import autumn.lang.Functor;
+import autumn.lang.Lambda;
 import autumn.lang.Local;
 import autumn.lang.LocalsMap;
 import autumn.lang.Module;
@@ -138,6 +139,8 @@ public final class TypeSystemUtils
 
     public final IInterfaceType FUNCTOR;
 
+    public final IInterfaceType LAMBDA;
+
     public final IInterfaceType RECORD;
 
     public final IInterfaceType MODULE;
@@ -235,6 +238,8 @@ public final class TypeSystemUtils
         this.FUNCTOR = (IInterfaceType) factory.fromClass(Functor.class);
 
         this.TYPED_FUNCTOR = (IInterfaceType) factory.fromClass(TypedFunctor.class);
+
+        this.LAMBDA = (IInterfaceType) factory.fromClass(Lambda.class);
 
         this.MODULE = (IInterfaceType) factory.fromClass(Module.class);
 

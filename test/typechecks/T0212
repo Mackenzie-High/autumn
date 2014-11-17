@@ -1,0 +1,9 @@
+module Main in typechecks;
+
+@Start
+defun main (args : String[]) : void
+{
+    val $0 = 3;
+
+    lambda p : Predicate => true;
+}

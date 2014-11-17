@@ -30,6 +30,13 @@ abstract class AbstractTypeChecker
         extends AbstractAstVisitor
 {
     /**
+     * Essentially, this method retrieves the enclosing function.
+     *
+     * @return the enclosing function compiler.
+     */
+    public abstract AbstractFunctionCompiler function();
+
+    /**
      * This is the compiler that is responsible for compiling the enclosing program.
      */
     protected final ProgramCompiler program;
@@ -40,22 +47,16 @@ abstract class AbstractTypeChecker
     protected final ModuleCompiler module;
 
     /**
-     * This is the compiler that is responsible for compiling the enclosing function.
-     */
-    protected final FunctionCompiler function;
-
-    /**
      * Sole Constructor.
      *
      * @param function is the compiler that is responsible for compiling the enclosing function.
      */
-    protected AbstractTypeChecker(final FunctionCompiler function)
+    protected AbstractTypeChecker(final AbstractFunctionCompiler function)
     {
         Preconditions.checkNotNull(function);
 
         this.program = function.module.program;
         this.module = function.module;
-        this.function = function;
     }
 
     /**
@@ -413,7 +414,7 @@ abstract class AbstractTypeChecker
          * The variable cannot be declared, if another variable was already created
          * with the same name.
          */
-        final boolean alread_declared = function.allocator.isDeclared(variable.getName());
+        final boolean alread_declared = function().allocator.isDeclared(variable.getName());
         program.checker.reportDuplicateVariable(variable, alread_declared);
 
         /**
@@ -426,11 +427,11 @@ abstract class AbstractTypeChecker
          */
         if (mutable)
         {
-            function.allocator.declareVar(variable, type);
+            function().allocator.declareVar(variable.getName(), type);
         }
         else
         {
-            function.allocator.declareVal(variable, type);
+            function().allocator.declareVal(variable.getName(), type);
         }
     }
 }
