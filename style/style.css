@@ -1,5 +1,4 @@
 
-
 body
 {
 	/**
@@ -254,7 +253,15 @@ li
 
 #tabs
 {
-	background-color: #000000;
+    background-color: #000000;
+}
+
+#type-structure-image
+{
+    width: 100%;
+    
+    border: 2px solid;
+    border-radius: 10px;
 }
 
 
@@ -273,4 +280,15 @@ footer
 
     text-align: center;
 }
+
+
+
+
+
+
+
+
+
+
+
 
