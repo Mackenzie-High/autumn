@@ -333,7 +333,25 @@ public final class Visitor
     {
         visitChildren(node);
 
-        System.out.println("Document");
+        /**
+         * Load the project.
+         */
+        try
+        {
+            final File project = resolveProject();
+
+            cmp.loadProject(project);
+        }
+        catch (IOException ex)
+        {
+            System.out.println("The project coult not be loaded.");
+            ex.printStackTrace(System.out);
+        }
+
+        /**
+         * Generate the documentation.
+         */
+        cmp.document();
     }
 
     /**

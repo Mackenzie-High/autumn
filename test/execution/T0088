@@ -61,10 +61,8 @@ defun main (args : String[]) : void
     assert ((new BigDecimal 3) != (new BigDecimal 3)) == F;
     assert ((new BigDecimal 3) != (new BigDecimal 2)) == T;
 
-    // BigInteger - Avoid the Weird Behavior of equals(Object)
-    assert ((new BigDecimal "2") != (new BigDecimal "3.00")) == T;
-    assert ((new BigDecimal "3") != (new BigDecimal "3.00")) == F;
-    assert ((new BigDecimal "3") != (new BigDecimal "2.00")) == T;
+    // BigDecimal - Weird Behavior of equals(Object)
+    assert ((new BigDecimal "3") != (new BigDecimal "3.00")) == T;
 
     // BigDecimal - null
     assert (null != (new BigInteger "3")) == T;

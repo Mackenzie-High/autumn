@@ -855,25 +855,7 @@ public final class Operators
     public static boolean equals(final BigDecimal left,
                                  final BigDecimal right)
     {
-        if (left == null && right == null)
-        {
-            return true;
-        }
-        else if (left != null && right == null)
-        {
-            return false;
-        }
-        else if (left == null && right != null)
-        {
-            return false;
-        }
-        else
-        {
-            assert left != null;
-            assert right != null;
-
-            return left.compareTo(right) == 0;
-        }
+        return Objects.equal(left, right);
     }
 
     /**
@@ -1016,25 +998,7 @@ public final class Operators
     public static boolean notEquals(final BigDecimal left,
                                     final BigDecimal right)
     {
-        if (left == null && right == null)
-        {
-            return false;
-        }
-        else if (left != null && right == null)
-        {
-            return true;
-        }
-        else if (left == null && right != null)
-        {
-            return true;
-        }
-        else
-        {
-            assert left != null;
-            assert right != null;
-
-            return left.compareTo(right) != 0;
-        }
+        return Objects.equal(left, right) == false;
     }
 
     /**

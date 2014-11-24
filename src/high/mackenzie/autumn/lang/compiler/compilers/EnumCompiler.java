@@ -199,6 +199,11 @@ final class EnumCompiler
         program.checker.checkAnnotations(node.getAnnotations(), type.getAnnotations());
 
         /**
+         * Set the type's access modifiers and make the type an enum.
+         */
+        type.setModifiers(Opcodes.ACC_PUBLIC | Opcodes.ACC_FINAL | Opcodes.ACC_SUPER | Opcodes.ACC_ENUM);
+
+        /**
          * Create the type-system representations of the enum-constant's field.
          */
         final List<IField> constants = Lists.newLinkedList();
@@ -211,8 +216,9 @@ final class EnumCompiler
                 {
                     field.setOwner(type);
                     field.setModifiers(Opcodes.ACC_PUBLIC
-                                       + Opcodes.ACC_STATIC
-                                       + Opcodes.ACC_FINAL);
+                                       | Opcodes.ACC_STATIC
+                                       | Opcodes.ACC_ENUM
+                                       | Opcodes.ACC_FINAL);
                     field.setName(ec.getName());
                     field.setType(type);
                     field.setOrdinal(ordinal++);
@@ -227,7 +233,7 @@ final class EnumCompiler
          */
         method_values.setOwner(type);
         method_values.setAnnotations(ImmutableList.<IAnnotation>of());
-        method_values.setModifiers(Opcodes.ACC_PUBLIC + Opcodes.ACC_STATIC + Opcodes.ACC_FINAL);
+        method_values.setModifiers(Opcodes.ACC_PUBLIC | Opcodes.ACC_STATIC | Opcodes.ACC_FINAL);
         method_values.setName("values");
         method_values.setParameters(ImmutableList.<IFormalParameter>of());
         method_values.setReturnType(program.typesystem.typefactory().getArrayType(type, 1));
@@ -237,7 +243,7 @@ final class EnumCompiler
          */
         method_valueof.setOwner(type);
         method_valueof.setAnnotations(ImmutableList.<IAnnotation>of());
-        method_valueof.setModifiers(Opcodes.ACC_PUBLIC + Opcodes.ACC_STATIC + Opcodes.ACC_FINAL);
+        method_valueof.setModifiers(Opcodes.ACC_PUBLIC | Opcodes.ACC_STATIC | Opcodes.ACC_FINAL);
         method_valueof.setName("valueOf");
         final CustomFormalParameter param = new CustomFormalParameter();
         param.setType(program.typesystem.utils.STRING);
@@ -248,7 +254,7 @@ final class EnumCompiler
          * Initialize the type that represents the enum being compiled.
          */
         type.setAnnotations(module.anno_utils.typesOf(node.getAnnotations()));
-        type.setModifiers(Opcodes.ACC_PUBLIC + Opcodes.ACC_FINAL + Opcodes.ACC_ENUM);
+        type.setModifiers(Opcodes.ACC_PUBLIC | Opcodes.ACC_FINAL | Opcodes.ACC_ENUM);
         type.setSuperclass(program.typesystem.utils.ENUM);
         type.setSuperinterfaces(ImmutableList.<IInterfaceType>of());
         type.setFields(constants);
@@ -296,7 +302,7 @@ final class EnumCompiler
     private MethodNode generateStaticInitializer()
     {
         final MethodNode method = new MethodNode();
-        method.access = Opcodes.ACC_PRIVATE + Opcodes.ACC_STATIC;
+        method.access = Opcodes.ACC_PRIVATE | Opcodes.ACC_STATIC;
         method.name = "<clinit>";
         method.desc = "()V";
         method.exceptions = ImmutableList.of();

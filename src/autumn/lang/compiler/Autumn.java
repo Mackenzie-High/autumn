@@ -12,6 +12,7 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.common.io.Files;
 import com.google.common.io.Resources;
+import high.mackenzie.autumn.compiler.documentor.Documentor;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -643,5 +644,28 @@ public final class Autumn
         }
 
         // TODO: load resources, libs, etc
+    }
+
+    /**
+     * This method compiles the program and generates browsable documentation.
+     *
+     * @return the results of running the unit-tests.
+     */
+    public void document()
+    {
+        if (reporter.errorCount() > 0)
+        {
+            return;
+        }
+
+        final CompiledProgram program = compile();
+
+        final DynamicLoader loader = program.load();
+
+        final File folder = new File("/home/mackenzie/test/doc/");
+
+        final Documentor docgen = new Documentor(loader, modules, folder);
+
+        docgen.generate();
     }
 }
