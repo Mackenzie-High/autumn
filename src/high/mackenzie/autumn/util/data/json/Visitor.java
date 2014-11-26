@@ -4,8 +4,6 @@ import autumn.util.data.json.Json;
 import autumn.util.data.json.JsonValue;
 import high.mackenzie.snowflake.ITreeNode;
 import java.util.AbstractMap.SimpleImmutableEntry;
-import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Stack;
 
@@ -109,16 +107,16 @@ public final class Visitor
 
         visitUnknown(node);
 
-        final Map<JsonValue, JsonValue> map = Json.map();
+        final ConcreteMutableJsonObject builder = new ConcreteMutableJsonObject();
 
         while (stack.size() > size)
         {
             final Entry<JsonValue, JsonValue> entry = (Entry<JsonValue, JsonValue>) stack.pop();
 
-            map.put(entry.getKey(), entry.getValue());
+            builder.put(entry.getKey().toString(), entry.getValue());
         }
 
-        stack.push(map);
+        stack.push(builder.immutable());
     }
 
     /**
@@ -131,13 +129,13 @@ public final class Visitor
 
         visitUnknown(node);
 
-        final List<JsonValue> array = Json.array();
+        final ConcreteMutableJsonArray builder = new ConcreteMutableJsonArray();
 
         while (stack.size() > size)
         {
-            array.add(0, (JsonValue) stack.pop());
+            builder.add(0, (JsonValue) stack.pop());
         }
 
-        stack.push(array);
+        stack.push(builder.immutable());
     }
 }

@@ -11,9 +11,13 @@ import java.util.Map;
  *
  * @author Mackenzie High
  */
-public interface JsonMap
-        extends Map<JsonValue, JsonValue>,
+public interface JsonObject
+        extends Map<String, JsonValue>,
                 JsonValue
 {
-    // Pass
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonValue get(Object key);
 }

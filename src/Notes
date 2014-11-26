@@ -1,5 +1,6 @@
 
 Notes:
+. Should there be ImmutableSortedSet and ImmutableNavigableSet, instead of just one?
 . Rename StaticFunctor to DefinedFunctor
 . Remember to add line-number-nodes to the bytecode.
 . Double check the grammar again for consistency.

@@ -3,11 +3,11 @@ package autumn.util.data.json;
 import autumn.lang.Record;
 import autumn.util.data.sexpr.Symbol;
 import com.google.common.base.Preconditions;
-import high.mackenzie.autumn.util.data.json.ConcreteJsonArray;
 import high.mackenzie.autumn.util.data.json.ConcreteJsonBoolean;
-import high.mackenzie.autumn.util.data.json.ConcreteJsonMap;
 import high.mackenzie.autumn.util.data.json.ConcreteJsonNull;
 import high.mackenzie.autumn.util.data.json.ConcreteJsonNumber;
+import high.mackenzie.autumn.util.data.json.ConcreteMutableJsonArray;
+import high.mackenzie.autumn.util.data.json.ConcreteMutableJsonObject;
 import high.mackenzie.autumn.util.data.json.JsonParser;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -82,16 +82,6 @@ public class Json
     }
 
     /**
-     * This method creates a new and empty array.
-     *
-     * @return the new JSON array object.
-     */
-    public static JsonArray array()
-    {
-        return new ConcreteJsonArray();
-    }
-
-    /**
      * This method creates a new array that contains a given number of JSON null values.
      *
      * @param size is the number of elements in the new array.
@@ -112,14 +102,14 @@ public class Json
     public static JsonArray array(int size,
                                   JsonValue value)
     {
-        final ConcreteJsonArray array = new ConcreteJsonArray();
+        final ConcreteMutableJsonArray array = new ConcreteMutableJsonArray();
 
         for (int i = 0; i < size; i++)
         {
             array.add(value);
         }
 
-        return array;
+        return array.immutable();
     }
 
     /**
@@ -222,27 +212,17 @@ public class Json
     }
 
     /**
-     * This method creates a new map.
+     * This method creates a new object.
      *
-     * @return the JSON map.
+     * @param map contains the initial entries of the new object.
+     * @return the JSON object.
      */
-    public static JsonMap map()
+    public static JsonObject map(final Map<String, JsonValue> map)
     {
-        return new ConcreteJsonMap();
-    }
+        final ConcreteMutableJsonObject builder = new ConcreteMutableJsonObject();
 
-    /**
-     * This method creates a new map.
-     *
-     * @param map contains the initial entries of the new map.
-     * @return the JSON map.
-     */
-    public static JsonMap map(Map<JsonValue, JsonValue> map)
-    {
-        final ConcreteJsonMap result = new ConcreteJsonMap();
+        builder.putAll(map);
 
-        result.putAll(map);
-
-        return result;
+        return builder.immutable();
     }
 }

@@ -3,6 +3,7 @@ package high.mackenzie.autumn.util.ds;
 import autumn.util.ds.ImmutableMap;
 import autumn.util.ds.MutableSortedMap;
 import high.mackenzie.autumn.util.ds.AvlTree.Node;
+import java.util.Iterator;
 
 /**
  * This class provides a concrete implementation of the FunctionalSortedMap interface.
@@ -11,14 +12,22 @@ import high.mackenzie.autumn.util.ds.AvlTree.Node;
  */
 public final class FunctionalTreeMap<K, V>
 {
-    private final AvlTree tree;
+    public final ITree tree;
+
+    /**
+     * Constructor.
+     */
+    public FunctionalTreeMap()
+    {
+        this.tree = new SlowTree();
+    }
 
     /**
      * Constructor.
      *
      * @param tree is the tree that backs this map.
      */
-    private FunctionalTreeMap(final AvlTree tree)
+    private FunctionalTreeMap(final ITree tree)
     {
         this.tree = tree;
     }
@@ -28,7 +37,7 @@ public final class FunctionalTreeMap<K, V>
      */
     public MutableSortedMap<K, V> mutable()
     {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return new ConcreteMutableTreeMap(this);
     }
 
     /**
@@ -36,7 +45,7 @@ public final class FunctionalTreeMap<K, V>
      */
     public ImmutableMap<K, V> immutable()
     {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return new ConcreteImmutableTreeMap(this);
     }
 
     /**
@@ -61,22 +70,6 @@ public final class FunctionalTreeMap<K, V>
     /**
      * {@inheritDoc}
      */
-    public boolean containsKey(K key)
-    {
-        return tree.find(key) != null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public boolean containsValue(final V value)
-    {
-        return mutable().containsValue(value);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public int size()
     {
         return tree.size();
@@ -85,8 +78,30 @@ public final class FunctionalTreeMap<K, V>
     /**
      * {@inheritDoc}
      */
+    public boolean isEmpty()
+    {
+        return tree.size() == 0;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public FunctionalTreeMap<K, V> remove(K key)
     {
         return new FunctionalTreeMap<K, V>(tree.delete(key));
+    }
+
+    public Iterator<K> keys()
+    {
+        return tree.keys();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString()
+    {
+        return tree.toString();
     }
 }

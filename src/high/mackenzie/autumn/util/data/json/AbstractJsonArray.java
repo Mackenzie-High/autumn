@@ -3,15 +3,15 @@ package high.mackenzie.autumn.util.data.json;
 import autumn.util.data.json.JsonArray;
 import autumn.util.data.json.JsonTypeSystem;
 import autumn.util.data.json.JsonValue;
+import com.google.common.collect.ForwardingList;
 import java.io.PrintStream;
-import java.util.ArrayList;
 
 /**
  *
  * @author mackenzie
  */
-public class ConcreteJsonArray
-        extends ArrayList<JsonValue>
+public abstract class AbstractJsonArray
+        extends ForwardingList<JsonValue>
         implements JsonArray
 {
     private JsonTypeSystem typesystem;

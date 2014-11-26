@@ -37,4 +37,12 @@
 
 
 
-. T0001 = high.mackenzie.autumn.util.ds.ConcreteFunctionalList
+. high.mackenzie.autumn.util.ds.AvlTree
+. . T0009 = High Volume Insertions and Deletions
+
+. high.mackenzie.autumn.util.ds.ImmutableList
+. . T0001 = All Normal Cases
+
+. high.mackenzie.autumn.util.ds.MutableList
+. . T0008 = All Normal Cases
+

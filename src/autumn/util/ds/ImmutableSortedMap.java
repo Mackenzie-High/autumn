@@ -1,12 +1,15 @@
 package autumn.util.ds;
 
+import java.util.NavigableMap;
+
 /**
  * An instance of this class is a sorted immutable map data-structure.
  *
  * @author Mackenzie High
  */
 public interface ImmutableSortedMap<K, V>
-        extends ImmutableMap<K, V>
+        extends ImmutableMap<K, V>,
+                NavigableMap<K, V>
 {
     /**
      * This method creates an mutable copy of this object.

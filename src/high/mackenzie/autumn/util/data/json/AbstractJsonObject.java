@@ -1,20 +1,20 @@
 package high.mackenzie.autumn.util.data.json;
 
-import autumn.util.data.json.JsonMap;
+import autumn.util.data.json.JsonObject;
 import autumn.util.data.json.JsonTypeSystem;
 import autumn.util.data.json.JsonValue;
+import com.google.common.collect.ForwardingMap;
 import java.io.PrintStream;
-import java.util.HashMap;
 
 /**
  *
  * @author mackenzie
  */
-public class ConcreteJsonMap
-        extends HashMap<JsonValue, JsonValue>
-        implements JsonMap
+public abstract class AbstractJsonObject
+        extends ForwardingMap<String, JsonValue>
+        implements JsonObject
 {
-    private JsonTypeSystem typesystem;
+    protected JsonTypeSystem typesystem;
 
     /**
      * {@inheritDoc}

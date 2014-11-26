@@ -1,7 +1,6 @@
 package high.mackenzie.autumn.lang.compiler.compilers;
 
 import autumn.lang.compiler.ast.nodes.TypeSpecifier;
-import autumn.util.ds.Counter;
 import autumn.util.ds.ImmutableCollection;
 import autumn.util.ds.ImmutableMap;
 import autumn.util.ds.ImmutableSet;
@@ -13,7 +12,6 @@ import autumn.util.ds.MutableMap;
 import autumn.util.ds.MutableSet;
 import autumn.util.ds.MutableSortedMap;
 import autumn.util.ds.MutableSortedSet;
-import autumn.util.ds.SparseArray;
 import autumn.util.functors.MethodCompareTo;
 import autumn.util.functors.MethodEquals;
 import autumn.util.functors.MethodHashCode;
@@ -104,13 +102,12 @@ public final class Importer
         importClass(autumn.util.data.json.Json.class);
         importClass(autumn.util.data.json.JsonArray.class);
         importClass(autumn.util.data.json.JsonBoolean.class);
-        importClass(autumn.util.data.json.JsonMap.class);
+        importClass(autumn.util.data.json.JsonObject.class);
         importClass(autumn.util.data.json.JsonNull.class);
         importClass(autumn.util.data.json.JsonNumber.class);
         importClass(autumn.util.data.json.JsonValue.class);
 
         // autumn.util.ds
-        importClass(Counter.class);
         importClass(ImmutableCollection.class);
         importClass(ImmutableList.class);
         importClass(ImmutableMap.class);
@@ -123,7 +120,6 @@ public final class Importer
         importClass(MutableSet.class);
         importClass(MutableSortedMap.class);
         importClass(MutableSortedSet.class);
-        importClass(SparseArray.class);
 
         // autumn.util.test
         importClass(autumn.util.test.MalformedTestException.class);
@@ -189,6 +185,7 @@ public final class Importer
         importClass(java.util.Set.class);
         importClass(java.util.TreeMap.class);
         importClass(java.util.TreeSet.class);
+        importClass(java.util.Random.class);
     }
 
     private void checkAccess(final TypeSpecifier specifier,

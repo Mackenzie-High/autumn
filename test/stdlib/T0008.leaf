@@ -1,0 +1,56 @@
+module Main in tests;
+
+import high.mackenzie.autumn.util.ds.ConcreteMutableList;
+import high.mackenzie.autumn.util.ds.ConcreteImmutableList;
+
+@Start
+defun main(args : String[]) : void
+{
+    val list = (new ConcreteMutableList);
+
+    assert (list.size) == 0;
+    assert (list.isEmpty) == true;
+
+    assert "[]" == (list.toString);
+
+    (list.add "A");
+    (list.add "B");
+    (list.add "C");
+    (list.add "D");
+    (list.add "E");
+
+    assert (list.size) == 5;
+    assert (list.isEmpty) == false;
+
+    assert (list.get 0) == "A";
+    assert (list.get 1) == "B";
+    assert (list.get 2) == "C";
+    assert (list.get 3) == "D";
+    assert (list.get 4) == "E";
+
+    assert "[A, B, C, D, E]" == (list.toString);
+
+    (list.set 0, "X");
+    (list.set 2, "Y");
+    (list.set 4, "Z");
+
+    assert "[X, B, Y, D, Z]" == (list.toString);
+
+    (list.add 0, "P"); assert "[P, X, B, Y, D, Z]" == (list.toString);
+    (list.add 3, "M"); assert "[P, X, B, M, Y, D, Z]" == (list.toString);
+    (list.add 7, "Q"); assert "[P, X, B, M, Y, D, Z, Q]" == (list.toString);
+
+    (list.set 1, "A");
+    (list.set 6, "C");
+
+    assert "[P, A, B, M, Y, D, C, Q]" == (list.toString);
+
+    (list.remove 1); assert "[P, B, M, Y, D, C, Q]" == (list.toString);
+    (list.remove 5); assert "[P, B, M, Y, D, Q]" == (list.toString);
+
+    (list.remove 0); assert "[B, M, Y, D, Q]" == (list.toString);
+    (list.remove 4); assert "[B, M, Y, D]" == (list.toString);
+
+    (list.remove 0); assert "[M, Y, D]" == (list.toString);
+    (list.remove 2); assert "[M, Y]" == (list.toString);
+}

@@ -26,14 +26,14 @@ public final class Runner
         failed_count = 0;
 
 
-
+        test("T0008");
         test("T0007");
         test("T0006");
         test("T0005");
 //        test("T0004");
 //        test("T0003");
         test("T0002");
-//        test("T0001");
+        test("T0001");
 
         System.out.println("Number of Failed Tests: " + failed_count);
     }

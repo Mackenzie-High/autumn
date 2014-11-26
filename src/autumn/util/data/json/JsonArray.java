@@ -12,6 +12,12 @@ public interface JsonArray
                 List<JsonValue>
 {
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonValue get(int index);
+
+    /**
      * This method retrieves the first element in this list.
      *
      * @return the first element herein.

@@ -1223,16 +1223,28 @@ public final class F
     /**
      * This method creates a new BigDecimal from a double value.
      *
+     * <p>
+     * The new object will have a scale of thirty-two.
+     * </p>
+     *
      * @param value is the value of the new BigDecimal.
      * @return the aforedescribed BigDecimal.
      */
     public static BigDecimal big(final double value)
     {
-        return BigDecimal.valueOf(value);
+        final BigDecimal unscaled = BigDecimal.valueOf(value);
+
+        final BigDecimal scaled = unscaled.setScale(32);
+
+        return scaled;
     }
 
     /**
      * This method converts a number to a BigDecimal.
+     *
+     * <p>
+     * The new object will have a scale of thirty-two.
+     * </p>
      *
      * @param value is the value to convert.
      * @return the value as a big-decimal.
@@ -1243,51 +1255,76 @@ public final class F
     {
         Preconditions.checkNotNull(value);
 
+        final BigDecimal unscaled;
+
         if (value instanceof Byte)
         {
-            return new BigDecimal(value.byteValue());
+            unscaled = new BigDecimal(value.byteValue());
         }
         else if (value instanceof Short)
         {
-            return new BigDecimal(value.shortValue());
+            unscaled = new BigDecimal(value.shortValue());
         }
         else if (value instanceof Integer)
         {
-            return new BigDecimal(value.intValue());
+            unscaled = new BigDecimal(value.intValue());
         }
         else if (value instanceof Long)
         {
-            return new BigDecimal(value.longValue());
+            unscaled = new BigDecimal(value.longValue());
         }
         else if (value instanceof Float)
         {
-            return new BigDecimal(value.floatValue());
+            unscaled = new BigDecimal(value.floatValue());
         }
         else if (value instanceof Double)
         {
-            return new BigDecimal(value.doubleValue());
+            unscaled = new BigDecimal(value.doubleValue());
         }
         else if (value instanceof BigInteger)
         {
-            return new BigDecimal((BigInteger) value);
+            unscaled = new BigDecimal((BigInteger) value);
         }
         else if (value instanceof BigDecimal)
         {
-            return (BigDecimal) value;
+            unscaled = (BigDecimal) value;
         }
         else
         {
             throw new IllegalArgumentException("Unrecognized Number: " + value);
         }
+
+        final BigDecimal scaled = unscaled.setScale(32);
+
+        return scaled;
+    }
+
+    /**
+     * This method creates a new BigDecimal from a string value.
+     *
+     * <p>
+     * The new object will have a scale of thirty-two.
+     * </p>
+     *
+     * @param value is the value of the new BigDecimal.
+     * @return the aforedescribed BigDecimal.
+     */
+    public static BigDecimal big(final String value)
+    {
+        final BigDecimal unscaled = new BigDecimal(value);
+
+        final BigDecimal scaled = unscaled.setScale(32);
+
+        return scaled;
     }
 
     /**
      * This method returns the default value of a given type.
      *
      * <p>
-     * The boolean type returns false.
-     * Numeric types return zero.
-     * Reference types return null.
+     * The boolean type returns false. <br>
+     * Numeric types return zero. <br>
+     * Reference types return null. <br>
      * </p>
      *
      * @param type is the type that indicates the value to return.

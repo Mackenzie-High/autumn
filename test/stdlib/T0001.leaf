@@ -1,55 +1,33 @@
 module Main in tests;
 
-import high.mackenzie.autumn.util.ds.ConcreteFunctionalList;
-
+import high.mackenzie.autumn.util.ds.ConcreteMutableList;
+import high.mackenzie.autumn.util.ds.ConcreteImmutableList;
 
 @Start
 defun main(args : String[]) : void
 {
-    var list = (new ConcreteFunctionalList) is FunctionalList;
+    val builder = (new ConcreteMutableList);
 
-    assert (list.size) == 0;
-    assert (list.isEmpty) == true;
+    assert (builder.size) == 0;
+    assert (builder.isEmpty) == true;
 
-    list = (list.add "A");
-    list = (list.add "B");
-    list = (list.add "C");
-    list = (list.add "D");
-    list = (list.add "E");
+    (builder.add "A");
+    (builder.add "B");
+    (builder.add "C");
+    (builder.add "D");
+    (builder.add "E");
+
+    assert (builder.size) == 5;
+    assert (builder.isEmpty) == false;
+
+    val list = (builder.immutable) is ConcreteImmutableList;
+
+    assert (Reflect::isSubtypeOf (list.getClass), (class ConcreteImmutableList));
 
     assert "[A, B, C, D, E]" == (list.toString);
 
     assert (list.size) == 5;
     assert (list.isEmpty) == false;
-
-    //assert (list.equals list) == true;
-    //assert (list.equals null) == false;
-    //assert (list.equals 5) == false;
-    //assert (list.equals ["A", "B", "C", "D", "X"]) == false;
-    //assert (list.equals ["A", "B", "C", "D", "E"]) == true;
-
-    assert (list.mutable)   != null;
-    assert (list.immutable) != null;
-
-    assert (list.contains "A") == true;
-    assert (list.contains "B") == true;
-    assert (list.contains "C") == true;
-    assert (list.contains "D") == true;
-    assert (list.contains "E") == true;
-
-    assert (list.contains "X") == false;
-    assert (list.contains "Y") == false;
-    assert (list.contains "Z") == false;
-
-    assert (list.containsAll ["A", "B", "C"]) == true;
-    assert (list.containsAll ["A", "X", "Y"]) == false;
-
-    assert (list.containsAny ["A", "B", "C"]) == true;
-    assert (list.containsAny ["A", "X", "Y"]) == true;
-    assert (list.containsAny ["X", "Y", "Z"]) == false;
-
-    assert (list.first) == "A";
-    assert (list.last)  == "E";
 
     assert (list.get 0) == "A";
     assert (list.get 1) == "B";
@@ -57,18 +35,27 @@ defun main(args : String[]) : void
     assert (list.get 3) == "D";
     assert (list.get 4) == "E";
 
-    list = (list.set 0, "X");
-    list = (list.set 2, "Y");
-    list = (list.set 4, "Z");
+    val modifier = (list.mutable);
 
-    assert "[X, B, Y, D, Z]" == (list.toString);
+    (modifier.add "X");
+    (modifier.add "Y");
+    (modifier.add "Z");
 
-    assert (list.size) == 5;
-    assert (list.isEmpty) == false;
+    val modified = (modifier.immutable);
 
-    // TODO: test add(int, Object)
-    //            addAll(int, Iterable)
-    //            remove(int)
-    //            removeFirst()
-    //            removeLast();
+    assert builder !== list;
+    assert modifier !== modified;
+
+    assert "[A, B, C, D, E]" == (builder.toString);
+    assert "[A, B, C, D, E]" == (list.toString);
+    assert "[A, B, C, D, E, X, Y, Z]" == (modifier.toString);
+    assert "[A, B, C, D, E, X, Y, Z]" == (modified.toString);
+
+    (builder.add "P");
+    (modifier.add "Q");
+
+    assert "[A, B, C, D, E, P]" == (builder.toString);
+    assert "[A, B, C, D, E]" == (list.toString);
+    assert "[A, B, C, D, E, X, Y, Z, Q]" == (modifier.toString);
+    assert "[A, B, C, D, E, X, Y, Z]" == (modified.toString);
 }

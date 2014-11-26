@@ -19,7 +19,15 @@ public final class ConcreteMutableList<E>
     private FunctionalList<E> list;
 
     /**
-     * Sole Constructor.
+     * Constructor.
+     */
+    public ConcreteMutableList()
+    {
+        this.list = new FunctionalList<E>();
+    }
+
+    /**
+     * Constructor.
      *
      * @param list is the initial backing list.
      */
@@ -46,7 +54,7 @@ public final class ConcreteMutableList<E>
     public void add(final int index,
                     final E value)
     {
-        list = list.add(index, value);
+        list = list.insert(index, value);
     }
 
     /**

@@ -8,6 +8,8 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
+ * TODO: I believe there is a bug in this - delete *sometimes* removes multiple elements.
+ *
  * An instance of this class is an immutable AVL tree.
  *
  * http://en.wikipedia.org/wiki/AVL_tree
@@ -15,8 +17,9 @@ import java.util.List;
  *
  * @author mackenzie
  */
-public class AvlTree
-        implements Serializable
+public final class AvlTree
+        implements Serializable,
+                   ITree
 {
     /**
      * An instance of this class is a node in an AVL tree.
@@ -168,6 +171,7 @@ public class AvlTree
      * @param value is the value of the new node in the tree.
      * @return a modified copy of the tree.
      */
+    @Override
     public AvlTree insert(final Object key,
                           final Object value)
     {
@@ -318,6 +322,7 @@ public class AvlTree
      *
      * @return the number of nodes in this tree.
      */
+    @Override
     public int size()
     {
         return size(root);
@@ -339,6 +344,7 @@ public class AvlTree
      * @param key
      * @return
      */
+    @Override
     public Node find(final Object key)
     {
         return find(root, key);
@@ -350,6 +356,7 @@ public class AvlTree
      * @param key
      * @return
      */
+    @Override
     public Node find(final Node node,
                      final Object key)
     {
@@ -383,6 +390,7 @@ public class AvlTree
      *
      * @return a modified copy of the tree.
      */
+    @Override
     public AvlTree clear()
     {
         return new AvlTree(this, null);
@@ -393,6 +401,7 @@ public class AvlTree
      * @param key
      * @return
      */
+    @Override
     public AvlTree delete(final Object key)
     {
         final Node new_root;
@@ -562,6 +571,7 @@ public class AvlTree
         }
     }
 
+    @Override
     public Iterator values()
     {
         // TODO: make lazy
@@ -592,6 +602,7 @@ public class AvlTree
         return values;
     }
 
+    @Override
     public Iterator keys()
     {
         // TODO: make lazy
