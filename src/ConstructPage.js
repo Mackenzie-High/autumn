@@ -1,3 +1,4 @@
+var GITHUB_OUT = "https://raw.githubusercontent.com/Mackenzie-High/autumn/gh-pages/out/";
 
 var ERROR_CODE_JAVADOC = "javadoc/autumn/lang/compiler/errors/ErrorCode.html";
 
@@ -143,13 +144,13 @@ function displayExample(index)
 
 function main()
 {
-	var hello = $.getJSON("specification.json", function (x) {  });
-	
 	var params = getURLParameters();
 	
 	var name = params["construct"];
 	
-	page = $.getJSON("out/" + name + ".json");
+	path = GITHUB_OUT + name + ".json";
+	
+	page = $.getJSON(path);
 	
 	document.title = name;
 	
