@@ -1,5 +1,3 @@
-var GITHUB_OUT = "https://raw.githubusercontent.com/Mackenzie-High/autumn/gh-pages/out/";
-
 var ERROR_CODE_JAVADOC = "javadoc/autumn/lang/compiler/errors/ErrorCode.html";
 
 var name = null;
