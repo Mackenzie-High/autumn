@@ -148,7 +148,7 @@ function main()
 	
 	var name = params["construct"];
 	
-	path = GITHUB_OUT + name + ".json";
+	path = "out/" + name + ".json";
 	
 	page = $.getJSON(path);
 	
