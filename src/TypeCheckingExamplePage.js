@@ -16,13 +16,13 @@ function emitExample()
 	
 	var testno = "T" + zfill("" + test, 4);
 	
-	var code_url = "https://github.com/Mackenzie-High/autumn/tree/master/test/typechecks/" + testno;
+	var code_url = "out/typechecks/" + testno + ".code";
 	
-	var stdout_url = "https://github.com/Mackenzie-High/autumn/tree/master/test/typechecks/stdout/" + testno;
+	var stdout_url = "out/typechecks/" + testno + ".stdout";
 	
 	var code = $.get(code_url).responseText;
 	
-	var stdout = "";
+	var stdout = $.get(stdout_url).responseText;
 	
 	$("#construct-page-example-code").html(code);
 	$("#construct-page-example-stdout").html(stdout);

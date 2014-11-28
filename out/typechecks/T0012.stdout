@@ -1,0 +1,6 @@
+Warning: EXPECTED_THROWABLE
+  File: file:/typechecks/T0012
+  Line: #10
+  Column: #16
+  Message: A java.lang.Throwable was expected.
+

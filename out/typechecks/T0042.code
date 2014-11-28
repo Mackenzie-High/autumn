@@ -1,0 +1,3 @@
+module * in typechecks;
+
+exception Moo extends Object;

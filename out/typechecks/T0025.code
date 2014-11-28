@@ -1,0 +1,8 @@
+module * in typechecks;
+
+@Start
+defun main (args : String[]) : void
+{
+    "Venus" === 2;
+}
+

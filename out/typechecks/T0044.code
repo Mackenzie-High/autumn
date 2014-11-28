@@ -1,0 +1,5 @@
+module * in typechecks;
+
+import typechecks.inaccessible.InaccessibleClass;
+
+exception Moo extends InaccessibleClass;

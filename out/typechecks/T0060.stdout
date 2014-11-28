@@ -1,0 +1,6 @@
+Warning: BREAK_OUTSIDE_OF_LOOP
+  File: file:/typechecks/T0060
+  Line: #6
+  Column: #5
+  Message: A break-statement can only be used inside of a loop construct.
+

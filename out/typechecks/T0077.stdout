@@ -1,0 +1,7 @@
+Warning: MALFORMED_STRING_LITERAL
+  File: file:/typechecks/T0077
+  Line: #6
+  Column: #13
+  Message: A non-verbatim string cannot contain malformed escape-sequences.
+  Detail: Invalid Escape Sequence: \a
+

@@ -1,0 +1,5 @@
+module Main in typechecks;
+
+import typechecks.inaccessible.InaccessibleClass;
+
+tuple Employee () extends InaccessibleClass;

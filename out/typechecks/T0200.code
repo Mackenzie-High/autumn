@@ -1,0 +1,5 @@
+module Main in typechecks;
+
+design Taxable ();
+
+tuple Person () extends Taxable & Taxable;

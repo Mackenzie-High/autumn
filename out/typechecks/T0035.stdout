@@ -1,0 +1,6 @@
+Warning: IMPOSSIBLE_CONVERSION
+  File: file:/typechecks/T0035
+  Line: #6
+  Column: #7
+  Message: An is-conversion is not possible.
+

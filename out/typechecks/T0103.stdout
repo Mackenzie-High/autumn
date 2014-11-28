@@ -1,0 +1,7 @@
+Warning: NO_SUCH_FIELD
+  File: file:/typechecks/T0103
+  Line: #10
+  Column: #6
+  Message: No acceptable field was found.
+  Field: InstanceFieldTester.age
+

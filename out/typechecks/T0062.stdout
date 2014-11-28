@@ -1,0 +1,6 @@
+Warning: REDO_OUTSIDE_OF_LOOP
+  File: file:/typechecks/T0062
+  Line: #6
+  Column: #5
+  Message: A redo-statement can only be used inside of a loop construct.
+

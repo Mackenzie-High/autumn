@@ -1,0 +1,7 @@
+Warning: ASSIGNMENT_TO_READONLY
+  File: file:/typechecks/T0097
+  Line: #6
+  Column: #6
+  Message: A value cannot be assigned to a final field.
+  Field: Integer::MAX_VALUE
+

@@ -1,0 +1,7 @@
+module * in typechecks;
+
+exception Moo extends Cow;
+
+exception Cow extends Animal;
+
+exception Animal extends Moo;

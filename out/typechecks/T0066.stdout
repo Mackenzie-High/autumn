@@ -1,0 +1,7 @@
+Warning: NO_SUCH_CONSTRUCTOR
+  File: file:/typechecks/T0066
+  Line: #8
+  Column: #6
+  Message: No accessible constructor was found that will accept the given arguments.
+  Type: java.util.LinkedList
+

@@ -1,0 +1,8 @@
+Warning: WRONG_TYPE
+  File: file:/typechecks/T0210
+  Line: #6
+  Column: #5
+  Message: The value being returned must be assignable to the return-type.
+  Return Type: boolean
+  Actual Type: int
+

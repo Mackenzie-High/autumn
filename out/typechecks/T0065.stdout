@@ -1,0 +1,6 @@
+Warning: EXPECTED_CLASS_TYPE
+  File: file:/typechecks/T0065
+  Line: #8
+  Column: #10
+  Message: A class-type was expected.
+

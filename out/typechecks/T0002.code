@@ -1,0 +1,14 @@
+module Main in typechecks;
+
+@Start
+defun main (args : String[]) : void
+{
+    if(true)
+    {
+        nop;
+    }
+    elif(123)
+    {
+        nop;
+    }
+}

@@ -1,0 +1,8 @@
+Warning: INCOMPATIBLE_OPERANDS
+  File: file:/typechecks/T0027
+  Line: #9
+  Column: #7
+  Message: One of the operands must be a subtype of the other.
+  left.type: Long
+  right.type: String
+

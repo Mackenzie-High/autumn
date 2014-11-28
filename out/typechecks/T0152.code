@@ -1,0 +1,7 @@
+module Main in typechecks;
+
+annotation Anno;
+
+@Anno
+@Anno
+enum E ();

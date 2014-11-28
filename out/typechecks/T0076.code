@@ -1,0 +1,16 @@
+module Main in typechecks;
+
+@Start
+defun main (args : String[]) : void
+{
+    # Define a nested scope.
+    {
+        var x = 0;
+    }
+
+    # Define a new nested scope.
+    {
+        # This variable is out-of-scope, because it was declared in a different nested scope.
+        x;
+    }
+}
