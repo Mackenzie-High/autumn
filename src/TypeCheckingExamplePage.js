@@ -35,7 +35,7 @@ function main()
 	test = params["test-number"];
 	
 	document.title = "Example Type Check: " + test;
-	emitSummary();;
+	//emitSummary();;
 	emitExample();
 	
 	$(function() { $( "#tabs" ).tabs(); });	
