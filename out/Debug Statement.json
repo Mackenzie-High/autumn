@@ -1,0 +1,1 @@
+{ "summary" : "A debug-statement invokes the builtin debugger.", "ast" : "autumn.lang.compiler.ast.nodes.DebugStatement", "syntax" : [[0, "<span class=\"keyword\">debug</span> ;"]], "details" : [[0, "Debug-statements can be disabled; in which case, no bytecode is generated therefor."], [0, "The builtin debugger can be dynamically replaced programmatically."]], "checks" : [] }

@@ -1,0 +1,1 @@
+{ "summary" : "A doc-comment-line that is a single line in a doc-comment.", "ast" : "autumn.lang.compiler.ast.nodes.FormalParameter", "syntax" : [[0, "/// <i>text</i>"]], "details" : [], "checks" : [] }

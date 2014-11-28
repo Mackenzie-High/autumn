@@ -1,0 +1,1 @@
+"<h1>Type Accessibility</h1><p>A type T is accessible from within the definition of a type U, iff:</p>%0A<ul>%0A  <li>T is U</li>%0A  <li>T is in the same package as U</li>%0A  <li>T is in a different package than U and T has public-access</li>%0A</ul><h1>Type Member Accessibility</h1><p>A member M of a type T is accessible in the definition of a type U, iff:</p>"

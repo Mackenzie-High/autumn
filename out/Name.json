@@ -1,0 +1,1 @@
+{ "summary" : "A name construct is used to represent a name that does not denote a type.", "ast" : "autumn.lang.compiler.ast.nodes.Name", "syntax" : [[0, "<i>name</i>"]], "details" : [[0, "A <i>name</i> is a sequence of letters, digits, underscores, and/or dollar signs."], [0, "A <i>name</i> cannot start with a digit."], [0, "A <i>name</i> is case-sensitive."]], "checks" : [] }

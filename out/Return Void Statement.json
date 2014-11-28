@@ -1,0 +1,1 @@
+{ "summary" : "A return-statement causes execution to exit the invocation of a function.", "ast" : "autumn.lang.compiler.ast.nodes.ReturnVoidStatement", "syntax" : [[0, "<span class=\"keyword\">return</span> ;"]], "details" : [], "checks" : [["EXPECTED_VOID", "The return-type of the enclosing function must be void.", "null"]] }
