@@ -2,6 +2,8 @@ var GITHUB_OUT = "https://raw.githubusercontent.com/Mackenzie-High/autumn/gh-pag
 
 var ERROR_CODE_JAVADOC = "javadoc/autumn/lang/compiler/errors/ErrorCode.html";
 
+var name = null;
+
 var page = null;
 
 function repeatString(string, count)
@@ -140,20 +142,11 @@ function displayExample(index)
 	$("#construct-page-example-stdout").html(stdout);
 }
 
-
-
-function main()
+function load_page(json)
 {
-	var params = getURLParameters();
-	
-	var name = params["construct"];
-	
-	path = "out/" + name + ".json";
-	
-	page = $.getJSON(path);
+	page = json;
 	
 	document.title = name;
-	
 	emitName(name);
 	emitSummary();
 	emitSyntax();
@@ -165,6 +158,18 @@ function main()
 	
 	$(function() { $( "#tabs" ).tabs(); });
 }
+
+function main()
+{
+	var params = getURLParameters();
+	
+	name = params["construct"];
+	
+	path = "out/" + name + ".json";
+	
+	$.getJSON(path, load_page);
+}
+
 
 
 
