@@ -6,11 +6,17 @@ function emitAdvancedIndex(json)
 	
 	for(var i = 0; i < length; i++)
 	{
-		var construct = "Hello";
+		var entry = index[i];
 		
-		var error = "Moo";
+		var test = entry["test"];
 		
-		var link = "Boo";
+		var url = "TypeCheckingExamplePage.html";
+		
+		var construct = entry["construct"];
+		
+		var error = entry["error-code"];
+		
+		var link = "<a href='URL'>".replace("URL", url) + "Link to Example Page</a>";
 		
 		var description = "Zoo";
 		
@@ -22,7 +28,7 @@ function emitAdvancedIndex(json)
 
 function main()
 {
-	var path = "out/index.json";
+	var path = "out/index-of-type-checking-examples.json";
 	
 	$.getJSON(path, emitAdvancedIndex);
 }
