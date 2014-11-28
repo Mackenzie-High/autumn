@@ -2,13 +2,6 @@ var ERROR_CODE_JAVADOC = "javadoc/autumn/lang/compiler/errors/ErrorCode.html";
 
 var test = null;
 
-function emitSummary()
-{
-	var summary = page["description"];
-	
-	$("#construct-page-summary-text").append(summary);
-}
-
 function formatCode(code)
 {
 	code = replaceAll(code, " ", "&nbsp;");
