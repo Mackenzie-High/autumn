@@ -13,9 +13,9 @@ function main()
 	
 	name = params["page"];
 	
-	path = "out/" + name + ".json";
+	path = "out/" + name + ".html";
 	
 	document.title = name;
 	
-	$.getJSON(path, load_page);
+	$.get(path, load_page);
 }
