@@ -9,6 +9,14 @@ function emitSummary()
 	$("#construct-page-summary-text").append(summary);
 }
 
+function formatCode(code)
+{
+	code = code.replace(" ", "&nbsp;");
+	code = code.replace("\n", "<br>");
+	
+	return code;
+}
+
 function emitExample()
 {
 	$("#construct-page-example-code").empty();
@@ -20,9 +28,9 @@ function emitExample()
 	
 	var stdout_url = "out/typechecks/" + testno + ".stdout";
 	
-	var code = syncGet(code_url);
+	var code = formatCode(syncGet(code_url));
 	
-	var stdout = syncGet(stdout_url);
+	var stdout = formatCode(syncGet(stdout_url));
 	
 	$("#construct-page-example-code").html(code);
 	$("#construct-page-example-stdout").html(stdout);
