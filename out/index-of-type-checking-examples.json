@@ -1,1 +1,1 @@
-[{ "test" : 1, "construct" : "class autumn.lang.compiler.ast.nodes.IfStatement", "error-code" : "EXPECTED_CONDITION" }]
+[{ "test" : 1, "construct" : "autumn.lang.compiler.ast.nodes.IfStatement", "error-code" : "EXPECTED_CONDITION" }]

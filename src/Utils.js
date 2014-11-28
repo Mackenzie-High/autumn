@@ -1,3 +1,8 @@
+
+var ERROR_CODE_JAVADOC = "javadoc/autumn/lang/compiler/errors/ErrorCode.html";
+
+
+
 /**
  * This function randomly generates a boolean value. 
  * 
@@ -22,7 +27,6 @@ function replaceAll(string, original, replacement)
 	
 	return string;
 }
-
 
 function getURLParameters() 
 {
@@ -55,4 +59,24 @@ function getURLParameters()
 	}
 	
 	return map;
+}
+
+function ast_link(klass)
+{
+	var href = 'javadoc/' + replaceAll(klass, ".", "/") + ".html";
+
+	var link = '<a href="HREF"> ' + klass + '</a>';
+	
+	link = link.replace("HREF", href);
+	
+	return link;
+}
+
+function errorcode_link(key)
+{
+	var link = '<a href="HREF">' + key + '</a>';
+	
+	link = link.replace("HREF", ERROR_CODE_JAVADOC + '#' + key);
+	
+	return link;
 }

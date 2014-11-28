@@ -1,4 +1,3 @@
-var ERROR_CODE_JAVADOC = "javadoc/autumn/lang/compiler/errors/ErrorCode.html";
 
 var name = null;
 
@@ -75,9 +74,7 @@ function emitStaticChecks()
 	{
 		var key = checks[i][0];
 		
-		var link = '<a href="HREF">' + key + '</a>';
-		
-		link = link.replace("HREF", ERROR_CODE_JAVADOC + '#' + key);
+		var link = errorcode_link(key);
 		
 		var value = checks[i][1];
 		
@@ -91,11 +88,7 @@ function emitAstClass()
 {
 	var klass = page["ast"];
 	
-	var href = 'javadoc/' + replaceAll(klass, ".", "/") + ".html";
-
-	var link = '<a href="HREF"> ' + klass + '</a>';
-	
-	link = link.replace("HREF", href);
+	var link = ast_link(klass);
 	
 	$("#construct-page-ast").append(link);
 }

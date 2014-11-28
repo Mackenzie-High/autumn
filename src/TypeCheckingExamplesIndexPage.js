@@ -1,3 +1,5 @@
+
+
 function emitAdvancedIndex(json)
 {
 	var index = json;
@@ -10,17 +12,15 @@ function emitAdvancedIndex(json)
 		
 		var test = entry["test"];
 		
-		var url = "TypeCheckingExamplePage.html";
+		var url = "TypeCheckingExamplePage.html?test-number=" + test;
 		
-		var construct = entry["construct"];
+		var construct = ast_link(entry["construct"]);
 		
-		var error = entry["error-code"];
+		var error = errorcode_link(entry["error-code"]);
 		
 		var link = "<a href='URL'>".replace("URL", url) + "Link to Example Page</a>";
 		
-		var description = "Zoo";
-		
-		var row = "<tr> <td>" + construct + "</td> <td>" + error + "</td> <td>" + link + "</td> <td>" + description + "</td> </tr>";
+		var row = "<tr> <td>" + construct + "</td> <td>" + error + "</td> <td>" + link + "</td> </tr>";
 
 		$("#type-checking-examples-table").append(row);
 	}
