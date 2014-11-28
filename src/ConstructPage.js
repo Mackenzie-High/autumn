@@ -143,11 +143,13 @@ function displayExample(index)
 
 function main()
 {
+	var hello = $.getJSON("specification.json", function (x) {  });
+	
 	var params = getURLParameters();
 	
 	var name = params["construct"];
 	
-	page = spec()[name];
+	page = $.getJSON("out/" + name + ".json");
 	
 	document.title = name;
 	
