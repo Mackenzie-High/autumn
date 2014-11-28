@@ -11,8 +11,8 @@ function emitSummary()
 
 function formatCode(code)
 {
-	code = code.replace(" ", "&nbsp;");
-	code = code.replace("\n", "<br>");
+	code = replaceAll(code, " ", "&nbsp;");
+	code = replaceAll(code, "\n", "<br>");
 	
 	return code;
 }
