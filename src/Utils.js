@@ -28,6 +28,16 @@ function replaceAll(string, original, replacement)
 	return string;
 }
 
+function zfill(string, count)
+{		
+	while(string.length < count)
+	{
+		string = "0" + string;
+	}
+	
+	return string;
+}
+
 function getURLParameters() 
 {
 	// The parameters section of a URL starts at the first '?' character. 

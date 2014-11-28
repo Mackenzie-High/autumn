@@ -14,7 +14,7 @@ function emitAdvancedIndex(json)
 		
 		var url = "TypeCheckingExamplePage.html?test-number=" + test;
 		
-		var construct = ast_link(entry["construct"]);
+		var construct = ast_link(entry["construct"]).replace("autumn.lang.compiler.ast.nodes.", "");
 		
 		var error = errorcode_link(entry["error-code"]);
 		

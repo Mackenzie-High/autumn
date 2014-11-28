@@ -1,23 +1,6 @@
 var ERROR_CODE_JAVADOC = "javadoc/autumn/lang/compiler/errors/ErrorCode.html";
 
-var name = null;
-
-var page = null;
-
-function repeatString(string, count)
-{
-	var result = "";
-	
-	var i = 0;
-	
-	while(i < count)
-	{
-		result = result + string;
-		i = i + 1;
-	}
-	
-	return result;
-}
+var test = null;
 
 function emitSummary()
 {
@@ -31,40 +14,29 @@ function emitExample(index)
 	$("#construct-page-example-code").empty();
 	$("#construct-page-example-stdout").empty();
 	
-	var example = "Hello";
+	var testno = "T" + zfill("" + test, 4);
 	
-	return;
+	var code_url = "https://github.com/Mackenzie-High/autumn/tree/master/test/typechecks/" + testno;
 	
-	var code = decodeURIComponent(example[0]);
-	code = replaceAll(code, "\n", "<br>");
-	code = replaceAll(code, " ", "&nbsp;");
+	var stdout_url = "https://github.com/Mackenzie-High/autumn/tree/master/test/typechecks/stdout/" + testno;
 	
-	var stdout = decodeURIComponent(example[1]);
-	stdout = replaceAll(stdout, "\n", "<br>");
+	var code = $.get(code_url).responseText;
+	
+	var stdout = "";
 	
 	$("#construct-page-example-code").html(code);
 	$("#construct-page-example-stdout").html(stdout);
-}
-
-function load_page(json)
-{
-	page = json;
-	
-	document.title = name;
-	emitName(name);
-	emitSummary();;
-	emitExample();
-	
-	$(function() { $( "#tabs" ).tabs(); });
 }
 
 function main()
 {
 	var params = getURLParameters();
 	
-	name = params["construct"];
+	test = params["test-number"];
 	
-	path = "out/" + name + ".json";
+	document.title = "Example Type Check: " + test;
+	emitSummary();;
+	emitExample();
 	
-	$.getJSON(path, load_page);
+	$(function() { $( "#tabs" ).tabs(); });	
 }
