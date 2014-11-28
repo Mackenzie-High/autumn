@@ -1,7 +1,6 @@
 package high.mackenzie.autumn.util.data.json;
 
 import autumn.util.data.json.JsonNull;
-import autumn.util.data.json.JsonTypeSystem;
 import java.io.PrintStream;
 
 /**
@@ -11,25 +10,7 @@ import java.io.PrintStream;
 public class ConcreteJsonNull
         implements JsonNull
 {
-    private JsonTypeSystem typesystem;
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public final void enforce(JsonTypeSystem structure)
-    {
-        this.typesystem = structure;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public JsonTypeSystem typesystem()
-    {
-        return typesystem;
-    }
+    public static JsonNull NULL = new ConcreteJsonNull();
 
     /**
      * {@inheritDoc}
@@ -71,7 +52,7 @@ public class ConcreteJsonNull
      * {@inheritDoc}
      */
     @Override
-    public boolean isMap()
+    public boolean isObject()
     {
         return false;
     }

@@ -3,8 +3,9 @@ package autumn.util.data.json;
 import autumn.util.ds.MutableMap;
 
 /**
+ * An instance of this interface is a mutable representation of a Json object.
  *
- * @author mackenzie
+ * @author Mackenzie High
  */
 public interface MutableJsonObject
         extends JsonObject,

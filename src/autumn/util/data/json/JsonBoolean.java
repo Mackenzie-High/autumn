@@ -8,4 +8,8 @@ package autumn.util.data.json;
 public interface JsonBoolean
         extends JsonValue
 {
+    public boolean value();
+
+    @Override
+    public String toString();
 }

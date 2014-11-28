@@ -12,20 +12,6 @@ public interface JsonValue
         extends Serializable
 {
     /**
-     * This method applies a type-system to this value; thereby, causing this value to be typed.
-     *
-     * @param structure is the type-system that this object must subsequently obey (may be null).
-     */
-    public void enforce(final JsonTypeSystem structure);
-
-    /**
-     * This method retrieves the type-system that this object obeys.
-     *
-     * @return the obeyed type-system, or null, if this object is untyped.
-     */
-    public JsonTypeSystem typesystem();
-
-    /**
      * This method determines whether this object represents a JSON array.
      *
      * @return true, iff this object represents a JSON array.
@@ -58,7 +44,7 @@ public interface JsonValue
      *
      * @return true, iff this object represents a JSON map.
      */
-    public boolean isMap();
+    public boolean isObject();
 
     /**
      * This method determines whether this object represents a JSON string.

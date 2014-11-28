@@ -1,0 +1,27 @@
+module Main in tests;
+
+@Start
+defun main(args : String[]) : void
+{
+    val x = (Json::number 12.34);
+
+    assert (x.isArray) == false;
+    assert (x.isBoolean) == false;
+    assert (x.isNumber) == true;
+    assert (x.isNull) == false;
+    assert (x.isString) == false;
+    assert (x.isObject) == false;
+
+    assert (Json::number 12.34) == (Json::number 12.34);
+    assert (Json::number 12.34) != (Json::number 12.35);
+    assert (Json::number 0.0) == (Json::number 0.000);
+
+    assert (((Json::number 12.34).asBigDecimal).scale) == 32;
+
+    assert ((Json::number 123).asByte) == 123B;
+    assert ((Json::number 123).asShort) == 123S;
+    assert ((Json::number 123).asInt) == 123;
+    assert ((Json::number 123).asLong) == 123L;
+    assert ((Json::number 123).asFloat) == 123.0F;
+    assert ((Json::number 123).asDouble) == 123.0;
+}

@@ -1,0 +1,23 @@
+module Main in tests;
+
+@Start
+defun main(args : String[]) : void
+{
+    val x = (Json::bool true);
+
+    assert (x.isArray) == false;
+    assert (x.isBoolean) == true;
+    assert (x.isNumber) == false;
+    assert (x.isNull) == false;
+    assert (x.isString) == false;
+    assert (x.isObject) == false;
+
+    assert ((Json::bool true).value) == true;
+    assert ((Json::bool false).value) == false;
+
+    assert (Json::bool true) === (Json::bool true);
+    assert (Json::bool true) !== (Json::bool false);
+
+    assert (Json::bool true) == (Json::bool true);
+    assert (Json::bool true) != (Json::bool false);
+}

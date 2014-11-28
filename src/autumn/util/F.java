@@ -11,6 +11,7 @@ import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.math.RoundingMode;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.Iterator;
@@ -1234,7 +1235,7 @@ public final class F
     {
         final BigDecimal unscaled = BigDecimal.valueOf(value);
 
-        final BigDecimal scaled = unscaled.setScale(32);
+        final BigDecimal scaled = unscaled.setScale(32, RoundingMode.HALF_EVEN);
 
         return scaled;
     }
@@ -1294,7 +1295,7 @@ public final class F
             throw new IllegalArgumentException("Unrecognized Number: " + value);
         }
 
-        final BigDecimal scaled = unscaled.setScale(32);
+        final BigDecimal scaled = unscaled.setScale(32, RoundingMode.HALF_EVEN);
 
         return scaled;
     }
@@ -1313,7 +1314,7 @@ public final class F
     {
         final BigDecimal unscaled = new BigDecimal(value);
 
-        final BigDecimal scaled = unscaled.setScale(32);
+        final BigDecimal scaled = unscaled.setScale(32, RoundingMode.HALF_EVEN);
 
         return scaled;
     }

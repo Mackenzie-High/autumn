@@ -106,6 +106,10 @@ public final class Importer
         importClass(autumn.util.data.json.JsonNull.class);
         importClass(autumn.util.data.json.JsonNumber.class);
         importClass(autumn.util.data.json.JsonValue.class);
+        importClass(autumn.util.data.json.ImmutableJsonArray.class);
+        importClass(autumn.util.data.json.ImmutableJsonObject.class);
+        importClass(autumn.util.data.json.MutableJsonArray.class);
+        importClass(autumn.util.data.json.MutableJsonObject.class);
 
         // autumn.util.ds
         importClass(ImmutableCollection.class);

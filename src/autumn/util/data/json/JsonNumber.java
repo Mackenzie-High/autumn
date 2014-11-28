@@ -16,6 +16,20 @@ public interface JsonNumber
      *
      * @return the value of this number.
      */
+    public byte asByte();
+
+    /**
+     * This method gets the value of this number.
+     *
+     * @return the value of this number.
+     */
+    public short asShort();
+
+    /**
+     * This method gets the value of this number.
+     *
+     * @return the value of this number.
+     */
     public int asInt();
 
     /**
@@ -24,6 +38,13 @@ public interface JsonNumber
      * @return the value of this number.
      */
     public long asLong();
+
+    /**
+     * This method gets the value of this number.
+     *
+     * @return the value of this number.
+     */
+    public float asFloat();
 
     /**
      * This method gets the value of this number.

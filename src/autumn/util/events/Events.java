@@ -1,4 +1,4 @@
-package autumn.util;
+package autumn.util.events;
 
 import autumn.lang.Module;
 import autumn.lang.TypedFunctor;

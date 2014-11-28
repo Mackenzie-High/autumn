@@ -1,7 +1,6 @@
 package high.mackenzie.autumn.util.data.json;
 
 import autumn.util.data.json.JsonBoolean;
-import autumn.util.data.json.JsonTypeSystem;
 import java.io.PrintStream;
 
 /**
@@ -11,32 +10,9 @@ import java.io.PrintStream;
 public class ConcreteJsonBoolean
         implements JsonBoolean
 {
-    private JsonTypeSystem typesystem;
+    public static final JsonBoolean TRUE = new ConcreteJsonBoolean();
 
-    private final boolean value;
-
-    public ConcreteJsonBoolean(final boolean value)
-    {
-        this.value = value;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public final void enforce(JsonTypeSystem structure)
-    {
-        this.typesystem = structure;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public JsonTypeSystem typesystem()
-    {
-        return typesystem;
-    }
+    public static final JsonBoolean FALSE = new ConcreteJsonBoolean();
 
     /**
      * {@inheritDoc}
@@ -78,7 +54,7 @@ public class ConcreteJsonBoolean
      * {@inheritDoc}
      */
     @Override
-    public boolean isMap()
+    public boolean isObject()
     {
         return false;
     }
@@ -98,15 +74,24 @@ public class ConcreteJsonBoolean
     @Override
     public final String toString()
     {
-        return "";
+        return value() ? "true" : "false";
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void print(PrintStream out)
+    public void print(final PrintStream out)
     {
-        throw new UnsupportedOperationException("Not supported yet.");
+        out.print(this);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean value()
+    {
+        return this == TRUE;
     }
 }

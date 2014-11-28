@@ -1,7 +1,6 @@
 package high.mackenzie.autumn.util.data.json;
 
 import autumn.util.data.json.JsonArray;
-import autumn.util.data.json.JsonTypeSystem;
 import autumn.util.data.json.JsonValue;
 import com.google.common.collect.ForwardingList;
 import java.io.PrintStream;
@@ -14,26 +13,6 @@ public abstract class AbstractJsonArray
         extends ForwardingList<JsonValue>
         implements JsonArray
 {
-    private JsonTypeSystem typesystem;
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public final void enforce(JsonTypeSystem structure)
-    {
-        this.typesystem = structure;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public JsonTypeSystem typesystem()
-    {
-        return typesystem;
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -74,7 +53,7 @@ public abstract class AbstractJsonArray
      * {@inheritDoc}
      */
     @Override
-    public boolean isMap()
+    public boolean isObject()
     {
         return false;
     }

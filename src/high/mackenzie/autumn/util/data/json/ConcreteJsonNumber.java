@@ -1,7 +1,6 @@
 package high.mackenzie.autumn.util.data.json;
 
 import autumn.util.data.json.JsonNumber;
-import autumn.util.data.json.JsonTypeSystem;
 import java.io.PrintStream;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -13,31 +12,11 @@ import java.math.BigInteger;
 public class ConcreteJsonNumber
         implements JsonNumber
 {
-    private JsonTypeSystem typesystem;
-
     public BigDecimal value;
 
     public ConcreteJsonNumber(final BigDecimal value)
     {
         this.value = value;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public final void enforce(JsonTypeSystem structure)
-    {
-        this.typesystem = structure;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public JsonTypeSystem typesystem()
-    {
-        return typesystem;
     }
 
     /**
@@ -80,7 +59,7 @@ public class ConcreteJsonNumber
      * {@inheritDoc}
      */
     @Override
-    public boolean isMap()
+    public boolean isObject()
     {
         return false;
     }
@@ -98,18 +77,27 @@ public class ConcreteJsonNumber
      * {@inheritDoc}
      */
     @Override
-    public final String toString()
+    public void print(final PrintStream out)
     {
-        return value.toPlainString();
+        out.print(this);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void print(final PrintStream out)
+    public byte asByte()
     {
-        out.print(this);
+        return value.byteValue();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public short asShort()
+    {
+        return value.shortValue();
     }
 
     /**
@@ -128,6 +116,15 @@ public class ConcreteJsonNumber
     public long asLong()
     {
         return value.longValue();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public float asFloat()
+    {
+        return value.floatValue();
     }
 
     /**
@@ -155,5 +152,47 @@ public class ConcreteJsonNumber
     public BigDecimal asBigDecimal()
     {
         return value;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode()
+    {
+        int hash = 7;
+        hash = 79 * hash + (this.value != null ? this.value.hashCode() : 0);
+        return hash;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(final Object obj)
+    {
+        if (obj == null)
+        {
+            return false;
+        }
+        if (getClass() != obj.getClass())
+        {
+            return false;
+        }
+        final ConcreteJsonNumber other = (ConcreteJsonNumber) obj;
+        if (this.value != other.value && (this.value == null || !this.value.equals(other.value)))
+        {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString()
+    {
+        return value.toString().toLowerCase();
     }
 }

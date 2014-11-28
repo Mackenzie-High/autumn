@@ -32,8 +32,16 @@
 . . zfill (CharSequence, int) - Normal Case
 
 
-. autumn.util.data.json.Json
-. . T0002 = parse(String) - Normal Case   // TODO : Finish
+Json:
+. . Basic Functionality
+. . . T0009 = Json Boolean
+. . . T0010 = Json Null
+. . . T0011 = Json Number
+. . . T0012 = Json Array                    // TODO: finish
+. . . T0013 = Json Object                   // TODO: finish
+. . autumn.util.data.json.Json
+. . . T0002 = parse(String) - Normal Case   // TODO : Finish
+
 
 
 

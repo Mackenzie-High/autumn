@@ -1,6 +1,7 @@
 package autumn.util.data.json;
 
 import autumn.lang.Record;
+import autumn.util.F;
 import autumn.util.data.sexpr.Symbol;
 import com.google.common.base.Preconditions;
 import high.mackenzie.autumn.util.data.json.ConcreteJsonBoolean;
@@ -113,6 +114,24 @@ public class Json
     }
 
     /**
+     * This method creates a new array.
+     *
+     * @param values are the elements of the array.
+     * @return the new JSON array object.
+     */
+    public static JsonArray array(final Iterable values)
+    {
+        final ConcreteMutableJsonArray array = new ConcreteMutableJsonArray();
+
+        for (Object value : values)
+        {
+            array.add((JsonValue) value); // TODO: should an automatic conversion take place, if necessary, rather than cast?
+        }
+
+        return array.immutable();
+    }
+
+    /**
      * This method creates a new boolean value.
      *
      * @param value is the boolean value.
@@ -120,7 +139,7 @@ public class Json
      */
     public static JsonBoolean bool(boolean value)
     {
-        return new ConcreteJsonBoolean(value);
+        return value ? ConcreteJsonBoolean.TRUE : ConcreteJsonBoolean.FALSE;
     }
 
     /**
@@ -130,7 +149,7 @@ public class Json
      */
     public static JsonNull nil()
     {
-        return new ConcreteJsonNull();
+        return ConcreteJsonNull.NULL;
     }
 
     /**
@@ -139,11 +158,11 @@ public class Json
      * @param value is the number value.
      * @return the JSON numeric value.
      */
-    public static JsonNumber number(long value)
+    public static JsonNumber number(final long value)
     {
         Preconditions.checkNotNull(value, "value");
 
-        return new ConcreteJsonNumber(new BigDecimal(value));
+        return new ConcreteJsonNumber(F.big(new BigDecimal(value)));
     }
 
     /**
@@ -152,11 +171,11 @@ public class Json
      * @param value is the number value.
      * @return the JSON numeric value.
      */
-    public static JsonNumber number(double value)
+    public static JsonNumber number(final double value)
     {
         Preconditions.checkNotNull(value, "value");
 
-        return new ConcreteJsonNumber(new BigDecimal(value));
+        return new ConcreteJsonNumber(F.big(new BigDecimal(value)));
     }
 
     /**
@@ -165,11 +184,11 @@ public class Json
      * @param value is the number value.
      * @return the JSON numeric value.
      */
-    public static JsonNumber number(BigInteger value)
+    public static JsonNumber number(final BigInteger value)
     {
         Preconditions.checkNotNull(value, "value");
 
-        return new ConcreteJsonNumber(new BigDecimal(value));
+        return new ConcreteJsonNumber(F.big(new BigDecimal(value)));
     }
 
     /**
@@ -178,11 +197,11 @@ public class Json
      * @param value is the number value.
      * @return the JSON numeric value.
      */
-    public static JsonNumber number(BigDecimal value)
+    public static JsonNumber number(final BigDecimal value)
     {
         Preconditions.checkNotNull(value, "value");
 
-        return new ConcreteJsonNumber(value);
+        return new ConcreteJsonNumber(F.big(value));
     }
 
     /**
@@ -208,7 +227,7 @@ public class Json
      */
     public static JsonNumber number(final String value)
     {
-        return number(new BigDecimal(value));
+        return new ConcreteJsonNumber(F.big(new BigDecimal(value)));
     }
 
     /**

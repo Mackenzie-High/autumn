@@ -32,24 +32,36 @@ public final class ConcreteMutableTreeMap<K, V>
         this.map = map;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Set<Entry<K, V>> entrySet()
     {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ImmutableSortedMap<K, V> immutable()
     {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Entry<K, V> lowerEntry(K key)
     {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public K lowerKey(K key)
     {
@@ -62,78 +74,117 @@ public final class ConcreteMutableTreeMap<K, V>
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public K floorKey(K key)
     {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Entry<K, V> ceilingEntry(K key)
     {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public K ceilingKey(K key)
     {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Entry<K, V> higherEntry(K key)
     {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public K higherKey(K key)
     {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Entry<K, V> firstEntry()
     {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Entry<K, V> lastEntry()
     {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Entry<K, V> pollFirstEntry()
     {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Entry<K, V> pollLastEntry()
     {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NavigableMap<K, V> descendingMap()
     {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NavigableSet<K> navigableKeySet()
     {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NavigableSet<K> descendingKeySet()
     {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NavigableMap<K, V> subMap(K fromKey,
                                      boolean fromInclusive,
@@ -143,6 +194,9 @@ public final class ConcreteMutableTreeMap<K, V>
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NavigableMap<K, V> headMap(K toKey,
                                       boolean inclusive)
@@ -150,6 +204,9 @@ public final class ConcreteMutableTreeMap<K, V>
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NavigableMap<K, V> tailMap(K fromKey,
                                       boolean inclusive)
@@ -157,6 +214,9 @@ public final class ConcreteMutableTreeMap<K, V>
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SortedMap<K, V> subMap(K fromKey,
                                   K toKey)
@@ -164,33 +224,48 @@ public final class ConcreteMutableTreeMap<K, V>
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SortedMap<K, V> headMap(K toKey)
     {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SortedMap<K, V> tailMap(K fromKey)
     {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Comparator<? super K> comparator()
     {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public K firstKey()
     {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public K lastKey()
     {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return null;
     }
 }

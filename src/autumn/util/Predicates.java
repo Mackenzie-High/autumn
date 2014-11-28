@@ -5,7 +5,9 @@ import autumn.lang.internals.ArgumentStack;
 import autumn.util.functors.Predicate;
 import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Sets;
 import java.util.List;
+import java.util.Set;
 
 /**
  * This class provides static utility methods for creating commonly used predicates.
@@ -17,27 +19,32 @@ public final class Predicates
     private static abstract class PredicateImp
             implements TypedFunctor
     {
-        public abstract boolean invoke(final Object argument);
+        public abstract boolean invoke(Object value)
+                throws Throwable;
 
         @Override
-        public void apply(ArgumentStack stack)
-                throws Throwable
-        {
-            final Object argument = stack.popO();
-
-            stack.push(invoke(argument));
-        }
-
-        @Override
-        public List<Class> parameterTypes()
+        public final List<Class> parameterTypes()
         {
             return ImmutableList.<Class>of(Object.class);
         }
 
         @Override
-        public Class returnType()
+        public final Class returnType()
         {
             return boolean.class;
+        }
+
+        @Override
+        public final void apply(final ArgumentStack stack)
+                throws Throwable
+        {
+            final Object argument = stack.popO();
+
+            final boolean retval = invoke(argument);
+
+            stack.clear();
+
+            stack.push(retval);
         }
     }
 
@@ -57,7 +64,17 @@ public final class Predicates
      */
     public static Predicate not(final Predicate operand)
     {
-        return null;
+        final PredicateImp inner = new PredicateImp()
+        {
+            @Override
+            public boolean invoke(Object value)
+                    throws Throwable
+            {
+                return !operand.invoke(value);
+            }
+        };
+
+        return new Predicate(inner);
     }
 
     /**
@@ -69,7 +86,27 @@ public final class Predicates
      */
     public static Predicate and(final Iterable<Predicate> operands)
     {
-        return null;
+        final List<Predicate> predicates = ImmutableList.copyOf(operands);
+
+        final PredicateImp inner = new PredicateImp()
+        {
+            @Override
+            public boolean invoke(Object value)
+                    throws Throwable
+            {
+                for (Predicate predicate : predicates)
+                {
+                    if (predicate.invoke(value) == false)
+                    {
+                        return false;
+                    }
+                }
+
+                return true;
+            }
+        };
+
+        return new Predicate(inner);
     }
 
     /**
@@ -81,7 +118,27 @@ public final class Predicates
      */
     public static Predicate or(final Iterable<Predicate> operands)
     {
-        return null;
+        final List<Predicate> predicates = ImmutableList.copyOf(operands);
+
+        final PredicateImp inner = new PredicateImp()
+        {
+            @Override
+            public boolean invoke(Object value)
+                    throws Throwable
+            {
+                for (Predicate predicate : predicates)
+                {
+                    if (predicate.invoke(value))
+                    {
+                        return true;
+                    }
+                }
+
+                return false;
+            }
+        };
+
+        return new Predicate(inner);
     }
 
     /**
@@ -94,7 +151,17 @@ public final class Predicates
     public static Predicate xor(final Predicate left,
                                 final Predicate right)
     {
-        return null;
+        final PredicateImp inner = new PredicateImp()
+        {
+            @Override
+            public boolean invoke(Object value)
+                    throws Throwable
+            {
+                return left.invoke(value) || right.invoke(value);
+            }
+        };
+
+        return new Predicate(inner);
     }
 
     /**
@@ -106,7 +173,16 @@ public final class Predicates
      */
     public static Predicate forall(final Predicate predicate)
     {
-        return null;
+        final PredicateImp inner = new PredicateImp()
+        {
+            @Override
+            public boolean invoke(Object value)
+            {
+                throw new UnsupportedOperationException("Not supported yet.");
+            }
+        };
+
+        return new Predicate(inner);
     }
 
     /**
@@ -118,7 +194,16 @@ public final class Predicates
      */
     public static Predicate forany(final Predicate predicate)
     {
-        return null;
+        final PredicateImp inner = new PredicateImp()
+        {
+            @Override
+            public boolean invoke(Object value)
+            {
+                throw new UnsupportedOperationException("Not supported yet.");
+            }
+        };
+
+        return new Predicate(inner);
     }
 
     /**
@@ -150,19 +235,36 @@ public final class Predicates
      */
     public static Predicate ne(final Object value)
     {
-        return null;
+        final PredicateImp inner = new PredicateImp()
+        {
+            @Override
+            public boolean invoke(Object argument)
+            {
+                return !Objects.equal(value, argument);
+            }
+        };
+
+        return new Predicate(inner);
     }
 
     /**
-     * This method creates a predicate that determines whether its argument is greater-than
-     * a specific value.
+     * This method creates a predicate that determines whether its argument is greater-than a specific value.
      *
      * @param value is the specific value.
      * @return the newly created predicate.
      */
     public static Predicate gt(final Comparable value)
     {
-        return null;
+        final PredicateImp inner = new PredicateImp()
+        {
+            @Override
+            public boolean invoke(Object argument)
+            {
+                return value.compareTo(argument) <= 0;
+            }
+        };
+
+        return new Predicate(inner);
     }
 
     /**
@@ -174,7 +276,16 @@ public final class Predicates
      */
     public static Predicate ge(final Comparable value)
     {
-        return null;
+        final PredicateImp inner = new PredicateImp()
+        {
+            @Override
+            public boolean invoke(Object argument)
+            {
+                return value.compareTo(argument) < 0;
+            }
+        };
+
+        return new Predicate(inner);
     }
 
     /**
@@ -186,7 +297,16 @@ public final class Predicates
      */
     public static Predicate lt(final Comparable value)
     {
-        return null;
+        final PredicateImp inner = new PredicateImp()
+        {
+            @Override
+            public boolean invoke(Object argument)
+            {
+                return value.compareTo(argument) >= 0;
+            }
+        };
+
+        return new Predicate(inner);
     }
 
     /**
@@ -198,7 +318,16 @@ public final class Predicates
      */
     public static Predicate le(final Comparable value)
     {
-        return null;
+        final PredicateImp inner = new PredicateImp()
+        {
+            @Override
+            public boolean invoke(Object argument)
+            {
+                return value.compareTo(argument) > 0;
+            }
+        };
+
+        return new Predicate(inner);
     }
 
     /**
@@ -216,7 +345,16 @@ public final class Predicates
                                     final boolean inclusive_minimum,
                                     final boolean inclusive_maximum)
     {
-        return null;
+        final PredicateImp inner = new PredicateImp()
+        {
+            @Override
+            public boolean invoke(Object value)
+            {
+                throw new UnsupportedOperationException("Not supported yet.");
+            }
+        };
+
+        return new Predicate(inner);
     }
 
     public static Predicate notBetween(final Comparable minimum,
@@ -224,7 +362,16 @@ public final class Predicates
                                        final boolean inclusive_minimum,
                                        final boolean inclusive_maximum)
     {
-        return null;
+        final PredicateImp inner = new PredicateImp()
+        {
+            @Override
+            public boolean invoke(Object value)
+            {
+                throw new UnsupportedOperationException("Not supported yet.");
+            }
+        };
+
+        return new Predicate(inner);
     }
 
     /**
@@ -236,7 +383,16 @@ public final class Predicates
      */
     public static Predicate stringMatches(final String pattern)
     {
-        return null;
+        final PredicateImp inner = new PredicateImp()
+        {
+            @Override
+            public boolean invoke(Object value)
+            {
+                throw new UnsupportedOperationException("Not supported yet.");
+            }
+        };
+
+        return new Predicate(inner);
     }
 
     /**
@@ -248,7 +404,16 @@ public final class Predicates
      */
     public static Predicate stringStartsWith(final String prefix)
     {
-        return null;
+        final PredicateImp inner = new PredicateImp()
+        {
+            @Override
+            public boolean invoke(Object value)
+            {
+                throw new UnsupportedOperationException("Not supported yet.");
+            }
+        };
+
+        return new Predicate(inner);
     }
 
     /**
@@ -260,7 +425,16 @@ public final class Predicates
      */
     public static Predicate stringEndsWith(final String suffix)
     {
-        return null;
+        final PredicateImp inner = new PredicateImp()
+        {
+            @Override
+            public boolean invoke(Object value)
+            {
+                throw new UnsupportedOperationException("Not supported yet.");
+            }
+        };
+
+        return new Predicate(inner);
     }
 
     /**
@@ -272,26 +446,75 @@ public final class Predicates
      */
     public static Predicate stringContains(final String substring)
     {
-        return null;
+        final PredicateImp inner = new PredicateImp()
+        {
+            @Override
+            public boolean invoke(Object value)
+            {
+                throw new UnsupportedOperationException("Not supported yet.");
+            }
+        };
+
+        return new Predicate(inner);
     }
 
-    public static Predicate oneOf(final Iterable<Object> allowed)
+    public static Predicate oneOf(final Iterable<? extends Object> allowed)
     {
-        return null;
+        final Set<Object> set = Sets.newHashSet(allowed);
+
+        final PredicateImp inner = new PredicateImp()
+        {
+            @Override
+            public boolean invoke(Object value)
+            {
+                return set.contains(value);
+            }
+        };
+
+        return new Predicate(inner);
     }
 
-    public static Predicate noneOf(final Iterable<Object> forbidden)
+    public static Predicate noneOf(final Iterable<? extends Object> forbidden)
     {
-        return null;
+        final Set<Object> set = Sets.newHashSet(forbidden);
+
+        final PredicateImp inner = new PredicateImp()
+        {
+            @Override
+            public boolean invoke(Object value)
+            {
+                return !set.contains(value);
+            }
+        };
+
+        return new Predicate(inner);
     }
 
     public static Predicate instanceOf(final Class type)
     {
-        return null;
+        final PredicateImp inner = new PredicateImp()
+        {
+            @Override
+            public boolean invoke(Object value)
+            {
+                return type.isInstance(value);
+            }
+        };
+
+        return new Predicate(inner);
     }
 
     public static Predicate assignableTo(final Class type)
     {
-        return null;
+        final PredicateImp inner = new PredicateImp()
+        {
+            @Override
+            public boolean invoke(Object value)
+            {
+                throw new UnsupportedOperationException("Not supported yet.");
+            }
+        };
+
+        return new Predicate(inner);
     }
 }
