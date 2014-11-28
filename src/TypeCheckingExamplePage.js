@@ -9,7 +9,7 @@ function emitSummary()
 	$("#construct-page-summary-text").append(summary);
 }
 
-function emitExample(index)
+function emitExample()
 {
 	$("#construct-page-example-code").empty();
 	$("#construct-page-example-stdout").empty();
