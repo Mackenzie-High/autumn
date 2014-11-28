@@ -7,7 +7,7 @@ function emitAdvancedIndex(json)
 	var length = index.length;
 	
 	var header = "<tr> <td> <b>Construct</b> </td> <td> <b>Error Code</b> </td> <td> <b>Link to Example</b> </td> </tr>";
-1
+
 	$("#type-checking-examples-table").append(header);
 	
 	for(var i = 0; i < length; i++)
