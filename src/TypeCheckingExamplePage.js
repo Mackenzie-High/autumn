@@ -20,9 +20,9 @@ function emitExample()
 	
 	var stdout_url = "out/typechecks/" + testno + ".stdout";
 	
-	var code = $.get(code_url).responseText;
+	var code = syncGet(code_url);
 	
-	var stdout = $.get(stdout_url).responseText;
+	var stdout = syncGet(stdout_url);
 	
 	$("#construct-page-example-code").html(code);
 	$("#construct-page-example-stdout").html(stdout);

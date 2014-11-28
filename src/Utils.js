@@ -38,6 +38,16 @@ function zfill(string, count)
 	return string;
 }
 
+function syncGet(url)
+{
+    return $.ajax({
+        type: "GET",
+        url: url,
+        cache: false,
+        async: false
+    }).responseText;
+}
+
 function getURLParameters() 
 {
 	// The parameters section of a URL starts at the first '?' character. 
