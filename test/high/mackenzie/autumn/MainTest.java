@@ -1,5 +1,6 @@
 package high.mackenzie.autumn;
 
+import java.io.IOException;
 import org.junit.Test;
 
 public final class MainTest
@@ -9,6 +10,7 @@ public final class MainTest
      */
     @Test
     public void autumnBasedTests()
+            throws IOException
     {
         execution.Runner.main(new String[0]);
 

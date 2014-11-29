@@ -140,7 +140,7 @@ public final class Helpers
     public static Delegate delegate(final Module module,
                                     final String method)
     {
-        for (Delegate d : module.moduleFunctions())
+        for (Delegate d : module.moduleInfo().functions())
         {
             if (method.equals(d.name()))
             {

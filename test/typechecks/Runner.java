@@ -6,10 +6,13 @@ import autumn.lang.compiler.ast.nodes.Module;
 import autumn.lang.compiler.errors.BasicErrorReporter;
 import autumn.lang.compiler.errors.ErrorCode;
 import static autumn.lang.compiler.errors.ErrorCode.*;
+import autumn.util.Files;
 import com.google.common.collect.ImmutableSet;
-import com.google.common.io.NullOutputStream;
 import com.google.common.io.Resources;
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.PrintStream;
 import java.net.URL;
 import java.nio.charset.Charset;
@@ -18,6 +21,8 @@ import java.util.Set;
 
 public final class Runner
 {
+    private static final String STDOUT = "/media/disk/Code/EclipseProjects/AutumnSpecification/autumn/out/typechecks/";
+
     private static final boolean FAILED = false;
 
     private static final boolean PASSED = true;
@@ -33,6 +38,7 @@ public final class Runner
      * @param args are ignored.
      */
     public static void main(final String[] args)
+            throws IOException
     {
         failed_count = 0;
 
@@ -262,6 +268,7 @@ public final class Runner
      */
     private static void test(final String test,
                              final ErrorCode... errors)
+            throws IOException
     {
         for (int i = 0; i < 10; i++)
         {
@@ -285,20 +292,26 @@ public final class Runner
      */
     private static boolean singleTest(final String test,
                                       final ErrorCode[] errors)
+            throws IOException
     {
+        final String path = "/typechecks/" + test;
+
+        final File stdout = new File(STDOUT + test + ".stdout");
+
+        final FileOutputStream fos = new FileOutputStream(stdout);
+
+        final BufferedOutputStream bos = new BufferedOutputStream(fos);
+
         try
         {
-
-
-            final String path = "/typechecks/" + test;
 
             final URL url = Resources.getResource(Runner.class, path);
 
             final String code = Resources.toString(url, Charset.defaultCharset());
 
-            final NullOutputStream devnull = new NullOutputStream();
+            Files.writeText(new File(STDOUT + test + ".code"), code);
 
-            final PrintStream stream = new PrintStream(devnull);
+            final PrintStream stream = new PrintStream(bos);
 
             final BasicErrorReporter reporter = new BasicErrorReporter(stream);
 
@@ -330,6 +343,10 @@ public final class Runner
             System.out.println(ex);
             ex.printStackTrace(System.out);
             return FAILED;
+        }
+        finally
+        {
+            bos.close();
         }
     }
 }

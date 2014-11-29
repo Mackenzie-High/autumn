@@ -1,5 +1,7 @@
 package high.mackenzie.autumn.lang.compiler.compilers;
 
+import autumn.lang.annotations.Memoize;
+import autumn.lang.annotations.Setup;
 import autumn.lang.compiler.ast.nodes.FormalParameter;
 import autumn.lang.compiler.ast.nodes.FunctionDefinition;
 import autumn.lang.compiler.ast.nodes.Variable;
@@ -14,6 +16,8 @@ import high.mackenzie.autumn.lang.compiler.typesystem.design.IExpressionType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IFormalParameter;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IMethod;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IVariableType;
+import high.mackenzie.autumn.lang.compiler.utils.Memoization;
+import high.mackenzie.autumn.lang.compiler.utils.TypeSystemUtils;
 import high.mackenzie.autumn.lang.compiler.utils.Utils;
 import java.util.Collections;
 import java.util.List;
@@ -75,6 +79,8 @@ public final class FunctionCompiler
      */
     private final List<IVariableType> param_types = Lists.newArrayList();
 
+    public final Memoization memoization;
+
     /**
      * Sole Constructor.
      *
@@ -89,6 +95,8 @@ public final class FunctionCompiler
         this.node = node;
 
         this.type = new CustomMethod(module.program.typesystem.typefactory(), false);
+
+        this.memoization = new Memoization(this);
     }
 
     /**
@@ -207,6 +215,7 @@ public final class FunctionCompiler
         //
         // LABEL @RECUR
         //
+        // <memoization-short-circuit>
         // <init-variables>
         // <restoration-code>
         // <reentry-table>
@@ -226,6 +235,8 @@ public final class FunctionCompiler
             final StatementCodeGenerator codegen = new StatementCodeGenerator(this);
 
             method.instructions.add(recur_label);
+
+            addMemoizationShortCircuit();
 
             vars.initScope();
 
@@ -249,6 +260,17 @@ public final class FunctionCompiler
         method.tryCatchBlocks = ImmutableList.copyOf(trycatches);
 
         return method;
+    }
+
+    /**
+     * This method generates the bytecode that handles returning previously memoized values.
+     */
+    private void addMemoizationShortCircuit()
+    {
+        if (this.isMemoized())
+        {
+            memoization.shortcircuit(instructions);
+        }
     }
 
     /**
@@ -483,6 +505,38 @@ public final class FunctionCompiler
     public boolean isGenerator()
     {
         return yield_field != null;
+    }
+
+    /**
+     * This method determines whether the function is a memoized function.
+     *
+     * <p>
+     * A memoized function is a function that has the Memoize annotation applied to it.
+     * </p>
+     *
+     * @return true, if the function is a memoized function.
+     */
+    public boolean isMemoized()
+    {
+        assert type != null;
+
+        return TypeSystemUtils.isAnnotationPresent(type, Memoize.class);
+    }
+
+    /**
+     * This method determines whether the function is a setup function.
+     *
+     * <p>
+     * A setup function is a function that has the Setup annotation applied to it.
+     * </p>
+     *
+     * @return true, if the function is a setup function.
+     */
+    public boolean isSetup()
+    {
+        assert type != null;
+
+        return TypeSystemUtils.isAnnotationPresent(type, Setup.class);
     }
 
     /**

@@ -1,0 +1,29 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    val object1 = ["Venus"];
+    val object2 = ["Venus"];
+
+    val object3 = ["Pluto"];
+    val object4 = ["Pluto"];
+
+    assert object1 == object2;
+    assert object1 !== object2;
+
+    assert object3 == object4;
+    assert object3 !== object4;
+
+    (My::save object1) === object1;
+    (My::save object3) === object3;
+
+    (My::save object2) === object1;
+    (My::save object4) === object3;
+}
+
+@Memoize
+defun save (value : List) : List
+{
+    return value;
+}

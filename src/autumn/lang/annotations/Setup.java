@@ -5,7 +5,7 @@ package autumn.lang.annotations;
  *
  * @author Mackenzie High
  */
-public @interface Clinit
+public @interface Setup
 {
     // Pass
 }

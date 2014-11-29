@@ -318,7 +318,9 @@ public class ExpressionCodeGenerator
         //
         /////////////////////////////////////////////////
 
-        code.add(new LdcInsnNode(object.getValue().value()));
+        final long value = object.getValue().value();
+
+        code.add(new LdcInsnNode(value));
     }
 
     @Override
@@ -342,7 +344,9 @@ public class ExpressionCodeGenerator
         //
         /////////////////////////////////////////////////
 
-        code.add(new LdcInsnNode(object.getValue().value()));
+        final double value = object.getValue().value();
+
+        code.add(new LdcInsnNode(value));
     }
 
     @Override

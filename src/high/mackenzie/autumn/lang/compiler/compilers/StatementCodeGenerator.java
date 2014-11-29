@@ -1118,6 +1118,12 @@ public final class StatementCodeGenerator
         // Evaluate the expression that produces the value to return.
         object.getValue().accept(this);
 
+        // Conditionally save the value being returned.
+        if (function.isMemoized())
+        {
+            function.memoization.intern(code, program.symbols.expressions.get(object.getValue()));
+        }
+
         // Perform auto-boxing or auto-unboxing, if needed.
         convert(function.type.getReturnType(), object.getValue());
 

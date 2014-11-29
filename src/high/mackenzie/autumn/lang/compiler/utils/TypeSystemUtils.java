@@ -6,6 +6,7 @@ import autumn.lang.Lambda;
 import autumn.lang.Local;
 import autumn.lang.LocalsMap;
 import autumn.lang.Module;
+import autumn.lang.ModuleInfo;
 import autumn.lang.Record;
 import autumn.lang.SpecialMethods;
 import autumn.lang.TypedFunctor;
@@ -21,6 +22,7 @@ import autumn.lang.internals.ArgumentStack;
 import autumn.lang.internals.Conversions;
 import autumn.lang.internals.Helpers;
 import autumn.lang.internals.ModuleDelegate;
+import autumn.lang.internals.ModuleInfoBuilder;
 import autumn.lang.internals.Operators;
 import autumn.lang.internals.YieldState;
 import com.google.common.base.Preconditions;
@@ -36,6 +38,7 @@ import high.mackenzie.autumn.lang.compiler.typesystem.design.IConstructor;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IDeclaredType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IElementType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IEnumType;
+import high.mackenzie.autumn.lang.compiler.typesystem.design.IExpressionType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IField;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IFormalParameter;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IInterfaceType;
@@ -175,6 +178,10 @@ public final class TypeSystemUtils
 
     public final IInterfaceType TYPED_FUNCTOR;
 
+    public final IClassType MODULE_INFO_BUILDER;
+
+    public final IInterfaceType MODULE_INFO;
+
     /**
      * Sole Constructor.
      *
@@ -272,6 +279,10 @@ public final class TypeSystemUtils
         this.LOCALS_MAP = (IClassType) factory.fromClass(LocalsMap.class);
 
         this.LOCAL = (IClassType) factory.fromClass(Local.class);
+
+        this.MODULE_INFO_BUILDER = (IClassType) factory.fromClass(ModuleInfoBuilder.class);
+
+        this.MODULE_INFO = (IInterfaceType) factory.fromClass(ModuleInfo.class);
     }
 
     /**
@@ -1467,5 +1478,69 @@ NEXT_METHOD:
         }
 
         return false;
+    }
+
+    /**
+     * This method generates bytecode that assigns a reference-type to another, possibly primitive, type.
+     *
+     * <p>
+     * If the target is a primitive-type, the generated code is a cast to the related boxed-type
+     * and then an unboxing operation.
+     * </p>
+     *
+     * @param code is the code being generated.
+     * @param target is the type of the assignee.
+     * @param value is the type of the value being assigned to the assignee.
+     */
+    public void forceAssign(final InsnList code,
+                            final IExpressionType target,
+                            final IReferenceType value)
+    {
+        if (target.equals(PRIMITIVE_BOOLEAN))
+        {
+            code.add(Utils.conditionalCast(value, BOXED_BOOLEAN));
+            code.add(unbox(BOXED_BOOLEAN, target));
+        }
+        else if (target.equals(PRIMITIVE_CHAR))
+        {
+            code.add(Utils.conditionalCast(value, BOXED_CHAR));
+            code.add(unbox(BOXED_CHAR, target));
+        }
+        else if (target.equals(PRIMITIVE_BYTE))
+        {
+            code.add(Utils.conditionalCast(value, BOXED_BYTE));
+            code.add(unbox(BOXED_BYTE, target));
+        }
+        else if (target.equals(PRIMITIVE_SHORT))
+        {
+            code.add(Utils.conditionalCast(value, BOXED_SHORT));
+            code.add(unbox(BOXED_SHORT, target));
+        }
+        else if (target.equals(PRIMITIVE_INT))
+        {
+            code.add(Utils.conditionalCast(value, BOXED_INT));
+            code.add(unbox(BOXED_INT, target));
+        }
+        else if (target.equals(PRIMITIVE_LONG))
+        {
+            code.add(Utils.conditionalCast(value, BOXED_LONG));
+            code.add(unbox(BOXED_LONG, target));
+        }
+        else if (target.equals(PRIMITIVE_FLOAT))
+        {
+            code.add(Utils.conditionalCast(value, BOXED_FLOAT));
+            code.add(unbox(BOXED_FLOAT, target));
+        }
+        else if (target.equals(PRIMITIVE_DOUBLE))
+        {
+            code.add(Utils.conditionalCast(value, BOXED_DOUBLE));
+            code.add(unbox(BOXED_DOUBLE, target));
+        }
+        else
+        {
+            assert target.isReferenceType();
+
+            code.add(Utils.conditionalCast(value, target));
+        }
     }
 }

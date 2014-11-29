@@ -1,7 +1,6 @@
 package autumn.lang;
 
 import autumn.lang.internals.ArgumentStack;
-import java.util.List;
 
 /**
  * This is a supertype of all modules.
@@ -15,43 +14,15 @@ import java.util.List;
 public interface Module
 {
     /**
-     * This method returns the class objects that represent the annotations defined in this module.
-     *
-     * @return the aforedescribed immutable list.
-     */
-    public List<Class> moduleAnnotationDefinitions();
-
-    /**
-     * This method returns the class objects that represent the exceptions defined in this module.
-     *
-     * @return the aforedescribed immutable list.
-     */
-    public List<Class> moduleExceptionDefinitions();
-
-    /**
-     * This method returns the class objects that represent the enumerations defined in this module.
-     *
-     * @return the aforedescribed immutable list.
-     */
-    public List<Class> moduleEnumDefinitions();
-
-    /**
-     * This method returns the class objects that represent the designs defined in this module.
-     *
-     * @return the aforedescribed immutable list.
-     */
-    public List<Class> moduleDesignDefinitions();
-
-    /**
-     * This method returns a list containing a delegate for each function defined in this module.
+     * This method retrieves the object that describes this module.
      *
      * <p>
-     * The delegates in the list are in the same order as the functions in the source code.
+     * This is a constant-time operation.
      * </p>
      *
-     * @return the aforedescribed immutable list.
+     * @return the singleton object that stores information regarding this module.
      */
-    public List<Delegate> moduleFunctions();
+    public ModuleInfo moduleInfo();
 
     /**
      * This method invokes a function within this module.

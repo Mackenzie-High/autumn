@@ -16,11 +16,21 @@ Test Index
 . Modules
 . . Reflective Testing of the Module's Class
 . . Special Methods - instance()
-. . Special Method - moduleAnnotationDefinitions()
-. . T0081 = Special Method - moduleExceptionDefinitions()
-. . T0080 = Special Method - moduleEnumDefinitions()
-. . Special Method - moduleDesignDefinitions()
+. . Special Method - moduleInfo()
 . . Special Method - moduleInvokeFunction(int, ArgumentStack)
+. . Module Info
+. . . T0310 = Special Method - instance()
+. . . T0312 = Special Method - name()
+. . . T0311 = Special Method - type()
+. . . T0314 = Special Method - annotations()
+. . . T0315 = Special Method - exceptions()
+. . . T0316 = Special Method - enums()
+. . . T0317 = Special Method - designs()
+. . . T0318 = Special Method - tuples()
+. . . T0319 = Special Method - structs()
+. . . T0320 = Special Method - functors()
+. . . T0321 = Special Method - functions()
+. . . T0313 = Special Method - toString()
 . . Delegates
 . . . T0078 = Metadata    // TODO: fix
 . . . Invocation  // TODO: fix
@@ -123,6 +133,11 @@ Test Index
 . . Annotation Lists
 . . Parameter Lists
 . . T0063 = Return Types                   # TODO: Add array return-types to the test.
+. . Memoization
+. . . T0323 = High Speed Fibonacci
+. . . T0322 = Ensure memoization is actually occurring.
+. . . Different Types of Return Types
+. . . Auto Conversion of Memoized Values
 . Statements
 . . Nop = No Test Needed
 . . Expression = No Test Needed

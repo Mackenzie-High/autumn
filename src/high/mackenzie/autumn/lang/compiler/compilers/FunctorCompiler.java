@@ -46,7 +46,7 @@ public final class FunctorCompiler
 
     private final FunctorDefinition node;
 
-    private CustomDeclaredType type;
+    public CustomDeclaredType type;
 
     /**
      * This will be the type-system representation of the sole constructor.

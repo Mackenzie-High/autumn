@@ -1,0 +1,19 @@
+module Main in execution;
+
+struct Boo ();
+
+struct Moo ();
+
+@Start
+defun main (args : String[]) : void
+{
+    val module = (My::instance);
+
+    val info = (module.moduleInfo);
+
+    val actual = (info.structs);
+
+    val expected = [(class Boo), (class Moo)];
+
+    assert actual == expected;
+}

@@ -2,16 +2,33 @@ package high.mackenzie.autumn.lang.compiler.compilers;
 
 import autumn.lang.compiler.ast.nodes.TypeSpecifier;
 import autumn.util.ds.ImmutableCollection;
+import autumn.util.ds.ImmutableDeque;
 import autumn.util.ds.ImmutableMap;
+import autumn.util.ds.ImmutableNavigableMap;
+import autumn.util.ds.ImmutableNavigableSet;
+import autumn.util.ds.ImmutableQueue;
 import autumn.util.ds.ImmutableSet;
 import autumn.util.ds.ImmutableSortedMap;
 import autumn.util.ds.ImmutableSortedSet;
 import autumn.util.ds.MutableCollection;
 import autumn.util.ds.MutableList;
 import autumn.util.ds.MutableMap;
+import autumn.util.ds.MutableNavigableMap;
+import autumn.util.ds.MutableNavigableSet;
+import autumn.util.ds.MutableQueue;
 import autumn.util.ds.MutableSet;
 import autumn.util.ds.MutableSortedMap;
 import autumn.util.ds.MutableSortedSet;
+import autumn.util.ds.specific.ImmutableHashMap;
+import autumn.util.ds.specific.ImmutableHashSet;
+import autumn.util.ds.specific.ImmutableSequence;
+import autumn.util.ds.specific.ImmutableTreeMap;
+import autumn.util.ds.specific.ImmutableTreeSet;
+import autumn.util.ds.specific.MutableHashMap;
+import autumn.util.ds.specific.MutableHashSet;
+import autumn.util.ds.specific.MutableSequence;
+import autumn.util.ds.specific.MutableTreeMap;
+import autumn.util.ds.specific.MutableTreeSet;
 import autumn.util.functors.MethodCompareTo;
 import autumn.util.functors.MethodEquals;
 import autumn.util.functors.MethodHashCode;
@@ -71,9 +88,10 @@ public final class Importer
         importClass(autumn.lang.TypedFunctor.class);
 
         // autumn.lang.annotations
-        importClass(autumn.lang.annotations.Clinit.class);
+        importClass(autumn.lang.annotations.Setup.class);
         importClass(autumn.lang.annotations.Hide.class);
         importClass(autumn.lang.annotations.InferReturnType.class);
+        importClass(autumn.lang.annotations.Memoize.class);
         importClass(autumn.lang.annotations.Once.class);
         importClass(autumn.lang.annotations.Start.class);
         importClass(autumn.lang.annotations.Sync.class);
@@ -99,31 +117,43 @@ public final class Importer
         importClass(autumn.util.Threads.class);
 
         // autumn.util.data.json
-        importClass(autumn.util.data.json.Json.class);
-        importClass(autumn.util.data.json.JsonArray.class);
-        importClass(autumn.util.data.json.JsonBoolean.class);
-        importClass(autumn.util.data.json.JsonObject.class);
-        importClass(autumn.util.data.json.JsonNull.class);
-        importClass(autumn.util.data.json.JsonNumber.class);
-        importClass(autumn.util.data.json.JsonValue.class);
-        importClass(autumn.util.data.json.ImmutableJsonArray.class);
-        importClass(autumn.util.data.json.ImmutableJsonObject.class);
-        importClass(autumn.util.data.json.MutableJsonArray.class);
-        importClass(autumn.util.data.json.MutableJsonObject.class);
+        importClass(autumn.util.data.json.JsonEncoder.class);
+        importClass(autumn.util.data.json.JsonDecoder.class);
+
 
         // autumn.util.ds
         importClass(ImmutableCollection.class);
+        importClass(ImmutableDeque.class);
         importClass(ImmutableList.class);
         importClass(ImmutableMap.class);
+        importClass(ImmutableNavigableMap.class);
+        importClass(ImmutableNavigableSet.class);
+        importClass(ImmutableQueue.class);
         importClass(ImmutableSet.class);
         importClass(ImmutableSortedMap.class);
         importClass(ImmutableSortedSet.class);
         importClass(MutableCollection.class);
+        importClass(ImmutableDeque.class);
         importClass(MutableList.class);
         importClass(MutableMap.class);
+        importClass(MutableNavigableMap.class);
+        importClass(MutableNavigableSet.class);
+        importClass(MutableQueue.class);
         importClass(MutableSet.class);
         importClass(MutableSortedMap.class);
         importClass(MutableSortedSet.class);
+
+        // autumn.util.ds.specific
+        importClass(ImmutableHashMap.class);
+        importClass(ImmutableHashSet.class);
+        importClass(ImmutableSequence.class);
+        importClass(ImmutableTreeMap.class);
+        importClass(ImmutableTreeSet.class);
+        importClass(MutableHashMap.class);
+        importClass(MutableHashSet.class);
+        importClass(MutableSequence.class);
+        importClass(MutableTreeMap.class);
+        importClass(MutableTreeSet.class);
 
         // autumn.util.test
         importClass(autumn.util.test.MalformedTestException.class);

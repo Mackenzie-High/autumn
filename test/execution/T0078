@@ -16,9 +16,9 @@ defun main (args : String[]) : void
     assert m === (Main::instance);
     assert m === (Main::instance);
 
-    val delegates = (call m.moduleFunctions);
+    val delegates = ((call m.moduleInfo).functions);
 
-    // Remember, main is also a function. 
+    // Remember, main is also a function.
     assert (F::len delegates) == 4;
 
     val delegate1 = (delegates.get 0) as Delegate;

@@ -421,4 +421,28 @@ public final class Strings
     {
         return 0;
     }
+
+    /**
+     * This method formats a string given an iterable containing the format arguments.
+     *
+     * <p>
+     * The method is exactly like format(String, Object...) in java.lang.String,
+     * except this method takes an iterable containing the arguments rather than an array.
+     * </p>
+     *
+     * @param format is the format specifier.
+     * @param arguments are the arguments to substitute into the format specifier.
+     * @return the formatted string.
+     * @throws NullPointerException if format is null.
+     * @throws NullPointerException if arguments is null.
+     * @see java.lang.String
+     */
+    public static String format(final String format,
+                                final Iterable arguments)
+    {
+        Preconditions.checkNotNull(format);
+        Preconditions.checkNotNull(arguments);
+
+        return String.format(format, (Object[]) Lists.newArrayList(arguments).toArray());
+    }
 }

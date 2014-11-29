@@ -3,8 +3,6 @@ package autumn.util;
 import autumn.lang.Functor;
 import autumn.lang.exceptions.CheckedException;
 import autumn.lang.internals.ArgumentStack;
-import autumn.util.data.json.Json;
-import autumn.util.data.json.JsonValue;
 import autumn.util.functors.Predicate;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Iterators;
@@ -1584,26 +1582,25 @@ public final class F
 
         return count;
     }
-
-    /**
-     * This method decodes the textual representation of a JSON value.
-     *
-     * @param value is the textual representation of the JSON value.
-     * @return the object tree representation of the JSON value.
-     */
-    public static JsonValue json(final String value)
-    {
-        return Json.parse(value);
-    }
-
-    /**
-     * This method encodes the textual representation of a JSON value.
-     *
-     * @param input is the object tree representation of the JSON value.
-     * @return the textual representation of the JSON value.
-     */
-    public static String json(final JsonValue value)
-    {
-        return value.toString();
-    }
+//    /**
+//     * This method decodes the textual representation of a JSON value.
+//     *
+//     * @param value is the textual representation of the JSON value.
+//     * @return the object tree representation of the JSON value.
+//     */
+//    public static JsonValue json(final String value)
+//    {
+//        return Json.parse(value);
+//    }
+//
+//    /**
+//     * This method encodes the textual representation of a JSON value.
+//     *
+//     * @param input is the object tree representation of the JSON value.
+//     * @return the textual representation of the JSON value.
+//     */
+//    public static String json(final JsonValue value)
+//    {
+//        return value.toString();
+//    }
 }

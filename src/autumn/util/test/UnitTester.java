@@ -212,7 +212,7 @@ public final class UnitTester
                       final AtomicLong time,
                       final Module module)
     {
-        for (Delegate function : module.moduleFunctions())
+        for (Delegate function : module.moduleInfo().functions())
         {
             // Get the reflective view of the function.
             final Method method = function.method();

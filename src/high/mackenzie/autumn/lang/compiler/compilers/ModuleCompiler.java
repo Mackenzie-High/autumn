@@ -98,6 +98,15 @@ public final class ModuleCompiler
 
     public final List<FunctionCompiler> functions = Lists.newLinkedList();
 
+    private final FieldNode info = new FieldNode(Opcodes.ACC_PRIVATE + Opcodes.ACC_FINAL,
+                                                 "module_info",
+                                                 "Lautumn/lang/ModuleInfo;",
+                                                 null,
+                                                 null);
+
+    /**
+     * These objects represent the fields that store the states of generator functions.
+     */
     public final List<FieldNode> yields = Lists.newLinkedList();
 
     /**
@@ -222,10 +231,8 @@ public final class ModuleCompiler
 
         methods.add(buildClinit());
         methods.add(buildInit());
-        methods.add(buildModuleFunctions());
+        methods.add(buildModuleInfo());
         methods.add(buildInstance());
-        methods.add(buildModuleExceptions());
-        methods.add(buildModuleEnums());
         methods.add(buildModuleInvokeFunction());
 
         for (FunctionCompiler x : functions)
@@ -246,6 +253,7 @@ public final class ModuleCompiler
             clazz.superName = Utils.internalName(type.getSuperclass());
             clazz.interfaces = Lists.newLinkedList();
             clazz.fields = Lists.newLinkedList();
+            clazz.fields.add(info);
             clazz.fields.addAll(yields);
             clazz.fields.add(delegates);
             clazz.fields.add(instance_field);
@@ -316,6 +324,20 @@ public final class ModuleCompiler
             m.instructions.add(new FieldInsnNode(Opcodes.PUTSTATIC, owner, name, desc));
         }
 
+        /**
+         * Invoke the setup functions.
+         */
+        for (FunctionCompiler function : functions)
+        {
+            if (function.isSetup())
+            {
+                owner = Utils.internalName(type);
+                name = function.type.getName();
+                desc = "()V";
+                m.instructions.add(new MethodInsnNode(Opcodes.INVOKESTATIC, owner, name, desc));
+            }
+        }
+
         // Exit the static constructor.
         m.instructions.add(new InsnNode(Opcodes.RETURN));
 
@@ -340,83 +362,193 @@ public final class ModuleCompiler
         String name;
         String desc;
 
-        // Invoke super().
+        /**
+         * Invoke super().
+         */
         owner = Utils.internalName(program.typesystem.utils.ABSTRACT_MODULE);
         name = "<init>";
         desc = "()V";
         m.instructions.add(new VarInsnNode(Opcodes.ALOAD, 0)); // Load 'this'.
         m.instructions.add(new MethodInsnNode(Opcodes.INVOKESPECIAL, owner, name, desc));
 
-        // Load the module itself onto the operand-stack for later use.
-        m.instructions.add(new VarInsnNode(Opcodes.ALOAD, 0)); // Load 'this'.
-
-        // Create the list that will store the delegates that refer to functions in this module.
-        owner = "java/util/ArrayList";
-        m.instructions.add(new TypeInsnNode(Opcodes.NEW, owner));
-        m.instructions.add(new InsnNode(Opcodes.DUP));
+        /**
+         * Create the ModuleInfoBuilder object.
+         */
+        owner = Utils.internalName(program.typesystem.utils.MODULE_INFO_BUILDER);
         name = "<init>";
-        desc = "()V";
+        desc = "(Lautumn/lang/Module;)V";
+        m.instructions.add(new TypeInsnNode(Opcodes.NEW, Utils.internalName(program.typesystem.utils.MODULE_INFO_BUILDER)));
+        m.instructions.add(new InsnNode(Opcodes.DUP));
+        m.instructions.add(new VarInsnNode(Opcodes.ALOAD, 0)); // Load 'this'.
         m.instructions.add(new MethodInsnNode(Opcodes.INVOKESPECIAL, owner, name, desc));
 
+        /**
+         * Add the delegates to the user-defined functions to the ModuleInfoBuilder object.
+         */
         for (FunctionCompiler function : functions)
         {
-            // Duplicate the reference to the list of delegates.
+            /**
+             * Duplicate the reference to the ModuleInfoBuilder object.
+             */
             m.instructions.add(new InsnNode(Opcodes.DUP));
 
-            // Create a new delegate object.
+            /**
+             * Create a new delegate object.
+             */
             loadDelegate(m, function);
 
-            // Store the delegate object in the list.
-            owner = Utils.internalName(program.typesystem.utils.LIST);
+            /**
+             * Add the delegate object in the ModuleInfoBuilder.
+             */
+            owner = Utils.internalName(program.typesystem.utils.MODULE_INFO_BUILDER);
             name = "add";
-            desc = "(Ljava/lang/Object;)Z";
-
-            m.instructions.add(new MethodInsnNode(Opcodes.INVOKEINTERFACE, owner, name, desc));
-            m.instructions.add(new InsnNode(Opcodes.POP)); // Pop the returned boolean.
+            desc = "(Lautumn/lang/Delegate;)V";
+            m.instructions.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL, owner, name, desc));
         }
 
-        // Note: After the loop exited a reference to the list of delegates is on the operand-stack.
+        // Note: After the loop exited a reference to the ModuleInfoBuilder is on the operand-stack.
 
-        // Make the list unmodifiable.
-        owner = Utils.internalName(program.typesystem.utils.HELPERS);
-        name = "newImmutableList";
-        desc = "(Ljava/lang/Iterable;)Ljava/util/List;";
-        m.instructions.add(new MethodInsnNode(Opcodes.INVOKESTATIC, owner, name, desc));
+        /**
+         * Add the annotation-types declared in the module to the ModuleInfoBuilder object.
+         */
+        for (AnnotationCompiler x : annotations)
+        {
+            owner = Utils.internalName(program.typesystem.utils.MODULE_INFO_BUILDER);
+            name = "addAnnotation";
+            desc = "(Ljava/lang/Class;)V";
+            m.instructions.add(new InsnNode(Opcodes.DUP));
+            m.instructions.add(Utils.ldcClass(x.type));
+            m.instructions.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL, owner, name, desc));
+        }
 
-        // Store the list in the delegates field.
+        /**
+         * Add the enum-types declared in the module to the ModuleInfoBuilder object.
+         */
+        for (EnumCompiler x : enums)
+        {
+            owner = Utils.internalName(program.typesystem.utils.MODULE_INFO_BUILDER);
+            name = "addEnum";
+            desc = "(Ljava/lang/Class;)V";
+            m.instructions.add(new InsnNode(Opcodes.DUP));
+            m.instructions.add(Utils.ldcClass(x.type));
+            m.instructions.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL, owner, name, desc));
+        }
+
+        /**
+         * Add the exception-types declared in the module to the ModuleInfoBuilder object.
+         */
+        for (ExceptionCompiler x : exceptions)
+        {
+            owner = Utils.internalName(program.typesystem.utils.MODULE_INFO_BUILDER);
+            name = "addException";
+            desc = "(Ljava/lang/Class;)V";
+            m.instructions.add(new InsnNode(Opcodes.DUP));
+            m.instructions.add(Utils.ldcClass(x.type));
+            m.instructions.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL, owner, name, desc));
+        }
+
+        /**
+         * Add the design-types declared in the module to the ModuleInfoBuilder object.
+         */
+        for (DesignCompiler x : designs)
+        {
+            owner = Utils.internalName(program.typesystem.utils.MODULE_INFO_BUILDER);
+            name = "addDesign";
+            desc = "(Ljava/lang/Class;)V";
+            m.instructions.add(new InsnNode(Opcodes.DUP));
+            m.instructions.add(Utils.ldcClass(x.type));
+            m.instructions.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL, owner, name, desc));
+        }
+
+        /**
+         * Add the struct-types declared in the module to the ModuleInfoBuilder object.
+         */
+        for (StructCompiler x : structs)
+        {
+            owner = Utils.internalName(program.typesystem.utils.MODULE_INFO_BUILDER);
+            name = "addStruct";
+            desc = "(Ljava/lang/Class;)V";
+            m.instructions.add(new InsnNode(Opcodes.DUP));
+            m.instructions.add(Utils.ldcClass(x.type));
+            m.instructions.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL, owner, name, desc));
+        }
+
+        /**
+         * Add the tuple-types declared in the module to the ModuleInfoBuilder object.
+         */
+        for (TupleCompiler x : tuples)
+        {
+            owner = Utils.internalName(program.typesystem.utils.MODULE_INFO_BUILDER);
+            name = "addTuple";
+            desc = "(Ljava/lang/Class;)V";
+            m.instructions.add(new InsnNode(Opcodes.DUP));
+            m.instructions.add(Utils.ldcClass(x.type));
+            m.instructions.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL, owner, name, desc));
+        }
+
+        /**
+         * Add the functor-types declared in the module to the ModuleInfoBuilder object.
+         */
+        for (FunctorCompiler x : functors)
+        {
+            owner = Utils.internalName(program.typesystem.utils.MODULE_INFO_BUILDER);
+            name = "addFunctor";
+            desc = "(Ljava/lang/Class;)V";
+            m.instructions.add(new InsnNode(Opcodes.DUP));
+            m.instructions.add(Utils.ldcClass(x.type));
+            m.instructions.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL, owner, name, desc));
+        }
+
+        // Note: After the loop exited a reference to the ModuleInfoBuilder is on the operand-stack.
+
+        /**
+         * Convert the ModuleInfoBuilder object into a ModuleInfo object.
+         */
+        owner = Utils.internalName(program.typesystem.utils.MODULE_INFO_BUILDER);
+        name = "build";
+        desc = "()" + program.typesystem.utils.MODULE_INFO.getDescriptor();
+        m.instructions.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL, owner, name, desc));
+
+        /**
+         * Store the ModuleInfo object in the appropriate field.
+         */
         owner = Utils.internalName(type);
-        name = delegates.name;
-        desc = delegates.desc;
+        name = info.name;
+        desc = info.desc;
+        m.instructions.add(new VarInsnNode(Opcodes.ALOAD, 0)); // Load 'this'.
+        m.instructions.add(new InsnNode(Opcodes.SWAP));
         m.instructions.add(new FieldInsnNode(Opcodes.PUTFIELD, owner, name, desc));
 
-        // Exit the static constructor.
+        /**
+         * Exit the static constructor.
+         */
         m.instructions.add(new InsnNode(Opcodes.RETURN));
 
         return m;
     }
 
     /**
-     * This method generates the moduleFunctions() special method.
+     * This method generates the moduleInfo() special method.
      *
      * @return an object representation of the special method.
      */
-    private MethodNode buildModuleFunctions()
+    private MethodNode buildModuleInfo()
     {
         final MethodNode m = new MethodNode();
 
         m.access = Opcodes.ACC_PUBLIC + Opcodes.ACC_FINAL;
-        m.name = "moduleFunctions";
-        m.desc = "()Ljava/util/List;";
+        m.name = "moduleInfo";
+        m.desc = "()Lautumn/lang/ModuleInfo;";
         m.exceptions = ImmutableList.of();
 
-        // Load the list of delegates onto the operand-stack.
+        // Load the ModuleInfo object onto the operand-stack.
         m.instructions.add(new VarInsnNode(Opcodes.ALOAD, 0)); // Load 'this'.
         m.instructions.add(new FieldInsnNode(Opcodes.GETFIELD,
                                              Utils.internalName(type),
-                                             delegates.name,
-                                             delegates.desc));
+                                             info.name,
+                                             info.desc));
 
-        // Return the list of delegates.
+        // Return the ModuleInfo object.
         m.instructions.add(new InsnNode(Opcodes.ARETURN));
 
         return m;
@@ -643,110 +775,6 @@ public final class ModuleCompiler
 
         m.instructions.add(code);
 
-
-        return m;
-    }
-
-    /**
-     * This method generates the moduleEnumDefinitions() special method.
-     *
-     * @return an object representation of the special method.
-     */
-    private MethodNode buildModuleEnums()
-    {
-        final MethodNode m = new MethodNode();
-
-        m.access = Opcodes.ACC_PUBLIC + Opcodes.ACC_FINAL;
-        m.name = "moduleEnumDefinitions";
-        m.desc = "()Ljava/util/List;";
-        m.exceptions = ImmutableList.of();
-
-        final InsnList code = new InsnList();
-
-        /**
-         * This class is used to generate a list of Class object.
-         */
-        final CollectionCompiler<EnumCompiler> cmp = new CollectionCompiler<EnumCompiler>()
-        {
-            @Override
-            public void compile(final EnumCompiler element)
-            {
-                code().add(Utils.ldcClass(element.type));
-            }
-
-            @Override
-            public InsnList code()
-            {
-                return code;
-            }
-        };
-
-        // Generate a list of Class objects.
-        cmp.compile(enums);
-
-        // Make the list immutable.
-        code.add(new MethodInsnNode(Opcodes.INVOKESTATIC,
-                                    Utils.internalName(program.typesystem.utils.HELPERS),
-                                    "newImmutableList",
-                                    "(Ljava/lang/Iterable;)Ljava/util/List;"));
-
-        // Return the list.
-        code.add(new InsnNode(Opcodes.ARETURN));
-
-        // Emit the generated instructions.
-        m.instructions.add(code);
-
-        return m;
-    }
-
-    /**
-     * This method generates the moduleExceptionDefinitions() special method.
-     *
-     * @return an object representation of the special method.
-     */
-    private MethodNode buildModuleExceptions()
-    {
-        final MethodNode m = new MethodNode();
-
-        m.access = Opcodes.ACC_PUBLIC + Opcodes.ACC_FINAL;
-        m.name = "moduleExceptionDefinitions";
-        m.desc = "()Ljava/util/List;";
-        m.exceptions = ImmutableList.of();
-
-        final InsnList code = new InsnList();
-
-        /**
-         * This class is used to generate a list of Class object.
-         */
-        final CollectionCompiler<ExceptionCompiler> cmp = new CollectionCompiler<ExceptionCompiler>()
-        {
-            @Override
-            public void compile(final ExceptionCompiler element)
-            {
-                code().add(Utils.ldcClass(element.type));
-            }
-
-            @Override
-            public InsnList code()
-            {
-                return code;
-            }
-        };
-
-        // Generate a list of Class objects.
-        cmp.compile(exceptions);
-
-        // Make the list immutable.
-        code.add(new MethodInsnNode(Opcodes.INVOKESTATIC,
-                                    Utils.internalName(program.typesystem.utils.HELPERS),
-                                    "newImmutableList",
-                                    "(Ljava/lang/Iterable;)Ljava/util/List;"));
-
-        // Return the list.
-        code.add(new InsnNode(Opcodes.ARETURN));
-
-        // Emit the generated instructions.
-        m.instructions.add(code);
 
         return m;
     }
