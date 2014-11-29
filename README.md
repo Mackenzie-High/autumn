@@ -26,4 +26,4 @@ Detailed Status:
 ----------------
 The compiler itself is largely completed and tested. Only about ten constructs are not sufficently test or implemented. The largest remaining section of the project is the standard library. 
 
-Last Release: November 01, 2014
+Last Release: November 17, 2014
