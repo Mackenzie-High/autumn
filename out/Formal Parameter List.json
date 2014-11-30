@@ -1,1 +1,1 @@
-{ "summary" : "A formal-parameter-list is a list of formal-parameters.", "ast" : "autumn.lang.compiler.ast.nodes.FormalParameterList", "syntax" : [[0, "( <i>#formal#<sub>1</sub></i> , ... , <i>#formal#<sub>n</sub></i> )"]], "details" : [], "static-checks" : [] }
+{ "summary" : "A formal-parameter-list is a list of formal-parameters.", "ast" : "autumn.lang.compiler.ast.nodes.FormalParameterList", "syntax" : [[0, "( <i>$formal$<sub>1</sub></i> , ... , <i>$formal$<sub>n</sub></i> )"]], "details" : [], "static-checks" : [] }

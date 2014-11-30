@@ -5,10 +5,9 @@ Autumn is a statically-typed dynamically-compiled multi-paradigm general-purpose
 
 ## Paradigms
 
-+ Object-Oriented
 + Imperative
-+ Functional
 + Procedural
++ Functional
 + Reflective
 + Concurrent
 + Metaprograming
@@ -17,10 +16,10 @@ Autumn is a statically-typed dynamically-compiled multi-paradigm general-purpose
 ## Notable Features and Benefits:
 
 + Precompiled Java Code can be used Directly in Autumn
-+ Prototype-based Object System
 + Automatic Easy-To-Use Immutability
 + Anonymous Functions
 + Multiple Dispatch
++ Automatic Memoization
 + Direct Tail-Recursion
 + Generator Functions
 + Unit Testing Framework

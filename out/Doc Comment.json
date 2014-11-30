@@ -1,1 +1,1 @@
-{ "summary" : "A doc-comment is a comment that can be processed by documentation generators.", "ast" : "autumn.lang.compiler.ast.nodes.FormalParameter", "syntax" : [[0, "<i>#DocLine#</i>"], [0, "<i>#DocLine#</i>"], [0, "<i>#DocLine#</i>"]], "details" : [], "static-checks" : [] }
+{ "summary" : "A doc-comment is a comment that can be processed by documentation generators.", "ast" : "autumn.lang.compiler.ast.nodes.FormalParameter", "syntax" : [[0, "<i>$DocLine$</i>"], [0, "<i>$DocLine$</i>"], [0, "<i>$DocLine$</i>"]], "details" : [], "static-checks" : [] }

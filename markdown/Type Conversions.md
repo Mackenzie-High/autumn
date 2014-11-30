@@ -1,26 +1,26 @@
 # Type Conversions and Assignability
 
 ## Boxing Conversions
-+ boolean ==> #JavaLangBoolean#
-+ char ==> #JavaLangCharacter#
-+ byte ==> #JavaLangByte#
-+ short ==> #JavaLangShort#
-+ int ==> #JavaLangInteger#
-+ long ==> #JavaLangLong#
-+ float ==> #JavaLangFloat#
-+ double ==> #JavaLangDouble# 
++ boolean ==> $JavaLangBoolean$
++ char ==> $JavaLangCharacter$
++ byte ==> $JavaLangByte$
++ short ==> $JavaLangShort$
++ int ==> $JavaLangInteger$
++ long ==> $JavaLangLong$
++ float ==> $JavaLangFloat$
++ double ==> $JavaLangDouble$
 
 
 
 ## Unboxing Conversions
-+ #JavaLangBoolean# ==> boolean
-+ #JavaLangCharacter# ==> char
-+ #JavaLangByte# ==> byte
-+ #JavaLangShort# ==> short
-+ #JavaLangInteger# ==> int
-+ #JavaLangLong# ==> long
-+ #JavaLangFloat# ==> float
-+ #JavaLangDouble# ==> double
++ $JavaLangBoolean$ ==> boolean
++ $JavaLangCharacter$ ==> char
++ $JavaLangByte$ ==> byte
++ $JavaLangShort$ ==> short
++ $JavaLangInteger$ ==> int
++ $JavaLangLong$ ==> long
++ $JavaLangFloat$ ==> float
++ $JavaLangDouble$ ==> double
 
 
 ## Coercions
