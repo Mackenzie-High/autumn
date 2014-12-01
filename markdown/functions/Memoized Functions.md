@@ -8,7 +8,7 @@ A function that has the $AutumnLangAnnotationsMemoize$ annotation applied to it 
 
 Memoized functions greatly simplify dynamic programming. 
 
-# Behavior
+## Behavior
 
 A memoized function maintains a cache of previously computed values.
 The cache maps lists of arguments to previously returned values. 
