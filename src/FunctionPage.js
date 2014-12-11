@@ -117,7 +117,7 @@ function load_page(json)
 {
 	page = json;
 	
-	var signature =json["signature"]; 
+	var signature = json["signature"]; 
 	
 	document.title = signature;
 	emitSummary();
@@ -134,9 +134,9 @@ function main()
 {
 	var params = getURLParameters();
 	
-	name = params["function"];
+	signature = params["function"];
 	
-	path = "out/functions/" + name + ".json";
+	path = "out/functions/" + signature + ".json";
 	
 	$.getJSON(path, load_page);
 }
