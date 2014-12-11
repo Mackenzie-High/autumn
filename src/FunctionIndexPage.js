@@ -8,16 +8,22 @@ function emitAdvancedIndex(json)
 
 	for(var i = 0; i < length; i++)
 	{
+		// Get the entry in from the index. 
 		var entry = index[i];
 		
+		// Get the signature of the function.
+		// Example: print (value : Object) : void
 		var signature = entry[0];
 		
-		var page = "FunctionPage.html?function=" + signature;
+		// This is the address of the page that describes the function. 
+		var address = "http://www.mackenziehigh.me/autumn/FunctionPage.html?function=" + signature;
 		
-		var link = '<a href="FILE"> SIGNATURE </a>'
-			.replace("FILE", file)
+		// Create a link to the aforesaid page. 
+		var link = '<a href="ADDRESS"> SIGNATURE </a>'
+			.replace("ADDRESS", address)
 			.replace("SIGNATURE", signature);
 
+		// Add the link to the index being displayed in the browser. 
 		$("#index").append("<li>" + link + "</li>");
 	}
 }
