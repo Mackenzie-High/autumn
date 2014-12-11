@@ -9,8 +9,10 @@ function emitAdvancedIndex(json)
 	for(var i = 0; i < length; i++)
 	{
 		var entry = index[i];
+		
+		var file = entry[0] + ".json";
 
-		$("#index").append("<li>" + entry + "</li>");
+		$("#index").append("<li>" + file + "</li>");
 	}
 }
 
