@@ -10,7 +10,7 @@ function emitAdvancedIndex(json)
 	{
 		var entry = index[i];
 
-		$("#type-checking-examples-table").append("<li>" + entry + "</li>");
+		$("#index").append("<li>" + entry + "</li>");
 	}
 }
 
