@@ -18,16 +18,16 @@ function repeatString(string, count)
 	return result;
 }
 
-function emitName(name)
-{
-	$("#function-page-name").append('<h1>' + name + '</h1>');
-}
-
 function emitSummary()
 {
 	var summary = page["summary"];
 	
 	$("#function-page-summary-text").append(summary);
+}
+
+function emitSignature(name)
+{
+	$("#construct-page-syntax-content").append(name);
 }
 
 function emitSyntax()
@@ -138,9 +138,8 @@ function load_page(json)
 	page = json;
 	
 	document.title = name;
-	emitName(name);
 	emitSummary();
-	//emitSyntax();
+	emitSignature(name);
 	//emitAstClass();
 	//emitDetails();
 	//emitStaticChecks();
