@@ -1,5 +1,5 @@
 
-var HEADER = "<tr> <td> Group </td> <td> Function <td> </tr>";
+var HEADER = "<tr> <td> Group </td> <td> Function </td> </tr>";
 
 function emitAdvancedIndex(json)
 {
@@ -19,6 +19,9 @@ function emitAdvancedIndex(json)
 		// Get the signature of the function.
 		// Example: print (value : Object) : void
 		var signature = entry[0];
+		
+		// Obtain the name of the group that the function belongs to. 
+		var group = entry[1];
 		
 		// This is the address of the page that describes the function. 
 		var address = "http://www.mackenziehigh.me/autumn/FunctionPage.html?function=" + signature;
