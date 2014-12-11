@@ -1,4 +1,6 @@
 
+var name = null;
+
 var page = null;
 
 function repeatString(string, count)
@@ -118,8 +120,7 @@ function load_page(json)
 	page = json;
 	
 	var signature = json["signature"]; 
-	document.write(signatue);
-	document.title = signature;
+
 	emitSummary();
 	emitSignature(signature);
 	emitDetails();
@@ -134,9 +135,9 @@ function main()
 {
 	var params = getURLParameters();
 	
-	var signature = params["function"];
-
-	path = "out/functions/" + signature + ".json";
-
+	name = params["construct"];
+	
+	path = "out/functions/" + name + ".json";
+	
 	$.getJSON(path, load_page);
 }
