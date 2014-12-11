@@ -115,10 +115,12 @@ function displayExample(index)
 
 function load_page(json)
 {
+	document.write("Hello");
+	
 	page = json;
 	
 	var signature = json["signature"]; 
-	
+	document.write(signatue);
 	document.title = signature;
 	emitSummary();
 	emitSignature(signature);
