@@ -30,24 +30,6 @@ function emitSignature(name)
 	$("#construct-page-syntax-content").append(name);
 }
 
-function emitSyntax()
-{
-	var syntax = page["syntax"];
-	
-	var length = syntax.length;
-	
-	var text = "";
-	
-	for(var i = 0; i < length; i++)
-	{
-		var line = decodeURIComponent(syntax[i][1]);
-		
-		text = text + repeatString("&nbsp;", syntax[i][0] * 4) + line + "<br>";
-	}
-	
-	$("#construct-page-syntax-content").append(text);
-}
-
 function emitDetails()
 {
 	var details = page["details"];
@@ -60,7 +42,7 @@ function emitDetails()
 		
 		var detail = details[i][1];
 		
-		$("#construct-page-details").append('<li class="indent-' + indent + '">' + detail + '</li>');
+		$("#function-page-details").append('<li class="indent-' + indent + '">' + detail + '</li>');
 	}
 }
 
@@ -140,11 +122,10 @@ function load_page(json)
 	document.title = name;
 	emitSummary();
 	emitSignature(name);
-	//emitAstClass();
-	//emitDetails();
+	emitDetails();
 	//emitStaticChecks();
 	
-	//displayExample(1);
+	displayExample(1);
 	
 	$(function() { $( "#tabs" ).tabs(); });
 }

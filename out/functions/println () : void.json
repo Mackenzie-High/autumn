@@ -1,1 +1,1 @@
-{ "name" : "println", "formals" : [], "returns" : ["void", null] }
+{ "group" : Standard_IO, "summary" : "This function prints a newline to standard-output.", "name" : "println", "formals" : [], "returns" : ["void", null], "details" : [] }
