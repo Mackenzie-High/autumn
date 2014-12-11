@@ -12,7 +12,7 @@ function emitAdvancedIndex(json)
 		
 		var signature = entry[0];
 		
-		var file = signature  + ".json";
+		var page = "FunctionPage.html?function=" + signature;
 		
 		var link = '<a href="FILE"> SIGNATURE </a>'
 			.replace("FILE", file)
