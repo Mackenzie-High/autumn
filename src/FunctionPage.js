@@ -137,8 +137,8 @@ function main()
 	var params = getURLParameters();
 	
 	signature = params["function"];
-	
+	document.write(signatue);
 	path = "out/functions/" + signature + ".json";
-	
+	document.write(path);
 	$.getJSON(path, load_page);
 }
