@@ -1,6 +1,7 @@
-Warning: EXPECTED_VOID
+Warning: NO_SUCH_VARIABLE
   File: file:/typechecks/T0188
   Line: #5
   Column: #5
-  Message: Type void was expected.
+  Message: A variable was used before it was declared.
+  Variable: yield
 
