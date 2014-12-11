@@ -10,9 +10,15 @@ function emitAdvancedIndex(json)
 	{
 		var entry = index[i];
 		
-		var file = entry[0] + ".json";
+		var signature = entry[0];
+		
+		var file = signature  + ".json";
+		
+		var link = '<a href="FILE"> SIGNATURE </a>'
+			.replace("FILE", file)
+			.replace("SIGNATURE", signature);
 
-		$("#index").append("<li>" + file + "</li>");
+		$("#index").append("<li>" + link + "</li>");
 	}
 }
 
