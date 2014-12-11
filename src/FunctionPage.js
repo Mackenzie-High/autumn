@@ -115,8 +115,6 @@ function displayExample(index)
 
 function load_page(json)
 {
-	document.write("Hello");
-	
 	page = json;
 	
 	var signature = json["signature"]; 
@@ -136,9 +134,9 @@ function main()
 {
 	var params = getURLParameters();
 	
-	signature = params["function"];
-	document.write(signatue);
+	var signature = params["function"];
+
 	path = "out/functions/" + signature + ".json";
-	document.write(path);
+
 	$.getJSON(path, load_page);
 }
