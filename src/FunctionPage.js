@@ -139,8 +139,5 @@ function main()
 	
 	path = "out/functions/" + name + ".json";
 	
-	$.getJSON(path, load_page).error(function(jqXHR, textStatus, errorThrown) {
-        console.log("error " + textStatus);
-        console.log("incoming Text " + jqXHR.responseText);
-    });
+	$.getJSON(path, load_page);
 }
