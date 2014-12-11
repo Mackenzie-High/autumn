@@ -1,6 +1,4 @@
 
-var name = null;
-
 var page = null;
 
 function repeatString(string, count)
@@ -119,9 +117,11 @@ function load_page(json)
 {
 	page = json;
 	
-	document.title = name;
+	var signature =json["signature"]; 
+	
+	document.title = signature;
 	emitSummary();
-	emitSignature(name);
+	emitSignature(signature);
 	emitDetails();
 	//emitStaticChecks();
 	
