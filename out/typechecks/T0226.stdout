@@ -1,0 +1,9 @@
+Warning: INACCURATE_NUMERIC_LITERAL
+  File: file:/typechecks/T0226
+  Line: #6
+  Column: #5
+  Message: A literal cannot be accurately compiled.
+  Minimum: -128
+  Maximum: 127
+  Value: -129B
+
