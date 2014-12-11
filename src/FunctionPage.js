@@ -135,7 +135,7 @@ function main()
 {
 	var params = getURLParameters();
 	
-	name = params["construct"];
+	name = params["function"];
 	
 	path = "out/functions/" + name + ".json";
 	
