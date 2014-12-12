@@ -8,17 +8,17 @@ defun main (args : String[]) : void
     val evie = 127000;
     val erin = 230000;
 
-    (My::write "Emma", emma);
-    (My::write "Elle", elle);
-    (My::write "Evie", evie);
-    (My::write "Erin", erin);
+    My::write("Emma", emma);
+    My::write("Elle", elle);
+    My::write("Evie", evie);
+    My::write("Erin", erin);
 }
 
 defun write(name : String, income : int) : void
 {
-    val tax = (My::tax income);
+    val tax = My::tax(income);
 
-    (F::println name .. "'s Tax = " .. tax);
+    F::println(name .. "'s Tax = " .. tax);
 }
 
 defun tax(income : int) : int

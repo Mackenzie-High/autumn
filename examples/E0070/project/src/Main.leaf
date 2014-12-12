@@ -11,7 +11,7 @@ defun main (args : String[]) : void
     val string3 = '''C:\\planets\\Earth.obj''';
     val string4 = @'''C:\planets\Mars.obj''';
 
-    (F::printlns [string1, string2, string3, string4]);
+    F::printlns([string1, string2, string3, string4]);
 }
 
 

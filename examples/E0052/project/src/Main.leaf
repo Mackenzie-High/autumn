@@ -10,11 +10,11 @@ defun main (args : String[]) : void
     val name = "main";
     val params = [ (class String[]) ];
 
-    val func = (Reflect::getMethod owner, name, params);
+    val func = Reflect::getMethod(owner, name, params);
 
-    val applied = (func.isAnnotationPresent (class Alien));
+    val applied = func.isAnnotationPresent((class Alien));
 
-    (F::println "@Alien Present = " .. applied);
+    F::println("@Alien Present = " .. applied);
 }
 
 

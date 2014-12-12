@@ -4,10 +4,10 @@ module Main in examples;
 defun main (args : String[]) : void
 {
     # The following line is an expression used as a statement.
-    (My::printNumber 17);
+    My::printNumber(17);
 }
 
 defun printNumber (x : int) : void
 {
-    (F::println "x = " .. x);
+    F::println("x = " .. x);
 }

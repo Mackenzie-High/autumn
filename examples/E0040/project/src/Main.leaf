@@ -16,10 +16,10 @@ defun main (args : String[]) : void
     val jovian = ["Jupiter", "Saturn", "Uranus", "Neptune"];
 
     # Print the results.
-    (F::println empty);
-    (F::println home);
-    (F::println hot);
-    (F::println jovian);
+    F::println(empty);
+    F::println(home);
+    F::println(hot);
+    F::println(jovian);
 }
 
 

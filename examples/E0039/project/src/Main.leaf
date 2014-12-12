@@ -11,11 +11,11 @@ defun main (args : String[]) : void
         # Case: Unsuccessful Cast
         input is List; 
 
-        (F::println "Failure: An exception was *not* thrown.");
+        F::println("Failure: An exception was *not* thrown.");
     }
     catch (ex : ClassCastException)
     {
-        (F::println "Success: An exception was thrown.");
+        F::println("Success: An exception was thrown.");
     }
 }
 

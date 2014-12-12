@@ -9,13 +9,13 @@ defun main (args : String[]) : void
 {
     val klass = (class Alien);
 
-    val modifiers = (Modifier::toString (klass.getModifiers));
+    val modifiers = Modifier::toStringklass.getModifiers(());
 
-    (F::println "Name = " .. (klass.getName));
+    F::println("Name = " .. klass.getName());
 
-    (F::println "Annotation? = " .. (klass.isAnnotation));
+    F::println("Annotation? = " .. klass.isAnnotation());
 
-    (F::println "Modifiers = " .. modifiers);
+    F::println("Modifiers = " .. modifiers);
 }
 
 

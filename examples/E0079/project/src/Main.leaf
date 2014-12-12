@@ -8,5 +8,5 @@ defun main (args : String[]) : void
 {
     (field StaticFieldTester::value9 = "Venus");
 
-    (F::println "Output = " .. (field StaticFieldTester::value9));
+    F::println("Output = " .. (field StaticFieldTester::value9));
 }

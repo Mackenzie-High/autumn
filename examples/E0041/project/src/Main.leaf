@@ -7,16 +7,16 @@ defun main (args : String[]) : void
     val pets = [];
 
     # Add elements to the list. 
-    (pets.add "Jet");
-    (pets.add "Fluffy");
-    (pets.add "Chicky");
-    (pets.add "Picky");
-    (pets.add "Sikorsky");
-    (pets.add "Lucky");
-    (pets.add "Eyeball");
+    pets.add("Jet");
+    pets.add("Fluffy");
+    pets.add("Chicky");
+    pets.add("Picky");
+    pets.add("Sikorsky");
+    pets.add("Lucky");
+    pets.add("Eyeball");
 
     # Print the results.
-    (F::println pets);
+    F::println(pets);
 }
 
 

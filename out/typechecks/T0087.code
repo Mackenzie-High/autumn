@@ -5,5 +5,5 @@ defun main (args : String[]) : void
 {
     val list = [];
 
-    (call list.subtract);
+    call list.subtract();
 }

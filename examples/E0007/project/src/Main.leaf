@@ -7,8 +7,8 @@ defun main (args : String[]) : void
 
     foreach (x : String in pets)
     {
-        (F::print "Pet Name = ");
-        (F::println x);
+        F::print("Pet Name = ");
+        F::println(x);
     }
 } 
 

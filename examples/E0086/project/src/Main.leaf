@@ -9,8 +9,8 @@ defun main (args : String[]) : void
 
     val map = (locals);
 
-    foreach (x : Local in (map.locals))
+    foreach (x : Local in map.locals())
     {
-        (F::println x);
+        F::println(x);
     }
 }

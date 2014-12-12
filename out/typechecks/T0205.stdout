@@ -1,0 +1,9 @@
+Warning: COVARIANCE_VIOLATION
+  File: file:/typechecks/T0205
+  Line: #5
+  Column: #1
+  Message: A covariance violation was encountered.
+  Element: name
+  Upper: java.lang.String
+  Lower: java.lang.Object
+

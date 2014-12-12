@@ -7,18 +7,18 @@ defun main (args : String[]) : void
     var planet = "Venus";
 
     # Print the name of the planet.
-    (F::println planet);
+    F::println(planet);
 
     # Change the value of the variable. 
     let planet = "Mars";
 
     # Print the name of the planet.
-    (F::println planet);
+    F::println(planet);
 
     # Change the value of the variable. 
     planet = "Pluto";
 
     # Print the name of the planet.
-    (F::println planet);
+    F::println(planet);
 } 
 

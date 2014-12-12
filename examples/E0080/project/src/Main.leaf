@@ -7,5 +7,5 @@ defun main (args : String[]) : void
     val min = (field Integer::MIN_VALUE);
     val max = (field Integer::MAX_VALUE);
 
-    (F::println "Integer Range: [" .. min .. ", " .. max .. "]");
+    F::println("Integer Range: [" .. min .. ", " .. max .. "]");
 }

@@ -17,9 +17,9 @@ defun main (args : String[]) : void
     val value6 = (null ?? null) is String;
 
     # Print the results.
-    (F::println value4);
-    (F::println value5);
-    (F::println value6);
+    F::println(value4);
+    F::println(value5);
+    F::println(value6);
 }
 
 

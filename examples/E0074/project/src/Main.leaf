@@ -3,9 +3,9 @@ module Main in examples;
 @Start
 defun main (args : String[]) : void
 {
-    (F::println "Before NOP");
+    F::println("Before NOP");
 
     nop;
 
-    (F::println "After NOP");
+    F::println("After NOP");
 }

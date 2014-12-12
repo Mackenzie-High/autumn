@@ -7,7 +7,7 @@ defun main (args : String[]) : void
 
     val value1 = 65 is char;
 
-    (F::println "Case 1: " .. value1);
+    F::println("Case 1: " .. value1);
 
 
 
@@ -15,7 +15,7 @@ defun main (args : String[]) : void
 
     val value2 = "Mars" is CharSequence;
 
-    (F::println "Case 2: " .. value2);
+    F::println("Case 2: " .. value2);
 }
 
 

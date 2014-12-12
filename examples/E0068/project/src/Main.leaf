@@ -17,19 +17,19 @@ defun main (args : String[]) : void
     var value11 = (class String[][]);
     var value12 = (class String[][][]);
 
-    (F::println value00);
-    (F::println value01);
-    (F::println value02);
-    (F::println value03);
-    (F::println value04);
-    (F::println value05);
-    (F::println value06);
-    (F::println value07);
-    (F::println value08);
-    (F::println value09);
-    (F::println value10);
-    (F::println value11);
-    (F::println value12);
+    F::println(value00);
+    F::println(value01);
+    F::println(value02);
+    F::println(value03);
+    F::println(value04);
+    F::println(value05);
+    F::println(value06);
+    F::println(value07);
+    F::println(value08);
+    F::println(value09);
+    F::println(value10);
+    F::println(value11);
+    F::println(value12);
 }
  
 

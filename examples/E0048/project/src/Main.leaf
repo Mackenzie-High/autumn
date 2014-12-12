@@ -3,43 +3,43 @@ module Main in examples;
 @Start
 defun main (args : String[]) : void
 {
-    (F::print "This");
+    F::print("This");
 
     goto IS;
 
     marker DONOT;
 
-    (F::print "do not");
+    F::print("do not");
 
     goto DO;
 
     marker PASTA;
 
-    (F::print "spaghetti");
+    F::print("spaghetti");
 
     goto CODE;
 
     marker IS;
 
-    (F::print " is ");
+    F::print(" is ");
 
     goto PASTA;
 
     marker DO;
 
-    (F::print " do ");
+    F::print(" do ");
 
     goto THIS;
 
     marker CODE;
 
-    (F::print " code ");
+    F::print(" code ");
 
     goto DONOT;
 
     marker THIS;
 
-    (F::print "this!!!");
+    F::print("this!!!");
 }
 
 

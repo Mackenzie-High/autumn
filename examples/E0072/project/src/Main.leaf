@@ -10,7 +10,7 @@ defun main (args : String[]) : void
 
     val planets = [planet1, planet2, planet3, planet4];
 
-    (F::println planets);
+    F::println(planets);
 }
 
 

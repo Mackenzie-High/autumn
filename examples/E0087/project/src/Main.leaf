@@ -3,10 +3,10 @@ module Main in examples;
 @Start
 defun main (args : String[]) : void
 {
-    val value = (progn (F::println "X"), 
-                       (F::println "Y"), 
-                       (F::println "Z"),
+    val value = (progn F::println("X"), 
+                       F::println("Y"), 
+                       F::println("Z"),
                        1010);
 
-    (F::println "value = " .. value);
+    F::println("value = " .. value);
 }

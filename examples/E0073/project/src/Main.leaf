@@ -21,6 +21,6 @@ defun main (args : String[]) : void
 
         marker ENTER;
 
-        (F::printlns [a, (b is int), c, d, e, f, g, h, i]);
+        F::printlns([a, (b is int), c, d, e, f, g, h, i]);
     }
 }

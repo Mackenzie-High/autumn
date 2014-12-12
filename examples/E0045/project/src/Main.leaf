@@ -3,23 +3,23 @@ module Main in examples;
 @Start
 defun main (args : String[]) : void
 {
-    (My::write 0);
-    (My::write 1);
-    (My::write 2);
-    (My::write 3);
-    (My::write 4);
-    (My::write 5);
-    (My::write 6);
-    (My::write 7);
-    (My::write 8);
-    (My::write 9);
+    My::write(0);
+    My::write(1);
+    My::write(2);
+    My::write(3);
+    My::write(4);
+    My::write(5);
+    My::write(6);
+    My::write(7);
+    My::write(8);
+    My::write(9);
 }
 
 defun write(number : int) : void
 {
     if(number % 2 != 0)
     {
-        (F::println number .. " is very odd.");
+        F::println(number .. " is very odd.");
     }
 }
 

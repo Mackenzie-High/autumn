@@ -11,7 +11,7 @@ defun main (args : String[]) : void
 
         when (i == 3) then continue;
 
-        (F::println "i = " .. i);
+        F::println("i = " .. i);
     }
 } 
 

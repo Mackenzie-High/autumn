@@ -5,5 +5,5 @@ import java.util.LinkedList;
 @Start
 defun main (args : String[]) : void
 {
-    (new LinkedList "string of characters");
+    new LinkedList("string of characters");
 }

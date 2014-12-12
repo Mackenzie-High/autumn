@@ -5,7 +5,7 @@ import high.mackenzie.autumn.resources.InstanceFieldTester;
 @Start
 defun main (args : String[]) : void
 {
-    val object = (new InstanceFieldTester);
+    val object = new InstanceFieldTester();
 
-    (field object.age);
+    field object.age;
 }

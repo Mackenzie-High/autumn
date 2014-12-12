@@ -5,10 +5,10 @@ defun main (args : String[]) : void
 {
     var i = 1;
 
-    while ((My::condition i))
+    while My::condition((i))
     {
-        (F::println "i = " .. i);
-        (F::println);
+        F::println("i = " .. i);
+        F::println();
 
         i = i + 1;
 
@@ -18,7 +18,7 @@ defun main (args : String[]) : void
 
 defun condition(x : int) : boolean
 {
-    (F::println "x = " .. x);
+    F::println("x = " .. x);
 
     return x < 4;
 }

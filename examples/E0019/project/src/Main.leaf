@@ -6,8 +6,8 @@ defun main (args : String[]) : void
     val case1 = ! false;
     val case2 = ! true;
 
-    (F::println case1);
-    (F::println case2);
+    F::println(case1);
+    F::println(case2);
 }
 
 

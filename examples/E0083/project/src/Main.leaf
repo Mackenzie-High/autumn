@@ -4,20 +4,20 @@ module Main in examples;
 defun main (args : String[]) : void
 {
     # String
-    (My::print "Text");
+    My::print("Text");
 
     # Integer
-    (My::print 17);
+    My::print(17);
 
     # List
-    (My::print [2, 4, 6, 8]);
+    My::print([2, 4, 6, 8]);
 }
 
 defun print(x : Object) : void
 {
-    (F::println "Object? = "  .. (instanceof x : Object));
-    (F::println "Integer? = " .. (instanceof x : Integer));
-    (F::println "String? = "  .. (instanceof x : String));
-    (F::println "List? = "    .. (instanceof x : List));
-    (F::println);
+    F::println("Object? = "  .. (instanceof x : Object));
+    F::println("Integer? = " .. (instanceof x : Integer));
+    F::println("String? = "  .. (instanceof x : String));
+    F::println("List? = "    .. (instanceof x : List));
+    F::println();
 }

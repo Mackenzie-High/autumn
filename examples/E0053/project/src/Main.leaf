@@ -9,16 +9,16 @@ defun main (args : String[]) : void
 {
     try
     {
-        (F::println "Oh look, a meteor?");
+        F::println("Oh look, a meteor?");
 
-        throw (new Apophis99942 "Oh no, an asteroid!");
+        throw new Apophis99942("Oh no, an asteroid!");
 
-        (F::println "The world survived!");
+        F::println("The world survived!");
     }
     catch (problem : Apocalypse)
     {
-        (F::println (problem.getMessage));
-        (F::println "Ah well, back to the stone age.");
+        F::printlnproblem.getMessage(());
+        F::println("Ah well, back to the stone age.");
     }
 }
 

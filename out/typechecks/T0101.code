@@ -5,8 +5,8 @@ import high.mackenzie.autumn.resources.InstanceFieldTester;
 @Start
 defun main (args : String[]) : void
 {
-    val object = (new InstanceFieldTester);
+    val object = new InstanceFieldTester();
 
     # An integer cannot be assigned to a boolean field.
-    (field object.value1 = 13);
+    field object.value1 = 13;
 }

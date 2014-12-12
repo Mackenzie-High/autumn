@@ -5,7 +5,7 @@ defun main (args : String[]) : void
 {
     for(i = 10; i < 25; i + 1)
     {
-        (My::write i);
+        My::write(i);
     }
 } 
 
@@ -17,19 +17,19 @@ defun write(index : int) : void
 
     if(case3)
     {
-        (F::println index .. " = Both");
+        F::println(index .. " = Both");
     }
     elif(case2)
     {
-        (F::println index .. " = Buzz");
+        F::println(index .. " = Buzz");
     }
     elif(case1)
     {
-        (F::println index .. " = Fizz");
+        F::println(index .. " = Fizz");
     }
     else
     {
-        (F::println index);
+        F::println(index);
     }
 }
 

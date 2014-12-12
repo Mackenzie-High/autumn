@@ -7,22 +7,22 @@ enum City ( Paris, London, Rome );
 @Start
 defun main (args : String[]) : void
 {
-    val array = (City::values);
+    val array = City::values();
 
-    for(i = 0; i < (F::len array); i + 1)
+    for(i = 0; i < F::len(array); i + 1)
     {
-        val constant = (F::get array, i) is Enum;
+        val constant = F::get(array, i) is Enum;
 
-        (My::print constant);
+        My::print(constant);
     }
 }
 
 
 defun print (constant : Enum) : void
 {
-    (F::println "Name: " .. (constant.name));
-    (F::println "Ordinal: " .. (constant.ordinal));
-    (F::println);
+    F::println("Name: " .. constant.name());
+    F::println("Ordinal: " .. constant.ordinal());
+    F::println();
 }
 
 

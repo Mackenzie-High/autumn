@@ -9,7 +9,7 @@ defun main (args : String[]) : void
 
     forever 
     {
-        (F::println "Forever is a" .. very .. " long time.");
+        F::println("Forever is a" .. very .. " long time.");
 
         very = very .. " very";
 

@@ -7,8 +7,8 @@ defun main (args : String[]) : void
     val sentence = "Hello Home World";
 
     # Invoke an instance method. 
-    val word = (call sentence.substring 6, 10);
+    val word = call sentence.substring(6, 10);
 
     # Print the result.
-    (F::println "Type of World: " .. word);
+    F::println("Type of World: " .. word);
 }

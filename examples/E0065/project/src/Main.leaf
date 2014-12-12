@@ -5,7 +5,7 @@ defun main (args : String[]) : void
 {
     val value = 23L + -5L + 1L;
 
-    (F::println value);
+    F::println(value);
 }
 
 

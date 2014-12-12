@@ -5,8 +5,8 @@ defun main (args : String[]) : void
 {
     for (i = 0; i < 5; i + 1)
     {
-        (F::print "X = ");
-        (F::println i);
+        F::print("X = ");
+        F::println(i);
     }
 } 
 

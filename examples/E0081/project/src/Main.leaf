@@ -12,11 +12,11 @@ defun main (args : String[]) : void
     (field object.value5 = 17);
 
     # Print the value stored in the field. 
-    (F::println (field object.value5));
+    F::println((field object.value5));
 
     # Set the field.
     (field object.value5 = 23);
 
     # Print the value stored in the field. 
-    (F::println (field object.value5));
+    F::println((field object.value5));
 }

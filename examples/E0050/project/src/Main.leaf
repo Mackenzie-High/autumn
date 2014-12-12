@@ -3,15 +3,15 @@ module Main in examples;
 @Start
 defun main (args : String[]) : void
 {
-    (F::println "Virginia");
+    F::println("Virginia");
 
     goto WEST;
 
-    (F::println "Kansas");
+    F::println("Kansas");
 
     marker WEST;
 
-    (F::println "California");
+    F::println("California");
 }
 
 

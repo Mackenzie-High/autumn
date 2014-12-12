@@ -7,19 +7,19 @@ enum City ( Paris, London, Rome );
 @Start
 defun main (args : String[]) : void
 {
-    (My::print (field City::Paris));
+    My::print((field City::Paris));
 
-    (My::print (field City::London));
+    My::print((field City::London));
 
-    (My::print (field City::Rome));
+    My::print((field City::Rome));
 }
 
 
 defun print (constant : Enum) : void
 {
-    (F::println "Name: " .. (constant.name));
-    (F::println "Ordinal: " .. (constant.ordinal));
-    (F::println);
+    F::println("Name: " .. constant.name());
+    F::println("Ordinal: " .. constant.ordinal());
+    F::println();
 }
 
 

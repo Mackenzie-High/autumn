@@ -7,11 +7,11 @@ defun main (args : String[]) : void
 {
     var x = "nil is ";
 
-    (F::print x);
+    F::print(x);
 
     x = null;
 
-    (F::print x);
+    F::print(x);
 }
 
 

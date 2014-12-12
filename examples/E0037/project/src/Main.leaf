@@ -16,9 +16,9 @@ defun main (args : String[]) : void
     val value3 = input as List;
 
     # Print the results.
-    (F::println "Case 1: " .. value1);
-    (F::println "Case 2: " .. value2);
-    (F::println "Case 3: " .. value3);
+    F::println("Case 1: " .. value1);
+    F::println("Case 2: " .. value2);
+    F::println("Case 3: " .. value3);
 }
 
 

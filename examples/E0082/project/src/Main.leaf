@@ -9,5 +9,5 @@ defun main (args : String[]) : void
 
     val value = (field object.answer);
 
-    (F::println "Life and Everything = " .. value);
+    F::println("Life and Everything = " .. value);
 }

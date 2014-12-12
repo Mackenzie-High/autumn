@@ -14,20 +14,20 @@ defun main (args : String[]) : void
     for (i = 0; i < 10; i + 1)
     {
         # Perform a calculation using the first function object.
-        val x = (My::compute p, i);
+        val x = My::compute(p, i);
 
         # Perform a calculation using the second function object.
-        val y = (My::compute q, i);
+        val y = My::compute(q, i);
 
         # Print the two results.
-        (F::println [x, y]);
+        F::println([x, y]);
     }
 }
 
 defun compute (function : Calculation, 
                value : int) : int
 {
-    return (function.invoke value);
+    return function.invoke(value);
 }
 
 defun square (x : int) : int

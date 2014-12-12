@@ -5,13 +5,13 @@ tuple Pet (type : String, name : String);
 @Start
 defun main (args : String[]) : void
 {
-    val animal1 = (new Pet "Sheep", "Eyeball");
+    val animal1 = new Pet("Sheep", "Eyeball");
 
-    val animal2 = (new Pet "German Shepherd", "Jet");
+    val animal2 = new Pet("German Shepherd", "Jet");
 
-    val animal3 = (new Pet "Cat", "Fluffy");
+    val animal3 = new Pet("Cat", "Fluffy");
 
-    (F::printlns [animal1, animal2, animal3]);
+    F::printlns([animal1, animal2, animal3]);
 }
 
 

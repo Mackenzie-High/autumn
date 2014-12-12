@@ -3,7 +3,7 @@ module Main in typechecks;
 @Start
 defun main (args : String[]) : void
 {
-    [ (My::moo) for x : Object in [] ];
+    [ My::moo() for x : Object in [] ];
 }
 
 defun moo () : void

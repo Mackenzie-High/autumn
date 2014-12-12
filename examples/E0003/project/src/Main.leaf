@@ -7,7 +7,7 @@ defun main (args : String[]) : void
 
     until (i > 5)
     {
-        (F::println "i = " .. i);
+        F::println("i = " .. i);
 
         i = i + 1;
     }

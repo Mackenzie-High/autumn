@@ -1,7 +1,7 @@
 Warning: NON_VIABLE_INSTANCEOF
   File: file:/typechecks/T0108
   Line: #6
-  Column: #6
+  Column: #5
   Message: An instance-of operation must be viable.
   Problem: List is never an instance-of Integer
 

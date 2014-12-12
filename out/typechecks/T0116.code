@@ -3,7 +3,7 @@ module Main in typechecks;
 @Start
 defun main (args : String[]) : void
 {
-    (if true then 17 else (My::moo));
+    (if true then 17 else My::moo());
 }
 
 defun moo () : void

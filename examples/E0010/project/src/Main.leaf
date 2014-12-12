@@ -44,8 +44,8 @@ defun main (args : String[]) : void
 
     foreach (value : Object in values)
     {
-        (F::print "Value = ");
-        (F::println value);
+        F::print("Value = ");
+        F::println(value);
     }
 } 
 

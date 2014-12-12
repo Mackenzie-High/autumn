@@ -4,9 +4,9 @@ module Main in examples;
 defun main (args : String[]) : void
 {
     {
-        (F::println "A");
-        (F::println "B");
-        (F::println "C");
+        F::println("A");
+        F::println("B");
+        F::println("C");
     }
 }
 
