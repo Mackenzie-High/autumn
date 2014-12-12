@@ -15,11 +15,11 @@ defun main (args : String[]) : void
     assert object3 == object4;
     assert object3 !== object4;
 
-    (My::save object1) === object1;
-    (My::save object3) === object3;
+    My::save(object1) === object1;
+    My::save(object3) === object3;
 
-    (My::save object2) === object1;
-    (My::save object4) === object3;
+    My::save(object2) === object1;
+    My::save(object4) === object3;
 }
 
 @Memoize

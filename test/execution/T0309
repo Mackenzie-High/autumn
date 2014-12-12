@@ -10,6 +10,6 @@ defun main (args : String[]) : void
     lambda p : Boo => null;
     lambda q : Moo => null;
 
-    assert (p.toString) == "functor () : Object";
-    assert (q.toString) == "functor (int, String, int[], String[][]) : List";
+    assert p.toString() == "functor () : Object";
+    assert q.toString() == "functor (int, String, int[], String[][]) : List";
 }

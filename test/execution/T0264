@@ -8,15 +8,15 @@ defun main (args : String[]) : void
 {
     delegate method : MethodIterator => My::handler;
 
-    val p = (new Group "Jetty", "Fluffy", "Molly");
+    val p = new Group("Jetty", "Fluffy", "Molly");
 
-    val q = (Records::bindStr p, method);
+    val q = Records::bindStr(p, method);
 
     val list = [];
 
     foreach (name : String in q)
     {
-        (list.add name);
+        list.add(name);
     }
 
     assert list == ["Jetty", "Fluffy", "Molly"];
@@ -24,5 +24,5 @@ defun main (args : String[]) : void
 
 defun handler (self : Group) : Iterator
 {
-    return ([(self.x), (self.y), (self.z)].iterator);
+    return [self.x(), self.y(), self.z()].iterator();
 }

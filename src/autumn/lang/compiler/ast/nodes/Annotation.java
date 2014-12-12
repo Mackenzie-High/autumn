@@ -22,12 +22,15 @@ import autumn.lang.compiler.ast.commons.IAnnotated;
 import autumn.lang.compiler.ast.commons.IBinaryOperation;
 import autumn.lang.compiler.ast.commons.IConstruct;
 import autumn.lang.compiler.ast.commons.IConversionOperation;
+import autumn.lang.compiler.ast.commons.IDatum;
 import autumn.lang.compiler.ast.commons.IDirective;
 import autumn.lang.compiler.ast.commons.IDocumented;
 import autumn.lang.compiler.ast.commons.IExpression;
 import autumn.lang.compiler.ast.commons.IRecord;
 import autumn.lang.compiler.ast.commons.IStatement;
 import autumn.lang.compiler.ast.commons.IUnaryOperation;
+import autumn.lang.compiler.ast.literals.BigDecimalLiteral;
+import autumn.lang.compiler.ast.literals.BigIntegerLiteral;
 import autumn.lang.compiler.ast.literals.ByteLiteral;
 import autumn.lang.compiler.ast.literals.CharLiteral;
 import autumn.lang.compiler.ast.literals.DoubleLiteral;
@@ -35,6 +38,7 @@ import autumn.lang.compiler.ast.literals.FloatLiteral;
 import autumn.lang.compiler.ast.literals.IntLiteral;
 import autumn.lang.compiler.ast.literals.LongLiteral;
 import autumn.lang.compiler.ast.literals.ShortLiteral;
+import autumn.util.ds.ImmutableList;
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
@@ -54,19 +58,19 @@ import java.util.TreeSet;
  * <table border="1">
  *     <tr> <td> <b>Property Name</b> </td> <td> <b>Property Description</b> </td> </tr>
  *     <tr> <td> <code>type</code> </td> <td>This is the type of the instantiated annotation definition.</td> </tr>
- *     <tr> <td> <code>value</code> </td> <td>This is the value stored in the annotation.</td> </tr>
+ *     <tr> <td> <code>values</code> </td> <td>This is the value stored in the annotation.</td> </tr>
  *     <tr> <td> <code>location</code> </td> <td>This is the source-location information regarding this construct.</td> </tr>
  * </table>
  * </p>
  * 
- * <p> This file was auto-generated on (Sat Nov 08 20:19:21 EST 2014).</p>
+ * <p> This file was auto-generated on (Fri Dec 12 09:04:03 EST 2014).</p>
  */
 @SuppressWarnings("unchecked")
 public final class Annotation extends Object implements IConstruct
 {
     private TypeSpecifier type;
 
-    private String value = null;
+    private ImmutableList<String> values = null;
 
     private SourceLocation location = new SourceLocation();
 
@@ -97,24 +101,24 @@ public final class Annotation extends Object implements IConstruct
     /**
      * Setter.
      * 
-     * @param value is the new value of property <code>value</code>.
-     * @return a copy of this object with property <code>value</code> set to value.
+     * @param value is the new value of property <code>values</code>.
+     * @return a copy of this object with property <code>values</code> set to value.
      */
-    public Annotation setValue(final String value)
+    public Annotation setValues(final ImmutableList<String> value)
     {
         final Annotation result = this.copy();
-        result.value = value;
+        result.values = value;
         return result;
     }
 
     /**
      * Getter.
      * 
-     * @return the value of property <code>value</code>.
+     * @return the value of property <code>values</code>.
      */
-    public String getValue()
+    public ImmutableList<String> getValues()
     {
-        final String value = this.value;
+        final ImmutableList<String> value = this.values;
         return value;
     }
 
@@ -146,15 +150,15 @@ public final class Annotation extends Object implements IConstruct
      * This method creates a new instance of this class.
      * 
      * @param type is the value for property <code>type</code>.
-     * @param value is the value for property <code>value</code>.
+     * @param values is the value for property <code>values</code>.
      * @param location is the value for property <code>location</code>.
      * @return a new instance of this class.
      */
-    public static Annotation create(TypeSpecifier type, String value, SourceLocation location)
+    public static Annotation create(TypeSpecifier type, ImmutableList<String> values, SourceLocation location)
     {
         Annotation object = new Annotation();
         object = object.setType(type);
-        object = object.setValue(value);
+        object = object.setValues(values);
         object = object.setLocation(location);
         return object;
     }
@@ -178,7 +182,7 @@ public final class Annotation extends Object implements IConstruct
     {
         final Annotation result = new Annotation();
         result.type = this.type;
-        result.value = this.value;
+        result.values = this.values;
         result.location = this.location;
         return result;
     }
@@ -197,7 +201,7 @@ public final class Annotation extends Object implements IConstruct
     {
         final Map<String, Object> map = new TreeMap<String, Object>();
         map.put("type", this.getType());
-        map.put("value", this.getValue());
+        map.put("values", this.getValues());
         map.put("location", this.getLocation());
 
         return map;

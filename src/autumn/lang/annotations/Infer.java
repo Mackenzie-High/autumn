@@ -20,7 +20,7 @@ import java.lang.annotation.RetentionPolicy;
  */
 @Finished("2014/07/12")
 @Retention(RetentionPolicy.RUNTIME)
-public @interface InferReturnType
+public @interface Infer
 {
     // Pass
 }

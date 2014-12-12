@@ -3,11 +3,11 @@ module Main in execution;
 @Start
 defun main (args : String[]) : void
 {
-    assert (My::tester -2B) == 23;
-    assert (My::tester -1B) == 23;
-    assert (My::tester  0B) == 100;
-    assert (My::tester  1B) == 101;
-    assert (My::tester  2B) == 102;
+    assert My::tester(-2B) == 23;
+    assert My::tester(-1B) == 23;
+    assert My::tester( 0B) == 100;
+    assert My::tester( 1B) == 101;
+    assert My::tester( 2B) == 102;
 }
 
 defun tester (x : byte) : int

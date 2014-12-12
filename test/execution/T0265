@@ -8,9 +8,9 @@ defun main (args : String[]) : void
 {
     delegate method : MethodEquals => My::handler;
 
-    val p = (new Group "Jetty", "Fluffy", "Molly");
+    val p = new Group("Jetty", "Fluffy", "Molly");
 
-    val q = (Records::bindEquals p, method);
+    val q = Records::bindEquals(p, method);
 
     assert q == "Jetty";
     assert q != "Fluffy";
@@ -19,5 +19,5 @@ defun main (args : String[]) : void
 
 defun handler (self : Group, other : Object) : boolean
 {
-    return (self.x) == other;
+    return self.x() == other;
 }

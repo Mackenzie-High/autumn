@@ -9,5 +9,5 @@ defun main (args : String[]) : void
 
     lambda p : Moo => $1 + $2 + x;
 
-    assert (p.invoke 100, 3) == 120;
+    assert p.invoke(100, 3) == 120;
 }

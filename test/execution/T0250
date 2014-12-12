@@ -5,10 +5,10 @@ struct Person (name : String, age : int);
 @Start
 defun main (args : String[]) : void
 {
-    var p = (Person::instance);
-    p = (p.name "Emma");
-    p = (p.age 24);
+    var p = Person::instance();
+    p = p.name("Emma");
+    p = p.age(24);
 
-    assert (p.name) == "Emma";
-    assert (p.age) == 24;
+    assert p.name() == "Emma";
+    assert p.age() == 24;
 }

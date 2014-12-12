@@ -46,7 +46,7 @@ public final class ByteLiteral
         {
             if (value == null)
             {
-                final String source = source().trim().replaceFirst("B", "");
+                final String source = sourceWithoutUnderscores().trim().replaceFirst("B", "");
 
                 final Byte result = Byte.valueOf(source);
 
@@ -70,6 +70,6 @@ public final class ByteLiteral
     @Override
     public boolean isParsable()
     {
-        return source().matches("-?[0-9]+B");
+        return sourceWithoutUnderscores().matches("-?[0-9]+B");
     }
 }

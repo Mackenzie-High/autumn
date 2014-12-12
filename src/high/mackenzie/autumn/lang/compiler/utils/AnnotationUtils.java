@@ -3,7 +3,6 @@ package high.mackenzie.autumn.lang.compiler.utils;
 import autumn.lang.compiler.ast.nodes.Annotation;
 import autumn.lang.compiler.ast.nodes.AnnotationList;
 import com.google.common.base.Preconditions;
-import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import high.mackenzie.autumn.lang.compiler.compilers.ModuleCompiler;
@@ -56,9 +55,16 @@ public final class AnnotationUtils
 
         final AnnotationNode node = new AnnotationNode(descriptor);
 
-        final String value = Strings.nullToEmpty(annotation.getAnnotationValue());
+        final List<String> values = annotation.getAnnotationValues();
 
-        node.values = ImmutableList.of("value", value);
+        if (values == null)
+        {
+            node.values = null;
+        }
+        else
+        {
+            node.values = Lists.newArrayList("value", values);
+        }
 
         return node;
     }
@@ -135,9 +141,9 @@ public final class AnnotationUtils
             return null;
         }
 
-        final String value = annotation.getValue();
+        final List<String> values = annotation.getValues();
 
-        final IAnnotation result = new CustomAnnotation(null, value, (IAnnotationType) type);
+        final IAnnotation result = new CustomAnnotation(null, values, (IAnnotationType) type);
 
         return result;
     }

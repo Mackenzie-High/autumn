@@ -6,7 +6,7 @@ import high.mackenzie.autumn.resources.InstanceFieldTester;
 @Start
 defun main (args : String[]) : void
 {
-    val tester = (new InstanceFieldTester);
+    val tester = new InstanceFieldTester();
 
     (field tester.object = true);
     assert (field tester.object) == true;

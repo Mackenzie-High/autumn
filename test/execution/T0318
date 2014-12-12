@@ -7,11 +7,11 @@ struct Moo ();
 @Start
 defun main (args : String[]) : void
 {
-    val module = (My::instance);
+    val module = My::instance();
 
-    val info = (module.moduleInfo);
+    val info = module.moduleInfo();
 
-    val actual = (info.structs);
+    val actual = info.structs();
 
     val expected = [(class Boo), (class Moo)];
 

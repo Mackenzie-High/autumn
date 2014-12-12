@@ -1,0 +1,45 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    val info = My::instance().moduleInfo();
+
+    val memory = info.memoizerOf("memory1");
+
+    # Initially there should not be anything in the cache.
+    assert memory.cache().isEmpty();
+
+    # Memoize a value.
+    My::intern(17);
+
+    # Now the interned value should be in the cache.
+    assert memory.cache().size() == 1;
+    assert memory.cache().get([17]) == null;
+
+    # Memoize another value.
+    My::intern(19);
+
+    # Now that value should also be in the cache.
+    assert memory.cache().size() == 2;
+    assert memory.cache().get([19]) == null;
+
+    # Clear the cache.
+    memory.clear();
+
+    # Now the cache should be empty.
+    assert memory.cache().isEmpty();
+
+    # Memoize a value.
+    My::intern(23);
+
+    # Now the interned value should be in the cache.
+    assert memory.cache().size() == 1;
+    assert memory.cache().get([23]) == null;
+}
+
+@Memoize
+defun intern (value : int) : void
+{
+    return;
+}

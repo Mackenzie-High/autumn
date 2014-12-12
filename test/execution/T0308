@@ -7,6 +7,6 @@ defun main (args : String[]) : void
 
     for(i = 0; i < 25000; i + 1)
     {
-        (p.invoke null);
+        p.invoke(null);
     }
 }

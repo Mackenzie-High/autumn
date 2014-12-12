@@ -7,10 +7,10 @@ tuple Person (name : String, age : int);
 @Start
 defun main (args : String[]) : void
 {
-    var p1 = (new Person "Avril", 30);
-    var p2 = (new Person "Avril", 30);
-    var p3 = (new Person "Emma",  24);
-    var p4 = (new Human  "Emma",  24);
+    var p1 = new Person("Avril", 30);
+    var p2 = new Person("Avril", 30);
+    var p3 = new Person("Emma",  24);
+    var p4 = new Human("Emma",  24);
 
     # An object is never equal to null.
     assert p1 != null;

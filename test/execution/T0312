@@ -3,9 +3,9 @@ module Main in execution;
 @Start
 defun main (args : String[]) : void
 {
-    val module = (My::instance);
+    val module = My::instance();
 
-    val info = (module.moduleInfo);
+    val info = module.moduleInfo();
 
-    assert (info.name) == ((class Main).getName);
+    assert info.name() == (class Main).getName();
 }

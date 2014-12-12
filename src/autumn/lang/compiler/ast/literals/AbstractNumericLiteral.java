@@ -58,6 +58,16 @@ public abstract class AbstractNumericLiteral<T>
     }
 
     /**
+     * This method returns the source-code representation of this literal with underscores removed.
+     *
+     * @return this literal, as it appeared in the source code, excluding any underscores.
+     */
+    public final String sourceWithoutUnderscores()
+    {
+        return source().replace("_", "");
+    }
+
+    /**
      * This method determines whether this literal can be converted to a number accurately.
      *
      * @return true, if a conversion would lose information.

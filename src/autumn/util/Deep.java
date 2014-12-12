@@ -1,7 +1,7 @@
 package autumn.util;
 
 import autumn.lang.Record;
-import autumn.lang.annotations.InferReturnType;
+import autumn.lang.annotations.Infer;
 import autumn.lang.compiler.ast.commons.IConstruct;
 import java.util.List;
 import java.util.Map;
@@ -30,7 +30,7 @@ public final class Deep
      * @return a modified version of the object tree, which will be a copy of the object,
      * if the object is immutable.
      */
-    @InferReturnType
+    @Infer
     public static Record set(final Record object,
                              final List<?> path,
                              final Object value)
@@ -38,7 +38,7 @@ public final class Deep
         return null;
     }
 
-    @InferReturnType
+    @Infer
     public static List set(final List<?> object,
                            final List<?> path,
                            final Object value)
@@ -46,7 +46,7 @@ public final class Deep
         return null;
     }
 
-    @InferReturnType
+    @Infer
     public static Map<?, ?> set(final Map<?, ?> object,
                                 final List<?> path,
                                 final Object value)
@@ -54,7 +54,7 @@ public final class Deep
         return null;
     }
 
-    @InferReturnType
+    @Infer
     public static IConstruct set(final IConstruct object,
                                  final List<?> path,
                                  final Object value)

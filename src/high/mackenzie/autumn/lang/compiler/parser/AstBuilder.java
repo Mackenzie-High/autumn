@@ -24,6 +24,7 @@ import high.mackenzie.autumn.lang.compiler.parser.Utils;
 import high.mackenzie.snowflake.ITreeNode;
 import java.io.File;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Stack;
 
 /**
@@ -1095,52 +1096,6 @@ public final class AstBuilder extends AbstractVisitor
      * {inheritDoc} 
      */
     @Override
-    public void visit_yield_void_statement(final ITreeNode $node)
-    {
-        final int $stack_size = $stack.size();
-
-        visitUnknown($node);
-
-        final int $change = $stack.size() - $stack_size;
-
-        assert $change >= 0;
-
-        final TreeBuilder builder = Utils.builder();
-
-        builder.createStatementYieldVoid();
-
-        Utils.setSourceLocation($node);
-
-        builder.popStack();
-    }
-
-    /**
-     * {inheritDoc} 
-     */
-    @Override
-    public void visit_yield_value_statement(final ITreeNode $node)
-    {
-        final int $stack_size = $stack.size();
-
-        visitUnknown($node);
-
-        final int $change = $stack.size() - $stack_size;
-
-        assert $change >= 0;
-
-        final TreeBuilder builder = Utils.builder();
-
-        builder.createStatementYieldValue();
-
-        Utils.setSourceLocation($node);
-
-        builder.popStack();
-    }
-
-    /**
-     * {inheritDoc} 
-     */
-    @Override
     public void visit_recur_statement(final ITreeNode $node)
     {
         final int $stack_size = $stack.size();
@@ -1338,6 +1293,52 @@ public final class AstBuilder extends AbstractVisitor
         final TreeBuilder builder = Utils.builder();
 
         final DoubleLiteral value = Utils.extractDoubleValue($node);
+
+        builder.createDatum(value);
+
+        Utils.setSourceLocation($node);
+    }
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_big_integer_datum(final ITreeNode $node)
+    {
+        final int $stack_size = $stack.size();
+
+        visitUnknown($node);
+
+        final int $change = $stack.size() - $stack_size;
+
+        assert $change >= 0;
+
+        final TreeBuilder builder = Utils.builder();
+
+        final BigIntegerLiteral value = Utils.extractBigIntegerValue($node);
+
+        builder.createDatum(value);
+
+        Utils.setSourceLocation($node);
+    }
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_big_decimal_datum(final ITreeNode $node)
+    {
+        final int $stack_size = $stack.size();
+
+        visitUnknown($node);
+
+        final int $change = $stack.size() - $stack_size;
+
+        assert $change >= 0;
+
+        final TreeBuilder builder = Utils.builder();
+
+        final BigDecimalLiteral value = Utils.extractBigDecimalValue($node);
 
         builder.createDatum(value);
 
@@ -1988,6 +1989,29 @@ public final class AstBuilder extends AbstractVisitor
      * {inheritDoc} 
      */
     @Override
+    public void visit_p8(final ITreeNode $node)
+    {
+        final int $stack_size = $stack.size();
+
+        visitUnknown($node);
+
+        final int $change = $stack.size() - $stack_size;
+
+        assert $change >= 0;
+
+        final TreeBuilder builder = Utils.builder();
+
+        Utils.createChainedMethodCall();
+
+        Utils.setSourceLocation($node);
+
+        builder.popStack();
+    }
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
     public void visit_call_static_method_expression(final ITreeNode $node)
     {
         final int $stack_size = $stack.size();
@@ -2324,9 +2348,9 @@ public final class AstBuilder extends AbstractVisitor
 
         final TreeBuilder builder = Utils.builder();
 
-        final String value = Utils.extractAnnotationValue($node);
+        final List values = Utils.extractAnnotationValues($node);
 
-        builder.createComponentAnnotation(value);
+        builder.createComponentAnnotation(values);
 
         Utils.setSourceLocation($node);
 

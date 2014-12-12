@@ -8,7 +8,7 @@ defun main (args : String[]) : void
 
     try
     {
-        throw (new Throwable);
+        throw new Throwable();
         let x = 21;
     }
     catch(e1 : RuntimeException)

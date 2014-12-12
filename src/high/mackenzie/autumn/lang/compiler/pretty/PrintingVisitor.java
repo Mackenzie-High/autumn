@@ -983,36 +983,13 @@ public final class PrintingVisitor
     }
 
     @Override
-    public void visit(final YieldVoidStatement object)
-    {
-        record(object);
-
-        p.addLine();
-        p.addText("yield;");
-        p.addEmptyLine();
-    }
-
-    @Override
-    public void visit(final YieldValueStatement object)
-    {
-        record(object);
-        require(object, object.getValue());
-
-        p.addLine();
-        p.addText("yield ");
-        object.getValue().accept(this);
-        p.addText(";");
-        p.addEmptyLine();
-    }
-
-    @Override
     public void visit(final PrognExpression object)
     {
         record(object);
         require(object, object.getElements());
         require(object, object.getElements().isEmpty() == false);
 
-        printList("(progn ", object.getElements(), ", ", ")");
+        printList("progn (", object.getElements(), ", ", ")");
     }
 
     @Override
@@ -1094,6 +1071,26 @@ public final class PrintingVisitor
 
     @Override
     public void visit(final DoubleDatum object)
+    {
+        record(object);
+        require(object, object.getValue() != null);
+        reportUnprintableNode(object, object.getValue().isParsable());
+
+        p.addText(object.getValue().source());
+    }
+
+    @Override
+    public void visit(final BigDecimalDatum object)
+    {
+        record(object);
+        require(object, object.getValue() != null);
+        reportUnprintableNode(object, object.getValue().isParsable());
+
+        p.addText(object.getValue().source());
+    }
+
+    @Override
+    public void visit(final BigIntegerDatum object)
     {
         record(object);
         require(object, object.getValue() != null);
@@ -1188,11 +1185,10 @@ public final class PrintingVisitor
         require(object, object.getName());
         require(object, object.getArguments());
 
-        p.addText("(dispatch ");
+        p.addText("dispatch ");
         object.getName().accept(this);
-        printIf(" ", !object.getArguments().isEmpty());
-        printList("", object.getArguments(), ", ", "");
-        p.addText(")");
+        p.addText(" ");
+        printList("(", object.getArguments(), ", ", ")");
     }
 
     @Override
@@ -1202,52 +1198,10 @@ public final class PrintingVisitor
         require(object, object.getName());
         require(object, object.getArguments());
 
-        p.addText("(call ");
+        p.addText("call ");
         printStaticMemberAccess(object.getOwner(), object.getName());
-        printIf(" ", !object.getArguments().isEmpty());
-        printList("", object.getArguments(), ", ", "");
-        p.addText(")");
-    }
-
-    @Override
-    public void visit(final SetStaticFieldExpression object)
-    {
-        record(object);
-        require(object, object.getOwner());
-        require(object, object.getName());
-        require(object, object.getValue());
-
-        p.addText("(field ");
-        printStaticMemberAccess(object.getOwner(), object.getName());
-        p.addText(" = ");
-        object.getValue().accept(this);
-        p.addText(")");
-    }
-
-    @Override
-    public void visit(final GetStaticFieldExpression object)
-    {
-        record(object);
-        require(object, object.getOwner());
-        require(object, object.getName());
-
-        p.addText("(field ");
-        printStaticMemberAccess(object.getOwner(), object.getName());
-        p.addText(")");
-    }
-
-    @Override
-    public void visit(final NewExpression object)
-    {
-        record(object);
-        require(object, object.getType());
-        require(object, object.getArguments());
-
-        p.addText("(new ");
-        object.getType().accept(this);
-        printIf(" ", !object.getArguments().isEmpty());
-        printList("", object.getArguments(), ", ", "");
-        p.addText(")");
+        p.addText(" ");
+        printList("(", object.getArguments(), ", ", ")");
     }
 
     @Override
@@ -1258,11 +1212,48 @@ public final class PrintingVisitor
         require(object, object.getName());
         require(object, object.getArguments());
 
-        p.addText("(call ");
+        p.addText("call ");
         printInstanceMemberAccess(object.getOwner(), object.getName());
-        printIf(" ", !object.getArguments().isEmpty());
-        printList("", object.getArguments(), ", ", "");
-        p.addText(")");
+        p.addText(" ");
+        printList("(", object.getArguments(), ", ", ")");
+    }
+
+    @Override
+    public void visit(final SetStaticFieldExpression object)
+    {
+        record(object);
+        require(object, object.getOwner());
+        require(object, object.getName());
+        require(object, object.getValue());
+
+        p.addText("field ");
+        printStaticMemberAccess(object.getOwner(), object.getName());
+        p.addText(" = ");
+        object.getValue().accept(this);
+    }
+
+    @Override
+    public void visit(final GetStaticFieldExpression object)
+    {
+        record(object);
+        require(object, object.getOwner());
+        require(object, object.getName());
+
+        p.addText("field ");
+        printStaticMemberAccess(object.getOwner(), object.getName());
+    }
+
+    @Override
+    public void visit(final NewExpression object)
+    {
+        record(object);
+        require(object, object.getType());
+        require(object, object.getArguments());
+
+        p.addText("new ");
+        object.getType().accept(this);
+        p.addText(" ");
+        printList("(", object.getArguments(), ", ", ")");
     }
 
     @Override
@@ -1273,11 +1264,10 @@ public final class PrintingVisitor
         require(object, object.getName());
         require(object, object.getValue());
 
-        p.addText("(field ");
+        p.addText("field ");
         printInstanceMemberAccess(object.getOwner(), object.getName());
         p.addText(" = ");
         object.getValue().accept(this);
-        p.addText(")");
     }
 
     @Override
@@ -1287,9 +1277,8 @@ public final class PrintingVisitor
         require(object, object.getOwner());
         require(object, object.getName());
 
-        p.addText("(field ");
+        p.addText("field ");
         printInstanceMemberAccess(object.getOwner(), object.getName());
-        p.addText(")");
     }
 
     @Override
@@ -1299,11 +1288,10 @@ public final class PrintingVisitor
         require(object, object.getValue());
         require(object, object.getType());
 
-        p.addText("(instanceof ");
+        p.addText("instanceof ");
         object.getValue().accept(this);
         p.addText(" : ");
         object.getType().accept(this);
-        p.addText(")");
     }
 
     @Override
@@ -1314,13 +1302,12 @@ public final class PrintingVisitor
         require(object, object.getCaseTrue());
         require(object, object.getCaseFalse());
 
-        p.addText("(if ");
+        p.addText("if ");
         object.getCondition().accept(this);
         p.addText(" then ");
         object.getCaseTrue().accept(this);
         p.addText(" else ");
         object.getCaseFalse().accept(this);
-        p.addText(")");
     }
 
     @Override
@@ -1575,14 +1562,10 @@ public final class PrintingVisitor
         p.addText("@");
         object.getType().accept(this);
 
-        if (object.getValue() != null)
+        if (object.getValues() != null)
         {
-            final String unescaped = autumn.util.Strings.unescape(object.getValue());
-
-            p.addText(" = ");
-            p.addText("\"");
-            p.addText(unescaped);
-            p.addText("\"");
+            p.addText(" ");
+            p.addText(autumn.util.Strings.str(createArrayOfStringLiterals(object.getValues()), "(", ", ", ")"));
         }
     }
 
@@ -1821,6 +1804,26 @@ public final class PrintingVisitor
         owner.accept(this);
         p.addText(".");
         member.accept(this);
+    }
+
+    /**
+     * This method converts a sequence of strings to string literal style strings.
+     *
+     * @param values are the escaped strings.
+     * @return the values such that they appear to be string literals.
+     */
+    private List<String> createArrayOfStringLiterals(final Iterable<String> values)
+    {
+        final List<String> result = Lists.newLinkedList();
+
+        for (String value : values)
+        {
+            final String unescaped = autumn.util.Strings.unescape(value);
+
+            result.add("\"" + unescaped + "\"");
+        }
+
+        return result;
     }
 
     /**

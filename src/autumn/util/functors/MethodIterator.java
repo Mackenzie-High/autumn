@@ -1,24 +1,23 @@
 package autumn.util.functors;
 
 import autumn.lang.TypedFunctor;
-import autumn.lang.internals.AbstractStaticFunctor;
+import autumn.lang.internals.AbstractDefinedFunctor;
 import autumn.lang.internals.ArgumentStack;
 import com.google.common.collect.ImmutableList;
 import java.util.Iterator;
 import java.util.List;
 
 /**
- * An instance of this functor-type is a functor that used to implement an iterator method.
+ * functor MethodIterator (owner : Object) : Iterator
  *
  * <p>
- * <b>Signature:</b>
- * <code> MethodIter (self : Object) => Iterator </code>
+ * The owner parameter is the object that contains the method. <br>
  * </p>
  *
  * @author Mackenzie High
  */
 public class MethodIterator
-        extends AbstractStaticFunctor
+        extends AbstractDefinedFunctor
 {
     /**
      * Sole Constructor.

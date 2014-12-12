@@ -10,6 +10,7 @@ import autumn.lang.compiler.ast.commons;
 import autumn.lang.compiler.ast.nodes;
 
 # Class Imports
+import java.util.List;
 import java.io.File;
 import high.mackenzie.snowflake.ITreeNode;
 import high.mackenzie.autumn.lang.compiler.parser.Utils;
@@ -848,44 +849,6 @@ rule return_value_statement
 }
 
 ###################################################################################################
-# Statements --> Yields --> Void
-###################################################################################################
-
-rule yield_void_statement
-{
-  # Get the AST builder.
-  builder : TreeBuilder = call Utils.builder();
-
-  # Create the AST node.
-  call builder.createStatementYieldVoid();
-
-  # Set the source-location information.
-  call Utils.setSourceLocation($node);
-
-  # Merge the upper stack with the next lower stack.
-  call builder.popStack();
-}
-
-###################################################################################################
-# Statements --> Yields --> Value
-###################################################################################################
-
-rule yield_value_statement
-{
-  # Get the AST builder.
-  builder : TreeBuilder = call Utils.builder();
-
-  # Create the AST node.
-  call builder.createStatementYieldValue();
-
-  # Set the source-location information.
-  call Utils.setSourceLocation($node);
-
-  # Merge the upper stack with the next lower stack.
-  call builder.popStack();
-}
-
-###################################################################################################
 # Statements --> Returns --> Recur
 ###################################################################################################
 
@@ -1048,6 +1011,45 @@ rule double_datum
 
   # Extract the value from the parse-tree node. 
   value : DoubleLiteral = call Utils.extractDoubleValue($node);
+
+  # Create the AST node.
+  call builder.createDatum(value);
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+}
+
+###################################################################################################
+# Expressions --> Datums --> Big Integer
+###################################################################################################
+
+rule big_integer_datum
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Extract the value from the parse-tree node. 
+  value : BigIntegerLiteral = call Utils.extractBigIntegerValue($node);
+
+  # Create the AST node.
+  call builder.createDatum(value);
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+}
+
+
+###################################################################################################
+# Expressions --> Datums --> Big Decimal
+###################################################################################################
+
+rule big_decimal_datum
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Extract the value from the parse-tree node. 
+  value : BigDecimalLiteral = call Utils.extractBigDecimalValue($node);
 
   # Create the AST node.
   call builder.createDatum(value);
@@ -1552,6 +1554,25 @@ rule call_method_expression
 }
 
 ###################################################################################################
+# Expressions --> Object Orientation --> Call Method - Chained
+###################################################################################################
+
+rule p8
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call Utils.createChainedMethodCall();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+
+  # Merge the upper stack with the next lower stack.
+  call builder.popStack();
+}
+
+###################################################################################################
 # Expressions --> Object Orientation --> Call Static Method
 ###################################################################################################
 
@@ -1830,10 +1851,10 @@ rule annotation
   builder : TreeBuilder = call Utils.builder();
 
   # Get the value to store in the annotation.
-  value : String = call Utils.extractAnnotationValue($node);
+  values : List = call Utils.extractAnnotationValues($node);
 
   # Create the AST node.
-  call builder.createComponentAnnotation(value);
+  call builder.createComponentAnnotation(values);
 
   # Set the source-location information.
   call Utils.setSourceLocation($node);

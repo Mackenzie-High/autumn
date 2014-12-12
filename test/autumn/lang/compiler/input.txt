@@ -7,7 +7,7 @@
 @Anno1
 @Anno2
 @Anno3
-@Author = "Hello \n World"
+@Author ( "Mackenzie \n High" )
 module * in program ;
 module * in program.xoo ;
 module * in program.xoo.moo ;
@@ -35,6 +35,7 @@ import java.util.Map [ ] [ ] [ ] ;
 @Anno01A
 @Anno02A
 @Anno03A
+@Authors ( "Larry" , "Moe" , "Curly" )
 annotation Anno17 ;
 
 
@@ -217,12 +218,27 @@ defun main (args : String[]) : void
 
     nop;
 
-    # Floating-Point Datums with Exponents
+    # Floating Point Datums with Exponents
     val xoo = 123.456e789F ;
     val xoo = 123.456e-789F ;
     val xoo = 123.456e789 ;
     val xoo = 123.456e-789 ;
 
+    nop;
+
+    # Big Integer Datums
+    val xoo = 1234567890BI;
+    val xoo = -1234567890BI;
+
+    nop;
+
+    # Big Decimal Datums
+    val xoo = 1234567890.456BD;
+    val xoo = -1234567890.456BD;
+    val xoo = 1234567890.456BD;
+    val xoo = 1234567890.456e30BD;
+    val xoo = 1234567890.456e+50BD;
+    val xoo = 1234567890.456e-70BD;
     nop;
 
     # String Datums
@@ -362,61 +378,61 @@ defun main (args : String[]) : void
 
     nop;
 
-    val xoo = ( new Goo ) ;
-    val xoo = ( new Goo 12 ) ;
-    val xoo = ( new Goo 12 , 34 ) ;
-    val xoo = ( new Goo 12 , 34 , 56 ) ;
+    val xoo = new Goo ( ) ;
+    val xoo = new Goo ( 12 ) ;
+    val xoo = new Goo ( 12 , 34 ) ;
+    val xoo = new Goo ( 12 , 34 , 56 ) ;
 
     nop;
 
-    val xoo = ( call Goo :: boo ) ;
-    val xoo = ( call Goo :: boo 12 ) ;
-    val xoo = ( call Goo :: boo 12 , 34 ) ;
-    val xoo = ( call Goo :: boo 12 , 34 , 56 ) ;
+    val xoo = call Goo :: boo ( ) ;
+    val xoo = call Goo :: boo ( 12 ) ;
+    val xoo = call Goo :: boo ( 12 , 34 ) ;
+    val xoo = call Goo :: boo ( 12 , 34 , 56 ) ;
 
     nop;
 
-    val xoo = ( call goo . boo ) ;
-    val xoo = ( call goo . boo 12 ) ;
-    val xoo = ( call goo . boo 12 , 34 ) ;
-    val xoo = ( call goo . boo 12 , 34 , 56 ) ;
+    val xoo = call goo . boo ( ) ;
+    val xoo = call goo . boo ( 12 ) ;
+    val xoo = call goo . boo ( 12 , 34 ) ;
+    val xoo = call goo . boo ( 12 , 34 , 56 ) ;
 
     nop;
 
-    val xoo = ( dispatch moo ) ;
-    val xoo = ( dispatch moo 12 ) ;
-    val xoo = ( dispatch moo 12 , 34 ) ;
-    val xoo = ( dispatch moo 12 , 34 , 56 ) ;
+    val xoo = dispatch moo ( ) ;
+    val xoo = dispatch moo ( 12 ) ;
+    val xoo = dispatch moo ( 12 , 34 ) ;
+    val xoo = dispatch moo ( 12 , 34 , 56 ) ;
 
     nop;
 
-    val xoo = ( field barn . moo = hay ) ;
+    val xoo = field barn . moo = hay ;
 
     nop;
 
-    val xoo = ( field barn . moo ) ;
+    val xoo = field barn . moo ;
 
     nop;
 
-    val xoo = ( field Barn :: moo = hay ) ;
+    val xoo = field Barn :: moo = hay ;
 
     nop;
 
-    val xoo = ( field Barn :: moo ) ;
+    val xoo = field Barn :: moo ;
 
     nop;
 
-    val xoo = ( instanceof 12 + 34 : String ) ;
+    val xoo = instanceof 12 + 34 : String ;
 
     nop;
 
-    val xoo = ( if 12 == 34 then 56 else 78 ) ;
+    val xoo = if 12 == 34 then 56 else 78 ;
 
     nop;
 
-    val xoo = ( progn 12 ) ;
-    val xoo = ( progn 12 , 34 ) ;
-    val xoo = ( progn 12 , 34 , 56 ) ;
+    val xoo = progn ( 12 ) ;
+    val xoo = progn ( 12 , 34 ) ;
+    val xoo = progn ( 12 , 34 , 56 ) ;
 
     nop;
 
@@ -529,14 +545,6 @@ defun main (args : String[]) : void
 
     nop;
 
-    yield ;
-
-    nop;
-
-    yield 12 + 34 ;
-
-    nop;
-
     recur ;
     recur 12 ;
     recur 12 , 34 ;
@@ -585,13 +593,13 @@ defun main (args : String[]) : void
     nop;
 
     # Name Components
-    (dispatch $);
-    (dispatch _);
-    (dispatch A);
-    (dispatch Z);
-    (dispatch a);
-    (dispatch z);
-    (dispatch A0123456789$_ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz);
+    dispatch $ ();
+    dispatch _ ();
+    dispatch A ();
+    dispatch Z ();
+    dispatch a ();
+    dispatch z ();
+    dispatch A0123456789$_ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz ();
 
     nop;
 
@@ -657,6 +665,10 @@ defun main (args : String[]) : void
     nop;
 
     val x = "\t\b\n\r\f\'\"\\";
+
+    nop;
+
+    val xoo = boo.goo (1, 2).moo (3, 4).zoo (5, 6) ;
 }
 
 

@@ -3,7 +3,7 @@ module Main in tests;
 @Start
 defun main(args : String[]) : void
 {
-    assert (F::str (F::sum [])) == "0";
+    assert F::strF::sum(([])) == "0";
 
-    assert (F::str (F::sum [1, 2, 3, 4, 5])) == "15";
+    assert F::strF::sum(([1, 2, 3, 4, 5])) == "15";
 }

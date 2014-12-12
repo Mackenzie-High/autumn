@@ -6,39 +6,39 @@ tuple Person (name : String, age : int);
 defun main (args : String[]) : void
 {
     # Create an immutable tuple.
-    val p1 = (new Person "Emma", 24);
+    val p1 = new Person("Emma", 24);
 
-    assert (p1.isImmutable);
-    assert (p1.isMutable) ^ (p1.isImmutable);
+    assert p1.isImmutable();
+    assert p1.isMutable() ^ p1.isImmutable();
 
 
 
 
 
     # Convert the immutable tuple to a mutable tuple.
-    val p2 = (p1.mutable);
+    val p2 = p1.mutable();
 
-    assert (p2.isMutable);
-    assert (p2.isMutable) ^ (p2.isImmutable);
+    assert p2.isMutable();
+    assert p2.isMutable() ^ p2.isImmutable();
 
     assert p1 == p2;
     assert p1 !== p2;
 
-    assert "(Emma, 24)" == (p2.toString);
+    assert "(Emma, 24)" == p2.toString();
 
 
 
 
 
     # Mutate the mutable tuple.
-    val p3 = (p2.name "Erin");
+    val p3 = p2.name("Erin");
 
-    assert (p3.isMutable);
-    assert (p3.isMutable) ^ (p3.isImmutable);
+    assert p3.isMutable();
+    assert p3.isMutable() ^ p3.isImmutable();
 
     assert p3 === p2;
 
     # The mutable tuple's state must have changed.
-    assert "(Erin, 24)" == (p2.toString);
-    assert "(Erin, 24)" == (p3.toString);
+    assert "(Erin, 24)" == p2.toString();
+    assert "(Erin, 24)" == p3.toString();
 }

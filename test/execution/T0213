@@ -13,11 +13,11 @@ tuple T (a : boolean,
 @Start
 defun main (args : String[]) : void
 {
-    val test = (new T true, 'X', 10B, 20S, 30, 40L, 50.0F, 60.0, "Venus");
+    val test = new T(true, 'X', 10B, 20S, 30, 40L, 50.0F, 60.0, "Venus");
 
     var expected = [true, 'X', 10B, 20S, 30, 40L, 50.0F, 60.0, "Venus"];
 
-    var actual = (test.values);
+    var actual = test.values();
 
     assert expected == actual;
 }

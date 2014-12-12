@@ -1,19 +1,22 @@
 package autumn.util.functors;
 
 import autumn.lang.TypedFunctor;
-import autumn.lang.internals.AbstractStaticFunctor;
+import autumn.lang.internals.AbstractDefinedFunctor;
 import autumn.lang.internals.ArgumentStack;
 import com.google.common.collect.ImmutableList;
 import java.io.File;
 import java.util.List;
 
 /**
- * An instance of this functor-type is a functor that accepts a file argument.
+ * functor FileProcessor (file : File) : void
+ *
+ * TODO: should this return an object?
+ * TODO: should this extend FunctionO?
  *
  * @author Mackenzie High
  */
 public class FileProcessor
-        extends AbstractStaticFunctor
+        extends AbstractDefinedFunctor
 {
     /**
      * Sole Constructor.

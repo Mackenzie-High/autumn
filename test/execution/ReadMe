@@ -36,10 +36,12 @@ Test Index
 . . . Invocation  // TODO: fix
 . Annotation Definitions
 . . T0140 = Reflective Testing of the Annotation's Class
-. . T0141 = Usage of a Defined Annotation
 . . T0160 = Annotation Applied to Itself
 . . T0161 = Annotations Applied to an Annotation
-. . T0287 = Usage of an Defined Annotation - With Value
+. . T0141 = Usage of a Defined Annotation - No Values
+. . T0287 = Usage of a Defined Annotation - Single Value
+. . T0326 = Usage of a Defined Annotation - Multiple Values
+. . T0327 = Escape Sequence in Annotation Value
 . Exception Definitions
 . . T0164 = Applied Annotations are Present
 . . T0163 = Inherited Constructors
@@ -126,9 +128,7 @@ Test Index
 . . T0285 = Covariance - Parameters
 . Functions
 . . Reflective Testing of the Reflective Method Object
-. . T0289 = Generator - Basic
 . . Generator - Recursive
-. . T0288 = Generator - Throws Exception
 . . T0064 = Checked Exceptions
 . . Annotation Lists
 . . Parameter Lists
@@ -271,26 +271,24 @@ Test Index
 . . . Special Method - closure()
 . . . T0308 = Special Method - toString()
 . . Return Void
-. . Return Value = T0053    # TODO: Add auto-boxing
+. . . T0333 = Early Exit
+. . . T0334 = Memoization
+. . Return Value
+. . . T0331 = Early Exit
+. . . T0053 = Different Types of Return Values
+. . . T0328 = Auto Boxing
+. . . T0329 = Auto Unboxing
+. . . T0330 = Auto Coercions
+. . . T0332 = Memoization
 . . Recur
-. . . T0067 = Nullary Function
-. . . Unary Function
-. . . Multiple Parameter Method
-. . . Void Method
-. . . Non-Void method
-. . . Auto-Boxing of Arguments
-. . . Auto-Unboxing of Arguments
-. . . Auto-Widening of Arguments
-. . Yield Void
-. . . Reentry Locations
-. . . Arguments
-. . . Restoration of Local Variables
-. . Yield Value
-. . . T0054 = Reentry Locations
-. . . T0069 = Arguments
-. . . T0068 = Restoration of Local Variables
-. . . T0070 = Auto-Boxing
-. . . T0071 = Auto-Unboxing
+. . . T0067 = Parameter Count - None
+. . . Parameter Count - Single
+. . . Parameter Count - Multiple
+. . . Return Type - Void
+. . . Return Type - Non Void
+. . . Arguments - Auto Boxing
+. . . Arguments - Auto Unboxing
+. . . Arguments - Coercion
 . Expressions
 . . Dispatch
 . . . T0301 = Very Basic Usage
@@ -374,13 +372,13 @@ Test Index
 . . T0090 = Less Operator
 . . T0091 = Greater-Equals Operator
 . . T0092 = Less-Equals Operator
-. . T0093 = AND Operator - (eager)
-. . T0097 = AND Operator - (short circuit)
-. . T0094 = OR Operator - (eager)
-. . T0098 = OR Operator - (short circuit)
+. . T0093 = AND Operator - Truth Table
+. . T0097 = AND Operator - Short Circuiting
+. . T0094 = OR Operator - Truth Table
+. . T0098 = OR Operator - Short Circuiting
 . . T0095 = XOR Operator
-. . T0096 = Implies Operator - (eager)
-. . T0248 = Implies Operator - (short circuit)
+. . T0096 = Implies Operator - Truth Table
+. . T0248 = Implies Operator - Short Circuiting
 . . T0043 = Null Coalescing Operator
 . . As
 . . . T0044 = Operand-Stack Leakage
@@ -398,10 +396,16 @@ Test Index
 . . T0221 = Class Datums
 . . T0055 = Types of Datums
 . . T0056 = Values of Datums
+. . T0324 = BigInteger Datums
+. . T0325 = BigDecimal Datums
 . . T0220 = Strings
 . . T0222 = Null
 . . Variables
 . . . T0223 = Default Value
+. Special Topics
+. . Automatic Boxing
+. . Automatic Unboxing
+. . Automatic Coercions
 
 
 

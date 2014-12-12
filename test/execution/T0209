@@ -5,26 +5,26 @@ import java.util.LinkedList;
 @Start
 defun main (args : String[]) : void
 {
-    var list = (new LinkedList);
+    var list = new LinkedList();
 
     var i = 1;
 
     do
     {
-        (list.add -i);
+        list.add(-i);
 
         let i = i + 1;
 
         when (i == 3) then redo;
     }
-    while ((My::moo list, i) & i < 5)
+    while (My::moo(list, i) & i < 5)
 
     assert list == [-1, 2, -2, -3, 4, -4, 5];
 }
 
 defun moo (list : List, i : int) : boolean
 {
-    (list.add i);
+    list.add(i);
 
     return true;
 }

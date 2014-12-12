@@ -8,9 +8,9 @@ defun main (args : String[]) : void
 {
     try
     {
-        val p = (new Pair 10, 20);
+        val p = new Pair(10, 20);
 
-        (p.bind null);
+        p.bind(null);
 
         assert false;
     }

@@ -93,49 +93,123 @@ public class ExpressionTypeChecker
     @Override
     public void visit(final BooleanDatum object)
     {
+        /**
+         * Assign a datatype to the literal based on its syntactic form.
+         */
         infer(object, program.typesystem.utils.PRIMITIVE_BOOLEAN);
     }
 
     @Override
     public void visit(final CharDatum object)
     {
+        /**
+         * Ensure that the literal can actually be compiled without losing information.
+         */
+        program.checker.checkLiteral(object, object.getValue().value(), object.getValue().source(), Character.MIN_VALUE, Character.MAX_VALUE);
+
+        /**
+         * Assign a datatype to the literal based on its syntactic form.
+         */
         infer(object, program.typesystem.utils.PRIMITIVE_CHAR);
     }
 
     @Override
     public void visit(final ByteDatum object)
     {
+        /**
+         * Ensure that the literal can actually be compiled without losing information.
+         */
+        program.checker.checkLiteral(object, object.getValue().value(), object.getValue().source(), Byte.MIN_VALUE, Byte.MAX_VALUE);
+
+        /**
+         * Assign a datatype to the literal based on its syntactic form.
+         */
         infer(object, program.typesystem.utils.PRIMITIVE_BYTE);
     }
 
     @Override
     public void visit(final ShortDatum object)
     {
+        /**
+         * Ensure that the literal can actually be compiled without losing information.
+         */
+        program.checker.checkLiteral(object, object.getValue().value(), object.getValue().source(), Short.MIN_VALUE, Short.MAX_VALUE);
+
+        /**
+         * Assign a datatype to the literal based on its syntactic form.
+         */
         infer(object, program.typesystem.utils.PRIMITIVE_SHORT);
     }
 
     @Override
     public void visit(final IntDatum object)
     {
+        /**
+         * Ensure that the literal can actually be compiled without losing information.
+         */
+        program.checker.checkLiteral(object, object.getValue().value(), object.getValue().source(), Integer.MIN_VALUE, Integer.MAX_VALUE);
+
+        /**
+         * Assign a datatype to the literal based on its syntactic form.
+         */
         infer(object, program.typesystem.utils.PRIMITIVE_INT);
     }
 
     @Override
     public void visit(final LongDatum object)
     {
+        /**
+         * Ensure that the literal can actually be compiled without losing information.
+         */
+        program.checker.checkLiteral(object, object.getValue().value(), object.getValue().source(), Long.MIN_VALUE, Long.MAX_VALUE);
+
+        /**
+         * Assign a datatype to the literal based on its syntactic form.
+         */
         infer(object, program.typesystem.utils.PRIMITIVE_LONG);
     }
 
     @Override
     public void visit(final FloatDatum object)
     {
+        /**
+         * Ensure that the literal can actually be compiled without losing information.
+         */
+        program.checker.checkLiteral(object, object.getValue().value(), object.getValue().source(), Float.MIN_VALUE, Float.MAX_VALUE);
+
         infer(object, program.typesystem.utils.PRIMITIVE_FLOAT);
     }
 
     @Override
     public void visit(final DoubleDatum object)
     {
+        /**
+         * Ensure that the literal can actually be compiled without losing information.
+         */
+        program.checker.checkLiteral(object, object.getValue().value(), object.getValue().source(), Double.MIN_VALUE, Double.MAX_VALUE);
+
+        /**
+         * Assign a datatype to the literal based on its syntactic form.
+         */
         infer(object, program.typesystem.utils.PRIMITIVE_DOUBLE);
+    }
+
+    @Override
+    public void visit(final BigIntegerDatum object)
+    {
+        /**
+         * Assign a datatype to the literal based on its syntactic form.
+         */
+        infer(object, program.typesystem.utils.BIG_INTEGER);
+    }
+
+    @Override
+    public void visit(final BigDecimalDatum object)
+    {
+        /**
+         * Assign a datatype to the literal based on its syntactic form.
+         */
+        infer(object, program.typesystem.utils.BIG_DECIMAL);
     }
 
     @Override
@@ -143,6 +217,9 @@ public class ExpressionTypeChecker
     {
         program.checker.requireWellFormedStringLiteral(object);
 
+        /**
+         * Assign a datatype to the literal based on its syntactic form.
+         */
         infer(object, program.typesystem.utils.STRING);
     }
 

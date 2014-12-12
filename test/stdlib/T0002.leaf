@@ -7,9 +7,9 @@ defun main(args : String[]) : void
     val output = null is JsonValue;
 
     input = "[12, -34.0, 56]";
-    output = (Json::parse input);
+    output = Json::parse(input);
 
-    assert (F::str ((output is JsonArray).get 0)) == "12";
-    assert (F::str ((output is JsonArray).get 1)) == "-34.0";
-    assert (F::str ((output is JsonArray).get 2)) == "56";
+    assert F::str(((output is JsonArray).get 0)) == "12";
+    assert F::str(((output is JsonArray).get 1)) == "-34.0";
+    assert F::str(((output is JsonArray).get 2)) == "56";
 }

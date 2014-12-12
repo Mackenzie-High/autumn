@@ -8,7 +8,7 @@ defun main (args : String[]) : void
 
     try
     {
-        throw (new IllegalStateException);
+        throw new IllegalStateException();
         let x = 21;
     }
     catch(e1 : Exception)

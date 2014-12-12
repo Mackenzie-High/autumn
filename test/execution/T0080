@@ -7,9 +7,9 @@ enum Cities (Paris, London);
 @Start
 defun main (args : String[]) : void
 {
-    val m = (Main::instance);
+    val m = Main::instance();
 
-    val enums = (call m.moduleEnumDefinitions);
+    val enums = call m.moduleEnumDefinitions();
 
     assert [(class Pets), (class Cities)] == enums;
 }

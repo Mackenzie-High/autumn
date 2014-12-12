@@ -5,7 +5,7 @@ defun main (args : String[]) : void
 {
     val x1 = "123";
     val x2 = [];
-    var x3 = (new Object);
+    var x3 = new Object();
 
     assert true == (instanceof x1 : String);
     assert true == (instanceof x1 : CharSequence);

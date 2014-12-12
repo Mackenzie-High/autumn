@@ -3,9 +3,9 @@ module Main in program;
 @Start
 defun main (args : String[]) : void
 {
-    assert (My::fib 46) == 1836311903L;
+    assert My::fib(46) == 1836311903L;
 
-    assert (My::fib 92) == 7540113804746346429L;
+    assert My::fib(92) == 7540113804746346429L;
 }
 
 @Memoize
@@ -15,5 +15,5 @@ defun fib (n : long) : long
 
     when (n == 1) then return 1;
 
-    return (My::fib n - 1) + (My::fib n - 2);
+    return My::fib(n - 1) + My::fib(n - 2);
 }

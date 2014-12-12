@@ -1,6 +1,6 @@
 package high.mackenzie.autumn.lang.compiler.utils;
 
-import autumn.lang.StaticFunctor;
+import autumn.lang.DefinedFunctor;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IClassType;
@@ -46,7 +46,7 @@ public final class FunctorAnalyzer
         Preconditions.checkNotNull(utils);
         Preconditions.checkNotNull(functor);
 
-        assert functor.isSubtypeOf(functor.getTypeFactory().fromClass(StaticFunctor.class));
+        assert functor.isSubtypeOf(functor.getTypeFactory().fromClass(DefinedFunctor.class));
 
         this.utils = utils;
         this.functor = functor;

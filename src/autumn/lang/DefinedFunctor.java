@@ -7,16 +7,17 @@ import java.util.List;
  * This interface is the supertype of statically defined functor types.
  *
  * <p>
- * A class that implements this interface should also provide a single invoke(*) method.
+ * A class that implements this interface must also provide a single invoke(*) method.
  * The method's parameters are the parameters to the functor.
  * The return-type of the method is the return-type of the functor.
+ * The invoke(*) method simply invokes the apply(ArgumentStack) method.
  * For example, imagine a functor that takes an int parameter and returns a double.
- * Then, the class should provide an invoke(int) : double.
+ * Then, the class should provide a method: invoke(int) : double.
  * </p>
  *
  * <p>
  * A class that implements this interface should provide a single constructor.
- * The constructor should take a Functor as its only parameter.
+ * The constructor should take a TypedFunctor as its only parameter.
  * The functor will become the inner() functor.
  * </p>
  *
@@ -33,7 +34,7 @@ import java.util.List;
  *
  * @author Mackenzie High
  */
-public interface StaticFunctor
+public interface DefinedFunctor
         extends TypedFunctor
 {
     /**

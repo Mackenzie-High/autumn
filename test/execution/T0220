@@ -62,7 +62,7 @@ defun main (args : String[]) : void
               B
               C";
 
-    s1 = (s1.replace " ", "");
+    s1 = s1.replace(" ", "");
 
     assert s1 == "A\nB\nC";
 
@@ -73,7 +73,7 @@ defun main (args : String[]) : void
                 B
                 C''';
 
-    s2 = (s2.replace " ", "");
+    s2 = s2.replace(" ", "");
 
     assert s2 == "A\nB\nC";
 

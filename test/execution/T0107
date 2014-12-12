@@ -5,7 +5,7 @@ defun main (args : String[]) : void
 {
     try
     {
-        var object = (new Object);
+        var object = new Object();
 
         // An is-conversion throws an exception, when the cast is impossible at runtime.
         // However, the conversion must be theoretically possible at compile-time.

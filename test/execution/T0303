@@ -7,9 +7,9 @@ defun main (args : String[]) : void
 {
     lambda p : Moo => null;
 
-    var inner = (p.inner) is Lambda;
+    var inner = p.inner() is Lambda;
 
     assert p !== inner;
-    assert (inner.parameterTypes) == [(class String), (class int)];
-    assert (inner.parameterTypes) == (p.parameterTypes);
+    assert inner.parameterTypes() == [(class String), (class int)];
+    assert inner.parameterTypes() == p.parameterTypes();
 }

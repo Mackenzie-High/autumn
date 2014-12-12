@@ -1,6 +1,6 @@
 package high.mackenzie.autumn.lang.compiler.utils;
 
-import autumn.lang.StaticFunctor;
+import autumn.lang.DefinedFunctor;
 import com.google.common.base.Preconditions;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IMethod;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IVariableType;
@@ -31,8 +31,8 @@ public final class FunctorSubtypingViolation
         assert lower.getOwner().isSubtypeOf(upper.getOwner());
         assert lower.getName().equals("invoke");
         assert upper.getName().equals("invoke");
-        assert lower.getOwner().isSubtypeOf(lower.getOwner().getTypeFactory().fromClass(StaticFunctor.class));
-        assert upper.getOwner().isSubtypeOf(upper.getOwner().getTypeFactory().fromClass(StaticFunctor.class));
+        assert lower.getOwner().isSubtypeOf(lower.getOwner().getTypeFactory().fromClass(DefinedFunctor.class));
+        assert upper.getOwner().isSubtypeOf(upper.getOwner().getTypeFactory().fromClass(DefinedFunctor.class));
 
         this.lower = lower;
         this.upper = upper;

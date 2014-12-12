@@ -1,23 +1,18 @@
 package autumn.util.functors;
 
 import autumn.lang.TypedFunctor;
-import autumn.lang.internals.AbstractStaticFunctor;
+import autumn.lang.internals.AbstractDefinedFunctor;
 import autumn.lang.internals.ArgumentStack;
 import com.google.common.collect.ImmutableList;
 import java.util.List;
 
 /**
- * An instance of this functor-type is a functor that used to implement a compare-to method.
- *
- * <p>
- * <b>Signature:</b>
- * <code> MethodCompare (self : Object, other : Object) => int </code>
- * </p>
+ * functor MethodCompareTo (left : Object, right : Object) : int
  *
  * @author Mackenzie High
  */
 public class MethodCompareTo
-        extends AbstractStaticFunctor
+        extends AbstractDefinedFunctor
 {
     /**
      * Sole Constructor.

@@ -19,6 +19,16 @@ public final class ConcreteImmutableList<E>
     private FunctionalList<E> list;
 
     /**
+     * Constructor.
+     *
+     * @param list is the backing list.
+     */
+    public ConcreteImmutableList()
+    {
+        this(new FunctionalList());
+    }
+
+    /**
      * Sole Constructor.
      *
      * @param list is the backing list.

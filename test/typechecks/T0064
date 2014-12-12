@@ -5,5 +5,5 @@ import typechecks.inaccessible.InaccessibleClass;
 @Start
 defun main (args : String[]) : void
 {
-    (new InaccessibleClass);
+    new InaccessibleClass();
 }

@@ -8,10 +8,10 @@ defun main (args : String[]) : void
     # 2. This tests whether the code-generator inserts a checked-cast.
     #    If the code-generator does not, then the bytecode verifier will loudly complain.
     #
-    assert (My::moo (My::boo "123")) == "(moo (boo 123))";
+    assert My::moo(My::boo("123")) == "(moo (boo 123))";
 }
 
-@InferReturnType
+@Infer
 defun boo (x : Object) : Object
 {
     return "(boo " .. x .. ")";

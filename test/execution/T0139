@@ -5,14 +5,14 @@ tuple T (x : int);
 @Start
 defun main (args : String[]) : void
 {
-    val p = (new T 123);
-    val x = (p.mutable);
-    val y = (x.copy);
+    val p = new T(123);
+    val x = p.mutable();
+    val y = x.copy();
 
     assert x == y;
     assert x !== y;
 
-    assert (p.isImmutable);
-    assert (x.isMutable);
-    assert (y.isMutable);
+    assert p.isImmutable();
+    assert x.isMutable();
+    assert y.isMutable();
 }

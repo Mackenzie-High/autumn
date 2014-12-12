@@ -1,6 +1,8 @@
 package autumn.lang.compiler;
 
 import autumn.lang.compiler.ast.commons.*;
+import autumn.lang.compiler.ast.literals.BigDecimalLiteral;
+import autumn.lang.compiler.ast.literals.BigIntegerLiteral;
 import autumn.lang.compiler.ast.literals.ByteLiteral;
 import autumn.lang.compiler.ast.literals.CharLiteral;
 import autumn.lang.compiler.ast.literals.DoubleLiteral;
@@ -9,11 +11,14 @@ import autumn.lang.compiler.ast.literals.IntLiteral;
 import autumn.lang.compiler.ast.literals.LongLiteral;
 import autumn.lang.compiler.ast.literals.ShortLiteral;
 import autumn.lang.compiler.ast.nodes.*;
+import autumn.util.ds.MutableList;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import high.mackenzie.autumn.resources.Finished;
+import high.mackenzie.autumn.util.ds.ConcreteImmutableList;
 import java.net.URL;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Stack;
 
 /**
@@ -1860,62 +1865,6 @@ public final class TreeBuilder
     }
 
     /**
-     * This method creates a yield-value statement.
-     *
-     * <p>
-     * <b>Precondition of the Stack</b>
-     * <ul>
-     * <li> value : IExpression </li>
-     * </ul>
-     * </p>
-     *
-     * <p>
-     * <b>Postcondition of the Stack</b>
-     * <ul>
-     * <li> result : YieldValueStatement </li>
-     * </ul>
-     * </p>
-     */
-    public void createStatementYieldValue()
-    {
-        Preconditions.checkState(stack.size() == 1);
-
-        // Create the AST node.
-        YieldValueStatement node = new YieldValueStatement();
-
-        // Initialize the AST node.
-        node = node.setValue((IExpression) stack.pop());
-
-        // Push the AST node onto the stack.
-        stack.push(node);
-
-        assert stack.size() == 1;
-    }
-
-    /**
-     * This method creates a yield-void statement.
-     *
-     * <p>
-     * <b>Postcondition of the Stack</b>
-     * <ul>
-     * <li> result : YieldVoidStatement </li>
-     * </ul>
-     * </p>
-     */
-    public void createStatementYieldVoid()
-    {
-        Preconditions.checkState(stack.isEmpty());
-
-        // Create the AST node.
-        YieldVoidStatement node = new YieldVoidStatement();
-
-        // Push the AST node onto the stack.
-        stack.push(node);
-
-        assert stack.size() == 1;
-    }
-
-    /**
      * This method creates an expression-statement.
      *
      * <p>
@@ -3497,6 +3446,78 @@ public final class TreeBuilder
     }
 
     /**
+     * This method creates a big-integer-datum.
+     *
+     * <p>
+     * <b>Precondition of the Stack</b>
+     * <ul>
+     * <li> ..... </li>
+     * </ul>
+     * </p>
+     *
+     * <p>
+     * <b>Postcondition of the Stack</b>
+     * <ul>
+     * <li> result : BigIntegerDatum </li>
+     * <li> ..... </li>
+     * </ul>
+     * </p>
+     *
+     * @param value is the value that the new datum represents.
+     */
+    public void createDatum(final BigIntegerLiteral value)
+    {
+        final int original_size = stack.size();
+        {
+            // Create the AST node.
+            BigIntegerDatum datum = new BigIntegerDatum();
+
+            // Initialize the AST node.
+            datum = datum.setValue(value);
+
+            // Push the AST node onto the stack.
+            stack.push(datum);
+        }
+        assert stack.size() == (original_size + 1);
+    }
+
+    /**
+     * This method creates a big-decimal-datum.
+     *
+     * <p>
+     * <b>Precondition of the Stack</b>
+     * <ul>
+     * <li> ..... </li>
+     * </ul>
+     * </p>
+     *
+     * <p>
+     * <b>Postcondition of the Stack</b>
+     * <ul>
+     * <li> result : BigDecimalDatum </li>
+     * <li> ..... </li>
+     * </ul>
+     * </p>
+     *
+     * @param value is the value that the new datum represents.
+     */
+    public void createDatum(final BigDecimalLiteral value)
+    {
+        final int original_size = stack.size();
+        {
+            // Create the AST node.
+            BigDecimalDatum datum = new BigDecimalDatum();
+
+            // Initialize the AST node.
+            datum = datum.setValue(value);
+
+            // Push the AST node onto the stack.
+            stack.push(datum);
+        }
+        assert stack.size() == (original_size + 1);
+    }
+
+    /**
      * This method creates a String-datum.
      *
      * <p>
@@ -3749,21 +3770,37 @@ public final class TreeBuilder
      * </ul>
      * </p>
      *
-     * @param value is the value to store in the annotation.
+     * @param values are the values to store in the annotation.
      */
-    public void createComponentAnnotation(final String value)
+    public void createComponentAnnotation(final List<String> values)
     {
         Preconditions.checkState(stack.size() == 1);
 
-        // Pop the pieces off of the stack.
+        /**
+         * Create the immutable list of values.
+         */
+        final MutableList<String> list = new ConcreteImmutableList<String>().mutable();
+
+        if (values != null)
+        {
+            list.addAll(values);
+        }
+
+        /**
+         * Pop the pieces off of the stack.
+         */
         final TypeSpecifier type = (TypeSpecifier) stack.pop();
 
-        // Create the AST node.
+        /**
+         * Create the AST node.
+         */
         Annotation node = new Annotation();
         node = node.setType(type);
-        node = node.setValue(value);
+        node = node.setValues(values == null ? null : list.immutable());
 
-        // Push the AST node onto the stack.
+        /**
+         * Push the AST node onto the stack.
+         */
         stack.push(node);
 
         assert stack.size() == 1;

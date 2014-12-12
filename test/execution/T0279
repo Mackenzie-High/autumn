@@ -27,52 +27,52 @@ defun main (args : String[]) : void
 
     # The design should have compiled to an interface.
     #
-    assert (owner.isInterface);
+    assert owner.isInterface();
 
 
 
     # Check whether the annotations were applied.
     #
-    assert (owner.isAnnotationPresent (class A));
-    assert (owner.isAnnotationPresent (class B));
+    assert owner.isAnnotationPresent((class A));
+    assert owner.isAnnotationPresent((class B));
 
 
 
     # Check whether the getter methods were generated.
     #
-    assert ((Reflect::getMethod owner, "a", []).getReturnType) == (class boolean);
-    assert ((Reflect::getMethod owner, "b", []).getReturnType) == (class char);
-    assert ((Reflect::getMethod owner, "c", []).getReturnType) == (class byte);
-    assert ((Reflect::getMethod owner, "d", []).getReturnType) == (class short);
-    assert ((Reflect::getMethod owner, "e", []).getReturnType) == (class int);
-    assert ((Reflect::getMethod owner, "f", []).getReturnType) == (class long);
-    assert ((Reflect::getMethod owner, "g", []).getReturnType) == (class float);
-    assert ((Reflect::getMethod owner, "h", []).getReturnType) == (class double);
-    assert ((Reflect::getMethod owner, "i", []).getReturnType) == (class String);
-    assert ((Reflect::getMethod owner, "j", []).getReturnType) == (class Object);
+    assert Reflect::getMethod(owner, "a", []).getReturnType() == (class boolean);
+    assert Reflect::getMethod(owner, "b", []).getReturnType() == (class char);
+    assert Reflect::getMethod(owner, "c", []).getReturnType() == (class byte);
+    assert Reflect::getMethod(owner, "d", []).getReturnType() == (class short);
+    assert Reflect::getMethod(owner, "e", []).getReturnType() == (class int);
+    assert Reflect::getMethod(owner, "f", []).getReturnType() == (class long);
+    assert Reflect::getMethod(owner, "g", []).getReturnType() == (class float);
+    assert Reflect::getMethod(owner, "h", []).getReturnType() == (class double);
+    assert Reflect::getMethod(owner, "i", []).getReturnType() == (class String);
+    assert Reflect::getMethod(owner, "j", []).getReturnType() == (class Object);
 
 
 
     # Check whether the setter methods were generated.
     #
-    assert ((Reflect::getMethod owner, "a", [(class boolean)]).getReturnType) == owner;
-    assert ((Reflect::getMethod owner, "b", [(class char)]).getReturnType) == owner;
-    assert ((Reflect::getMethod owner, "c", [(class byte)]).getReturnType) == owner;
-    assert ((Reflect::getMethod owner, "d", [(class short)]).getReturnType) == owner;
-    assert ((Reflect::getMethod owner, "e", [(class int)]).getReturnType) == owner;
-    assert ((Reflect::getMethod owner, "f", [(class long)]).getReturnType) == owner;
-    assert ((Reflect::getMethod owner, "g", [(class float)]).getReturnType) == owner;
-    assert ((Reflect::getMethod owner, "h", [(class double)]).getReturnType) == owner;
-    assert ((Reflect::getMethod owner, "i", [(class String)]).getReturnType) == owner;
-    assert ((Reflect::getMethod owner, "j", [(class Object)]).getReturnType) == owner;
+    assert Reflect::getMethod(owner, "a", [(class boolean)]).getReturnType() == owner;
+    assert Reflect::getMethod(owner, "b", [(class char)]).getReturnType() == owner;
+    assert Reflect::getMethod(owner, "c", [(class byte)]).getReturnType() == owner;
+    assert Reflect::getMethod(owner, "d", [(class short)]).getReturnType() == owner;
+    assert Reflect::getMethod(owner, "e", [(class int)]).getReturnType() == owner;
+    assert Reflect::getMethod(owner, "f", [(class long)]).getReturnType() == owner;
+    assert Reflect::getMethod(owner, "g", [(class float)]).getReturnType() == owner;
+    assert Reflect::getMethod(owner, "h", [(class double)]).getReturnType() == owner;
+    assert Reflect::getMethod(owner, "i", [(class String)]).getReturnType() == owner;
+    assert Reflect::getMethod(owner, "j", [(class Object)]).getReturnType() == owner;
 
 
 
     # Check whether the special methods were generated.
     #
-    assert ((Reflect::getMethod owner, "bind", [(class SpecialMethods)]).getReturnType) == owner;
-    assert ((Reflect::getMethod owner, "copy", []).getReturnType) == owner;
-    assert ((Reflect::getMethod owner, "mutable", []).getReturnType) == owner;
-    assert ((Reflect::getMethod owner, "immutable", []).getReturnType) == owner;
-    assert ((Reflect::getMethod owner, "set", [(class int), (class Object)]).getReturnType) == owner;
+    assert Reflect::getMethod(owner, "bind", [(class SpecialMethods)]).getReturnType() == owner;
+    assert Reflect::getMethod(owner, "copy", []).getReturnType() == owner;
+    assert Reflect::getMethod(owner, "mutable", []).getReturnType() == owner;
+    assert Reflect::getMethod(owner, "immutable", []).getReturnType() == owner;
+    assert Reflect::getMethod(owner, "set", [(class int), (class Object)]).getReturnType() == owner;
 }

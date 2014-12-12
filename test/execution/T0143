@@ -6,10 +6,10 @@ functor P (x : Object) : boolean;
 defun main (args : String[]) : void
 {
     # Create a functor to test.
-    val inner = (Predicates::eq "Venus");
-    val p = (new P inner);
+    val inner = Predicates::eq("Venus");
+    val p = new P(inner);
 
     # Test
-    assert (p.invoke "Venus") == true;
-    assert (p.invoke "Pluto") == false;
+    assert p.invoke("Venus") == true;
+    assert p.invoke("Pluto") == false;
 }

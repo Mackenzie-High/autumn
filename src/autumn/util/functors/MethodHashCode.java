@@ -1,23 +1,22 @@
 package autumn.util.functors;
 
 import autumn.lang.TypedFunctor;
-import autumn.lang.internals.AbstractStaticFunctor;
+import autumn.lang.internals.AbstractDefinedFunctor;
 import autumn.lang.internals.ArgumentStack;
 import com.google.common.collect.ImmutableList;
 import java.util.List;
 
 /**
- * An instance of this functor-type is a functor that used to implement a hash-code method.
+ * functor MethodHashCode (owner : Object) : int
  *
  * <p>
- * <b>Signature:</b>
- * <code> MethodHashCode (self : Object) => int </code>
+ * The owner parameter is the object that contains the method. <br>
  * </p>
  *
  * @author Mackenzie High
  */
 public class MethodHashCode
-        extends AbstractStaticFunctor
+        extends AbstractDefinedFunctor
 {
     /**
      * Sole Constructor.

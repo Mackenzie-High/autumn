@@ -2,12 +2,13 @@ package high.mackenzie.autumn.lang.compiler.typesystem;
 
 import autumn.util.Reflect;
 import com.google.common.base.Preconditions;
-import com.google.common.base.Strings;
+import com.google.common.collect.ImmutableList;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IAnnotation;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IAnnotationType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.ITypeFactory;
 import high.mackenzie.autumn.resources.Finished;
 import java.lang.annotation.Annotation;
+import java.util.List;
 
 /**
  * An instance of this class represents an annotation instantiation.
@@ -26,7 +27,7 @@ public final class CustomAnnotation
 {
     private final Annotation annotation;
 
-    private final String value;
+    private final List<String> values;
 
     private final IAnnotationType definition;
 
@@ -35,18 +36,18 @@ public final class CustomAnnotation
      *
      * @param annotation is the annotation that the new object will represent,
      * or null, if the new object is not backed by a real annotation.
-     * @param value is the value stored in the annotation, or null, if no such value exists.
+     * @param values are the values stored in the annotation, or null, if no such values are present.
      * @param definition is the type of the annotation's definition.
      */
     public CustomAnnotation(final Annotation annotation,
-                            final String value,
+                            final List<String> values,
                             final IAnnotationType definition)
     {
         Preconditions.checkNotNull(definition);
 
         this.annotation = annotation;
         this.definition = definition;
-        this.value = Strings.nullToEmpty(value);
+        this.values = values == null ? null : ImmutableList.copyOf(values);
     }
 
     /**
@@ -62,9 +63,9 @@ public final class CustomAnnotation
      * {@inheritDoc}
      */
     @Override
-    public String getAnnotationValue()
+    public List<String> getAnnotationValues()
     {
-        return value;
+        return values;
     }
 
     /**
@@ -93,9 +94,9 @@ public final class CustomAnnotation
 
         final IAnnotationType type = (IAnnotationType) factory.fromClass(clazz);
 
-        final String value = Reflect.getAnnotationValue(annotation);
+        final List<String> values = Reflect.getAnnotationValues(annotation);
 
-        final IAnnotation result = new CustomAnnotation(annotation, value, type);
+        final IAnnotation result = new CustomAnnotation(annotation, values, type);
 
         return result;
     }

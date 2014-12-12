@@ -13,17 +13,17 @@ tuple T (a : boolean,
 @Start
 defun main (args : String[]) : void
 {
-    val t = (new T true, 'X', 10B, 20S, 30, 40L, 50.0F, 60.0, "Venus");
+    val t = new T(true, 'X', 10B, 20S, 30, 40L, 50.0F, 60.0, "Venus");
 
-    assert (t.toString) == "(true, X, 10, 20, 30, 40, 50.0, 60.0, Venus)";
+    assert t.toString() == "(true, X, 10, 20, 30, 40, 50.0, 60.0, Venus)";
 
-    assert (t.a) == true;
-    assert (t.b) == 'X';
-    assert (t.c) == 10B;
-    assert (t.d) == 20S;
-    assert (t.e) == 30;
-    assert (t.f) == 40L;
-    assert (t.g) == 50.0F;
-    assert (t.h) == 60.0;
-    assert (t.i) == "Venus";
+    assert t.a() == true;
+    assert t.b() == 'X';
+    assert t.c() == 10B;
+    assert t.d() == 20S;
+    assert t.e() == 30;
+    assert t.f() == 40L;
+    assert t.g() == 50.0F;
+    assert t.h() == 60.0;
+    assert t.i() == "Venus";
 }

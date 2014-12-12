@@ -8,6 +8,6 @@ defun main(args : String[]) : void
 
     lambda p : Predicate => ($1 is Integer) == 2;
 
-    assert (F::any list1, p) == true;
-    assert (F::any list2, p) == false;
+    assert F::any(list1, p) == true;
+    assert F::any(list2, p) == false;
 }

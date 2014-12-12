@@ -22,9 +22,9 @@ defun main (args : String[]) : void
 
     # The invocations must actually work.
     #
-    val x = (p.invoke 3);
-    val y = (q.invoke 5);
-    val z = (r.invoke 7);
+    val x = p.invoke(3);
+    val y = q.invoke(5);
+    val z = r.invoke(7);
 
     assert x == "30";
     assert y == "50";
@@ -34,17 +34,17 @@ defun main (args : String[]) : void
 
     # Ensure that the compiler correctly figured out the return-type.
     #
-    assert (p.returnType) == (class String);
+    assert p.returnType() == (class String);
 
 
 
     # Ensure that the compiler correctly figured out the parameter-types.
     #
-    assert (p.parameterTypes) == [(class Integer)];
+    assert p.parameterTypes() == [(class Integer)];
 }
 
 
 defun moo (x : Integer) : String
 {
-    return (Strings::str x * 10);
+    return Strings::str(x * 10);
 }

@@ -8,14 +8,14 @@ import java.util.ArrayList;
 @Start
 defun main (args : String[]) : void
 {
-    assert (call Main::box true)  == (class Boolean);
-    assert (call Main::box 'X')   == (class Character);
-    assert (call Main::box 10B)   == (class Byte);
-    assert (call Main::box 20S)   == (class Short);
-    assert (call Main::box 30)    == (class Integer);
-    assert (call Main::box 40L)   == (class Long);
-    assert (call Main::box 50.0F) == (class Float);
-    assert (call Main::box 60.0)  == (class Double);
+    assert call Main::box(true)  == (class Boolean);
+    assert call Main::box('X')   == (class Character);
+    assert call Main::box(10B)   == (class Byte);
+    assert call Main::box(20S)   == (class Short);
+    assert call Main::box(30)    == (class Integer);
+    assert call Main::box(40L)   == (class Long);
+    assert call Main::box(50.0F) == (class Float);
+    assert call Main::box(60.0)  == (class Double);
 }
 
 defun box (x : Boolean) : Class

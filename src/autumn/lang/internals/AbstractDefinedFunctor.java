@@ -1,6 +1,6 @@
 package autumn.lang.internals;
 
-import autumn.lang.StaticFunctor;
+import autumn.lang.DefinedFunctor;
 import autumn.lang.TypedFunctor;
 import autumn.util.Strings;
 import com.google.common.base.Preconditions;
@@ -8,13 +8,13 @@ import com.google.common.collect.Lists;
 import java.util.List;
 
 /**
- * This class provides a partial implementation of the StaticFunctor interface.
+ * This class provides a partial implementation of the DefinedFunctor interface.
  *
  * @author Mackenzie High
  */
-public abstract class AbstractStaticFunctor
+public abstract class AbstractDefinedFunctor
         extends AbstractTypedFunctor
-        implements StaticFunctor
+        implements DefinedFunctor
 {
     private final TypedFunctor inner;
 
@@ -24,7 +24,7 @@ public abstract class AbstractStaticFunctor
      * @param inner is the inner() functor.
      * @throws NullPointerException.
      */
-    public AbstractStaticFunctor(final TypedFunctor inner)
+    public AbstractDefinedFunctor(final TypedFunctor inner)
     {
         Preconditions.checkNotNull(inner);
 

@@ -5,18 +5,18 @@ exception Moo extends Throwable;
 @Start
 defun main (args : String[]) : void
 {
-    assert (My::handler true) == 17;
+    assert My::handler(true) == 17;
 
-    assert (My::handler false) == 13;
+    assert My::handler(false) == 13;
 
-    assert (My::handler true) == 17;
+    assert My::handler(true) == 17;
 }
 
 defun handler(condition : boolean) : int
 {
     try
     {
-        (My::thrower condition);
+        My::thrower(condition);
 
         return 13;
     }
@@ -28,5 +28,5 @@ defun handler(condition : boolean) : int
 
 defun thrower(condition : boolean) : void
 {
-    when (condition) then throw (new Moo);
+    when (condition) then throw new Moo();
 }

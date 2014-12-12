@@ -13,41 +13,41 @@ tuple T (a : boolean,
 @Start
 defun main (args : String[]) : void
 {
-    val t = ((T::instance).mutable);
+    val t = T::instance().mutable();
 
-    assert (t.isMutable);
+    assert t.isMutable();
 
-    assert (t.a) == false;
-    assert (t.b) == 0C;
-    assert (t.c) == 0B;
-    assert (t.d) == 0S;
-    assert (t.e) == 0;
-    assert (t.f) == 0L;
-    assert (t.g) == 0.0F;
-    assert (t.h) == 0.0;
-    assert (t.i) == null;
+    assert t.a() == false;
+    assert t.b() == 0C;
+    assert t.c() == 0B;
+    assert t.d() == 0S;
+    assert t.e() == 0;
+    assert t.f() == 0L;
+    assert t.g() == 0.0F;
+    assert t.h() == 0.0;
+    assert t.i() == null;
 
-    val m1 = (t.a true);
-    val m2 = (m1.b 'X');
-    val m3 = (m2.c 10B);
-    val m4 = (m3.d 20S);
-    val m5 = (m4.e 30);
-    val m6 = (m5.f 40L);
-    val m7 = (m6.g 50.0F);
-    val m8 = (m7.h 60.0);
-    val m9 = (m8.i "Venus");
+    val m1 = t.a (true);
+    val m2 = m1.b ('X');
+    val m3 = m2.c (10B);
+    val m4 = m3.d (20S);
+    val m5 = m4.e (30);
+    val m6 = m5.f (40L);
+    val m7 = m6.g (50.0F);
+    val m8 = m7.h (60.0);
+    val m9 = m8.i ("Venus");
 
-    assert (t.toString) == "(true, X, 10, 20, 30, 40, 50.0, 60.0, Venus)";
+    assert t.toString() == "(true, X, 10, 20, 30, 40, 50.0, 60.0, Venus)";
 
-    assert (m1.isMutable);
-    assert (m2.isMutable);
-    assert (m3.isMutable);
-    assert (m4.isMutable);
-    assert (m5.isMutable);
-    assert (m6.isMutable);
-    assert (m7.isMutable);
-    assert (m8.isMutable);
-    assert (m9.isMutable);
+    assert m1.isMutable();
+    assert m2.isMutable();
+    assert m3.isMutable();
+    assert m4.isMutable();
+    assert m5.isMutable();
+    assert m6.isMutable();
+    assert m7.isMutable();
+    assert m8.isMutable();
+    assert m9.isMutable();
 
     assert t === m1;
     assert t === m2;

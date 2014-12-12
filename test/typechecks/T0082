@@ -3,5 +3,5 @@ module Main in typechecks;
 @Start
 defun main (args : String[]) : void
 {
-    (call ThisTypeDoesNotExist::println);
+    call ThisTypeDoesNotExist::println();
 }

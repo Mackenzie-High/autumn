@@ -1,0 +1,17 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    # Automatic coercions are tested elsewhere in depth.
+    # So, here a simple coercion detection test will suffice.
+
+    assert call Main::F01() == 17L;
+}
+
+defun F01() : long
+{
+    val x = 17B;
+
+    return x;
+}

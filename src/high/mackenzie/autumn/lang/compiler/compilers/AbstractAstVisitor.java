@@ -283,18 +283,6 @@ public class AbstractAstVisitor
     }
 
     @Override
-    public void visit(YieldVoidStatement object)
-    {
-        throw new UnsupportedOperationException("This should never happen.");
-    }
-
-    @Override
-    public void visit(YieldValueStatement object)
-    {
-        throw new UnsupportedOperationException("This should never happen.");
-    }
-
-    @Override
     public void visit(BooleanDatum object)
     {
         throw new UnsupportedOperationException("This should never happen.");
@@ -338,6 +326,18 @@ public class AbstractAstVisitor
 
     @Override
     public void visit(DoubleDatum object)
+    {
+        throw new UnsupportedOperationException("This should never happen.");
+    }
+
+    @Override
+    public void visit(BigIntegerDatum object)
+    {
+        throw new UnsupportedOperationException("This should never happen.");
+    }
+
+    @Override
+    public void visit(BigDecimalDatum object)
     {
         throw new UnsupportedOperationException("This should never happen.");
     }

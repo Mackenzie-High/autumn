@@ -19,15 +19,15 @@ defun main (args : String[]) : void
         var value_D = 17.0;
         var value_T = "Soi";
 
-        assert (Main::F value_Z) == "Z";
-        assert (Main::F value_C) == "C";
-        assert (Main::F value_B) == "B";
-        assert (Main::F value_S) == "S";
-        assert (Main::F value_I) == "I";
-        assert (Main::F value_J) == "J";
-        assert (Main::F value_F) == "F";
-        assert (Main::F value_D) == "D";
-        assert (Main::F value_T) == "T";
+        assert Main::F (value_Z) == "Z";
+        assert Main::F (value_C) == "C";
+        assert Main::F (value_B) == "B";
+        assert Main::F (value_S) == "S";
+        assert Main::F (value_I) == "I";
+        assert Main::F (value_J) == "J";
+        assert Main::F (value_F) == "F";
+        assert Main::F (value_D) == "D";
+        assert Main::F (value_T) == "T";
 
         let i = i + 1;
     }

@@ -5,5 +5,5 @@ import typechecks.inaccessible.InaccessibleClass;
 @Start
 defun main (args : String[]) : void
 {
-    (call F::print);
+    call F::print();
 }

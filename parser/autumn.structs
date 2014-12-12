@@ -6,6 +6,7 @@ package autumn.lang.compiler.ast.nodes;
 
 import java.io.File;
 import java.net.URL;
+import autumn.util.ds.ImmutableList;
 import autumn.lang.compiler.ast.literals.CharLiteral;
 import autumn.lang.compiler.ast.literals.ByteLiteral;
 import autumn.lang.compiler.ast.literals.ShortLiteral;
@@ -13,10 +14,13 @@ import autumn.lang.compiler.ast.literals.IntLiteral;
 import autumn.lang.compiler.ast.literals.LongLiteral;
 import autumn.lang.compiler.ast.literals.FloatLiteral;
 import autumn.lang.compiler.ast.literals.DoubleLiteral;
+import autumn.lang.compiler.ast.literals.BigIntegerLiteral;
+import autumn.lang.compiler.ast.literals.BigDecimalLiteral;
 import autumn.lang.compiler.ast.commons.IConstruct;
 import autumn.lang.compiler.ast.commons.IAnnotated;
 import autumn.lang.compiler.ast.commons.IDocumented;
 import autumn.lang.compiler.ast.commons.IDirective;
+import autumn.lang.compiler.ast.commons.IDatum;
 import autumn.lang.compiler.ast.commons.IRecord;
 import autumn.lang.compiler.ast.commons.IExpression;
 import autumn.lang.compiler.ast.commons.IStatement;
@@ -883,39 +887,12 @@ struct RecurStatement
 end
 
 ###################################################################################################
-# Statements --> Yield Void
-###################################################################################################
-
-doc An instance of this class is an AST node that represents a return-void statement.
-struct YieldVoidStatement
-  implement IStatement;
-
-  doc This is the source-location information regarding this construct.
-  data location : SourceLocation = { new SourceLocation() };
-end
-
-###################################################################################################
-# Statements --> Yield Value
-###################################################################################################
-
-doc An instance of this class is an AST node that represents a return-value statement.
-struct YieldValueStatement
-  implement IStatement;
-
-  doc This expression produces the value to return. 
-  data value : IExpression;
-
-  doc This is the source-location information regarding this construct.
-  data location : SourceLocation = { new SourceLocation() };
-end
-
-###################################################################################################
 # Expressions --> Datums --> Boolean
 ###################################################################################################
 
 doc An instance of this class is an AST node that represents a boolean literal.
 struct BooleanDatum
-  implement IExpression;
+  implement IDatum;
 
   doc This is the value that this datum represents.
   data value : boolean;
@@ -930,7 +907,7 @@ end
 
 doc An instance of this class is an AST node that represents a char literal.
 struct CharDatum
-  implement IExpression;
+  implement IDatum;
 
   doc This is the value that this datum represents.
   data value : CharLiteral;
@@ -945,7 +922,7 @@ end
 
 doc An instance of this class is an AST node that represents a byte literal.
 struct ByteDatum
-  implement IExpression;
+  implement IDatum;
 
   doc This is the value that this datum represents.
   data value : ByteLiteral;
@@ -960,7 +937,7 @@ end
 
 doc An instance of this class is an AST node that represents a short literal.
 struct ShortDatum
-  implement IExpression;
+  implement IDatum;
 
   doc This is the value that this datum represents.
   data value : ShortLiteral;
@@ -975,7 +952,7 @@ end
 
 doc An instance of this class is an AST node that represents a int literal.
 struct IntDatum
-  implement IExpression;
+  implement IDatum;
 
   doc This is the value that this datum represents.
   data value : IntLiteral;
@@ -990,7 +967,7 @@ end
 
 doc An instance of this class is an AST node that represents a long literal.
 struct LongDatum
-  implement IExpression;
+  implement IDatum;
 
   doc This is the value that this datum represents.
   data value : LongLiteral;
@@ -1005,7 +982,7 @@ end
 
 doc An instance of this class is an AST node that represents a float literal.
 struct FloatDatum
-  implement IExpression;
+  implement IDatum;
 
   doc This is the value that this datum represents.
   data value : FloatLiteral;
@@ -1020,10 +997,40 @@ end
 
 doc An instance of this class is an AST node that represents a double literal.
 struct DoubleDatum
-  implement IExpression;
+  implement IDatum;
 
   doc This is the value that this datum represents.
   data value : DoubleLiteral;
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Expressions --> Datums --> Big Integer
+###################################################################################################
+
+doc An instance of this class is an AST node that represents a BigInteger literal.
+struct BigIntegerDatum
+  implement IDatum;
+
+  doc This is the value that this datum represents.
+  data value : BigIntegerLiteral;
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
+# Expressions --> Datums --> Big Decimal
+###################################################################################################
+
+doc An instance of this class is an AST node that represents a BigDecimal literal.
+struct BigDecimalDatum
+  implement IDatum;
+
+  doc This is the value that this datum represents.
+  data value : BigDecimalLiteral;
 
   doc This is the source-location information regarding this construct.
   data location : SourceLocation = { new SourceLocation() };
@@ -1035,7 +1042,7 @@ end
 
 doc An instance of this class is an AST node that represents a string literal.
 struct StringDatum
-  implement IExpression;
+  implement IDatum;
 
   doc This flag is true, if the string does not contain escape sequences.
   data verbatim : boolean = { false };
@@ -1053,7 +1060,7 @@ end
 
 doc An instance of this class is an AST node that represents a the null constant.
 struct NullDatum
-  implement IExpression;
+  implement IDatum;
 
   doc This is the source-location information regarding this construct.
   data location : SourceLocation = { new SourceLocation() };
@@ -1065,7 +1072,7 @@ end
 
 doc An instance of this class is an AST node that represents the usage of a variable.
 struct VariableDatum
-  implement IExpression;
+  implement IDatum;
 
   doc This is the the variable itself.
   data variable : Variable;
@@ -1080,7 +1087,7 @@ end
 
 doc An instance of this class is an AST node that represents a class literal.
 struct ClassDatum
-  implement IExpression;
+  implement IDatum;
 
   doc This is the type whose <code>java.lang.Class</code> representation is represented by this datum. 
   data type : TypeSpecifier;
@@ -1806,7 +1813,7 @@ struct Annotation
   data type : TypeSpecifier;
 
   doc This is the value stored in the annotation. 
-  data value : String = { null };
+  data values : ImmutableList<String> = { null };
 
   doc This is the source-location information regarding this construct.
   data location : SourceLocation = { new SourceLocation() };

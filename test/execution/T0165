@@ -5,7 +5,7 @@ enum City ( Paris, London, Moscow );
 @Start
 defun main (args : String[]) : void
 {
-    assert (field City::Paris) === (call City::valueOf "Paris");
-    assert (field City::London) === (call City::valueOf "London");
-    assert (field City::Moscow) === (call City::valueOf "Moscow");
+    assert (field City::Paris) === call City::valueOf("Paris");
+    assert (field City::London) === call City::valueOf("London");
+    assert (field City::Moscow) === call City::valueOf("Moscow");
 }

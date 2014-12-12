@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Stack;
 
@@ -19,7 +18,7 @@ import java.util.Stack;
 public final class Files
 {
     /**
-     * This method creates an iterator that can iterate over all the files in a directory.
+     * This method creates an iterable whose iterator can iterate over all the files in a directory.
      *
      * <p>
      * If recur is true, sub-directories will be returned before their contents.
@@ -30,7 +29,7 @@ public final class Files
      * @return the aforedescribed iterator.
      * @throws IllegalArgumentException if root is not a directory.
      */
-    public static Iterator<File> iterFiles(final File root,
+    public static Iterable<File> iterFiles(final File root,
                                            final boolean recur)
     {
         Preconditions.checkNotNull(root);
@@ -43,44 +42,51 @@ public final class Files
         stack.push(root);
 
         /**
-         * Create the iterator, which basically performs a preorder depth-first transversal.
+         * Create the iterable, which basically performs a preorder depth-first transversal.
          */
-        return new Iterator<File>()
+        return new Iterable<File>()
         {
             @Override
-            public boolean hasNext()
+            public Iterator<File> iterator()
             {
-                return !stack.isEmpty();
-            }
-
-            @Override
-            public File next()
-            {
-                // This is required by the iterator interface.
-                if (stack.isEmpty())
+                return new Iterator<File>()
                 {
-                    throw new NoSuchElementException("Out of Files");
-                }
-
-                // Get the next file to return.
-                final File next = stack.pop();
-
-                if (recur && next.isDirectory())
-                {
-                    // Push all the files that are directly contained in the sub-directory.
-                    for (File child : next.listFiles())
+                    @Override
+                    public boolean hasNext()
                     {
-                        stack.push(child);
+                        return !stack.isEmpty();
                     }
-                }
 
-                return next;
-            }
+                    @Override
+                    public File next()
+                    {
+                        // This is required by the iterator interface.
+                        if (stack.isEmpty())
+                        {
+                            throw new NoSuchElementException("Out of Files");
+                        }
 
-            @Override
-            public void remove()
-            {
-                throw new UnsupportedOperationException("Not Supported");
+                        // Get the next file to return.
+                        final File next = stack.pop();
+
+                        if (recur && next.isDirectory())
+                        {
+                            // Push all the files that are directly contained in the sub-directory.
+                            for (File child : next.listFiles())
+                            {
+                                stack.push(child);
+                            }
+                        }
+
+                        return next;
+                    }
+
+                    @Override
+                    public void remove()
+                    {
+                        throw new UnsupportedOperationException("Not Supported");
+                    }
+                };
             }
         };
     }
@@ -174,65 +180,17 @@ public final class Files
     public static String readText(final File file)
             throws IOException
     {
-        return null;
+        return readText(file, Charset.defaultCharset());
     }
 
     public static String readText(final File file,
                                   final Charset charset)
             throws IOException
     {
-        return null;
+        return com.google.common.io.Files.toString(file, charset);
     }
 
     public static byte[] readBytes(final File file)
-            throws IOException
-    {
-        return null;
-    }
-
-    /**
-     * This map writes a zip file.
-     *
-     * <p>
-     * Each entry in the map describes an entry in the zip-file.
-     * Each key is the path to the entry within the zip-file.
-     * Each value is the content to place in the zip-file entry.
-     * </p>
-     *
-     * <p>
-     * This method is intended for writing small zip-files.
-     * Large zip files should be created using the Java zip-file API.
-     * </p>
-     *
-     * @param file is the output path.
-     * @param map describes the contents of the zip-file.
-     * @throws IOException if something goes wrong.
-     */
-    public static void writeZipMap(final File file,
-                                   final Map<String, byte[]> map)
-            throws IOException
-    {
-    }
-
-    /**
-     * This method reads a zip file.
-     *
-     * <p>
-     * Each entry in the returned map describes an entry in the zip-file.
-     * Each key is the path to the entry within the zip-file.
-     * Each value is the content to place in the zip-file entry.
-     * </p>
-     *
-     * <p>
-     * This method is intended for reading small zip-files.
-     * Large zip files should be created using the Java zip-file API.
-     * </p>
-     *
-     * @param file is the path to the zip-file to read.
-     * @return a map that describes the zip-file.
-     * @throws IOException if something goes wrong.
-     */
-    public static Map<String, byte[]> readZipMap(final File file)
             throws IOException
     {
         return null;

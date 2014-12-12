@@ -14,8 +14,6 @@ import high.mackenzie.autumn.lang.compiler.utils.Utils;
 import java.util.List;
 import java.util.Stack;
 import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.tree.FieldInsnNode;
-import org.objectweb.asm.tree.FieldNode;
 import org.objectweb.asm.tree.InsnNode;
 import org.objectweb.asm.tree.JumpInsnNode;
 import org.objectweb.asm.tree.LabelNode;
@@ -1090,13 +1088,17 @@ public final class StatementCodeGenerator
          */
         Utils.addLineNumber(code, object);
 
-        // Conditionally save the state of the function's local-variables.
-        if (function.isGenerator())
+        /**
+         * Memoize the invocation, if necessary.
+         */
+        if (function.isMemoized())
         {
-            saveReentryIndex(-1);
-            saveState();
+            function.memoization.internVoid(code);
         }
 
+        /**
+         * Return from the function immediately.
+         */
         code.add(new InsnNode(Opcodes.RETURN));
     }
 
@@ -1108,26 +1110,28 @@ public final class StatementCodeGenerator
          */
         Utils.addLineNumber(code, object);
 
-        // Conditionally save the state of the function's local-variables.
-        if (function.isGenerator())
-        {
-            saveReentryIndex(-1);
-            saveState();
-        }
 
-        // Evaluate the expression that produces the value to return.
+        /**
+         * Evaluate the expression that produces the value to return.
+         */
         object.getValue().accept(this);
 
-        // Conditionally save the value being returned.
+        /**
+         * Memoize the value being returned, if necessary.
+         */
         if (function.isMemoized())
         {
             function.memoization.intern(code, program.symbols.expressions.get(object.getValue()));
         }
 
-        // Perform auto-boxing or auto-unboxing, if needed.
+        /**
+         * Perform auto-boxing or auto-unboxing, if needed.
+         */
         convert(function.type.getReturnType(), object.getValue());
 
-        // Return.
+        /**
+         * Return from the function immediately.
+         */
         code.add(Utils.selectReturnInsn(function.type.getReturnType()));
     }
 
@@ -1163,180 +1167,5 @@ public final class StatementCodeGenerator
 
         // Goto the start of the function.
         code.add(new JumpInsnNode(Opcodes.GOTO, function.recur_label));
-    }
-
-    @Override
-    public void visit(final YieldVoidStatement object)
-    {
-        /**
-         * Embed the line number in the bytecode for debugging purposes.
-         */
-        Utils.addLineNumber(code, object);
-
-        /**
-         * This label marks the location where code will be reentered.
-         */
-        final LabelNode label = program.symbols.yields.get(object);
-
-        // Save the function's reentry-point.
-        saveReentryIndex(object);
-
-        // Save the state of the function's local variables.
-        saveState();
-
-        // Yield.
-        code.add(new InsnNode(Opcodes.RETURN));
-
-        // Reentry Point.
-        code.add(label);
-    }
-
-    @Override
-    public void visit(final YieldValueStatement object)
-    {
-        /**
-         * Embed the line number in the bytecode for debugging purposes.
-         */
-        Utils.addLineNumber(code, object);
-
-        /**
-         * This label marks the location where code will be reentered.
-         */
-        final LabelNode label = program.symbols.yields.get(object);
-
-        // Save the function's reentry-point.
-        saveReentryIndex(object);
-
-        // Save the state of the function's local variables.
-        saveState();
-
-        // Evaluate the expression to yield.
-        object.getValue().accept(this);
-
-        // Perform auto-boxing or auto-unboxing, if needed.
-        convert(function.type.getReturnType(), object.getValue());
-
-        // Yield.
-        code.add(Utils.selectReturnInsn(function.type.getReturnType()));
-
-        // Reentry Point.
-        code.add(label);
-    }
-
-    /**
-     * This method generates bytecode that causes a generator function to save the index of the
-     * yield statement where the function will be reentered, if the function is reentered.
-     *
-     * @param yield is the yield statement that is being compiled.
-     */
-    private void saveReentryIndex(final IStatement yield)
-    {
-
-        assert function.isGenerator();
-
-        /**
-         * This label marks the location where code will be reentered.
-         */
-        final LabelNode label = program.symbols.yields.get(yield);
-
-        /**
-         * Compute the reentry index.
-         */
-        final int index = function.yields.indexOf(label);
-
-        /**
-         * Generate the bytecode to save the reentry index.
-         */
-        saveReentryIndex(index);
-    }
-
-    /**
-     * This method generates bytecode that causes a generator function to save the reentry index.
-     *
-     * @param index is the reentry index to save.
-     */
-    private void saveReentryIndex(final int index)
-    {
-        assert function.isGenerator();
-        assert index >= -1;
-
-        String owner;
-        String name;
-        String desc;
-
-        /**
-         * This is the field that stores the state of the method, between invocations.
-         */
-        final FieldNode field = function.yieldField();
-
-        // Load the yield-state object onto the operand-stack.
-        owner = Utils.internalName(function.module.type);
-        name = field.name;
-        desc = field.desc;
-        code.add(new FieldInsnNode(Opcodes.GETSTATIC, owner, name, desc));
-
-        // Duplicate the reference to the yield-state object.
-        code.add(new InsnNode(Opcodes.DUP));
-
-        // Load the reentry index onto the operand-stack, if necessary.
-        code.add(new LdcInsnNode(index));
-
-        // Set the reentry index.
-        owner = Utils.internalName(program.typesystem.utils.YIELD_STATE);
-        name = "setIndex";
-        desc = "(I)V";
-        code.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL, owner, name, desc));
-    }
-
-    /**
-     * This function generates the bytecode that causes a generator function to save the state
-     * of the function's local variables.
-     */
-    private void saveState()
-    {
-        assert function.isGenerator();
-
-        String owner;
-        String name;
-        String desc;
-
-        /**
-         * This is the field that stores the state of the method, between invocations.
-         */
-        final FieldNode field = function.yieldField();
-
-        // Load the yield-state object onto the operand-stack.
-        owner = Utils.internalName(function.module.type);
-        name = field.name;
-        desc = field.desc;
-        code.add(new FieldInsnNode(Opcodes.GETSTATIC, owner, name, desc));
-
-        // Load the storage-stack onto the operand-stack.
-        owner = "autumn/lang/internals/YieldState";
-        name = "stack";
-        desc = "()Lautumn/lang/internals/ArgumentStack;";
-        code.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL, owner, name, desc));
-
-        // Store each variable.
-        for (String variable : function.allocator.getVariables())
-        {
-            // Skip parameters, because they are unique to each invocation.
-            if (function.allocator.isParameter(variable))
-            {
-                continue;
-            }
-
-            // Duplicate the reference to the storage-stack.
-            code.add(new InsnNode(Opcodes.DUP));
-
-            // Load the variable's value onto the operand-stack.
-            function.vars.load(variable);
-
-            // Push the variable's value onto the storage-stack.
-            Utils.pushArgument(program, code, function.allocator.typeOf(variable));
-        }
-
-        // Pop the storage-stack off of the operand-stack.
-        code.add(new InsnNode(Opcodes.POP));
     }
 }

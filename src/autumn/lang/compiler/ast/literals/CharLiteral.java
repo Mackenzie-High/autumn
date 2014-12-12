@@ -1,7 +1,6 @@
 package autumn.lang.compiler.ast.literals;
 
 import high.mackenzie.autumn.resources.Finished;
-import java.math.BigInteger;
 
 /**
  * An instance of this class represents a
@@ -13,7 +12,7 @@ import java.math.BigInteger;
 public final class CharLiteral
         extends AbstractNumericLiteral<Character>
 {
-    private static final BigInteger MAXIMUM = BigInteger.valueOf(Character.MAX_VALUE);
+    private static final int MAXIMUM = Character.MAX_VALUE;
 
     private Character value = null;
 
@@ -53,13 +52,13 @@ public final class CharLiteral
         }
         else if (source.matches("[0-9]+C"))
         {
-            final BigInteger digits = new BigInteger(source.replace("C", ""));
+            final int digits = Integer.valueOf(sourceWithoutUnderscores().trim().replace("C", ""));
 
-            final boolean conversion_is_safe = digits.compareTo(MAXIMUM) <= 0;
+            final boolean conversion_is_safe = digits <= MAXIMUM;
 
             if (conversion_is_safe)
             {
-                return (char) digits.longValue();
+                return (char) digits;
             }
         }
 
@@ -73,8 +72,6 @@ public final class CharLiteral
     @Override
     public boolean isParsable()
     {
-        // Note: The \r character is not allowed in 'X' style literals.
-
-        return source().matches("[0-9]+C") || source().matches("'(.|\n)'");
+        return sourceWithoutUnderscores().matches("[0-9]+C") || source().matches("'(.|\n)'");
     }
 }

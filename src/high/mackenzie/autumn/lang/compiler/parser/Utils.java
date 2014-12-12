@@ -1,6 +1,10 @@
 package high.mackenzie.autumn.lang.compiler.parser;
 
 import autumn.lang.compiler.TreeBuilder;
+import autumn.lang.compiler.ast.commons.IConstruct;
+import autumn.lang.compiler.ast.commons.IExpression;
+import autumn.lang.compiler.ast.literals.BigDecimalLiteral;
+import autumn.lang.compiler.ast.literals.BigIntegerLiteral;
 import autumn.lang.compiler.ast.literals.ByteLiteral;
 import autumn.lang.compiler.ast.literals.CharLiteral;
 import autumn.lang.compiler.ast.literals.DoubleLiteral;
@@ -10,6 +14,7 @@ import autumn.lang.compiler.ast.literals.LongLiteral;
 import autumn.lang.compiler.ast.literals.ShortLiteral;
 import autumn.lang.compiler.ast.nodes.Name;
 import autumn.util.Strings;
+import com.google.common.collect.Lists;
 import high.mackenzie.autumn.resources.Finished;
 import high.mackenzie.snowflake.ITreeNode;
 import high.mackenzie.snowflake.LinesAndColumns;
@@ -17,6 +22,9 @@ import high.mackenzie.snowflake.NewlineStyles;
 import high.mackenzie.snowflake.TreeNode;
 import java.io.File;
 import java.net.URL;
+import java.util.Collections;
+import java.util.List;
+import java.util.Stack;
 
 /**
  * This class is used by the parser to help facilitate the building of an abstract-syntax-tree.
@@ -101,6 +109,102 @@ public final class Utils
         return new File(last_string);
     }
 
+    public static void createChainedMethodCall()
+    {
+        if (builder.size() == 1)
+        {
+            return;
+        }
+
+        /**
+         * The primary stack looks something like this (from top to bottom):
+         *
+         * . argument[N]
+         * . argument[2]
+         * . argument[1]
+         * . name
+         * . argument[N]
+         * . argument[2]
+         * . argument[1]
+         * . name
+         * . argument[N]
+         * . argument[2]
+         * . argument[1]
+         * . name
+         * . owner
+         *
+         * Get the primary stack off of the stack of stacks.
+         */
+        final Stack<IConstruct> stack = builder.copyStack();
+
+        /**
+         * Remove the primary stack from the stack of stack.
+         */
+        builder.clear();
+        builder.popStack();
+
+        /**
+         * Reverse the order of the stack (i.e. the former primary stack).
+         * So now, the stack looks something like this (from top to bottom):
+         *
+         * . owner
+         * . name
+         * . argument[1]
+         * . argument[2]
+         * . argument[N]
+         * . name
+         * . argument[1]
+         * . argument[2]
+         * . argument[N]
+         * . name
+         * . argument[1]
+         * . argument[2]
+         * . argument[N]
+         */
+        Collections.reverse(stack);
+
+        /**
+         * Push a new primary stack onto the stack of stacks.
+         */
+        builder.pushStack();
+
+        /**
+         * Transfer the owner onto the primary stack.
+         */
+        assert stack.peek() instanceof IExpression;
+        builder.push(stack.pop());
+
+        /**
+         * For each chained method call:
+         */
+        while (stack.isEmpty() == false)
+        {
+            /**
+             * Transfer the name onto the primary stack.
+             */
+            assert stack.peek() instanceof Name;
+            builder.push(stack.pop());
+
+            /**
+             * Transfer each argument onto the primary stack.
+             */
+            while (stack.isEmpty() == false && stack.peek() instanceof Name == false)
+            {
+                assert stack.peek() instanceof IExpression;
+                builder.push(stack.pop());
+            }
+
+            /**
+             * Create a call-method-expression given the single chained method call
+             * that is currently in pieces on the primary stack.
+             */
+            builder.createExpressionCallMethod();
+        }
+
+        assert stack.isEmpty();
+        assert builder.size() == 1;
+    }
+
     public static void createComponentTypeSpecifier(final ITreeNode node)
     {
         final int dimensions = TreeNode.findAll(node, "dimension").size();
@@ -183,7 +287,36 @@ public final class Utils
         return new DoubleLiteral(removeWS(node));
     }
 
-    public static String extractAnnotationValue(final ITreeNode node)
+    public static BigIntegerLiteral extractBigIntegerValue(final ITreeNode node)
+    {
+        return new BigIntegerLiteral(removeWS(node));
+    }
+
+    public static BigDecimalLiteral extractBigDecimalValue(final ITreeNode node)
+    {
+        return new BigDecimalLiteral(removeWS(node));
+    }
+
+    public static List<String> extractAnnotationValues(final ITreeNode node)
+    {
+        final List<ITreeNode> nodes = TreeNode.findAll(node, "annotation_value");
+
+        if (nodes.isEmpty())
+        {
+            return null;
+        }
+
+        final List<String> values = Lists.newLinkedList();
+
+        for (ITreeNode x : nodes)
+        {
+            values.add(extractAnnotationValue(x));
+        }
+
+        return values;
+    }
+
+    private static String extractAnnotationValue(final ITreeNode node)
     {
         final ITreeNode annotation_value = TreeNode.find(node, "annotation_value");
 

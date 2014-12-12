@@ -22,12 +22,15 @@ import autumn.lang.compiler.ast.commons.IAnnotated;
 import autumn.lang.compiler.ast.commons.IBinaryOperation;
 import autumn.lang.compiler.ast.commons.IConstruct;
 import autumn.lang.compiler.ast.commons.IConversionOperation;
+import autumn.lang.compiler.ast.commons.IDatum;
 import autumn.lang.compiler.ast.commons.IDirective;
 import autumn.lang.compiler.ast.commons.IDocumented;
 import autumn.lang.compiler.ast.commons.IExpression;
 import autumn.lang.compiler.ast.commons.IRecord;
 import autumn.lang.compiler.ast.commons.IStatement;
 import autumn.lang.compiler.ast.commons.IUnaryOperation;
+import autumn.lang.compiler.ast.literals.BigDecimalLiteral;
+import autumn.lang.compiler.ast.literals.BigIntegerLiteral;
 import autumn.lang.compiler.ast.literals.ByteLiteral;
 import autumn.lang.compiler.ast.literals.CharLiteral;
 import autumn.lang.compiler.ast.literals.DoubleLiteral;
@@ -35,6 +38,7 @@ import autumn.lang.compiler.ast.literals.FloatLiteral;
 import autumn.lang.compiler.ast.literals.IntLiteral;
 import autumn.lang.compiler.ast.literals.LongLiteral;
 import autumn.lang.compiler.ast.literals.ShortLiteral;
+import autumn.util.ds.ImmutableList;
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
@@ -50,7 +54,7 @@ import java.util.TreeSet;
 /**
  * An instance of this interface is a visitor that can visit the nodes in an Autumn abstract-syntax-tree.
  * 
- * <p> This file was auto-generated on (Sat Nov 08 20:19:21 EST 2014).</p>
+ * <p> This file was auto-generated on (Fri Dec 12 09:04:03 EST 2014).</p>
  */
 public interface IAstVisitor
 {
@@ -356,20 +360,6 @@ public interface IAstVisitor
     public void visit(final RecurStatement object);
 
     /**
-     * This method visits an object of type <code>YieldVoidStatement</code>.
-     * 
-     * @param object is the object to visit.
-     */
-    public void visit(final YieldVoidStatement object);
-
-    /**
-     * This method visits an object of type <code>YieldValueStatement</code>.
-     * 
-     * @param object is the object to visit.
-     */
-    public void visit(final YieldValueStatement object);
-
-    /**
      * This method visits an object of type <code>BooleanDatum</code>.
      * 
      * @param object is the object to visit.
@@ -424,6 +414,20 @@ public interface IAstVisitor
      * @param object is the object to visit.
      */
     public void visit(final DoubleDatum object);
+
+    /**
+     * This method visits an object of type <code>BigIntegerDatum</code>.
+     * 
+     * @param object is the object to visit.
+     */
+    public void visit(final BigIntegerDatum object);
+
+    /**
+     * This method visits an object of type <code>BigDecimalDatum</code>.
+     * 
+     * @param object is the object to visit.
+     */
+    public void visit(final BigDecimalDatum object);
 
     /**
      * This method visits an object of type <code>StringDatum</code>.

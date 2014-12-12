@@ -7,7 +7,5 @@ tuple Person (name : String, children : List) extends Parent;
 @Start
 defun main (args : String[]) : void
 {
-    var p = (new Person "Mom", ["Jet", "Fluffy"]);
-
-
+    var p = new Person("Mom", ["Jet", "Fluffy"]);
 }

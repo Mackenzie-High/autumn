@@ -6,15 +6,15 @@ tuple Person (name : String, age : int);
 @Start
 defun main (args : String[]) : void
 {
-    var p = (new Person "Avril", 30);
+    var p = new Person("Avril", 30);
 
-    assert (p.iterator) !== (p.iterator);
+    assert p.iterator() !== p.iterator();
 
-    var i = (p.iterator);
+    var i = p.iterator();
 
-    assert (i.hasNext);
-    assert (i.next) == "Avril";
-    assert (i.hasNext);
-    assert (i.next) == 30;
-    assert (i.hasNext) == false;
+    assert i.hasNext();
+    assert i.next() == "Avril";
+    assert i.hasNext();
+    assert i.next() == 30;
+    assert i.hasNext() == false;
 }

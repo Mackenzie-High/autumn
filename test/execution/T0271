@@ -5,9 +5,9 @@ tuple Person (name : String);
 @Start
 defun main (args : String[]) : void
 {
-    var p = (new Person "Molly");
+    var p = new Person("Molly");
 
-    assert (p.isTuple) == true;
+    assert p.isTuple() == true;
 
-    assert (p.isStruct) == false;
+    assert p.isStruct() == false;
 }

@@ -5,5 +5,5 @@ tuple T (value : Integer);
 @Start
 defun main (args : String[]) : void
 {
-    assert ((new T 23).value) == 23;
+    assert new T(23).value() == 23;
 }

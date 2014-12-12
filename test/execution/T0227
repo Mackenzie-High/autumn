@@ -17,14 +17,14 @@ defun main (args : String[]) : void
     val value7 = 50.0F is Float;
     val value8 = 60.0 is Double;
 
-    assert (call Main::unbox value1) == (class boolean);
-    assert (call Main::unbox value2) == (class char);
-    assert (call Main::unbox value3) == (class byte);
-    assert (call Main::unbox value4) == (class short);
-    assert (call Main::unbox value5) == (class int);
-    assert (call Main::unbox value6) == (class long);
-    assert (call Main::unbox value7) == (class float);
-    assert (call Main::unbox value8) == (class double);
+    assert call Main::unbox(value1) == (class boolean);
+    assert call Main::unbox(value2) == (class char);
+    assert call Main::unbox(value3) == (class byte);
+    assert call Main::unbox(value4) == (class short);
+    assert call Main::unbox(value5) == (class int);
+    assert call Main::unbox(value6) == (class long);
+    assert call Main::unbox(value7) == (class float);
+    assert call Main::unbox(value8) == (class double);
 }
 
 defun unbox (x : boolean) : Class

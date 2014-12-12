@@ -1,6 +1,6 @@
 package high.mackenzie.autumn.lang.compiler.compilers;
 
-import autumn.lang.annotations.InferReturnType;
+import autumn.lang.annotations.Infer;
 import autumn.lang.compiler.ast.commons.IBinaryOperation;
 import autumn.lang.compiler.ast.commons.IExpression;
 import autumn.lang.compiler.ast.commons.IUnaryOperation;
@@ -288,7 +288,7 @@ abstract class AbstractTypeChecker
         {
             infer(operation, method.getReturnType());
         }
-        else if (TypeSystemUtils.isAnnotationPresent(method, InferReturnType.class))
+        else if (TypeSystemUtils.isAnnotationPresent(method, Infer.class))
         {
             infer(operation, args.get(0));
         }

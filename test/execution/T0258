@@ -6,7 +6,7 @@ tuple Person (name : String, age : int);
 @Start
 defun main (args : String[]) : void
 {
-    var p = (new Person "Avril", 30);
+    var p = new Person("Avril", 30);
 
-    assert "(Avril, 30)" == (p.toString);
+    assert "(Avril, 30)" == p.toString();
 }

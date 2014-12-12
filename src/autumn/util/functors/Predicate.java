@@ -1,17 +1,18 @@
 package autumn.util.functors;
 
 import autumn.lang.TypedFunctor;
-import autumn.lang.internals.AbstractStaticFunctor;
+import autumn.lang.internals.AbstractDefinedFunctor;
 import autumn.lang.internals.ArgumentStack;
 import com.google.common.collect.ImmutableList;
 import java.util.List;
 
 /**
+ * functor Predicate (value : Object) : boolean
  *
- * @author mackenzie
+ * @author Mackenzie High
  */
 public class Predicate
-        extends AbstractStaticFunctor
+        extends AbstractDefinedFunctor
 {
     public Predicate(final TypedFunctor functor)
     {

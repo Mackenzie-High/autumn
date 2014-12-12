@@ -15,9 +15,9 @@ defun main (args : String[]) : void
     val q = p is Moo;
     val r = q is Boo;
 
-    assert (p.invoke 3) == 30;
-    assert (p.invoke 5) == 50;
-    assert (r.invoke 7) == 70;
+    assert p.invoke(3) == 30;
+    assert p.invoke(5) == 50;
+    assert r.invoke(7) == 70;
 
     assert (instanceof p : Boo);
     assert (instanceof p : Moo);

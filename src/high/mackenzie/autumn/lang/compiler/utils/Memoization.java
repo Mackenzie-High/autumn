@@ -6,6 +6,7 @@ import high.mackenzie.autumn.lang.compiler.compilers.FunctionCompiler;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IExpressionType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IVariableType;
 import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.InsnList;
 import org.objectweb.asm.tree.InsnNode;
 import org.objectweb.asm.tree.JumpInsnNode;
@@ -151,6 +152,24 @@ public final class Memoization
     }
 
     /**
+     * This method generates the bytecode needed to memoize an invocation of a void function.
+     *
+     * @param code is the code bing generated.
+     */
+    public void internVoid(final InsnList code)
+    {
+        /**
+         * Load null onto the operand-stack.
+         */
+        code.add(new InsnNode(Opcodes.ACONST_NULL));
+
+        /**
+         * Intern the null value.
+         */
+        intern(code, function.program.typesystem.utils.OBJECT);
+    }
+
+    /**
      * This method generates bytecode that creates a list containing the function's arguments.
      *
      * <p>
@@ -236,8 +255,15 @@ public final class Memoization
                                     "(Ljava/lang/String;)Lautumn/lang/Memoizer;"));
     }
 
-    private MethodInsnNode getter()
+    /**
+     * This method creates the bytecode instruction needed to retrieve the value from the memoizer.
+     *
+     * @return aforedescribed bytecode instruction.
+     */
+    private AbstractInsnNode getter()
     {
+        // Note: Values are retrieved from the memoizer using one of the value*() methods.
+
         if (function.type.getReturnType().getDescriptor().equals("Z"))
         {
             return new MethodInsnNode(Opcodes.INVOKEVIRTUAL,
@@ -293,6 +319,10 @@ public final class Memoization
                                       "autumn/lang/Memoizer",
                                       "valueAsDouble",
                                       "(Ljava/util/List;)D");
+        }
+        else if (function.type.getReturnType().getDescriptor().equals("V"))
+        {
+            return new InsnNode(Opcodes.NOP);
         }
         else
         {

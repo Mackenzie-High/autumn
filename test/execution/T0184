@@ -7,11 +7,11 @@ import java.util.LinkedList;
 @Start
 defun main (args : String[]) : void
 {
-    val good = (new LinkedList);
+    val good = new LinkedList();
 
-    (My::looper [10, 20, "Thirty", 40], good);
+    My::looper([10, 20, "Thirty", 40], good);
 
-    (My::looper [50, 60, "Seventy", 80], good);
+    My::looper([50, 60, "Seventy", 80], good);
 
     assert good == [10, 20, 50, 60];
 }
@@ -25,7 +25,7 @@ defun looper (input : Iterable,
     {
         foreach (x : Integer in input)
         {
-            (good.add x);
+            good.add(x);
         }
 
         assert false;

@@ -7,7 +7,7 @@ defun main (args : String[]) : void
 {
     delegate p : F0 => Main::moo;
 
-    assert [17] == (p.invoke);
+    assert [17] == p.invoke();
 }
 
 defun moo () : List

@@ -17,7 +17,7 @@ defun main (args : String[]) : void
 
     val expected = [true, 'X', 10B, 20S, 30, 40L, 50.0F, 60.0, "Venus"];
 
-    val actual = (p.invoke true, 'X', 10B, 20S, 30, 40L, 50.0F, 60.0, "Venus");
+    val actual = p.invoke(true, 'X', 10B, 20S, 30, 40L, 50.0F, 60.0, "Venus");
 
     assert expected == actual;
 }

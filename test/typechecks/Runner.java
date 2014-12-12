@@ -46,6 +46,14 @@ public final class Runner
 
 
 
+        test("T0228", INACCURATE_NUMERIC_LITERAL);
+        test("T0227", INACCURATE_NUMERIC_LITERAL);
+        test("T0226", INACCURATE_NUMERIC_LITERAL);
+        test("T0225", INACCURATE_NUMERIC_LITERAL);
+        test("T0224", INACCURATE_NUMERIC_LITERAL);
+        test("T0223", INACCURATE_NUMERIC_LITERAL);
+        test("T0222", INACCURATE_NUMERIC_LITERAL);
+        test("T0221", INACCURATE_NUMERIC_LITERAL);
         //test("T0220", NO_SUCH_METHOD);
         test("T0219", EXPECTED_MODULE_TYPE);
         test("T0218", INACCESSIBLE_TYPE);
@@ -76,9 +84,7 @@ public final class Runner
         test("T0193", NO_SUCH_TYPE);
         test("T0192", EXPECTED_DESIGN_TYPE);
         test("T0191", EXPECTED_INTERFACE_TYPE);
-        test("T0190", WRONG_TYPE);
         test("T0189", WRONG_TYPE);
-        test("T0188", EXPECTED_VOID);
         test("T0187", EXPECTED_VOID);
         test("T0186", INACCESSIBLE_TYPE);
         test("T0185", NO_SUCH_TYPE);

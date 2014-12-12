@@ -4,16 +4,16 @@ module Main in execution;
 defun main (args : String[]) : void
 {
     var x = 0;
-    var list = (new LinkedList);
+    var list = new LinkedList();
 
     for(i = 0; i < 10; i + 1)
     {
         let x = x + 17;
 
-        (list.add x);
+        list.add(x);
     }
 
     assert x == 170;
 
-    assert (list.toString) == "[17, 34, 51, 68, 85, 102, 119, 136, 153, 170]";
+    assert list.toString() == "[17, 34, 51, 68, 85, 102, 119, 136, 153, 170]";
 }

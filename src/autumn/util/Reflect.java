@@ -11,6 +11,8 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import org.objectweb.asm.Type;
 
@@ -175,13 +177,27 @@ public final class Reflect
         return result;
     }
 
-    /**
-     * This method retrieves the value stored in an Autumn style annotation.
-     *
-     * @param annotation is the annotation that contains the value to return.
-     * @return the value stored in the value() element, if any such value exists.
-     */
     public static String getAnnotationValue(final Annotation annotation)
+    {
+        Preconditions.checkNotNull(annotation);
+
+        final List<String> values = getAnnotationValues(annotation);
+
+        if (values == null || values.isEmpty())
+        {
+            throw new IllegalArgumentException("No annotation value is present.");
+        }
+        else if (values.size() > 1)
+        {
+            throw new IllegalArgumentException("Too many annotation values are present.");
+        }
+        else
+        {
+            return values.get(0);
+        }
+    }
+
+    public static List<String> getAnnotationValues(final Annotation annotation)
     {
         Preconditions.checkNotNull(annotation);
 
@@ -190,9 +206,9 @@ public final class Reflect
             final Method method = annotation.annotationType().getDeclaredMethod("value");
 
             /**
-             * We are only want to read the value(), if it is a String.
+             * We are only want to read the value(), if it is a String[].
              */
-            if (method.getReturnType().equals(String.class) == false)
+            if (method.getReturnType().equals(String[].class) == false)
             {
                 return null;
             }
@@ -200,12 +216,25 @@ public final class Reflect
             /**
              * Invoke the value() method in order to retrieve the value.
              */
-            final String value = (String) method.invoke(annotation);
+            final String[] value = (String[]) method.invoke(annotation);
 
             /**
-             * Return the string value that is stored in the annotation.
+             * If the value is null, then no values are present.
              */
-            return value;
+            if (value == null)
+            {
+                return null;
+            }
+
+            /**
+             * Convert the value to a list of values.
+             */
+            final List<String> values = Collections.unmodifiableList(Arrays.<String>asList(value));
+
+            /**
+             * Return the values that are stored in the annotation.
+             */
+            return values;
         }
         catch (NoSuchMethodException ex)
         {

@@ -1,23 +1,22 @@
 package autumn.util.functors;
 
 import autumn.lang.TypedFunctor;
-import autumn.lang.internals.AbstractStaticFunctor;
+import autumn.lang.internals.AbstractDefinedFunctor;
 import autumn.lang.internals.ArgumentStack;
 import com.google.common.collect.ImmutableList;
 import java.util.List;
 
 /**
- * An instance of this functor-type is a functor that used to implement a to-string method.
+ * functor MethodToString (owner : Object) : String
  *
  * <p>
- * <b>Signature:</b>
- * <code> MethodStr (self : Object) => String </code>
+ * The owner parameter is the object that contains the method. <br>
  * </p>
  *
  * @author Mackenzie High
  */
 public class MethodToString
-        extends AbstractStaticFunctor
+        extends AbstractDefinedFunctor
 {
     /**
      * Sole Constructor.

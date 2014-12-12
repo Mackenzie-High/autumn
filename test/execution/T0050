@@ -9,7 +9,7 @@ var x = 0;
     {
         let x = x + 100;
 
-        throw (new Exception);
+        throw new Exception();
 
         let x = x + 200;
     }

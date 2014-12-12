@@ -5,7 +5,7 @@ tuple T (value : int);
 @Start
 defun main (args : String[]) : void
 {
-    val input = (Integer::valueOf 23);
+    val input = Integer::valueOf(23);
 
-    assert ((new T input).value) == 23;
+    assert new T(input).value() == 23;
 }

@@ -8,29 +8,34 @@ tuple T (a : short,
 @Start
 defun main (args : String[]) : void
 {
-    var p = (T::instance);
+    var p = T::instance();
 
     # byte ==> short
-    p = (p.a 10B);
-    assert (p.a) == 10S;
+    p = p.a (10B);
+    assert p.a() == 10S;
 
     # char ==> int
-    p = (p.b 'A');
-    assert (p.b) == 65;
+    p = p.b ('A');
+    assert p.b() == 65;
 
     # byte ==> int
-    p = (p.b 10B);
-    assert (p.b) == 10;
+    p = p.b (10B);
+    assert p.b() == 10;
 
     # short ==> int
-    p = (p.b 20S);
-    assert (p.b) == 20;
+    p = p.b (20S);
+    assert p.b() == 20;
 
     # int ==> long
-    p = (p.c 30);
-    assert (p.c) == 30L;
+    p = p.c (30);
+    assert p.c() == 30L;
 
     # float ==> double
-    p = (p.d 4.0F);
-    assert (p.d) == 4.0;
+    p = p.d (4.0F);
+    assert p.d() == 4.0;
 }
+
+
+
+
+

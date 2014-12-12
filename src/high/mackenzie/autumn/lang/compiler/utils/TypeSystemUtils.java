@@ -17,7 +17,7 @@ import autumn.lang.internals.AbstractDelegate;
 import autumn.lang.internals.AbstractLambda;
 import autumn.lang.internals.AbstractModule;
 import autumn.lang.internals.AbstractRecord;
-import autumn.lang.internals.AbstractStaticFunctor;
+import autumn.lang.internals.AbstractDefinedFunctor;
 import autumn.lang.internals.ArgumentStack;
 import autumn.lang.internals.Conversions;
 import autumn.lang.internals.Helpers;
@@ -260,7 +260,7 @@ public final class TypeSystemUtils
 
         this.ABSTRACT_LAMBDA = (IClassType) factory.fromClass(AbstractLambda.class);
 
-        this.ABSTRACT_STATIC_FUNCTOR = (IClassType) factory.fromClass(AbstractStaticFunctor.class);
+        this.ABSTRACT_STATIC_FUNCTOR = (IClassType) factory.fromClass(AbstractDefinedFunctor.class);
 
         this.HELPERS = (IClassType) factory.fromClass(Helpers.class);
 

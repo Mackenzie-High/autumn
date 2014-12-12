@@ -301,4 +301,40 @@ public enum ErrorCode
      * Meaning: An annotation that cannot be used by Autumn was encountered.
      */
     UNUSABLE_ANNOTATION,
+    /**
+     * Meaning: A module must contain a module-directive.
+     */
+    MISSING_MODULE_DIRECTIVE,
+    /**
+     * Meaning: A start function must have a signature of: main(String[]) : void
+     */
+    WRONG_SIGNATURE_FOR_START,
+    /**
+     * Meaning: A setup function must have a signature of: () : void
+     */
+    WRONG_SIGNATURE_FOR_SETUP,
+    /**
+     * Meaning: A test function must have a signature of: (TestCase) : void
+     */
+    WRONG_SIGNATURE_FOR_TEST,
+    /**
+     * Meaning: An inferred function must have a signature of: (T, ...) : T, where T is some reference-type.
+     */
+    WRONG_SIGNATURE_FOR_INFER,
+    /**
+     * Meaning: A recur-statement cannot be used inside of a generator-function.
+     */
+    RECUR_IN_GENERATOR_FUNCTION,
+    /**
+     * Meaning: A recur-statement cannot be used inside of a memoized-function.
+     */
+    RECUR_IN_MEMOIZED_FUNCTION,
+    /**
+     * Meaning: An anonymous module cannot contain any functions.
+     */
+    FUNCTION_IN_ANONYMOUS_MODULE,
+    /**
+     * Meaning: A literal value is outside the range of its datatype.
+     */
+    INACCURATE_NUMERIC_LITERAL,
 }

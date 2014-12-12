@@ -7,18 +7,18 @@ tuple Person (name : String, children : Collection) extends Parent;
 @Start
 defun main (args : String[]) : void
 {
-    var p = (new Person "Mom", ["Jetty", "Fluffy"]);
+    var p = new Person("Mom", ["Jetty", "Fluffy"]);
 
-    assert (p.name) == "Mom";
-    assert (p.children) == ["Jetty", "Fluffy"];
+    assert p.name() == "Mom";
+    assert p.children() == ["Jetty", "Fluffy"];
 
     var q = p is Parent;
 
-    assert (q.name) == "Mom";
-    assert (q.children) == ["Jetty", "Fluffy"];
+    assert q.name() == "Mom";
+    assert q.children() == ["Jetty", "Fluffy"];
 
-    q = (q.children ["Chicky", "Picky"]);
+    q = q.children( ["Chicky", "Picky"]);
 
-    assert (q.name) == "Mom";
-    assert (q.children) == ["Chicky", "Picky"];
+    assert q.name() == "Mom";
+    assert q.children() == ["Chicky", "Picky"];
 }

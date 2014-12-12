@@ -7,7 +7,7 @@ defun main (args : String[]) : void
 {
     try
     {
-        (call City::valueOf null);
+        call City::valueOf(null);
 
         assert false;
     }

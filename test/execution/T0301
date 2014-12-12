@@ -7,22 +7,22 @@ defun main (args : String[]) : void
     var value = null as Object;
 
     value = [];
-    assert (dispatch moo value) == "list";
+    assert dispatch moo (value) == "list";
 
-    value = (new HashSet);
-    assert (dispatch moo value) == "collection";
+    value = new HashSet();
+    assert dispatch moo (value) == "collection";
 
     value = 3;
-    assert (dispatch moo value) == "integer";
+    assert dispatch moo (value) == "integer";
 
     value = 7L;
-    assert (dispatch moo value) == "long";
+    assert dispatch moo (value) == "long";
 
     value = 9.0;
-    assert (dispatch moo value) == "number";
+    assert dispatch moo (value) == "number";
 
     value = "Venus";
-    assert (dispatch moo value) == "object";
+    assert dispatch moo (value) == "object";
 }
 
 defun moo (x : List) : String

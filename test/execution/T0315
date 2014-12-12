@@ -7,11 +7,11 @@ exception Moo extends RuntimeException;
 @Start
 defun main (args : String[]) : void
 {
-    val module = (My::instance);
+    val module = My::instance();
 
-    val info = (module.moduleInfo);
+    val info = module.moduleInfo();
 
-    val actual = (info.exceptions);
+    val actual = info.exceptions();
 
     val expected = [(class Boo), (class Moo)];
 

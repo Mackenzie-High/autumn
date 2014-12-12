@@ -19,9 +19,9 @@ defun main (args : String[]) : void
 
     # The invocations must actually work.
     #
-    val x = (p.invoke 3);
-    val y = (q.invoke 5);
-    val z = (r.invoke 7);
+    val x = p.invoke(3);
+    val y = q.invoke(5);
+    val z = r.invoke(7);
 
     assert x == "30";
     assert y == "50";
@@ -31,9 +31,9 @@ defun main (args : String[]) : void
 
     # Ensure that the correct invoke(*) methods were actually invoked.
     #
-    assert ((locals).typeOf "x") == (class String);
-    assert ((locals).typeOf "y") == (class CharSequence);
-    assert ((locals).typeOf "z") == (class Object);
+    assert (locals).typeOf("x") == (class String);
+    assert (locals).typeOf("y") == (class CharSequence);
+    assert (locals).typeOf("z") == (class Object);
 
 
 
@@ -54,13 +54,13 @@ defun main (args : String[]) : void
 
     # Ensure that the compiler correctly figured out the return-type.
     #
-    assert (p.returnType) == (class String);
+    assert p.returnType() == (class String);
 }
 
 
 defun moo (x : int) : String
 {
-    return (Strings::str x * 10);
+    return Strings::str(x * 10);
 }
 
 

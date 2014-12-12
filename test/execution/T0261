@@ -8,9 +8,9 @@ defun main (args : String[]) : void
 {
     try
     {
-        var problem = (new Object);
+        var problem = new Object();
 
-        (new Pair 10, problem) < (new Pair 10, 20);
+        new Pair(10, problem) < new Pair(10, 20);
 
         assert false;
     }

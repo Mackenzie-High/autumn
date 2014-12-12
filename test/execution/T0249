@@ -30,20 +30,24 @@ defun main (args : String[]) : void
     #
     val map = (locals);
 
-    assert ((map.locals).size) == 5;
+    assert map.locals().size() == 5;
 
-    assert (map.typeOf "args") == (class String[]);
-    assert (map.typeOf "prime1") == (class int);
-    assert (map.typeOf "prime2") == (class int);
-    assert (map.typeOf "prime3") == (class int);
-    assert (map.typeOf "primes") == (class List);
+    assert map.typeOf("args") == (class String[]);
+    assert map.typeOf("prime1") == (class int);
+    assert map.typeOf("prime2") == (class int);
+    assert map.typeOf("prime3") == (class int);
+    assert map.typeOf("primes") == (class List);
 
-    assert (map.valueOf "prime1") == prime1;
-    assert (map.valueOf "prime2") == prime2;
-    assert (map.valueOf "prime3") == prime3;
-    assert (map.valueOf "primes") == primes;
+    assert map.valueOf("prime1") == prime1;
+    assert map.valueOf("prime2") == prime2;
+    assert map.valueOf("prime3") == prime3;
+    assert map.valueOf("primes") == primes;
 
-    assert ((map.file).contains "T0249");
-    assert (map.line) == 31;
-    assert (map.column) == 16;
+    assert map.file().contains("T0249");
+    assert map.line() == 31;
+    assert map.column() == 15;
 }
+
+
+
+

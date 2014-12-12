@@ -9,26 +9,26 @@ import java.util.ArrayList;
 defun main (args : String[]) : void
 {
     # Widen to a Short
-    assert (call Main::widen1 10B) == (class short);
-    assert (call Main::widen1 20S) == (class short);
+    assert call Main::widen1(10B) == (class short);
+    assert call Main::widen1(20S) == (class short);
 
 
     # Widen to a Integer
-    assert (call Main::widen2 10B) == (class int);
-    assert (call Main::widen2 20S) == (class int);
-    assert (call Main::widen2 30)  == (class int);
+    assert call Main::widen2(10B) == (class int);
+    assert call Main::widen2(20S) == (class int);
+    assert call Main::widen2(30)  == (class int);
 
 
     # Widen to a Long
-    assert (call Main::widen3 10B) == (class long);
-    assert (call Main::widen3 20S) == (class long);
-    assert (call Main::widen3 30)  == (class long);
-    assert (call Main::widen3 40L) == (class long);
+    assert call Main::widen3(10B) == (class long);
+    assert call Main::widen3(20S) == (class long);
+    assert call Main::widen3(30)  == (class long);
+    assert call Main::widen3(40L) == (class long);
 
 
     # Widen to a Double
-    assert (call Main::widen4 50.0F) == (class double);
-    assert (call Main::widen4 60.0)  == (class double);
+    assert call Main::widen4(50.0F) == (class double);
+    assert call Main::widen4(60.0)  == (class double);
 }
 
 defun widen1 (x : short) : Class

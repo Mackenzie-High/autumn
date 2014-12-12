@@ -22,12 +22,15 @@ import autumn.lang.compiler.ast.commons.IAnnotated;
 import autumn.lang.compiler.ast.commons.IBinaryOperation;
 import autumn.lang.compiler.ast.commons.IConstruct;
 import autumn.lang.compiler.ast.commons.IConversionOperation;
+import autumn.lang.compiler.ast.commons.IDatum;
 import autumn.lang.compiler.ast.commons.IDirective;
 import autumn.lang.compiler.ast.commons.IDocumented;
 import autumn.lang.compiler.ast.commons.IExpression;
 import autumn.lang.compiler.ast.commons.IRecord;
 import autumn.lang.compiler.ast.commons.IStatement;
 import autumn.lang.compiler.ast.commons.IUnaryOperation;
+import autumn.lang.compiler.ast.literals.BigDecimalLiteral;
+import autumn.lang.compiler.ast.literals.BigIntegerLiteral;
 import autumn.lang.compiler.ast.literals.ByteLiteral;
 import autumn.lang.compiler.ast.literals.CharLiteral;
 import autumn.lang.compiler.ast.literals.DoubleLiteral;
@@ -35,6 +38,7 @@ import autumn.lang.compiler.ast.literals.FloatLiteral;
 import autumn.lang.compiler.ast.literals.IntLiteral;
 import autumn.lang.compiler.ast.literals.LongLiteral;
 import autumn.lang.compiler.ast.literals.ShortLiteral;
+import autumn.util.ds.ImmutableList;
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
@@ -48,22 +52,22 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 
 /**
- * An instance of this class is an AST node that represents a return-value statement.
+ * An instance of this class is an AST node that represents a BigInteger literal.
  * 
  * <p> 
  * <table border="1">
  *     <tr> <td> <b>Property Name</b> </td> <td> <b>Property Description</b> </td> </tr>
- *     <tr> <td> <code>value</code> </td> <td>This expression produces the value to return.</td> </tr>
+ *     <tr> <td> <code>value</code> </td> <td>This is the value that this datum represents.</td> </tr>
  *     <tr> <td> <code>location</code> </td> <td>This is the source-location information regarding this construct.</td> </tr>
  * </table>
  * </p>
  * 
- * <p> This file was auto-generated on (Sat Nov 08 20:19:20 EST 2014).</p>
+ * <p> This file was auto-generated on (Fri Dec 12 09:04:03 EST 2014).</p>
  */
 @SuppressWarnings("unchecked")
-public final class YieldValueStatement extends Object implements IStatement
+public final class BigIntegerDatum extends Object implements IDatum
 {
-    private IExpression value;
+    private BigIntegerLiteral value;
 
     private SourceLocation location = new SourceLocation();
 
@@ -73,9 +77,9 @@ public final class YieldValueStatement extends Object implements IStatement
      * @param value is the new value of property <code>value</code>.
      * @return a copy of this object with property <code>value</code> set to value.
      */
-    public YieldValueStatement setValue(final IExpression value)
+    public BigIntegerDatum setValue(final BigIntegerLiteral value)
     {
-        final YieldValueStatement result = this.copy();
+        final BigIntegerDatum result = this.copy();
         result.value = value;
         return result;
     }
@@ -85,9 +89,9 @@ public final class YieldValueStatement extends Object implements IStatement
      * 
      * @return the value of property <code>value</code>.
      */
-    public IExpression getValue()
+    public BigIntegerLiteral getValue()
     {
-        final IExpression value = this.value;
+        final BigIntegerLiteral value = this.value;
         return value;
     }
 
@@ -97,9 +101,9 @@ public final class YieldValueStatement extends Object implements IStatement
      * @param value is the new value of property <code>location</code>.
      * @return a copy of this object with property <code>location</code> set to value.
      */
-    public YieldValueStatement setLocation(final SourceLocation value)
+    public BigIntegerDatum setLocation(final SourceLocation value)
     {
-        final YieldValueStatement result = this.copy();
+        final BigIntegerDatum result = this.copy();
         result.location = value;
         return result;
     }
@@ -122,9 +126,9 @@ public final class YieldValueStatement extends Object implements IStatement
      * @param location is the value for property <code>location</code>.
      * @return a new instance of this class.
      */
-    public static YieldValueStatement create(IExpression value, SourceLocation location)
+    public static BigIntegerDatum create(BigIntegerLiteral value, SourceLocation location)
     {
-        YieldValueStatement object = new YieldValueStatement();
+        BigIntegerDatum object = new BigIntegerDatum();
         object = object.setValue(value);
         object = object.setLocation(location);
         return object;
@@ -145,9 +149,9 @@ public final class YieldValueStatement extends Object implements IStatement
      * 
      * @return a shallow copy of this object.
      */
-    public YieldValueStatement copy()
+    public BigIntegerDatum copy()
     {
-        final YieldValueStatement result = new YieldValueStatement();
+        final BigIntegerDatum result = new BigIntegerDatum();
         result.value = this.value;
         result.location = this.location;
         return result;

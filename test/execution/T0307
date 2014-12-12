@@ -5,11 +5,11 @@ functor Action () : void;
 @Start
 defun main (args : String[]) : void
 {
-    lambda p : Action => (Main::thrower);
+    lambda p : Action => Main::thrower();
 
     try
     {
-        (p.invoke);
+        p.invoke();
 
         assert false;
     }
@@ -21,5 +21,5 @@ defun main (args : String[]) : void
 
 defun thrower () : void
 {
-    throw (new Exception);
+    throw new Exception();
 }

@@ -3,14 +3,14 @@ module Main in tests;
 @Start
 defun main(args : String[]) : void
 {
-    val x = (Json::map (new HashMap));
+    val x = Json::map((new HashMap));
 
-    assert (x.isArray) == false;
-    assert (x.isBoolean) == false;
-    assert (x.isNumber) == false;
-    assert (x.isNull) == false;
-    assert (x.isString) == false;
-    assert (x.isObject) == true;
+    assert x.isArray() == false;
+    assert x.isBoolean() == false;
+    assert x.isNumber() == false;
+    assert x.isNull() == false;
+    assert x.isString() == false;
+    assert x.isObject() == true;
 
 
 }

@@ -6,9 +6,9 @@ functor F0146 () : boolean;
 defun main (args : String[]) : void
 {
     # Create a functor to test.
-    val inner = (Predicates::eq "Venus");
-    val functor = (new F0146 inner);
+    val inner = Predicates::eq("Venus");
+    val functor = new F0146(inner);
 
     # Test
-    assert (functor.returnType) == (class boolean);
+    assert functor.returnType() == (class boolean);
 }

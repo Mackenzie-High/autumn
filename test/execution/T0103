@@ -113,21 +113,21 @@ defun main (args : String[]) : void
 
     // Boxing
     assert (true as Boolean) == (field Boolean::TRUE);
-    assert (65C as Character) == (call Character::valueOf 65C);
-    assert (65B as Byte) == (call Byte::valueOf 65B);
-    assert (65S as Short) == (call Short::valueOf 65S);
-    assert (65  as Integer) == (call Integer::valueOf 65);
-    assert (65L as Long) == (call Long::valueOf 65L);
-    assert (65.0F as Float) == (call Float::valueOf 65.0F);
-    assert (65.0 as Double) == (call Double::valueOf 65.0);
+    assert (65C as Character) == call Character::valueOf(65C);
+    assert (65B as Byte) == call Byte::valueOf(65B);
+    assert (65S as Short) == call Short::valueOf(65S);
+    assert (65  as Integer) == call Integer::valueOf(65);
+    assert (65L as Long) == call Long::valueOf(65L);
+    assert (65.0F as Float) == call Float::valueOf(65.0F);
+    assert (65.0 as Double) == call Double::valueOf(65.0);
 
     // Unboxing
     assert ((field Boolean::TRUE) as boolean) == true;
-    assert ((call Character::valueOf 65C) as char) == 65C;
-    assert ((call Byte::valueOf 65B) as byte) == 65B;
-    assert ((call Short::valueOf 65S) as short) == 65S;
-    assert ((call Integer::valueOf 65) as int) == 65;
-    assert ((call Long::valueOf 65L) as long) == 65L;
-    assert ((call Float::valueOf 65.0F) as float) == 65.0F;
-    assert ((call Double::valueOf 65.0) as double) == 65.0;
+    assert call Character::valueOf((65C) as char) == 65C;
+    assert call Byte::valueOf((65B) as byte) == 65B;
+    assert call Short::valueOf((65S) as short) == 65S;
+    assert call Integer::valueOf((65) as int) == 65;
+    assert call Long::valueOf((65L) as long) == 65L;
+    assert call Float::valueOf((65.0F) as float) == 65.0F;
+    assert call Double::valueOf((65.0) as double) == 65.0;
 }

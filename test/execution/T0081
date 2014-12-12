@@ -6,9 +6,9 @@ exception Moo extends RuntimeException;
 @Start
 defun main (args : String[]) : void
 {
-    val m = (Main::instance);
+    val m = Main::instance();
 
-    val exceptions = (call m.moduleExceptionDefinitions);
+    val exceptions = call m.moduleExceptionDefinitions();
 
     assert [(class Boo), (class Moo)] == exceptions;
 }

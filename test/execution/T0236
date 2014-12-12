@@ -8,7 +8,7 @@ defun main (args : String[]) : void
 {
     # This code is used to test both set-field and get-field expressions.
 
-    val object = (new InstanceFieldTester);
+    val object = new InstanceFieldTester();
 
     (field object.value1 = true);
     (field object.value2 = 'X');

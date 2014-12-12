@@ -2,6 +2,7 @@ package high.mackenzie.autumn.lang.compiler.compilers;
 
 import autumn.lang.compiler.ast.commons.IBinaryOperation;
 import autumn.lang.compiler.ast.commons.IConstruct;
+import autumn.lang.compiler.ast.commons.IDatum;
 import autumn.lang.compiler.ast.commons.IExpression;
 import autumn.lang.compiler.ast.commons.IStatement;
 import autumn.lang.compiler.ast.commons.IUnaryOperation;
@@ -84,6 +85,45 @@ public final class StaticChecker
     {
         reporter.reportFailedCheck(report);
         throw new TypeCheckFailed();
+    }
+
+    /**
+     * This method ensures that a literal's value is within the bounds of its datatype.
+     *
+     * @param value is the value of the literal.
+     * @param source the value as it appears in the source code.
+     * @param min is the minimum allowed value.
+     * @param max is the maximum allowed value.
+     */
+    public void checkLiteral(final IDatum node,
+                             final Comparable value,
+                             final String source,
+                             final Comparable min,
+                             final Comparable max)
+    {
+
+        /**
+         * The value will be null, if it is not acceptable.
+         */
+        if (value != null)
+        {
+            return;
+        }
+
+        /**
+         * Create the error-report.
+         */
+        final ErrorCode code = ErrorCode.INACCURATE_NUMERIC_LITERAL;
+        final String message = "A literal cannot be accurately compiled.";
+        final ErrorReport report = new ErrorReport(node, code, message);
+        report.addDetail("Minimum", min.toString());
+        report.addDetail("Maximum", max.toString());
+        report.addDetail("Value", source);
+
+        /**
+         * Issue the error-report to the user.
+         */
+        report(report);
     }
 
     /**
@@ -230,7 +270,7 @@ public final class StaticChecker
          * 2. Annotations written in Java *may* have too many methods.
          * 3. Autumn based annotations always have exactly one method.
          */
-        if (site.getValue() != null && annotation.getAnnotationType().getMethods().size() != 1)
+        if (site.getValues() != null && annotation.getAnnotationType().getMethods().size() != 1)
         {
             reportUnusableAnnotation(site, annotation);
         }
@@ -658,7 +698,7 @@ public final class StaticChecker
      * @param type must be a subtype of Functor.
      */
     public void requireDefinedFunctor(final TypeSpecifier specifier,
-                               final IType type)
+                                      final IType type)
     {
         if (type.isSubtypeOf(program.typesystem.utils.ABSTRACT_STATIC_FUNCTOR))
         {

@@ -17,7 +17,6 @@ import high.mackenzie.autumn.lang.compiler.utils.MemberToHandler;
 import high.mackenzie.autumn.lang.compiler.utils.TopoSorter;
 import java.util.List;
 import java.util.Set;
-import org.objectweb.asm.tree.LabelNode;
 
 /**
  * An instance of this class performs type usage checking on a statement.
@@ -673,40 +672,5 @@ public final class StatementTypeChecker
         }
 
         program.typesystem.utils.checkArgs(ImmutableList.of(function.type), args);
-    }
-
-    @Override
-    public void visit(final YieldVoidStatement object)
-    {
-        /**
-         * Only a function whose return-type is void can contain a yield-void statement.
-         */
-        program.checker.requireVoid(object, function.type.getReturnType());
-
-        final LabelNode reentry = new LabelNode();
-
-        function.yields.add(reentry);
-        function.yieldField();
-        program.symbols.yields.put(object, reentry);
-    }
-
-    @Override
-    public void visit(final YieldValueStatement object)
-    {
-        /**
-         * Visit and type-check the expression that produces the value to return.
-         */
-        object.getValue().accept(this);
-
-        /**
-         * The type of the expression must be assignable to the return-type of the function.
-         */
-        program.checker.checkReturn(object, function.type.getReturnType(), object.getValue());
-
-        final LabelNode reentry = new LabelNode();
-
-        function.yields.add(reentry);
-        function.yieldField();
-        program.symbols.yields.put(object, reentry);
     }
 }

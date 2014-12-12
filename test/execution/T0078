@@ -10,35 +10,35 @@ defun F03(x : int, y : long) : void { }
 @Start
 defun main (args : String[]) : void
 {
-    val m = (Main::instance);
+    val m = Main::instance();
 
     // The instance() method should always return the same object.
-    assert m === (Main::instance);
-    assert m === (Main::instance);
+    assert m === Main::instance();
+    assert m === Main::instance();
 
-    val delegates = ((call m.moduleInfo).functions);
+    val delegates = call m.moduleInfo().functions();
 
     // Remember, main is also a function.
-    assert (F::len delegates) == 4;
+    assert F::len(delegates) == 4;
 
-    val delegate1 = (delegates.get 0) as Delegate;
-    assert "F01" == (call delegate1.name);
-    assert (class Main) === (call delegate1.owner);
-    assert m === (call delegate1.module);
-    assert [] == (call delegate1.parameterTypes);
-    assert (class void) === (call delegate1.returnType);
+    val delegate1 = delegates.get(0) as Delegate;
+    assert "F01" == call delegate1.name();
+    assert (class Main) === call delegate1.owner();
+    assert m === call delegate1.module();
+    assert [] == call delegate1.parameterTypes();
+    assert (class void) === call delegate1.returnType();
 
-    val delegate2 = (delegates.get 1) as Delegate;
-    assert "F02" == (call delegate2.name);
-    assert (class Main) === (call delegate2.owner);
-    assert m === (call delegate2.module);
-    assert [(class int)] == (call delegate2.parameterTypes);
-    assert (class void) === (call delegate2.returnType);
+    val delegate2 = delegates.get(1) as Delegate;
+    assert "F02" == call delegate2.name();
+    assert (class Main) === call delegate2.owner();
+    assert m === call delegate2.module();
+    assert [(class int)] == call delegate2.parameterTypes();
+    assert (class void) === call delegate2.returnType();
 
-    val delegate3 = (delegates.get 2) as Delegate;
-    assert "F03" == (call delegate3.name);
-    assert (class Main) === (call delegate3.owner);
-    assert m === (call delegate3.module);
-    assert [(class int), (class long)] == (call delegate3.parameterTypes);
-    assert (class void) === (call delegate3.returnType);
+    val delegate3 = delegates.get(2) as Delegate;
+    assert "F03" == call delegate3.name();
+    assert (class Main) === call delegate3.owner();
+    assert m === call delegate3.module();
+    assert [(class int), (class long)] == call delegate3.parameterTypes();
+    assert (class void) === call delegate3.returnType();
 }

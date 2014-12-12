@@ -5,11 +5,11 @@ import java.util.LinkedList;
 @Start
 defun main (args : String[]) : void
 {
-    var list = (new LinkedList);
+    var list = new LinkedList();
 
-    for(i = 1; (My::moo list, i) & i < 5; i + 0)
+    for(i = 1; My::moo(list, i) & i < 5; i + 0)
     {
-        (list.add -i);
+        list.add(-i);
 
         let i = i + 1;
 
@@ -21,7 +21,7 @@ defun main (args : String[]) : void
 
 defun moo (list : List, i : int) : boolean
 {
-    (list.add i);
+    list.add(i);
 
     return true;
 }

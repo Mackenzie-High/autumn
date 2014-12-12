@@ -2,6 +2,7 @@ package high.mackenzie.autumn.lang.compiler.typesystem.design;
 
 import high.mackenzie.autumn.resources.Finished;
 import java.lang.annotation.Annotation;
+import java.util.List;
 
 /**
  * An instance of this interface is an instantiation of an annotation.
@@ -34,15 +35,16 @@ public interface IAnnotation
     public IAnnotationType getAnnotationType();
 
     /**
-     * This method retrieves the value stored in the annotation, if it has a value.
+     * This method retrieves the values stored in the annotation, if it has any values.
      *
      * <p>
-     * In terms of Java based code, the value is stored in an annotation-element named "value".
-     * The return-type of the element must be String.
-     * If no such element exists, then the annotation does not have a value.
+     * In terms of Java based code, the values are stored in an annotation-element named "value".
+     * The return-type of the element must be String[].
+     * If no such element exists, then the annotation does not have any values.
+     * The default value of the "value" annotation-element is null.
      * </p>
      *
      * @return the value in the annotation.
      */
-    public String getAnnotationValue();
+    public List<String> getAnnotationValues();
 }

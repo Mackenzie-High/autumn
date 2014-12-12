@@ -9,7 +9,7 @@ tuple Employee (name : String) is Person;
 @Start
 defun main (args : String[]) : void
 {
-    val p = (new Employee "Mork");
+    val p = new Employee("Mork");
 
 
 }

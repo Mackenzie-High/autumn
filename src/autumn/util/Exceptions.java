@@ -16,8 +16,17 @@ public final class Exceptions
      */
     private static final Map<Object, Map<Object, Object>> details = Maps.newIdentityHashMap();
 
-    public static void put(final Throwable problem,
-                           final Object key,
+    /**
+     * This method associates a detail with a given exception.
+     *
+     * @param problem is the exception that the detail is in reference to.
+     * @param key identifies the detail.
+     * @param value is the content of the detail.
+     * @throws NullPointerException if problem is null.
+     * @throws NullPointerException if key is null.
+     */
+    public static void set(final Throwable problem,
+                           final String key,
                            final Object value)
     {
         Preconditions.checkNotNull(problem);
@@ -33,8 +42,17 @@ public final class Exceptions
         map.put(key, value);
     }
 
+    /**
+     * This method retrieves a detail that is associated with a given exception.
+     *
+     * @param problem is the exception that the detail is in reference to.
+     * @param key identifies the detail.
+     * @return the value of the detail, or null, if the detail does not exist.
+     * @throws NullPointerException if problem is null.
+     * @throws NullPointerException if key is null.
+     */
     public static Object get(final Throwable problem,
-                             final Object key)
+                             final String key)
     {
         Preconditions.checkNotNull(problem);
         Preconditions.checkNotNull(key);

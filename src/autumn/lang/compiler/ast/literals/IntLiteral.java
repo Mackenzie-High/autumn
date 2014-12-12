@@ -46,7 +46,7 @@ public final class IntLiteral
         {
             if (value == null)
             {
-                final String source = source().trim();
+                final String source = sourceWithoutUnderscores().trim();
 
                 final Integer result = Integer.valueOf(source);
 
@@ -70,6 +70,6 @@ public final class IntLiteral
     @Override
     public boolean isParsable()
     {
-        return source().matches("-?[0-9]+");
+        return sourceWithoutUnderscores().matches("-?[0-9]+");
     }
 }

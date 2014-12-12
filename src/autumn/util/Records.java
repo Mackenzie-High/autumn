@@ -4,7 +4,7 @@ import autumn.lang.Record;
 import autumn.lang.RecordEntry;
 import autumn.lang.SpecialMethods;
 import autumn.lang.TypedFunctor;
-import autumn.lang.annotations.InferReturnType;
+import autumn.lang.annotations.Infer;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
@@ -31,7 +31,7 @@ public final class Records
      *
      * @return this object, if this record is mutable; otherwise, return a modified copy thereof.
      */
-    @InferReturnType
+    @Infer
     public static <T extends Record> T clear(final T self)
     {
         return self.isMutable() ? clearThis(self) : clearCopy(self);
@@ -177,7 +177,7 @@ public final class Records
      * @throws NoSuchElementException if the key does not refer to an actual element.
      * @throws ClassCastException if the object is not of an acceptable type.
      */
-    @InferReturnType
+    @Infer
     public static <T extends Record> T set(final T self,
                                            final String key,
                                            final Object value)
@@ -237,7 +237,7 @@ public final class Records
      * @return the modified object, if it is mutable; otherwise, return a modified copy thereof.
      * @throws NullPointerException if owner is null.
      */
-    @InferReturnType
+    @Infer
     public static <T extends Record> T bindIter(final T owner,
                                                 final TypedFunctor handler)
     {
@@ -262,7 +262,7 @@ public final class Records
      * @return the modified object, if it is mutable; otherwise, return a modified copy thereof.
      * @throws NullPointerException if owner is null.
      */
-    @InferReturnType
+    @Infer
     public static <T extends Record> T bindCompare(final T owner,
                                                    final TypedFunctor handler)
     {
@@ -287,7 +287,7 @@ public final class Records
      * @return the modified object, if it is mutable; otherwise, return a modified copy thereof.
      * @throws NullPointerException if owner is null.
      */
-    @InferReturnType
+    @Infer
     public static <T extends Record> T bindEquals(final T owner,
                                                   final TypedFunctor handler)
     {
@@ -309,7 +309,7 @@ public final class Records
      * @param handler is the new implementation of the method.
      * @return the modified object, if it is mutable; otherwise, return a modified copy thereof.
      */
-    @InferReturnType
+    @Infer
     public static <T extends Record> T bindHash(final T owner,
                                                 final TypedFunctor handler)
     {
@@ -331,7 +331,7 @@ public final class Records
      * @param handler is the new implementation of the method.
      * @return the modified object, if it is mutable; otherwise, return a modified copy thereof.
      */
-    @InferReturnType
+    @Infer
     public static <T extends Record> T bindStr(final T owner,
                                                final TypedFunctor handler)
     {
@@ -370,7 +370,7 @@ public final class Records
      * @param NullPointerException if the assignee is null.
      * @param NullPointerException if the value is null.
      */
-    @InferReturnType
+    @Infer
     public static <T extends Record> T assign(final T assignee,
                                               final Map<String, Object> value)
     {
@@ -396,7 +396,7 @@ public final class Records
      * @param NullPointerException if the assignee is null.
      * @param NullPointerException if the value is null.
      */
-    @InferReturnType
+    @Infer
     public static <T extends Record> T assign(final T assignee,
                                               final Record value)
     {

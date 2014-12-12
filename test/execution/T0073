@@ -9,8 +9,8 @@ defun main (args : String[]) : void
     // Variable N is a java.lang.Integer.
     val N = 250 as Integer;
 
-    assert ((locals).typeOf "X") == (class int);
-    assert ((locals).typeOf "N") == (class Integer);
+    assert (locals).typeOf ("X") == (class int);
+    assert (locals).typeOf ("N") == (class Integer);
 
     // Assign an Integer to a primitive int variable.
     // This requires auto-unboxing.
@@ -18,6 +18,6 @@ defun main (args : String[]) : void
 
     assert X == 250;
 
-    assert ((locals).typeOf "X") == (class int);
-    assert ((locals).typeOf "N") == (class Integer);
+    assert (locals).typeOf ("X") == (class int);
+    assert (locals).typeOf ("N") == (class Integer);
 }

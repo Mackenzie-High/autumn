@@ -15,11 +15,11 @@ defun main (args : String[]) : void
 
     assert (- - 3.0) == 3.0;
 
-    assert (- - (F::big 3)) == (F::big 3);
+    assert (- - F::big(3)) == F::big(3);
 
-    assert (- - (F::big 3.0)) == (F::big 3.0);
+    assert (- - F::big(3.0)) == F::big(3.0);
 
-    assert (- - (null is BigInteger)) == (F::big 0);
+    assert (- - (null is BigInteger)) == F::big(0);
 
     assert (- - (null is BigDecimal)) == (field BigDecimal::ZERO);
 }

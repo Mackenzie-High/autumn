@@ -6,11 +6,11 @@ annotation Anno;
 @Start
 defun main (args : String[]) : void
 {
-    val method = (Reflect::getMethod (class Main), "main", [(class String[])]);
+    val method = Reflect::getMethod((class Main), "main", [(class String[])]);
 
-    assert (method.isAnnotationPresent (class Anno));
+    assert method.isAnnotationPresent((class Anno));
 
-    val anno = (method.getAnnotation (class Anno));
+    val anno = method.getAnnotation((class Anno));
 
-    assert (Reflect::getAnnotationValue anno) == "";
+    assert null == Reflect::getAnnotationValues(anno);
 }

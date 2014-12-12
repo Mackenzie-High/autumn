@@ -3,6 +3,8 @@ package autumn.util;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 /**
  * This class provides static utility methods for working with strings.
@@ -310,6 +312,53 @@ public final class Strings
                 result.append(arg);
 
                 if (count < elements.size())
+                {
+                    result.append(separator);
+                }
+            }
+        }
+        result.append(suffix);
+
+        return result.toString();
+    }
+
+    /**
+     * This method creates a string representation for a map.
+     *
+     * @param map is the map itself.
+     * @param prefix is a string to prepend onto the result.
+     * @param assign is the substring to place between keys and values in the result.
+     * @param seperator is the substring used to separate key-value-pairs from each other in the result.
+     * @param suffix is a string to append onto the result.
+     * @return the aforedescribed result.
+     */
+    public static String str(final Map<?, ?> map,
+                             final String prefix,
+                             final String assign,
+                             final String separator,
+                             final String suffix)
+    {
+        Preconditions.checkNotNull(map);
+        Preconditions.checkNotNull(prefix);
+        Preconditions.checkNotNull(assign);
+        Preconditions.checkNotNull(separator);
+        Preconditions.checkNotNull(suffix);
+
+        final StringBuilder result = new StringBuilder();
+
+        result.append(prefix);
+        {
+            int count = 0;
+
+            for (Entry<?, ?> entry : map.entrySet())
+            {
+                ++count;
+
+                result.append(entry.getKey());
+                result.append(assign);
+                result.append(entry.getValue());
+
+                if (count < map.size())
                 {
                     result.append(separator);
                 }

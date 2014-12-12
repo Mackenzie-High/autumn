@@ -8,6 +8,7 @@ import com.google.common.collect.Lists;
 import high.mackenzie.autumn.lang.compiler.typesystem.CustomDeclaredType;
 import high.mackenzie.autumn.lang.compiler.typesystem.CustomMethod;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IAnnotation;
+import high.mackenzie.autumn.lang.compiler.typesystem.design.IArrayType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IClassType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IFormalParameter;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IMethod;
@@ -222,6 +223,8 @@ final class AnnotationCompiler
      */
     private IMethod typeOfMethodValue()
     {
+        final IArrayType STRING_ARRAY = program.typesystem.typefactory().getArrayType(program.typesystem.utils.STRING, 1);
+
         final CustomMethod method = new CustomMethod(type.getTypeFactory(), true);
 
         method.setOwner(type);
@@ -229,7 +232,7 @@ final class AnnotationCompiler
         method.setModifiers(Opcodes.ACC_PUBLIC + Opcodes.ACC_ABSTRACT);
         method.setName("value");
         method.setParameters(Lists.<IFormalParameter>newArrayList());
-        method.setReturnType(program.typesystem.utils.STRING);
+        method.setReturnType(STRING_ARRAY);
         method.setThrowsClause(Lists.<IClassType>newArrayList());
 
         return method;
@@ -244,7 +247,7 @@ final class AnnotationCompiler
     {
         final MethodNode method = Utils.bytecodeOf(module, TypeSystemUtils.find(type.getMethods(), "value"));
 
-        method.annotationDefault = "";
+        method.annotationDefault = null;
 
         return method;
     }

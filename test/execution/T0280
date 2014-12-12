@@ -17,13 +17,13 @@ defun main (args : String[]) : void
 
     # Check whether the getter methods were generated.
     #
-    assert ((Reflect::getMethod owner, "name", []).getReturnType) == (class String);
-    assert ((Reflect::getMethod owner, "age", []).getReturnType) == (class int);
+    assert Reflect::getMethod(owner, "name", []).getReturnType() == (class String);
+    assert Reflect::getMethod(owner, "age", []).getReturnType() == (class int);
 
 
 
     # Check whether the setter methods were generated.
     #
-    assert ((Reflect::getMethod owner, "name", [(class String)]).getReturnType) == owner;
-    assert ((Reflect::getMethod owner, "age",  [(class int)]).getReturnType) == owner;
+    assert Reflect::getMethod(owner, "name", [(class String)]).getReturnType() == owner;
+    assert Reflect::getMethod(owner, "age",  [(class int)]).getReturnType() == owner;
 }

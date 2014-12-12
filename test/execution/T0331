@@ -1,0 +1,18 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    assert My::fire(true) == "Launch Aborted";
+
+    assert My::fire(false) == "Go for Launch";
+
+    assert My::fire(true) == "Launch Aborted";
+}
+
+defun fire (condition : boolean) : String
+{
+    when (condition) then return "Launch Aborted";
+
+    return "Go for Launch";
+}

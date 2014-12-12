@@ -15,11 +15,11 @@ defun main (args : String[]) : void
 
     assert (50.0 / 2.0) == 25.0;
 
-    assert ((F::big 50) / (F::big 2)) == (F::big 25);
+    assert 50BI / 2BI == 25BI;
 
-    assert (((F::big 50.0) / (F::big 2.0)).intValue) == 25;
+    assert 50.0BD / 2.0BD == 25.0BD;
 
-    // assert ((null is BigInteger) / (null is BigInteger)) == (F::big 0);
+    assert ((null is BigInteger) / (null is BigInteger)) == 0BI;
 
-    // assert ((null is BigDecimal) / (null is BigDecimal)) == (field BigDecimal::ZERO);
+    assert ((null is BigDecimal) / (null is BigDecimal)) == 0.0BD;
 }

@@ -8,6 +8,9 @@ import autumn.util.F;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -24,6 +27,11 @@ import java.util.Map;
  */
 public final class Helpers
 {
+    /**
+     * This is the scale of big-decimal literals.
+     */
+    public static final int BIG_DECIMAL_SCALE = 32;
+
     /**
      * This method finds a named enum-constant in an array of enum-constants.
      *
@@ -178,5 +186,35 @@ public final class Helpers
         {
             throw new NullPointerException();
         }
+    }
+
+    /**
+     * This method creates a new big-integer.
+     *
+     * <p>
+     * This method is used to implement big-integer literals.
+     * </p>
+     *
+     * @param value is the string representation of the new big-integer.
+     * @return the value as a big-integer.
+     */
+    public static BigInteger createBigInteger(final String value)
+    {
+        return new BigInteger(value);
+    }
+
+    /**
+     * This method creates a new big-decimal.
+     *
+     * <p>
+     * This method is used to implement big-decimal literals.
+     * </p>
+     *
+     * @param value is the string representation of the new big-decimal.
+     * @return the value as a big-decimal.
+     */
+    public static BigDecimal createBigDecimal(final String value)
+    {
+        return new BigDecimal(value).setScale(BIG_DECIMAL_SCALE, RoundingMode.HALF_EVEN);
     }
 }

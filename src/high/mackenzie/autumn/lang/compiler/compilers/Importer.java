@@ -29,6 +29,7 @@ import autumn.util.ds.specific.MutableHashSet;
 import autumn.util.ds.specific.MutableSequence;
 import autumn.util.ds.specific.MutableTreeMap;
 import autumn.util.ds.specific.MutableTreeSet;
+import autumn.util.functors.Action;
 import autumn.util.functors.MethodCompareTo;
 import autumn.util.functors.MethodEquals;
 import autumn.util.functors.MethodHashCode;
@@ -79,18 +80,20 @@ public final class Importer
         importClass(autumn.lang.Lambda.class);
         importClass(autumn.lang.Local.class);
         importClass(autumn.lang.LocalsMap.class);
+        importClass(autumn.lang.Memoizer.class);
         importClass(autumn.lang.Module.class);
+        importClass(autumn.lang.ModuleInfo.class);
         importClass(autumn.lang.Mutable.class);
         importClass(autumn.lang.Record.class);
         importClass(autumn.lang.RecordEntry.class);
         importClass(autumn.lang.SpecialMethods.class);
-        importClass(autumn.lang.StaticFunctor.class);
+        importClass(autumn.lang.DefinedFunctor.class);
         importClass(autumn.lang.TypedFunctor.class);
 
         // autumn.lang.annotations
         importClass(autumn.lang.annotations.Setup.class);
         importClass(autumn.lang.annotations.Hide.class);
-        importClass(autumn.lang.annotations.InferReturnType.class);
+        importClass(autumn.lang.annotations.Infer.class);
         importClass(autumn.lang.annotations.Memoize.class);
         importClass(autumn.lang.annotations.Once.class);
         importClass(autumn.lang.annotations.Start.class);
@@ -165,6 +168,7 @@ public final class Importer
         importClass(autumn.util.test.UnitTester.class);
 
         // autumn.util.functors
+        importClass(Action.class);
         importClass(Predicate.class);
         importClass(MethodCompareTo.class);
         importClass(MethodEquals.class);
@@ -191,6 +195,7 @@ public final class Importer
         importClass(java.lang.Integer.class);
         importClass(java.lang.Iterable.class);
         importClass(java.lang.Long.class);
+        importClass(java.lang.Math.class);
         importClass(java.lang.NullPointerException.class);
         importClass(java.lang.Number.class);
         importClass(java.lang.Object.class);
@@ -203,8 +208,8 @@ public final class Importer
         importClass(java.lang.UnsupportedOperationException.class);
 
         // java.math
-        importClass(java.math.BigInteger.class);
         importClass(java.math.BigDecimal.class);
+        importClass(java.math.BigInteger.class);
 
         // java.util
         importClass(java.util.ArrayList.class);

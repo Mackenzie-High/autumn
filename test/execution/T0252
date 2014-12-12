@@ -11,22 +11,22 @@ defun main (args : String[]) : void
     delegate string  : MethodToString => My::string;
     delegate iter    : MethodIterator => My::iterator;
 
-    var p = (Person::instance);
-    p = (p.name "Emma");
-    p = (p.age 24);
+    var p = Person::instance();
+    p = p.name("Emma");
+    p = p.age(24);
 
-    p = (Records::bindCompare p, compare);
-    p = (Records::bindEquals  p, equals);
-    p = (Records::bindHash    p, hash);
-    p = (Records::bindStr     p, string);
-    p = (Records::bindIter    p, iter);
+    p = Records::bindCompare(p, compare);
+    p = Records::bindEquals(p, equals);
+    p = Records::bindHash(p, hash);
+    p = Records::bindStr(p, string);
+    p = Records::bindIter(p, iter);
 
-    assert (p.bindings) !== (SpecialMethods::instance);
-    assert ((p.bindings).getCompareTo) === compare;
-    assert ((p.bindings).getEquals) === equals;
-    assert ((p.bindings).getHashCode) === hash;
-    assert ((p.bindings).getToString) === string;
-    assert ((p.bindings).getIterator) === iter;
+    assert p.bindings() !== SpecialMethods::instance();
+    assert p.bindings().getCompareTo() === compare;
+    assert p.bindings().getEquals() === equals;
+    assert p.bindings().getHashCode() === hash;
+    assert p.bindings().getToString() === string;
+    assert p.bindings().getIterator() === iter;
 }
 
 defun compare (self : Object, other : Object) : int

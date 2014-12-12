@@ -48,25 +48,25 @@ defun main (args : String[]) : void
     assert (3.0 != 2.0) == T;
 
     // BigInteger
-    assert ((new BigInteger "2") != (new BigInteger "3")) == T;
-    assert ((new BigInteger "3") != (new BigInteger "3")) == F;
-    assert ((new BigInteger "3") != (new BigInteger "2")) == T;
+    assert (new BigInteger("2") != new BigInteger("3")) == T;
+    assert (new BigInteger("3") != new BigInteger("3")) == F;
+    assert (new BigInteger("3") != new BigInteger("2")) == T;
 
     // BigInteger - null
-    assert (null != (new BigInteger "3")) == T;
-    assert ((new BigInteger "3") != null) == T;
+    assert (null != new BigInteger("3")) == T;
+    assert (new BigInteger("3") != null) == T;
 
     // BigInteger
-    assert ((new BigDecimal 2) != (new BigDecimal 3)) == T;
-    assert ((new BigDecimal 3) != (new BigDecimal 3)) == F;
-    assert ((new BigDecimal 3) != (new BigDecimal 2)) == T;
+    assert (new BigDecimal(2) != new BigDecimal(3)) == T;
+    assert (new BigDecimal(3) != new BigDecimal(3)) == F;
+    assert (new BigDecimal(3) != new BigDecimal(2)) == T;
 
     // BigDecimal - Weird Behavior of equals(Object)
-    assert ((new BigDecimal "3") != (new BigDecimal "3.00")) == T;
+    assert (new BigDecimal("3") != new BigDecimal("3.00")) == T;
 
     // BigDecimal - null
-    assert (null != (new BigInteger "3")) == T;
-    assert ((new BigInteger "3") != null) == T;
+    assert (null != new BigInteger("3")) == T;
+    assert (new BigInteger("3") != null) == T;
 
     // Object - Neither operand is null.
     assert ("Hello" != "Hello") == F;

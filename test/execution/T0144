@@ -6,9 +6,9 @@ functor F0144 (x : byte, y : short, z : int) : boolean;
 defun main (args : String[]) : void
 {
     # Create a functor to test.
-    val inner = (Predicates::eq "Venus");
-    val functor = (new F0144 inner);
+    val inner = Predicates::eq("Venus");
+    val functor = new F0144(inner);
 
     # Test
-    assert (functor.parameterTypes) == [(class byte), (class short), (class int)];
+    assert functor.parameterTypes() == [(class byte), (class short), (class int)];
 }

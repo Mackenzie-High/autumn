@@ -48,7 +48,7 @@ public final class FloatLiteral
         {
             if (value == null)
             {
-                final String source = source().trim();
+                final String source = sourceWithoutUnderscores().trim();
 
                 result = Float.valueOf(source);
             }
@@ -72,6 +72,6 @@ public final class FloatLiteral
     @Override
     public boolean isParsable()
     {
-        return source().matches("-?[0-9]+([.][0-9]*)?([eE]-?[0-9]+)?F");
+        return sourceWithoutUnderscores().matches("-?[0-9]+([.][0-9]*)?([eE][\\-\\+]?[0-9]+)?F");
     }
 }

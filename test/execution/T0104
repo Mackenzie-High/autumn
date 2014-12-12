@@ -4,18 +4,18 @@ module Main in execution;
 defun main (args : String[]) : void
 {
     // The static-type of this variable is Object.
-    var object = (new Object);
+    var object = new Object();
 
     // Assign an exception object to the variable.
     // This does *not* change the static-type of the variable.
-    let object = (new IllegalArgumentException);
+    let object = new IllegalArgumentException();
 
     // Test that casts work as expected, when the cast is possible.
-    assert (Main::F (object is Object)) == "O";
-    assert (Main::F (object is IllegalArgumentException)) == "I";
-    assert (Main::F (object is RuntimeException)) == "R";
-    assert (Main::F (object is Throwable)) == "T";
-    assert (Main::F (object is Object)) == "O";
+    assert Main::F (object is Object) == "O";
+    assert Main::F (object is IllegalArgumentException) == "I";
+    assert Main::F (object is RuntimeException) == "R";
+    assert Main::F (object is Throwable) == "T";
+    assert Main::F (object is Object) == "O";
 }
 
 defun F(x : IllegalArgumentException) : String

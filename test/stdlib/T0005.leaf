@@ -7,5 +7,5 @@ defun main(args : String[]) : void
 
     lambda p : Predicate => ($1 is Integer) == 2;
 
-    assert (F::count list, p) == 3;
+    assert F::count(list, p) == 3;
 }

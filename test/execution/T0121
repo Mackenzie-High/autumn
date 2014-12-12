@@ -13,7 +13,7 @@ tuple T (a : boolean,
 @Start
 defun main (args : String[]) : void
 {
-    val t = (new T true, 'X', 10B, 20S, 30, 40L, 50.0F, 60.0, "Venus");
+    val t = new T(true, 'X', 10B, 20S, 30, 40L, 50.0F, 60.0, "Venus");
 
     val expected = [(class boolean),
                     (class char),
@@ -26,8 +26,8 @@ defun main (args : String[]) : void
                     (class String)];
 
     # The types() method should create a list containing the types of the elements.
-    assert expected == (t.types);
+    assert expected == t.types();
 
     # The types() method should cache the list.
-    assert (t.types) === (t.types);
+    assert t.types() === t.types();
 }

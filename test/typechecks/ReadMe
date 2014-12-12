@@ -102,7 +102,6 @@ Test Index
 . . T0185 = Returns - No Such Type
 . . T0186 = Returns - Inaccessible Type
 . . Returns - Expected Return Type - (impossible to test)
-. . Wrong Signature for Annotation - @Once
 . . Wrong Signature for Annotation - @Setup
 . . Wrong Signature for Annotation - @Start
 . . Wrong Signature for Annotation - @Test
@@ -203,10 +202,6 @@ Test Index
 . . . T0187 = Expected Void
 . . Return Value
 . . . T0189 = Wrong Type
-. . Yield Void
-. . . T0188 = Expected Void
-. . Yield Value
-. . . T0190 = Wrong Type
 . . Recur
 . . . Recur in Generator Function
 . Expressions
@@ -304,15 +299,32 @@ Test Index
 . . Is
 . . . T0035 = Impossible Conversion
 . Datums
-. . No Test Needed = Boolean
-. . No Test Needed = Char
-. . No Test Needed = Byte
-. . No Test Needed = Short
-. . No Test Needed = Int
-. . No Test Needed = Long
-. . No Test Needed = Float
-. . No Test Needed = Double
-. . No Test Needed = Null
+. . Boolean
+. . . No Tests are Needed
+. . Char
+. . . T0221 = Value - Too Big
+. . Byte
+. . . T0222 = Value - Too Big
+. . . T0226 = Value - Too Small
+. . Short
+. . . T0223 = Value - Too Big
+. . . T0227 = Value - Too Small
+. . Int
+. . . T0224 = Value - Too Big
+. . . T0228 = Value - Too Small
+. . Long
+. . . T0225 = Value - Too Big
+. . . T0229 = Value - Too Small
+. . Float
+. . . No Tests are Needed
+. . Double
+. . . No Tests are Needed
+. . Big Integer
+. . . T = Malformed Literal
+. . Big Decimal
+. . . No Tests are Needed
+. . Null
+. . . No Tests are Needed
 . . String
 . . . T0077 = Malformed Escape-Sequences
 . . Class

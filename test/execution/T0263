@@ -8,12 +8,12 @@ defun main (args : String[]) : void
 {
     delegate method : MethodHashCode => My::handler;
 
-    val p = (new Person "Molly");
+    val p = new Person("Molly");
 
-    val q = (Records::bindHash p, method);
+    val q = Records::bindHash(p, method);
 
-    assert (p.hashCode) != (q.hashCode);
-    assert (q.hashCode) == 17;
+    assert p.hashCode() != q.hashCode();
+    assert q.hashCode() == 17;
 }
 
 defun handler (self : Person) : int

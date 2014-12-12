@@ -13,11 +13,11 @@ tuple T (a : boolean,
 @Start
 defun main (args : String[]) : void
 {
-    val t = (new T true, 'X', 10B, 20S, 30, 40L, 50.0F, 60.0, "Venus");
+    val t = new T(true, 'X', 10B, 20S, 30, 40L, 50.0F, 60.0, "Venus");
 
     # The keys() method should create a list containing the elements.
-    assert (t.keys) == ["a", "b", "c", "d", "e", "f", "g", "h", "i"];
+    assert t.keys() == ["a", "b", "c", "d", "e", "f", "g", "h", "i"];
 
     # The keys() method should cache the list.
-    assert (t.keys) === (t.keys);
+    assert t.keys() === t.keys();
 }

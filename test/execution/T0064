@@ -5,7 +5,7 @@ defun main (args : String[]) : void
 {
     try
     {
-        (Main::F01);
+        Main::F01();
         assert false;
     }
     catch(ex : Throwable)
@@ -19,6 +19,6 @@ defun main (args : String[]) : void
 
 defun F01() : void
 {
-    throw (new Throwable);
+    throw new Throwable();
     assert false;
 }

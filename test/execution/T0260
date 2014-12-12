@@ -7,26 +7,26 @@ tuple Triplet (x : Object, y : Object);
 defun main (args : String[]) : void
 {
     # Case - Null Other
-
-    assert (new Triplet 10, 10) > null;
+    #
+    assert new Triplet(10, 10) > null;
 
 
 
     # Case - Null Elements
-
-    assert (new Triplet 10, null) < (new Triplet 10, 10);
-    assert (new Triplet 10, 10)   > (new Triplet 10, null);
-    assert ((new Triplet 10, null).compareTo (new Triplet 10, null)) == 0;
+    #
+    assert new Triplet(10, null) < new Triplet(10, 10);
+    assert new Triplet(10, 10)   > new Triplet(10, null);
+    assert new Triplet(10, null).compareTo(new Triplet(10, null)) == 0;
 
 
 
     # Case - Non-Null Elements
+    #
+    assert new Triplet(10, 10) < new Triplet(10, 20);
+    assert new Triplet(10, 10) < new Triplet(20, 10);
 
-    assert (new Triplet 10, 10) < (new Triplet 10, 20);
-    assert (new Triplet 10, 10) < (new Triplet 20, 10);
+    assert new Triplet(10, 10).compareTo(new Triplet(10, 10)) == 0;
 
-    assert ((new Triplet 10, 10).compareTo (new Triplet 10, 10)) == 0;
-
-    assert (new Triplet 20, 20) > (new Triplet 20, 10);
-    assert (new Triplet 30, 10) > (new Triplet 20, 10);
+    assert new Triplet(20, 20) > new Triplet(20, 10);
+    assert new Triplet(30, 10) > new Triplet(20, 10);
 }

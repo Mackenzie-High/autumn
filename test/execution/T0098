@@ -13,28 +13,28 @@ defun main (args : String[]) : void
     val T = true;
     val F = false;
 
-    val left = (new AtomicInteger);
-    val right = (new AtomicInteger);
+    val left = new AtomicInteger();
+    val right = new AtomicInteger();
 
     // Case: F F
-    assert ((My::operand left, F) | (My::operand right, F)) == F;
-    assert (call left.get) == 1;
-    assert (call right.get) == 1;
+    assert My::operand(left, F) | My::operand(right, F) == F;
+    assert call left.get() == 1;
+    assert call right.get() == 1;
 
     // Case: F T
-    assert ((My::operand left, F) | (My::operand right, T)) == T;
-    assert (call left.get) == 2;
-    assert (call right.get) == 2;
+    assert My::operand(left, F) | My::operand(right, T) == T;
+    assert call left.get() == 2;
+    assert call right.get() == 2;
 
     // Case: T F
-    assert ((My::operand left, T) | (My::operand right, F)) == T;
-    assert (call left.get) == 3;
-    assert (call right.get) == 2;
+    assert My::operand(left, T) | My::operand(right, F) == T;
+    assert call left.get() == 3;
+    assert call right.get() == 2;
 
     // Case: T T
-    assert ((My::operand left, T) | (My::operand right, T)) == T;
-    assert (call left.get) == 4;
-    assert (call right.get) == 2;
+    assert My::operand(left, T) | My::operand(right, T) == T;
+    assert call left.get() == 4;
+    assert call right.get() == 2;
 }
 
 
@@ -42,7 +42,7 @@ defun operand(atom : AtomicInteger,
              result : boolean) : boolean
 {
     // Increment the atom by one.
-    (call atom.incrementAndGet);
+    call atom.incrementAndGet();
 
     return result;
 }

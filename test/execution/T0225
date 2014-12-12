@@ -11,10 +11,10 @@ defun main (args : String[]) : void
     # The resolution algorithm is primarily tested in the type-system tests.
     # This is a simple test to ensure that the algorithm is integrated with the compiler.
 
-    val type1 = (call Helpers$StaticMethodTester::moo (new ArrayList));
-    val type2 = (call Helpers$StaticMethodTester::moo (new LinkedList));
-    val type3 = (call Helpers$StaticMethodTester::moo (new HashSet));
-    val type4 = (call Helpers$StaticMethodTester::moo "Bypass the inaccessible constructor.");
+    val type1 = call Helpers$StaticMethodTester::moo(new ArrayList());
+    val type2 = call Helpers$StaticMethodTester::moo(new LinkedList());
+    val type3 = call Helpers$StaticMethodTester::moo(new HashSet());
+    val type4 = call Helpers$StaticMethodTester::moo("Bypass the inaccessible constructor.");
 
     assert type1 == (class List);
     assert type2 == (class LinkedList);
