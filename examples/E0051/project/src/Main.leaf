@@ -9,7 +9,7 @@ defun main (args : String[]) : void
 {
     val klass = (class Alien);
 
-    val modifiers = Modifier::toStringklass.getModifiers(());
+    val modifiers = Modifier::toStringklass().getModifiers();
 
     F::println("Name = " .. klass.getName());
 

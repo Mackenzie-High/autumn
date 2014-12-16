@@ -5,9 +5,9 @@ import high.mackenzie.autumn.resources.InstanceFieldTester;
 @Start
 defun main (args : String[]) : void
 {
-    val object = (new InstanceFieldTester);
+    val object = new InstanceFieldTester();
 
-    val value = (field object.answer);
+    val value = field object.answer;
 
     F::println("Life and Everything = " .. value);
 }

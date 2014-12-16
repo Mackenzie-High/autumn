@@ -6,4 +6,4 @@ long = 12
 float = 12.0
 double = 12.0
 BigInteger = 12
-BigDecimal = 12.0
+BigDecimal = 12.00000000000000000000000000000000

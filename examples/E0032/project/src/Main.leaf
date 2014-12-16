@@ -3,8 +3,8 @@ module Main in examples;
 @Start
 defun main (args : String[]) : void
 {
-    val object1 = (new Object);
-    val object2 = (new Object);
+    val object1 = new Object();
+    val object2 = new Object();
 
     val case1 = object1 !== object1;
     val case2 = object1 !== object2;

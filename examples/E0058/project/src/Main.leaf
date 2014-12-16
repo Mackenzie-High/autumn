@@ -7,7 +7,7 @@ tuple Pet (kind : String, name : String);
 @Start
 defun main (args : String[]) : void
 {
-    val barn = (new LinkedList);
+    val barn = new LinkedList();
 
     barn.add(new Pet("Chicken", "Chicky")); 
     barn.add(new Pet("Chicken", "Picky"));
@@ -19,7 +19,7 @@ defun main (args : String[]) : void
 
     foreach (pet : Pet in barn)
     {
-        when pet.kind(() != "Chicken") then continue;
+        when (pet.kind() != "Chicken") then continue;
 
         F::println("Name of Chicken: " .. pet.name());
     }

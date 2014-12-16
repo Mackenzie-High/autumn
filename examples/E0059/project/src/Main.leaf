@@ -5,7 +5,7 @@ defun main (args : String[]) : void
 {
     var i = 1;
 
-    while My::condition((i))
+    while (My::condition(i))
     {
         F::println("i = " .. i);
         F::println();

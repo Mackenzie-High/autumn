@@ -7,11 +7,11 @@ enum City ( Paris, London, Rome );
 @Start
 defun main (args : String[]) : void
 {
-    My::printCity::valueOf(("Paris"));
+    My::println(City::valueOf("Paris"));
 
-    My::printCity::valueOf(("London"));
+    My::println(City::valueOf("London"));
 
-    My::printCity::valueOf(("Rome"));
+    My::println(City::valueOf("Rome"));
 }
 
 

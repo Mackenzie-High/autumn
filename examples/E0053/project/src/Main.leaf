@@ -17,7 +17,7 @@ defun main (args : String[]) : void
     }
     catch (problem : Apocalypse)
     {
-        F::printlnproblem.getMessage(());
+        F::println(problem.getMessage());
         F::println("Ah well, back to the stone age.");
     }
 }
