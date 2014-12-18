@@ -1,0 +1,7 @@
+Warning: DUPLICATE_SUPERTYPE
+  File: file:/typechecks/T0200
+  Line: #5
+  Column: #1
+  Message: A supertype can appear only once in an extends-clause.
+  Super Type: typechecks.Taxable
+
