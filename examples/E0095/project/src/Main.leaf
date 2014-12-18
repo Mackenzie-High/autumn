@@ -12,6 +12,6 @@ defun main (args : String[]) : void
     {
         val square = i * i;
 
-        F::println (x);
+        F::println (square);
     }
 }
