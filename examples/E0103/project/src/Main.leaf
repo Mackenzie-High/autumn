@@ -1,0 +1,44 @@
+module Main in examples;
+
+@Start
+defun main (args : String[]) : void
+{
+    Main::irs(-1000);
+    Main::irs(-1000);
+    Main::irs(-2000);
+    Main::irs(-3000);
+
+    Main::irs(1000);
+    Main::irs(1000);
+    Main::irs(2000);
+    Main::irs(3000);
+}
+
+defun irs (income : int) : void
+{
+    try
+    {
+        F::println("Income = " .. income);
+
+        val taxes = My::tax(income);
+
+        F::println("Taxes = " .. taxes);
+    }
+    catch (ex : AssertionFailedException)
+    {
+        F::println("Error - Tax Computation Failed");
+    }
+
+    F::println();
+}
+
+defun tax (income : int) : int
+{
+    assert income >= 0;
+
+    # Flat Tax of 25%.
+    return income / 4; 
+}
+
+
+

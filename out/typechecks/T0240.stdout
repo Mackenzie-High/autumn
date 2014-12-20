@@ -1,0 +1,6 @@
+Warning: EXPECTED_STRING
+  File: file:/typechecks/T0240
+  Line: #6
+  Column: #22
+  Message: A java.lang.String was expected.
+

@@ -1,0 +1,9 @@
+Error - 1 is even.
+2 => 4
+Error - 3 is even.
+4 => 16
+Error - 5 is even.
+6 => 36
+Error - 7 is even.
+8 => 64
+Error - 9 is even.

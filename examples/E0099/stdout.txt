@@ -4,7 +4,7 @@ java.lang.Exception
 	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
 	at java.lang.reflect.Method.invoke(Method.java:606)
-	at autumn.lang.compiler.DynamicLoader.invokeMain(DynamicLoader.java:97)
+	at autumn.lang.compiler.DynamicLoader.invokeMain(DynamicLoader.java:119)
 	at autumn.lang.compiler.Autumn.run(Autumn.java:381)
 	at autumn.lang.compiler.Autumn.run(Autumn.java:397)
 	at high.mackenzie.autumn.lang.compiler.args.Visitor$1.invoke(Visitor.java:262)

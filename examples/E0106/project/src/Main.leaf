@@ -1,0 +1,29 @@
+module Main in examples;
+
+@Start
+defun main (args : String[]) : void
+{
+    Autumn::enableAssume();
+
+    for (i = 1; i <= 9; i + 1)
+    {
+        try
+        {
+            My::oddSquare(i);
+        }
+        catch (ex : AssumptionFailedException)
+        {
+            F::println("Error - " .. ex.getMessage());
+        }
+    }
+}
+
+defun oddSquare (n : int) : void
+{
+    assume n % 2 == 0 echo (n .. " is even.");
+
+    F::println(n .. " => " .. n * n);
+}
+
+
+

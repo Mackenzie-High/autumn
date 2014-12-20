@@ -1,0 +1,24 @@
+Income = -1000
+Error - Tax Computation Failed
+
+Income = -1000
+Error - Tax Computation Failed
+
+Income = -2000
+Error - Tax Computation Failed
+
+Income = -3000
+Error - Tax Computation Failed
+
+Income = 1000
+Taxes = 250
+
+Income = 1000
+Taxes = 250
+
+Income = 2000
+Taxes = 500
+
+Income = 3000
+Taxes = 750
+
