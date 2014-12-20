@@ -1,0 +1,7 @@
+Warning: IMPOSSIBLE_ASSIGNMENT
+  File: file:/typechecks/T0233
+  Line: #8
+  Column: #5
+  Message: An impossible assignment operation was detected.
+  Assignment: int (Target) = List (Value)
+
