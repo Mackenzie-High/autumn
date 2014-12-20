@@ -1,0 +1,13 @@
+module Enterprise in starships;
+
+@Start
+defun main (args : String[]) : void
+{
+    val mod = My::instance();
+
+    F::println (mod.getClass());
+}
+
+
+
+
