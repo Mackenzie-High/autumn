@@ -14,11 +14,11 @@ exception Tornado extends Disaster;
 @Start
 defun main (args : String[]) : void
 {
-    Main::fema(1);
-    Main::fema(2);
-    Main::fema(3);
-    Main::fema(4);
-    Main::fema(5);
+    Main::goverment(1);
+    Main::goverment(2);
+    Main::goverment(3);
+    Main::goverment(4);
+    Main::goverment(5);
 }
 
 defun goverment (n : int) : void
