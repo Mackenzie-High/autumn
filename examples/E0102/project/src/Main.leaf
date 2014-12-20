@@ -28,6 +28,8 @@ defun goverment (n : int) : void
         F::println("Day " .. n);
 
         My::fema(n);
+
+        F::println("Pander for votes.");
     }
     catch (problem1 : BankRun)
     {

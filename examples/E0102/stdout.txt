@@ -9,6 +9,8 @@ Handle Disaster - class examples.Invasion
 
 Day 4
 Handle Tornado.
+Pander for votes.
 
 Day 5
+Pander for votes.
 
