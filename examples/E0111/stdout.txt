@@ -1,0 +1,14 @@
+Warning: NO_SUCH_TYPE
+  File: file:/media/disk/Code/EclipseProjects/AutumnSpecification/autumn/examples/E0111/project/src/Main.leaf
+  Line: #11
+  Column: #26
+  Message: The specified type does not exist.
+  Type: Deflator
+
+Warning: NO_SUCH_VARIABLE
+  File: file:/media/disk/Code/EclipseProjects/AutumnSpecification/autumn/examples/E0111/project/src/Main.leaf
+  Line: #13
+  Column: #16
+  Message: A variable was used before it was declared.
+  Variable: constant
+
