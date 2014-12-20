@@ -1,0 +1,6 @@
+Warning: RECUR_IN_MEMOIZED_FUNCTION
+  File: file:/typechecks/T0242
+  Line: #6
+  Column: #5
+  Message: A recur-statement cannot be used inside of a memoized function.
+
