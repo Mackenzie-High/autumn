@@ -1,0 +1,19 @@
+module Enterprise in starships;
+
+import java.util.List;
+
+tuple List ();
+
+@Start
+defun main (args : String[]) : void
+{
+    # This example shows that locally declared types override imports.
+
+    val name = (class List).getName();
+
+    F::println(name);
+}
+
+
+
+
