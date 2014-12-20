@@ -1,4 +1,4 @@
-module Enterprise in starships;
+module Main in execution;
 
 import java.util.List;
 
