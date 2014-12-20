@@ -4,11 +4,9 @@ module Main in examples;
 defun main (args : String[]) : void
 {
     Main::irs(-1000);
-    Main::irs(-1000);
     Main::irs(-2000);
     Main::irs(-3000);
 
-    Main::irs(1000);
     Main::irs(1000);
     Main::irs(2000);
     Main::irs(3000);

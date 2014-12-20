@@ -6,11 +6,9 @@ defun main (args : String[]) : void
     Autumn::enableAssume();
 
     Main::irs(-1000);
-    Main::irs(-1000);
     Main::irs(-2000);
     Main::irs(-3000);
 
-    Main::irs(1000);
     Main::irs(1000);
     Main::irs(2000);
     Main::irs(3000);
@@ -18,11 +16,9 @@ defun main (args : String[]) : void
     Autumn::disableAssume();
 
     Main::irs(-1000);
-    Main::irs(-1000);
     Main::irs(-2000);
     Main::irs(-3000);
 
-    Main::irs(1000);
     Main::irs(1000);
     Main::irs(2000);
     Main::irs(3000);
