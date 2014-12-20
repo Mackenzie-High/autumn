@@ -1,0 +1,26 @@
+module Main in execution;
+
+functor Function (w : byte,
+                  x : short,
+                  y : int,
+                  z : long,
+                  s : String) : boolean;
+
+@Start
+defun main (args : String[]) : void
+{
+    delegate p : Function => My::function;
+
+    val inner = p.inner() as Delegate;
+
+    assert inner.toString() == "Main::function (byte, short, int, long, String) : boolean";
+}
+
+defun function (w : byte,
+                x : short,
+                y : int,
+                z : long,
+                s : String) : boolean
+{
+    return false;
+}

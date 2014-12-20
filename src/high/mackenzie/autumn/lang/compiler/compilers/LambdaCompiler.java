@@ -109,7 +109,7 @@ public final class LambdaCompiler
     @Override
     public void performTypeInitialization()
     {
-        functor_type = module.imports.resolveFunctorType(node.getType());
+        functor_type = module.imports.resolveDefinedFunctorType(node.getType());
 
         lambda_type.setSuperclass(program.typesystem.utils.ABSTRACT_LAMBDA);
     }

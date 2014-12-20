@@ -845,7 +845,7 @@ public final class Utils
      * This method conditionally generates a checked-cast instruction.
      *
      * <p>
-     * In other words, this method will not generate a clearly unnecessary cast.
+     * In other words, this method will not generate a clearly unnecessary or impossible cast.
      * </p>
      *
      * @param value is the type of the value being cast.

@@ -1,0 +1,12 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    # This should cause cause a stack overflow, if operands are leaked.
+
+    for (i = 0; i < 50000; i + 1)
+    {
+        progn (1, 2, 3, 4, 5);
+    }
+}

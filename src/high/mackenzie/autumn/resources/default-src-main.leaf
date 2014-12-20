@@ -3,5 +3,5 @@ module Main in program;
 @Start
 defun main (args : String[]) : void
 {
-    (F::println "Hello World!");
+    F::println ("Hello World!");
 }

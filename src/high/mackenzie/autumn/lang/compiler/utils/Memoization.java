@@ -75,9 +75,9 @@ public final class Memoization
         /**
          * Convert the value from type Object to the return-type of the function.
          */
-//        function.program.typesystem.utils.forceAssign(code,
-//                                                      function.type.getReturnType(),
-//                                                      function.program.typesystem.utils.OBJECT);
+        code.add(Utils.conditionalCast(function.program.typesystem.utils.OBJECT, function.type.getReturnType()));
+
+
         /**
          * Return the memoized value from the function.
          */

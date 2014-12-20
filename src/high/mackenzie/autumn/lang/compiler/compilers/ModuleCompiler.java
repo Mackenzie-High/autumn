@@ -21,6 +21,7 @@ import com.google.common.collect.Sets;
 import high.mackenzie.autumn.lang.compiler.typesystem.CustomDeclaredType;
 import high.mackenzie.autumn.lang.compiler.typesystem.CustomFormalParameter;
 import high.mackenzie.autumn.lang.compiler.typesystem.CustomMethod;
+import high.mackenzie.autumn.lang.compiler.typesystem.design.IDeclaredType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IExpressionType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IFormalParameter;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IInterfaceType;
@@ -247,7 +248,7 @@ public final class ModuleCompiler
         final ClassNode clazz = new ClassNode();
         {
             clazz.version = Opcodes.V1_6;
-            clazz.visibleAnnotations = ImmutableList.of();
+            clazz.visibleAnnotations = anno_utils.compileAnnotationList(type.getAnnotations());
             clazz.access = type.getModifiers();
             clazz.name = module_internal_name;
             clazz.superName = Utils.internalName(type.getSuperclass());
@@ -785,6 +786,11 @@ public final class ModuleCompiler
     @Override
     public void performTypeDeclaration()
     {
+        /**
+         * This object only compiles non empty nodes.
+         */
+        assert isEmpty(node) == false;
+
         if (node.getModuleDirectives().size() < 1)
         {
             // Error - missing module directive
@@ -941,16 +947,83 @@ public final class ModuleCompiler
         }
 
         /**
+         * Import all the annotations defined in this module.
+         */
+        for (AnnotationCompiler cmp : annotations)
+        {
+            autoimport(cmp.type);
+        }
+
+        /**
+         * Import all the exceptions defined in this module.
+         */
+        for (ExceptionCompiler cmp : exceptions)
+        {
+            autoimport(cmp.type);
+        }
+
+        /**
          * Import all the enums defined in this module.
          */
         for (EnumCompiler cmp : enums)
         {
-            final String simple_name = cmp.node.getName().getName();
-
-            final String typename = Utils.internalName(cmp.type).replace('/', '.');
-
-            imports.importType(simple_name, typename);
+            autoimport(cmp.type);
         }
+
+        /**
+         * Import all the designs defined in this module.
+         */
+        for (DesignCompiler cmp : designs)
+        {
+            autoimport(cmp.type);
+        }
+
+        /**
+         * Import all the structs defined in this module.
+         */
+        for (StructCompiler cmp : structs)
+        {
+            autoimport(cmp.type);
+        }
+
+        /**
+         * Import all the tuples defined in this module.
+         */
+        for (TupleCompiler cmp : tuples)
+        {
+            autoimport(cmp.type);
+        }
+
+        /**
+         * Import all the functors defined in this module.
+         */
+        for (FunctorCompiler cmp : functors)
+        {
+            autoimport(cmp.type);
+        }
+    }
+
+    /**
+     * This method performs the importation of a type declared within the module.
+     *
+     * @param type is the type to import.
+     */
+    private void autoimport(final IDeclaredType type)
+    {
+        /**
+         * Get the fully-qualified internal-name of the type.
+         */
+        final String internal_name = Utils.internalName(type).replace('/', '.');
+
+        /**
+         * Get the simple-name of the type.
+         */
+        final String simple_name = internal_name.substring(internal_name.lastIndexOf('.') + 1, internal_name.length());
+
+        /**
+         * Import the type.
+         */
+        imports.importType(simple_name, internal_name);
     }
 
     private String processModuleDirective(final ModuleDirective directive)
@@ -1036,5 +1109,29 @@ public final class ModuleCompiler
         }
 
         return formals;
+    }
+
+    /**
+     * This method determines whether a module is empty.
+     *
+     * <p>
+     * Empty modules are caused, for example, by empty source files.
+     * </p>
+     *
+     * @param node is the AST representation of the module.
+     * @return true, iff the is an empty module.
+     */
+    public static boolean isEmpty(Module node)
+    {
+        return node.getAnnotations().isEmpty()
+               && node.getDesigns().isEmpty()
+               && node.getEnums().isEmpty()
+               && node.getExceptions().isEmpty()
+               && node.getFunctions().isEmpty()
+               && node.getFunctors().isEmpty()
+               && node.getImportDirectives().isEmpty()
+               && node.getModuleDirectives().isEmpty()
+               && node.getStructs().isEmpty()
+               && node.getTuples().isEmpty();
     }
 }

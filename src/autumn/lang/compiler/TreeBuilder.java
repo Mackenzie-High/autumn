@@ -2934,7 +2934,7 @@ public final class TreeBuilder
      */
     public void createExpressionProgn()
     {
-        Preconditions.checkState(stack.size() >= 1);
+        Preconditions.checkState(stack.size() >= 0);
 
         // Create the AST node.
         PrognExpression node = new PrognExpression();

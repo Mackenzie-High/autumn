@@ -259,6 +259,17 @@ public class ExpressionTypeChecker
     @Override
     public void visit(final PrognExpression object)
     {
+        /**
+         * A progn-expression cannot be empty.
+         */
+        if (object.getElements().isEmpty())
+        {
+            program.checker.reportEmptyProgn(object);
+        }
+
+        /**
+         * Visit and type-check each one of the elements in the sequence.
+         */
         IExpression last = null;
 
         for (IExpression x : object.getElements())
@@ -270,11 +281,15 @@ public class ExpressionTypeChecker
 
         assert last != null;
 
-        // The last element must return a value.
+        /**
+         * The last element must return a value.
+         */
         program.checker.requireNonVoid(last);
 
+        /**
+         * The return-type of the progn-expression is the return-type of its last element.
+         */
         final IExpressionType type = program.symbols.expressions.get(last);
-
         infer(object, type);
     }
 

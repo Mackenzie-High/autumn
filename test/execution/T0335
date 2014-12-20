@@ -3,13 +3,22 @@ module Main in execution;
 @Start
 defun main (args : String[]) : void
 {
-    My::moo();
-}
+    val s = new StringBuilder();
 
-defun moo () : void
-{
-    return;
+    assert s.toString() == "";
 
-    # This should not happen, because execution should not reach this point.
-    assert false;
+    progn (s.append("A"));
+
+    assert s.toString() == "A";
+
+    progn (s.append("B"),
+           s.append("C"));
+
+    assert s.toString() == "ABC";
+
+    progn (s.append("D"),
+           s.append("E"),
+           s.append("F"));
+
+    assert s.toString() == "ABCDEF";
 }

@@ -3,6 +3,7 @@ package high.mackenzie.autumn.lang.compiler.compilers;
 import autumn.lang.compiler.ast.nodes.TypeSpecifier;
 import autumn.util.ds.ImmutableCollection;
 import autumn.util.ds.ImmutableDeque;
+import autumn.util.ds.ImmutableList;
 import autumn.util.ds.ImmutableMap;
 import autumn.util.ds.ImmutableNavigableMap;
 import autumn.util.ds.ImmutableNavigableSet;
@@ -37,7 +38,6 @@ import autumn.util.functors.MethodIterator;
 import autumn.util.functors.MethodToString;
 import autumn.util.functors.Predicate;
 import com.google.common.base.Preconditions;
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IClassType;
@@ -91,11 +91,12 @@ public final class Importer
         importClass(autumn.lang.TypedFunctor.class);
 
         // autumn.lang.annotations
-        importClass(autumn.lang.annotations.Setup.class);
+        importClass(autumn.lang.annotations.Author.class);
         importClass(autumn.lang.annotations.Hide.class);
         importClass(autumn.lang.annotations.Infer.class);
         importClass(autumn.lang.annotations.Memoize.class);
         importClass(autumn.lang.annotations.Once.class);
+        importClass(autumn.lang.annotations.Setup.class);
         importClass(autumn.lang.annotations.Start.class);
         importClass(autumn.lang.annotations.Sync.class);
 
@@ -310,11 +311,13 @@ public final class Importer
         return (IClassType) type;
     }
 
-    public IClassType resolveFunctorType(final TypeSpecifier specifier)
+    public IClassType resolveDefinedFunctorType(final TypeSpecifier specifier)
     {
         final IReturnType type = resolveReturnType(specifier);
 
-        module.program.checker.requireDefinedFunctor(specifier, type);
+        module.program.checker.requireDefinedFunctorType(specifier, type);
+
+        module.program.checker.requireClassType(specifier, type);
 
         return (IClassType) type;
     }

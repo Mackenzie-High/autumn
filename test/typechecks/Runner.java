@@ -45,7 +45,27 @@ public final class Runner
 
 
 
-
+        test("T0249", EXPECTED_CLASS_TYPE);
+        test("T0248", INCOMPATIBLE_DELEGATE);
+        test("T0247", INCOMPATIBLE_DELEGATE);
+        test("T0246", INCOMPATIBLE_DELEGATE);
+        test("T0245", OVERLOADED_METHOD);
+        test("T0244", IMPOSSIBLE_ASSIGNMENT);
+        test("T0243", BAD_ARGUMENT_COUNT);
+        test("T0242", RECUR_IN_MEMOIZED_FUNCTION);
+        test("T0241", DUPLICATE_ANNOTATION);
+        test("T0240", EXPECTED_STRING);
+        test("T0239", EXPECTED_CONDITION);
+        test("T0238", EXPECTED_CONDITION);
+        test("T0237", EXPECTED_VARIABLE_TYPE);
+        test("T0236", EXPECTED_VARIABLE_TYPE);
+        test("T0235", EXPECTED_VARIABLE_TYPE);
+        test("T0234", EXPECTED_VARIABLE_TYPE);
+        test("T0233", IMPOSSIBLE_ASSIGNMENT);
+        test("T0232", MUTABLE_VARIABLE_REQUIRED);
+        test("T0231", VALUE_REQUIRED);
+        test("T0230", EMPTY_PROGN);
+        test("T0229", VALUE_REQUIRED);
         test("T0228", INACCURATE_NUMERIC_LITERAL);
         test("T0227", INACCURATE_NUMERIC_LITERAL);
         test("T0226", INACCURATE_NUMERIC_LITERAL);
@@ -54,7 +74,7 @@ public final class Runner
         test("T0223", INACCURATE_NUMERIC_LITERAL);
         test("T0222", INACCURATE_NUMERIC_LITERAL);
         test("T0221", INACCURATE_NUMERIC_LITERAL);
-        //test("T0220", NO_SUCH_METHOD);
+        test("T0220", NO_SUCH_METHOD);
         test("T0219", EXPECTED_MODULE_TYPE);
         test("T0218", INACCESSIBLE_TYPE);
         test("T0217", NO_SUCH_TYPE);

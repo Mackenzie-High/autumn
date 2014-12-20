@@ -3,7 +3,7 @@ module Main in execution;
 @Start
 defun main (args : String[]) : void
 {
-var x = 0;
+    var x = 0;
 
     try
     {

@@ -3,7 +3,7 @@ module MainTest in program;
 @Test
 defun test1 (test : TestCase) : void
 {
-    (test.describe "This is just an example test case");
+    test.describe ("This is just an example test case");
 
     assert 1 != 2;
 }

@@ -1,0 +1,11 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    assert Autumn::isAssumeOn();
+
+    val x = field Boolean::TRUE;
+
+    assume x;
+}

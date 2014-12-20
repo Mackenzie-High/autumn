@@ -1,5 +1,6 @@
 package high.mackenzie.autumn.lang.compiler.compilers;
 
+import autumn.lang.DefinedFunctor;
 import autumn.lang.compiler.ast.commons.IBinaryOperation;
 import autumn.lang.compiler.ast.commons.IConstruct;
 import autumn.lang.compiler.ast.commons.IDatum;
@@ -11,12 +12,15 @@ import autumn.lang.compiler.ast.nodes.AnnotationList;
 import autumn.lang.compiler.ast.nodes.AsOperation;
 import autumn.lang.compiler.ast.nodes.BreakStatement;
 import autumn.lang.compiler.ast.nodes.ContinueStatement;
+import autumn.lang.compiler.ast.nodes.DelegateStatement;
 import autumn.lang.compiler.ast.nodes.Element;
 import autumn.lang.compiler.ast.nodes.ExceptionHandler;
 import autumn.lang.compiler.ast.nodes.InstanceOfExpression;
 import autumn.lang.compiler.ast.nodes.IsOperation;
 import autumn.lang.compiler.ast.nodes.Label;
 import autumn.lang.compiler.ast.nodes.Name;
+import autumn.lang.compiler.ast.nodes.PrognExpression;
+import autumn.lang.compiler.ast.nodes.RecurStatement;
 import autumn.lang.compiler.ast.nodes.RedoStatement;
 import autumn.lang.compiler.ast.nodes.StringDatum;
 import autumn.lang.compiler.ast.nodes.TypeSpecifier;
@@ -29,6 +33,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import high.mackenzie.autumn.lang.compiler.exceptions.TypeCheckFailed;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IAnnotation;
+import high.mackenzie.autumn.lang.compiler.typesystem.design.IClassType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IDeclaredType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IEnumType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IExpressionType;
@@ -403,7 +408,11 @@ public final class StaticChecker
     public void requireVariableType(final IConstruct construct,
                                     final IExpressionType type)
     {
-        if (type.isPrimitiveType() || type.isReferenceType())
+        if (type.isPrimitiveType())
+        {
+            return;
+        }
+        else if (type.isReferenceType() && !type.isNullType())
         {
             return;
         }
@@ -692,20 +701,46 @@ public final class StaticChecker
     }
 
     /**
-     * This method ensures that a type-specifier specifies a functor-type.
+     * This method ensures that a type-specifier specifies a defined-functor-type.
      *
-     * @param specifier must specify a functor-type.
-     * @param type must be a subtype of Functor.
+     * @param specifier must specify a defined-functor-type.
+     * @param type must be a subtype of DefinedFunctor.
      */
-    public void requireDefinedFunctor(final TypeSpecifier specifier,
+    public void requireDefinedFunctorType(final TypeSpecifier specifier,
                                       final IType type)
     {
-        if (type.isSubtypeOf(program.typesystem.utils.ABSTRACT_STATIC_FUNCTOR))
+        if (type.isSubtypeOf(program.typesystem.typefactory().fromClass(DefinedFunctor.class)))
         {
             return;
         }
 
         final ErrorCode ERROR_CODE = ErrorCode.EXPECTED_DEFINED_FUNCTOR_TYPE;
+
+        final String MESSAGE = "An autumn.lang.DefinedFunctor was expected.";
+
+        final ErrorReport report = new ErrorReport(specifier, ERROR_CODE, MESSAGE);
+
+        /**
+         * Issue the error-report to the user.
+         */
+        report(report);
+    }
+
+    /**
+     * This method ensures that a type-specifier specifies a functor-type.
+     *
+     * @param specifier must specify a functor-type.
+     * @param type must be a subtype of Functor.
+     */
+    public void requireFunctorType(final TypeSpecifier specifier,
+                                   final IType type)
+    {
+        if (type.isSubtypeOf(program.typesystem.utils.FUNCTOR))
+        {
+            return;
+        }
+
+        final ErrorCode ERROR_CODE = ErrorCode.EXPECTED_FUNCTOR_TYPE;
 
         final String MESSAGE = "An autumn.lang.Functor was expected.";
 
@@ -1118,7 +1153,7 @@ public final class StaticChecker
 
         final ErrorReport report = new ErrorReport(variable, ERROR_CODE, MESSAGE);
 
-        report.details().put("Variable", variable.getName());
+        report.addDetail("Variable", variable.getName());
 
         /**
          * Issue the error-report to the user.
@@ -1538,6 +1573,170 @@ public final class StaticChecker
         report.addDetail("Element", violation.lower.name);
         report.addDetail("Upper", Utils.sourceName(violation.upper.parameter));
         report.addDetail("Lower", Utils.sourceName(violation.lower.parameter));
+
+        /**
+         * Issue the error-report to the user.
+         */
+        report(report);
+    }
+
+    /**
+     * This method reports that a progn-expression is empty.
+     *
+     * @param site is the AST node of the progn-expression.
+     */
+    public void reportEmptyProgn(final PrognExpression site)
+    {
+        final ErrorCode ERROR_CODE = ErrorCode.EMPTY_PROGN;
+
+        final String MESSAGE = "A progn-expression cannot be empty.";
+
+        final ErrorReport report = new ErrorReport(site, ERROR_CODE, MESSAGE);
+
+        /**
+         * Issue the error-report to the user.
+         */
+        report(report);
+    }
+
+    /**
+     * This method reports that a variable is not mutable.
+     *
+     * @param site is the AST node representation of the variable.
+     * @param mutable is true, iff the variable is true.
+     */
+    public void requireMutableVariable(final Variable site,
+                                       final boolean mutable)
+    {
+        if (mutable)
+        {
+            return;
+        }
+
+        final ErrorCode ERROR_CODE = ErrorCode.MUTABLE_VARIABLE_REQUIRED;
+
+        final String MESSAGE = "A mutable variable is required.";
+
+        final ErrorReport report = new ErrorReport(site, ERROR_CODE, MESSAGE);
+
+        report.addDetail("Variable", site.getName());
+
+        /**
+         * Issue the error-report to the user.
+         */
+        report(report);
+    }
+
+    /**
+     * This method reports that a recur-statement is being used inside of a memoized-function.
+     *
+     * @param site is the recur-statement itself.
+     */
+    public void reportRecurInMemoizedFunction(RecurStatement site)
+    {
+        final ErrorCode ERROR_CODE = ErrorCode.RECUR_IN_MEMOIZED_FUNCTION;
+
+        final String MESSAGE = "A recur-statement cannot be used inside of a memoized function.";
+
+        final ErrorReport report = new ErrorReport(site, ERROR_CODE, MESSAGE);
+
+        /**
+         * Issue the error-report to the user.
+         */
+        report(report);
+    }
+
+    /**
+     * This method reports that the number of given arguments does not match the number of parameters.
+     *
+     * @param site is the recur-statement that is providing the arguments.
+     * @param required is the number of parameters.
+     */
+    public void reportBadArgumentCount(final RecurStatement site,
+                                       final int required)
+    {
+        final ErrorCode ERROR_CODE = ErrorCode.BAD_ARGUMENT_COUNT;
+
+        final String MESSAGE = "The number of arguments must match the number of parameters.";
+
+        final ErrorReport report = new ErrorReport(site, ERROR_CODE, MESSAGE);
+
+        report.addDetail("Argument Count", "" + site.getArguments().size());
+        report.addDetail("Parameter Count", "" + required);
+
+        /**
+         * Issue the error-report to the user.
+         */
+        report(report);
+    }
+
+    /**
+     * This method reports that a method does not exist.
+     *
+     * @param object is the site where the method is needed.
+     * @param owner is the type that should contain the method.
+     * @param name is the name of the method.
+     */
+    public void reportNoSuchMethod(final DelegateStatement site,
+                                   final IClassType owner,
+                                   final String name)
+    {
+        final ErrorCode ERROR_CODE = ErrorCode.NO_SUCH_METHOD;
+
+        final String MESSAGE = "The handler function does not exist.";
+
+        final ErrorReport report = new ErrorReport(site, ERROR_CODE, MESSAGE);
+
+        report.addDetail("Owner", Utils.sourceName(owner));
+        report.addDetail("Name", name);
+
+        /**
+         * Issue the error-report to the user.
+         */
+        report(report);
+    }
+
+    /**
+     * This method reports that a method is overloaded when it should not be overloaded.
+     *
+     * @param object is the site where the method is being used.
+     * @param owner is the type that contains the method.
+     * @param name is the name of the method.
+     */
+    public void reportOverloadedMethod(final DelegateStatement site,
+                                       final IClassType owner,
+                                       final String name)
+    {
+        final ErrorCode ERROR_CODE = ErrorCode.OVERLOADED_METHOD;
+
+        final String MESSAGE = "The handler function cannot be overloaded.";
+
+        final ErrorReport report = new ErrorReport(site, ERROR_CODE, MESSAGE);
+
+        /**
+         * Issue the error-report to the user.
+         */
+        report(report);
+    }
+
+    /**
+     * This method reports that a delegate is incompatible with the function that it refers to.
+     *
+     * @param site is the site where the delegate is being created.
+     * @param delegate is the type of the delegate's invoke(*) method.
+     * @param handler is the type of the function that the delegate refers to.
+     */
+    public void reportIncompatibleDelegate(final DelegateStatement site,
+                                           final IMethod delegate,
+                                           final IMethod handler)
+    {
+        final ErrorCode ERROR_CODE = ErrorCode.INCOMPATIBLE_DELEGATE;
+
+        final String MESSAGE = "The handler function is not compatible with the delegate.";
+
+        final ErrorReport report = new ErrorReport(site, ERROR_CODE, MESSAGE);
+
+        // TODO: improve error details
 
         /**
          * Issue the error-report to the user.

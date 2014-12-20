@@ -158,7 +158,7 @@ public enum ErrorCode
     /**
      * Meaning: A variable must be mutable in a particular circumstance.
      */
-    EXPECTED_MUTABLE_VARIABLLE,
+    MUTABLE_VARIABLE_REQUIRED,
     /**
      * Meaning: The variable was already previously declared elsewhere.
      */
@@ -337,4 +337,20 @@ public enum ErrorCode
      * Meaning: A literal value is outside the range of its datatype.
      */
     INACCURATE_NUMERIC_LITERAL,
+    /**
+     * Meaning: A progn-expression cannot be empty.
+     */
+    EMPTY_PROGN,
+    /**
+     * Meaning: A non-overloaded method is required.
+     */
+    OVERLOADED_METHOD,
+    /**
+     * Meaning: The signature of a function must be compatible with a given functor-type.
+     */
+    INCOMPATIBLE_DELEGATE,
+    /**
+     * Meaning: A functor-type is required.
+     */
+    EXPECTED_FUNCTOR_TYPE,
 }

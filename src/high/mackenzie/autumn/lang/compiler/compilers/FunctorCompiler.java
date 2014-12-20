@@ -210,7 +210,7 @@ public final class FunctorCompiler
         /**
          * The superclass must be a subtype of Functor.
          */
-        program.checker.requireDefinedFunctor(node.getSuperclass(), type.getSuperclass());
+        program.checker.requireDefinedFunctorType(node.getSuperclass(), type.getSuperclass());
 
         /**
          * Create an object that will be used to find problem with the functor-type.

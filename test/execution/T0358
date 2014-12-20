@@ -1,0 +1,10 @@
+module Main in execution;
+
+import execution.Helpers;
+import autumn.lang.internals.Helpers;
+
+@Start
+defun main (args : String[]) : void
+{
+    assert (class Helpers).getName() == "autumn.lang.internals.Helpers";
+}

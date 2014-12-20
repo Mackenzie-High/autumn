@@ -686,11 +686,20 @@ public final class StatementCodeGenerator
          */
         Utils.addLineNumber(code, object);
 
-        final String name = object.getVariable().getName();
+        /**
+         * Get the name of the variable that is being assigned to.
+         */
+        final String assignee = object.getVariable().getName();
 
+        /**
+         * Generate the bytecode that produces the value.
+         */
         object.getValue().accept(this);
 
-        vars.store(name);
+        /**
+         * Generate the bytecode that actually performs the assignment.
+         */
+        vars.store(assignee);
     }
 
     @Override
@@ -701,10 +710,19 @@ public final class StatementCodeGenerator
          */
         Utils.addLineNumber(code, object);
 
+        /**
+         * Get the name of the variable that is being assigned to.
+         */
         final String name = object.getVariable().getName();
 
+        /**
+         * Generate the bytecode that produces the value.
+         */
         object.getValue().accept(this);
 
+        /**
+         * Generate the bytecode that actually performs the assignment.
+         */
         vars.store(name);
     }
 
@@ -716,17 +734,29 @@ public final class StatementCodeGenerator
          */
         Utils.addLineNumber(code, object);
 
+        /**
+         * Get the name of the variable that is being assigned to.
+         */
         final String name_of_variable = object.getVariable().getName();
 
+        /**
+         * Get the type of the variable that is being assigned to.
+         */
         final IType type_of_variable = function.allocator.typeOf(name_of_variable);
 
-        // Evaluate the expression that produces the value to assign to the variable.
+        /**
+         * Generate the bytecode that produces the value.
+         */
         object.getValue().accept(this);
 
-        // Perform auto-boxing or auto-unboxing, if needed.
+        /**
+         * Generate the bytecode that performs auto-boxing, auto-unboxing, or coercion, if needed.
+         */
         convert(type_of_variable, object.getValue());
 
-        // Assign the value to the variable.
+        /**
+         * Generate the bytecode that actually performs the assignment.
+         */
         vars.store(object.getVariable().getName());
     }
 
@@ -756,7 +786,7 @@ public final class StatementCodeGenerator
     @Override
     public void visit(final DelegateStatement object)
     {
-        final IClassType functor = module.imports.resolveFunctorType(object.getType());
+        final IClassType functor = module.imports.resolveDefinedFunctorType(object.getType());
 
         final IMethod handler = program.symbols.delegates.get(object);
 
@@ -1041,17 +1071,22 @@ public final class StatementCodeGenerator
          */
         Utils.addLineNumber(code, object);
 
-        // TODO: These need to be disablable.
-
         final String descriptor;
 
         final LabelNode END = new LabelNode();
+
+        code.add(new MethodInsnNode(Opcodes.INVOKESTATIC,
+                                    "autumn/lang/compiler/Autumn",
+                                    "isAssumeOn",
+                                    "()Z"));
+
+        code.add(new JumpInsnNode(Utils.IF_FALSE, END));
 
         compileCondition(object.getCondition());
 
         code.add(new JumpInsnNode(Utils.IF_TRUE, END));
 
-        code.add(new TypeInsnNode(Opcodes.NEW, "autumn/lang/exceptions/AssertionFailedException"));
+        code.add(new TypeInsnNode(Opcodes.NEW, "autumn/lang/exceptions/AssumptionFailedException"));
 
         code.add(new InsnNode(Opcodes.DUP));
 
@@ -1071,7 +1106,7 @@ public final class StatementCodeGenerator
         }
 
         code.add(new MethodInsnNode(Opcodes.INVOKESPECIAL,
-                                    "autumn/lang/exceptions/AssertionFailedException",
+                                    "autumn/lang/exceptions/AssumptionFailedException",
                                     "<init>",
                                     descriptor));
 
@@ -1143,29 +1178,41 @@ public final class StatementCodeGenerator
          */
         Utils.addLineNumber(code, object);
 
-        int i = 0;
+        int parameter_index = 0;
 
-        // Evaluate the arguments and store them in the parameter variables.
+        /**
+         * Evaluate the arguments and store them in the parameter variables.
+         */
         for (IExpression arg : object.getArguments())
         {
             final String parameter = function.node // Get the function's AST node.
                     .getParameters() // Get formal-parameter-list.
                     .getParameters() // From the formal-parameter-list, get the actual list.
                     .asMutableList() // Convert the list, because we need the get(int) method.
-                    .get(i++) // Get the ith formal-parameter in the list.
+                    .get(parameter_index++) // Get the formal-parameter from the list.
                     .getVariable() // We only need the variable, not the type.
                     .getName(); // Get the name of the variable as a string.
 
-            // Generate the argument's bytecode.
+            /**
+             * Generate the argument's bytecode.
+             */
             arg.accept(this);
 
-            // TODO: autoboxing?
+            /**
+             * Generate the bytecode that performs auto-boxing, auto-unboxing, and coercions, if needed.
+             */
+            code.add(program.typesystem.utils.assign(program.symbols.expressions.get(arg),
+                                                     function.allocator.typeOf(parameter)));
 
-            // Store the value of the argument in the appropriate local-variable.
+            /**
+             * Generate the bytecode that assigns the argument to the parameter's local-variable.
+             */
             function.vars.store(parameter);
         }
 
-        // Goto the start of the function.
+        /**
+         * Goto the start of the function.
+         */
         code.add(new JumpInsnNode(Opcodes.GOTO, function.recur_label));
     }
 }

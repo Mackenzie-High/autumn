@@ -4,8 +4,9 @@ import autumn.lang.Delegate;
 import autumn.lang.LocalsMap;
 import autumn.lang.Module;
 import autumn.lang.compiler.Autumn;
-import autumn.util.F;
+import autumn.lang.debugger.IDebugger;
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import java.math.BigDecimal;
@@ -125,16 +126,15 @@ public final class Helpers
                              final int column,
                              final LocalsMap locals)
     {
-        if (Autumn.isDebugOn() == false)
+        /**
+         * If the debugger is turned on, then hit a breakpoint; otherwise, do nothing.
+         */
+        if (Autumn.isDebugOn())
         {
-            return;
+            final IDebugger debugger = Autumn.getDebugger();
+
+            debugger.debug(file, line, column, locals);
         }
-
-        System.out.println();
-        System.out.printf("Breakpoint Hit: line = %d, column = %d, file = %s\n", line, column, file);
-        locals.print();
-
-        F.readln();
     }
 
     /**
@@ -148,6 +148,61 @@ public final class Helpers
     public static Delegate delegate(final Module module,
                                     final String method)
     {
+        Preconditions.checkNotNull(module);
+        Preconditions.checkNotNull(method);
+
+        /**
+         * If the delegate refers to the special instance() method,
+         * create a special delegate just it.
+         */
+        if (method.equals("instance"))
+        {
+            return new AbstractDelegate()
+            {
+                @Override
+                public void apply(ArgumentStack stack)
+                        throws Throwable
+                {
+                    stack.clear();
+
+                    stack.push(module);
+                }
+
+                @Override
+                public List<Class> parameterTypes()
+                {
+                    return ImmutableList.of();
+                }
+
+                @Override
+                public Class returnType()
+                {
+                    return module.getClass();
+                }
+
+                @Override
+                public Module module()
+                {
+                    return module;
+                }
+
+                @Override
+                public Class owner()
+                {
+                    return module.getClass();
+                }
+
+                @Override
+                public String name()
+                {
+                    return method;
+                }
+            };
+        }
+
+        /**
+         * Otherwise, the delegate must refer to a user-defined function.
+         */
         for (Delegate d : module.moduleInfo().functions())
         {
             if (method.equals(d.name()))

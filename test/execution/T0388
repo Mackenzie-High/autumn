@@ -1,0 +1,18 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    # This test attempts to detect operand-stack leakage.
+    # The creation of delegates cannot leave anything on the operand-stack.
+
+    for (i = 0; i < 50000; i + 1)
+    {
+        delegate p : Predicate => My::function;
+    }
+}
+
+defun function (value : Object) : boolean
+{
+    return false;
+}

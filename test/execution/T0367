@@ -1,0 +1,24 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    assert My::recursive() == "OK";
+}
+
+@Memoize
+defun state () : StringBuilder
+{
+    return new StringBuilder();
+}
+
+defun recursive () : String
+{
+    when (My::state().toString() == "0123456789") then return "OK";
+
+    val s = My::state();
+
+    s.append(s.length());
+
+    recur;
+}

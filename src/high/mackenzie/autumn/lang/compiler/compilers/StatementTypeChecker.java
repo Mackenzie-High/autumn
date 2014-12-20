@@ -4,16 +4,14 @@ import autumn.lang.compiler.ast.commons.IExpression;
 import autumn.lang.compiler.ast.commons.IStatement;
 import autumn.lang.compiler.ast.nodes.*;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import high.mackenzie.autumn.lang.compiler.exceptions.TypeCheckFailed;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IClassType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IExpressionType;
-import high.mackenzie.autumn.lang.compiler.typesystem.design.IMethod;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IReferenceType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IVariableType;
-import high.mackenzie.autumn.lang.compiler.utils.MemberToHandler;
+import high.mackenzie.autumn.lang.compiler.utils.DelegateToHandler;
 import high.mackenzie.autumn.lang.compiler.utils.TopoSorter;
 import java.util.List;
 import java.util.Set;
@@ -342,38 +340,66 @@ public final class StatementTypeChecker
     @Override
     public void visit(final VarStatement object)
     {
+        /**
+         * Visit and type-check the expression.
+         */
         object.getValue().accept(this);
 
-        final Variable variable = object.getVariable();
+        /**
+         * Declare the assignee.
+         */
+        final Variable assignee = object.getVariable();
 
         final IExpression value = object.getValue();
 
         final IExpressionType type = program.symbols.expressions.get(value);
 
-        super.declareVar(variable, type, true);
+        super.declareVar(assignee, type, true);
     }
 
     @Override
     public void visit(final ValStatement object)
     {
+        /**
+         * Visit and type-check the expression.
+         */
         object.getValue().accept(this);
 
-        final Variable variable = object.getVariable();
+        /**
+         * Declare the assignee.
+         */
+        final Variable assignee = object.getVariable();
 
         final IExpression value = object.getValue();
 
         final IExpressionType type = program.symbols.expressions.get(value);
 
-        super.declareVar(variable, type, false);
+        super.declareVar(assignee, type, false);
     }
 
     @Override
     public void visit(final LetStatement object)
     {
+        /**
+         * Generate the bytecode that produces the value.
+         */
         object.getValue().accept(this);
 
+        /**
+         * The variable must have been declared somewhere.
+         */
         program.checker.checkDeclared(function.allocator, object.getVariable());
 
+        /**
+         * The variable cannot be readonly.
+         */
+        final boolean readonly = !function.vars.allocator().isReadOnly(object.getVariable().getName());
+
+        program.checker.requireMutableVariable(object.getVariable(), readonly);
+
+        /**
+         * The assignment must actually be possible type wise.
+         */
         final IVariableType expected = function.allocator.typeOf(object.getVariable().getName());
 
         program.checker.checkAssign(object, expected, object.getValue());
@@ -430,22 +456,61 @@ public final class StatementTypeChecker
     @Override
     public void visit(final DelegateStatement object)
     {
+        /**
+         * Get the assignee variable.
+         */
+        final Variable assignee = object.getVariable();
+
+        /**
+         * Get the name of the function that will be delegated to.
+         */
         final String name = object.getMethod().getName();
 
-        final IClassType functor_type = module.imports.resolveFunctorType(object.getType());
+        /**
+         * Get the type of the delegate itself.
+         */
+        final IClassType functor_type = module.imports.resolveDefinedFunctorType(object.getType());
 
+        /**
+         * The functor-type must also be a class-type.
+         */
+        program.checker.requireClassType(object, functor_type);
+
+        /**
+         * Get the type of the module that contains the function that will be delegated to.
+         */
         final IClassType owner_type = module.imports.resolveModuleType(object.getOwner());
 
-        final IMethod handler = MemberToHandler.findHandler(owner_type, name);
+        /**
+         * Resolve the method that will be delegated to.
+         */
+        final DelegateToHandler mapping = DelegateToHandler.find(functor_type, owner_type, name);
 
-        if (handler == null)
+        if (mapping.error == DelegateToHandler.Errors.NO_SUCH_METHOD)
         {
-            // TODO
+            // This will throw an exception.
+            program.checker.reportNoSuchMethod(object, owner_type, name);
+        }
+        else if (mapping.error == DelegateToHandler.Errors.OVERLOADED_METHOD)
+        {
+            // This will throw an exception.
+            program.checker.reportOverloadedMethod(object, owner_type, name);
+        }
+        else if (mapping.error == DelegateToHandler.Errors.INCOMPATIBLE_METHOD)
+        {
+            // This will throw an exception.
+            program.checker.reportIncompatibleDelegate(object, mapping.delegate, mapping.handler);
         }
 
-        super.declareVar(object.getVariable(), functor_type, false);
+        /**
+         * Declare the assignee variable as a readonly local variable.
+         */
+        super.declareVar(assignee, functor_type, false);
 
-        program.symbols.delegates.put(object, handler);
+        /**
+         * Remember the delegate-method, because it will be needed during code generation.
+         */
+        program.symbols.delegates.put(object, mapping.handler);
     }
 
     @Override
@@ -655,6 +720,11 @@ public final class StatementTypeChecker
         object.getValue().accept(this);
 
         /**
+         * The expression must return a non void value.
+         */
+        program.checker.requireNonVoid(object.getValue());
+
+        /**
          * The type of the expression must be assignable to the return-type of the function.
          */
         program.checker.checkReturn(object, function.type.getReturnType(), object.getValue());
@@ -663,14 +733,48 @@ public final class StatementTypeChecker
     @Override
     public void visit(final RecurStatement object)
     {
-        final List<IType> args = Lists.newLinkedList();
-
-        for (IExpression arg : object.getArguments())
+        /**
+         * A recur-statement cannot be used inside of a memoized function.
+         */
+        if (function.isMemoized())
         {
-            arg.accept(this);
-            args.add(program.symbols.expressions.get(arg));
+            // This will throw an exception.
+            program.checker.reportRecurInMemoizedFunction(object);
         }
 
-        program.typesystem.utils.checkArgs(ImmutableList.of(function.type), args);
+        /**
+         * The number of arguments must match the number of parameters.
+         */
+        if (function.type.getParameters().size() != object.getArguments().size())
+        {
+            // This will throw an exception.
+            program.checker.reportBadArgumentCount(object, function.type.getParameters().size());
+        }
+
+        /**
+         * Each argument must be assignable to the related parameter.
+         */
+        for (int i = 0; i < object.getArguments().size(); i++)
+        {
+            /**
+             * Get the argument expression.
+             */
+            final IExpression argument = object.getArguments().get(i);
+
+            /**
+             * Get the type of the related parameter.
+             */
+            final IVariableType parameter = function.type.getParameters().get(i).getType();
+
+            /**
+             * Visit and type-check the argument.
+             */
+            argument.accept(this);
+
+            /**
+             * The argument must be assignable to the parameter.
+             */
+            program.checker.checkAssign(object, parameter, argument);
+        }
     }
 }

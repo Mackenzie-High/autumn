@@ -6,9 +6,12 @@
 
 Test Index
 . Modules
+. . Duplicate Annotation
 . . Duplicate Type
 . . Illegal Package - autumn
 . . Illegal Package - java
+. Module Directive
+. . T0241 = Duplicate Annotation
 . Annotation Definitions
 . . T0039 = Duplicate Type
 . . T0150 = Duplicate Annotation
@@ -151,14 +154,17 @@ Test Index
 . . Redo
 . . . T0074 = Outside of Loop
 . . Var
-. . . T0015 = Duplicate Variable Declaration
-. . . Wrong Type for Assignment
+. . . T0015 = Assignee - Duplicate Variable Declaration
+. . . T0234 = Value - Expected Variable Type - void type
+. . . T0235 = Value - Expected Variable Type - null type
 . . Val
-. . . T0016 = Duplicate Variable Declaration
-. . . Wrong Type for Assignment
+. . . T0016 = Assignee - Duplicate Variable Declaration
+. . . T0236 = Value - Expected Variable Type - void type
+. . . T0237 = Value - Expected Variable Type - null type
 . . Let
-. . . T0017 = No Such Variable
-. . . Wrong Type for Assignment
+. . . T0017 = Assignee - No Such Variable
+. . . T0232 = Assignee - Mutable Variable Required
+. . . T0233 = Value - Impossible Assignment
 . . Try Catch
 . . . T0011 = Duplicate Variable Declaration
 . . . T0012 = Expected Throwable
@@ -169,9 +175,13 @@ Test Index
 . . Throw
 . . . T0010 = Expected Throwable
 . . Assert
-. . . T0007 = Expected Condition
-. . . T0008 = Expected Condition
-. . . T0009 = Expected String
+. . . T0007 = No Message Form - Expected Condition
+. . . T0008 = Message Form - Expected Condition
+. . . T0009 = Message Form - Expected String
+. . Assume
+. . . T0238 = No Message Form - Expected Condition
+. . . T0239 = Message Form - Expected Condition
+. . . T0240 = Message Form - Expected String
 . . Sequence
 . . . T0037 = Reporting of Multiple Errors
 . . . T0075 = Variable Out of Scope - (in outer scope)
@@ -181,14 +191,16 @@ Test Index
 . . . T0213 = Duplicate Variable Declaration
 . . . T0214 = Type - No Such Type
 . . . T0215 = Type - Inaccessible Type
-. . . T0216 = Type - Expected Functor Type
+. . . T0216 = Type - Expected Defined Functor Type
+. . . T0249 = Type - Expected Class Type
 . . . T0217 = Owner - No Such Type
 . . . T0218 = Owner - Inaccessible Type
 . . . T0219 = Owner - Expected Module Type
 . . . T0220 = No Such Method
-. . . Overloaded Method
-. . . Incompatible Method - Return Type
-. . . Incompatible Method - Parameter Type
+. . . T0245 = Overloaded Method
+. . . T0246 = Incompatible Method - Return Type
+. . . T0247 = Incompatible Method - Parameter Count
+. . . T0248 = Incompatible Method - Parameter Type
 . . Lambda
 . . . T0206 = Duplicate Variable Declaration
 . . . T0207 = Type - No Such Type
@@ -202,8 +214,11 @@ Test Index
 . . . T0187 = Expected Void
 . . Return Value
 . . . T0189 = Wrong Type
+. . . T0229 = Value Required
 . . Recur
-. . . Recur in Generator Function
+. . . T0242 = Recur in Memoized Function
+. . . T0243 = Bad Argument Count
+. . . T0244 = Impossible Assignment
 . Expressions
 . . Dispatch
 . . . No Such Method
@@ -252,7 +267,8 @@ Test Index
 . . . T0115 = Value Required - Left Operand
 . . . T0116 = Value Required - Right Operand
 . . Progn
-. . . Expected Non-Void Last Element
+. . . T0230 = Empty
+. . . T0231 = Last Element - Value Required
 . . List
 . . . T0036 = Value Required
 . . List Comprehension

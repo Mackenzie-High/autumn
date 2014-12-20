@@ -1,0 +1,14 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    assert My::recursive(0, 13) == 13_000_013;
+}
+
+defun recursive (total : int, result : int) : int
+{
+    when (total == 17_000_000) then return result;
+
+    recur total + 17, result + 13;
+}

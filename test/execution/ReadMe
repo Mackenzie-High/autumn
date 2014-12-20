@@ -11,8 +11,20 @@ TODO:
 Test Index
 . Directives
 . . Import
-. . . T0060 = Automatically Imported Types # TODO: Complete
+. . . T0357 = Basic Usage
+. . . T0358 = Collision - Import Directive
+. . . T0359 = Collision - Locally Declared Type
+. . . T0360 = Auto Import of Local - Annotation Type
+. . . T0361 = Auto Import of Local - Exception Type
+. . . T0362 = Auto Import of Local - Enum Type
+. . . T0363 = Auto Import of Local - Design Type
+. . . T0364 = Auto Import of Local - Struct Type
+. . . T0365 = Auto Import of Local - Tuple Type
+. . . T0366 = Auto Import of Local - Functor Type
+. . . T0060 = Auto Imported Types                             # TODO: Complete
 . . Module
+. . . T0355 = Annotations
+. . . T0356 = Name and Namespace
 . Modules
 . . Reflective Testing of the Module's Class
 . . Special Methods - instance()
@@ -128,7 +140,6 @@ Test Index
 . . T0285 = Covariance - Parameters
 . Functions
 . . Reflective Testing of the Reflective Method Object
-. . Generator - Recursive
 . . T0064 = Checked Exceptions
 . . Annotation Lists
 . . Parameter Lists
@@ -157,6 +168,7 @@ Test Index
 . . . T0273 = Index - int
 . . . T0274 = Index - Unboxing
 . . . T0275 = Index - Auto-Widening
+. . . T0354 = Index - Negative
 . . . T0276 = Jump Backward
 . . . T0277 = Only the Default Case
 . . . T0278 = Only One Case
@@ -234,29 +246,51 @@ Test Index
 . . . T0077 = Different Types of Values
 . . Let
 . . . T0075 = Different Types of Values
-. . . T0072 = Auto-Boxing
-. . . T0073 = Auto-Unboxing
+. . . T0072 = Auto Boxing
+. . . T0073 = Auto Unboxing
+. . . T0338 = Coercion
 . . Try Catch
-. . . T0049 = Single Case - No Catch
-. . . T0050 = Single Case - Throw
+. . . T0049 = Single Case - No Catch Needed
+. . . T0050 = Single Case - Caught
+. . . T0340 = Single Case - Propagated
+. . . T0341 = Multiple Cases - No Catch Needed
+. . . T0342 = Multiple Cases - Caught
+. . . T0343 = Multiple Cases - Propagated
+. . . T0345 = Handler Specificity
+. . . T0344 = Handler Reordering
 . . Throw
 . . . T0061 = Checked Exceptions
 . . . T0062 = Unchecked Exceptions
+. . . T0339 = Null Argument
 . . Assert
-. . . No Message
-. . . With Message
+. . . T0352 = Condition - Auto Unboxing
+. . . T0346 = No Message
+. . . T0347 = With Message
 . . Assume
-. . . No Message
-. . . With Message
+. . . T0353 = Condition - Auto Unboxing
+. . . T0348 = Enabled - No Message
+. . . T0349 = Enabled - With Message
+. . . T0350 = Disabled - No Side Effects - No Message
+. . . T0351 = Disabled - No Side Effects - With Message
 . . Delegate
-. . . Checked Exceptions
 . . . T0153 = No Parameters
 . . . T0154 = Single Parameter
 . . . T0155 = Multiple Parameters
 . . . T0156 = Different Types of Parameters
-. . . Different Types of Return-Types
-. . . Operand-Stack Leakage
-. . . Special Method - toString()
+. . . T0376 = Different Types of Return-Types
+. . . T0383 = Apply - Arguments - Auto Boxing
+. . . T0384 = Apply - Arguments - Auto Unboxing
+. . . T0385 = Apply - Arguments - Auto Coercion
+. . . T0386 = Apply - Checked Exceptions
+. . . T0387 = Invoke - Checked Exceptions
+. . . T0377 = Special Method - module()
+. . . T0378 = Special Method - owner()
+. . . T0379 = Special Method - name()
+. . . T0380 = Special Method - returnType()
+. . . T0381 = Special Method - parameterTypes()
+. . . T0382 = Special Method - method()
+. . . T0389 = Special Method - toString()
+. . . T0388 = Operand-Stack Leakage
 . . Lambda
 . . . Reflective Testing of the Lambda's Type
 . . . T0282 = Basic                                       // TODO: finish
@@ -271,8 +305,8 @@ Test Index
 . . . Special Method - closure()
 . . . T0308 = Special Method - toString()
 . . Return Void
-. . . T0333 = Early Exit
-. . . T0334 = Memoization
+. . . T0334 = Early Exit
+. . . T0333 = Memoization
 . . Return Value
 . . . T0331 = Early Exit
 . . . T0053 = Different Types of Return Values
@@ -281,14 +315,15 @@ Test Index
 . . . T0330 = Auto Coercions
 . . . T0332 = Memoization
 . . Recur
-. . . T0067 = Parameter Count - None
-. . . Parameter Count - Single
-. . . Parameter Count - Multiple
-. . . Return Type - Void
-. . . Return Type - Non Void
-. . . Arguments - Auto Boxing
-. . . Arguments - Auto Unboxing
-. . . Arguments - Coercion
+. . . T0372 = Very Deep Recursion
+. . . T0367 = Parameter Count - None
+. . . T0368 = Parameter Count - Single
+. . . T0369 = Parameter Count - Multiple
+. . . T0370 = Return Type - Void
+. . . T0371 = Return Type - Non Void
+. . . T0373 = Arguments - Auto Boxing
+. . . T0374 = Arguments - Auto Unboxing
+. . . T0375 = Arguments - Coercion
 . Expressions
 . . Dispatch
 . . . T0301 = Very Basic Usage
@@ -341,9 +376,11 @@ Test Index
 . . Locals
 . . . T0249 = All Cases
 . . Progn
-. . . All Cases
+. . . T0335 = Basic Usage
+. . . T0336 = Operand Stack Leakage
 . . List Literals
-. . . T0058 = All Cases
+. . . T0058 = Basic Usage
+. . . T0337 = Operand Stack Leakage
 . . List Comprehensions
 . . . T0291 = Basic Usage
 . . . T0292 = Conditional

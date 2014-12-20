@@ -1,0 +1,9 @@
+module Main in execution;
+
+exception T extends RuntimeException;
+
+@Start
+defun main (args : String[]) : void
+{
+    assert (class T).getName() == "execution.T";
+}

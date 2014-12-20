@@ -27,7 +27,7 @@ public final class Runner
 
 
 
-        //test("T0000");
+        test("T0000");
 
 
 
@@ -36,6 +36,62 @@ public final class Runner
 
 
 
+        test("T0389");
+        test("T0388");
+        test("T0387");
+        test("T0386");
+        test("T0385");
+        test("T0384");
+        test("T0383");
+        test("T0382");
+        test("T0381");
+        test("T0380");
+        test("T0379");
+        test("T0378");
+        test("T0377");
+        test("T0376");
+        test("T0375");
+        test("T0374");
+        test("T0373");
+        test("T0372");
+        test("T0371");
+        test("T0370");
+        test("T0369");
+        test("T0368");
+        test("T0367");
+        test("T0366");
+        test("T0365");
+        test("T0364");
+        test("T0363");
+        test("T0362");
+        test("T0361");
+        test("T0360");
+        test("T0359");
+        test("T0358");
+        test("T0357");
+        test("T0356");
+        test("T0355");
+        test("T0354");
+        test("T0353");
+        test("T0352");
+        test("T0351");
+        test("T0350");
+        test("T0349");
+        test("T0348");
+        test("T0347");
+        test("T0346");
+        test("T0345");
+        test("T0344");
+        test("T0343");
+        test("T0342");
+        test("T0341");
+        test("T0340");
+        test("T0339");
+        test("T0338");
+        test("T0337");
+        test("T0336");
+        test("T0335");
+        test("T0334");
         // test("T0333");
         test("T0332");
         test("T0331");

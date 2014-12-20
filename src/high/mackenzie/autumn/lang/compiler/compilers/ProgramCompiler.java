@@ -55,7 +55,10 @@ public final class ProgramCompiler
 
         for (Module m : mules)
         {
-            this.modules.add(new ModuleCompiler(this, m));
+            if (ModuleCompiler.isEmpty(m) == false)
+            {
+                this.modules.add(new ModuleCompiler(this, m));
+            }
         }
     }
 

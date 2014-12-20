@@ -72,6 +72,10 @@ public final class DynamicLoader
     /**
      * This method invokes the program's entry-point thereby causing the program to execute.
      *
+     * <p>
+     * This method does fails quietly, if the program's entry-point was not specified.
+     * </p>
+     *
      * @param args are the arguments to pass to the main method.
      * @throws ClassNotFoundException if the main class does not exist.
      * @throws NoSuchMethodException if the main method does not exist.
@@ -86,14 +90,32 @@ public final class DynamicLoader
     {
         Preconditions.checkNotNull(args);
 
+        /**
+         * Get the name of the module that is the entry-point of the program.
+         */
         final String name = program.mainClass();
 
-        Preconditions.checkNotNull(name, "The program's entry point was not specified.");
+        /**
+         * Fail quietly, if no entry point was specified.
+         */
+        if (name == null)
+        {
+            return;
+        }
 
+        /**
+         * Reflectively find the main class.
+         */
         final Class main_class = Class.forName(name, false, this);
 
+        /**
+         * Reflectively find the main function.
+         */
         final Method main = main_class.getMethod("main", String[].class);
 
+        /**
+         * Invoke the main function.
+         */
         main.invoke(null, (Object) args);
     }
 }

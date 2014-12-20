@@ -1,8 +1,10 @@
 package autumn.lang.internals;
 
 import autumn.lang.Module;
+import autumn.util.Strings;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
 import high.mackenzie.autumn.resources.Finished;
 import java.util.List;
 
@@ -133,6 +135,29 @@ public final class ModuleDelegate
     @Override
     public String toString()
     {
-        return "delegate: " + name; // TODO
+        final StringBuilder result = new StringBuilder();
+
+        /**
+         * Determine the simple-names of the parameters.
+         */
+        final List<String> list = Lists.newLinkedList();
+
+        for (Class parameter : parameterTypes())
+        {
+            list.add(parameter.getSimpleName());
+        }
+
+        /**
+         * Create the desired string representation of his delegate.
+         */
+        result.append(owner().getSimpleName());
+        result.append("::");
+        result.append(name);
+        result.append(" ");
+        result.append(Strings.str(list, "(", ", ", ")"));
+        result.append(" : ");
+        result.append(returnType().getSimpleName());
+
+        return result.toString();
     }
 }

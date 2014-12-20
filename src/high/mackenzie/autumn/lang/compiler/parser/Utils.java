@@ -377,9 +377,9 @@ public final class Utils
 
         final LinesAndColumns finder = new LinesAndColumns(code, newline);
 
-        final int line = finder.lineNumbers()[position];
+        final int line = finder.lineNumbers().length == 0 ? 1 : finder.lineNumbers()[position];
 
-        final int column = finder.columnNumbers()[position];
+        final int column = finder.columnNumbers().length == 0 ? 1 : finder.columnNumbers()[position];
 
         builder.setSourceLocation(source_file, line, column, null);
     }

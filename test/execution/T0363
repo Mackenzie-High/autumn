@@ -1,0 +1,9 @@
+module Main in execution;
+
+design T ();
+
+@Start
+defun main (args : String[]) : void
+{
+    assert (class T).getName() == "execution.T";
+}
