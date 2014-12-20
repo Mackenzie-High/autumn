@@ -18,7 +18,7 @@ defun main (args : String[]) : void
 
 defun oddSquare (n : int) : void
 {
-    assert n % 2 == 0 echo (n .. " is even.");
+    assert n % 2 != 0 echo (n .. " is even.");
 
     F::println(n .. " => " .. n * n);
 }

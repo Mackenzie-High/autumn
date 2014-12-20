@@ -20,7 +20,7 @@ defun main (args : String[]) : void
 
 defun oddSquare (n : int) : void
 {
-    assume n % 2 == 0 echo (n .. " is even.");
+    assume n % 2 != 0 echo (n .. " is even.");
 
     F::println(n .. " => " .. n * n);
 }
