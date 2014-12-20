@@ -8,9 +8,9 @@ defun main (args : String[]) : void
     # Since the Deflator type was imported,
     # it can be used using only its simple-name.
     
-    val constant = field Deflater::HUFFMAN_ONLY;
+    val name = (class Deflater).getName();
 
-    F::println(constant);
+    F::println(name);
 }
 
 
