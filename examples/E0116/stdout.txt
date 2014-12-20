@@ -1,0 +1,18 @@
+Income = 10000
+Tax = 1000
+
+Income = 20000
+Tax = 2000
+
+Income = 30000
+Tax = 3000
+
+Income = 100000
+Tax = 25000
+
+Income = 200000
+Tax = 50000
+
+Income = 300000
+Tax = 75000
+

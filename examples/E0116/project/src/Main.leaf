@@ -1,0 +1,40 @@
+module Main in execution;
+
+functor TaxCalculator (income : int) : int;
+
+@Start
+defun main (args : String[]) : void
+{
+    delegate poor : TaxCalculator => My::poorTax;
+    delegate rich : TaxCalculator => My::richTax;
+
+    My::printTax(10_000, poor);
+    My::printTax(20_000, poor);
+    My::printTax(30_000, poor);
+
+    My::printTax(100_000, rich);
+    My::printTax(200_000, rich);
+    My::printTax(300_000, rich);
+}
+
+defun printTax (income : int, 
+                irs : TaxCalculator) : void
+{
+    val tax = irs.invoke(income);
+
+    F::println("Income = " .. income);
+    F::println("Tax = " .. tax);
+    F::println();
+}
+
+defun poorTax (income : int) : int
+{
+    // Flat Rat = 10%
+    return income / 10;
+}
+
+defun richTax (income : int) : int
+{
+    // Flat Rat = 25%
+    return income / 4;
+}

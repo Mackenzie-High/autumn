@@ -3,7 +3,7 @@ module Main in execution;
 @Start
 defun main (args : String[]) : void
 {
-    # Compute the sum of integers less than ten million
+    # Compute the sum of the integers less than ten million
     # that are evenly divisible by both two and three. 
 
     val result = My::compute(0, 0);
