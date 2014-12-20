@@ -1,0 +1,69 @@
+module Main in examples;
+
+exception Disaster extends RuntimeException;
+
+exception Invasion extends Disaster;
+
+exception NaturalDisaster extends Disaster;
+
+exception Asteroid extends NaturalDisaster;
+
+exception Storm extends NaturalDisaster;
+
+exception Tornado extends Storm;
+
+exception Hurricane extends Storm;
+
+exception Volcano extends NaturalDisaster;
+
+
+@Start
+defun main (args : String[]) : void
+{
+    Main::fema(1);
+    Main::fema(2);
+    Main::fema(3);
+    Main::fema(4);
+    Main::fema(5);
+    Main::fema(6);
+}
+
+defun fema (n : int) : void
+{
+    try 
+    {
+        F::println ("Day " .. n);
+
+        My::world(n);
+
+        F::println("Good. No Disaster.");
+    }
+    catch (natural : NaturalDisaster)
+    {
+        F::println ("Handle Natural Disaster - " .. natural.getClass());
+    }
+    catch (storm : Storm)
+    {
+        F::println ("Handle Storm - " .. storm.getClass());
+    }
+    catch (disaster : Disaster)
+    {
+        F::println ("Handle Disaster - " .. disaster.getClass());
+    }
+
+    F::println();
+}
+
+defun world (x : int) : void
+{
+    when (x == 1) then throw new Asteroid();
+
+    when (x == 2) then throw new Invasion();
+
+    when (x == 3) then throw new Hurricane();
+
+    when (x == 4) then throw new Tornado();
+
+    when (x == 5) then throw new Volcano();
+}
+
