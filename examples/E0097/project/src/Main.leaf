@@ -3,7 +3,7 @@ module Main in examples;
 @Start
 defun main (args : String[]) : void
 {
-    # This example shows that an exception can cause an invocation to terminate early.
+    # An exception can cause an invocation to terminate early.
 
     try
     {
