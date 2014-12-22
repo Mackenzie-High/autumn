@@ -1,0 +1,8 @@
+Warning: NO_SUCH_METHOD
+  File: file:/typechecks/T0220
+  Line: #6
+  Column: #5
+  Message: The handler function does not exist.
+  Owner: typechecks.Main
+  Name: moo
+

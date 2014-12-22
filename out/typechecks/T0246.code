@@ -1,0 +1,14 @@
+module Main in typechecks;
+
+functor Function () : String;
+
+@Start
+defun main (args : String[]) : void
+{
+    delegate p : Function => My::function;
+}
+
+defun function () : Object
+{
+    nop;
+}
