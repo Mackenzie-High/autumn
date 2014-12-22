@@ -3,4 +3,5 @@ Warning: DUPLICATE_VARIABLE
   Line: #8
   Column: #14
   Message: A variable was declared more than once in the same scope.
+  Variable: x
 

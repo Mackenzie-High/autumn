@@ -3,4 +3,5 @@ Warning: DUPLICATE_VARIABLE
   Line: #7
   Column: #9
   Message: A variable was declared more than once in the same scope.
+  Variable: moo
 
