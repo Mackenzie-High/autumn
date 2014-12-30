@@ -46,7 +46,7 @@ function emitFormals()
 
 function emitReturns()
 {
-	var about = page["returns"][0];
+	var about = page["returns"][1];
 	
 	$("#function-page-returns").append(about);
 }

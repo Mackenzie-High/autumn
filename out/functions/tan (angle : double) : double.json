@@ -1,0 +1,1 @@
+{ "group" : "Math", "summary" : "This is the tangent function.", "signature" : "tan (angle : double) : double", "formals" : [["angle", "double", "is the angle in radians."]], "returns" : ["double", "tan(angle)"], "throws" : [], "details" : [] }
