@@ -38,11 +38,19 @@ function emitFormals()
 	
 	for(var i = 0; i < length; i++)
 	{
-		var formal = "Parameter " + formals[i][0] + " " + formals[i][2];
+		var formal = "Parameter <i>" + formals[i][0] + "</i> " + formals[i][2];
 		
 		$("#function-page-formals-list").append('<li>' + formal + '</li>');
 	}
 }
+
+function emitReturns()
+{
+	var about = page["returns"][1];
+	
+	$("#construct-page-syntax-content").append(about);
+}
+
 
 function emitDetails()
 {
@@ -118,7 +126,7 @@ function load_page(json)
 	emitSummary();
 	emitSignature(signature);
 	emitFormals();
-	//emitReturns();
+	emitReturns();
 	//emitThrows();
 	emitDetails();
 	

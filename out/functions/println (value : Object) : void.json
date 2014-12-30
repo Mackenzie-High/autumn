@@ -1,1 +1,1 @@
-{ "group" : "Standard_IO", "summary" : "This function prints a value to standard-output followed by a newline.", "signature" : "println (value : Object) : void", "formals" : [["value", "Object", "is the value to print."]], "returns" : ["void", null], "details" : [] }
+{ "group" : "Standard_IO", "summary" : "This function prints a value to standard-output followed by a newline.", "signature" : "println (value : Object) : void", "formals" : [["value", "Object", "is the value to print."]], "returns" : ["void", "Nothing."], "details" : [] }
