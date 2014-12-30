@@ -1,4 +1,4 @@
 /**
- * Data Structure Abstractions
+ * Data Structures
  */
 package autumn.util.ds;

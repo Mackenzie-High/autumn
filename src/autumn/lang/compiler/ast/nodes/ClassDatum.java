@@ -38,7 +38,7 @@ import autumn.lang.compiler.ast.literals.FloatLiteral;
 import autumn.lang.compiler.ast.literals.IntLiteral;
 import autumn.lang.compiler.ast.literals.LongLiteral;
 import autumn.lang.compiler.ast.literals.ShortLiteral;
-import autumn.util.ds.ImmutableList;
+import autumn.util.ds.ImmutableSequence;
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
@@ -62,7 +62,7 @@ import java.util.TreeSet;
  * </table>
  * </p>
  * 
- * <p> This file was auto-generated on (Fri Dec 12 09:04:03 EST 2014).</p>
+ * <p> This file was auto-generated on (Mon Dec 29 14:17:29 EST 2014).</p>
  */
 @SuppressWarnings("unchecked")
 public final class ClassDatum extends Object implements IDatum
@@ -165,7 +165,7 @@ public final class ClassDatum extends Object implements IDatum
      * Each value is the result of calling the key field's getter.
      * </p>
      * 
-     * @returns a map containing the entries in this struct.
+     * @return a map containing the entries in this struct.
      */
     public Map<String, Object> toMap()
     {

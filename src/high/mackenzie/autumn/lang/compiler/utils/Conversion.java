@@ -110,6 +110,15 @@ public final class Conversion
         best = isPredefined(best, "box", B_float, P_float, expression, type);
         best = isPredefined(best, "box", B_double, P_double, expression, type);
 
+        best = isPredefined(best, "boxToObject", OBJECT, P_boolean, expression, type);
+        best = isPredefined(best, "boxToObject", OBJECT, P_char, expression, type);
+        best = isPredefined(best, "boxToObject", OBJECT, P_byte, expression, type);
+        best = isPredefined(best, "boxToObject", OBJECT, P_short, expression, type);
+        best = isPredefined(best, "boxToObject", OBJECT, P_int, expression, type);
+        best = isPredefined(best, "boxToObject", OBJECT, P_long, expression, type);
+        best = isPredefined(best, "boxToObject", OBJECT, P_float, expression, type);
+        best = isPredefined(best, "boxToObject", OBJECT, P_double, expression, type);
+
         best = isPredefined(best, "unbox", P_boolean, B_boolean, expression, type);
         best = isPredefined(best, "unbox", P_char, B_char, expression, type);
         best = isPredefined(best, "unbox", P_byte, B_byte, expression, type);

@@ -8,7 +8,7 @@ import java.util.List;
  *
  * @author mackenzie
  */
-public interface ITree
+interface ITree
 {
     /**
      * This method removes all the nodes from the tree.

@@ -2,8 +2,6 @@ package autumn.util;
 
 import autumn.lang.Record;
 import autumn.lang.RecordEntry;
-import autumn.lang.SpecialMethods;
-import autumn.lang.TypedFunctor;
 import autumn.lang.annotations.Infer;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
@@ -34,38 +32,16 @@ public final class Records
     @Infer
     public static <T extends Record> T clear(final T self)
     {
-        return self.isMutable() ? clearThis(self) : clearCopy(self);
-    }
+        T p = self;
 
-    /**
-     * This method clears the elements of this mutable tuple.
-     *
-     * @return this object.
-     */
-    private static <T extends Record> T clearThis(final T self)
-    {
         final List<Class> types = self.types();
 
         for (int i = 0; i < self.size(); i++)
         {
-            self.set(i, F.defaultValue(types.get(i)));
+            p = (T) p.set(i, F.defaultValue(types.get(i)));
         }
 
-        return self;
-    }
-
-    /**
-     * This method creates an immutable tuple that is a cleared copy of this tuple.
-     *
-     * @return a copy of this tuple.
-     */
-    private static <T extends Record> T clearCopy(final T self)
-    {
-        // This object is an immutable tuple.
-        // Create a mutable copy of this tuple.
-        // Clear the mutable copy.
-        // Return an immutable copy of the cleared mutable tuple.
-        return (T) clear(self.mutable()).immutable();
+        return p;
     }
 
     /**
@@ -121,18 +97,6 @@ public final class Records
             public Record set(Object value)
             {
                 return self.set(index, value);
-            }
-
-            @Override
-            public boolean isMutable()
-            {
-                return self.isMutable();
-            }
-
-            @Override
-            public boolean isImmutable()
-            {
-                return self.isImmutable();
             }
 
             @Override
@@ -221,123 +185,6 @@ public final class Records
         }
 
         final Object result = self.get(index);
-
-        return result;
-    }
-
-    /**
-     * This method redefines the iterator() method.
-     *
-     * <p>
-     * If the handler is null, the method will revert to its default behavior.
-     * </p>
-     *
-     * @param owner is the object whose method will be redefined.
-     * @param handler is the new implementation of the method.
-     * @return the modified object, if it is mutable; otherwise, return a modified copy thereof.
-     * @throws NullPointerException if owner is null.
-     */
-    @Infer
-    public static <T extends Record> T bindIter(final T owner,
-                                                final TypedFunctor handler)
-    {
-        Preconditions.checkNotNull(owner);
-
-        final SpecialMethods methods = owner.bindings().setIterator(handler);
-
-        final T result = (T) owner.bind(methods);
-
-        return result;
-    }
-
-    /**
-     * This method redefines the compareTo(Object) method.
-     *
-     * <p>
-     * If the handler is null, the method will revert to its default behavior.
-     * </p>
-     *
-     * @param owner is the object whose method will be redefined.
-     * @param handler is the new implementation of the method.
-     * @return the modified object, if it is mutable; otherwise, return a modified copy thereof.
-     * @throws NullPointerException if owner is null.
-     */
-    @Infer
-    public static <T extends Record> T bindCompare(final T owner,
-                                                   final TypedFunctor handler)
-    {
-        Preconditions.checkNotNull(owner);
-
-        final SpecialMethods methods = owner.bindings().setCompareTo(handler);
-
-        final T result = (T) owner.bind(methods);
-
-        return result;
-    }
-
-    /**
-     * This method redefines the equals(Object) method.
-     *
-     * <p>
-     * If the handler is null, the method will revert to its default behavior.
-     * </p>
-     *
-     * @param owner is the object whose method will be redefined.
-     * @param handler is the new implementation of the method.
-     * @return the modified object, if it is mutable; otherwise, return a modified copy thereof.
-     * @throws NullPointerException if owner is null.
-     */
-    @Infer
-    public static <T extends Record> T bindEquals(final T owner,
-                                                  final TypedFunctor handler)
-    {
-        final SpecialMethods methods = owner.bindings().setEquals(handler);
-
-        final T result = (T) owner.bind(methods);
-
-        return result;
-    }
-
-    /**
-     * This method redefines the hashCode() method.
-     *
-     * <p>
-     * If the handler is null, the method will revert to its default behavior.
-     * </p>
-     *
-     * @param owner is the object whose method will be redefined.
-     * @param handler is the new implementation of the method.
-     * @return the modified object, if it is mutable; otherwise, return a modified copy thereof.
-     */
-    @Infer
-    public static <T extends Record> T bindHash(final T owner,
-                                                final TypedFunctor handler)
-    {
-        final SpecialMethods methods = owner.bindings().setHashCode(handler);
-
-        final T result = (T) owner.bind(methods);
-
-        return result;
-    }
-
-    /**
-     * This method redefines the toString() method.
-     *
-     * <p>
-     * If the handler is null, the method will revert to its default behavior.
-     * </p>
-     *
-     * @param owner is the object whose method will be redefined.
-     * @param handler is the new implementation of the method.
-     * @return the modified object, if it is mutable; otherwise, return a modified copy thereof.
-     */
-    @Infer
-    public static <T extends Record> T bindStr(final T owner,
-                                               final TypedFunctor handler)
-    {
-        final SpecialMethods methods = owner.bindings().setToString(handler);
-
-        final T result = (T) owner.bind(methods);
 
         return result;
     }

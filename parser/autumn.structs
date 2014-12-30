@@ -6,7 +6,7 @@ package autumn.lang.compiler.ast.nodes;
 
 import java.io.File;
 import java.net.URL;
-import autumn.util.ds.ImmutableList;
+import autumn.util.ds.ImmutableSequence;
 import autumn.lang.compiler.ast.literals.CharLiteral;
 import autumn.lang.compiler.ast.literals.ByteLiteral;
 import autumn.lang.compiler.ast.literals.ShortLiteral;
@@ -1813,7 +1813,7 @@ struct Annotation
   data type : TypeSpecifier;
 
   doc This is the value stored in the annotation. 
-  data values : ImmutableList<String> = { null };
+  data values : ImmutableSequence<String> = { null };
 
   doc This is the source-location information regarding this construct.
   data location : SourceLocation = { new SourceLocation() };

@@ -15,8 +15,6 @@ defun main (args : String[]) : void
 {
     val t = T::instance();
 
-    assert t.isImmutable();
-
     assert t.a() == false;
     assert t.b() == 0C;
     assert t.c() == 0B;
@@ -38,16 +36,6 @@ defun main (args : String[]) : void
     val m9 = m8.i ("Venus");
 
     assert m9.toString() == "(true, X, 10, 20, 30, 40, 50.0, 60.0, Venus)";
-
-    assert m1.isImmutable();
-    assert m2.isImmutable();
-    assert m3.isImmutable();
-    assert m4.isImmutable();
-    assert m5.isImmutable();
-    assert m6.isImmutable();
-    assert m7.isImmutable();
-    assert m8.isImmutable();
-    assert m9.isImmutable();
 
     assert m1 != m2;
     assert m1 != m3;

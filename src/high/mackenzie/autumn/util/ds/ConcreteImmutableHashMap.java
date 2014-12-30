@@ -1,7 +1,8 @@
 package high.mackenzie.autumn.util.ds;
 
-import autumn.util.ds.ImmutableMap;
-import autumn.util.ds.MutableMap;
+import autumn.util.ds.ImmutableHashMap;
+import autumn.util.ds.MutableHashMap;
+import com.google.common.base.Preconditions;
 import java.util.AbstractMap;
 import java.util.AbstractSet;
 import java.util.Iterator;
@@ -10,27 +11,46 @@ import java.util.Set;
 import java.util.Stack;
 
 /**
- * This class provides a concrete hashing-based implementation of the ImmutableMap interface.
+ * This class provides a concrete hashing-based implementation of the ImmutableHashMap interface.
  *
  * @author Mackenzie High
  */
 public final class ConcreteImmutableHashMap<K, V>
         extends AbstractMap<K, V>
-        implements ImmutableMap<K, V>
+        implements ImmutableHashMap<K, V>
 {
+    /**
+     * This is the map that maps hash-values to lists of entries,
+     * where the aforesaid hash-value is the same as that of each entry's key.
+     */
     private final FunctionalTreeMap<Integer, FunctionalList<Entry<K, V>>> map;
 
-    public ConcreteImmutableHashMap(final FunctionalTreeMap<Integer, FunctionalList<Entry<K, V>>> map)
-    {
-        this.map = map;
+    /**
+     * This is the total number of entries in this map.
+     */
+    private final int size;
 
+    /**
+     * Sole Constructor.
+     *
+     * @param map is the object that this object will wrap.
+     * @param size is the number of entries in this new hash-map.
+     * @throws NullPointerException if map is null.
+     */
+    ConcreteImmutableHashMap(final FunctionalTreeMap<Integer, FunctionalList<Entry<K, V>>> map,
+                             final int size)
+    {
+        Preconditions.checkNotNull(map);
+
+        this.map = map;
+        this.size = size;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public MutableMap<K, V> mutable()
+    public MutableHashMap<K, V> mutable()
     {
         return new ConcreteMutableHashMap<K, V>(map);
     }
@@ -47,6 +67,9 @@ public final class ConcreteImmutableHashMap<K, V>
 
             final Stack<Entry<K, V>> stack = new Stack<Entry<K, V>>();
 
+            /**
+             * This method is required by AbstractSet.
+             */
             @Override
             public Iterator<Entry<K, V>> iterator()
             {
@@ -84,18 +107,12 @@ public final class ConcreteImmutableHashMap<K, V>
                 };
             }
 
+            /**
+             * This method is required by AbstractSet.
+             */
             @Override
             public int size()
             {
-                int size = 0;
-
-                final Iterator<Integer> iter = map.keys();
-
-                while (iter.hasNext())
-                {
-                    size = size + map.get(iter.next()).size();
-                }
-
                 return size;
             }
         };

@@ -270,6 +270,21 @@ public final class Helpers
      */
     public static BigDecimal createBigDecimal(final String value)
     {
-        return new BigDecimal(value).setScale(BIG_DECIMAL_SCALE, RoundingMode.HALF_EVEN);
+        return createBigDecimal(new BigDecimal(value));
+    }
+
+    /**
+     * This method creates a new properly scaled big-decimal from an existing big-decimal.
+     *
+     * <p>
+     * This method is used to implement big-decimal operators.
+     * </p>
+     *
+     * @param value is big-decimal itself.
+     * @return the value as a properly scaled big-decimal.
+     */
+    public static BigDecimal createBigDecimal(final BigDecimal value)
+    {
+        return value.setScale(BIG_DECIMAL_SCALE, RoundingMode.HALF_EVEN);
     }
 }

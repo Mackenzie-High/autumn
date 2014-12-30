@@ -365,19 +365,62 @@ public final class ArgumentStack
     public final void push(final Object value)
     {
         /**
-         * Ensure that there is enough space on the argument-stack for one more element.
+         * Determine the actual type of the object.
          */
-        if (size == stack.length)
-        {
-            increaseSize();
-        }
+        final Class klass = value == null ? null : value.getClass();
 
         /**
-         * Push the value onto the argument-stack.
+         * If the object is a boxed type, then treat it as a primitive-type.
          */
-        final Argument x = stack[size++];
-        x.type = Object.class;
-        x.value_O = value;
+        if (klass == Boolean.class)
+        {
+            push((boolean) (Boolean) value);
+        }
+        else if (klass == Character.class)
+        {
+            push((char) (Character) value);
+        }
+        else if (klass == Byte.class)
+        {
+            push((byte) (Byte) value);
+        }
+        else if (klass == Short.class)
+        {
+            push((short) (Short) value);
+        }
+        else if (klass == Integer.class)
+        {
+            push((int) (Integer) value);
+        }
+        else if (klass == Long.class)
+        {
+            push((long) (Long) value);
+        }
+        else if (klass == Float.class)
+        {
+            push((float) (Float) value);
+        }
+        else if (klass == Double.class)
+        {
+            push((double) (Double) value);
+        }
+        else
+        {
+            /**
+             * Ensure that there is enough space on the argument-stack for one more element.
+             */
+            if (size == stack.length)
+            {
+                increaseSize();
+            }
+
+            /**
+             * Push the value onto the argument-stack.
+             */
+            final Argument x = stack[size++];
+            x.type = Object.class;
+            x.value_O = value;
+        }
     }
 
     /**

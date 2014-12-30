@@ -15,11 +15,15 @@ defun main (args : String[]) : void
 
     assert (55.0 % 4.0) == 3.0;
 
-    assert 50BI % 4BI == 3BI;
+    assert 55BI % 4BI == 3BI;
 
-    assert 50.0BD % 4.0BD == 3.0BD;
+    assert 55.0BD % 4.0BD == 3.0BD;
 
-    assert ((null is BigInteger) % (null is BigInteger)) == 0BI;
+    assert null % 4BI == 0BI;
 
-    assert ((null is BigDecimal) % (null is BigDecimal)) == 0.0BD;
+    assert null % 4.0BD == 0.0BD;
 }
+
+
+
+

@@ -11,11 +11,11 @@ import autumn.lang.compiler.ast.literals.IntLiteral;
 import autumn.lang.compiler.ast.literals.LongLiteral;
 import autumn.lang.compiler.ast.literals.ShortLiteral;
 import autumn.lang.compiler.ast.nodes.*;
-import autumn.util.ds.MutableList;
+import autumn.util.ds.MutableSequence;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import high.mackenzie.autumn.resources.Finished;
-import high.mackenzie.autumn.util.ds.ConcreteImmutableList;
+import high.mackenzie.autumn.util.ds.ConcreteImmutableSequence;
 import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
@@ -3779,7 +3779,7 @@ public final class TreeBuilder
         /**
          * Create the immutable list of values.
          */
-        final MutableList<String> list = new ConcreteImmutableList<String>().mutable();
+        final MutableSequence<String> list = new ConcreteImmutableSequence<String>().mutable();
 
         if (values != null)
         {

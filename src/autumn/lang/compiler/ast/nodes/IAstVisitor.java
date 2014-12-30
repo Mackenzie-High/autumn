@@ -38,7 +38,7 @@ import autumn.lang.compiler.ast.literals.FloatLiteral;
 import autumn.lang.compiler.ast.literals.IntLiteral;
 import autumn.lang.compiler.ast.literals.LongLiteral;
 import autumn.lang.compiler.ast.literals.ShortLiteral;
-import autumn.util.ds.ImmutableList;
+import autumn.util.ds.ImmutableSequence;
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
@@ -54,7 +54,7 @@ import java.util.TreeSet;
 /**
  * An instance of this interface is a visitor that can visit the nodes in an Autumn abstract-syntax-tree.
  * 
- * <p> This file was auto-generated on (Fri Dec 12 09:04:03 EST 2014).</p>
+ * <p> This file was auto-generated on (Mon Dec 29 14:17:29 EST 2014).</p>
  */
 public interface IAstVisitor
 {

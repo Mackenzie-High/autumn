@@ -1,8 +1,8 @@
 package high.mackenzie.autumn.util.ds;
 
 import autumn.util.Strings;
-import autumn.util.ds.ImmutableList;
-import autumn.util.ds.MutableList;
+import autumn.util.ds.ImmutableSequence;
+import autumn.util.ds.MutableSequence;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import java.util.Collections;
@@ -10,11 +10,11 @@ import java.util.Iterator;
 import java.util.Stack;
 
 /**
- * An instance of this class is a functional list data-structure.
+ * An instance of this class is a functional-style list data-structure.
  *
  * @author Mackenzie High
  */
-public final class FunctionalList<E>
+final class FunctionalList<E>
         implements Iterable<E>
 {
     private final int first;
@@ -55,9 +55,9 @@ public final class FunctionalList<E>
      *
      * @return the new mutable list.
      */
-    public MutableList<E> mutable()
+    public MutableSequence<E> mutable()
     {
-        return new ConcreteMutableList<E>(this);
+        return new ConcreteMutableSequence<E>(this);
     }
 
     /**
@@ -69,9 +69,9 @@ public final class FunctionalList<E>
      *
      * @return the new immutable list.
      */
-    public ImmutableList<E> immutable()
+    public ImmutableSequence<E> immutable()
     {
-        return new ConcreteImmutableList<E>(this);
+        return new ConcreteImmutableSequence<E>(this);
     }
 
     /**

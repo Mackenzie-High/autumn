@@ -3,7 +3,7 @@ module Main in execution;
 @Start
 defun main (args : String[]) : void
 {
-    val i = 0;
+    var i = 0;
 
     when (true) then i = 2;
 

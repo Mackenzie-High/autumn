@@ -64,20 +64,6 @@ public interface RecordEntry
     public Record set(Object value);
 
     /**
-     * This method determines whether this entry is mutable.
-     *
-     * @return <code>record().isMutable()</code>
-     */
-    public boolean isMutable();
-
-    /**
-     * This method determines whether this entry is immutable.
-     *
-     * @return <code>record().isImmutable()</code>
-     */
-    public boolean isImmutable();
-
-    /**
      * This method creates a string representation of this object.
      *
      * @return the string representation of the value returned by value().

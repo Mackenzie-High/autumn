@@ -9,7 +9,7 @@ import java.util.TreeMap;
  *
  * @author mackenzie
  */
-public class SlowTree
+class SlowTree
         implements ITree
 {
     private final TreeMap<Object, AvlTree.Node> map;

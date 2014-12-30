@@ -17,7 +17,7 @@ import java.util.List;
  *
  * @author mackenzie
  */
-public final class AvlTree
+final class AvlTree
         implements Serializable,
                    ITree
 {

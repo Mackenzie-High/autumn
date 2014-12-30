@@ -18,8 +18,4 @@ defun main (args : String[]) : void
     assert 50BI / 2BI == 25BI;
 
     assert 50.0BD / 2.0BD == 25.0BD;
-
-    assert ((null is BigInteger) / (null is BigInteger)) == 0BI;
-
-    assert ((null is BigDecimal) / (null is BigDecimal)) == 0.0BD;
 }

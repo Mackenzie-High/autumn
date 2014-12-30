@@ -27,7 +27,6 @@ import org.objectweb.asm.tree.FieldInsnNode;
 import org.objectweb.asm.tree.FieldNode;
 import org.objectweb.asm.tree.InsnList;
 import org.objectweb.asm.tree.InsnNode;
-import org.objectweb.asm.tree.JumpInsnNode;
 import org.objectweb.asm.tree.LabelNode;
 import org.objectweb.asm.tree.LdcInsnNode;
 import org.objectweb.asm.tree.MethodInsnNode;
@@ -109,21 +108,6 @@ public class AbstractStructTupleCompiler
          */
         final List<FieldNode> fields = Lists.newLinkedList();
 
-        // Create the field that indicates whether the tuple is mutable.
-        // Tuples are immutable, by default.
-        fields.add(new FieldNode(Opcodes.ACC_PRIVATE,
-                                 "MUTABLE",
-                                 "Z",
-                                 null,
-                                 false));
-
-        // Create the field that stores the bindings of special-methods.
-        fields.add(new FieldNode(Opcodes.ACC_PRIVATE,
-                                 "BINDINGS",
-                                 program.typesystem.utils.SPECIAL_METHODS.getDescriptor(),
-                                 null,
-                                 false));
-
         // Create the field that stores the names of the elements.
         fields.add(new FieldNode(Opcodes.ACC_PRIVATE + Opcodes.ACC_STATIC + Opcodes.ACC_FINAL,
                                  "KEYS",
@@ -179,8 +163,6 @@ public class AbstractStructTupleCompiler
 
             clazz.methods.add(this.generateMethodInstance());
 
-            clazz.methods.add(this.generateMethodCreate());
-
             clazz.methods.add(this.generateMethodIsStruct());
 
             clazz.methods.add(this.generateMethodIsTuple());
@@ -189,21 +171,9 @@ public class AbstractStructTupleCompiler
 
             clazz.methods.add(this.generateMethodTypes());
 
-            clazz.methods.add(this.generateMethodValues());
-
-            clazz.methods.add(this.generateMethodIsMutable());
-
-            clazz.methods.add(this.generateMethodMutable());
-
-            clazz.methods.add(this.generateMethodImmutable());
-
             clazz.methods.add(this.generateMethodGet());
 
             clazz.methods.add(this.generateMethodSet());
-
-            clazz.methods.add(this.generateMethodBind());
-
-            clazz.methods.add(this.generateMethodBindings());
 
             clazz.methods.addAll(this.generateBridgeMethods());
 
@@ -276,27 +246,6 @@ public class AbstractStructTupleCompiler
     }
 
     /**
-     * This method creates the type-system representation of the create() method.
-     *
-     * @return the aforedescribed method.
-     */
-    @Override
-    protected IMethod typeofCreate()
-    {
-        final CustomMethod method = new CustomMethod(program.typesystem.typefactory(), false);
-
-        method.setAnnotations(new LinkedList());
-        method.setModifiers(Opcodes.ACC_PUBLIC + Opcodes.ACC_STATIC);
-        method.setName("create");
-        method.setOwner(type);
-        method.setParameters(new LinkedList());
-        method.setReturnType(type);
-        method.setThrowsClause(new LinkedList());
-
-        return method;
-    }
-
-    /**
      * This method creates the type-system representation of the instance() method.
      *
      * @return the aforedescribed method.
@@ -366,7 +315,6 @@ public class AbstractStructTupleCompiler
         // . invoke super()
         // . for each parameter [p]:
         // . . transfer [p] into the field that will store [p].
-        // . set BINDINGS = SpecialMethods.EMPTY
         // . return
         //
         //////////////////////////////////////////////////////////
@@ -406,24 +354,6 @@ public class AbstractStructTupleCompiler
 
             address += Utils.sizeof(element_type);
         }
-        /**
-         * Set the field that stores the special-method bindings to its default value.
-         *
-         * 1. Load the 'this' onto the operand-stack.
-         * 2. Get the EMPTY SpecialMethods object.
-         * 3. Set the BINDINGS field.
-         */
-        method.instructions.add(new VarInsnNode(Opcodes.ALOAD, 0)); // Load 'this'
-
-        method.instructions.add(new FieldInsnNode(Opcodes.GETSTATIC,
-                                                  Utils.internalName(program.typesystem.utils.SPECIAL_METHODS),
-                                                  "EMPTY",
-                                                  program.typesystem.utils.SPECIAL_METHODS.getDescriptor()));
-
-        method.instructions.add(new FieldInsnNode(Opcodes.PUTFIELD,
-                                                  Utils.internalName(type),
-                                                  "BINDINGS",
-                                                  program.typesystem.utils.SPECIAL_METHODS.getDescriptor()));
 
         /**
          * Return from the constructor.
@@ -670,48 +600,6 @@ public class AbstractStructTupleCompiler
                                                   Utils.internalName(type),
                                                   "INSTANCE",
                                                   type.getDescriptor()));
-
-        method.instructions.add(new InsnNode(Opcodes.ARETURN));
-
-        return method;
-    }
-
-    /**
-     * This method generates the bytecode representation of the create() method.
-     *
-     * @return the generated method.
-     */
-    private MethodNode generateMethodCreate()
-    {
-        // Generated Bytecode:
-        //
-        // GETSTATIC INSTANCE                  - Get the empty immutable instance from the INSTANCE field.
-        // INVOKEVIRTUAL instance.mutable()    - Create a mutable copy of the immutable instance.
-        // ARETURN                             - Return the mutable instance.
-        //
-        //
-        //////////////////////////////////////////////////////////////////////////////////////////
-
-        final MethodNode method = Utils.bytecodeOf(module,
-                                                   TypeSystemUtils.find(type.getMethods(),
-                                                                        "create",
-                                                                        "()" + type.getDescriptor()));
-
-        // Remove the abstract modifier.
-        method.access = method.access & (~Opcodes.ACC_ABSTRACT);
-
-        /**
-         * Generate the bytecode.
-         */
-        method.instructions.add(new FieldInsnNode(Opcodes.GETSTATIC,
-                                                  Utils.internalName(type),
-                                                  "INSTANCE",
-                                                  type.getDescriptor()));
-
-        method.instructions.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL,
-                                                   Utils.internalName(type),
-                                                   "mutable",
-                                                   "()" + type.getDescriptor()));
 
         method.instructions.add(new InsnNode(Opcodes.ARETURN));
 
@@ -999,317 +887,6 @@ public class AbstractStructTupleCompiler
     }
 
     /**
-     * This method generates the bytecode representation of the isMutable() method.
-     *
-     * @return the generated method.
-     */
-    private MethodNode generateMethodIsMutable()
-    {
-        final MethodNode method = Utils.bytecodeOf(module,
-                                                   TypeSystemUtils.find(type.getAllVisibleMethods(),
-                                                                        "isMutable",
-                                                                        "()Z"));
-
-        // Remove the abstract modifier.
-        method.access = method.access & (~Opcodes.ACC_ABSTRACT);
-
-        /**
-         * Get the field that indicates whether the tuple is mutable.
-         */
-        method.instructions.add(new VarInsnNode(Opcodes.ALOAD, 0)); // Load 'this'
-        method.instructions.add(new FieldInsnNode(Opcodes.GETFIELD,
-                                                  Utils.internalName(type),
-                                                  "MUTABLE",
-                                                  "Z"));
-
-        /**
-         * Return the result.
-         */
-        method.instructions.add(new InsnNode(Opcodes.IRETURN));
-
-        return method;
-    }
-
-    /**
-     * This method generates the bytecode representation of the immutable() method.
-     *
-     * @return the generated method.
-     */
-    private MethodNode generateMethodImmutable()
-    {
-        // Generated Bytecode:
-        //
-        // NEW *type*              - Create a new uninitialized object of this record-type.
-        // DUP                     - Duplicate the object-reference to the uninitialized object.
-        //
-        // ALOAD this              - Load 'this' onto the operand-stack.
-        // GETFIELD this.field[0]  - Load value in field #0 onto the operand-stack.
-        //
-        // ALOAD this              - Load 'this' onto the operand-stack.
-        // GETFIELD this.field[1]  - Load value in field #1 onto the operand-stack.
-        //
-        // ALOAD this              - Load 'this' onto the operand-stack.
-        // GETFIELD this.field[2]  - Load value in field #2 onto the operand-stack.
-        //
-        // ...
-        //
-        // ALOAD this              - Load 'this' onto the operand-stack.
-        // GETFIELD this.field[n]  - Load value in field #n onto the operand-stack.
-        //
-        // INVOKESPECIAL <init>    - Invoke the only ctor that the uninitialized object has.
-        //                         - The constructor takes the previous field values as arguments.
-        //                         - Essentially, we are simply copying the 'this' object.
-        //                         - However, the ctor does *not* copy the special method bindings.
-        //                         - So, we still need to do that.
-        //
-        // NOTE                    - The uninitialized object is now initialized.
-        //                         - A reference to that object is on the top of the operand-stack.
-        //
-        // NOTE                    - Now, we need to manually copy the special-method bindings.
-        //                         - The bindings are stored in a special field named BINDINGS.
-        //
-        // DUP                     - Duplicate the aforesaid object-reference.
-        // ALOAD this              - Load the 'this' reference onto the operand-stack.
-        // GETFIELD this.BINDINGS  - Get the value in the 'this' object in the BINDINGS field.
-        // PUTFIELD copy.BINDINGS  - Set the value of the BINDINGS field in the 'copy' object.
-        //
-        // ARETURN copy            - Return the copy object.
-        //
-        ////////////////////////////////////////////////////////////////////////////////////////////
-
-
-        final MethodNode method = Utils.bytecodeOf(module,
-                                                   TypeSystemUtils.find(type.getAllVisibleMethods(),
-                                                                        "immutable",
-                                                                        "()" + program.typesystem.utils.RECORD.getDescriptor()));
-
-        // Remove the abstract modifier.
-        method.access = method.access & (~Opcodes.ACC_ABSTRACT);
-
-        /**
-         * Create a new uninitialized instance of the tuple.
-         */
-        method.instructions.add(new TypeInsnNode(Opcodes.NEW, Utils.internalName(type)));
-
-        /**
-         * Duplicate the object-reference.
-         */
-        method.instructions.add(new InsnNode(Opcodes.DUP));
-
-        /**
-         * Load the value of each element onto the operand-stack.
-         */
-        for (String element : keys)
-        {
-            /**
-             * Get the static-type of the element.
-             */
-            final IVariableType element_type = typeOfElement(element);
-
-            /**
-             * Load the value of the element onto the operand-stack.
-             * This requires retrieving the value from the field it is stored in.
-             */
-            method.instructions.add(new VarInsnNode(Opcodes.ALOAD, 0)); // Load 'this'
-            method.instructions.add(new FieldInsnNode(Opcodes.GETFIELD,
-                                                      Utils.internalName(type),
-                                                      nameOfField(element),
-                                                      element_type.getDescriptor()));
-        }
-
-        /**
-         * Invoke the constructor in order to create a copy of this object.
-         */
-        method.instructions.add(new MethodInsnNode(Opcodes.INVOKESPECIAL,
-                                                   Utils.internalName(type),
-                                                   "<init>",
-                                                   ctor.getDescriptor()));
-
-        /**
-         * Copy the special-methods field manually.
-         *
-         * Be sure to leave a reference to the copy of the record on the operand-stack.
-         */
-        method.instructions.add(new InsnNode(Opcodes.DUP));
-        method.instructions.add(new VarInsnNode(Opcodes.ALOAD, 0)); // Load 'this'
-        method.instructions.add(new FieldInsnNode(Opcodes.GETFIELD,
-                                                  Utils.internalName(type),
-                                                  "BINDINGS",
-                                                  program.typesystem.utils.SPECIAL_METHODS.getDescriptor()));
-        method.instructions.add(new FieldInsnNode(Opcodes.PUTFIELD,
-                                                  Utils.internalName(type),
-                                                  "BINDINGS",
-                                                  program.typesystem.utils.SPECIAL_METHODS.getDescriptor()));
-
-        /**
-         * Return the copy.
-         */
-        method.instructions.add(new InsnNode(Opcodes.ARETURN));
-
-
-        return method;
-    }
-
-    /**
-     * This method generates the bytecode representation of the mutable() method.
-     *
-     * @return the generated method.
-     */
-    private MethodNode generateMethodMutable()
-    {
-        final MethodNode method = Utils.bytecodeOf(module,
-                                                   TypeSystemUtils.find(type.getAllVisibleMethods(),
-                                                                        "mutable",
-                                                                        "()" + program.typesystem.utils.RECORD.getDescriptor()));
-
-        // Remove the abstract modifier.
-        method.access = method.access & (~Opcodes.ACC_ABSTRACT);
-
-        /**
-         * Create an immutable copy of the tuple.
-         */
-        method.instructions.add(new VarInsnNode(Opcodes.ALOAD, 0)); // Load 'this'
-        method.instructions.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL,
-                                                   Utils.internalName(type),
-                                                   "immutable",
-                                                   "()" + type.getDescriptor()));
-
-        /**
-         * Duplicate the object reference.
-         */
-        method.instructions.add(new InsnNode(Opcodes.DUP));
-
-        /**
-         * Set the field that indicates the tuple is mutable to indicate
-         * that it is in fact mutable.
-         */
-        method.instructions.add(new LdcInsnNode(true));
-        method.instructions.add(new FieldInsnNode(Opcodes.PUTFIELD,
-                                                  Utils.internalName(type),
-                                                  "MUTABLE",
-                                                  "Z"));
-
-        /**
-         * Return the copy.
-         */
-        method.instructions.add(new InsnNode(Opcodes.ARETURN));
-
-
-        return method;
-    }
-
-    /**
-     * This method generates the bytecode representation of the bindings() method.
-     *
-     * @return the generated method.
-     */
-    public MethodNode generateMethodBindings()
-    {
-        /**
-         * Get partial bytecode representation of the bindings() method.
-         */
-        final MethodNode method = Utils.bytecodeOf(module,
-                                                   TypeSystemUtils.find(type.getAllVisibleMethods(),
-                                                                        "bindings",
-                                                                        "()" + program.typesystem.utils.SPECIAL_METHODS));
-
-        /**
-         * Remove the abstract modifier.
-         */
-        method.access = method.access & (~Opcodes.ACC_ABSTRACT);
-
-        /**
-         * Load the 'this' instance onto the operand-stack.
-         */
-        method.instructions.add(new VarInsnNode(Opcodes.ALOAD, 0));
-
-        /**
-         * Load the object that stores the method bindings onto the operand-stack.
-         *
-         * The bindings are stored in a special field.
-         */
-        method.instructions.add(new FieldInsnNode(Opcodes.GETFIELD,
-                                                  Utils.internalName(type),
-                                                  "BINDINGS",
-                                                  program.typesystem.utils.SPECIAL_METHODS.getDescriptor()));
-
-        /**
-         * Return the object that stores the method bindings.
-         */
-        method.instructions.add(new InsnNode(Opcodes.ARETURN));
-
-        return method;
-    }
-
-    /**
-     * This method generates the bytecode representation of the bind(SpecialMethods) method.
-     *
-     * @return the generated method.
-     */
-    public MethodNode generateMethodBind()
-    {
-        final IInterfaceType RECORD = program.typesystem.utils.RECORD;
-
-        /**
-         * Get partial bytecode representation of the bindings() method.
-         */
-        final MethodNode method = Utils.bytecodeOf(module,
-                                                   TypeSystemUtils.find(type.getAllVisibleMethods(),
-                                                                        "bind",
-                                                                        "(" + program.typesystem.utils.SPECIAL_METHODS + ")" + RECORD.getDescriptor()));
-
-        /**
-         * Remove the abstract modifier.
-         */
-        method.access = method.access & (~Opcodes.ACC_ABSTRACT);
-
-        /**
-         * Load the a modifiable instance of the record onto the operand-stack.
-         * If the record object is mutable, then it will be pushed onto the operand-stack.
-         * If the record object is immutable, then a copy will be pushed onto the operand-stack.
-         */
-        loadModifiableVariant(method.instructions);
-
-        /**
-         * Duplicate the reference to the modifiable instance.
-         * One instance will be needed in an upcoming operation.
-         * Another instance will be returned by the method.
-         */
-        method.instructions.add(new InsnNode(Opcodes.DUP));
-
-        /**
-         * Load the new SpecialMethods object onto the operand-stack.
-         */
-        method.instructions.add(new VarInsnNode(Opcodes.ALOAD, 1));
-
-        /**
-         * The reference cannot be null.
-         */
-        method.instructions.add(new InsnNode(Opcodes.DUP));
-        method.instructions.add(new MethodInsnNode(Opcodes.INVOKESTATIC,
-                                                   Utils.internalName(program.typesystem.utils.HELPERS),
-                                                   "requireNonNull",
-                                                   "(Ljava/lang/Object;)V"));
-
-        /**
-         * Set the field that stores the special-method bindings.
-         *
-         * This will pop one of the references to the record object off of the operand-stack.
-         */
-        method.instructions.add(new FieldInsnNode(Opcodes.PUTFIELD,
-                                                  Utils.internalName(type),
-                                                  "BINDINGS",
-                                                  program.typesystem.utils.SPECIAL_METHODS.getDescriptor()));
-
-        /**
-         * Return the record object itself.
-         */
-        method.instructions.add(new InsnNode(Opcodes.ARETURN));
-
-        return method;
-    }
-
-    /**
      * This method generates the bytecode representation of the keys() method.
      *
      * @return the generated method.
@@ -1360,74 +937,6 @@ public class AbstractStructTupleCompiler
                                                   "TYPES",
                                                   "Ljava/util/List;"));
 
-        method.instructions.add(new InsnNode(Opcodes.ARETURN));
-
-        return method;
-    }
-
-    /**
-     * This method generates the bytecode representation of the values() method.
-     *
-     * @return the generated method.
-     */
-    private MethodNode generateMethodValues()
-    {
-        final MethodNode method = Utils.bytecodeOf(module,
-                                                   TypeSystemUtils.find(type.getAllVisibleMethods(),
-                                                                        "values",
-                                                                        "()Ljava/util/List;"));
-
-        // Remove the abstract modifier.
-        method.access = method.access & (~Opcodes.ACC_ABSTRACT);
-
-        /**
-         * This object will generate bytecode that a list containing the values in the record.
-         */
-        final CollectionCompiler<String> cmp = new CollectionCompiler<String>()
-        {
-            @Override
-            public void compile(final String element)
-            {
-                /**
-                 * Get the static-type of the element.
-                 */
-                final IVariableType element_type = typeOfElement(element);
-
-
-                // Load 'this' onto the operand-stack.
-                code().add(new VarInsnNode(Opcodes.ALOAD, 0));
-
-                // Get the value stored in the element's field and push it onto the operand stack.
-                // This pops the 'this' instance previously pushed.
-                code().add(new FieldInsnNode(Opcodes.GETFIELD,
-                                             Utils.internalName(type),
-                                             nameOfField(element),
-                                             element_type.getDescriptor()));
-
-                // Autobox the value, if the value is primitive.
-                program.typesystem.utils.autoboxToObject(code(), element_type);
-            }
-
-            @Override
-            public InsnList code()
-            {
-                return method.instructions;
-            }
-        };
-
-        /**
-         * Create a list of the values in the record and push it onto the operand-stack.
-         */
-        cmp.compile(keys);
-
-        /**
-         * Make the list immutable.
-         */
-        Utils.makeListImmutable(method.instructions);
-
-        /**
-         * Return the list of values.
-         */
         method.instructions.add(new InsnNode(Opcodes.ARETURN));
 
         return method;
@@ -1498,15 +1007,10 @@ public class AbstractStructTupleCompiler
     }
 
     /**
-     * This method generates bytecode that creates a modifiable variant of the tuple.
+     * This method generates bytecode that creates a copy of the record.
      *
      * <p>
-     * This method expects that the tuple object is the topmost element of the operand-stack.
-     * </p>
-     *
-     * <p>
-     * If the tuple is immutable, then it will be copied.
-     * If the tuple is mutable, then the tuple will be unchanged.
+     * This method expects that the record object is the topmost element of the operand-stack.
      * </p>
      *
      * @param code is the bytecode being generated.
@@ -1515,46 +1019,73 @@ public class AbstractStructTupleCompiler
     {
         // Generated Bytecode:
         //
-        // ALOAD 0
-        // GETFIELD mutable
-        // IF_FALSE @ELSE
+        // NEW *type*              - Create a new uninitialized object of this record-type.
+        // DUP                     - Duplicate the object-reference to the uninitialized object.
         //
-        // ALOAD 0
+        // ALOAD this              - Load 'this' onto the operand-stack.
+        // GETFIELD this.field[0]  - Load value in field #0 onto the operand-stack.
         //
-        // GOTO @END
-        // @ELSE
+        // ALOAD this              - Load 'this' onto the operand-stack.
+        // GETFIELD this.field[1]  - Load value in field #1 onto the operand-stack.
         //
-        // ALOAD 0
-        // INVOKEVIRTUAL this.immutable()
+        // ALOAD this              - Load 'this' onto the operand-stack.
+        // GETFIELD this.field[2]  - Load value in field #2 onto the operand-stack.
         //
-        // @END
+        // ...
         //
-        ///////////////////////////////////////////
+        // ALOAD this              - Load 'this' onto the operand-stack.
+        // GETFIELD this.field[n]  - Load value in field #n onto the operand-stack.
+        //
+        // INVOKESPECIAL <init>    - Invoke the only ctor that the uninitialized object has.
+        //                         - The constructor takes the previous field values as arguments.
+        //                         - Essentially, we are simply copying the 'this' object.
+        //                         - However, the ctor does *not* copy the special method bindings.
+        //                         - So, we still need to do that.
+        //
+        // NOTE                    - The uninitialized object is now initialized.
+        //                         - A reference to that object is on the top of the operand-stack.
+        //
+        ////////////////////////////////////////////////////////////////////////////////////////////
 
-        final LabelNode ELSE = new LabelNode();
 
-        final LabelNode END = new LabelNode();
+        /**
+         * Create a new uninitialized instance of the tuple.
+         */
+        code.add(new TypeInsnNode(Opcodes.NEW, Utils.internalName(type)));
 
-        code.add(new VarInsnNode(Opcodes.ALOAD, 0)); // Load 'this'
-        code.add(new FieldInsnNode(Opcodes.GETFIELD,
-                                   Utils.internalName(type),
-                                   "MUTABLE",
-                                   "Z"));
+        /**
+         * Duplicate the object-reference.
+         */
+        code.add(new InsnNode(Opcodes.DUP));
 
-        code.add(new JumpInsnNode(Utils.IF_FALSE, ELSE));
+        /**
+         * Load the value of each element onto the operand-stack.
+         */
+        for (String element : keys)
+        {
+            /**
+             * Get the static-type of the element.
+             */
+            final IVariableType element_type = typeOfElement(element);
 
-        code.add(new VarInsnNode(Opcodes.ALOAD, 0)); // Load 'this'
+            /**
+             * Load the value of the element onto the operand-stack.
+             * This requires retrieving the value from the field it is stored in.
+             */
+            code.add(new VarInsnNode(Opcodes.ALOAD, 0)); // Load 'this'
+            code.add(new FieldInsnNode(Opcodes.GETFIELD,
+                                       Utils.internalName(type),
+                                       nameOfField(element),
+                                       element_type.getDescriptor()));
+        }
 
-        code.add(new JumpInsnNode(Opcodes.GOTO, END));
-        code.add(ELSE);
-
-        code.add(new VarInsnNode(Opcodes.ALOAD, 0)); // Load 'this'
-        code.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL,
+        /**
+         * Invoke the constructor in order to create a copy of this object.
+         */
+        code.add(new MethodInsnNode(Opcodes.INVOKESPECIAL,
                                     Utils.internalName(type),
-                                    "immutable",
-                                    "()" + type.getDescriptor()));
-
-        code.add(END);
+                                    "<init>",
+                                    ctor.getDescriptor()));
     }
 
     /**

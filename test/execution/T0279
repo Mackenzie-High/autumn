@@ -70,9 +70,5 @@ defun main (args : String[]) : void
 
     # Check whether the special methods were generated.
     #
-    assert Reflect::getMethod(owner, "bind", [(class SpecialMethods)]).getReturnType() == owner;
-    assert Reflect::getMethod(owner, "copy", []).getReturnType() == owner;
-    assert Reflect::getMethod(owner, "mutable", []).getReturnType() == owner;
-    assert Reflect::getMethod(owner, "immutable", []).getReturnType() == owner;
     assert Reflect::getMethod(owner, "set", [(class int), (class Object)]).getReturnType() == owner;
 }

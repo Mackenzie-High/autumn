@@ -66,17 +66,6 @@ public class DesignCompiler
     }
 
     /**
-     * A design-type never has an create() method, because design-types compiles to an interface.
-     *
-     * @return null.
-     */
-    @Override
-    protected IMethod typeofCreate()
-    {
-        return null;
-    }
-
-    /**
      * This method generates the compiled class-file.
      *
      * @return the compiled class-file.
@@ -112,10 +101,7 @@ public class DesignCompiler
             /**
              * Generate the special methods.
              */
-            clazz.methods.add(this.generateMethodMutable());
-            clazz.methods.add(this.generateMethodImmutable());
             clazz.methods.add(this.generateMethodSet());
-            clazz.methods.add(this.generateMethodBind());
 
             /**
              * Generate all the bridge methods.
@@ -206,65 +192,6 @@ public class DesignCompiler
                                                    TypeSystemUtils.find(type.getAllVisibleMethods(),
                                                                         "set",
                                                                         "(ILjava/lang/Object;)" + program.typesystem.utils.RECORD.getDescriptor()));
-
-        // Add the ABSTRACT modifier.
-        method.access = method.access | Opcodes.ACC_ABSTRACT;
-
-        return method;
-    }
-
-    /**
-     * This method generates the bytecode representation of the immutable() method.
-     *
-     * @return the generated method.
-     */
-    private MethodNode generateMethodImmutable()
-    {
-        final MethodNode method = Utils.bytecodeOf(module,
-                                                   TypeSystemUtils.find(type.getAllVisibleMethods(),
-                                                                        "immutable",
-                                                                        "()" + program.typesystem.utils.RECORD.getDescriptor()));
-
-        // Add the ABSTRACT modifier.
-        method.access = method.access | Opcodes.ACC_ABSTRACT;
-
-        return method;
-    }
-
-    /**
-     * This method generates the bytecode representation of the mutable() method.
-     *
-     * @return the generated method.
-     */
-    private MethodNode generateMethodMutable()
-    {
-        final MethodNode method = Utils.bytecodeOf(module,
-                                                   TypeSystemUtils.find(type.getAllVisibleMethods(),
-                                                                        "mutable",
-                                                                        "()" + program.typesystem.utils.RECORD.getDescriptor()));
-
-        // Add the ABSTRACT modifier.
-        method.access = method.access | Opcodes.ACC_ABSTRACT;
-
-        return method;
-    }
-
-    /**
-     * This method generates the bytecode representation of the bind(SpecialMethods) method.
-     *
-     * @return the generated method.
-     */
-    public MethodNode generateMethodBind()
-    {
-        final IInterfaceType RECORD = program.typesystem.utils.RECORD;
-
-        /**
-         * Get partial bytecode representation of the bindings() method.
-         */
-        final MethodNode method = Utils.bytecodeOf(module,
-                                                   TypeSystemUtils.find(type.getAllVisibleMethods(),
-                                                                        "bind",
-                                                                        "(" + program.typesystem.utils.SPECIAL_METHODS + ")" + RECORD.getDescriptor()));
 
         // Add the ABSTRACT modifier.
         method.access = method.access | Opcodes.ACC_ABSTRACT;

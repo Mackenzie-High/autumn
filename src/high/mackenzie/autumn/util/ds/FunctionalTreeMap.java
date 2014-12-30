@@ -1,7 +1,7 @@
 package high.mackenzie.autumn.util.ds;
 
-import autumn.util.ds.ImmutableMap;
-import autumn.util.ds.MutableSortedMap;
+import autumn.util.ds.ImmutableTreeMap;
+import autumn.util.ds.MutableTreeMap;
 import high.mackenzie.autumn.util.ds.AvlTree.Node;
 import java.util.Iterator;
 
@@ -10,7 +10,7 @@ import java.util.Iterator;
  *
  * @author Mackenzie High
  */
-public final class FunctionalTreeMap<K, V>
+final class FunctionalTreeMap<K, V>
 {
     public final ITree tree;
 
@@ -35,7 +35,7 @@ public final class FunctionalTreeMap<K, V>
     /**
      * {@inheritDoc}
      */
-    public MutableSortedMap<K, V> mutable()
+    public MutableTreeMap<K, V> mutable()
     {
         return new ConcreteMutableTreeMap(this);
     }
@@ -43,7 +43,7 @@ public final class FunctionalTreeMap<K, V>
     /**
      * {@inheritDoc}
      */
-    public ImmutableMap<K, V> immutable()
+    public ImmutableTreeMap<K, V> immutable()
     {
         return new ConcreteImmutableTreeMap(this);
     }
@@ -60,7 +60,7 @@ public final class FunctionalTreeMap<K, V>
     /**
      * {@inheritDoc}
      */
-    public V get(final K key)
+    public V get(final Object key)
     {
         final Node node = tree.find(key);
 
@@ -86,7 +86,7 @@ public final class FunctionalTreeMap<K, V>
     /**
      * {@inheritDoc}
      */
-    public FunctionalTreeMap<K, V> remove(K key)
+    public FunctionalTreeMap<K, V> remove(final Object key)
     {
         return new FunctionalTreeMap<K, V>(tree.delete(key));
     }
@@ -94,6 +94,13 @@ public final class FunctionalTreeMap<K, V>
     public Iterator<K> keys()
     {
         return tree.keys();
+    }
+
+    public boolean contains(final Object key)
+    {
+        final Node node = tree.find(key);
+
+        return node != null;
     }
 
     /**

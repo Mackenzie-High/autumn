@@ -18,25 +18,37 @@ import java.math.BigInteger;
 public final class Operators
 {
     /**
+     * This is the number zero.
+     */
+    private static final BigInteger BIGINT_ZERO = Helpers.createBigInteger("0");
+
+    /**
+     * This is the number zero.
+     *
+     * This constant is scaled correctly.
+     */
+    private static final BigDecimal BIGDEC_ZERO = Helpers.createBigDecimal("0");
+
+    /**
      * This method prevents null pointer exceptions.
      *
      * @param value is the value that may be null.
-     * @return zero; or the value itself, if the value is non-null.
+     * @return the value itself, or zero, if the value is null.
      */
     private static BigInteger operand(final BigInteger value)
     {
-        return value == null ? BigInteger.ZERO : value;
+        return value == null ? BIGINT_ZERO : value;
     }
 
     /**
      * This method prevents null pointer exceptions.
      *
      * @param value is the value that may be null.
-     * @return zero; or the value itself, if the value is non-null.
+     * @return the value itself, or zero, if the value is null.
      */
     private static BigDecimal operand(final BigDecimal value)
     {
-        return value == null ? BigDecimal.ZERO : value;
+        return value == null ? BIGDEC_ZERO : value;
     }
 
     /**
@@ -140,7 +152,7 @@ public final class Operators
      */
     public static BigDecimal negate(final BigDecimal operand)
     {
-        return operand(operand).negate();
+        return Helpers.createBigDecimal(operand(operand).negate());
     }
 
     /**
@@ -257,7 +269,7 @@ public final class Operators
     public static BigDecimal divide(final BigDecimal left,
                                     final BigDecimal right)
     {
-        return operand(left).divide(operand(right));
+        return Helpers.createBigDecimal(operand(left).divide(operand(right)));
     }
 
     /**
@@ -361,7 +373,7 @@ public final class Operators
     public static BigDecimal modulo(final BigDecimal left,
                                     final BigDecimal right)
     {
-        return operand(left).remainder(operand(right));
+        return Helpers.createBigDecimal(operand(left).remainder(operand(right)));
     }
 
     /**
@@ -491,7 +503,7 @@ public final class Operators
     public static BigDecimal multiply(final BigDecimal left,
                                       final BigDecimal right)
     {
-        return operand(left).multiply(operand(right));
+        return Helpers.createBigDecimal(operand(left).multiply(operand(right)));
     }
 
     /**
@@ -608,7 +620,7 @@ public final class Operators
     public static BigDecimal add(final BigDecimal left,
                                  final BigDecimal right)
     {
-        return operand(left).add(operand(right));
+        return Helpers.createBigDecimal(operand(left).add(operand(right)));
     }
 
     /**
@@ -725,7 +737,7 @@ public final class Operators
     public static BigDecimal subtract(final BigDecimal left,
                                       final BigDecimal right)
     {
-        return operand(left).subtract(operand(right));
+        return Helpers.createBigDecimal(operand(left).subtract(operand(right)));
     }
 
     /**

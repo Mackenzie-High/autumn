@@ -1,0 +1,48 @@
+module Main in execution;
+
+functor Function (z : Boolean,
+                  c : Character,
+                  b : Byte,
+                  s : Short,
+                  i : Integer,
+                  j : Long,
+                  f : Float,
+                  d : Double) : List;
+
+@Start
+defun main (args : String[]) : void
+{
+    delegate p : Function => My::function;
+
+    val stack = autumn.lang.internals.ArgumentStack::getThreadStack();
+
+    # Push primitive values onto the stack.
+    stack.push(true  is Object);
+    stack.push('X'   is Object);
+    stack.push(11B   is Object);
+    stack.push(13S   is Object);
+    stack.push(17    is Object);
+    stack.push(19L   is Object);
+    stack.push(21.0F is Object);
+    stack.push(23.0  is Object);
+
+    # Invoke the delegate.
+    p.apply(stack);
+
+    # Get the return-value.
+    val result = stack.popO();
+
+    assert result == [true, 'X', 11B, 13S, 17, 19L, 21.0F, 23.0];
+}
+
+defun function (z : Boolean,
+                c : Character,
+                b : Byte,
+                s : Short,
+                i : Integer,
+                j : Long,
+                f : Float,
+                d : Double) : List
+{
+    return [z, c, b, s, i, j, f, d];
+}

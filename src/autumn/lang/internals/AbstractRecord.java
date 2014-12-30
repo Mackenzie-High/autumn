@@ -1,22 +1,20 @@
 package autumn.lang.internals;
 
 import autumn.lang.Record;
-import autumn.lang.SpecialMethods;
-import autumn.lang.TypedFunctor;
 import autumn.util.F;
-import autumn.util.Functors;
 import autumn.util.Strings;
 import com.google.common.collect.Lists;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
 /**
- * This class provides a partial implementation of the Record.
+ * This class provides a partial implementation of the Record type.
  *
  * <p>
  * A subclass must provide a single constructor.
  * The constructor takes one parameter for each element in the record.
- * The constructor simply copies its parameters into the appropriate elements.
+ * The constructor simply places its parameters into the appropriate elements.
  * The new record must be immutable.
  * </p>
  *
@@ -24,14 +22,8 @@ import java.util.List;
  * A subclass needs to implement the following methods:
  * <ul>
  * <li>static method instance() - Returns an immutable empty instance.</li>
- * <li>static method create() - Returns a mutable empty instance.</li>
- * <li>bind(SpecialMethods)</li>
- * <li>bindings()</li>
  * <li>isStruct()</li>
  * <li>isTuple()</li>
- * <li>isMutable()</li>
- * <li>mutable()</li>
- * <li>immutable()</li>
  * <li>keys()</li>
  * <li>types()</li>
  * <li>values()</li>
@@ -46,11 +38,8 @@ import java.util.List;
  * For example in a subclass T, method copy() : Record should have a bridge method copy() : T.
  * <br>
  * <ul>
- * <li>bind(SpecialMethods)</li>
  * <li>set(int, Object)</li>
  * <li>copy()</li>
- * <li>immutable()</li>
- * <li>mutable()</li>
  * </ul>
  * </p>
  *
@@ -59,18 +48,6 @@ import java.util.List;
 public abstract class AbstractRecord
         implements Record
 {
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public abstract Record bind(final SpecialMethods methods);
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public abstract SpecialMethods bindings();
-
     /**
      * {@inheritDoc}
      */
@@ -87,24 +64,6 @@ public abstract class AbstractRecord
      * {@inheritDoc}
      */
     @Override
-    public abstract List<Object> values();
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public abstract Record immutable();
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public abstract Record mutable();
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public abstract boolean isStruct();
 
     /**
@@ -112,12 +71,6 @@ public abstract class AbstractRecord
      */
     @Override
     public abstract boolean isTuple();
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public abstract boolean isMutable();
 
     /**
      * {@inheritDoc}
@@ -136,9 +89,20 @@ public abstract class AbstractRecord
      * {@inheritDoc}
      */
     @Override
-    public final boolean isImmutable()
+    public final List<Object> values()
     {
-        return !isMutable();
+        final int size = size();
+
+        final List<Object> values = Lists.newLinkedList();
+
+        for (int i = 0; i < size; i++)
+        {
+            values.add(get(i));
+        }
+
+        final List<Object> result = Collections.unmodifiableList(values);
+
+        return result;
     }
 
     /**
@@ -163,23 +127,9 @@ public abstract class AbstractRecord
      * {@inheritDoc}
      */
     @Override
-    public Record copy()
-    {
-        return isMutable() ? mutable() : immutable();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public final int compareTo(final Record other)
     {
-        if (bindings().getCompareTo() != null)
-        {
-            return (Integer) Functors.quietlyApply(bindings().getCompareTo(),
-                                                   Lists.newArrayList(this, other));
-        }
-        else if (other == null)
+        if (other == null)
         {
             return 1; // Null is always less than an object.
         }
@@ -223,15 +173,6 @@ public abstract class AbstractRecord
     @Override
     public final boolean equals(final Object other)
     {
-        final TypedFunctor method = bindings().getEquals();
-
-        if (method != null)
-        {
-            final Object self = this;
-
-            return (Boolean) Functors.quietlyApply(method, Lists.newArrayList(self, other));
-        }
-
         if (this == null)
         {
             return false;
@@ -260,18 +201,7 @@ public abstract class AbstractRecord
     @Override
     public final int hashCode()
     {
-        final TypedFunctor method = bindings().getHashCode();
-
-        if (method == null)
-        {
-            return keys().hashCode() ^ values().hashCode();
-        }
-        else
-        {
-            final Object self = this;
-
-            return (Integer) Functors.quietlyApply(method, Lists.newArrayList(self));
-        }
+        return keys().hashCode() ^ values().hashCode();
     }
 
     /**
@@ -280,18 +210,7 @@ public abstract class AbstractRecord
     @Override
     public final Iterator<Object> iterator()
     {
-        final TypedFunctor method = bindings().getIterator();
-
-        if (method != null)
-        {
-            final Object self = this;
-
-            return (Iterator) Functors.quietlyApply(method, Lists.newArrayList(self));
-        }
-        else
-        {
-            return values().iterator();
-        }
+        return values().iterator();
     }
 
     /**
@@ -300,21 +219,8 @@ public abstract class AbstractRecord
     @Override
     public final String toString()
     {
-        final TypedFunctor method = bindings().getToString();
+        final String result = Strings.str(values(), "(", ", ", ")");
 
-        if (method != null)
-        {
-            final Object self = this;
-
-            final List<Object> arguments = Lists.newArrayList(self);
-
-            return "" + Functors.quietlyApply(method, arguments);
-        }
-        else
-        {
-            final String result = Strings.str(values(), "(", ", ", ")");
-
-            return result;
-        }
+        return result;
     }
 }

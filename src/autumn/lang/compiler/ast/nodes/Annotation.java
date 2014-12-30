@@ -38,7 +38,7 @@ import autumn.lang.compiler.ast.literals.FloatLiteral;
 import autumn.lang.compiler.ast.literals.IntLiteral;
 import autumn.lang.compiler.ast.literals.LongLiteral;
 import autumn.lang.compiler.ast.literals.ShortLiteral;
-import autumn.util.ds.ImmutableList;
+import autumn.util.ds.ImmutableSequence;
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
@@ -63,14 +63,14 @@ import java.util.TreeSet;
  * </table>
  * </p>
  * 
- * <p> This file was auto-generated on (Fri Dec 12 09:04:03 EST 2014).</p>
+ * <p> This file was auto-generated on (Mon Dec 29 14:17:29 EST 2014).</p>
  */
 @SuppressWarnings("unchecked")
 public final class Annotation extends Object implements IConstruct
 {
     private TypeSpecifier type;
 
-    private ImmutableList<String> values = null;
+    private ImmutableSequence<String> values = null;
 
     private SourceLocation location = new SourceLocation();
 
@@ -104,7 +104,7 @@ public final class Annotation extends Object implements IConstruct
      * @param value is the new value of property <code>values</code>.
      * @return a copy of this object with property <code>values</code> set to value.
      */
-    public Annotation setValues(final ImmutableList<String> value)
+    public Annotation setValues(final ImmutableSequence<String> value)
     {
         final Annotation result = this.copy();
         result.values = value;
@@ -116,9 +116,9 @@ public final class Annotation extends Object implements IConstruct
      * 
      * @return the value of property <code>values</code>.
      */
-    public ImmutableList<String> getValues()
+    public ImmutableSequence<String> getValues()
     {
-        final ImmutableList<String> value = this.values;
+        final ImmutableSequence<String> value = this.values;
         return value;
     }
 
@@ -154,7 +154,7 @@ public final class Annotation extends Object implements IConstruct
      * @param location is the value for property <code>location</code>.
      * @return a new instance of this class.
      */
-    public static Annotation create(TypeSpecifier type, ImmutableList<String> values, SourceLocation location)
+    public static Annotation create(TypeSpecifier type, ImmutableSequence<String> values, SourceLocation location)
     {
         Annotation object = new Annotation();
         object = object.setType(type);
@@ -195,7 +195,7 @@ public final class Annotation extends Object implements IConstruct
      * Each value is the result of calling the key field's getter.
      * </p>
      * 
-     * @returns a map containing the entries in this struct.
+     * @return a map containing the entries in this struct.
      */
     public Map<String, Object> toMap()
     {

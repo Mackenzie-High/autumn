@@ -1,13 +1,12 @@
 package high.mackenzie.autumn.util.ds;
 
-import autumn.util.ds.ImmutableSortedMap;
-import autumn.util.ds.MutableSortedMap;
+import autumn.util.ds.ImmutableTreeMap;
+import autumn.util.ds.MutableTreeMap;
+import com.google.common.base.Preconditions;
 import java.util.AbstractMap;
-import java.util.Comparator;
-import java.util.NavigableMap;
-import java.util.NavigableSet;
+import java.util.AbstractSet;
+import java.util.Iterator;
 import java.util.Set;
-import java.util.SortedMap;
 
 /**
  * This class provides a concrete tree-based implementation of the MutableMap interface.
@@ -16,18 +15,22 @@ import java.util.SortedMap;
  */
 public final class ConcreteMutableTreeMap<K, V>
         extends AbstractMap<K, V>
-        implements MutableSortedMap<K, V>
+        implements MutableTreeMap<K, V>
 {
+    /**
+     * This is the persistent tree that this object wraps.
+     */
     private FunctionalTreeMap<K, V> map;
 
     /**
      * Sole Constructor.
      *
      * @param map is the wrapped map.
+     * @throws NullPointerException if map is null.
      */
-    public ConcreteMutableTreeMap(final FunctionalTreeMap<K, V> map)
+    ConcreteMutableTreeMap(final FunctionalTreeMap<K, V> map)
     {
-        assert map != null;
+        Preconditions.checkNotNull(map);
 
         this.map = map;
     }
@@ -36,236 +39,177 @@ public final class ConcreteMutableTreeMap<K, V>
      * {@inheritDoc}
      */
     @Override
+    public ImmutableTreeMap<K, V> immutable()
+    {
+        return map.immutable();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void clear()
+    {
+        map = new FunctionalTreeMap<K, V>();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public V put(final K key,
+                 final V value)
+    {
+        /**
+         * Retrieve the value that is currently associated with the given key.
+         * This will be null, if the given key is not currently in the map.
+         */
+        final V previous = map.get(key);
+
+        /**
+         * Insert the new entry into the map.
+         * This will overwrite the previous entry with the given key, if any.
+         */
+        map = map.put(key, value);
+
+        /**
+         * Return the value that was previously associated with the given key.
+         */
+        return previous;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public V get(final Object key)
+    {
+        return map.get(key);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public V remove(final Object key)
+    {
+        /**
+         * Retrieve the value that is currently associated with the given key.
+         * This will be null, if the given key is not currently in the map.
+         */
+        final V previous = map.get(key);
+
+        /**
+         * Remove the entry from the map, if such an entry exists.
+         */
+        map = map.remove(key);
+
+        /**
+         * Return the value that was previously associated with the given key.
+         */
+        return previous;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean containsKey(final Object key)
+    {
+        return map.contains(key);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int size()
+    {
+        return map.size();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Set<Entry<K, V>> entrySet()
     {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+        final ConcreteMutableTreeMap<K, V> SELF = this;
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public ImmutableSortedMap<K, V> immutable()
-    {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+        return new AbstractSet<Entry<K, V>>()
+        {
+            /**
+             * This is a more efficient implementation
+             * of this method than AbstractSet provides.
+             */
+            @Override
+            public void clear()
+            {
+                SELF.clear();
+            }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Entry<K, V> lowerEntry(K key)
-    {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+            /**
+             * This is a more efficient implementation
+             * of this method than AbstractSet provides.
+             */
+            @Override
+            public boolean contains(final Object key)
+            {
+                return SELF.containsKey(key);
+            }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public K lowerKey(K key)
-    {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+            /**
+             * This method is required, since the map is mutable.
+             */
+            @Override
+            public boolean remove(Object key)
+            {
+                SELF.remove(key);
+                return true;
+            }
 
-    @Override
-    public Entry<K, V> floorEntry(K key)
-    {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+            /**
+             * This method is required by AbstractSet.
+             */
+            @Override
+            public Iterator<Entry<K, V>> iterator()
+            {
+                final Iterator<Entry<K, V>> entries = immutable().entrySet().iterator();
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public K floorKey(K key)
-    {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+                return new Iterator<Entry<K, V>>()
+                {
+                    private Entry<K, V> last;
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Entry<K, V> ceilingEntry(K key)
-    {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+                    @Override
+                    public boolean hasNext()
+                    {
+                        return entries.hasNext();
+                    }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public K ceilingKey(K key)
-    {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+                    @Override
+                    public Entry<K, V> next()
+                    {
+                        last = entries.next();
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Entry<K, V> higherEntry(K key)
-    {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+                        return last;
+                    }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public K higherKey(K key)
-    {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+                    @Override
+                    public void remove()
+                    {
+                        SELF.remove(last.getKey());
+                    }
+                };
+            }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Entry<K, V> firstEntry()
-    {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Entry<K, V> lastEntry()
-    {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Entry<K, V> pollFirstEntry()
-    {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Entry<K, V> pollLastEntry()
-    {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public NavigableMap<K, V> descendingMap()
-    {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public NavigableSet<K> navigableKeySet()
-    {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public NavigableSet<K> descendingKeySet()
-    {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public NavigableMap<K, V> subMap(K fromKey,
-                                     boolean fromInclusive,
-                                     K toKey,
-                                     boolean toInclusive)
-    {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public NavigableMap<K, V> headMap(K toKey,
-                                      boolean inclusive)
-    {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public NavigableMap<K, V> tailMap(K fromKey,
-                                      boolean inclusive)
-    {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public SortedMap<K, V> subMap(K fromKey,
-                                  K toKey)
-    {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public SortedMap<K, V> headMap(K toKey)
-    {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public SortedMap<K, V> tailMap(K fromKey)
-    {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Comparator<? super K> comparator()
-    {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public K firstKey()
-    {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public K lastKey()
-    {
-        return null;
+            /**
+             * This method is required by AbstractSet.
+             */
+            @Override
+            public int size()
+            {
+                return SELF.size();
+            }
+        };
     }
 }

@@ -1,41 +1,17 @@
 package high.mackenzie.autumn.lang.compiler.compilers;
 
 import autumn.lang.compiler.ast.nodes.TypeSpecifier;
-import autumn.util.ds.ImmutableCollection;
-import autumn.util.ds.ImmutableDeque;
-import autumn.util.ds.ImmutableList;
-import autumn.util.ds.ImmutableMap;
-import autumn.util.ds.ImmutableNavigableMap;
-import autumn.util.ds.ImmutableNavigableSet;
-import autumn.util.ds.ImmutableQueue;
-import autumn.util.ds.ImmutableSet;
-import autumn.util.ds.ImmutableSortedMap;
-import autumn.util.ds.ImmutableSortedSet;
-import autumn.util.ds.MutableCollection;
-import autumn.util.ds.MutableList;
-import autumn.util.ds.MutableMap;
-import autumn.util.ds.MutableNavigableMap;
-import autumn.util.ds.MutableNavigableSet;
-import autumn.util.ds.MutableQueue;
-import autumn.util.ds.MutableSet;
-import autumn.util.ds.MutableSortedMap;
-import autumn.util.ds.MutableSortedSet;
-import autumn.util.ds.specific.ImmutableHashMap;
-import autumn.util.ds.specific.ImmutableHashSet;
-import autumn.util.ds.specific.ImmutableSequence;
-import autumn.util.ds.specific.ImmutableTreeMap;
-import autumn.util.ds.specific.ImmutableTreeSet;
-import autumn.util.ds.specific.MutableHashMap;
-import autumn.util.ds.specific.MutableHashSet;
-import autumn.util.ds.specific.MutableSequence;
-import autumn.util.ds.specific.MutableTreeMap;
-import autumn.util.ds.specific.MutableTreeSet;
+import autumn.util.ds.ImmutableHashMap;
+import autumn.util.ds.ImmutableHashSet;
+import autumn.util.ds.ImmutableSequence;
+import autumn.util.ds.ImmutableTreeMap;
+import autumn.util.ds.ImmutableTreeSet;
+import autumn.util.ds.MutableHashMap;
+import autumn.util.ds.MutableHashSet;
+import autumn.util.ds.MutableSequence;
+import autumn.util.ds.MutableTreeMap;
+import autumn.util.ds.MutableTreeSet;
 import autumn.util.functors.Action;
-import autumn.util.functors.MethodCompareTo;
-import autumn.util.functors.MethodEquals;
-import autumn.util.functors.MethodHashCode;
-import autumn.util.functors.MethodIterator;
-import autumn.util.functors.MethodToString;
 import autumn.util.functors.Predicate;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
@@ -121,33 +97,11 @@ public final class Importer
         importClass(autumn.util.Threads.class);
 
         // autumn.util.data.json
-        importClass(autumn.util.data.json.JsonEncoder.class);
-        importClass(autumn.util.data.json.JsonDecoder.class);
+        importClass(high.mackenzie.autumn.util.json.JsonEncoder.class);
+        importClass(high.mackenzie.autumn.util.json.JsonDecoder.class);
 
 
         // autumn.util.ds
-        importClass(ImmutableCollection.class);
-        importClass(ImmutableDeque.class);
-        importClass(ImmutableList.class);
-        importClass(ImmutableMap.class);
-        importClass(ImmutableNavigableMap.class);
-        importClass(ImmutableNavigableSet.class);
-        importClass(ImmutableQueue.class);
-        importClass(ImmutableSet.class);
-        importClass(ImmutableSortedMap.class);
-        importClass(ImmutableSortedSet.class);
-        importClass(MutableCollection.class);
-        importClass(ImmutableDeque.class);
-        importClass(MutableList.class);
-        importClass(MutableMap.class);
-        importClass(MutableNavigableMap.class);
-        importClass(MutableNavigableSet.class);
-        importClass(MutableQueue.class);
-        importClass(MutableSet.class);
-        importClass(MutableSortedMap.class);
-        importClass(MutableSortedSet.class);
-
-        // autumn.util.ds.specific
         importClass(ImmutableHashMap.class);
         importClass(ImmutableHashSet.class);
         importClass(ImmutableSequence.class);
@@ -171,14 +125,10 @@ public final class Importer
         // autumn.util.functors
         importClass(Action.class);
         importClass(Predicate.class);
-        importClass(MethodCompareTo.class);
-        importClass(MethodEquals.class);
-        importClass(MethodHashCode.class);
-        importClass(MethodIterator.class);
-        importClass(MethodToString.class);
 
 
         // java.lang
+        importClass(java.lang.ArithmeticException.class);
         importClass(java.lang.Boolean.class);
         importClass(java.lang.Byte.class);
         importClass(java.lang.Character.class);

@@ -73,46 +73,30 @@ Test Index
 . Tuple Definitions
 . . T0128 = Reflective Testing of the Tuple's Class                  // TODO: finish
 . . T0114 = Sole Constructor
-. . T0126 = Setters - (immutable)
-. . T0127 = Setters - (mutable)
+. . T0126 = Setters
 . . T0117 = Getters
 . . T0271 - Special Method - isStruct() and isTuple()
-. . T0251 - Special Method - bind(SpecialMethods)
-. . T0267 - Special Method - bind(SpecialMethods) - null argument
-. . T0252 = Special Method - bindings()
-. . T0132 = Special Method - set(int, Object) - (index OK, immutable tuple)
-. . T0133 = Special Method - set(int, Object) - (index OK, mutable tuple)
+. . T0132 = Special Method - set(int, Object) - (index OK)
 . . T0134 = Special Method - set(int, Object) - (index Out-Of-Bounds)
 . . T0115 = Special Method - get(int) - (index OK)
 . . T0116 = Special Method - get(int) - (index Out-Of-Bounds)
-. . T0118 = Special Method - toString() - default behavior
+. . T0118 = Special Method - toString()
 . . T0120 = Special Method - keys()
 . . T0121 = Special Method - types()
 . . T0119 = Special Method - values()
 . . T0122 = Special Method - instance()
-. . T0290 = Special Method - create()
 . . T0123 = Special Method - size() and isEmpty()
-. . T0129 = Special Method - mutable()
-. . T0130 = Special Method - immutable()
-. . T0138 = Special Method - copy() - (immutable tuple)
-. . T0139 = Special Method - copy() - (mutable tuple)
-. . T0260 = Special Method - compareTo(Record) - default behavior - comparison possible
-. . T0261 = Special Method - compareTo(Record) - default behavior - non-comparable element
-. . T0256 = Special Method - equals(Object)    - default behavior
-. . T0257 = Special Method - hashCode()        - default behavior
-. . T0258 = Special Method - toString()        - default behavior
-. . T0259 = Special Method - iterator()        - default behavior
-. . T0266 = Special Method - compareTo(Record) - custom behavior
-. . T0265 = Special Method - equals(Object)    - custom behavior
-. . T0263 = Special Method - hashCode()        - custom behavior
-. . T0262 = Special Method - toString()        - custom behavior
-. . T0264 = Special Method - iterator()        - custom behavior
+. . T0260 = Special Method - compareTo(Record) - Comparison Possible
+. . T0261 = Special Method - compareTo(Record) - Non Comparable Element
+. . T0256 = Special Method - equals(Object)
+. . T0257 = Special Method - hashCode()
+. . T0258 = Special Method - toString()
+. . T0259 = Special Method - iterator()
 . . T0254 - Inheritance of Elements                           // TODO: finish
 . . T0255 = Covariant Elements                                // TODO: finish
 . Struct Definitions
 . . T0250 = Basic Test
-. . Setters - (immutable)
-. . Setters - (mutable)
+. . Setters
 . . Getters
 . . No Elements
 . . Different Types of Elements
@@ -120,10 +104,6 @@ Test Index
 . . T0268 = Special Method - keys()
 . . T0269 = Special Method - types()
 . . T0270 = Special Method - values()
-. . Special Method - mutable()
-. . Special Method - immutable()
-. . Special Method - copy() - (immutable struct)
-. . Special Method - copy() - (mutable struct)
 . . Covariant Elements
 . . Subtyping
 . Functor Definition
@@ -280,7 +260,19 @@ Test Index
 . . . T0376 = Different Types of Return-Types
 . . . T0383 = Apply - Arguments - Auto Boxing
 . . . T0384 = Apply - Arguments - Auto Unboxing
-. . . T0385 = Apply - Arguments - Auto Coercion
+. . . T0385 = Apply - Arguments - Coercion
+. . . T0393 = Apply - Arguments - Wrong Type - boolean
+. . . T0394 = Apply - Arguments - Wrong Type - char
+. . . T0395 = Apply - Arguments - Wrong Type - byte
+. . . T0396 = Apply - Arguments - Wrong Type - short
+. . . T0397 = Apply - Arguments - Wrong Type - int
+. . . T0398 = Apply - Arguments - Wrong Type - long
+. . . T0399 = Apply - Arguments - Wrong Type - float
+. . . T0400 = Apply - Arguments - Wrong Type - double
+. . . T0401 = Apply - Arguments - Wrong Type - Object
+. . . T0390 = Apply - From Object - Auto Boxing
+. . . T0391 = Apply - From Object - Auto Unboxing
+. . . T0392 = Apply - From Object - Coercion
 . . . T0386 = Apply - Checked Exceptions
 . . . T0387 = Invoke - Checked Exceptions
 . . . T0377 = Special Method - module()
@@ -397,8 +389,10 @@ Test Index
 . . T0109 = Operator Primitive-To-Primitive Coercion
 . . T0099 = Negate Operator
 . . T0040 = Not Operator
-. . T0041 = Division Operator
-. . T0083 = Modulo Operator
+. . T0041 = Division Operator - Normal
+. . T0402 = Division Operator - Division by Zero
+. . T0083 = Modulo Operator - Normal
+. . T0403 = Modulo Operator - Division by Zero
 . . T0084 = Multiply Operator
 . . T0085 = Add Operator
 . . T0086 = Subtract Operator
@@ -439,10 +433,6 @@ Test Index
 . . T0222 = Null
 . . Variables
 . . . T0223 = Default Value
-. Special Topics
-. . Automatic Boxing
-. . Automatic Unboxing
-. . Automatic Coercions
 
 
 

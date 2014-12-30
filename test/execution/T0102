@@ -112,22 +112,32 @@ defun main (args : String[]) : void
     assert ([] is String) == "[]";
 
     // Boxing
-    assert (true is Boolean) == (field Boolean::TRUE);
-    assert (65C is Character) == call Character::valueOf(65C);
-    assert (65B is Byte) == call Byte::valueOf(65B);
-    assert (65S is Short) == call Short::valueOf(65S);
-    assert (65  is Integer) == call Integer::valueOf(65);
-    assert (65L is Long) == call Long::valueOf(65L);
+    assert (true  is Boolean) == (field Boolean::TRUE);
+    assert (65C   is Character) == call Character::valueOf(65C);
+    assert (65B   is Byte) == call Byte::valueOf(65B);
+    assert (65S   is Short) == call Short::valueOf(65S);
+    assert (65    is Integer) == call Integer::valueOf(65);
+    assert (65L   is Long) == call Long::valueOf(65L);
     assert (65.0F is Float) == call Float::valueOf(65.0F);
-    assert (65.0 is Double) == call Double::valueOf(65.0);
+    assert (65.0  is Double) == call Double::valueOf(65.0);
+
+    // Boxing
+    assert (true  is Object) == (field Boolean::TRUE);
+    assert (65C   is Object) == call Character::valueOf(65C);
+    assert (65B   is Object) == call Byte::valueOf(65B);
+    assert (65S   is Object) == call Short::valueOf(65S);
+    assert (65    is Object) == call Integer::valueOf(65);
+    assert (65L   is Object) == call Long::valueOf(65L);
+    assert (65.0F is Object) == call Float::valueOf(65.0F);
+    assert (65.0  is Object) == call Double::valueOf(65.0);
 
     // Unboxing
-    assert ((field Boolean::TRUE) is boolean) == true;
+    assert ((field Boolean::TRUE)        is boolean) == true;
     assert call Character::valueOf((65C) is char) == 65C;
-    assert call Byte::valueOf((65B) is byte) == 65B;
-    assert call Short::valueOf((65S) is short) == 65S;
-    assert call Integer::valueOf((65) is int) == 65;
-    assert call Long::valueOf((65L) is long) == 65L;
-    assert call Float::valueOf((65.0F) is float) == 65.0F;
-    assert call Double::valueOf((65.0) is double) == 65.0;
+    assert call Byte::valueOf((65B)      is byte) == 65B;
+    assert call Short::valueOf((65S)     is short) == 65S;
+    assert call Integer::valueOf((65)    is int) == 65;
+    assert call Long::valueOf((65L)      is long) == 65L;
+    assert call Float::valueOf((65.0F)   is float) == 65.0F;
+    assert call Double::valueOf((65.0)   is double) == 65.0;
 }

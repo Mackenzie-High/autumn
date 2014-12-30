@@ -1,8 +1,9 @@
 package high.mackenzie.autumn.util.ds;
 
-import autumn.util.ds.ImmutableSet;
-import autumn.util.ds.MutableMap;
-import autumn.util.ds.MutableSet;
+import autumn.util.ds.ImmutableHashSet;
+import autumn.util.ds.MutableHashMap;
+import autumn.util.ds.MutableHashSet;
+import com.google.common.base.Preconditions;
 import java.util.AbstractSet;
 import java.util.Iterator;
 
@@ -11,28 +12,50 @@ import java.util.Iterator;
  *
  * @author Mackenzie High
  */
-public class ConcreteMutableHashSet<E>
+public final class ConcreteMutableHashSet<E>
         extends AbstractSet<E>
-        implements MutableSet<E>
+        implements MutableHashSet<E>
 {
-    private MutableMap<E, ?> map;
+    /**
+     * This Set object is really just a wrapper around this Map object.
+     */
+    private MutableHashMap<E, ?> map;
 
+    /**
+     * Constructor.
+     */
     public ConcreteMutableHashSet()
     {
         this.map = new ConcreteMutableHashMap<E, Object>();
     }
 
-    public ConcreteMutableHashSet(MutableMap<E, ?> map)
+    /**
+     * Constructor.
+     *
+     * @param map is a map whose keys will be the initial elements in this object.
+     * @throws NullPointerException if map is null.
+     */
+    ConcreteMutableHashSet(final MutableHashMap<E, ?> map)
     {
+        Preconditions.checkNotNull(map);
+
         this.map = map.immutable().mutable();
+
+        assert this.map != map;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public ImmutableSet<E> immutable()
+    public ImmutableHashSet<E> immutable()
     {
         return new ConcreteImmutableHashSet<E>(map);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean add(final E value)
     {
@@ -41,18 +64,27 @@ public class ConcreteMutableHashSet<E>
         return true;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Iterator<E> iterator()
     {
         return map.keySet().iterator();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int size()
     {
         return map.size();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public static void main(String[] args)
     {
         final ConcreteMutableHashSet<String> set = new ConcreteMutableHashSet<String>();

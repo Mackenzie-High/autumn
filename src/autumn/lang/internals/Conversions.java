@@ -99,6 +99,94 @@ public final class Conversions
     }
 
     /**
+     * This method boxes a given input value.
+     *
+     * @param input is the value to box.
+     * @return the boxed value.
+     */
+    public static Object boxToObject(final boolean input)
+    {
+        return (boolean) input;
+    }
+
+    /**
+     * This method boxes a given input value.
+     *
+     * @param input is the value to box.
+     * @return the boxed value.
+     */
+    public static Object boxToObject(final char input)
+    {
+        return (char) input;
+    }
+
+    /**
+     * This method boxes a given input value.
+     *
+     * @param input is the value to box.
+     * @return the boxed value.
+     */
+    public static Object boxToObject(final byte input)
+    {
+        return (byte) input;
+    }
+
+    /**
+     * This method boxes a given input value.
+     *
+     * @param input is the value to box.
+     * @return the boxed value.
+     */
+    public static Object boxToObject(final short input)
+    {
+        return (short) input;
+    }
+
+    /**
+     * This method boxes a given input value.
+     *
+     * @param input is the value to box.
+     * @return the boxed value.
+     */
+    public static Object boxToObject(final int input)
+    {
+        return (int) input;
+    }
+
+    /**
+     * This method boxes a given input value.
+     *
+     * @param input is the value to box.
+     * @return the boxed value.
+     */
+    public static Object boxToObject(final long input)
+    {
+        return (long) input;
+    }
+
+    /**
+     * This method boxes a given input value.
+     *
+     * @param input is the value to box.
+     * @return the boxed value.
+     */
+    public static Object boxToObject(final float input)
+    {
+        return (float) input;
+    }
+
+    /**
+     * This method boxes a given input value.
+     *
+     * @param input is the value to box.
+     * @return the boxed value.
+     */
+    public static Object boxToObject(final double input)
+    {
+        return (double) input;
+    }
+
+    /**
      * This method unboxes a given input value.
      *
      * @param input is the value to unbox.

@@ -29,9 +29,6 @@ defun main (args : String[]) : void
     # The size of the tuple should *not* be zero.
     assert 9 == t.size();
 
-    # The tuple should be immutable.
-    assert t.isImmutable() == true;
-
     # The instance() method should always return the same object.
     assert T::instance() === T::instance();
 }
