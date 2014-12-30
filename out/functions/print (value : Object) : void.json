@@ -1,0 +1,1 @@
+{ "group" : "Standard_IO", "summary" : "This function prints a value to standard-output.", "signature" : "print (value : <a href='https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html'>java.lang.Object</a>) : void", "formals" : [["value", "class java.lang.Object", "is the value to print."]], "returns" : ["void", "Nothing."], "throws" : [], "details" : [] }
