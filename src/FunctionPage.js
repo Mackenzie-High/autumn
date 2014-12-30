@@ -30,6 +30,20 @@ function emitSignature(name)
 	$("#construct-page-syntax-content").append(name);
 }
 
+function emitFormals()
+{
+	var formals = page["formals"];
+	
+	var length = formals.length;
+	
+	for(var i = 0; i < length; i++)
+	{
+		var formal = "Parameter " + formals[i][0] + " " + formals[i][2];
+		
+		$("#function-page-formals-list").append('<li class="indent-' + indent + '">' + formal + '</li>');
+	}
+}
+
 function emitDetails()
 {
 	var details = page["details"];
@@ -42,27 +56,7 @@ function emitDetails()
 		
 		var detail = details[i][1];
 		
-		$("#function-page-details").append('<li class="indent-' + indent + '">' + detail + '</li>');
-	}
-}
-
-function emitStaticChecks()
-{
-	var checks = page["static-checks"];
-	
-	var length = checks.length;
-	
-	for(var i = 0; i < length; i++)
-	{
-		var key = checks[i][0];
-		
-		var link = errorcode_link(key);
-		
-		var value = checks[i][1];
-		
-		var html = '<li>' + link + ': <br> <p class="indent-0">' + value + '</p> </li>';
-		
-		$("#construct-page-checks-list").append(html);
+		$("#function-page-details-list").append('<li class="indent-' + indent + '">' + detail + '</li>');
 	}
 }
 
@@ -123,8 +117,10 @@ function load_page(json)
 
 	emitSummary();
 	emitSignature(signature);
+	emitFormals();
+	//emitReturns();
+	//emitThrows();
 	emitDetails();
-	//emitStaticChecks();
 	
 	displayExample(1);
 	
