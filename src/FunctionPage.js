@@ -48,7 +48,7 @@ function emitReturns()
 {
 	var about = page["returns"][1];
 	
-	$("#construct-page-syntax-content").append(about);
+	$("#construct-page-returns").append(about);
 }
 
 
