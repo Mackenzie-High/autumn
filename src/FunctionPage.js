@@ -46,7 +46,7 @@ function emitFormals()
 
 function emitReturns()
 {
-	var about = page["returns"][1];
+	var about = page["returns"][0];
 	
 	$("#function-page-returns").append(about);
 }
@@ -59,7 +59,7 @@ function emitThrows()
 	
 	for(var i = 0; i < length; i++)
 	{
-		var problem = problems[i][0] + ", " + problems[i][2];
+		var problem = problems[i][0] + ", " + problems[i][1];
 		
 		$("#function-page-throws-list").append('<li>' + problem + '</li>');
 	}
