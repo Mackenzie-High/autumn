@@ -48,9 +48,22 @@ function emitReturns()
 {
 	var about = page["returns"][1];
 	
-	$("#construct-page-returns").append(about);
+	$("#function-page-returns").append(about);
 }
 
+function emitThrows()
+{
+	var problems = page["throws"];
+	
+	var length = problems.length;
+	
+	for(var i = 0; i < length; i++)
+	{
+		var problem = problems[i][0] + ", " + problems[i][2];
+		
+		$("#function-page-throws-list").append('<li>' + problem + '</li>');
+	}
+}
 
 function emitDetails()
 {
@@ -127,7 +140,7 @@ function load_page(json)
 	emitSignature(signature);
 	emitFormals();
 	emitReturns();
-	//emitThrows();
+	emitThrows();
 	emitDetails();
 	
 	displayExample(1);
