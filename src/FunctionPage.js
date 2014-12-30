@@ -40,7 +40,7 @@ function emitFormals()
 	{
 		var formal = "Parameter " + formals[i][0] + " " + formals[i][2];
 		
-		$("#function-page-formals-list").append('<li class="indent-' + indent + '">' + formal + '</li>');
+		$("#function-page-formals-list").append('<li>' + formal + '</li>');
 	}
 }
 
