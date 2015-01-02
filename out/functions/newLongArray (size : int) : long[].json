@@ -1,0 +1,1 @@
+{ "group" : "Data_Structures", "summary" : "This function creates a new array of long values.", "signature" : "newLongArray (size : int) : long[]", "formals" : [["size", "int", "is the number of elements in the new array."]], "returns" : ["long[]", "The new array object is returned."], "throws" : [], "details" : [] }

@@ -19,8 +19,8 @@ defun main (args : String[]) : void
         # Perform a calculation using the second function object.
         val y = My::compute(q, i);
 
-        # Print the two results.
-        F::println([x, y]);
+        # Print the results.
+        F::println([i, x, y]);
     }
 }
 

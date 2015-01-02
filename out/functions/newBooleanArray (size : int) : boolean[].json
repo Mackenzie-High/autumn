@@ -1,0 +1,1 @@
+{ "group" : "Data_Structures", "summary" : "This function creates a new array of boolean values.", "signature" : "newBooleanArray (size : int) : boolean[]", "formals" : [["size", "int", "is the number of elements in the new array."]], "returns" : ["boolean[]", "The new array object is returned."], "throws" : [], "details" : [] }
