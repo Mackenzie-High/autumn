@@ -10,5 +10,5 @@ Z = (Paris, France)
 Z.name = Paris
 Z.country = France
 
-false
-false
+Value Equality: true
+Identity Equality: false

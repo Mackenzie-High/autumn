@@ -27,6 +27,6 @@ defun main (args : String[]) : void
     F::println ("Z.country = " .. z.country());
     F::println ();
 
-    F::println ("Value Equality: " .. x == z);
-    F::println ("Identity Equality: " .. x === z);
+    F::println ("Value Equality: " .. (x == z));
+    F::println ("Identity Equality: " .. (x === z));
 }
