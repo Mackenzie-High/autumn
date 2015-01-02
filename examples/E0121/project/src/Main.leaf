@@ -1,0 +1,26 @@
+module Main in execution;
+
+struct City (name : String, 
+             country : String);
+
+@Start
+defun main (args : String[]) : void
+{
+    val city = new City ("Paris", "France");
+    
+    F::println ("Keys = " .. city.keys());
+    F::println ();
+    F::println ("Values = " .. city.values());
+    F::println ();
+    F::println ("Size = " .. city.size());
+    F::println ();
+    F::println ("Tuple? = " .. city.isTuple());
+    F::println ();
+    F::println ("Struct? = " .. city.isStruct());
+    F::println ();
+
+    foreach (value : String in city)
+    {
+        F::println ("Value = " .. value);
+    }
+}
