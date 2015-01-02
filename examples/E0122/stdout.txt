@@ -1,42 +1,12 @@
-Warning: NO_SUCH_CONSTRUCTOR
-  File: file:/media/disk/Code/EclipseProjects/AutumnSpecification/autumn/examples/E0122/project/src/Main.leaf
-  Line: #12
-  Column: #16
-  Message: No accessible constructor was found that will accept the given arguments.
-  Type: execution.Person
+Name = Anna
+ID   = 743397452
+Tax  = 6250
 
-Warning: NO_SUCH_CONSTRUCTOR
-  File: file:/media/disk/Code/EclipseProjects/AutumnSpecification/autumn/examples/E0122/project/src/Main.leaf
-  Line: #13
-  Column: #16
-  Message: No accessible constructor was found that will accept the given arguments.
-  Type: execution.Person
+Name = Emma
+ID   = 921476357
+Tax  = 12500
 
-Warning: NO_SUCH_CONSTRUCTOR
-  File: file:/media/disk/Code/EclipseProjects/AutumnSpecification/autumn/examples/E0122/project/src/Main.leaf
-  Line: #14
-  Column: #16
-  Message: No accessible constructor was found that will accept the given arguments.
-  Type: execution.Person
-
-Warning: NO_SUCH_VARIABLE
-  File: file:/media/disk/Code/EclipseProjects/AutumnSpecification/autumn/examples/E0122/project/src/Main.leaf
-  Line: #16
-  Column: #18
-  Message: A variable was used before it was declared.
-  Variable: anna
-
-Warning: NO_SUCH_VARIABLE
-  File: file:/media/disk/Code/EclipseProjects/AutumnSpecification/autumn/examples/E0122/project/src/Main.leaf
-  Line: #17
-  Column: #18
-  Message: A variable was used before it was declared.
-  Variable: emma
-
-Warning: NO_SUCH_VARIABLE
-  File: file:/media/disk/Code/EclipseProjects/AutumnSpecification/autumn/examples/E0122/project/src/Main.leaf
-  Line: #18
-  Column: #18
-  Message: A variable was used before it was declared.
-  Variable: kate
+Name = Kate
+ID   = 812338721
+Tax  = 2500
 

@@ -1,6 +1,6 @@
 Keys = [country, name]
 
-Values = [Paris, France]
+Values = [France, Paris]
 
 Size = 2
 
@@ -8,5 +8,5 @@ Tuple? = false
 
 Struct? = true
 
-Value = Paris
 Value = France
+Value = Paris

@@ -9,9 +9,9 @@ struct Person (name : String) extends Citizen & Taxable;
 @Start
 defun main (args : String[]) : void
 {
-    val anna = new Person ("Anna", 7_433_9_7452, 25_000);
-    val emma = new Person ("Emma", 9_214_7_6357, 50_000);
-    val kate = new Person ("Kate", 8_123_3_8721, 10_000);
+    val anna = new Person (7_433_9_7452, 25_000, "Anna");
+    val emma = new Person (9_214_7_6357, 50_000, "Emma");
+    val kate = new Person (8_123_3_8721, 10_000, "Kate");
 
     My::printTax(anna);
     My::printTax(emma);

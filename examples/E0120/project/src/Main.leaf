@@ -6,7 +6,7 @@ struct City (name : String,
 @Start
 defun main (args : String[]) : void
 {
-    val x = new City ("Paris", "France");
+    val x = new City ("France", "Paris");
     
     val y = x.country ("United States");
 

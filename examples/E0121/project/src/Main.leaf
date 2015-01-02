@@ -6,7 +6,7 @@ struct City (name : String,
 @Start
 defun main (args : String[]) : void
 {
-    val city = new City ("Paris", "France");
+    val city = new City ("France", "Paris");
     
     F::println ("Keys = " .. city.keys());
     F::println ();
