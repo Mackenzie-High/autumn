@@ -1,0 +1,1 @@
+{ "group" : "Math", "summary" : "This function multiples a number by itself multiple times.", "signature" : "pow (x : long, n : int) : long", "formals" : [["x", "long", "is the number to multiply."], ["n", "int", "is the number of times to multiple the value by itself."]], "returns" : ["long", "Return <i>x</i> raised to the <i>n</i>th power."], "throws" : [], "details" : [] }

@@ -1,0 +1,1 @@
+{ "group" : "Math", "summary" : "This function determines whether a number is odd.", "signature" : "isOdd (value : long) : boolean", "formals" : [["value", "long", "is the value itself."]], "returns" : ["boolean", "Return true, iff the number is odd."], "throws" : [], "details" : [] }
