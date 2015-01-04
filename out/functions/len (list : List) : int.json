@@ -1,0 +1,1 @@
+{ "group" : "Data_Structures", "summary" : "This function retrieves the length of a list.", "signature" : "len (list : <a href='https://docs.oracle.com/javase/7/docs/api/java/util/List.html'>List</a>) : int", "formals" : [["list", "interface java.util.List", "is the list itself."]], "returns" : ["int", "Return the length of the <i>list</i>."], "throws" : [], "details" : [] }
