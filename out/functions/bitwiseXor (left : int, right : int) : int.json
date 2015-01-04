@@ -1,0 +1,1 @@
+{ "group" : "Data_Structures", "summary" : "This function performs a bitwise XOR operation.", "signature" : "bitwiseXor (left : int, right : int) : int", "formals" : [["left", "int", "is the left operand."], ["right", "int", "is the right operand."]], "returns" : ["int", "The result of the bitwise operation is returned."], "throws" : [], "details" : [] }

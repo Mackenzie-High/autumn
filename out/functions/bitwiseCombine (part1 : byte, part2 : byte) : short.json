@@ -1,0 +1,1 @@
+{ "group" : "Data_Structures", "summary" : "This function creates a short from two bytes.", "signature" : "bitwiseCombine (part1 : byte, part2 : byte) : short", "formals" : [["part1", "byte", "is the first byte."], ["part2", "byte", "is the second byte."]], "returns" : ["short", "The short formed from part1:part2 will be returned."], "throws" : [], "details" : [] }

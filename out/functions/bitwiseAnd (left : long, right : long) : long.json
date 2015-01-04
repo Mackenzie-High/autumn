@@ -1,0 +1,1 @@
+{ "group" : "Data_Structures", "summary" : "This function performs a bitwise AND operation.", "signature" : "bitwiseAnd (left : long, right : long) : long", "formals" : [["left", "long", "is the left operand."], ["right", "long", "is the right operand."]], "returns" : ["long", "The result of the bitwise operation is returned."], "throws" : [], "details" : [] }

@@ -1,0 +1,1 @@
+{ "group" : "Data_Structures", "summary" : "This function performs a bitwise NOT operation.", "signature" : "bitwiseNot (operand : int) : int", "formals" : [["operand", "int", "is the the input."]], "returns" : ["int", "The result of the bitwise operation is returned."], "throws" : [], "details" : [] }

@@ -1,0 +1,1 @@
+{ "group" : "Data_Structures", "summary" : "This function retrieves the length of an array", "signature" : "len (array : long[]) : int", "formals" : [["array", "class [J", "is the array itself."]], "returns" : ["int", "The length of the array is returned."], "throws" : [], "details" : [] }
