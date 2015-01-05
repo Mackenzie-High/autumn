@@ -1,16 +1,10 @@
 # ~!/binbash
 
-home=${PWD}
- 
-for f in $(find "examples/" -name 'Main.leaf'); do 
-    dir="$home/$(dirname "$(dirname "$(dirname "$f")")")"
-    echo $dir; 
-    cd "$dir/project/src/"
-    autumn run > "$dir/stdout.txt"
-    rm -f "$dir/project/src/stdout.txt"
+# The examples are actually built using an Autumn program. 
+# See the example_builder folder.
+# However, that program needs to be passed the path to the examples folder as an argument,
+# which is the sole purpose of this script.
 
-    if grep -q "Parsing Failed" "$dir/stdout.txt"; then
-        echo "Bad Example - Parsing Failed!"
-        exit 1
-    fi
-done
+
+cd example_builder 
+autumn run "/media/disk/Code/EclipseProjects/AutumnSpecification/autumn/examples"
