@@ -1,0 +1,1 @@
+{ "group" : "Conversions", "summary" : "This function converts a string to a float.", "signature" : "parseFloat null : float", "formals" : [["value", "class java.lang.String", "is the string representation of the value."]], "returns" : ["float", "Return the <i>value</i> as a number."], "throws" : [], "details" : [] }

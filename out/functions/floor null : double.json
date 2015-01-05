@@ -1,0 +1,1 @@
+{ "group" : "Math", "summary" : "This function rounds a value down to the next integer.", "signature" : "floor null : double", "formals" : [["value", "double", "is the value to round."]], "returns" : ["double", "The result of rounding the value down."], "throws" : [], "details" : [] }

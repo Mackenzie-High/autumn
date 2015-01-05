@@ -1,0 +1,1 @@
+{ "group" : "Math", "summary" : "This function determines whether a number is even.", "signature" : "isEven null : boolean", "formals" : [["value", "class java.math.BigInteger", "is the value itself."]], "returns" : ["boolean", "Return true, iff the number is even."], "throws" : [], "details" : [] }

@@ -1,0 +1,1 @@
+{ "group" : "Conversions", "summary" : "This function converts a string to an int.", "signature" : "parseInt null : int", "formals" : [["value", "class java.lang.String", "is the string representation of the value."]], "returns" : ["int", "Return the <i>value</i> as a number."], "throws" : [], "details" : [] }

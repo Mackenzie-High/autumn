@@ -1,0 +1,1 @@
+{ "group" : "Bitwise", "summary" : "This function performs a left bit shift operation.", "signature" : "bitwiseShiftLeft null : int", "formals" : [["value", "int", "contains the bits to shift."], ["distance", "int", "is the number of places to shift the bits."]], "returns" : ["int", "The result of the bitwise operation is returned."], "throws" : [], "details" : [] }

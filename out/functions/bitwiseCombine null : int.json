@@ -1,0 +1,1 @@
+{ "group" : "Bitwise", "summary" : "This function creates an int from two shorts.", "signature" : "bitwiseCombine null : int", "formals" : [["part1", "short", "is the first short."], ["part2", "short", "is the second short."]], "returns" : ["int", "The int formed from part1:part2 will be returned."], "throws" : [], "details" : [] }

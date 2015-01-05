@@ -1,0 +1,1 @@
+{ "group" : "Data_Structures", "summary" : "This function creates a new array of double values.", "signature" : "newDoubleArray null : double[]", "formals" : [["size", "int", "is the number of elements in the new array."]], "returns" : ["double[]", "The new array object is returned."], "throws" : [], "details" : [] }

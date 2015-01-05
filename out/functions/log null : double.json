@@ -1,0 +1,1 @@
+{ "group" : "Math", "summary" : "This is the natural log function.", "signature" : "log null : double", "formals" : [["value", "double", "is the value to compute the log of."]], "returns" : ["double", "log(value)"], "throws" : [], "details" : [] }

@@ -1,0 +1,1 @@
+{ "group" : "Math", "summary" : "This is the inverse cosine function.", "signature" : "arccos null : double", "formals" : [["value", "double", "is the input value."]], "returns" : ["double", "The angle in radians is returned."], "throws" : [], "details" : [] }

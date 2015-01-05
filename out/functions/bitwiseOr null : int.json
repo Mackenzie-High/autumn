@@ -1,0 +1,1 @@
+{ "group" : "Bitwise", "summary" : "This function performs a bitwise OR operation.", "signature" : "bitwiseOr null : int", "formals" : [["left", "int", "is the left operand."], ["right", "int", "is the right operand."]], "returns" : ["int", "The result of the bitwise operation is returned."], "throws" : [], "details" : [] }

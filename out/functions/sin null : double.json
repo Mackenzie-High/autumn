@@ -1,0 +1,1 @@
+{ "group" : "Math", "summary" : "This is the sine function.", "signature" : "sin null : double", "formals" : [["angle", "double", "is the angle in radians."]], "returns" : ["double", "sin(angle)"], "throws" : [], "details" : [] }
