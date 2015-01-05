@@ -63,6 +63,14 @@ function emitThrows()
 		
 		$("#function-page-throws-list").append('<li>' + problem + '</li>');
 	}
+	
+	/**
+	 * Remove the section, if it is empty. 
+	 */
+	if(problems.isEmpty())
+	{
+		$("#function-page-throws").remove();
+	}
 }
 
 function emitDetails()
@@ -78,6 +86,14 @@ function emitDetails()
 		var detail = details[i][1];
 		
 		$("#function-page-details-list").append('<li class="indent-' + indent + '">' + detail + '</li>');
+	}
+	
+	/**
+	 * Remove the section, if it is empty. 
+	 */
+	if(details.isEmpty())
+	{
+		$("#function-page-details").remove();
 	}
 }
 
