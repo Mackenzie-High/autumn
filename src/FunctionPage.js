@@ -67,7 +67,7 @@ function emitThrows()
 	/**
 	 * Remove the section, if it is empty. 
 	 */
-	if(problems == undefined)
+	if(problems == "")
 	{
 		$("#function-page-throws").remove();
 	}
@@ -91,7 +91,7 @@ function emitDetails()
 	/**
 	 * Remove the section, if it is empty. 
 	 */
-	if(details == undefined)
+	if(details == "")
 	{
 		$("#function-page-details").remove();
 	}
