@@ -33,6 +33,7 @@ defun main (args : String[]) : void
 
         # This is the path to the stdout.txt file of the example. 
         val stdout = new File(example, "stdout.txt");
+        when (stdout.exists()) then stdout.delete();
 
         # This is the path to the project folder of the example. 
         val project = new File(example, "project");
