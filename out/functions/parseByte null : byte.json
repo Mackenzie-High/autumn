@@ -1,1 +1,0 @@
-{ "group" : "Conversions", "summary" : "This function converts a string to a byte.", "signature" : "parseByte null : byte", "formals" : [["value", "class java.lang.String", "is the string representation of the value."]], "returns" : ["byte", "Return the <i>value</i> as a number."], "throws" : [], "details" : [] }

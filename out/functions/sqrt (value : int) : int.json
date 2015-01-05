@@ -1,1 +1,0 @@
-{ "group" : "Math", "summary" : "This is the square root function.", "signature" : "sqrt (value : int) : int", "formals" : [["value", "int", "is the squared value."]], "returns" : ["int", "Return the square root of the <i>value</i>."], "throws" : [], "details" : [] }

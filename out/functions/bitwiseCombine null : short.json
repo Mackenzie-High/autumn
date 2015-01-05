@@ -1,1 +1,0 @@
-{ "group" : "Bitwise", "summary" : "This function creates a short from two bytes.", "signature" : "bitwiseCombine null : short", "formals" : [["part1", "byte", "is the first byte."], ["part2", "byte", "is the second byte."]], "returns" : ["short", "The short formed from part1:part2 will be returned."], "throws" : [], "details" : [] }

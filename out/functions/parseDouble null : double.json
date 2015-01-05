@@ -1,1 +1,0 @@
-{ "group" : "Conversions", "summary" : "This function converts a string to a double.", "signature" : "parseDouble null : double", "formals" : [["value", "class java.lang.String", "is the string representation of the value."]], "returns" : ["double", "Return the <i>value</i> as a number."], "throws" : [], "details" : [] }

@@ -1,1 +1,0 @@
-{ "group" : "Data_Structures", "summary" : "This function retrieves the length of a $JavaLangCharSequence$.", "signature" : "len null : int", "formals" : [["string", "interface java.lang.CharSequence", "is the string of characters."]], "returns" : ["int", "Return the number of characters in the string."], "throws" : [], "details" : [] }

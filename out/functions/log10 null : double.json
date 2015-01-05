@@ -1,1 +1,0 @@
-{ "group" : "Math", "summary" : "This is the base ten log function.", "signature" : "log10 null : double", "formals" : [["value", "double", "is the value to compute the log of."]], "returns" : ["double", "log(value)"], "throws" : [], "details" : [] }

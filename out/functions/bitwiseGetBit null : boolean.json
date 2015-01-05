@@ -1,1 +1,0 @@
-{ "group" : "Bitwise", "summary" : "This function gets a particular bit from a long.", "signature" : "bitwiseGetBit null : boolean", "formals" : [["value", "long", "contains the bit."], ["index", "int", "is the index of the bit inside the value."]], "returns" : ["boolean", "The indexed bit is retrieved and then returned."], "throws" : [], "details" : [] }

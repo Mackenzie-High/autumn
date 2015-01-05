@@ -1,1 +1,0 @@
-{ "group" : "Bitwise", "summary" : "This function creates a long from two ints.", "signature" : "bitwiseCombine null : long", "formals" : [["part1", "int", "is the first int."], ["part2", "int", "is the second int."]], "returns" : ["long", "The long formed from part1:part2 will be returned."], "throws" : [], "details" : [] }

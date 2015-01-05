@@ -1,1 +1,0 @@
-{ "group" : "Math", "summary" : "This is the inverse tangent function.", "signature" : "arctan.0 (value : double) : double", "formals" : [["value", "double", "is the input value."]], "returns" : ["double", "The angle in radians is returned."], "throws" : [], "details" : [] }

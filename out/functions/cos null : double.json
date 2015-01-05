@@ -1,1 +1,0 @@
-{ "group" : "Math", "summary" : "This is the cosine function.", "signature" : "cos null : double", "formals" : [["angle", "double", "is the angle in radians."]], "returns" : ["double", "cos(angle)"], "throws" : [], "details" : [] }

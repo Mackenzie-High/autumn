@@ -1,1 +1,0 @@
-{ "group" : "Math", "summary" : "This is the absolute-value function.", "signature" : "abs null : int", "formals" : [["value", "int", "is the the signed value."]], "returns" : ["int", "abs(value)"], "throws" : [], "details" : [] }

@@ -1,1 +1,0 @@
-{ "group" : "Operators", "summary" : "This function computes the hash-code of a value.", "signature" : "hash null : int", "formals" : [["value", "class java.lang.Object", "is the value to compute a hash-code for. (may be null)"]], "returns" : ["int", "Return the hash-code of the value."], "throws" : [], "details" : [] }
