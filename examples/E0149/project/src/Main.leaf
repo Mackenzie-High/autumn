@@ -1,0 +1,15 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    val a = F::between(2, 3, 5);
+    val b = F::between(2, 6, 5);
+    val c = F::between(2, 2, 5);
+    val d = F::between(2, 5, 5);
+
+    F::println(a);
+    F::println(b);
+    F::println(c);
+    F::println(d);
+}
