@@ -1,0 +1,19 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    # This is the number whose absolute value will be computed. 
+    var i = -5L is long;
+
+    while (i < 6L)
+    {
+        # This is the absolute value of the number. 
+        val result = F::abs(i);
+
+        # Print the result in a nice human-readable format. 
+        F::println ("abs(" .. i .. ") = " .. result);
+
+        i = i + 1L;
+    }
+}
