@@ -1,5 +1,5 @@
 
-var HEADER = "<tr> <td> Group </td> <td> Function </td> </tr>";
+var HEADER = "<tr> <td> Function </td> </tr>";
 
 function emitAdvancedIndex(json)
 {
@@ -32,9 +32,7 @@ function emitAdvancedIndex(json)
 			.replace("SIGNATURE", signature);
 
 		// Create a row representing the function in the index table. 
-		var row = HEADER
-			.replace("Group", group)
-			.replace("Function", link);
+		var row = HEADER.replace("Function", link);
 		
 		// Add the link to the index being displayed in the browser. 
 		$("#index").append(row);
