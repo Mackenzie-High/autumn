@@ -1,0 +1,44 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    # Get the value of the PI constant.
+    val PI = field Math::PI;
+
+    # Create some angles in radians. 
+    # angle1 = 60 degrees
+    # angle2 = 30 degrees
+    # angle3 = 20 degrees
+    val angle1 = PI / 3.0;
+    val angle2 = PI / 6.0;
+    val angle3 = PI / 9.0;
+
+    # Print the angles.
+    F::println("Angle #1 = " .. angle1);
+    F::println("Angle #2 = " .. angle2);
+    F::println("Angle #3 = " .. angle3);
+    F::println();
+
+    # Compue some common sines.
+    val a = F::sin(angle1);
+    val b = F::sin(angle2);
+    val c = F::sin(angle3);
+
+    # Print the results. 
+    F::println("sin(PI / 3) = " .. a);
+    F::println("sin(PI / 6) = " .. b);
+    F::println("sin(PI / 9) = " .. c);
+    F::println();
+
+    # Compute the related arcsines.
+    val x = F::asin(a);
+    val y = F::asin(b);
+    val z = F::asin(c);
+
+    # Print the results. 
+    F::println("asin(PI / 3) = " .. x);
+    F::println("asin(PI / 6) = " .. y);
+    F::println("asin(PI / 9) = " .. z);
+    F::println();
+}
