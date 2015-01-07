@@ -11,6 +11,9 @@ defun main (args : String[]) : void
         # This is the absolute value of the number. 
         val result = F::abs(i);
 
+        # Make the result more human readable. 
+        val pretty = result.stripTrailingZeros();
+
         # Print the result in a nice human-readable format. 
         F::println ("abs(" .. i .. ") = " .. result);
 

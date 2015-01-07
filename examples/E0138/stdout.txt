@@ -1,14 +1,11 @@
-Warning: NO_SUCH_METHOD
-  File: file:/media/disk/Code/EclipseProjects/AutumnSpecification/autumn/examples/E0138/project/src/Main.leaf
-  Line: #12
-  Column: #22
-  Message: No acceptable method overload was found.
-  Invocation: F::abs(long)
-
-Warning: NO_SUCH_VARIABLE
-  File: file:/media/disk/Code/EclipseProjects/AutumnSpecification/autumn/examples/E0138/project/src/Main.leaf
-  Line: #15
-  Column: #46
-  Message: A variable was used before it was declared.
-  Variable: result
-
+abs(-5) = 5
+abs(-4) = 4
+abs(-3) = 3
+abs(-2) = 2
+abs(-1) = 1
+abs(0) = 0
+abs(1) = 1
+abs(2) = 2
+abs(3) = 3
+abs(4) = 4
+abs(5) = 5
