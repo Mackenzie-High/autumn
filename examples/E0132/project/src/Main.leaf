@@ -4,7 +4,7 @@ module Main in execution;
 defun main (args : String[]) : void
 {
     # Create a new array. 
-    val array = F::newDoubleArray(5);
+    val array = F::newArray((class double), 5) is double[];
 
     # Compute the length of the array. 
     val length = F::len(array);

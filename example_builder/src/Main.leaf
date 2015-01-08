@@ -24,7 +24,8 @@ defun main (args : String[]) : void
     # Reverse the order of the examples.
     # Higher numbered examples are newer.
     # Newer examples are more likely to fail, because they are still ebing developed. 
-    val reversed = F::reversed(examples);
+    val reversed = new LinkedList(examples);
+    Collections::reverse(reversed);
 
     # Run the examples.
     foreach (example : File in reversed)
@@ -49,7 +50,7 @@ defun main (args : String[]) : void
         F::println("; exit-code = " .. process.exitValue());
 
         # If the example failed due to a syntax error, report it.
-        val text = F::readText(stdout, null);
+        val text = FileIO::readText(stdout);
 
         if (text.contains("Parsing Failed!"))
         { 
