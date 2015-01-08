@@ -46,5 +46,5 @@ defun main (args : String[]) : void
 
 defun moo (x : Integer) : String
 {
-    return Strings::str(x * 10);
+    return F::str(x * 10);
 }

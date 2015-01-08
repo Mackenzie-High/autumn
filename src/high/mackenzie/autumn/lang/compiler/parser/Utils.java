@@ -13,7 +13,7 @@ import autumn.lang.compiler.ast.literals.IntLiteral;
 import autumn.lang.compiler.ast.literals.LongLiteral;
 import autumn.lang.compiler.ast.literals.ShortLiteral;
 import autumn.lang.compiler.ast.nodes.Name;
-import autumn.util.Strings;
+import autumn.util.F;
 import com.google.common.collect.Lists;
 import high.mackenzie.autumn.resources.Finished;
 import high.mackenzie.snowflake.ITreeNode;
@@ -331,7 +331,7 @@ public final class Utils
                 ? text.substring(1, text.length() - 1)
                 : text;
 
-        final String escaped = Strings.escape(modified);
+        final String escaped = F.escape(modified);
 
         return escaped;
     }

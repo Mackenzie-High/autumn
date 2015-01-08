@@ -1,7 +1,7 @@
 package autumn.lang.internals;
 
 import autumn.lang.Lambda;
-import autumn.util.Strings;
+import autumn.util.F;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -169,7 +169,7 @@ public abstract class AbstractLambda
         }
 
         string.append("lambda ");
-        string.append(Strings.str(params, "(", ", ", ")"));
+        string.append(F.str(params, "(", ", ", ")"));
         string.append(" : ");
         string.append(returnType().getSimpleName());
 

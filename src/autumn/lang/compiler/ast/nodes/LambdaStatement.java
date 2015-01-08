@@ -38,7 +38,6 @@ import autumn.lang.compiler.ast.literals.FloatLiteral;
 import autumn.lang.compiler.ast.literals.IntLiteral;
 import autumn.lang.compiler.ast.literals.LongLiteral;
 import autumn.lang.compiler.ast.literals.ShortLiteral;
-import autumn.util.ds.ImmutableSequence;
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
@@ -64,7 +63,7 @@ import java.util.TreeSet;
  * </table>
  * </p>
  * 
- * <p> This file was auto-generated on (Mon Dec 29 14:17:29 EST 2014).</p>
+ * <p> This file was auto-generated on (Thu Jan 08 00:47:19 EST 2015).</p>
  */
 @SuppressWarnings("unchecked")
 public final class LambdaStatement extends Object implements IStatement

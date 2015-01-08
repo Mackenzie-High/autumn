@@ -38,7 +38,6 @@ import autumn.lang.compiler.ast.literals.FloatLiteral;
 import autumn.lang.compiler.ast.literals.IntLiteral;
 import autumn.lang.compiler.ast.literals.LongLiteral;
 import autumn.lang.compiler.ast.literals.ShortLiteral;
-import autumn.util.ds.ImmutableSequence;
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
@@ -58,19 +57,19 @@ import java.util.TreeSet;
  * <table border="1">
  *     <tr> <td> <b>Property Name</b> </td> <td> <b>Property Description</b> </td> </tr>
  *     <tr> <td> <code>type</code> </td> <td>This is the type of the instantiated annotation definition.</td> </tr>
- *     <tr> <td> <code>values</code> </td> <td>This is the value stored in the annotation.</td> </tr>
+ *     <tr> <td> <code>values</code> </td> <td>This is a (hopefully) immutable list of the values stored in the annotation.</td> </tr>
  *     <tr> <td> <code>location</code> </td> <td>This is the source-location information regarding this construct.</td> </tr>
  * </table>
  * </p>
  * 
- * <p> This file was auto-generated on (Mon Dec 29 14:17:29 EST 2014).</p>
+ * <p> This file was auto-generated on (Thu Jan 08 00:47:19 EST 2015).</p>
  */
 @SuppressWarnings("unchecked")
 public final class Annotation extends Object implements IConstruct
 {
     private TypeSpecifier type;
 
-    private ImmutableSequence<String> values = null;
+    private List<String> values = null;
 
     private SourceLocation location = new SourceLocation();
 
@@ -104,7 +103,7 @@ public final class Annotation extends Object implements IConstruct
      * @param value is the new value of property <code>values</code>.
      * @return a copy of this object with property <code>values</code> set to value.
      */
-    public Annotation setValues(final ImmutableSequence<String> value)
+    public Annotation setValues(final List<String> value)
     {
         final Annotation result = this.copy();
         result.values = value;
@@ -116,9 +115,9 @@ public final class Annotation extends Object implements IConstruct
      * 
      * @return the value of property <code>values</code>.
      */
-    public ImmutableSequence<String> getValues()
+    public List<String> getValues()
     {
-        final ImmutableSequence<String> value = this.values;
+        final List<String> value = this.values;
         return value;
     }
 
@@ -154,7 +153,7 @@ public final class Annotation extends Object implements IConstruct
      * @param location is the value for property <code>location</code>.
      * @return a new instance of this class.
      */
-    public static Annotation create(TypeSpecifier type, ImmutableSequence<String> values, SourceLocation location)
+    public static Annotation create(TypeSpecifier type, List<String> values, SourceLocation location)
     {
         Annotation object = new Annotation();
         object = object.setType(type);

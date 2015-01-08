@@ -21,8 +21,7 @@ import java.util.List;
  */
 @Finished("2014/10/18")
 public interface Record
-        extends Copyable,
-                Iterable,
+        extends Iterable,
                 Comparable<Record>
 {
     /**

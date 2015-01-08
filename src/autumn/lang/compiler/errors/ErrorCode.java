@@ -353,4 +353,16 @@ public enum ErrorCode
      * Meaning: A functor-type is required.
      */
     EXPECTED_FUNCTOR_TYPE,
+    /**
+     * Meaning: The type of an element cannot be different be redefined in a subtype.
+     */
+    RETYPED_ELEMENT,
+    /**
+     * Meaning: A tuple must explicitly declare all of its elements, including inherited elements.
+     */
+    TOTAL_ORDERING_REQUIRED,
+    /**
+     * Meaning: The name of one entity conflicts with the name of another entity.
+     */
+    NAME_CONFLICT,
 }

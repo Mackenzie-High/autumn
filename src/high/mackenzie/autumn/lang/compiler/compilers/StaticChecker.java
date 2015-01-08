@@ -28,7 +28,7 @@ import autumn.lang.compiler.ast.nodes.Variable;
 import autumn.lang.compiler.errors.ErrorCode;
 import autumn.lang.compiler.errors.ErrorReport;
 import autumn.lang.compiler.errors.IErrorReporter;
-import autumn.util.Strings;
+import autumn.util.F;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import high.mackenzie.autumn.lang.compiler.exceptions.TypeCheckFailed;
@@ -707,7 +707,7 @@ public final class StaticChecker
      * @param type must be a subtype of DefinedFunctor.
      */
     public void requireDefinedFunctorType(final TypeSpecifier specifier,
-                                      final IType type)
+                                          final IType type)
     {
         if (type.isSubtypeOf(program.typesystem.typefactory().fromClass(DefinedFunctor.class)))
         {
@@ -1120,7 +1120,7 @@ public final class StaticChecker
 
         try
         {
-            Strings.escape(datum.getValue());
+            F.escape(datum.getValue());
         }
         catch (IllegalArgumentException ex)
         {
@@ -1357,7 +1357,7 @@ public final class StaticChecker
         result.append(Utils.simpleName(owner));
         result.append(dot);
         result.append(name);
-        result.append(Strings.str(args, "(", ", ", ")"));
+        result.append(F.str(args, "(", ", ", ")"));
 
         return result.toString();
     }

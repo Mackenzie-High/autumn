@@ -6,8 +6,8 @@ import autumn.lang.compiler.ast.nodes.Module;
 import autumn.lang.compiler.errors.BasicErrorReporter;
 import autumn.lang.compiler.errors.ErrorCode;
 import static autumn.lang.compiler.errors.ErrorCode.*;
-import autumn.util.Files;
 import com.google.common.collect.ImmutableSet;
+import com.google.common.io.Files;
 import com.google.common.io.Resources;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -335,7 +335,7 @@ public final class Runner
 
             final String code = Resources.toString(url, Charset.defaultCharset());
 
-            Files.writeText(new File(STDOUT + test + ".code"), code);
+            Files.write(code, new File(STDOUT + test + ".code"), Charset.defaultCharset());
 
             final PrintStream stream = new PrintStream(bos);
 

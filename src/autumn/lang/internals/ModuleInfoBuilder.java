@@ -1,16 +1,19 @@
 package autumn.lang.internals;
 
-import autumn.lang.Memoizer;
 import autumn.lang.Delegate;
+import autumn.lang.Memoizer;
 import autumn.lang.Module;
 import autumn.lang.ModuleInfo;
+import autumn.lang.annotations.Start;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Instances of this class are used to construct ModuleInfo objects.
@@ -241,6 +244,44 @@ public final class ModuleInfoBuilder
             public List<Delegate> functions()
             {
                 return delegates;
+            }
+
+            @Override
+            public boolean isStart()
+            {
+                for (Delegate x : functions())
+                {
+                    final boolean test1 = x.method().isAnnotationPresent(Start.class);
+
+                    final boolean test2 = test1 && x.name().equals("main");
+
+                    final boolean test3 = test1 && x.parameterTypes().equals(Lists.newArrayList(String[].class));
+
+                    final boolean test4 = test1 && x.returnType().equals(void.class);
+
+                    if (test1 && test2 && test3 && test4)
+                    {
+                        return true;
+                    }
+                }
+
+                return false;
+            }
+
+            @Override
+            public Set<Class> types()
+            {
+                final Set<Class> result = Sets.newIdentityHashSet();
+
+                result.addAll(annotations());
+                result.addAll(designs());
+                result.addAll(enums());
+                result.addAll(exceptions());
+                result.addAll(functors());
+                result.addAll(structs());
+                result.addAll(tuples());
+
+                return Collections.unmodifiableSet(result);
             }
 
             @Override

@@ -15,9 +15,9 @@ defun main (args : String[]) : void
 
     assert (- - 3.0) == 3.0;
 
-    assert (- - F::big(3)) == 3BI;
+    assert (- - 3BI) == 3BI;
 
-    assert (- - F::big(3.0)) == 3.0BD;
+    assert (- - 3.0BD) == 3.0BD;
 
     assert (- - (null is BigInteger)) == 0BI;
 

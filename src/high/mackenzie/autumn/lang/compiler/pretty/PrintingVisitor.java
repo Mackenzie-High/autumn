@@ -12,6 +12,7 @@ import autumn.lang.compiler.ast.nodes.*;
 import autumn.lang.compiler.exceptions.IncompleteNodeException;
 import autumn.lang.compiler.exceptions.RepeatedNodeException;
 import autumn.lang.compiler.exceptions.UnprintableNodeException;
+import autumn.util.F;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
@@ -1565,7 +1566,7 @@ public final class PrintingVisitor
         if (object.getValues() != null)
         {
             p.addText(" ");
-            p.addText(autumn.util.Strings.str(createArrayOfStringLiterals(object.getValues()), "(", ", ", ")"));
+            p.addText(F.str(createArrayOfStringLiterals(object.getValues()), "(", ", ", ")"));
         }
     }
 
@@ -1818,7 +1819,7 @@ public final class PrintingVisitor
 
         for (String value : values)
         {
-            final String unescaped = autumn.util.Strings.unescape(value);
+            final String unescaped = F.unescape(value);
 
             result.add("\"" + unescaped + "\"");
         }

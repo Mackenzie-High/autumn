@@ -7,6 +7,7 @@ import autumn.lang.compiler.errors.BasicErrorReporter;
 import autumn.lang.compiler.errors.IErrorReporter;
 import autumn.lang.debugger.IDebugger;
 import autumn.util.F;
+import autumn.util.FileIO;
 import autumn.util.test.TestResults;
 import autumn.util.test.UnitTester;
 import com.google.common.base.Preconditions;
@@ -178,8 +179,10 @@ public final class Autumn
 
         final List<Module> result = Lists.newLinkedList();
 
-        for (File file : F.iter(autumn.util.Files.iterFiles(root, recur)))
+        for (Object path : F.iter(FileIO.filesOf(root, recur)))
         {
+            final File file = (File) path;
+
             final String name = file.getName();
 
             final boolean is_file = file.isFile();
@@ -639,8 +642,10 @@ public final class Autumn
          */
         final File src = new File(folder, "src");
 
-        for (File file : F.iter(autumn.util.Files.iterFiles(src, true)))
+        for (Object path : F.iter(FileIO.filesOf(src, true)))
         {
+            final File file = (File) path;
+
             if (file.getPath().endsWith(".leaf") && !file.isHidden())
             {
                 srcFile(file);
@@ -652,8 +657,10 @@ public final class Autumn
          */
         final File test = new File(folder, "test");
 
-        for (File file : F.iter(autumn.util.Files.iterFiles(test, true)))
+        for (Object path : F.iter(FileIO.filesOf(test, true)))
         {
+            final File file = (File) path;
+
             if (file.getPath().endsWith(".leaf") && !file.isHidden())
             {
                 srcFile(file);

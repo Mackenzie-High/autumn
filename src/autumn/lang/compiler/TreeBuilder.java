@@ -11,12 +11,11 @@ import autumn.lang.compiler.ast.literals.IntLiteral;
 import autumn.lang.compiler.ast.literals.LongLiteral;
 import autumn.lang.compiler.ast.literals.ShortLiteral;
 import autumn.lang.compiler.ast.nodes.*;
-import autumn.util.ds.MutableSequence;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import high.mackenzie.autumn.resources.Finished;
-import high.mackenzie.autumn.util.ds.ConcreteImmutableSequence;
 import java.net.URL;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Stack;
@@ -3779,7 +3778,7 @@ public final class TreeBuilder
         /**
          * Create the immutable list of values.
          */
-        final MutableSequence<String> list = new ConcreteImmutableSequence<String>().mutable();
+        final List<String> list = new LinkedList<String>();
 
         if (values != null)
         {
@@ -3796,7 +3795,7 @@ public final class TreeBuilder
          */
         Annotation node = new Annotation();
         node = node.setType(type);
-        node = node.setValues(values == null ? null : list.immutable());
+        node = node.setValues(values == null ? null : Collections.unmodifiableList(list));
 
         /**
          * Push the AST node onto the stack.

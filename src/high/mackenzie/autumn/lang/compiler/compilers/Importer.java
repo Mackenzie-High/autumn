@@ -1,16 +1,6 @@
 package high.mackenzie.autumn.lang.compiler.compilers;
 
 import autumn.lang.compiler.ast.nodes.TypeSpecifier;
-import autumn.util.ds.ImmutableHashMap;
-import autumn.util.ds.ImmutableHashSet;
-import autumn.util.ds.ImmutableSequence;
-import autumn.util.ds.ImmutableTreeMap;
-import autumn.util.ds.ImmutableTreeSet;
-import autumn.util.ds.MutableHashMap;
-import autumn.util.ds.MutableHashSet;
-import autumn.util.ds.MutableSequence;
-import autumn.util.ds.MutableTreeMap;
-import autumn.util.ds.MutableTreeSet;
 import autumn.util.functors.Action;
 import autumn.util.functors.Predicate;
 import com.google.common.base.Preconditions;
@@ -49,20 +39,16 @@ public final class Importer
         this.module = module;
 
         // autumn.lang
-        importClass(autumn.lang.Copyable.class);
         importClass(autumn.lang.Delegate.class);
         importClass(autumn.lang.Functor.class);
-        importClass(autumn.lang.Immutable.class);
         importClass(autumn.lang.Lambda.class);
         importClass(autumn.lang.Local.class);
         importClass(autumn.lang.LocalsMap.class);
         importClass(autumn.lang.Memoizer.class);
         importClass(autumn.lang.Module.class);
         importClass(autumn.lang.ModuleInfo.class);
-        importClass(autumn.lang.Mutable.class);
         importClass(autumn.lang.Record.class);
         importClass(autumn.lang.RecordEntry.class);
-        importClass(autumn.lang.SpecialMethods.class);
         importClass(autumn.lang.DefinedFunctor.class);
         importClass(autumn.lang.TypedFunctor.class);
 
@@ -85,33 +71,8 @@ public final class Importer
         importClass(autumn.lang.exceptions.CheckedException.class);
 
         // autumn.util
-        importClass(autumn.util.Bitwise.class);
-        importClass(autumn.util.DS.class);
         importClass(autumn.util.F.class);
-        importClass(autumn.util.Files.class);
-        importClass(autumn.util.Functors.class);
-        importClass(autumn.util.Predicates.class);
-        importClass(autumn.util.Records.class);
-        importClass(autumn.util.Reflect.class);
-        importClass(autumn.util.Strings.class);
-        importClass(autumn.util.Threads.class);
-
-        // autumn.util.data.json
-        importClass(high.mackenzie.autumn.util.json.JsonEncoder.class);
-        importClass(high.mackenzie.autumn.util.json.JsonDecoder.class);
-
-
-        // autumn.util.ds
-        importClass(ImmutableHashMap.class);
-        importClass(ImmutableHashSet.class);
-        importClass(ImmutableSequence.class);
-        importClass(ImmutableTreeMap.class);
-        importClass(ImmutableTreeSet.class);
-        importClass(MutableHashMap.class);
-        importClass(MutableHashSet.class);
-        importClass(MutableSequence.class);
-        importClass(MutableTreeMap.class);
-        importClass(MutableTreeSet.class);
+        importClass(autumn.util.FileIO.class);
 
         // autumn.util.test
         importClass(autumn.util.test.MalformedTestException.class);

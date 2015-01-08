@@ -8,16 +8,15 @@ import autumn.lang.LocalsMap;
 import autumn.lang.Module;
 import autumn.lang.ModuleInfo;
 import autumn.lang.Record;
-import autumn.lang.SpecialMethods;
 import autumn.lang.TypedFunctor;
 import autumn.lang.annotations.Start;
 import autumn.lang.compiler.ast.nodes.Name;
 import autumn.lang.compiler.ast.nodes.TypeSpecifier;
+import autumn.lang.internals.AbstractDefinedFunctor;
 import autumn.lang.internals.AbstractDelegate;
 import autumn.lang.internals.AbstractLambda;
 import autumn.lang.internals.AbstractModule;
 import autumn.lang.internals.AbstractRecord;
-import autumn.lang.internals.AbstractDefinedFunctor;
 import autumn.lang.internals.ArgumentStack;
 import autumn.lang.internals.Conversions;
 import autumn.lang.internals.Helpers;
@@ -170,8 +169,6 @@ public final class TypeSystemUtils
 
     public final IClassType OPERATORS;
 
-    public final IClassType SPECIAL_METHODS;
-
     public final IClassType LOCALS_MAP;
 
     public final IClassType LOCAL;
@@ -273,8 +270,6 @@ public final class TypeSystemUtils
         this.CONVERSIONS = (IClassType) factory.fromClass(Conversions.class);
 
         this.OPERATORS = (IClassType) factory.fromClass(Operators.class);
-
-        this.SPECIAL_METHODS = (IClassType) factory.fromClass(SpecialMethods.class);
 
         this.LOCALS_MAP = (IClassType) factory.fromClass(LocalsMap.class);
 

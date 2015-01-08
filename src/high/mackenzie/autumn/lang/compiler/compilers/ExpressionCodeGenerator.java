@@ -7,7 +7,6 @@ import autumn.lang.compiler.ast.commons.IExpression;
 import autumn.lang.compiler.ast.commons.IUnaryOperation;
 import autumn.lang.compiler.ast.nodes.*;
 import autumn.util.F;
-import autumn.util.Strings;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IDeclaredType;
@@ -400,7 +399,7 @@ public class ExpressionCodeGenerator
 
         final String value = object.getValue();
 
-        final String string = object.getVerbatim() ? value : Strings.escape(value);
+        final String string = object.getVerbatim() ? value : F.escape(value);
 
         code.add(new LdcInsnNode(string));
     }

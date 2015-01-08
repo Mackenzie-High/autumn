@@ -6,7 +6,7 @@ functor F0145 () : boolean;
 defun main (args : String[]) : void
 {
     # Create a functor to test.
-    val inner = Predicates::eq("Venus");
+    lambda inner : Predicate => false;
     val functor = new F0145(inner);
 
     # Test

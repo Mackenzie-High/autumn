@@ -8,5 +8,5 @@ defun main (args : String[]) : void
 {
     var p = new Person("Avril", 30);
 
-    assert p.hashCode() == Bitwise::xor(p.keys().hashCode(), p.values().hashCode());
+    assert p.hashCode() == F::bitwiseXor(p.keys().hashCode(), p.values().hashCode());
 }

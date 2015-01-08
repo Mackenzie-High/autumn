@@ -1,7 +1,7 @@
 package autumn.lang.internals;
 
 import autumn.lang.Module;
-import autumn.util.Strings;
+import autumn.util.F;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
@@ -154,7 +154,7 @@ public final class ModuleDelegate
         result.append("::");
         result.append(name);
         result.append(" ");
-        result.append(Strings.str(list, "(", ", ", ")"));
+        result.append(F.str(list, "(", ", ", ")"));
         result.append(" : ");
         result.append(returnType().getSimpleName());
 

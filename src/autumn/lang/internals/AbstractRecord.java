@@ -2,7 +2,7 @@ package autumn.lang.internals;
 
 import autumn.lang.Record;
 import autumn.util.F;
-import autumn.util.Strings;
+import autumn.util.T;
 import com.google.common.collect.Lists;
 import java.util.Collections;
 import java.util.Iterator;
@@ -146,7 +146,7 @@ public abstract class AbstractRecord
                     final Comparable operand1 = (Comparable) this.get(i);
                     final Comparable operand2 = (Comparable) other.get(i);
 
-                    final int relationship = F.compare(operand1, operand2);
+                    final int relationship = T.compare(operand1, operand2);
 
                     if (relationship < 0)
                     {
@@ -173,7 +173,7 @@ public abstract class AbstractRecord
     @Override
     public final boolean equals(final Object other)
     {
-        if (this == null)
+        if (other == null)
         {
             return false;
         }
@@ -219,7 +219,7 @@ public abstract class AbstractRecord
     @Override
     public final String toString()
     {
-        final String result = Strings.str(values(), "(", ", ", ")");
+        final String result = F.str(values(), "(", ", ", ")");
 
         return result;
     }

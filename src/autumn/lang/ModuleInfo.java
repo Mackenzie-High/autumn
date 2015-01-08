@@ -1,6 +1,7 @@
 package autumn.lang;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * An instance of this interfaces provides information regarding a Module.
@@ -121,6 +122,33 @@ public interface ModuleInfo
      * @return an immutable list of delegates that refer to the functions in the module.
      */
     public List<Delegate> functions();
+
+    /**
+     * This method creates a set containing all of the types that are declared inside of the module.
+     *
+     * <p>
+     * The new set contains all of the following:
+     * <ul>
+     * <li>annotations()</li>
+     * <li>designs()</li>
+     * <li>enums()</li>
+     * <li>exceptions()</li>
+     * <li>functors()</li>
+     * <li>structs()</li>
+     * <li>tuples()</li>
+     * </ul>
+     * </p>
+     *
+     * @return the new immutable set.
+     */
+    public Set<Class> types();
+
+    /**
+     * This method determines whether the module is likely the entry-point of the program.
+     *
+     * @return true, iff the module contains the main(String[]) function.
+     */
+    public boolean isStart();
 
     /**
      * This method retrieves the memoizer associated with a named function.

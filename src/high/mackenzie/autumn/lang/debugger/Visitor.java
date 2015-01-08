@@ -3,7 +3,7 @@ package high.mackenzie.autumn.lang.debugger;
 import autumn.lang.Local;
 import autumn.lang.LocalsMap;
 import autumn.lang.Record;
-import autumn.util.Records;
+import autumn.util.T;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
 import high.mackenzie.snowflake.ITreeNode;
@@ -177,7 +177,7 @@ public final class Visitor
         {
             final Record record = (Record) owner;
 
-            value = Records.get(record, name);
+            value = T.get(record, name);
         }
         else
         {

@@ -2,8 +2,8 @@ package autumn.util.test;
 
 import autumn.lang.Delegate;
 import autumn.lang.Module;
-import autumn.util.F;
 import autumn.util.Reflect;
+import autumn.util.T;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
@@ -302,7 +302,7 @@ public final class UnitTester
 
             validate(function);
 
-            F.apply(function, Collections.singleton(testcase));
+            T.apply(function, Collections.singleton(testcase));
         }
         catch (Throwable t)
         {

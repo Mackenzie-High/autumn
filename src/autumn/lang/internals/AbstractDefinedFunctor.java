@@ -2,7 +2,7 @@ package autumn.lang.internals;
 
 import autumn.lang.DefinedFunctor;
 import autumn.lang.TypedFunctor;
-import autumn.util.Strings;
+import autumn.util.F;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import java.util.List;
@@ -66,7 +66,7 @@ public abstract class AbstractDefinedFunctor
         }
 
         string.append("functor ");
-        string.append(Strings.str(params, "(", ", ", ")"));
+        string.append(F.str(params, "(", ", ", ")"));
         string.append(" : ");
         string.append(returnType().getSimpleName());
 

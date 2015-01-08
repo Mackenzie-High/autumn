@@ -2,10 +2,11 @@ package high.mackenzie.autumn.compiler.documentor;
 
 import autumn.lang.compiler.ast.nodes.Module;
 import autumn.lang.compiler.ast.nodes.Name;
-import autumn.util.Files;
 import com.google.common.collect.Lists;
+import com.google.common.io.Files;
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -99,7 +100,7 @@ public final class Documentor
 
             path.createNewFile();
 
-            Files.writeText(path, content);
+            Files.write(content, path, Charset.defaultCharset());
         }
         catch (IOException ex)
         {
