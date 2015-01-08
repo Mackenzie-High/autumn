@@ -13,7 +13,7 @@ defun main (args : String[]) : void
     val examples = new TreeSet(); 
 
     # Find the examples. 
-    foreach (file : File in F::filesOf(folder, false))
+    foreach (file : File in FileIO::filesOf(folder, false))
     {
         # Skip hidden folders. 
         when (file.isHidden()) then continue;
