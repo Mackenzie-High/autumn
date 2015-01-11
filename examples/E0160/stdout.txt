@@ -1,0 +1,1 @@
+public java.util.LinkedList(java.util.Collection)

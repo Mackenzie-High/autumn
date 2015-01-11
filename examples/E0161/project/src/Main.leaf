@@ -1,0 +1,9 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    val x = F::findField(class Integer, "MAX_VALUE");
+
+    F::println(x);
+}

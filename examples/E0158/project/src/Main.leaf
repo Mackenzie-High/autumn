@@ -1,0 +1,11 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    val planets = ["Mercury", "Venus", "Earth", "Mars"];
+
+    val result = F::enumerate(planets);
+
+    F::println(result);
+}

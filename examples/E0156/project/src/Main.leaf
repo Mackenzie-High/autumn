@@ -22,7 +22,7 @@ defun main (args : String[]) : void
     lambda p : Predicate => ($1 is Pet).type() == "Chicken";
 
     # Create a list of chickens by filtering out the other pets. 
-    val chickens = F::filter(pets, p);
+    val chickens = F::filter(p, pets);
 
     # Print the results. 
     F::printlns(chickens);
