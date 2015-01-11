@@ -1,0 +1,15 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    F::println("[01] = " .. F::defaultValueOf((class boolean)));
+    F::println("[02] = " .. F::defaultValueOf((class byte)));
+    F::println("[03] = " .. F::defaultValueOf((class short)));
+    F::println("[04] = " .. F::defaultValueOf((class int)));
+    F::println("[05] = " .. F::defaultValueOf((class long)));
+    F::println("[06] = " .. F::defaultValueOf((class float)));
+    F::println("[07] = " .. F::defaultValueOf((class double)));
+    F::println("[08] = " .. F::defaultValueOf((class Object)));
+    F::println("[09] = " .. F::defaultValueOf((class List)));
+}

@@ -4,7 +4,7 @@
 ## Dedication:
 
 <br>
-<div class="center-text"> <i>This project is dedicated to my loving mother, who tirelessly supports all my endeavors.</i> </div>
+<div class="center-text"> <i>This project is dedicated to my loving mother, who supports all my endeavors.</i> </div>
 <br>
 <div id="mom-image"> <img src="images/Mom.jpeg"> </div>
 

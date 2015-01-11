@@ -12,9 +12,9 @@ defun main (args : String[]) : void
     lambda p : Predicate => ($1 is Integer) < 5;
 
     # Count the elements that match the predicate. 
-    val count1 = F::count(list1, p);
-    val count2 = F::count(list2, p);
-    val count3 = F::count(list3, p);
+    val count1 = F::count(p, list1);
+    val count2 = F::count(p, list2);
+    val count3 = F::count(p, list3);
 
     # Print the results.
     F::println(count1);
