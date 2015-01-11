@@ -1,0 +1,14 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    val values = new TreeSet();
+
+    for (i = 0; i < 1000; i + 1)
+    {
+        values.add(F::unique());
+    }
+
+    assert values.size() == 1000;
+}

@@ -1,0 +1,16 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    try
+    {
+        F::sum([1, null, 3]);
+
+        assert false;
+    }
+    catch(ex : NullPointerException)
+    {
+        nop;
+    }
+}

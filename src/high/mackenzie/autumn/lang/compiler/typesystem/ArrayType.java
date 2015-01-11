@@ -7,6 +7,7 @@ import high.mackenzie.autumn.lang.compiler.typesystem.design.IElementType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.ITypeFactory;
 import high.mackenzie.autumn.resources.Finished;
+import java.io.Serializable;
 
 /**
  * This class provides a concrete implementation of the IArrayType interface.
@@ -56,11 +57,13 @@ public final class ArrayType
     {
         final boolean case1 = target.equals(getTypeFactory().fromClass(Object.class));
 
-        final boolean case2 = target instanceof IArrayType
+        final boolean case2 = target.equals(getTypeFactory().fromClass(Serializable.class));
+
+        final boolean case3 = target instanceof IArrayType
                               && dimensions == ((IArrayType) target).getDimensions()
                               && element.isSubtypeOf(((IArrayType) target).getElement());
 
-        return case1 || case2;
+        return case1 || case2 || case3;
     }
 
     /**

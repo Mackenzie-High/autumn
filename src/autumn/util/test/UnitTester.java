@@ -2,7 +2,7 @@ package autumn.util.test;
 
 import autumn.lang.Delegate;
 import autumn.lang.Module;
-import autumn.util.Reflect;
+import autumn.util.F;
 import autumn.util.T;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
@@ -319,7 +319,7 @@ public final class UnitTester
         time.addAndGet(total_time);
 
         // Determine whether the test-case passed.
-        final boolean case1 = thrown != null && test_exception.get() != null && Reflect.isSubtypeOf(thrown.getClass(), test_exception.get());
+        final boolean case1 = thrown != null && test_exception.get() != null && F.isSubtypeOf(thrown.getClass(), test_exception.get());
         final boolean case2 = thrown == null && test_exception.get() == null;
         final boolean passed = case1 || case2;
 
@@ -421,7 +421,7 @@ public final class UnitTester
             throw new MalformedTestException("A test function must take exactly one parameter.");
         }
 
-        if (Reflect.isSubtypeOf(function.parameterTypes().get(0), TestCase.class) == false)
+        if (F.isSubtypeOf(function.parameterTypes().get(0), TestCase.class) == false)
         {
             throw new MalformedTestException("The type of a test function's only parameter must be TestCase.");
         }

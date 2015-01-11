@@ -1,0 +1,14 @@
+@City ("Toronto", "Vancouver", "Montreal")
+module Main in execution;
+
+annotation City;
+
+@Start
+defun main (args : String[]) : void
+{
+    val anno = F::findAnnotation((class Main), (class City));
+
+    assert F::get(anno, 0) == "Toronto";
+    assert F::get(anno, 1) == "Vancouver";
+    assert F::get(anno, 2) == "Montreal";
+}

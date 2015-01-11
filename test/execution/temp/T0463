@@ -1,0 +1,9 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    val method = F::findMethod((class Main), "moo", []);
+
+    assert method == null;
+}

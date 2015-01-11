@@ -1,0 +1,18 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    try
+    {
+       lambda p : Predicate => false;
+
+       F::find(null, 0, []);
+
+       assert false;
+    }
+    catch (ex : NullPointerException)
+    {
+        nop;
+    }
+}

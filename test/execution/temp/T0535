@@ -1,0 +1,78 @@
+module Main in execution;
+
+import high.mackenzie.autumn.lang.compiler.typesystem.TypeFactory;
+import high.mackenzie.autumn.lang.compiler.utils.TypeSystemUtils;
+import java.util.AbstractList;
+import java.io.Serializable;
+
+@Start
+defun main (args : String[]) : void
+{
+    var subtype = null is Class;
+    var supertype = null is Class;
+
+
+    # Case: Null is a  subtype of null.
+    subtype = null;
+    supertype = null;
+    assert F::isSubtypeOf (subtype, supertype) == true;
+
+
+    # Case: Null is not a subtype of a primitive-type.
+    subtype = null;
+    supertype = (class boolean);
+    assert F::isSubtypeOf (subtype, supertype) == false;
+
+
+    # Case: Null is a subtype of  a reference-type.
+    subtype = null;
+    supertype = (class String);
+    assert F::isSubtypeOf (subtype, supertype) == true;
+
+
+    # Case: Null is a subtype of an array-type
+    subtype = null;
+    supertype = (class boolean[]);
+    assert F::isSubtypeOf (subtype, supertype) == true;
+
+
+    # Case: A subtype is a subtype of its supertype.
+    subtype = (class ArrayList);
+    supertype = (class List);
+    assert F::isSubtypeOf (subtype, supertype) == true;
+
+
+    # Case: The subtype is not a subtype of the supertype.
+    subtype = (class ArrayList);
+    supertype = (class Set);
+    assert F::isSubtypeOf (subtype, supertype) == false;
+
+
+    # Case: A supertype is not a subtype of a subtype.
+    subtype = (class Object);
+    supertype = (class String);
+    assert F::isSubtypeOf (subtype, supertype) == false;
+
+
+    # Case: A reference-type is a subtype of itself.
+    subtype = (class String);
+    supertype = (class String);
+    assert F::isSubtypeOf (subtype, supertype) == true;
+
+
+    # Case: A primitive-type is a subtype of itself.
+    subtype = (class boolean);
+    supertype = (class boolean);
+    assert F::isSubtypeOf (subtype, supertype) == true;
+
+
+    # Case: A primitive-type is not a subtype of a reference-type.
+    subtype = (class boolean);
+    supertype = (class Boolean);
+    assert F::isSubtypeOf (subtype, supertype) == false;
+
+}
+
+
+
+

@@ -1,0 +1,16 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    try
+    {
+        F::get((null is Object[]), 0);
+
+        assert false;
+    }
+    catch (ex : NullPointerException)
+    {
+        nop;
+    }
+}

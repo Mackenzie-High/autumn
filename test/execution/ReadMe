@@ -437,9 +437,405 @@ Test Index
 
 
 Standard Library
+. autumn.util.F
+. . all
+. . . T0404 = null condition
+. . . T0405 = null elements
+. . . T0406 = normal
+. . any
+. . . T0407 = null condition
+. . . T0408 = null elements
+. . . T0409 = normal
+. . apply
+. . . T0410 = null functor
+. . . T0411 = null arguments
+. . . T0412 = len(arguments) != len(parameters)
+. . . T0413 = normal
+. . async
+. . . T0414 = null action
+. . . normal
+. . average
+. . . T0415 = null values (variable)
+. . . T0416 = null value  (element)
+. . . T0417 = incompatible argument
+. . . T0418 = normal
+. . big
+. . . T0419 = null argument
+. . . T0421 = normal
+. . compare
+. . . T0422 = normal
+. . count
+. . . T0423 = null condition
+. . . T0424 = null iterable
+. . . T0425 = normal
+. . decodeJson
+. . . T0426 = null module
+. . . T0427 = null string
+. . . normal
+. . . ambiguity
+. . defaultValueOf
+. . . T0428 = null argument
+. . . T0429 = void-type
+. . . T0430 = normal
+. . encodeJson
+. . . T0431 = null argument
+. . . unexpected type
+. . . normal
+. . enumerate
+. . . T0433 = null iterable
+. . . T0434 = normal
+. . escape
+. . . T0435 = null argument
+. . . T0436 = bad escape sequence     // TODO
+. . . T0437 = normal                  // TODO
+. . filter
+. . . T0438 = null condition
+. . . T0439 = null elements
+. . . T0440 = normal
+. . find
+. . . T0441 = null condition
+. . . T0442 = null elements
+. . . T0443 = negative skip
+. . . T0444 = normal
+. . findAnnotation
+. . . T0445 = null annotatable
+. . . T0446 = null type
+. . . T0447 = found
+. . . T0448 = not found
+. . findConstructor
+. . . T0449 = null owner
+. . . T0450 = null formals
+. . . T0452 = found
+. . . T0453 = not found
+. . findField
+. . . T0454 = null owner
+. . . T0455 = null name
+. . . T0456 = found
+. . . T0457 = not found
+. . findMethod
+. . . T0458 = null owner
+. . . T0459 = null name
+. . . T0460 = null formals
+. . . T0462 = found
+. . . T0463 = not found
+. . first
+. . . T0464 = null argument
+. . . T0465 = normal
+. . format
+. . . T0466 = null string
+. . . T0467 = null arguments
+. . . T0468 = normal
+. . get
+. . . T0469 = null boolean[]
+. . . T0470 = null char[]
+. . . T0471 = null byte[]
+. . . T0472 = null short[]
+. . . T0473 = null int[]
+. . . T0474 = null long[]
+. . . T0475 = null float[]
+. . . T0476 = null double[]
+. . . T0477 = null BigInteger[]
+. . . T0478 = null BigDecimal[]
+. . . T0479 = null String[]
+. . . T0480 = null Object[]
+. . . T0481 = null List
+. . . T0484 = null Map
+. . . T0485 = null Annotation
+. . . T0482 = null Record - int key
+. . . T0483 = null Record - String key
+. . . T0486 = normal - boolean[]
+. . . T0487 = normal - char[]
+. . . T0488 = normal - byte[]
+. . . T0489 = normal - short[]
+. . . T0490 = normal - int[]
+. . . T0491 = normal - long[]
+. . . T0492 = normal - float[]
+. . . T0493 = normal - double[]
+. . . T0494 = normal - BigInteger[]
+. . . T0495 = normal - BigDecimal[]
+. . . T0496 = normal - String[]
+. . . T0497 = normal - Object[]
+. . . T0498 = normal - List
+. . . T0499 = normal - Map
+. . . T0500 = normal - Annotation
+. . . T0501 = normal - Record - int key
+. . . T0502 = normal - Record - String key
+. . hash
+. . . T0503 = normal
+. . immutable
+. . . T0504 = null - Iterable
+. . . T0505 = null - List
+. . . T0506 = null - Set
+. . . T0507 = null - Map
+. . . T0508 = normal - Iterable
+. . . T0509 = normal - List
+. . . T0510 = normal - Set
+. . . T0511 = normal - Map
+. . isAnnotationType
+. . . T0512 = null argument
+. . . T0513 = normal
+. . isAssignableTo
+. . . T0534 = normal
+. . isDesignType
+. . . T0516 = null argument
+. . . T0517 = normal
+. . isEnumType
+. . . T0518 = null argument
+. . . T0519 = normal
+. . isExceptionType
+. . . T0520 = null argument
+. . . T0521 normal
+. . isFunctorType
+. . . T0522 = null argument
+. . . T0523 = normal
+. . isModuleType
+. . . T0526 = null argument
+. . . T0527 = normal
+. . isRecordType
+. . . T0528 = null argument
+. . . T0529 = normal
+. . isStructType
+. . . T0530 = null argument
+. . . T0531 = normal
+. . isSubtypeOf
+. . . T0535 = normal
+. . isTupleType
+. . . T0532 = null argument
+. . . T0533 = normal
+. . iter
+. . . T0536 = null argument - boolean[]
+. . . T0537 = null argument - char[]
+. . . T0538 = null argument - byte[]
+. . . T0539 = null argument - short[]
+. . . T0540 = null argument - int[]
+. . . T0541 = null argument - long[]
+. . . T0542 = null argument - float[]
+. . . T0543 = null argument - double[]
+. . . T0544 = null argument - Object[]
+. . . T0545 = null argument - Iterable
+. . . T0546 = null argument - Map
+. . . T0547 = null argument - Record
+. . . T0548 = null argument - Annotation
+. . . T0563 = null argument - Iterator
+. . . T0549 = normal - boolean[]
+. . . T0550 = normal - char[]
+. . . T0551 = normal - byte[]
+. . . T0552 = normal - short[]
+. . . T0553 = normal - int[]
+. . . T0554 = normal - long[]
+. . . T0555 = normal - float[]
+. . . T0556 = normal - double[]
+. . . T0557 = normal - Object[]
+. . . T0558 = normal - Iterable - List
+. . . T0559 = normal - Iterable - Set
+. . . T0560 = normal - Map
+. . . T0561 = normal - Record
+. . . T0562 = normal - Annotation
+. . . T0564 = normal - Iterator
+. . last
+. . . T0565 = null argument
+. . . T0566 = normal
+. . len
+. . . T0567 = null argument - boolean[]
+. . . T0568 = null argument - char[]
+. . . T0569 = null argument - byte[]
+. . . T0570 = null argument - short[]
+. . . T0571 = null argument - int[]
+. . . T0572 = null argument - long[]
+. . . T0573 = null argument - float[]
+. . . T0574 = null argument - double[]
+. . . T0575 = null argument - Object[]
+. . . T0576 = null argument - String
+. . . T0577 = null argument - Collection
+. . . T0578 = null argument - Map
+. . . T0579 = null argument - Record
+. . . T0580 = null argument - Annotation
+. . . T0581 = normal - boolean[]
+. . . T0582 = normal - char[]
+. . . T0583 = normal - byte[]
+. . . T0584 = normal - short[]
+. . . T0585 = normal - int[]
+. . . T0586 = normal - long[]
+. . . T0587 = normal - float[]
+. . . T0588 = normal - double[]
+. . . T0589 = normal - Object[]
+. . . T0590 = normal - String
+. . . T0591 = normal - Collection
+. . . T0592 = normal - Map
+. . . T0593 = normal - Record
+. . . T0594 = normal - Annotation
+. . map
+. . . T0595 = null functor
+. . . T0596 = null iterable
+. . . T0597 = normal
+. . maximum
+. . . T0598 = null values
+. . . T0599 = normal
+. . minimum
+. . . T0600 = null values
+. . . T0601 = normal
+. . mutable
+. . . T0602 = null - Iterable
+. . . T0603 = null - List
+. . . T0604 = null - Set
+. . . T0605 = null - Map
+. . . T0606 = normal - Iterable
+. . . T0607 = normal - List
+. . . T0608 = normal - Set
+. . . T0609 = normal - Map
+. . newArray
+. . . T0610 = single dimensional - null class
+. . . T0611 = single dimensional - negative size
+. . . T0612 = single dimensional - normal
+. . newList
+. . . T0613 = null argument
+. . . T0614 = normal
+. . newMap
+. . . T0617 = null argument
+. . . T0618 = normal
+. . newProxy
+. . . null class
+. . . null handler
+. . . normal
+. . newSet
+. . . T0615 = null argument
+. . . T0616 = normal
+. . padEnd
+. . . T0622 = null string
+. . . T0623 = negative count
+. . . T0624 = normal
+. . padStart
+. . . T0619 = null string
+. . . T0620 = negative count
+. . . T0621 = normal
+. . parseBigDecimal
+. . . T0625 = null argument
+. . . T0626 = bad format
+. . . T0627 = normal
+. . parseBigInteger
+. . . T0628 = null argument
+. . . T0629 = bad format
+. . . T0630 = normal
+. . parseBoolean
+. . . T0631 = null argument
+. . . T0632 = bad format      // TODO
+. . . T0633 = normal
+. . parseByte
+. . . T0634 = null argument
+. . . T0635 = bad format
+. . . T0636 = normal
+. . parseDouble
+. . . T0637 = null argument
+. . . T0638 = bad format
+. . . T0639 = normal
+. . parseFloat
+. . . T0640 = null argument
+. . . T0641 = bad format
+. . . T0642 = normal
+. . parseInt
+. . . T0643 = null argument
+. . . T0644 = bad format
+. . . T0645 = normal
+. . parseLong
+. . . T0646 = null argument
+. . . T0647 = bad format
+. . . T0648 = normal
+. . parseShort
+. . . T0649 = null argument
+. . . T0650 = bad format
+. . . T0651 = normal
+. . print
+. . printerr
+. . printerrf
+. . printerrln
+. . printerrln
+. . printerrlns
+. . printf
+. . println
+. . println
+. . printlns
+. . raise
+. . . T0652 = null argument
+. . . T0703 = normal
+. . range
+. . . normal
+. . readln
+. . recall
+. . . T0653 = null owner
+. . reduce
+. . . null functor
+. . . null iterable
+. . . normal
+. . remember
+. . . T0654 = null owner
+. . reset
+. . . T0655 = null argument
+. . . normal
+. . rethrow
+. . . T0656 = null argument
+. . . T0702 = normal
+. . search
+. . . T0657 = null array
+. . . T0658 = null comparator
+. . . normal
+. . set
+. . . T0680 = null array - boolean[]
+. . . T0681 = null array - char[]
+. . . T0682 = null array - byte[]
+. . . T0683 = null array - short[]
+. . . T0684 = null array - int[]
+. . . T0685 = null array - long[]
+. . . T0686 = null array - float[]
+. . . T0687 = null array - double[]
+. . . T0688 = null array - BigInteger[]
+. . . T0689 = null array - BigDecimal[]
+. . . T0690 = null array - String[]
+. . . T0691 = null array - Object[]
+. . . T0692 = null list
+. . . T0693 = null map
+. . .                                                 // TODO: null checks of record forms
+. . sort
+. . . T0659 = null array
+. . . T0660 = null comparator
+. . . normal
+. . str
+. . . T0662 = form iterable - null iterable
+. . . T0663 = form iterable - null prefix
+. . . T0664 = form iterable - null separator
+. . . T0665 = form iterable - null suffix
+. . . T0700 = form object - normal
+. . . T0701 = form iterable - normal
+. . sum
+. . . T0666 = null values
+. . . T0667 = null value
+. . . T0699 = normal
+. . sync
+. . . T0668 = null lock
+. . . T0669 = null action
+. . . normal
+. . unescape
+. . . T0670 = null argument
+. . . normal
+. . unique
+. . . T0698 = normal
+. . unmodifiable
+. . . T0671 = null - Iterable
+. . . T0672 = null - List
+. . . T0673 = null - Set
+. . . T0674 = null - Map
+. . . T0694 = normal - Iterable
+. . . T0695 = normal - List
+. . . T0696 = normal - Set
+. . . T0697 = normal - Map
+. . zfill
+. . . T0675 = null string
+. . . T0676 = negative length
+. . . T0677 = normal
+. . zip
+. . . T0678 = null argument
+. . . T0679 = normal         // TODO
+
+
 . autumn.util.test
 . . T0218 = Test Cases, Test Results, and most of UnitTester
 . . T0219 = UnitTester - Load Non-Existent Class
-
-
-

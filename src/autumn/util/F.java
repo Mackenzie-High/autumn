@@ -5,35 +5,36 @@ import java.math.BigDecimal;
 import com.google.common.io.Files;
 import com.google.common.base.Strings;
 import java.nio.charset.Charset;
-import autumn.util.*;
 import autumn.lang.annotations.*;
 import autumn.lang.exceptions.*;
+import autumn.lang.internals.*;
 import autumn.lang.*;
+import java.lang.reflect.*;
 import java.util.*;
 import com.google.common.collect.*;
 
 public final class F 
 {
     
-    public static boolean all (final java.lang.Iterable elements, final autumn.util.functors.Predicate condition) throws java.lang.NullPointerException, java.lang.NullPointerException, java.lang.Throwable
+    public static boolean all (final autumn.util.functors.Predicate condition, final java.lang.Iterable elements) throws java.lang.NullPointerException, java.lang.NullPointerException, java.lang.Throwable
     {
 
-        if(elements == null) { throw new java.lang.NullPointerException(); }
         if(condition == null) { throw new java.lang.NullPointerException(); }
+        if(elements == null) { throw new java.lang.NullPointerException(); }
         return T.all(elements, condition);
     }
 
     
-    public static boolean any (final java.lang.Iterable elements, final autumn.util.functors.Predicate condition) throws java.lang.NullPointerException, java.lang.NullPointerException, java.lang.Throwable
+    public static boolean any (final autumn.util.functors.Predicate condition, final java.lang.Iterable elements) throws java.lang.NullPointerException, java.lang.NullPointerException, java.lang.Throwable
     {
 
-        if(elements == null) { throw new java.lang.NullPointerException(); }
         if(condition == null) { throw new java.lang.NullPointerException(); }
+        if(elements == null) { throw new java.lang.NullPointerException(); }
         return T.any(elements, condition);
     }
 
     
-    public static java.lang.Object apply (final autumn.lang.Functor functor, final java.lang.Iterable arguments) throws java.lang.NullPointerException, java.lang.NullPointerException, java.lang.Throwable
+    public static java.lang.Object apply (final autumn.lang.TypedFunctor functor, final java.lang.Iterable arguments) throws java.lang.NullPointerException, java.lang.NullPointerException, java.lang.IllegalArgumentException, java.lang.Throwable
     {
 
         if(functor == null) { throw new java.lang.NullPointerException(); }
@@ -42,28 +43,27 @@ public final class F
     }
 
     
-    public static java.lang.Object applyQuietly (final autumn.lang.Functor functor, final java.lang.Iterable arguments) throws java.lang.NullPointerException, java.lang.NullPointerException, autumn.lang.exceptions.CheckedException
-    {
-
-        if(functor == null) { throw new java.lang.NullPointerException(); }
-        if(arguments == null) { throw new java.lang.NullPointerException(); }
-        try { return apply(functor, arguments); } catch (Throwable t) { throw new CheckedException(t); }
-    }
-
-    
     public static autumn.lang.AsyncTask async (final autumn.util.functors.Action action) throws java.lang.NullPointerException
     {
 
         if(action == null) { throw new java.lang.NullPointerException(); }
-        return null;
+        return T.async(action);
     }
 
     
-    public static java.math.BigDecimal big (final java.lang.Object value) throws java.lang.NullPointerException, java.lang.ClassCastException
+    public static java.math.BigDecimal average (final java.lang.Iterable values) throws java.lang.NullPointerException, java.lang.NullPointerException, java.lang.IllegalArgumentException
+    {
+
+        if(values == null) { throw new java.lang.NullPointerException(); }
+        return T.average(values);
+    }
+
+    
+    public static java.math.BigDecimal big (final java.lang.Object value) throws java.lang.NullPointerException, java.lang.IllegalArgumentException
     {
 
         if(value == null) { throw new java.lang.NullPointerException(); }
-        return null;
+        return T.big(value);
     }
 
     
@@ -74,11 +74,11 @@ public final class F
     }
 
     
-    public static int count (final java.lang.Iterable elements, final autumn.util.functors.Predicate condition) throws java.lang.NullPointerException, java.lang.NullPointerException, java.lang.Throwable
+    public static int count (final autumn.util.functors.Predicate condition, final java.lang.Iterable elements) throws java.lang.NullPointerException, java.lang.NullPointerException, java.lang.Throwable
     {
 
-        if(elements == null) { throw new java.lang.NullPointerException(); }
         if(condition == null) { throw new java.lang.NullPointerException(); }
+        if(elements == null) { throw new java.lang.NullPointerException(); }
         return T.count(elements, condition);
     }
 
@@ -92,26 +92,11 @@ public final class F
     }
 
     
-    public static java.lang.Object defaultValue (final java.lang.Class type) 
+    public static java.lang.Object defaultValueOf (final java.lang.Class type) throws java.lang.IllegalArgumentException
     {
 
+        if(type == void.class) { throw new java.lang.IllegalArgumentException(); }
         return T.defaultValue(type);
-    }
-
-    
-    public static autumn.lang.Delegate delegateTo (final java.lang.reflect.Constructor target) throws java.lang.NullPointerException
-    {
-
-        if(target == null) { throw new java.lang.NullPointerException(); }
-        return T.delegateTo(target);
-    }
-
-    
-    public static autumn.lang.Delegate delegateTo (final java.lang.reflect.Method target) throws java.lang.NullPointerException
-    {
-
-        if(target == null) { throw new java.lang.NullPointerException(); }
-        return null;
     }
 
     
@@ -127,7 +112,7 @@ public final class F
     {
 
         if(iterable == null) { throw new java.lang.NullPointerException(); }
-        return null;
+        return T.enumerate(iterable);
     }
 
     
@@ -139,45 +124,20 @@ public final class F
     }
 
     
-    public static java.lang.String extractAnnotationValue (final java.lang.annotation.Annotation anno) throws java.lang.NullPointerException, java.lang.IllegalArgumentException
+    public static java.util.List filter (final autumn.util.functors.Predicate condition, final java.lang.Iterable elements) throws java.lang.NullPointerException, java.lang.NullPointerException, java.lang.Throwable
     {
 
-        if(anno == null) { throw new java.lang.NullPointerException(); }
-        return T.extractAnnotationValue(anno);
-    }
-
-    
-    public static java.util.List extractAnnotationValues (final java.lang.annotation.Annotation anno) throws java.lang.NullPointerException
-    {
-
-        if(anno == null) { throw new java.lang.NullPointerException(); }
-        return T.extractAnnotationValues(anno);
-    }
-
-    
-    public static java.util.List filter (final java.lang.Iterable elements, final autumn.util.functors.Predicate condition) throws java.lang.NullPointerException, java.lang.NullPointerException, java.lang.Throwable
-    {
-
-        if(elements == null) { throw new java.lang.NullPointerException(); }
         if(condition == null) { throw new java.lang.NullPointerException(); }
+        if(elements == null) { throw new java.lang.NullPointerException(); }
         return T.filter(elements, condition);
     }
 
     
-    public static java.lang.Object find (final java.lang.Iterable elements, final autumn.util.functors.Predicate condition) throws java.lang.NullPointerException, java.lang.NullPointerException, java.lang.Throwable
+    public static java.lang.Object find (final autumn.util.functors.Predicate condition, final int skip, final java.lang.Iterable elements) throws java.lang.NullPointerException, java.lang.NullPointerException, java.lang.IllegalArgumentException, java.lang.Throwable
     {
 
-        if(elements == null) { throw new java.lang.NullPointerException(); }
         if(condition == null) { throw new java.lang.NullPointerException(); }
-        return T.find(elements, condition, 0);
-    }
-
-    
-    public static java.lang.Object find (final java.lang.Iterable elements, final autumn.util.functors.Predicate condition, final int skip) throws java.lang.NullPointerException, java.lang.NullPointerException, java.lang.IllegalArgumentException, java.lang.Throwable
-    {
-
         if(elements == null) { throw new java.lang.NullPointerException(); }
-        if(condition == null) { throw new java.lang.NullPointerException(); }
         if(skip < 0) { throw new java.lang.IllegalArgumentException(); }
         return T.find(elements, condition, skip);
     }
@@ -188,7 +148,7 @@ public final class F
 
         if(owner == null) { throw new java.lang.NullPointerException(); }
         if(type == null) { throw new java.lang.NullPointerException(); }
-        return T.findAnnotation(owner, type);
+        return owner.getAnnotation(type);
     }
 
     
@@ -228,13 +188,20 @@ public final class F
     }
 
     
-    public static java.lang.String format (final java.lang.String string, final java.lang.String format, final java.lang.Iterable args) throws java.lang.NullPointerException, java.lang.NullPointerException, java.lang.NullPointerException, java.lang.NullPointerException
+    public static java.lang.String format (final java.lang.String format, final java.lang.Iterable args) throws java.lang.NullPointerException, java.lang.NullPointerException
     {
 
-        if(string == null) { throw new java.lang.NullPointerException(); }
         if(format == null) { throw new java.lang.NullPointerException(); }
         if(args == null) { throw new java.lang.NullPointerException(); }
-        return null;
+        return String.format(format, newList(args).toArray());
+    }
+
+    
+    public static java.lang.String get (final java.lang.annotation.Annotation anno, final int index) throws java.lang.NullPointerException, java.lang.IllegalArgumentException
+    {
+
+        if(anno == null) { throw new java.lang.NullPointerException(); }
+        return (String) iter(anno).get(index);
     }
 
     
@@ -373,11 +340,11 @@ public final class F
     }
 
     
-    public static java.util.Collection immutable (final java.util.Collection value) throws java.lang.NullPointerException
+    public static java.util.List immutable (final java.lang.Iterable value) throws java.lang.NullPointerException
     {
 
         if(value == null) { throw new java.lang.NullPointerException(); }
-        return Collections.unmodifiableCollection(new ArrayList(value));
+        return immutable(iter(value));
     }
 
     
@@ -405,105 +372,101 @@ public final class F
     }
 
     
-    public static boolean isAnnotation (final java.lang.Class type) throws java.lang.NullPointerException
+    public static boolean isAnnotationType (final java.lang.Class type) throws java.lang.NullPointerException
     {
 
         if(type == null) { throw new java.lang.NullPointerException(); }
-        return false;
+        return type.isAnnotation();
     }
 
     
-    public static boolean isAssignableTo (final java.lang.Class assignee, final java.lang.Class value) throws java.lang.NullPointerException, java.lang.NullPointerException
+    public static boolean isAssignableTo (final java.lang.Class assignee, final java.lang.Class value) 
     {
 
-        if(assignee == null) { throw new java.lang.NullPointerException(); }
-        if(value == null) { throw new java.lang.NullPointerException(); }
-        return false;
+        return T.isAssignableTo(assignee, value);
     }
 
     
-    public static boolean isClass (final java.lang.Class type) throws java.lang.NullPointerException
-    {
-
-        if(type == null) { throw new java.lang.NullPointerException(); }
-        return false;
-    }
-
-    
-    public static boolean isDesign (final java.lang.Class type) throws java.lang.NullPointerException
+    public static boolean isDesignType (final java.lang.Class type) throws java.lang.NullPointerException
     {
 
         if(type == null) { throw new java.lang.NullPointerException(); }
-        return false;
+        return type.isInterface() && Record.class.isAssignableFrom(type);
     }
 
     
-    public static boolean isEnum (final java.lang.Class type) throws java.lang.NullPointerException
+    public static boolean isEnumType (final java.lang.Class type) throws java.lang.NullPointerException
     {
 
         if(type == null) { throw new java.lang.NullPointerException(); }
-        return false;
+        return type.isEnum();
     }
 
     
-    public static boolean isException (final java.lang.Class type) throws java.lang.NullPointerException
+    public static boolean isExceptionType (final java.lang.Class type) throws java.lang.NullPointerException
     {
 
         if(type == null) { throw new java.lang.NullPointerException(); }
-        return false;
+        return Throwable.class.isAssignableFrom(type);
     }
 
     
-    public static boolean isFunctor (final java.lang.Class type) throws java.lang.NullPointerException
+    public static boolean isFunctorType (final java.lang.Class type) throws java.lang.NullPointerException
     {
 
         if(type == null) { throw new java.lang.NullPointerException(); }
-        return false;
+        return Functor.class.isAssignableFrom(type);
     }
 
     
-    public static boolean isInterface (final java.lang.Class type) throws java.lang.NullPointerException
+    public static boolean isModuleType (final java.lang.Class type) throws java.lang.NullPointerException
     {
 
         if(type == null) { throw new java.lang.NullPointerException(); }
-        return false;
+        return Module.class.isAssignableFrom(type);
     }
 
     
-    public static boolean isRecord (final java.lang.Class type) throws java.lang.NullPointerException
+    public static boolean isRecordType (final java.lang.Class type) throws java.lang.NullPointerException
     {
 
         if(type == null) { throw new java.lang.NullPointerException(); }
-        return isDesign(type) || isStruct(type) || isTuple(type);
+        return isDesignType(type) || isStructType(type) || isTupleType(type);
     }
 
     
-    public static boolean isStruct (final java.lang.Class type) throws java.lang.NullPointerException
+    public static boolean isStructType (final java.lang.Class type) throws java.lang.NullPointerException
     {
 
         if(type == null) { throw new java.lang.NullPointerException(); }
-        return false;
+        return Struct.class.isAssignableFrom(type);
     }
 
     
-    public static boolean isSubtypeOf (final java.lang.Class subtype, final java.lang.Class supertype) throws java.lang.NullPointerException, java.lang.NullPointerException
+    public static boolean isSubtypeOf (final java.lang.Class subtype, final java.lang.Class supertype) 
     {
 
-        if(subtype == null) { throw new java.lang.NullPointerException(); }
-        if(supertype == null) { throw new java.lang.NullPointerException(); }
-        return false;
+        return T.isSubtypeOf(subtype, supertype);
     }
 
     
-    public static boolean isTuple (final java.lang.Class type) throws java.lang.NullPointerException
+    public static boolean isTupleType (final java.lang.Class type) throws java.lang.NullPointerException
     {
 
         if(type == null) { throw new java.lang.NullPointerException(); }
-        return false;
+        return Tuple.class.isAssignableFrom(type);
     }
 
     
-    public static java.lang.Iterable iter (final java.lang.CharSequence input) throws java.lang.NullPointerException
+    public static java.util.List iter (final java.lang.annotation.Annotation anno) throws java.lang.NullPointerException
+    {
+
+        if(anno == null) { throw new java.lang.NullPointerException(); }
+        return T.iter(anno);
+    }
+
+    
+    public static java.util.List iter (final java.lang.Iterable input) throws java.lang.NullPointerException
     {
 
         if(input == null) { throw new java.lang.NullPointerException(); }
@@ -511,7 +474,7 @@ public final class F
     }
 
     
-    public static java.lang.Iterable iter (final java.lang.Iterable input) throws java.lang.NullPointerException
+    public static java.lang.Iterable iter (final java.util.Iterator input) throws java.lang.NullPointerException
     {
 
         if(input == null) { throw new java.lang.NullPointerException(); }
@@ -519,7 +482,15 @@ public final class F
     }
 
     
-    public static java.lang.Iterable iter (final java.lang.Object[] input) throws java.lang.NullPointerException
+    public static java.util.Set iter (final java.util.Map input) throws java.lang.NullPointerException
+    {
+
+        if(input == null) { throw new java.lang.NullPointerException(); }
+        return input.keySet();
+    }
+
+    
+    public static java.util.List iter (final java.lang.Object[] input) throws java.lang.NullPointerException
     {
 
         if(input == null) { throw new java.lang.NullPointerException(); }
@@ -527,7 +498,15 @@ public final class F
     }
 
     
-    public static java.lang.Iterable iter (final boolean[] input) throws java.lang.NullPointerException
+    public static java.util.List iter (final autumn.lang.Record input) throws java.lang.NullPointerException
+    {
+
+        if(input == null) { throw new java.lang.NullPointerException(); }
+        return input.keys();
+    }
+
+    
+    public static java.util.List iter (final boolean[] input) throws java.lang.NullPointerException
     {
 
         if(input == null) { throw new java.lang.NullPointerException(); }
@@ -535,7 +514,7 @@ public final class F
     }
 
     
-    public static java.lang.Iterable iter (final byte[] input) throws java.lang.NullPointerException
+    public static java.util.List iter (final byte[] input) throws java.lang.NullPointerException
     {
 
         if(input == null) { throw new java.lang.NullPointerException(); }
@@ -543,7 +522,7 @@ public final class F
     }
 
     
-    public static java.lang.Iterable iter (final char[] input) throws java.lang.NullPointerException
+    public static java.util.List iter (final char[] input) throws java.lang.NullPointerException
     {
 
         if(input == null) { throw new java.lang.NullPointerException(); }
@@ -551,7 +530,7 @@ public final class F
     }
 
     
-    public static java.lang.Iterable iter (final double[] input) throws java.lang.NullPointerException
+    public static java.util.List iter (final double[] input) throws java.lang.NullPointerException
     {
 
         if(input == null) { throw new java.lang.NullPointerException(); }
@@ -559,7 +538,7 @@ public final class F
     }
 
     
-    public static java.lang.Iterable iter (final float[] input) throws java.lang.NullPointerException
+    public static java.util.List iter (final float[] input) throws java.lang.NullPointerException
     {
 
         if(input == null) { throw new java.lang.NullPointerException(); }
@@ -567,7 +546,7 @@ public final class F
     }
 
     
-    public static java.lang.Iterable iter (final int[] input) throws java.lang.NullPointerException
+    public static java.util.List iter (final int[] input) throws java.lang.NullPointerException
     {
 
         if(input == null) { throw new java.lang.NullPointerException(); }
@@ -575,7 +554,7 @@ public final class F
     }
 
     
-    public static java.lang.Iterable iter (final long[] input) throws java.lang.NullPointerException
+    public static java.util.List iter (final long[] input) throws java.lang.NullPointerException
     {
 
         if(input == null) { throw new java.lang.NullPointerException(); }
@@ -583,7 +562,7 @@ public final class F
     }
 
     
-    public static java.lang.Iterable iter (final short[] input) throws java.lang.NullPointerException
+    public static java.util.List iter (final short[] input) throws java.lang.NullPointerException
     {
 
         if(input == null) { throw new java.lang.NullPointerException(); }
@@ -596,6 +575,14 @@ public final class F
 
         if(list == null) { throw new java.lang.NullPointerException(); }
         return list.get(list.size() - 1);
+    }
+
+    
+    public static int len (final java.lang.annotation.Annotation anno) throws java.lang.NullPointerException
+    {
+
+        if(anno == null) { throw new java.lang.NullPointerException(); }
+        return iter(anno).size();
     }
 
     
@@ -671,11 +658,11 @@ public final class F
     }
 
     
-    public static int len (final java.util.List list) throws java.lang.NullPointerException
+    public static int len (final java.util.Collection collection) throws java.lang.NullPointerException
     {
 
-        if(list == null) { throw new java.lang.NullPointerException(); }
-        return list.size();
+        if(collection == null) { throw new java.lang.NullPointerException(); }
+        return collection.size();
     }
 
     
@@ -703,7 +690,7 @@ public final class F
     }
 
     
-    public static java.util.List map (final java.lang.Iterable elements, final autumn.util.functors.Function1 functor) throws java.lang.NullPointerException, java.lang.NullPointerException, java.lang.Throwable
+    public static java.util.List map (final autumn.util.functors.Function1 functor, final java.lang.Iterable elements) throws java.lang.NullPointerException, java.lang.NullPointerException, java.lang.Throwable
     {
 
         if(elements == null) { throw new java.lang.NullPointerException(); }
@@ -712,59 +699,27 @@ public final class F
     }
 
     
-    public static java.lang.Object max (final java.lang.Iterable values) throws java.lang.NullPointerException
+    public static java.lang.Object maximum (final java.lang.Iterable values) throws java.lang.NullPointerException
     {
 
         if(values == null) { throw new java.lang.NullPointerException(); }
-        return null;
+        return T.maximum(values);
     }
 
     
-    public static java.math.BigDecimal mean (final java.lang.Iterable values) throws java.lang.NullPointerException
+    public static java.lang.Object minimum (final java.lang.Iterable values) throws java.lang.NullPointerException
     {
 
         if(values == null) { throw new java.lang.NullPointerException(); }
-        return null;
+        return T.minimum(values);
     }
 
     
-    public static java.lang.Object median (final java.lang.Iterable values) throws java.lang.NullPointerException
-    {
-
-        if(values == null) { throw new java.lang.NullPointerException(); }
-        return null;
-    }
-
-    @Infer
-    public static autumn.lang.Functor memoize (final autumn.lang.Functor functor) throws java.lang.NullPointerException
-    {
-
-        if(functor == null) { throw new java.lang.NullPointerException(); }
-        return null;
-    }
-
-    
-    public static java.lang.Object min (final java.lang.Iterable values) throws java.lang.NullPointerException
-    {
-
-        if(values == null) { throw new java.lang.NullPointerException(); }
-        return null;
-    }
-
-    
-    public static java.lang.Object mode (final java.lang.Iterable values) throws java.lang.NullPointerException
-    {
-
-        if(values == null) { throw new java.lang.NullPointerException(); }
-        return null;
-    }
-
-    
-    public static java.util.Collection mutable (final java.util.Collection value) throws java.lang.NullPointerException
+    public static java.util.List mutable (final java.lang.Iterable value) throws java.lang.NullPointerException
     {
 
         if(value == null) { throw new java.lang.NullPointerException(); }
-        return new ArrayList(value);
+        return new ArrayList(F.iter(value));
     }
 
     
@@ -792,20 +747,11 @@ public final class F
     }
 
     
-    public static java.lang.Object newArray (final java.lang.Class type, final java.util.List dimensions) throws java.lang.NullPointerException, java.lang.NullPointerException, java.lang.ClassCastException, java.lang.IllegalArgumentException
+    public static java.lang.Object newArray (final java.lang.Class type, final int size) throws java.lang.NullPointerException, java.lang.NegativeArraySizeException
     {
 
         if(type == null) { throw new java.lang.NullPointerException(); }
-        if(dimensions == null) { throw new java.lang.NullPointerException(); }
-        return null;
-    }
-
-    
-    public static java.lang.Object newArray (final java.lang.Class type, final int size) throws java.lang.NullPointerException, java.lang.IllegalArgumentException
-    {
-
-        if(type == null) { throw new java.lang.NullPointerException(); }
-        if(size < 0) { throw new java.lang.IllegalArgumentException(); }
+        if(size < 0) { throw new java.lang.NegativeArraySizeException(); }
         return java.lang.reflect.Array.newInstance(type, size);
     }
 
@@ -814,7 +760,7 @@ public final class F
     {
 
         if(elements == null) { throw new java.lang.NullPointerException(); }
-        return immutable(Lists.newLinkedList(elements));
+        return immutable(F.iter(elements));
     }
 
     
@@ -839,22 +785,24 @@ public final class F
     {
 
         if(elements == null) { throw new java.lang.NullPointerException(); }
-        return immutable(Sets.newHashSet(elements));
+        return immutable(new HashSet(F.iter(elements)));
     }
 
     
-    public static java.lang.String padEnd (final java.lang.String string, final int length, final char pad) throws java.lang.NullPointerException
+    public static java.lang.String padEnd (final java.lang.String string, final int length, final char pad) throws java.lang.NullPointerException, java.lang.IllegalArgumentException
     {
 
         if(string == null) { throw new java.lang.NullPointerException(); }
-        return padEnd(string, length, pad);
+        if(length < 0) { throw new java.lang.IllegalArgumentException(); }
+        return Strings.padEnd(string, length, pad);
     }
 
     
-    public static java.lang.String padStart (final java.lang.String string, final int length, final char pad) throws java.lang.NullPointerException
+    public static java.lang.String padStart (final java.lang.String string, final int length, final char pad) throws java.lang.NullPointerException, java.lang.IllegalArgumentException
     {
 
         if(string == null) { throw new java.lang.NullPointerException(); }
+        if(length < 0) { throw new java.lang.IllegalArgumentException(); }
         return Strings.padStart(string, length, pad);
     }
 
@@ -871,7 +819,7 @@ public final class F
     {
 
         if(value == null) { throw new java.lang.NullPointerException(); }
-        return null;
+        return new BigInteger(value);
     }
 
     
@@ -945,6 +893,13 @@ public final class F
     }
 
     
+    public static void printerrf (final java.lang.String format, final java.lang.Iterable args) 
+    {
+
+        System.err.printf(format, newList(args).toArray());
+    }
+
+    
     public static void printerrln () 
     {
 
@@ -963,6 +918,13 @@ public final class F
     {
 
         for(Object line : lines) { printerrln(line); }
+    }
+
+    
+    public static void printf (final java.lang.String format, final java.lang.Iterable args) 
+    {
+
+        System.out.printf(format, newList(args).toArray());
     }
 
     
@@ -987,7 +949,7 @@ public final class F
     }
 
     
-    public static void raise (final java.lang.Exception exception) throws java.lang.Throwable, java.lang.NullPointerException
+    public static void raise (final java.lang.Throwable exception) throws java.lang.Throwable, java.lang.NullPointerException
     {
 
         if(exception == null) { throw new java.lang.NullPointerException(); }
@@ -1057,10 +1019,11 @@ public final class F
     }
 
     
-    public static java.util.List search (final java.util.ArrayList list, final autumn.lang.TypedFunctor ordering) throws java.lang.NullPointerException
+    public static java.lang.Object search (final java.util.ArrayList list, final autumn.util.functors.Ordering ordering) throws java.lang.NullPointerException, java.lang.NullPointerException
     {
 
         if(list == null) { throw new java.lang.NullPointerException(); }
+        if(ordering == null) { throw new java.lang.NullPointerException(); }
         return null;
     }
 
@@ -1187,7 +1150,7 @@ public final class F
     }
 
     
-    public static java.util.Map set (final java.util.Map map, final int key, final java.lang.Object value) throws java.lang.NullPointerException
+    public static java.util.Map set (final java.util.Map map, final java.lang.Object key, final java.lang.Object value) throws java.lang.NullPointerException
     {
 
         if(map == null) { throw new java.lang.NullPointerException(); }
@@ -1212,18 +1175,11 @@ public final class F
     }
 
     
-    public static java.util.List sort (final java.util.ArrayList list, final autumn.lang.TypedFunctor ordering) throws java.lang.NullPointerException
+    public static java.util.List sort (final java.util.ArrayList list, final autumn.util.functors.Ordering ordering) throws java.lang.NullPointerException, java.lang.NullPointerException
     {
 
         if(list == null) { throw new java.lang.NullPointerException(); }
-        return null;
-    }
-
-    
-    public static java.math.BigDecimal standardDeviation (final java.lang.Iterable values) throws java.lang.NullPointerException
-    {
-
-        if(values == null) { throw new java.lang.NullPointerException(); }
+        if(ordering == null) { throw new java.lang.NullPointerException(); }
         return null;
     }
 
@@ -1239,19 +1195,18 @@ public final class F
     }
 
     
-    public static java.lang.String str (final java.lang.Object value) throws java.lang.NullPointerException, java.lang.NumberFormatException
+    public static java.lang.String str (final java.lang.Object value) throws java.lang.NumberFormatException
     {
 
-        if(value == null) { throw new java.lang.NullPointerException(); }
         return "" + value;
     }
 
     
-    public static java.math.BigDecimal sum (final java.lang.Iterable values) throws java.lang.NullPointerException
+    public static java.math.BigDecimal sum (final java.lang.Iterable values) throws java.lang.NullPointerException, java.lang.NullPointerException, java.lang.IllegalArgumentException
     {
 
         if(values == null) { throw new java.lang.NullPointerException(); }
-        return null;
+        return T.sum(values);
     }
 
     
@@ -1261,14 +1216,6 @@ public final class F
         if(locked == null) { throw new java.lang.NullPointerException(); }
         if(action == null) { throw new java.lang.NullPointerException(); }
         return;
-    }
-
-    @Infer
-    public static autumn.lang.Functor synchronize (final autumn.lang.Functor functor) throws java.lang.NullPointerException
-    {
-
-        if(functor == null) { throw new java.lang.NullPointerException(); }
-        return null;
     }
 
     
@@ -1287,11 +1234,11 @@ public final class F
     }
 
     
-    public static java.util.Collection unmodifiable (final java.util.Collection value) throws java.lang.NullPointerException
+    public static java.util.List unmodifiable (final java.lang.Iterable value) throws java.lang.NullPointerException
     {
 
         if(value == null) { throw new java.lang.NullPointerException(); }
-        return Collections.unmodifiableCollection(value);
+        return Collections.unmodifiableList(F.iter(value));
     }
 
     

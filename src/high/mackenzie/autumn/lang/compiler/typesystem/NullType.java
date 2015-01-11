@@ -1,6 +1,7 @@
 package high.mackenzie.autumn.lang.compiler.typesystem;
 
 import high.mackenzie.autumn.lang.compiler.typesystem.design.INullType;
+import high.mackenzie.autumn.lang.compiler.typesystem.design.IReferenceType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.ITypeFactory;
 import high.mackenzie.autumn.resources.Finished;
@@ -31,7 +32,7 @@ public final class NullType
     @Override
     public boolean isSubtypeOf(final IType target)
     {
-        return target.getDescriptor().startsWith("L");
+        return target instanceof IReferenceType && ((IReferenceType) target).isReferenceType();
     }
 
     /**

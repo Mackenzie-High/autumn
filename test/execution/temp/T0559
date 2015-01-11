@@ -1,0 +1,21 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    val set = new TreeSet(["A", "B", "C", "D", "E"]);
+
+    val result = F::iter(set);
+
+    assert result.size() == 5;
+    assert result == ["A", "B", "C", "D", "E"];
+
+    var i = 0;
+
+    foreach (value : Object in result)
+    {
+        assert value == F::get(result, i);
+
+        i = i + 1;
+    }
+}

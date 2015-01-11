@@ -1,0 +1,16 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    try
+    {
+        F::padEnd(null, 0, 'X');
+
+        assert false;
+    }
+    catch(ex : NullPointerException)
+    {
+        nop;
+    }
+}

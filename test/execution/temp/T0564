@@ -1,0 +1,13 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    val list = ["A", "B", "C", "D", "E"];
+
+    val iterator = list.iterator();
+
+    val iterable = F::iter(iterator);
+
+    assert iterator === iterable.iterator();
+}

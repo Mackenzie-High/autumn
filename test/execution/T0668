@@ -1,0 +1,23 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    try
+    {
+        delegate p : Action => My::action;
+
+        F::sync(null, p);
+
+        assert false;
+    }
+    catch(ex : NullPointerException)
+    {
+        nop;
+    }
+}
+
+defun action() : void
+{
+
+}

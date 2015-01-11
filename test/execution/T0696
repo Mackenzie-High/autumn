@@ -1,0 +1,19 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    val original = new TreeSet(["A", "B", "C"]);
+
+    val view = F::unmodifiable(original is Set);
+
+    assert view == original;
+    assert view !== original;
+
+    assert view == new TreeSet(["A", "B", "C"]);
+
+    original.add("X");
+
+    assert original == new TreeSet(["A", "B", "C", "X"]);
+    assert view == new TreeSet(["A", "B", "C", "X"]);
+}

@@ -14,9 +14,10 @@ public final class CheckedException
     /**
      * Sole Constructor.
      *
-     * @param ex is the checked exception.
+     * @param cause is the checked exception.
      */
-    public CheckedException(final Throwable ex)
+    public CheckedException(final Throwable cause)
     {
+        super(cause);
     }
 }

@@ -1,7 +1,7 @@
 package high.mackenzie.autumn.util.json;
 
 import autumn.lang.Record;
-import autumn.util.T;
+import autumn.util.F;
 import com.google.common.collect.Lists;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -120,18 +120,16 @@ public final class JsonEncoder
 
         pairs.add(String.format("\"class\" : \"%s\"", record.getClass().getName()));
 
-        for (Entry<String, ? extends Object> entry : T.entryMap(record).entrySet())
+        for (String key : record.keys())
         {
-            final String key = entry.getKey();
-
-            final String value = encode(entry.getValue());
+            final String value = encode(F.get(record, key));
 
             final String pair = String.format("\"%s\" : %s", key, value);
 
             pairs.add(pair);
         }
 
-        final String result = T.str(pairs, "{ ", ", ", " }");
+        final String result = F.str(pairs, "{ ", ", ", " }");
 
         return result;
     }
@@ -147,14 +145,14 @@ public final class JsonEncoder
 
     public String encode(final boolean value)
     {
-        final String text = T.str(value);
+        final String text = F.str(value);
 
         return text;
     }
 
     public String encode(final char value)
     {
-        final String text = T.str((int) value);
+        final String text = F.str((int) value);
 
         final String result = encodeTypedAtom(char.class.getSimpleName(), text);
 
@@ -163,7 +161,7 @@ public final class JsonEncoder
 
     public String encode(final byte value)
     {
-        final String text = T.str(value);
+        final String text = F.str(value);
 
         final String result = encodeTypedAtom(byte.class.getSimpleName(), text);
 
@@ -172,7 +170,7 @@ public final class JsonEncoder
 
     public String encode(final short value)
     {
-        final String text = T.str(value);
+        final String text = F.str(value);
 
         final String result = encodeTypedAtom(short.class.getSimpleName(), text);
 
@@ -181,7 +179,7 @@ public final class JsonEncoder
 
     public String encode(final int value)
     {
-        final String text = T.str(value);
+        final String text = F.str(value);
 
         final String result = encodeTypedAtom(int.class.getSimpleName(), text);
 
@@ -190,7 +188,7 @@ public final class JsonEncoder
 
     public String encode(final long value)
     {
-        final String text = T.str(value);
+        final String text = F.str(value);
 
         final String result = encodeTypedAtom(long.class.getSimpleName(), text);
 
@@ -199,7 +197,7 @@ public final class JsonEncoder
 
     public String encode(final float value)
     {
-        final String text = T.str(value);
+        final String text = F.str(value);
 
         final String result = encodeTypedAtom(float.class.getSimpleName(), text);
 
@@ -208,7 +206,7 @@ public final class JsonEncoder
 
     public String encode(final double value)
     {
-        final String text = T.str(value);
+        final String text = F.str(value);
 
         final String result = encodeTypedAtom(double.class.getSimpleName(), text);
 
@@ -217,7 +215,7 @@ public final class JsonEncoder
 
     public String encode(final BigInteger value)
     {
-        final String text = T.str(value);
+        final String text = F.str(value);
 
         final String result = encodeTypedAtom(BigInteger.class.getSimpleName(), text);
 
@@ -226,7 +224,7 @@ public final class JsonEncoder
 
     public String encode(final BigDecimal value)
     {
-        final String text = T.str(value);
+        final String text = F.str(value);
 
         final StringBuilder result = new StringBuilder();
 
@@ -259,7 +257,7 @@ public final class JsonEncoder
 
     public String encode(final String value)
     {
-        return "\"" + T.str(value) + "\"";
+        return "\"" + F.str(value) + "\"";
     }
 
     public String encode(final Map<String, ? extends Object> map)
@@ -277,7 +275,7 @@ public final class JsonEncoder
             pairs.add(pair);
         }
 
-        final String result = T.str(pairs, "{ ", ", ", " }");
+        final String result = F.str(pairs, "{ ", ", ", " }");
 
         return result;
     }
@@ -291,7 +289,7 @@ public final class JsonEncoder
             elements.add(encode(element));
         }
 
-        final String result = T.str(elements, "[", ", ", "]");
+        final String result = F.str(elements, "[", ", ", "]");
 
         return result;
     }
@@ -302,7 +300,7 @@ public final class JsonEncoder
         m.put("Emma", "Pretty");
 
 
-        Object x = Lists.newArrayList(12, 'A', "Hello", T.big("123.0"), true, null, m);
+        Object x = Lists.newArrayList(12, 'A', "Hello", F.parseBigDecimal("123.0"), true, null, m);
 
 
         final String json = (new JsonEncoder()).encode(x);

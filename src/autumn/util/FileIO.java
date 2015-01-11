@@ -31,14 +31,19 @@ public final class FileIO
     public static Iterable<File> filesOf(final File root,
                                          final boolean recur)
     {
+        // TODO: buggy
+
         Preconditions.checkNotNull(root);
         Preconditions.checkArgument(root.isDirectory(), "Expected a Directory: " + root);
 
         // This stack stores fiels and directories that have not yet been returned.
         final Stack<File> stack = new Stack();
 
-        // The root directory will be the first file returned.
-        stack.push(root);
+        // Push the files that are in the root directory.
+        for (File file : root.listFiles())
+        {
+            stack.push(file);
+        }
 
         /**
          * Create the iterable, which basically performs a preorder depth-first transversal.

@@ -1,0 +1,16 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    try
+    {
+        F::set(null is short[], 0, 3S);
+
+        assert false;
+    }
+    catch(ex : NullPointerException)
+    {
+        nop;
+    }
+}

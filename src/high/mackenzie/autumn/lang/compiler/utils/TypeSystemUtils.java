@@ -8,6 +8,8 @@ import autumn.lang.LocalsMap;
 import autumn.lang.Module;
 import autumn.lang.ModuleInfo;
 import autumn.lang.Record;
+import autumn.lang.Struct;
+import autumn.lang.Tuple;
 import autumn.lang.TypedFunctor;
 import autumn.lang.annotations.Start;
 import autumn.lang.compiler.ast.nodes.Name;
@@ -23,7 +25,6 @@ import autumn.lang.internals.Helpers;
 import autumn.lang.internals.ModuleDelegate;
 import autumn.lang.internals.ModuleInfoBuilder;
 import autumn.lang.internals.Operators;
-import autumn.lang.internals.YieldState;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
@@ -161,8 +162,6 @@ public final class TypeSystemUtils
 
     public final IClassType HELPERS;
 
-    public final IClassType YIELD_STATE;
-
     public final IClassType ARGUMENT_STACK;
 
     public final IClassType CONVERSIONS;
@@ -178,6 +177,10 @@ public final class TypeSystemUtils
     public final IClassType MODULE_INFO_BUILDER;
 
     public final IInterfaceType MODULE_INFO;
+
+    public final IInterfaceType STRUCT;
+
+    public final IInterfaceType TUPLE;
 
     /**
      * Sole Constructor.
@@ -261,8 +264,6 @@ public final class TypeSystemUtils
 
         this.HELPERS = (IClassType) factory.fromClass(Helpers.class);
 
-        this.YIELD_STATE = (IClassType) factory.fromClass(YieldState.class);
-
         this.ARGUMENT_STACK = (IClassType) factory.fromClass(ArgumentStack.class);
 
         this.START = (IAnnotationType) factory.fromClass(Start.class);
@@ -278,6 +279,10 @@ public final class TypeSystemUtils
         this.MODULE_INFO_BUILDER = (IClassType) factory.fromClass(ModuleInfoBuilder.class);
 
         this.MODULE_INFO = (IInterfaceType) factory.fromClass(ModuleInfo.class);
+
+        this.STRUCT = (IInterfaceType) factory.fromClass(Struct.class);
+
+        this.TUPLE = (IInterfaceType) factory.fromClass(Tuple.class);
     }
 
     /**

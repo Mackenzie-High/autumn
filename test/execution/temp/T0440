@@ -1,0 +1,17 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    # Create some data.
+    val list = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+    # Create a predicate that matches even numbers.
+    lambda p : Predicate => ($1 is Integer) % 2 == 0;
+
+    # Filter the data.
+    val result = F::filter(p, list);
+
+    # Verify the result.
+    assert result == [2, 4, 6, 8];
+}

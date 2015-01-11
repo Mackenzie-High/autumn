@@ -1,0 +1,9 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    val field = F::findField((class Main), "age");
+
+    assert field == null;
+}

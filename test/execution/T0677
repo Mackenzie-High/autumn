@@ -1,0 +1,9 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    assert F::zfill("123", 0) == "123";
+    assert F::zfill("123", 3) == "123";
+    assert F::zfill("123", 5) == "00123";
+}

@@ -1,6 +1,7 @@
 package autumn.util.functors;
 
 import autumn.lang.TypedFunctor;
+import autumn.lang.exceptions.CheckedException;
 import autumn.lang.internals.AbstractDefinedFunctor;
 import autumn.lang.internals.ArgumentStack;
 import com.google.common.collect.ImmutableList;
@@ -13,6 +14,7 @@ import java.util.List;
  */
 public class Action
         extends AbstractDefinedFunctor
+        implements Runnable
 {
     public Action(final TypedFunctor functor)
     {
@@ -39,5 +41,18 @@ public class Action
         stack.clear();
 
         inner().apply(stack);
+    }
+
+    @Override
+    public void run()
+    {
+        try
+        {
+            invoke();
+        }
+        catch (Throwable t)
+        {
+            throw new CheckedException(t);
+        }
     }
 }

@@ -221,27 +221,29 @@ public final class Conversion
          * A type can be upcast to a supertype and a supertype can be downcast to a subtype.
          * However, there is no such thing as a cross-cast.
          */
-        final boolean case1 = !(value.isSubtypeOf(type) || type.isSubtypeOf(value));
+        final boolean case1 = value.isSubtypeOf(type) || type.isSubtypeOf(value);
 
         /**
          * The input-type must be a reference-type,
          * because a primitive-type cannot be *cast* to another type.
          */
-        final boolean case2 = value.isReferenceType() == false;
+        final boolean case2 = value.isReferenceType();
 
         /**
          * The output-type must be an reference-type,
          * because a value cannot be *cast* to a primitive-type.
          */
-        final boolean case3 = value.isReferenceType() == false;
+        final boolean case3 = value.isReferenceType();
 
-        if (case1 || case2 || case3)
+        if (case1 && case2 && case3)
+        {
+            // The conversion is an apparently valid cast.
+            return new Conversion(null, value, type, true);
+        }
+        else
         {
             return null;
         }
-
-        // The conversion is an apparently valid cast.
-        return new Conversion(null, value, type, true);
     }
 
     /**

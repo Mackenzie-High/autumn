@@ -1,0 +1,8 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    assert F::padEnd("123", 0, '0') == "123";
+    assert F::padEnd("123", 5, '0') == "12300";
+}

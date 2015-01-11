@@ -1,0 +1,7 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    assert F::parseDouble("17") == 17.0;
+}

@@ -106,11 +106,6 @@ public final class ModuleCompiler
                                                  null);
 
     /**
-     * These objects represent the fields that store the states of generator functions.
-     */
-    public final List<FieldNode> yields = Lists.newLinkedList();
-
-    /**
      * This field stores a list of delegates.
      * Each element is a delegate that refers to a function in this module.
      */
@@ -255,7 +250,6 @@ public final class ModuleCompiler
             clazz.interfaces = Lists.newLinkedList();
             clazz.fields = Lists.newLinkedList();
             clazz.fields.add(info);
-            clazz.fields.addAll(yields);
             clazz.fields.add(delegates);
             clazz.fields.add(instance_field);
             clazz.methods = ImmutableList.copyOf(methods);
@@ -307,23 +301,6 @@ public final class ModuleCompiler
         name = "instance";
         desc = type.getDescriptor();
         m.instructions.add(new FieldInsnNode(Opcodes.PUTSTATIC, owner, name, desc));
-
-        for (FieldNode field : yields)
-        {
-            // Create a YieldState object.
-            owner = Utils.internalName(program.typesystem.utils.YIELD_STATE);
-            m.instructions.add(new TypeInsnNode(Opcodes.NEW, owner));
-            m.instructions.add(new InsnNode(Opcodes.DUP));
-            name = "<init>";
-            desc = "()V";
-            m.instructions.add(new MethodInsnNode(Opcodes.INVOKESPECIAL, owner, name, desc));
-
-            // Store the YieldState object in the field.
-            owner = Utils.internalName(type);
-            name = field.name;
-            desc = field.desc;
-            m.instructions.add(new FieldInsnNode(Opcodes.PUTSTATIC, owner, name, desc));
-        }
 
         /**
          * Invoke the setup functions.

@@ -1,0 +1,16 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    try
+    {
+        F::zfill("", -5);
+
+        assert false;
+    }
+    catch(ex : IllegalArgumentException)
+    {
+        nop;
+    }
+}

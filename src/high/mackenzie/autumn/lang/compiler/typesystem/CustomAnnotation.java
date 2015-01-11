@@ -1,6 +1,6 @@
 package high.mackenzie.autumn.lang.compiler.typesystem;
 
-import autumn.util.Reflect;
+import autumn.util.F;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IAnnotation;
@@ -94,7 +94,7 @@ public final class CustomAnnotation
 
         final IAnnotationType type = (IAnnotationType) factory.fromClass(clazz);
 
-        final List<String> values = Reflect.getAnnotationValues(annotation);
+        final List<String> values = F.iter(annotation);
 
         final IAnnotation result = new CustomAnnotation(annotation, values, type);
 

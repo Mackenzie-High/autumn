@@ -2,7 +2,19 @@ package high.mackenzie.autumn.lang.compiler.compilers;
 
 import autumn.lang.compiler.ast.nodes.TypeSpecifier;
 import autumn.util.functors.Action;
+import autumn.util.functors.Function0;
+import autumn.util.functors.Function1;
+import autumn.util.functors.Function2;
+import autumn.util.functors.Function3;
+import autumn.util.functors.Function4;
+import autumn.util.functors.Function5;
+import autumn.util.functors.Function6;
+import autumn.util.functors.Function7;
+import autumn.util.functors.Function8;
+import autumn.util.functors.Function9;
+import autumn.util.functors.Ordering;
 import autumn.util.functors.Predicate;
+import autumn.util.functors.ProxyHandler;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
@@ -71,8 +83,10 @@ public final class Importer
         importClass(autumn.lang.exceptions.CheckedException.class);
 
         // autumn.util
+        importClass(autumn.util.Bitwise.class);
         importClass(autumn.util.F.class);
         importClass(autumn.util.FileIO.class);
+        importClass(autumn.util.Vars.class);
 
         // autumn.util.test
         importClass(autumn.util.test.MalformedTestException.class);
@@ -85,8 +99,22 @@ public final class Importer
 
         // autumn.util.functors
         importClass(Action.class);
+        importClass(Function0.class);
+        importClass(Function1.class);
+        importClass(Function2.class);
+        importClass(Function3.class);
+        importClass(Function4.class);
+        importClass(Function5.class);
+        importClass(Function6.class);
+        importClass(Function7.class);
+        importClass(Function8.class);
+        importClass(Function9.class);
+        importClass(Ordering.class);
         importClass(Predicate.class);
+        importClass(ProxyHandler.class);
 
+        // java.lang.annotation
+        importClass(java.lang.annotation.Annotation.class);
 
         // java.lang
         importClass(java.lang.ArithmeticException.class);
@@ -94,9 +122,9 @@ public final class Importer
         importClass(java.lang.Byte.class);
         importClass(java.lang.Character.class);
         importClass(java.lang.CharSequence.class);
-        importClass(java.lang.CharSequence.class);
         importClass(java.lang.Class.class);
         importClass(java.lang.ClassCastException.class);
+        importClass(java.lang.Comparable.class);
         importClass(java.lang.Double.class);
         importClass(java.lang.Enum.class);
         importClass(java.lang.Exception.class);
@@ -108,8 +136,10 @@ public final class Importer
         importClass(java.lang.Iterable.class);
         importClass(java.lang.Long.class);
         importClass(java.lang.Math.class);
+        importClass(java.lang.NegativeArraySizeException.class);
         importClass(java.lang.NullPointerException.class);
         importClass(java.lang.Number.class);
+        importClass(java.lang.NumberFormatException.class);
         importClass(java.lang.Object.class);
         importClass(java.lang.RuntimeException.class);
         importClass(java.lang.Short.class);
@@ -126,6 +156,7 @@ public final class Importer
         // java.util
         importClass(java.util.ArrayList.class);
         importClass(java.util.Collection.class);
+        importClass(java.util.Collections.class);
         importClass(java.util.HashMap.class);
         importClass(java.util.HashSet.class);
         importClass(java.util.Iterator.class);

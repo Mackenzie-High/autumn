@@ -1,0 +1,29 @@
+module Main in execution;
+
+
+design Person (name : String, age : int);
+
+design Employee () extends Person;
+
+
+@Start
+defun main (args : String[]) : void
+{
+    val owner = (class Employee);
+
+    assert owner != null;
+
+
+
+    # Check whether the getter methods were generated.
+    #
+    assert F::findMethod(owner, "name", []).getReturnType() == (class String);
+    assert F::findMethod(owner, "age", []).getReturnType() == (class int);
+
+
+
+    # Check whether the setter methods were generated.
+    #
+    assert F::findMethod(owner, "name", [(class String)]).getReturnType() == owner;
+    assert F::findMethod(owner, "age",  [(class int)]).getReturnType() == owner;
+}

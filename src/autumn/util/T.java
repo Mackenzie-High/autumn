@@ -1,39 +1,36 @@
 package autumn.util;
 
-import autumn.lang.Delegate;
-import autumn.lang.Functor;
+import autumn.lang.AsyncTask;
 import autumn.lang.Module;
 import autumn.lang.Record;
-import autumn.lang.RecordEntry;
 import autumn.lang.TypedFunctor;
 import autumn.lang.annotations.Infer;
 import autumn.lang.exceptions.CheckedException;
 import autumn.lang.internals.ArgumentStack;
+import autumn.lang.internals.Helpers;
+import autumn.lang.internals.Operators;
 import autumn.util.functors.Action;
 import autumn.util.functors.Function1;
 import autumn.util.functors.Function2;
 import autumn.util.functors.Predicate;
 import com.google.common.base.Preconditions;
-import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
 import high.mackenzie.autumn.util.json.JsonEncoder;
-import java.io.File;
 import java.lang.annotation.Annotation;
-import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.math.RoundingMode;
+import java.util.AbstractList;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -41,12 +38,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
-import java.util.Set;
-import java.util.SortedMap;
-import java.util.Stack;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * This class provides commonly used static utility methods.
@@ -60,6 +51,11 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public final class T
 {
+    private static abstract class ArrayBackedList<E>
+            extends AbstractList<E>
+    {
+    }
+
     private static BigInteger unique = BigInteger.ZERO;
 
     /**
@@ -104,10 +100,9 @@ public final class T
      * @return the result of applying the functor to the arguments.
      * @throws NullPointerException if functor is null.
      * @throws NullPointerException if arguments is null.
-     * @throws ClassCastException if any of the arguments cannot be accepted due to their type.
      * @throws Throwable in order to propagate any exceptions thrown by the functor.
      */
-    public static Object apply(final Functor functor,
+    public static Object apply(final TypedFunctor functor,
                                final Iterable<?> arguments)
             throws Throwable
     {
@@ -120,6 +115,13 @@ public final class T
         for (Object argument : arguments)
         {
             stack.push(argument);
+        }
+
+        // The number of arguments must match the number of parameters.
+        if (functor.parameterTypes().size() != stack.size())
+        {
+            stack.clear();
+            throw new IllegalArgumentException("arguments.length != parameters.length");
         }
 
         // Invoke the functor.
@@ -245,16 +247,30 @@ public final class T
      * @param array is the array itself.
      * @return an iterable whose iterator can iterate over the given array.
      */
-    public static Iterable<Boolean> iter(final boolean[] array)
+    public static List<Boolean> iter(final boolean[] array)
     {
-        return new Iterable()
+        /**
+         * Create a list that wraps the array.
+         */
+        final ArrayBackedList<Boolean> list = new ArrayBackedList<Boolean>()
         {
             @Override
-            public Iterator iterator()
+            public Boolean get(int index)
             {
-                return Iterators.forArray(array);
+                return array[index];
+            }
+
+            @Override
+            public int size()
+            {
+                return array.length;
             }
         };
+
+        /**
+         * Make sure the list is unmodifiable.
+         */
+        return Collections.unmodifiableList(list);
     }
 
     /**
@@ -267,16 +283,30 @@ public final class T
      * @param array is the array itself.
      * @return an iterable whose iterator can iterate over the given array.
      */
-    public static Iterable<Character> iter(final char[] array)
+    public static List<Character> iter(final char[] array)
     {
-        return new Iterable()
+        /**
+         * Create a list that wraps the array.
+         */
+        final ArrayBackedList<Character> list = new ArrayBackedList<Character>()
         {
             @Override
-            public Iterator iterator()
+            public Character get(int index)
             {
-                return Iterators.forArray(array);
+                return array[index];
+            }
+
+            @Override
+            public int size()
+            {
+                return array.length;
             }
         };
+
+        /**
+         * Make sure the list is unmodifiable.
+         */
+        return Collections.unmodifiableList(list);
     }
 
     /**
@@ -289,16 +319,30 @@ public final class T
      * @param array is the array itself.
      * @return an iterable whose iterator can iterate over the given array.
      */
-    public static Iterable<Byte> iter(final byte[] array)
+    public static List<Byte> iter(final byte[] array)
     {
-        return new Iterable()
+        /**
+         * Create a list that wraps the array.
+         */
+        final ArrayBackedList<Byte> list = new ArrayBackedList<Byte>()
         {
             @Override
-            public Iterator iterator()
+            public Byte get(int index)
             {
-                return Iterators.forArray(array);
+                return array[index];
+            }
+
+            @Override
+            public int size()
+            {
+                return array.length;
             }
         };
+
+        /**
+         * Make sure the list is unmodifiable.
+         */
+        return Collections.unmodifiableList(list);
     }
 
     /**
@@ -311,16 +355,30 @@ public final class T
      * @param array is the array itself.
      * @return an iterable whose iterator can iterate over the given array.
      */
-    public static Iterable<Short> iter(final short[] array)
+    public static List<Short> iter(final short[] array)
     {
-        return new Iterable()
+        /**
+         * Create a list that wraps the array.
+         */
+        final ArrayBackedList<Short> list = new ArrayBackedList<Short>()
         {
             @Override
-            public Iterator iterator()
+            public Short get(int index)
             {
-                return Iterators.forArray(array);
+                return array[index];
+            }
+
+            @Override
+            public int size()
+            {
+                return array.length;
             }
         };
+
+        /**
+         * Make sure the list is unmodifiable.
+         */
+        return Collections.unmodifiableList(list);
     }
 
     /**
@@ -333,16 +391,30 @@ public final class T
      * @param array is the array itself.
      * @return an iterable whose iterator can iterate over the given array.
      */
-    public static Iterable<Integer> iter(final int[] array)
+    public static List<Integer> iter(final int[] array)
     {
-        return new Iterable()
+        /**
+         * Create a list that wraps the array.
+         */
+        final ArrayBackedList<Integer> list = new ArrayBackedList<Integer>()
         {
             @Override
-            public Iterator iterator()
+            public Integer get(int index)
             {
-                return Iterators.forArray(array);
+                return array[index];
+            }
+
+            @Override
+            public int size()
+            {
+                return array.length;
             }
         };
+
+        /**
+         * Make sure the list is unmodifiable.
+         */
+        return Collections.unmodifiableList(list);
     }
 
     /**
@@ -355,16 +427,30 @@ public final class T
      * @param array is the array itself.
      * @return an iterable whose iterator can iterate over the given array.
      */
-    public static Iterable<Long> iter(final long[] array)
+    public static List<Long> iter(final long[] array)
     {
-        return new Iterable()
+        /**
+         * Create a list that wraps the array.
+         */
+        final ArrayBackedList<Long> list = new ArrayBackedList<Long>()
         {
             @Override
-            public Iterator iterator()
+            public Long get(int index)
             {
-                return Iterators.forArray(array);
+                return array[index];
+            }
+
+            @Override
+            public int size()
+            {
+                return array.length;
             }
         };
+
+        /**
+         * Make sure the list is unmodifiable.
+         */
+        return Collections.unmodifiableList(list);
     }
 
     /**
@@ -377,16 +463,30 @@ public final class T
      * @param array is the array itself.
      * @return an iterable whose iterator can iterate over the given array.
      */
-    public static Iterable<Float> iter(final float[] array)
+    public static List<Float> iter(final float[] array)
     {
-        return new Iterable()
+        /**
+         * Create a list that wraps the array.
+         */
+        final ArrayBackedList<Float> list = new ArrayBackedList<Float>()
         {
             @Override
-            public Iterator iterator()
+            public Float get(int index)
             {
-                return Iterators.forArray(array);
+                return array[index];
+            }
+
+            @Override
+            public int size()
+            {
+                return array.length;
             }
         };
+
+        /**
+         * Make sure the list is unmodifiable.
+         */
+        return Collections.unmodifiableList(list);
     }
 
     /**
@@ -399,16 +499,30 @@ public final class T
      * @param array is the array itself.
      * @return an iterable whose iterator can iterate over the given array.
      */
-    public static Iterable<Double> iter(final double[] array)
+    public static List<Double> iter(final double[] array)
     {
-        return new Iterable()
+        /**
+         * Create a list that wraps the array.
+         */
+        final ArrayBackedList<Double> list = new ArrayBackedList<Double>()
         {
             @Override
-            public Iterator iterator()
+            public Double get(int index)
             {
-                return Iterators.forArray(array);
+                return array[index];
+            }
+
+            @Override
+            public int size()
+            {
+                return array.length;
             }
         };
+
+        /**
+         * Make sure the list is unmodifiable.
+         */
+        return Collections.unmodifiableList(list);
     }
 
     /**
@@ -421,16 +535,30 @@ public final class T
      * @param array is the array itself.
      * @return an iterable whose iterator can iterate over the given array.
      */
-    public static <T> Iterable<T> iter(final T[] array)
+    public static <T> List<T> iter(final T[] array)
     {
-        return new Iterable()
+        /**
+         * Create a list that wraps the array.
+         */
+        final ArrayBackedList<T> list = new ArrayBackedList<T>()
         {
             @Override
-            public Iterator iterator()
+            public T get(int index)
             {
-                return Iterators.forArray(array);
+                return array[index];
+            }
+
+            @Override
+            public int size()
+            {
+                return array.length;
             }
         };
+
+        /**
+         * Make sure the list is unmodifiable.
+         */
+        return Collections.unmodifiableList(list);
     }
 
     /**
@@ -439,9 +567,44 @@ public final class T
      * @param iterable is the iterable itself.
      * @return iterable.
      */
-    public static <T> Iterable<T> iter(final Iterable<T> iterable)
+    public static <T> List<T> iter(final Iterable<T> iterable)
     {
-        return iterable;
+        /**
+         * Special Case: The iterable is a list.
+         */
+        if (iterable instanceof List)
+        {
+            return Collections.unmodifiableList((List) iterable);
+        }
+
+        /**
+         * Create a list that wraps the array.
+         */
+        final ArrayBackedList<T> list = new ArrayBackedList<T>()
+        {
+            @Override
+            public T get(int index)
+            {
+                return Iterables.get(iterable, index);
+            }
+
+            @Override
+            public int size()
+            {
+                return Iterables.size(iterable);
+            }
+
+            @Override
+            public Iterator<T> iterator()
+            {
+                return Iterators.unmodifiableIterator(iterable.iterator());
+            }
+        };
+
+        /**
+         * Make sure the list is unmodifiable.
+         */
+        return Collections.unmodifiableList(list);
     }
 
     /**
@@ -462,339 +625,51 @@ public final class T
         };
     }
 
-    /**
-     * This method creates an iterator over a map.
-     *
-     * <p>
-     * This method is equivalent to map.entrySet().
-     * </p>
-     *
-     * @param map is the map itself.
-     * @return an iterable whose iterator can iterate over the given map's entries.
-     */
-    public static <K, V> Iterable<Entry<K, V>> iter(final Map<K, V> map)
+    public static List<String> iter(final Annotation anno)
     {
-        return map.entrySet();
-    }
-
-    /**
-     * This method creates an iterator over a given string.
-     *
-     * <p>
-     * The returned iterator will not support the remove() method.
-     * </p>
-     *
-     * @param string is the string itself.
-     * @return an iterable whose iterator can iterate over the given string.
-     */
-    public static Iterable<Character> iter(final CharSequence string)
-    {
-        return new Iterable()
+        try
         {
-            @Override
-            public Iterator iterator()
+            Preconditions.checkNotNull(anno);
+
+            /**
+             * The values stored in the annotation will be added to this list.
+             */
+            final List<String> result = new LinkedList();
+
+            /**
+             * If the annotation is an Autumn-style annotation,
+             * then it must have a value() : String[] method.
+             */
+            final Method method = F.findMethod(anno.annotationType(), "value", Collections.EMPTY_LIST);
+
+            /**
+             * If the annotation is not an Autumn-style annotation,
+             * then we cannot extract any values from it.
+             */
+            if (method == null || method.getReturnType() != String[].class)
             {
-                return new Iterator()
-                {
-                    int index = -1;
-
-                    @Override
-                    public boolean hasNext()
-                    {
-                        return index + 1 < string.length();
-                    }
-
-                    @Override
-                    public Object next()
-                    {
-                        if (hasNext())
-                        {
-                            return string.charAt(++index);
-                        }
-                        else
-                        {
-                            throw new NoSuchElementException();
-                        }
-                    }
-
-                    @Override
-                    public void remove()
-                    {
-                        throw new UnsupportedOperationException("Not Supported");
-                    }
-                };
-            }
-        };
-    }
-
-    /**
-     * This method creates an iterator over a given enumeration.
-     *
-     * <p>
-     * The returned iterator will not support the remove() method.
-     * </p>
-     *
-     * @param enumeration is the enumeration itself.
-     * @return an iterable whose iterator can iterate over the given enumeration.
-     */
-    public static <T> Iterable<T> iter(final Enumeration<T> enumeration)
-    {
-        return new Iterable()
-        {
-            @Override
-            public Iterator iterator()
-            {
-                return Iterators.forEnumeration(enumeration);
-            }
-        };
-    }
-
-    /**
-     * This method creates an iterator over a given enum.
-     *
-     * <p>
-     * The returned iterator will not support the remove() method.
-     * </p>
-     *
-     * @param enumeration is the enum itself.
-     * @return an iterable whose iterator can iterate over the given enum.
-     */
-    public static Iterable<Enum> iter(final Enum enumeration)
-    {
-        final Enum[] constants = (Enum[]) enumeration.getDeclaringClass().getEnumConstants();
-
-        return new Iterable()
-        {
-            @Override
-            public Iterator iterator()
-            {
-                return Iterators.forArray(constants);
-            }
-        };
-    }
-
-    /**
-     * This method creates an iterator over a given function object.
-     *
-     * <p>
-     * Equivalence: iter(next, null, null).
-     * </p>
-     *
-     * <p>
-     * The returned iterator will not support the remove() method.
-     * </p>
-     *
-     * @param next is the function object that is invoked by the iterator's next() method.
-     * @return an iterable whose iterator simply invokes the given function object.
-     */
-    public static Iterable iter(final Functor next)
-    {
-        return iter(next, null, null);
-    }
-
-    /**
-     * This method creates an iterator over a pair of function objects.
-     *
-     * <p>
-     * Equivalence: iter(next, has, null).
-     * </p>
-     *
-     * <p>
-     * The returned iterator will not support the remove() method.
-     * </p>
-     *
-     * @param next is the function object that is invoked by the iterator's next() method.
-     * @param has is the function object that is invoked by the iterator's hasNext() method.
-     * @return an iterable whose iterator is based on the given function objects.
-     */
-    public static Iterable iter(final Functor next,
-                                final Functor has)
-    {
-        return iter(next, has);
-    }
-
-    /**
-     * This method creates an iterator over a pair of function objects.
-     *
-     * @param next is the function object that is invoked by the iterator's next() method.
-     * @param has is the function object that is invoked by the iterator's hasNext() method.
-     * @param remove is the function object that is invoked by the iterator's remove() method.
-     * @return an iterable whose iterator is based on the given function objects.
-     */
-    public static Iterable iter(final Functor next,
-                                final Functor has,
-                                final Functor remove)
-    {
-        return null; // TODO
-    }
-
-    /**
-     * This method gets a character from a string.
-     *
-     * @param string is the sequence of characters that contains the character.
-     * @param index is the index of the character.
-     * @return the character at the specified index in the string.
-     * @throws NullPointerException if the string is null.
-     * @throws IndexOutOfBoundsException if the index is out-of-bounds.
-     */
-    public static char get(final CharSequence string,
-                           final int index)
-    {
-        return string.charAt(index);
-    }
-
-    /**
-     * This method gets an element from an iterable.
-     *
-     * @param iterable is the iterable that contains the element.
-     * @param index is the index of the element.
-     * @return the element at the specified index in the iterable.
-     * @throws NullPointerException if the iterable is null.
-     * @throws IndexOutOfBoundsException if the index is out-of-bounds.
-     */
-    public static Object get(final Iterable iterable,
-                             final int index)
-    {
-        // If the iterable is really a list, use the potentially faster algorithm.
-
-        if (iterable instanceof List)
-        {
-            return ((List) iterable).get(index);
-        }
-        else
-        {
-            int i = 0;
-
-            for (Object element : iterable)
-            {
-                if (i++ == index)
-                {
-                    return element;
-                }
+                return Collections.EMPTY_LIST;
             }
 
-            throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + i);
+            /**
+             * Extract the values from the annotation.
+             */
+            final String[] values = (String[]) method.invoke(anno);
+            result.addAll(Arrays.asList(values));
+
+            /**
+             * Return the result as an immutable list.
+             */
+            return Collections.unmodifiableList(result);
         }
-    }
-
-    public static String set(final String string,
-                             final int index,
-                             final char value)
-    {
-        final char[] chars = string.toCharArray();
-
-        chars[index] = value;
-
-        return new String(chars);
-    }
-
-    /**
-     * This method creates a new BigInteger from a long value.
-     *
-     * @param value is the value of the new BigInteger.
-     * @return the aforedescribed BigInteger.
-     */
-    public static BigInteger big(final long value)
-    {
-        return BigInteger.valueOf(value);
-    }
-
-    /**
-     * This method creates a new BigDecimal from a double value.
-     *
-     * <p>
-     * The new object will have a scale of thirty-two.
-     * </p>
-     *
-     * @param value is the value of the new BigDecimal.
-     * @return the aforedescribed BigDecimal.
-     */
-    public static BigDecimal big(final double value)
-    {
-        final BigDecimal unscaled = BigDecimal.valueOf(value);
-
-        final BigDecimal scaled = unscaled.setScale(32, RoundingMode.HALF_EVEN);
-
-        return scaled;
-    }
-
-    /**
-     * This method converts a number to a BigDecimal.
-     *
-     * <p>
-     * The new object will have a scale of thirty-two.
-     * </p>
-     *
-     * @param value is the value to convert.
-     * @return the value as a big-decimal.
-     * @throws NullPointerException if the value is null.
-     * @throws IllegalArgumentException if the number could not be converted.
-     */
-    public static BigDecimal big(final Number value)
-    {
-        Preconditions.checkNotNull(value);
-
-        final BigDecimal unscaled;
-
-        if (value instanceof Byte)
+        catch (IllegalAccessException ex)
         {
-            unscaled = new BigDecimal(value.byteValue());
+            return Collections.EMPTY_LIST;
         }
-        else if (value instanceof Short)
+        catch (InvocationTargetException ex)
         {
-            unscaled = new BigDecimal(value.shortValue());
+            return Collections.EMPTY_LIST;
         }
-        else if (value instanceof Integer)
-        {
-            unscaled = new BigDecimal(value.intValue());
-        }
-        else if (value instanceof Long)
-        {
-            unscaled = new BigDecimal(value.longValue());
-        }
-        else if (value instanceof Float)
-        {
-            unscaled = new BigDecimal(value.floatValue());
-        }
-        else if (value instanceof Double)
-        {
-            unscaled = new BigDecimal(value.doubleValue());
-        }
-        else if (value instanceof BigInteger)
-        {
-            unscaled = new BigDecimal((BigInteger) value);
-        }
-        else if (value instanceof BigDecimal)
-        {
-            unscaled = (BigDecimal) value;
-        }
-        else
-        {
-            throw new IllegalArgumentException("Unrecognized Number: " + value);
-        }
-
-        final BigDecimal scaled = unscaled.setScale(32, RoundingMode.HALF_EVEN);
-
-        return scaled;
-    }
-
-    /**
-     * This method creates a new BigDecimal from a string value.
-     *
-     * <p>
-     * The new object will have a scale of thirty-two.
-     * </p>
-     *
-     * @param value is the value of the new BigDecimal.
-     * @return the aforedescribed BigDecimal.
-     */
-    public static BigDecimal big(final String value)
-    {
-        final BigDecimal unscaled = new BigDecimal(value);
-
-        final BigDecimal scaled = unscaled.setScale(32, RoundingMode.HALF_EVEN);
-
-        return scaled;
     }
 
     /**
@@ -913,13 +788,15 @@ public final class T
      * @param values are the values to sum.
      * @return the sum of the values.
      */
-    public static BigDecimal sum(final Iterable<Number> values)
+    public static BigDecimal sum(final Iterable<?> values)
     {
-        BigDecimal total = BigDecimal.ZERO;
+        BigDecimal total = F.big(BigDecimal.ZERO);
 
-        for (Number value : values)
+        for (Object value : values)
         {
-            total = total.add(T.big(value));
+            Preconditions.checkNotNull(value);
+
+            total = total.add(F.big(value));
         }
 
         return total;
@@ -931,21 +808,25 @@ public final class T
      * @param values are the values to average.
      * @return the average of the values.
      */
-    public static BigDecimal average(final Iterable<Number> values)
+    public static BigDecimal average(final Iterable<?> values)
     {
+        assert values != null;
+
         BigDecimal total = BigDecimal.ZERO;
 
-        long count = 0;
+        int count = 0;
 
-        for (Number value : values)
+        for (Object value : values)
         {
-            total = total.add(T.big(value));
+            final BigDecimal big = F.big(value);
+
+            total = total.add(big);
             ++count;
         }
 
-        final BigDecimal result = total.divide(new BigDecimal(count));
+        final BigDecimal result = total.divide(F.big(count));
 
-        return result;
+        return F.big(result);
     }
 
     /**
@@ -953,17 +834,35 @@ public final class T
      *
      * @param values are the values to search through.
      * @return the minimum value in the group.
+     * @throws NullPointerException if values is null.
      */
     public static Comparable minimum(final Iterable<Comparable> values)
     {
-        Comparable least = null;
+        Preconditions.checkNotNull(values);
 
-        for (Comparable value : values)
+        final Iterator<Comparable> iter = values.iterator();
+
+        /**
+         * If there are no values, then return null;
+         * otherwise, return the minimum value.
+         */
+        if (iter.hasNext() == false)
         {
-            value = compare(value, least) < 0 ? value : least;
+            return null;
         }
+        else
+        {
+            Comparable least = iter.next();
 
-        return least;
+            while (iter.hasNext())
+            {
+                final Comparable value = iter.next();
+
+                least = compare(value, least) < 0 ? value : least;
+            }
+
+            return least;
+        }
     }
 
     /**
@@ -971,17 +870,35 @@ public final class T
      *
      * @param values are the values to search through.
      * @return the maximum value in the group.
+     * @throws NullPointerException if values is null.
      */
     public static Comparable maximum(final Iterable<Comparable> values)
     {
-        Comparable greatest = null;
+        Preconditions.checkNotNull(values);
 
-        for (Comparable value : values)
+        final Iterator<Comparable> iter = values.iterator();
+
+        /**
+         * If there are no values, then return null;
+         * otherwise, return the maximum value.
+         */
+        if (iter.hasNext() == false)
         {
-            value = compare(value, greatest) > 0 ? value : greatest;
+            return null;
         }
+        else
+        {
+            Comparable greatest = iter.next();
 
-        return greatest;
+            while (iter.hasNext())
+            {
+                final Comparable value = iter.next();
+
+                greatest = compare(value, greatest) > 0 ? value : greatest;
+            }
+
+            return greatest;
+        }
     }
 
     /**
@@ -1053,85 +970,6 @@ public final class T
     }
 
     /**
-     * This method creates an iterable whose iterator can iterate over all the files in a directory.
-     *
-     * <p>
-     * If recur is true, sub-directories will be returned before their contents.
-     * </p>
-     *
-     * @param root is the directory to iterate over.
-     * @param recur is true, if the sub-directories transversed.
-     * @return the aforedescribed iterator.
-     * @throws IllegalArgumentException if root is not a directory.
-     */
-    public static Iterable<File> filesOf(final File root,
-                                         final boolean recur)
-    {
-        // TODO: this is very buggy
-
-        Preconditions.checkNotNull(root);
-        Preconditions.checkArgument(root.isDirectory(), "Expected a Directory: " + root);
-
-        // This stack stores fiels and directories that have not yet been returned.
-        final Stack<File> stack = new Stack();
-
-        // Push the files in the root directory, including the directory itself.
-        for (File file : root.listFiles())
-        {
-            stack.push(file);
-        }
-
-        /**
-         * Create the iterable, which basically performs a preorder depth-first transversal.
-         */
-        return new Iterable<File>()
-        {
-            @Override
-            public Iterator<File> iterator()
-            {
-                return new Iterator<File>()
-                {
-                    @Override
-                    public boolean hasNext()
-                    {
-                        return !stack.isEmpty();
-                    }
-
-                    @Override
-                    public File next()
-                    {
-                        // This is required by the iterator interface.
-                        if (stack.isEmpty())
-                        {
-                            throw new NoSuchElementException("Out of Files");
-                        }
-
-                        // Get the next file to return.
-                        final File next = stack.pop();
-
-                        if (recur && next.isDirectory())
-                        {
-                            // Push all the files that are directly contained in the sub-directory.
-                            for (File child : next.listFiles())
-                            {
-                                stack.push(child);
-                            }
-                        }
-
-                        return next;
-                    }
-
-                    @Override
-                    public void remove()
-                    {
-                        throw new UnsupportedOperationException("Not Supported");
-                    }
-                };
-            }
-        };
-    }
-
-    /**
      * This method applies a functor to each element of an iterable and collects the results.
      *
      * @param iterable is the iterable that provides input for the functor.
@@ -1150,17 +988,30 @@ public final class T
 
         for (Object element : iterable)
         {
-//            output.add(T.apply(function, Collections.singletonList(element)));
+            output.add(T.apply(function, Collections.singletonList(element)));
         }
 
         return output;
     }
 
-    public static List<Object> filter(final Iterable iterable,
+    public static List<Object> filter(final Iterable<?> iterable,
                                       final Predicate function)
             throws Throwable
     {
-        return null;
+        Preconditions.checkNotNull(iterable);
+        Preconditions.checkNotNull(function);
+
+        final List<Object> result = new LinkedList();
+
+        for (Object value : iterable)
+        {
+            if (function.invoke(value))
+            {
+                result.add(value);
+            }
+        }
+
+        return Collections.unmodifiableList(result);
     }
 
     public static Object reduce(final Iterable iterable,
@@ -1170,11 +1021,31 @@ public final class T
         return null;
     }
 
-    public static List<Object> find(final Iterable iterable,
-                                    final Predicate function,
-                                    final int skip)
+    public static Object find(final Iterable<?> iterable,
+                              final Predicate function,
+                              final int skip)
             throws Throwable
     {
+        Preconditions.checkNotNull(iterable);
+        Preconditions.checkNotNull(function);
+        Preconditions.checkArgument(skip >= 0);
+
+        int count = 0;
+
+        for (Object value : iterable)
+        {
+            final boolean match = function.invoke(value);
+
+            if (match && count == skip)
+            {
+                return value;
+            }
+            else if (match && count != skip)
+            {
+                ++count;
+            }
+        }
+
         return null;
     }
 
@@ -1224,91 +1095,6 @@ public final class T
         Collections.sort(result, comparator);
 
         return result;
-    }
-
-    /**
-     * This method creates a list that contains the elements from an iterable in reverse order.
-     *
-     * <p>
-     * If an reverse operation is preferred, consider using method
-     * <code>reverse(List)</code> in class
-     * <code>java.util.Collections</code>.
-     * </p>
-     *
-     * @param iterable provides the elements for the new list.
-     * @return a list that contains the elements of the given input iterable in reverse.
-     */
-    public static <T> List<T> reversed(final Iterable<T> iterable)
-    {
-        Preconditions.checkNotNull(iterable);
-
-        final LinkedList<T> result = Lists.newLinkedList();
-
-        for (T element : iterable)
-        {
-            result.addFirst(element);
-        }
-
-        return result;
-    }
-
-    public static <T> List<T> scramble(final Iterable<T> iterable)
-    {
-        Preconditions.checkNotNull(iterable);
-
-        return null;
-    }
-
-    /**
-     * This method determines whether an iterable contains an element of another iterable.
-     *
-     * @param iterable is the iterable that must contain an element from set.
-     * @param set is the iterable that shares at least one element with the other iterable.
-     * @return true, iff at least one element in set equals an element in iterable.
-     */
-    public static <T> boolean containsAny(final Iterable<T> iterable,
-                                          final Iterable<T> set)
-    {
-        Preconditions.checkNotNull(iterable, "iterable is null");
-        Preconditions.checkNotNull(iterable, "set is null");
-
-        final Set<T> required = set instanceof Set ? (Set) set : Sets.newHashSet(set);
-
-        for (T element : iterable)
-        {
-            if (required.contains(element))
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * This method finds the common prefix of two sequences.
-     *
-     * @param sequence1 is the first sequence.
-     * @param sequence2 is the second sequence.
-     * @return the prefix that the two sequences share.
-     */
-    public static <T> List<T> commonPrefix(final Iterable<T> sequence1,
-                                           final Iterable<T> sequence2)
-    {
-        return null;
-    }
-
-    /**
-     * This method finds the common suffix of two sequences.
-     *
-     * @param sequence1 is the first sequence.
-     * @param sequence2 is the second sequence.
-     * @return the suffix that the two sequences share.
-     */
-    public static <T> List<T> commonSuffix(final List<T> sequence1,
-                                           final List<T> sequence2)
-    {
-        return null;
     }
 
     /**
@@ -1543,40 +1329,6 @@ public final class T
     }
 
     /**
-     * This method creates a string that is another string repeated zero or more times.
-     *
-     * @param string is the string to repeat.
-     * @param times is the number of times to repeat the string.
-     * @return the aforedescribed string.
-     */
-    public static String repeat(final CharSequence string,
-                                final int times)
-    {
-        Preconditions.checkNotNull(string, "string");
-        Preconditions.checkArgument(times >= 0, "times");
-
-        final StringBuilder result = new StringBuilder();
-
-        for (int i = 0; i < times; i++)
-        {
-            result.append(string);
-        }
-
-        return string.toString();
-    }
-
-    /**
-     * This method creates the string representation of a value.
-     *
-     * @param value is the value itself.
-     * @return value.toString(), if the value is not null; otherwise return "null".
-     */
-    public static String str(final Object value)
-    {
-        return "" + value;
-    }
-
-    /**
      * This method creates a string representation for an iterable.
      *
      * @param iterable is the iterable itself.
@@ -1668,101 +1420,6 @@ public final class T
     }
 
     /**
-     * This method determines whether a string value is either null or the empty string.
-     *
-     * @param string is the value to check.
-     * @return true, iff the argument is null or the empty string.
-     */
-    public static boolean isNullOrEmpty(final CharSequence string)
-    {
-        return string == null || string.length() == 0;
-    }
-
-    /**
-     * This method finds the common prefix of two strings.
-     *
-     * @param string1 is the first string.
-     * @param string2 is the second string.
-     * @return the prefix that string1 and string2 share.
-     */
-    public static String commonPrefix(final CharSequence string1,
-                                      final CharSequence string2)
-    {
-        Preconditions.checkNotNull(string1, "string1");
-        Preconditions.checkNotNull(string1, "string2");
-
-        final StringBuilder common = new StringBuilder();
-
-        for (int i = 0; i < string1.length() && i < string2.length(); i++)
-        {
-            if (string1.charAt(i) == string2.charAt(i))
-            {
-                common.append(string1.charAt(i));
-            }
-            else
-            {
-                break;
-            }
-        }
-
-        return common.toString();
-    }
-
-    /**
-     * This method finds the common suffix of two strings.
-     *
-     * @param string1 is the first string.
-     * @param string2 is the second string.
-     * @return the suffix that string1 and string2 share.
-     */
-    public static String commonSuffix(final CharSequence string1,
-                                      final CharSequence string2)
-    {
-        Preconditions.checkNotNull(string1, "string1");
-        Preconditions.checkNotNull(string1, "string2");
-
-        final StringBuilder common = new StringBuilder();
-
-        for (int i = 1; string1.length() - i >= 0 && string2.length() - i >= 0; i++)
-        {
-            if (string1.charAt(string1.length() - i) == string2.charAt(string2.length() - i))
-            {
-                common.append(string1.charAt(i));
-            }
-            else
-            {
-                break;
-            }
-        }
-
-        return common.reverse().toString();
-    }
-
-    /**
-     * This method formats a string given an iterable containing the format arguments.
-     *
-     * <p>
-     * The method is exactly like format(String, Object...) in java.lang.String,
-     * except this method takes an iterable containing the arguments rather than an array.
-     * </p>
-     *
-     * @param format is the format specifier.
-     * @param arguments are the arguments to substitute into the format specifier.
-     * @return the formatted string.
-     * @throws NullPointerException if format is null.
-     * @throws NullPointerException if arguments is null.
-     * @see java.lang.String
-     */
-    public static String format(final String format,
-                                final Iterable arguments)
-    {
-        Preconditions.checkNotNull(format);
-        Preconditions.checkNotNull(arguments);
-
-        return String.format(format, (Object[]) Lists.newArrayList(arguments).toArray());
-    }
-
-    /**
      * This method synchronizes the invocation of a functor.
      *
      * @param locked is the object to obtain a lock on.
@@ -1785,118 +1442,6 @@ public final class T
     }
 
     /**
-     * This method creates a new thread and uses it to immediately run a given action.
-     *
-     * <p>
-     * Equivalent:
-     * <code>
-     * Threads.newThread(action).start()
-     * </code>
-     * </p>
-     *
-     * @param action is the action that will run on the newly created thread.
-     */
-    public static void run(final Action action)
-    {
-//        Threads.newThread(action).start();
-    }
-
-    /**
-     * This method invokes a given action based on a clock.
-     *
-     * <p>
-     * You may want to use a Timer object instead, which is what this method uses internally.
-     * </p>
-     *
-     * @param action is the action to invoke.
-     * @param interval is the approximate number of milliseconds between each invocation.
-     * @param count is the maximum number of times to invoke the action.
-     */
-    public static void ticker(final Action action,
-                              final long interval,
-                              final int count)
-    {
-        Preconditions.checkNotNull(action);
-        Preconditions.checkNotNull(interval >= 0);
-        Preconditions.checkNotNull(count >= 0);
-
-        /**
-         * This object will be used to count the number of times that the action has executed.
-         */
-        final AtomicInteger counter = new AtomicInteger();
-
-        /**
-         * This is essentially the clock that will fire the event.
-         */
-        final Timer timer = new Timer();
-
-        /**
-         * This is the event that will be fired by the clock.
-         */
-        final TimerTask task = new TimerTask()
-        {
-            @Override
-            public void run()
-            {
-                if (counter.get() >= count)
-                {
-                    timer.cancel();
-                    return;
-                }
-                else
-                {
-                    counter.incrementAndGet();
-                    T.quietlyApply(action, Collections.EMPTY_LIST);
-                }
-            }
-        };
-
-        /**
-         * Start the clock.
-         */
-        timer.scheduleAtFixedRate(task, 0, interval);
-    }
-
-    /**
-     * This method applies a functor to a list of arguments without risking a checked exception.
-     *
-     * @param functor is the function object.
-     * @param arguments are the arguments to pass to the functor.
-     * @return the value returned by the functor.
-     */
-    public static Object quietlyApply(final Functor functor,
-                                      final Iterable<?> arguments)
-    {
-        try
-        {
-            return T.apply(functor, arguments);
-        }
-        catch (Throwable ex)
-        {
-            T.rethrow(ex);
-        }
-
-        throw new RuntimeException("This should never happen.");
-    }
-
-    /**
-     * This method creates a list describing the signature of a functor.
-     *
-     * @param functor is the functor itself.
-     * @return a new immutable list: [return-type, parameter-type-1, ... , parameter-type-N]
-     */
-    public static List<Class> signatureOf(final TypedFunctor functor)
-    {
-        final List<Class> sig = Lists.newLinkedList();
-
-        sig.add(functor.returnType());
-
-        sig.addAll(functor.parameterTypes());
-
-        return ImmutableList.copyOf(sig);
-    }
-
-    /**
      * This method sets the value of each element to its default value.
      *
      * <p>
@@ -1914,88 +1459,10 @@ public final class T
 
         for (int i = 0; i < self.size(); i++)
         {
-            p = (T) p.set(i, F.defaultValue(types.get(i)));
+            p = (T) p.set(i, F.defaultValueOf(types.get(i)));
         }
 
         return p;
-    }
-
-    /**
-     * This method creates an object that represents an entry in this record.
-     *
-     * @param index is the index of the element to assign the value to.
-     * @return an object that describes the specified entry.
-     * @throws IndexOutOfBoundsException if the index is out-of-bounds.
-     */
-    public static RecordEntry find(final Record self,
-                                   final int index)
-    {
-        return new RecordEntry()
-        {
-            private String key = null;
-
-            @Override
-            public Record record()
-            {
-                return self;
-            }
-
-            @Override
-            public String key()
-            {
-                if (key == null)
-                {
-                    key = self.keys().get(index);
-                }
-
-                return key;
-            }
-
-            @Override
-            public Class type()
-            {
-                return self.types().get(index);
-            }
-
-            @Override
-            public Object value()
-            {
-                return self.get(index);
-            }
-
-            @Override
-            public Record clear()
-            {
-                return self.set(index, F.defaultValue(type()));
-            }
-
-            @Override
-            public Record set(Object value)
-            {
-                return self.set(index, value);
-            }
-
-            @Override
-            public String toString()
-            {
-                return "" + value();
-            }
-        };
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public static RecordEntry find(final Record self,
-                                   final String key)
-    {
-        Preconditions.checkNotNull(key);
-
-        final int index = self.keys().indexOf(key);
-
-        final RecordEntry result = find(self, index);
-
-        return result;
     }
 
     /**
@@ -2125,48 +1592,6 @@ public final class T
         return p;
     }
 
-    /**
-     * This method determines whether the type of the entries in a record are all the same.
-     *
-     * @param record is the record itself.
-     * @return true, if the static type of each entry is the same.
-     */
-    public static boolean isHomogeneous(final Record record)
-    {
-        Preconditions.checkNotNull(record);
-
-        // This algorithm could be replaced in the future.
-        final boolean answer = Sets.newHashSet(record.types()).size() <= 1;
-
-        return answer;
-    }
-
-    /**
-     * This method creates a map that maps the entry-names to entry-values.
-     *
-     * @param record is the record that will be converted to a map.
-     * @return a map representation of the record.
-     */
-    public static Map<String, Object> entryMap(final Record record)
-    {
-        Preconditions.checkNotNull(record);
-
-        final SortedMap<String, Object> map = Maps.newTreeMap();
-
-        final Collection<String> keys = record.keys();
-
-        final List<Object> values = record.values();
-
-        int i = 0;
-
-        for (String key : keys)
-        {
-            map.put(key, values.get(i++));
-        }
-
-        return Collections.unmodifiableSortedMap(map);
-    }
-
     public static String json(final Object input)
     {
         final JsonEncoder encoder = new JsonEncoder();
@@ -2194,48 +1619,332 @@ public final class T
         return null;
     }
 
-    public static Annotation findAnnotation(final AnnotatedElement owner,
-                                            final Class type)
-    {
-        return null;
-    }
-
     public static Field findField(final Class owner,
                                   final String name)
     {
-        return null;
+        Preconditions.checkNotNull(owner);
+        Preconditions.checkNotNull(name);
+
+        try
+        {
+            return owner.getField(name);
+        }
+        catch (NoSuchFieldException ex)
+        {
+            return null;
+        }
     }
 
     public static Constructor findConstructor(final Class owner,
                                               final Iterable<Class> formals)
     {
-        return null;
+        Preconditions.checkNotNull(owner);
+        Preconditions.checkNotNull(formals);
+
+        final Class[] params = (Class[]) F.newList(formals).toArray(new Class[0]);
+
+        try
+        {
+            return owner.getConstructor(params);
+        }
+        catch (NoSuchMethodException ex)
+        {
+            return null;
+        }
     }
 
     public static Method findMethod(final Class owner,
                                     final String name,
                                     final Iterable<Class> formals)
     {
-        return null;
+        Preconditions.checkNotNull(owner);
+        Preconditions.checkNotNull(name);
+        Preconditions.checkNotNull(formals);
+
+        final Class[] params = (Class[]) F.newList(formals).toArray(new Class[0]);
+
+        try
+        {
+            return owner.getMethod(name, params);
+        }
+        catch (NoSuchMethodException ex)
+        {
+            return null;
+        }
     }
 
-    public static String extractAnnotationValue(final Annotation anno)
+    /**
+     * TODO: This must be a weak map.
+     */
+    private static final Map<Object, Map<Object, Object>> details = Maps.newIdentityHashMap();
+
+    /**
+     * This method associates a detail with a given exception.
+     *
+     * @param problem is the exception that the detail is in reference to.
+     * @param key identifies the detail.
+     * @param value is the content of the detail.
+     * @throws NullPointerException if problem is null.
+     * @throws NullPointerException if key is null.
+     */
+    public static void set(final Throwable problem,
+                           final String key,
+                           final Object value)
+    {
+        Preconditions.checkNotNull(problem);
+        Preconditions.checkNotNull(key);
+
+        if (details.containsKey(problem) == false)
+        {
+            details.put(problem, Maps.newHashMap());
+        }
+
+        final Map<Object, Object> map = details.get(problem);
+
+        map.put(key, value);
+    }
+
+    /**
+     * This method retrieves a detail that is associated with a given exception.
+     *
+     * @param problem is the exception that the detail is in reference to.
+     * @param key identifies the detail.
+     * @return the value of the detail, or null, if the detail does not exist.
+     * @throws NullPointerException if problem is null.
+     * @throws NullPointerException if key is null.
+     */
+    public static Object get(final Throwable problem,
+                             final String key)
+    {
+        Preconditions.checkNotNull(problem);
+        Preconditions.checkNotNull(key);
+
+        if (details.containsKey(problem) == false)
+        {
+            return null;
+        }
+
+        final Map<Object, Object> map = details.get(problem);
+
+        final Object result = map.get(key);
+
+        return result;
+    }
+
+    /**
+     * This method converts a value to a BigDecimal.
+     *
+     * @param value is the value to convert.
+     * @return the value as a BigDecimal.
+     * @throws NullPointerException if value is null.
+     */
+    public static BigDecimal big(final Object value)
+    {
+        Preconditions.checkNotNull(value);
+
+        /**
+         * Convert the value to a BigDecimal.
+         */
+        final BigDecimal result;
+
+        if (value instanceof Character)
+        {
+            result = BigDecimal.valueOf((long) (Character) value);
+        }
+        else if (value instanceof Byte)
+        {
+            result = BigDecimal.valueOf((long) (Byte) value);
+        }
+        else if (value instanceof Short)
+        {
+            result = BigDecimal.valueOf((long) (Short) value);
+        }
+        else if (value instanceof Integer)
+        {
+            result = BigDecimal.valueOf((long) (Integer) value);
+        }
+        else if (value instanceof Long)
+        {
+            result = BigDecimal.valueOf((long) (Long) value);
+        }
+        else if (value instanceof Float)
+        {
+            result = BigDecimal.valueOf((double) (Float) value);
+        }
+        else if (value instanceof Double)
+        {
+            result = BigDecimal.valueOf((double) (Double) value);
+        }
+        else if (value instanceof BigInteger)
+        {
+            result = new BigDecimal((BigInteger) value);
+        }
+        else if (value instanceof BigDecimal)
+        {
+            result = (BigDecimal) value;
+        }
+        else
+        {
+            throw new IllegalArgumentException("The value cannot be converted to a BigDecimal.");
+        }
+
+        /**
+         * Ensure that the scale of the result is correct.
+         */
+        final BigDecimal datum = Helpers.createBigDecimal(result);
+
+        /**
+         * Return the value as a BigDecimal.
+         */
+        return datum;
+    }
+
+    /**
+     * This method creates a list of [index, element] pairs.
+     *
+     * @param iterable provides the elements.
+     * @return the list of [index, element] pairs.
+     * @throws NullPointerException if iterable is null.
+     */
+    public static List<List<Object>> enumerate(final Iterable<?> iterable)
+    {
+        Preconditions.checkNotNull(iterable);
+
+        final List<List<Object>> pairs = Lists.newLinkedList();
+
+        int index = 0;
+
+        for (Object value : iterable)
+        {
+            final List<Object> pair = Lists.newArrayList(index++, value);
+
+            pairs.add(Collections.unmodifiableList(pair));
+        }
+
+        return Collections.unmodifiableList(pairs);
+    }
+
+    public static AsyncTask async(final Action action)
     {
         return null;
     }
 
-    public static List extractAnnotationValues(final Annotation anno)
+    public static boolean isAssignableTo(final Class T,
+                                         final Class X)
     {
-        return null;
+        /**
+         * Case: X is T
+         */
+        if (Operators.equals(T, X))
+        {
+            return true;
+        }
+
+        /**
+         * Case: X is null
+         */
+        if (X == null && Object.class.isAssignableFrom(T))
+        {
+            return true;
+        }
+
+        /**
+         * From now on, T cannot be the null-type or the void-type.
+         * Likewise, X cannot be the void-type.
+         */
+        if (T == null || T == void.class || X == void.class)
+        {
+            return false;
+        }
+
+        /**
+         * Case: Boxing
+         */
+        final boolean boxing = (X == boolean.class && T == Boolean.class)
+                               || (X == char.class && T == Character.class)
+                               || (X == byte.class && T == Byte.class)
+                               || (X == short.class && T == Short.class)
+                               || (X == int.class && T == Integer.class)
+                               || (X == long.class && T == Long.class)
+                               || (X == float.class && T == Float.class)
+                               || (X == double.class && T == Double.class)
+                               || (X != null && X.isPrimitive() && T == Object.class)
+                               || (X != null && X.isPrimitive() && T == Comparable.class)
+                               || (X != null && X.isPrimitive() && X != boolean.class && X != char.class && T == Number.class);
+
+        if (boxing)
+        {
+            return true;
+        }
+
+
+        /**
+         * Case: Unboxing
+         */
+        final boolean unboxing = (X == Boolean.class && T == boolean.class)
+                                 || (X == Character.class && T == char.class)
+                                 || (X == Byte.class && T == byte.class)
+                                 || (X == Short.class && T == short.class)
+                                 || (X == Integer.class && T == int.class)
+                                 || (X == Long.class && T == long.class)
+                                 || (X == Float.class && T == float.class)
+                                 || (X == Double.class && T == double.class);
+
+        if (unboxing)
+        {
+            return true;
+        }
+
+        /**
+         * Case: Coercion
+         */
+        final boolean coercion = (X == char.class && T == int.class)
+                                 || (X == char.class && T == long.class)
+                                 || (X == byte.class && T == short.class)
+                                 || (X == byte.class && T == int.class)
+                                 || (X == byte.class && T == long.class)
+                                 || (X == short.class && T == int.class)
+                                 || (X == short.class && T == long.class)
+                                 || (X == int.class && T == long.class)
+                                 || (X == float.class && T == double.class);
+
+        if (coercion)
+        {
+            return true;
+        }
+
+        /**
+         * Case: Subtyping
+         */
+        if (isSubtypeOf(X, T))
+        {
+            return true;
+        }
+
+        /**
+         * Case: Not Assignable
+         */
+        return false;
     }
 
-    public static Delegate delegateTo(final Constructor ctor)
+    public static boolean isSubtypeOf(final Class subtype,
+                                      final Class supertype)
     {
-        return null;
-    }
-
-    public static Delegate delegateTo(final Method method)
-    {
-        return null;
+        if (Operators.equals(subtype, supertype))
+        {
+            return true;
+        }
+        else if (subtype == null && Object.class.isAssignableFrom(supertype))
+        {
+            return true;
+        }
+        else if (subtype != null && supertype != null && supertype.isAssignableFrom(subtype))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 }

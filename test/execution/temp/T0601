@@ -1,0 +1,9 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    val list = [8, 9, 2, 3, 7, 4, 5, 6];
+
+    assert 2 == F::minimum(list);
+}

@@ -1,0 +1,74 @@
+module Main in execution;
+
+annotation A;
+annotation B;
+
+@A
+@B
+design S (a : boolean,
+          b : char,
+          c : byte,
+          d : short,
+          e : int,
+          f : long,
+          g : float,
+          h : double,
+          i : String,
+          j : Object);
+
+@Start
+defun main (args : String[]) : void
+{
+    val owner = (class S);
+
+    assert owner != null;
+
+
+
+    # The design should have compiled to an interface.
+    #
+    assert owner.isInterface();
+
+
+
+    # Check whether the annotations were applied.
+    #
+    assert owner.isAnnotationPresent((class A));
+    assert owner.isAnnotationPresent((class B));
+
+
+
+    # Check whether the getter methods were generated.
+    #
+    assert F::findMethod(owner, "a", []).getReturnType() == (class boolean);
+    assert F::findMethod(owner, "b", []).getReturnType() == (class char);
+    assert F::findMethod(owner, "c", []).getReturnType() == (class byte);
+    assert F::findMethod(owner, "d", []).getReturnType() == (class short);
+    assert F::findMethod(owner, "e", []).getReturnType() == (class int);
+    assert F::findMethod(owner, "f", []).getReturnType() == (class long);
+    assert F::findMethod(owner, "g", []).getReturnType() == (class float);
+    assert F::findMethod(owner, "h", []).getReturnType() == (class double);
+    assert F::findMethod(owner, "i", []).getReturnType() == (class String);
+    assert F::findMethod(owner, "j", []).getReturnType() == (class Object);
+
+
+
+    # Check whether the setter methods were generated.
+    #
+    assert F::findMethod(owner, "a", [(class boolean)]).getReturnType() == owner;
+    assert F::findMethod(owner, "b", [(class char)]).getReturnType() == owner;
+    assert F::findMethod(owner, "c", [(class byte)]).getReturnType() == owner;
+    assert F::findMethod(owner, "d", [(class short)]).getReturnType() == owner;
+    assert F::findMethod(owner, "e", [(class int)]).getReturnType() == owner;
+    assert F::findMethod(owner, "f", [(class long)]).getReturnType() == owner;
+    assert F::findMethod(owner, "g", [(class float)]).getReturnType() == owner;
+    assert F::findMethod(owner, "h", [(class double)]).getReturnType() == owner;
+    assert F::findMethod(owner, "i", [(class String)]).getReturnType() == owner;
+    assert F::findMethod(owner, "j", [(class Object)]).getReturnType() == owner;
+
+
+
+    # Check whether the special methods were generated.
+    #
+    assert F::findMethod(owner, "set", [(class int), (class Object)]).getReturnType() == owner;
+}

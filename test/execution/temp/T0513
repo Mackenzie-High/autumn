@@ -1,0 +1,52 @@
+module Main in execution;
+
+import java.lang.annotation.RetentionPolicy;
+
+design Blueprint ();
+
+struct Account ();
+
+tuple Person ();
+
+
+@Start
+defun main (args : String[]) : void
+{
+    # Case: primitive
+    assert F::isAnnotationType((class boolean)) == false;
+
+    # Case: annotation
+    assert F::isAnnotationType((class Start)) == true;
+
+    # Case: class
+    assert F::isAnnotationType((class String)) == false;
+
+    # Case: interface
+    assert F::isAnnotationType((class List)) == false;
+
+    # Case: enum
+    assert F::isAnnotationType((class RetentionPolicy)) == false;
+
+    # Case: module
+    assert F::isAnnotationType((class Main)) == false;
+
+    # Case: exception
+    assert F::isAnnotationType((class Exception)) == false;
+
+    # Case: design
+    assert F::isAnnotationType((class Blueprint)) == false;
+
+    # Case: struct
+    assert F::isAnnotationType((class Account)) == false;
+
+    # Case: tuple
+    assert F::isAnnotationType((class Person)) == false;
+
+    # Case: functor
+    assert F::isAnnotationType((class Predicate)) == false;
+}
+
+
+
+
+

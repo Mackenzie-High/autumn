@@ -1,0 +1,18 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    val t = new Throwable();
+
+    try
+    {
+        F::raise(t);
+
+        assert false;
+    }
+    catch(ex : Throwable)
+    {
+        assert ex === t;
+    }
+}

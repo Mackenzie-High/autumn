@@ -1,0 +1,9 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    assert F::sum([]) == 0.0BD;
+
+    assert F::sum([100, 200, 300]) == 600.0BD;
+}

@@ -1,0 +1,23 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    # Creates some lists.
+    val list1 = [1, 2, 3, 2, 1, 2, 3, 2, 1];
+    val list2 = [9, 8, 7, 8, 9, 8, 7, 8, 9];
+    val list3 = [9, 8, 7, 8, 3, 8, 7, 8, 9];
+
+    # Create a predicate.
+    lambda p : Predicate => ($1 is Integer) < 5;
+
+    # Are any the values below five?
+    val test1 = F::any(p, list1);
+    val test2 = F::any(p, list2);
+    val test3 = F::any(p, list3);
+
+    # Print the results.
+    assert test1 == true;
+    assert test2 == false;
+    assert test3 == true;
+}

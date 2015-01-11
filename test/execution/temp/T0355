@@ -1,0 +1,15 @@
+
+@Author ("Chicky", "Picky")
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    val type = My::instance().getClass();
+
+    assert type.isAnnotationPresent((class Author));
+
+    val anno = type.getAnnotation((class Author));
+
+    assert F::iter(anno) == ["Chicky", "Picky"];
+}

@@ -1,0 +1,15 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    val map = new TreeMap();
+
+    map.put("A", "X");
+    map.put("B", "Y");
+    map.put("C", "Z");
+
+    assert F::get(map, "A") == "X";
+    assert F::get(map, "B") == "Y";
+    assert F::get(map, "C") == "Z";
+}

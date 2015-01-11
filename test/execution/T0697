@@ -1,0 +1,20 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    val original = new TreeMap();
+
+    original.put("A", 100);
+    original.put("B", 200);
+    original.put("C", 300);
+
+    val view = F::unmodifiable(original is Map);
+
+    assert view == original;
+    assert view !== original;
+
+    original.put("X", 400);
+
+    assert original == view;
+}
