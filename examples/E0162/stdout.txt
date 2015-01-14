@@ -1,1 +1,0 @@
-public void java.util.LinkedList.add(int,java.lang.Object)
