@@ -1,0 +1,13 @@
+module Main in execution;
+
+tuple Volcano (name : String, range : String, elevation : int);
+
+@Start
+defun main (args : String[]) : void
+{
+    val volcano = new Volcano("Mount Baker", "Cascade", 10_781);
+
+    F::println("Name: " .. F::get(volcano, 0));
+    F::println("Range: " .. F::get(volcano, 1));
+    F::println("Elevation: " .. F::get(volcano, 2));
+}
