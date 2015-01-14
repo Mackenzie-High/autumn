@@ -1,0 +1,30 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    # Create a new array. 
+    val array = F::newArray((class float), 5) is float[];
+
+    # Compute the length of the array. 
+    val length = F::len(array);
+
+    # Print the length of the array. 
+    F::println("Length = " .. length);
+
+    # Set the values of the elements in the array.
+    F::set(array, 0, 10.0F);
+    F::set(array, 1, 20.0F);
+    F::set(array, 2, 30.0F);
+    F::set(array, 3, 40.0F);
+    F::set(array, 4, 50.0F);
+
+    # Create a view of the array.
+    val view = F::iter(array);
+
+    # Print the aforesaid values. 
+    foreach (value : Object in view)
+    {
+        F::println(value);
+    }
+}
