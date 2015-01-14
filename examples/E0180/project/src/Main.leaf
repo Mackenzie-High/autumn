@@ -1,0 +1,34 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    val original = new TreeSet();
+
+    My::add(original, 100);
+    My::add(original, 200);
+    My::add(original, 300);
+
+    val derived = F::immutable(original is Set);
+    
+    My::add(original, 400);
+    My::add(original, 500);
+
+    My::add(derived, 600);
+    My::add(derived, 700);
+
+    F::println("Original: " .. original);
+    F::println("Derived: " .. derived);
+}
+
+defun add (ds : Set, value : Object) : void
+{
+    try
+    {
+        ds.add(value);
+    }
+    catch (ex : UnsupportedOperationException)
+    {
+        F::println("Failed to Add: " .. value);
+    }
+}

@@ -1,0 +1,34 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    val original = new TreeMap();
+
+    My::add(original, 100, 11);
+    My::add(original, 200, 12);
+    My::add(original, 300, 13);
+
+    val derived = F::immutable(original is Map);
+    
+    My::add(original, 400, 14);
+    My::add(original, 500, 15);
+
+    My::add(derived, 600, 16);
+    My::add(derived, 700, 17);
+
+    F::println("Original: " .. original);
+    F::println("Derived: " .. derived);
+}
+
+defun add (ds : Map, key : Object, value : Object) : void
+{
+    try
+    {
+        ds.put(key, value);
+    }
+    catch (ex : UnsupportedOperationException)
+    {
+        F::println("Failed to Add: " .. key);
+    }
+}
