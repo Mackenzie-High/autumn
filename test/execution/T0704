@@ -1,0 +1,23 @@
+module Main in execution;
+
+import java.lang.annotation.Retention;
+
+@Start
+defun main (args : String[]) : void
+{
+    try
+    {
+        # The Start class has an Retention annotation applied to it.
+        # Do not be confused by the fact that Start is an annotation.
+        # This was just a convenient way of getting a non Autumn-style annotation.
+        val anno = F::findAnnotation(class Start, class Retention);
+
+        F::get(anno, 0);
+
+        assert false;
+    }
+    catch(ex : IllegalArgumentException)
+    {
+        nop;
+    }
+}

@@ -39,6 +39,8 @@ public final class Runner
 
 
 
+
+        test("T0704");
         test("T0703");
         test("T0702");
         test("T0701");
@@ -48,7 +50,6 @@ public final class Runner
         test("T0697");
         test("T0696");
         test("T0695");
-        test("T0694");
         test("T0693");
         test("T0692");
         test("T0691");
@@ -71,7 +72,6 @@ public final class Runner
         test("T0674");
         test("T0673");
         test("T0672");
-        test("T0671");
         test("T0670");
         test("T0669");
         test("T0668");
@@ -81,10 +81,6 @@ public final class Runner
         test("T0664");
         test("T0663");
         test("T0662");
-        test("T0660");
-        test("T0659");
-        test("T0658");
-        test("T0657");
         test("T0656");
         test("T0655");
         test("T0654");
@@ -123,12 +119,6 @@ public final class Runner
         test("T0621");
         test("T0620");
         test("T0619");
-        test("T0618");
-        test("T0617");
-        test("T0616");
-        test("T0615");
-        test("T0614");
-        test("T0613");
         test("T0612");
         test("T0611");
         test("T0610");
@@ -708,19 +698,6 @@ public final class Runner
             final String path = "/execution/" + test;
 
             final URL url = Resources.getResource(Runner.class, path);
-
-//            final String code = Resources.toString(url, Charset.defaultCharset());
-//
-//            final IErrorReporter reporter = new BasicErrorReporter();
-//
-//            final AutumnParser parser = new AutumnParser(reporter);
-//
-//            final Module module = parser.parse(code, new File(path));
-//
-//            if (module == null)
-//            {
-//                return FAILED;
-//            }
 
             final Autumn cmp = new Autumn();
 

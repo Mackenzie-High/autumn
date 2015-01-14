@@ -189,16 +189,16 @@ public final class F
     }
 
     
-    public static java.lang.String format (final java.lang.String format, final java.lang.Iterable args) throws java.lang.NullPointerException, java.lang.NullPointerException
+    public static java.lang.String format (final java.lang.String format, final java.lang.Iterable args) throws java.lang.NullPointerException, java.lang.NullPointerException, java.util.IllegalFormatException
     {
 
         if(format == null) { throw new java.lang.NullPointerException(); }
         if(args == null) { throw new java.lang.NullPointerException(); }
-        return String.format(format, newList(args).toArray());
+        return String.format(format, immutable(args).toArray());
     }
 
     
-    public static java.lang.String get (final java.lang.annotation.Annotation anno, final int index) throws java.lang.NullPointerException, java.lang.IllegalArgumentException
+    public static java.lang.String get (final java.lang.annotation.Annotation anno, final int index) throws java.lang.NullPointerException, java.lang.IndexOutOfBoundsException
     {
 
         if(anno == null) { throw new java.lang.NullPointerException(); }
@@ -318,19 +318,19 @@ public final class F
     }
 
     
-    public static java.lang.Object get (final autumn.lang.Record owner, final int index) throws java.lang.NullPointerException, java.lang.IndexOutOfBoundsException
+    public static java.lang.Object get (final autumn.lang.Record record, final int index) throws java.lang.NullPointerException, java.lang.IndexOutOfBoundsException
     {
 
-        if(owner == null) { throw new java.lang.NullPointerException(); }
-        return owner.get(index);
+        if(record == null) { throw new java.lang.NullPointerException(); }
+        return record.get(index);
     }
 
     
-    public static java.lang.Object get (final autumn.lang.Record owner, final java.lang.String key) throws java.lang.NullPointerException, java.util.NoSuchElementException
+    public static java.lang.Object get (final autumn.lang.Record record, final java.lang.String key) throws java.lang.NullPointerException, java.util.NoSuchElementException
     {
 
-        if(owner == null) { throw new java.lang.NullPointerException(); }
-        return get(owner, owner.keys().indexOf(key));
+        if(record == null) { throw new java.lang.NullPointerException(); }
+        return get(record, record.keys().indexOf(key));
     }
 
     
@@ -341,35 +341,35 @@ public final class F
     }
 
     
-    public static java.util.List immutable (final java.lang.Iterable value) throws java.lang.NullPointerException
+    public static java.util.List immutable (final java.lang.Iterable original) throws java.lang.NullPointerException
     {
 
-        if(value == null) { throw new java.lang.NullPointerException(); }
-        return immutable(iter(value));
+        if(original == null) { throw new java.lang.NullPointerException(); }
+        return immutable(iter(original));
     }
 
     
-    public static java.util.List immutable (final java.util.List value) throws java.lang.NullPointerException
+    public static java.util.List immutable (final java.util.List original) throws java.lang.NullPointerException
     {
 
-        if(value == null) { throw new java.lang.NullPointerException(); }
-        return Collections.unmodifiableList(new ArrayList(value));
+        if(original == null) { throw new java.lang.NullPointerException(); }
+        return Collections.unmodifiableList(new ArrayList(original));
     }
 
     
-    public static java.util.Map immutable (final java.util.Map value) throws java.lang.NullPointerException
+    public static java.util.Map immutable (final java.util.Map original) throws java.lang.NullPointerException
     {
 
-        if(value == null) { throw new java.lang.NullPointerException(); }
-        return Collections.unmodifiableMap(new HashMap(value));
+        if(original == null) { throw new java.lang.NullPointerException(); }
+        return Collections.unmodifiableMap(new HashMap(original));
     }
 
     
-    public static java.util.Set immutable (final java.util.Set value) throws java.lang.NullPointerException
+    public static java.util.Set immutable (final java.util.Set original) throws java.lang.NullPointerException
     {
 
-        if(value == null) { throw new java.lang.NullPointerException(); }
-        return Collections.unmodifiableSet(new HashSet(value));
+        if(original == null) { throw new java.lang.NullPointerException(); }
+        return Collections.unmodifiableSet(new HashSet(original));
     }
 
     
@@ -716,35 +716,35 @@ public final class F
     }
 
     
-    public static java.util.List mutable (final java.lang.Iterable value) throws java.lang.NullPointerException
+    public static java.util.List mutable (final java.lang.Iterable original) throws java.lang.NullPointerException
     {
 
-        if(value == null) { throw new java.lang.NullPointerException(); }
-        return new ArrayList(F.iter(value));
+        if(original == null) { throw new java.lang.NullPointerException(); }
+        return mutable(iter(original));
     }
 
     
-    public static java.util.List mutable (final java.util.List value) throws java.lang.NullPointerException
+    public static java.util.List mutable (final java.util.List original) throws java.lang.NullPointerException
     {
 
-        if(value == null) { throw new java.lang.NullPointerException(); }
-        return new ArrayList(value);
+        if(original == null) { throw new java.lang.NullPointerException(); }
+        return new ArrayList(original);
     }
 
     
-    public static java.util.Map mutable (final java.util.Map value) throws java.lang.NullPointerException
+    public static java.util.Map mutable (final java.util.Map original) throws java.lang.NullPointerException
     {
 
-        if(value == null) { throw new java.lang.NullPointerException(); }
-        return new HashMap(value);
+        if(original == null) { throw new java.lang.NullPointerException(); }
+        return new HashMap(original);
     }
 
     
-    public static java.util.Set mutable (final java.util.Set value) throws java.lang.NullPointerException
+    public static java.util.Set mutable (final java.util.Set original) throws java.lang.NullPointerException
     {
 
-        if(value == null) { throw new java.lang.NullPointerException(); }
-        return new HashSet(value);
+        if(original == null) { throw new java.lang.NullPointerException(); }
+        return new HashSet(original);
     }
 
     
@@ -757,36 +757,12 @@ public final class F
     }
 
     
-    public static java.util.List newList (final java.lang.Iterable elements) throws java.lang.NullPointerException
-    {
-
-        if(elements == null) { throw new java.lang.NullPointerException(); }
-        return immutable(F.iter(elements));
-    }
-
-    
-    public static java.util.Map newMap (final java.util.Map original) throws java.lang.NullPointerException
-    {
-
-        if(original == null) { throw new java.lang.NullPointerException(); }
-        return immutable(original);
-    }
-
-    
     public static java.lang.Object newProxy (final java.lang.Class type, final autumn.util.functors.ProxyHandler handler) throws java.lang.NullPointerException, java.lang.NullPointerException
     {
 
         if(type == null) { throw new java.lang.NullPointerException(); }
         if(handler == null) { throw new java.lang.NullPointerException(); }
         return null;
-    }
-
-    
-    public static java.util.Set newSet (final java.lang.Iterable elements) throws java.lang.NullPointerException
-    {
-
-        if(elements == null) { throw new java.lang.NullPointerException(); }
-        return immutable(new HashSet(F.iter(elements)));
     }
 
     
@@ -824,10 +800,11 @@ public final class F
     }
 
     
-    public static boolean parseBoolean (final java.lang.String value) throws java.lang.NullPointerException, java.lang.NumberFormatException
+    public static boolean parseBoolean (final java.lang.String value) throws java.lang.NullPointerException, java.lang.IllegalArgumentException
     {
 
         if(value == null) { throw new java.lang.NullPointerException(); }
+        if(!value.equals("true") && !value.equals("false")) { throw new java.lang.IllegalArgumentException(); }
         return Boolean.parseBoolean(value);
     }
 
@@ -897,7 +874,7 @@ public final class F
     public static void printerrf (final java.lang.String format, final java.lang.Iterable args) 
     {
 
-        System.err.printf(format, newList(args).toArray());
+        System.err.printf(format, immutable(args).toArray());
     }
 
     
@@ -925,7 +902,7 @@ public final class F
     public static void printf (final java.lang.String format, final java.lang.Iterable args) 
     {
 
-        System.out.printf(format, newList(args).toArray());
+        System.out.printf(format, immutable(args).toArray());
     }
 
     
@@ -1167,12 +1144,12 @@ public final class F
     }
 
     
-    public static java.util.List sort (final java.util.ArrayList list, final autumn.util.functors.Ordering ordering) throws java.lang.NullPointerException, java.lang.NullPointerException
+    public static void sort (final java.util.ArrayList list, final autumn.util.functors.Ordering ordering) throws java.lang.NullPointerException, java.lang.NullPointerException
     {
 
         if(list == null) { throw new java.lang.NullPointerException(); }
         if(ordering == null) { throw new java.lang.NullPointerException(); }
-        return null;
+        Collections.sort(list, ordering);
     }
 
     
@@ -1187,7 +1164,7 @@ public final class F
     }
 
     
-    public static java.lang.String str (final java.lang.Object value) throws java.lang.NumberFormatException
+    public static java.lang.String str (final java.lang.Object value) 
     {
 
         return "" + value;
@@ -1226,35 +1203,27 @@ public final class F
     }
 
     
-    public static java.util.List unmodifiable (final java.lang.Iterable value) throws java.lang.NullPointerException
+    public static java.util.List unmodifiable (final java.util.List original) throws java.lang.NullPointerException
     {
 
-        if(value == null) { throw new java.lang.NullPointerException(); }
-        return Collections.unmodifiableList(F.iter(value));
+        if(original == null) { throw new java.lang.NullPointerException(); }
+        return Collections.unmodifiableList(new ArrayList(original));
     }
 
     
-    public static java.util.List unmodifiable (final java.util.List value) throws java.lang.NullPointerException
+    public static java.util.Map unmodifiable (final java.util.Map original) throws java.lang.NullPointerException
     {
 
-        if(value == null) { throw new java.lang.NullPointerException(); }
-        return Collections.unmodifiableList(value);
+        if(original == null) { throw new java.lang.NullPointerException(); }
+        return Collections.unmodifiableMap(new HashMap(original));
     }
 
     
-    public static java.util.Map unmodifiable (final java.util.Map value) throws java.lang.NullPointerException
+    public static java.util.Set unmodifiable (final java.util.Set original) throws java.lang.NullPointerException
     {
 
-        if(value == null) { throw new java.lang.NullPointerException(); }
-        return Collections.unmodifiableMap(value);
-    }
-
-    
-    public static java.util.Set unmodifiable (final java.util.Set value) throws java.lang.NullPointerException
-    {
-
-        if(value == null) { throw new java.lang.NullPointerException(); }
-        return Collections.unmodifiableSet(value);
+        if(original == null) { throw new java.lang.NullPointerException(); }
+        return Collections.unmodifiableSet(new HashSet(original));
     }
 
     

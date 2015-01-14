@@ -987,7 +987,7 @@ public final class T
      *
      * @param iterable is the iterable that provides input for the functor.
      * @param function is the functor(Object) : Object that processes the input.
-     * @return a list containing the output of the functor.
+     * @return an immutable list containing the output of the functor.
      * @throws Throwable in order to allow exceptions to propagate from the functor.
      */
     public static List<Object> map(final Iterable iterable,
@@ -1004,7 +1004,7 @@ public final class T
             output.add(T.apply(function, Collections.singletonList(element)));
         }
 
-        return output;
+        return Collections.unmodifiableList(output);
     }
 
     public static List<Object> filter(final Iterable<?> iterable,
@@ -1642,7 +1642,7 @@ public final class T
         {
             return owner.getField(name);
         }
-        catch (NoSuchFieldException ex)
+        catch (Exception ex)
         {
             return null;
         }
@@ -1654,13 +1654,13 @@ public final class T
         Preconditions.checkNotNull(owner);
         Preconditions.checkNotNull(formals);
 
-        final Class[] params = (Class[]) F.newList(formals).toArray(new Class[0]);
+        final Class[] params = (Class[]) F.immutable(formals).toArray(new Class[0]);
 
         try
         {
             return owner.getConstructor(params);
         }
-        catch (NoSuchMethodException ex)
+        catch (Exception ex)
         {
             return null;
         }
@@ -1674,13 +1674,13 @@ public final class T
         Preconditions.checkNotNull(name);
         Preconditions.checkNotNull(formals);
 
-        final Class[] params = (Class[]) F.newList(formals).toArray(new Class[0]);
+        final Class[] params = (Class[]) F.immutable(formals).toArray(new Class[0]);
 
         try
         {
             return owner.getMethod(name, params);
         }
-        catch (NoSuchMethodException ex)
+        catch (Exception ex)
         {
             return null;
         }

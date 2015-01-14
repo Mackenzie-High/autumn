@@ -687,19 +687,10 @@ Standard Library
 . . . T0610 = single dimensional - null class
 . . . T0611 = single dimensional - negative size
 . . . T0612 = single dimensional - normal
-. . newList
-. . . T0613 = null argument
-. . . T0614 = normal
-. . newMap
-. . . T0617 = null argument
-. . . T0618 = normal
 . . newProxy
 . . . null class
 . . . null handler
 . . . normal
-. . newSet
-. . . T0615 = null argument
-. . . T0616 = normal
 . . padEnd
 . . . T0622 = null string
 . . . T0623 = negative count
@@ -718,7 +709,7 @@ Standard Library
 . . . T0630 = normal
 . . parseBoolean
 . . . T0631 = null argument
-. . . T0632 = bad format      // TODO
+. . . T0632 = bad format
 . . . T0633 = normal
 . . parseByte
 . . . T0634 = null argument
@@ -770,10 +761,6 @@ Standard Library
 . . rethrow
 . . . T0656 = null argument
 . . . T0702 = normal
-. . search
-. . . T0657 = null array
-. . . T0658 = null comparator
-. . . normal
 . . set
 . . . T0680 = null array - boolean[]
 . . . T0681 = null array - char[]
@@ -815,11 +802,9 @@ Standard Library
 . . unique
 . . . T0698 = normal
 . . unmodifiable
-. . . T0671 = null - Iterable
 . . . T0672 = null - List
 . . . T0673 = null - Set
 . . . T0674 = null - Map
-. . . T0694 = normal - Iterable
 . . . T0695 = normal - List
 . . . T0696 = normal - Set
 . . . T0697 = normal - Map
