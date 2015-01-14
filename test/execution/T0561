@@ -1,0 +1,24 @@
+module Main in execution;
+
+tuple T (x : int, y : int, z : int);
+
+@Start
+defun main (args : String[]) : void
+{
+    val p = new T(0, 0, 0);
+
+    val result = F::iter(p);
+
+    assert result.size() == 3;
+    assert result == ["x", "y", "z"];
+
+    var i = 0;
+
+    foreach (value : Object in result)
+    {
+        assert value == result.get(i);
+        assert value == p.keys().get(i);
+
+        i = i + 1;
+    }
+}

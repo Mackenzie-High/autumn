@@ -1,0 +1,32 @@
+module Main in execution;
+
+import high.mackenzie.autumn.resources.StaticFieldTester;
+
+
+@Start
+defun main (args : String[]) : void
+{
+    (field StaticFieldTester::object = true);
+    assert (field StaticFieldTester::object) == true;
+
+    (field StaticFieldTester::object = 'X');
+    assert (field StaticFieldTester::object) == 'X';
+
+    (field StaticFieldTester::object = 10B);
+    assert (field StaticFieldTester::object) == 10B;
+
+    (field StaticFieldTester::object = 20S);
+    assert (field StaticFieldTester::object) == 20S;
+
+    (field StaticFieldTester::object = 30);
+    assert (field StaticFieldTester::object) == 30;
+
+    (field StaticFieldTester::object = 40L);
+    assert (field StaticFieldTester::object) == 40L;
+
+    (field StaticFieldTester::object = 50.0F);
+    assert (field StaticFieldTester::object) == 50.0F;
+
+    (field StaticFieldTester::object = 60.0);
+    assert (field StaticFieldTester::object) == 60.0;
+}

@@ -1,0 +1,25 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    assert Autumn::isAssumeOn();
+
+    assert My::test(false) == 17;
+
+    assert My::test(true) == 13;
+}
+
+defun test (condition : boolean) : int
+{
+    try
+    {
+        assume condition;
+
+        return 13;
+    }
+    catch (ex : AssumptionFailedException)
+    {
+        return 17;
+    }
+}

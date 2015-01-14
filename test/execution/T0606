@@ -1,0 +1,22 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    val original = new LinkedList();
+
+    original.add("A");
+    original.add("B");
+    original.add("C");
+
+    val copy = F::mutable(original is Iterable);
+
+    copy.add("X");
+    copy.add("Y");
+    copy.add("Z");
+
+    original.add("M");
+
+    assert original == ["A", "B", "C", "M"];
+    assert copy == ["A", "B", "C", "X", "Y", "Z"];
+}

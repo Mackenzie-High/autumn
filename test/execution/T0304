@@ -1,0 +1,47 @@
+module Main in execution;
+
+functor Moo (a : boolean,
+             b : char,
+             c : byte,
+             d : short,
+             e : int,
+             f : long,
+             g : float,
+             h : double,
+             i : String) : List;
+
+@Start
+defun main (args : String[]) : void
+{
+    lambda p : Moo => [$0, $1, $2, $3, $4, $5, $6, $7, $8, $9, (locals)];
+
+    val list = p.invoke(true, 'X', 3B, 5S, 7, 9L, 11.0F, 13.0, "Venus");
+
+    assert F::get(list, 0) === p.inner();
+
+    assert F::get(list, 1) == true;
+    assert F::get(list, 2) == 'X';
+    assert F::get(list, 3) == 3B;
+    assert F::get(list, 4) == 5S;
+    assert F::get(list, 5) == 7;
+    assert F::get(list, 6) == 9L;
+    assert F::get(list, 7) == 11.0F;
+    assert F::get(list, 8) == 13.0;
+    assert F::get(list, 9) == "Venus";
+
+    val variables = F::get(list, 10) is LocalsMap;
+
+    assert variables.typeOf("$0") == (class Lambda);
+    assert variables.typeOf("$1") == (class boolean);
+    assert variables.typeOf("$2") == (class char);
+    assert variables.typeOf("$3") == (class byte);
+    assert variables.typeOf("$4") == (class short);
+    assert variables.typeOf("$5") == (class int);
+    assert variables.typeOf("$6") == (class long);
+    assert variables.typeOf("$7") == (class float);
+    assert variables.typeOf("$8") == (class double);
+    assert variables.typeOf("$9") == (class String);
+
+    // $0, $1, $2, $3, $4, $5, $6, $7, $8, $9, args
+    assert variables.locals().size() == 11;
+}

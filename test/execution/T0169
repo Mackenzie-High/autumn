@@ -1,0 +1,18 @@
+module Main in execution;
+
+enum City ( Paris, London, Moscow );
+
+@Start
+defun main (args : String[]) : void
+{
+    try
+    {
+        call City::valueOf("Stockholm");
+
+        assert false;
+    }
+    catch (ex : IllegalArgumentException)
+    {
+        assert true;
+    }
+}

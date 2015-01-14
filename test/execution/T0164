@@ -1,0 +1,12 @@
+module Main in execution;
+
+@Alien
+exception Venus extends Exception;
+
+annotation Alien;
+
+@Start
+defun main (args : String[]) : void
+{
+    assert ((class Venus).isAnnotationPresent (class Alien));
+}

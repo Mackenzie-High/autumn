@@ -1,0 +1,19 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    var i = 0;
+
+    var s = "";
+
+    do
+    {
+        s = s .. i;
+
+        i = i + 1;
+    }
+    until (i == 1)
+
+    assert s == "0";
+}

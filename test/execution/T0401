@@ -1,0 +1,25 @@
+module Main in execution;
+
+functor Function (a : List) : void;
+
+@Start
+defun main (args : String[]) : void
+{
+    delegate p : Function => My::function;
+
+    try
+    {
+        F::apply(p, ["Mars"]);
+
+        assert false;
+    }
+    catch (ex : ClassCastException)
+    {
+        nop;
+    }
+}
+
+defun function (a : List) : void
+{
+    assert false;
+}

@@ -1,0 +1,22 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    val original = new TreeMap();
+
+    original.put("A", 100);
+    original.put("B", 200);
+    original.put("C", 300);
+
+    val copy = F::mutable(original is Map);
+
+    copy.put("X", 400);
+    copy.put("Y", 500);
+    copy.put("Z", 600);
+
+    original.put("M", 700);
+
+    assert original.keySet() == new TreeSet(["A", "B", "C", "M"]);
+    assert copy.keySet() == new TreeSet(["A", "B", "C", "X", "Y", "Z"]);
+}

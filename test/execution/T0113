@@ -1,0 +1,13 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    goto END;
+
+    assert false;
+
+    marker END;
+
+    assert true;
+}

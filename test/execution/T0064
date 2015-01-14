@@ -1,0 +1,24 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    try
+    {
+        Main::F01();
+        assert false;
+    }
+    catch(ex : Throwable)
+    {
+        assert true;
+        return;
+    }
+
+    assert false;
+}
+
+defun F01() : void
+{
+    throw new Throwable();
+    assert false;
+}

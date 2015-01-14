@@ -1,0 +1,23 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    var Z = true;
+    var B = 13B;
+    var S = 17S;
+    var I = 21;
+    var J = 23L;
+    var F = 27.0F;
+    var D = 29.0;
+    var X = "Venus";
+
+    assert Z == true;
+    assert B == 13B;
+    assert S == 17S;
+    assert I == 21;
+    assert J == 23L;
+    assert F == 27.0F;
+    assert D == 29.0;
+    assert X == "Venus";
+}

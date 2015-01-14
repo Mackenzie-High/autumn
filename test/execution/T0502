@@ -1,0 +1,12 @@
+module Main in execution;
+
+tuple Person(name : String, age : int);
+
+@Start
+defun main (args : String[]) : void
+{
+    var p = new Person("Emma", 24);
+
+    assert F::get(p, "name") == "Emma";
+    assert F::get(p, "age") == 24;
+}

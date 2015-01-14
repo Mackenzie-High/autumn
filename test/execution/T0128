@@ -1,0 +1,30 @@
+module Main in execution;
+
+tuple T (a : boolean,
+         b : char,
+         c : byte,
+         d : short,
+         e : int,
+         f : long,
+         g : float,
+         h : double,
+         i : String);
+
+@Start
+defun main (args : String[]) : void
+{
+    val tester = new execution.ReflectionTester();
+
+    tester.expectCtor([], [(class boolean),
+                            (class char),
+                            (class byte),
+                            (class short),
+                            (class int),
+                            (class long),
+                            (class float),
+                            (class double),
+                            (class String)]);
+
+    # Test the type of the tuple.
+    tester.check((class T));
+}

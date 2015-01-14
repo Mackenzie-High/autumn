@@ -1,0 +1,9 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    var list = ["A", "B", "C"];
+
+    assert F::last(list) == "C";
+}

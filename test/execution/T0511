@@ -1,0 +1,25 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    # Create a mutable map.
+    val map = new TreeMap();
+    map.put(1, "A");
+    map.put(2, "B");
+    map.put(3, "C");
+
+    # Create an immutable .
+    val actual = F::immutable(map);
+
+    # Modify the original mutable map.
+    map.put(4, "X");
+    map.put(5, "Y");
+    map.put(6, "Z");
+
+    # Detect unwanted changes in the immutable map.
+    assert actual.size() == 3;
+    assert actual.get(1) == "A";
+    assert actual.get(2) == "B";
+    assert actual.get(3) == "C";
+}

@@ -1,0 +1,22 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    var s = "";
+
+    var i = 0;
+
+    forever
+    {
+        let i = i + 1;
+
+        when (i == 3) then redo;
+
+        when (i == 6) then break;
+
+        s = s .. i;
+    }
+
+    assert s == "1245";
+}

@@ -1,0 +1,32 @@
+module Main in execution;
+
+exception Moo extends Throwable;
+
+@Start
+defun main (args : String[]) : void
+{
+    assert My::handler(true) == 17;
+
+    assert My::handler(false) == 13;
+
+    assert My::handler(true) == 17;
+}
+
+defun handler(condition : boolean) : int
+{
+    try
+    {
+        My::thrower(condition);
+
+        return 13;
+    }
+    catch(ex : Throwable)
+    {
+        return 17;
+    }
+}
+
+defun thrower(condition : boolean) : void
+{
+    when (condition) then throw new Moo();
+}

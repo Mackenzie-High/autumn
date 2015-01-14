@@ -1,0 +1,120 @@
+module Main in execution;
+
+tuple T (a : boolean,
+         b : char,
+         c : byte,
+         d : short,
+         e : int,
+         f : long,
+         g : float,
+         h : double,
+         i : String);
+
+@Start
+defun main (args : String[]) : void
+{
+    val t = T::instance();
+
+    assert t.a() == false;
+    assert t.b() == 0C;
+    assert t.c() == 0B;
+    assert t.d() == 0S;
+    assert t.e() == 0;
+    assert t.f() == 0L;
+    assert t.g() == 0.0F;
+    assert t.h() == 0.0;
+    assert t.i() == null;
+
+    val m1 = t.a (true);
+    val m2 = m1.b ('X');
+    val m3 = m2.c (10B);
+    val m4 = m3.d (20S);
+    val m5 = m4.e (30);
+    val m6 = m5.f (40L);
+    val m7 = m6.g (50.0F);
+    val m8 = m7.h (60.0);
+    val m9 = m8.i ("Venus");
+
+    assert m9.toString() == "(true, X, 10, 20, 30, 40, 50.0, 60.0, Venus)";
+
+    assert m1 != m2;
+    assert m1 != m3;
+    assert m1 != m4;
+    assert m1 != m5;
+    assert m1 != m6;
+    assert m1 != m7;
+    assert m1 != m8;
+    assert m1 != m9;
+
+    assert m2 != m1;
+    assert m2 != m3;
+    assert m2 != m4;
+    assert m2 != m5;
+    assert m2 != m6;
+    assert m2 != m7;
+    assert m2 != m8;
+    assert m2 != m9;
+
+    assert m3 != m1;
+    assert m3 != m2;
+    assert m3 != m4;
+    assert m3 != m5;
+    assert m3 != m6;
+    assert m3 != m7;
+    assert m3 != m8;
+    assert m3 != m9;
+
+    assert m4 != m1;
+    assert m4 != m2;
+    assert m4 != m3;
+    assert m4 != m5;
+    assert m4 != m6;
+    assert m4 != m7;
+    assert m4 != m8;
+    assert m4 != m9;
+
+    assert m5 != m1;
+    assert m5 != m2;
+    assert m5 != m3;
+    assert m5 != m4;
+    assert m5 != m6;
+    assert m5 != m7;
+    assert m5 != m8;
+    assert m5 != m9;
+
+    assert m6 != m1;
+    assert m6 != m2;
+    assert m6 != m3;
+    assert m6 != m4;
+    assert m6 != m5;
+    assert m6 != m7;
+    assert m6 != m8;
+    assert m6 != m9;
+
+    assert m7 != m1;
+    assert m7 != m2;
+    assert m7 != m3;
+    assert m7 != m4;
+    assert m7 != m5;
+    assert m7 != m6;
+    assert m7 != m8;
+    assert m7 != m9;
+
+    assert m8 != m1;
+    assert m8 != m2;
+    assert m8 != m3;
+    assert m8 != m4;
+    assert m8 != m5;
+    assert m8 != m6;
+    assert m8 != m7;
+    assert m8 != m9;
+
+    assert m9 != m1;
+    assert m9 != m2;
+    assert m9 != m3;
+    assert m9 != m4;
+    assert m9 != m5;
+    assert m9 != m6;
+    assert m9 != m7;
+    assert m9 != m8;
+}

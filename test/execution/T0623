@@ -1,0 +1,16 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    try
+    {
+        F::padEnd("", -1, 'X');
+
+        assert false;
+    }
+    catch(ex : IllegalArgumentException)
+    {
+        nop;
+    }
+}

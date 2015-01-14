@@ -1,0 +1,13 @@
+
+@City ("Sydney", "Perth", "Melbourne")
+module Main in execution;
+
+annotation City;
+
+@Start
+defun main (args : String[]) : void
+{
+    val anno = F::findAnnotation((class Main), (class City));
+
+    assert F::len(anno) == 3;
+}

@@ -1,0 +1,143 @@
+module * in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    // This test only needs to test throughput, because the conversions are tested elsewhere.
+
+    // Input: boolean
+    assert (true as boolean) == true;
+    assert (true as char) == 1C;
+    assert (true as byte) == 1B;
+    assert (true as int) == 1;
+    assert (true as long) == 1L;
+    assert (true as float) == 1.0F;
+    assert (true as double) == 1.0;
+
+    // Input: boolean
+    assert (false as boolean) == false;
+    assert (false as char) == 0C;
+    assert (false as byte) == 0B;
+    assert (false as int) == 0;
+    assert (false as long) == 0L;
+    assert (false as float) == 0.0F;
+    assert (false as double) == 0.0;
+
+    // Input: char
+    assert (0C as boolean) == false;
+    assert (1C as boolean) == true;
+    assert (2C as boolean) == true;
+    assert (75C as char) == 75C;
+    assert (75C as byte) == 75B;
+    assert (75C as int) == 75;
+    assert (75C as long) == 75L;
+    assert (75C as float) == 75.0F;
+    assert (75C as double) == 75.0;
+
+    // Input: byte
+    assert (0C as boolean) == false;
+    assert (1C as boolean) == true;
+    assert (2C as boolean) == true;
+    assert (75C as char) == 75C;
+    assert (75C as byte) == 75B;
+    assert (75C as int) == 75;
+    assert (75C as long) == 75L;
+    assert (75C as float) == 75.0F;
+    assert (75C as double) == 75.0;
+
+    // Input: short
+    assert (0S as boolean) == false;
+    assert (1S as boolean) == true;
+    assert (2S as boolean) == true;
+    assert (75S as char) == 75C;
+    assert (75S as byte) == 75B;
+    assert (75S as int) == 75;
+    assert (75S as long) == 75L;
+    assert (75S as float) == 75.0F;
+    assert (75S as double) == 75.0;
+
+    // Input: int
+    assert (0 as boolean) == false;
+    assert (1 as boolean) == true;
+    assert (2 as boolean) == true;
+    assert (75 as char) == 75C;
+    assert (75 as byte) == 75B;
+    assert (75 as int) == 75;
+    assert (75 as long) == 75L;
+    assert (75 as float) == 75.0F;
+    assert (75 as double) == 75.0;
+
+    // Input: long
+    assert (0L as boolean) == false;
+    assert (1L as boolean) == true;
+    assert (2L as boolean) == true;
+    assert (75L as char) == 75C;
+    assert (75L as byte) == 75B;
+    assert (75L as int) == 75;
+    assert (75L as long) == 75L;
+    assert (75L as float) == 75.0F;
+    assert (75L as double) == 75.0;
+
+    // Input: float
+    assert (0.0F as boolean) == false;
+    assert (1.0F as boolean) == true;
+    assert (2.0F as boolean) == true;
+    assert (75.0F as char) == 75C;
+    assert (75.0F as byte) == 75B;
+    assert (75.0F as int) == 75;
+    assert (75.0F as long) == 75L;
+    assert (75.0F as float) == 75.0F;
+    assert (75.0F as double) == 75.0;
+
+    // Input: double
+    assert (0.0 as boolean) == false;
+    assert (1.0 as boolean) == true;
+    assert (2.0 as boolean) == true;
+    assert (75.0 as char) == 75C;
+    assert (75.0 as byte) == 75B;
+    assert (75.0 as int) == 75;
+    assert (75.0 as long) == 75L;
+    assert (75.0 as float) == 75.0F;
+    assert (75.0 as double) == 75.0;
+
+    // Output: String
+    assert (true as String) == "true";
+    assert (65C as String) == "A";
+    assert (65B as String) == "65";
+    assert (65S as String) == "65";
+    assert (65  as String) == "65";
+    assert (65L as String) == "65";
+    assert (65.0F as String) == "65.0";
+    assert (65.0 as String) == "65.0";
+    assert ([] as String) == "[]";
+
+    // Boxing
+    assert (true as Boolean) == (field Boolean::TRUE);
+    assert (65C as Character) == call Character::valueOf(65C);
+    assert (65B as Byte) == call Byte::valueOf(65B);
+    assert (65S as Short) == call Short::valueOf(65S);
+    assert (65  as Integer) == call Integer::valueOf(65);
+    assert (65L as Long) == call Long::valueOf(65L);
+    assert (65.0F as Float) == call Float::valueOf(65.0F);
+    assert (65.0 as Double) == call Double::valueOf(65.0);
+
+    // Boxing
+    assert (true  as Object) == (field Boolean::TRUE);
+    assert (65C   as Object) == call Character::valueOf(65C);
+    assert (65B   as Object) == call Byte::valueOf(65B);
+    assert (65S   as Object) == call Short::valueOf(65S);
+    assert (65    as Object) == call Integer::valueOf(65);
+    assert (65L   as Object) == call Long::valueOf(65L);
+    assert (65.0F as Object) == call Float::valueOf(65.0F);
+    assert (65.0  as Object) == call Double::valueOf(65.0);
+
+    // Unboxing
+    assert ((field Boolean::TRUE) as boolean) == true;
+    assert call Character::valueOf((65C) as char) == 65C;
+    assert call Byte::valueOf((65B) as byte) == 65B;
+    assert call Short::valueOf((65S) as short) == 65S;
+    assert call Integer::valueOf((65) as int) == 65;
+    assert call Long::valueOf((65L) as long) == 65L;
+    assert call Float::valueOf((65.0F) as float) == 65.0F;
+    assert call Double::valueOf((65.0) as double) == 65.0;
+}

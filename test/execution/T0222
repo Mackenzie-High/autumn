@@ -1,0 +1,15 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    var x = "leaf";
+
+    assert F::str(x) == "leaf";
+
+    x = null;
+
+    assert F::str(x) == "null";
+
+    assert x == null;
+}

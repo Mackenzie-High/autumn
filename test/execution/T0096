@@ -1,0 +1,13 @@
+module * in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    val T = true;
+    val F = false;
+
+    assert (F -> F) == T;
+    assert (F -> T) == T;
+    assert (T -> F) == F;
+    assert (T -> T) == T;
+}

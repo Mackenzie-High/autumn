@@ -1,0 +1,16 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    try
+    {
+        F::immutable(null is List);
+
+        assert false;
+    }
+    catch (ex : NullPointerException)
+    {
+        nop;
+    }
+}

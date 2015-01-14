@@ -1,0 +1,265 @@
+module Main in execution;
+
+import java.lang.reflect.Method;
+
+@Start
+defun main (args : String[]) : void
+{
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // Check Return Values
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+
+    assert Main::F01() == true;
+    assert Main::F02() == false;
+
+    assert Main::F03() == 'A';
+    assert Main::F04() == 'Z';
+
+    assert Main::F05() == 17B;
+    assert Main::F06() == 21B;
+
+    assert Main::F07() == 17S;
+    assert Main::F08() == 21S;
+
+    assert Main::F09() == 17;
+    assert Main::F10() == 21;
+
+    assert Main::F11() == 17L;
+    assert Main::F12() == 21L;
+
+    assert Main::F13() > 16.0F;
+    assert Main::F13() < 18.0F;
+    assert Main::F14() > 20.0F;
+    assert Main::F14() < 22.0F;
+
+    assert Main::F15() > 16.0;
+    assert Main::F15() < 18.0;
+    assert Main::F16() > 20.0;
+    assert Main::F16() < 22.0;
+
+    assert Main::F17() == "Uranus";
+    assert Main::F18() == "Mars";
+
+    assert Main::F19() == ["Chicky", "Picky", "Sikorsky", "Lucky"];
+    assert Main::F20() == ["Daffy", "Fluffy"];
+
+    assert Main::F21() == "Chicky";
+    assert Main::F22() == "Picky";
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // Check Return Types
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+
+    var type = (class Main);
+    var method = null as Method;
+    var arguments = F::newArray((class Class), 0) as Class[];
+    var returns = null as Class;
+
+    let method = type.getMethod("F01", arguments);
+    let returns = method.getReturnType();
+    assert returns === (class boolean);
+
+    let method = type.getMethod("F02", arguments);
+    let returns = method.getReturnType();
+    assert returns === (class boolean);
+
+    let method = type.getMethod("F03", arguments);
+    let returns = method.getReturnType();
+    assert returns === (class char);
+
+    let method = type.getMethod("F04", arguments);
+    let returns = method.getReturnType();
+    assert returns === (class char);
+
+    let method = type.getMethod("F05", arguments);
+    let returns = method.getReturnType();
+    assert returns === (class byte);
+
+    let method = type.getMethod("F06", arguments);
+    let returns = method.getReturnType();
+    assert returns === (class byte);
+
+    let method = type.getMethod("F07", arguments);
+    let returns = method.getReturnType();
+    assert returns === (class short);
+
+    let method = type.getMethod("F08", arguments);
+    let returns = method.getReturnType();
+    assert returns === (class short);
+
+    let method = type.getMethod("F09", arguments);
+    let returns = method.getReturnType();
+    assert returns === (class int);
+
+    let method = type.getMethod("F10", arguments);
+    let returns = method.getReturnType();
+    assert returns === (class int);
+
+    let method = type.getMethod("F11", arguments);
+    let returns = method.getReturnType();
+    assert returns === (class long);
+
+    let method = type.getMethod("F12", arguments);
+    let returns = method.getReturnType();
+    assert returns === (class long);
+
+    let method = type.getMethod("F13", arguments);
+    let returns = method.getReturnType();
+    assert returns === (class float);
+
+    let method = type.getMethod("F14", arguments);
+    let returns = method.getReturnType();
+    assert returns === (class float);
+
+    let method = type.getMethod("F15", arguments);
+    let returns = method.getReturnType();
+    assert returns === (class double);
+
+    let method = type.getMethod("F16", arguments);
+    let returns = method.getReturnType();
+    assert returns === (class double);
+
+    let method = type.getMethod("F17", arguments);
+    let returns = method.getReturnType();
+    assert returns === (class String);
+
+    let method = type.getMethod("F18", arguments);
+    let returns = method.getReturnType();
+    assert returns === (class String);
+
+    let method = type.getMethod("F19", arguments);
+    let returns = method.getReturnType();
+    assert returns === (class List);
+
+    let method = type.getMethod("F20", arguments);
+    let returns = method.getReturnType();
+    assert returns === (class List);
+
+    let method = type.getMethod("F21", arguments);
+    let returns = method.getReturnType();
+    assert returns === (class Object);
+
+    let method = type.getMethod("F22", arguments);
+    let returns = method.getReturnType();
+    assert returns === (class Object);
+
+    let method = type.getMethod("F23", arguments);
+    let returns = method.getReturnType();
+    assert returns === (class void);
+}
+
+defun F01() : boolean
+{
+    return true;
+}
+
+defun F02() : boolean
+{
+    return false;
+}
+
+defun F03() : char
+{
+    return 'A';
+}
+
+defun F04() : char
+{
+    return 'Z';
+}
+
+defun F05() : byte
+{
+    return 17B;
+}
+
+defun F06() : byte
+{
+    return 21B;
+}
+
+defun F07() : short
+{
+    return 17S;
+}
+
+defun F08() : short
+{
+    return 21S;
+}
+
+defun F09() : int
+{
+    return 17;
+}
+
+defun F10() : int
+{
+    return 21;
+}
+
+defun F11() : long
+{
+    return 17L;
+}
+
+defun F12() : long
+{
+    return 21L;
+}
+
+defun F13() : float
+{
+    return 17.0F;
+}
+
+defun F14() : float
+{
+    return 21.0F;
+}
+
+defun F15() : double
+{
+    return 17.0;
+}
+
+defun F16() : double
+{
+    return 21.0;
+}
+
+defun F17() : String
+{
+    return "Uranus";
+}
+
+defun F18() : String
+{
+    return "Mars";
+}
+
+defun F19() : List
+{
+    return ["Chicky", "Picky", "Sikorsky", "Lucky"];
+}
+
+defun F20() : List
+{
+    return ["Daffy", "Fluffy"];
+}
+
+defun F21() : Object
+{
+    return "Chicky";
+}
+
+defun F22() : Object
+{
+    return "Picky";
+}
+
+defun F23() : void
+{
+    return;
+}

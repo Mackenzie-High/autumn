@@ -1,0 +1,19 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    # Create a mutable list.
+    val list = new LinkedList(["A", "B", "C"]);
+
+    # Create an immutable list.
+    val actual = F::immutable(list);
+
+    # Modify the original mutable list.
+    list.add("X");
+    list.add("Y");
+    list.add("Z");
+
+    # Detect unwanted changes in the immutable list.
+    assert actual == ["A", "B", "C"];
+}

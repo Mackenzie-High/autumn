@@ -1,0 +1,11 @@
+module Main in execution;
+
+import execution.Helpers;
+
+@Start
+defun main (args : String[]) : void
+{
+    val values = Helpers::list(true, 'X', 10B, 20S, 30, 40L, 50.0F, 60.0, "Venus");
+
+    assert "[true, X, 10, 20, 30, 40, 50.0, 60.0, Venus]" == values.toString();
+}

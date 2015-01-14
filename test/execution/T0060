@@ -1,0 +1,35 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    (class Main).getName() == "execution.Main";
+
+    (class Boolean).getName() == "java.lang.Boolean";
+    (class Character).getName() == "java.lang.Character";
+    (class Byte).getName() == "java.lang.Byte";
+    (class Short).getName() == "java.lang.Short";
+    (class Integer).getName() == "java.lang.Integer";
+    (class Long).getName() == "java.lang.Long";
+    (class Float).getName() == "java.lang.Float";
+    (class Double).getName() == "java.lang.Double";
+    (class String).getName() == "java.lang.String";
+
+    (class Class).getName() == "java.lang.Class";
+
+    (class Collection).getName() == "java.lang.Collection";
+    (class Set).getName() == "java.lang.Set";
+    (class List).getName() == "java.lang.List";
+    (class Map).getName() == "java.lang.Map";
+    (class HashSet).getName() == "java.lang.HashSet";
+    (class TreeSet).getName() == "java.lang.TreeSet";
+    (class ArrayList).getName() == "java.lang.ArrayList";
+    (class LinkedList).getName() == "java.lang.LinkedList";
+    (class HashMap).getName() == "java.lang.HashMap";
+    (class TreeMap).getName() == "java.lang.TreeMap";
+
+    (class Iterable).getName() == "java.lang.Iterable";
+    (class Iterator).getName() == "java.util.Iterator";
+
+    (class F).getName() == "autumn.lang.F";
+}

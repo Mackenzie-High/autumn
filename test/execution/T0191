@@ -1,0 +1,12 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    # If there is any operand-stack leakage, than a long-running loop should detect it.
+
+    for (i = 0; i < 123456; i + 1)
+    {
+        assert true;
+    }
+}

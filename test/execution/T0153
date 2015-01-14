@@ -1,0 +1,16 @@
+module Main in execution;
+
+functor F0 () : List;
+
+@Start
+defun main (args : String[]) : void
+{
+    delegate p : F0 => Main::moo;
+
+    assert [17] == p.invoke();
+}
+
+defun moo () : List
+{
+    return [17];
+}

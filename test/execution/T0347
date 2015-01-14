@@ -1,0 +1,16 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    try
+    {
+        assert false echo "An asteroid is coming!";
+
+        throw new Exception();
+    }
+    catch (ex : AssertionFailedException)
+    {
+        assert ex.getMessage() == "An asteroid is coming!";
+    }
+}

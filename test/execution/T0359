@@ -1,0 +1,11 @@
+module Main in execution;
+
+import java.util.List;
+
+tuple List ();
+
+@Start
+defun main (args : String[]) : void
+{
+    assert (class List).getName() == "execution.List";
+}

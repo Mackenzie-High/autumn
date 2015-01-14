@@ -1,0 +1,25 @@
+module Main in execution;
+
+tuple Integers (value : int);
+
+tuple Longs (value : long);
+
+tuple Doubles (value : double);
+
+@Start
+defun main (args : String[]) : void
+{
+    # Case: Widening of Integer Types to a 32-bit Integer
+    assert new Integers(23C).value() == 23;
+    assert new Integers(23B).value() == 23;
+    assert new Integers(23S).value() == 23;
+
+    # Case: Widening of Integer Types to a 64-bit Integer
+    assert new Longs(23C).value() == 23L;
+    assert new Longs(23B).value() == 23L;
+    assert new Longs(23S).value() == 23L;
+    assert new Longs(23).value() == 23L;
+
+    # Case: Widening of Float to Double
+    assert new Doubles(3.0F).value() == 3.0;
+}

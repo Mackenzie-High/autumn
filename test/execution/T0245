@@ -1,0 +1,12 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    val value1 = new LinkedList() is List;
+    val value2 = new LinkedList() is Collection;
+
+    assert value1 === (if true then value1 else value2);
+
+    assert value2 === (if false then value1 else value2);
+}

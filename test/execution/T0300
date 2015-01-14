@@ -1,0 +1,12 @@
+module Main in execution;
+
+
+@Start
+defun main (args : String[]) : void
+{
+    val input = ["A", "B", "C"];
+
+    val output = ["X" .. x for x : String in input if (field Boolean::TRUE)];
+
+    assert output == ["XA", "XB", "XC"];
+}

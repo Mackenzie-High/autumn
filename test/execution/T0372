@@ -1,0 +1,24 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    # This test has a recursion depth of ten million.
+    # If that will not detect a stack overflow, then I do not know what will.
+    # Anyway, thanks to the recur-statement, a stack overflow should not occur.
+
+    assert My::recursive(0, 0L) == 8333331666666L;
+}
+
+defun recursive (i : int, sum : long) : long
+{
+    when (i >= 10_000_000) then return sum;
+
+    var r = sum;
+
+    # If i is evenly divisible by both 2 and 3, add it to the sum.
+
+    when ((i % 2 == 0) & (i % 3 == 0)) then r = sum + i;
+
+    recur i + 1, r;
+}

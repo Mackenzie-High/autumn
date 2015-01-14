@@ -1,0 +1,15 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    My::moo();
+}
+
+defun moo () : void
+{
+    return;
+
+    # This should not happen, because execution should not reach this point.
+    assert false;
+}

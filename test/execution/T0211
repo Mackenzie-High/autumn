@@ -1,0 +1,31 @@
+module Main in execution;
+
+import java.util.LinkedList;
+
+@Start
+defun main (args : String[]) : void
+{
+    # When an iteration is restart:
+    # 1. The control variable should *not* be incremented.
+    # 2. The condition should not be evaluated.
+
+    var list = new LinkedList();
+
+    for(i = 1; My::moo(list, i) & i < 5; i + 1)
+    {
+        list.add(-i);
+
+        when (F::len(list) == 9) then break;
+
+        when (i == 3) then redo;
+    }
+
+    assert list == [1, -1, 2, -2, 3, -3, -3, -3, -3];
+}
+
+defun moo (list : List, i : int) : boolean
+{
+    list.add(i);
+
+    return true;
+}

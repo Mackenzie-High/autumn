@@ -1,0 +1,22 @@
+module Main in execution;
+
+functor Function (x : int, y : long) : boolean;
+
+@Start
+defun main (args : String[]) : void
+{
+    delegate p : Function => My::function;
+
+    val inner = p.inner() as Delegate;
+
+    val method = inner.method();
+
+    assert method.getName() == "function";
+    assert F::len(method.getParameterTypes()) == 2;
+    assert method.getReturnType() == (class boolean);
+}
+
+defun function (x : int, y : long) : boolean
+{
+    return false;
+}

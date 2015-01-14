@@ -1,0 +1,20 @@
+module Main in execution;
+
+enum City ( Paris, London, Moscow );
+
+@Start
+defun main (args : String[]) : void
+{
+    assert call (field City::Paris).name() == "Paris";
+    assert call (field City::Paris).ordinal() == 0;
+
+    assert call (field City::London).name() == "London";
+    assert call (field City::London).ordinal() == 1;
+
+    assert call (field City::Moscow).name() == "Moscow";
+    assert call (field City::Moscow).ordinal() == 2;
+
+    assert (field City::Paris) === call City::valueOf("Paris");
+    assert (field City::London) === call City::valueOf("London");
+    assert (field City::Moscow) === call City::valueOf("Moscow");
+}

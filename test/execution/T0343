@@ -1,0 +1,32 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    try
+    {
+        Main::trouble();
+
+        assert false;
+    }
+    catch (ex : RuntimeException)
+    {
+        assert true;
+    }
+}
+
+defun trouble () : void
+{
+    try
+    {
+        throw new NullPointerException();
+    }
+    catch (x : IllegalArgumentException)
+    {
+        assert false;
+    }
+    catch (y : IllegalStateException)
+    {
+        assert false;
+    }
+}

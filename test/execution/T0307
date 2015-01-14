@@ -1,0 +1,25 @@
+module Main in execution;
+
+functor Action () : void;
+
+@Start
+defun main (args : String[]) : void
+{
+    lambda p : Action => Main::thrower();
+
+    try
+    {
+        p.invoke();
+
+        assert false;
+    }
+    catch (ex : Exception)
+    {
+        nop;
+    }
+}
+
+defun thrower () : void
+{
+    throw new Exception();
+}

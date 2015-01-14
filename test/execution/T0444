@@ -1,0 +1,17 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    # Creates some data.
+    val list = [1, 2, 6, 2, 7, 2, 8, 2, 1];
+
+    # Create a predicate.
+    lambda p : Predicate => ($1 is Integer) > 5;
+
+    # Perform some find operations.
+    assert F::find(p, 0, list) == 6;
+    assert F::find(p, 1, list) == 7;
+    assert F::find(p, 2, list) == 8;
+    assert F::find(p, 3, list) == null;
+}

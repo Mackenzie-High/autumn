@@ -1,0 +1,61 @@
+module Main in program;
+
+@Start
+defun main (args : String[]) : void
+{
+
+    # A big-decimal literal must create a BigDecimal object.
+    var x = 17.0BD;
+    assert x.intValue() == 17;
+    assert x.getClass() == (class BigDecimal);
+
+
+
+    # A big-decimal literal can be negative.
+    x = -13.0BD;
+    assert x.intValue() == -13;
+
+
+
+    # The scale of a big-decimal literal is always thirty-two.
+    x = 23.0BD;
+    assert x.scale() == 32;
+    assert 23.0BD == 23.00000BD;
+
+
+
+    # A big-decimal can have an exponent with a plus sign.
+    x = 1.23E+45BD;
+    assert My::str(x) == "1.23E+45";
+
+
+
+    # A big-decimal can have an exponent with a minus sign.
+    x = 1.23E-16BD;
+    assert My::str(x) == "1.23E-16" echo My::str(x);
+
+
+
+    # A big-decimal can have an exponent with no sign.
+    x = 1.23E45BD;
+    assert My::str(x) == "1.23E+45";
+
+
+
+    # A big-decimal can contain underscores.
+    x = 1__2.3__4E5__6BD;
+    assert My::str(x) == "1.234E+57";
+
+
+
+    # A big-decimal can be larger than a double.
+    x = 100000000000000000000000000000000000000000000000000000000000000000.0BD;
+    assert My::str(x) == "1E+65";
+
+
+}
+
+defun str(x : BigDecimal) : String
+{
+    return F::str(x.stripTrailingZeros());
+}

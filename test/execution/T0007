@@ -1,0 +1,17 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    var control = true;
+    var i = 0;
+
+    while(control)
+    {
+        let i = i + 1;
+
+        let control = (if i == 17 then false else true);
+    }
+
+    assert i == 17;
+}

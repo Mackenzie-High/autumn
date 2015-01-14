@@ -1,0 +1,25 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    val array = F::newArray((class BigInteger), 5) is BigInteger[];
+
+    val value0 = 11BI;
+    val value1 = 13BI;
+    val value2 = 15BI;
+    val value3 = 17BI;
+    val value4 = 19BI;
+
+    F::set(array, 0, value0);
+    F::set(array, 1, value1);
+    F::set(array, 2, value2);
+    F::set(array, 3, value3);
+    F::set(array, 4, value4);
+
+    assert F::get(array, 0) == value0;
+    assert F::get(array, 1) == value1;
+    assert F::get(array, 2) == value2;
+    assert F::get(array, 3) == value3;
+    assert F::get(array, 4) == value4;
+}

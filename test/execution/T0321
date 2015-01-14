@@ -1,0 +1,26 @@
+module Main in execution;
+
+defun boo () : void
+{
+    nop;
+}
+
+defun moo () : void
+{
+    nop;
+}
+
+@Start
+defun main (args : String[]) : void
+{
+    val module = My::instance();
+
+    val info = module.moduleInfo();
+
+    val functions = info.functions();
+
+    assert F::len(functions) == 3;
+    assert (functions.get(0) is Delegate).name() == "boo";
+    assert (functions.get(1) is Delegate).name() == "moo";
+    assert (functions.get(2) is Delegate).name() == "main";
+}

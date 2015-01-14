@@ -1,0 +1,16 @@
+module Main in execution;
+
+annotation Planets;
+
+@Start
+@Planets ("Venus", "Earth", "Mars", "Pluto")
+defun main (args : String[]) : void
+{
+    val method = Reflect::getMethod((class Main), "main", [(class String[])]);
+
+    assert method.isAnnotationPresent((class Planets));
+
+    val anno = method.getAnnotation((class Planets));
+
+    assert Reflect::getAnnotationValues(anno) == ["Venus", "Earth", "Mars", "Pluto"];
+}

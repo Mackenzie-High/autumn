@@ -1,0 +1,10 @@
+module Main in execution;
+
+@Anno
+annotation Anno;
+
+@Start
+defun main (args : String[]) : void
+{
+    assert ((class Anno).isAnnotationPresent (class Anno));
+}

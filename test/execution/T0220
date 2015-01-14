@@ -1,0 +1,80 @@
+module Main in execution;
+
+tuple T (value : int);
+
+@Start
+defun main (args : String[]) : void
+{
+    # Double Quotes - Escape Sequences
+    assert ("" .. 9C) == "\t";
+    assert ("" .. 8C) == "\b";
+    assert ("" .. 10C) == "\n";
+    assert ("" .. 13C) == "\r";
+    assert ("" .. 12C) == "\f";
+    assert ("" .. 39C) == "\'";
+    assert ("" .. 34C) == "\"";
+    assert ("" .. 92C) == "\\";
+    assert ("ABC") == "A\00066C";
+
+
+
+    # Triple Quotes - Escape Sequences
+    assert ("" .. 9C) == '''\t''';
+    assert ("" .. 8C) == '''\b''';
+    assert ("" .. 10C) == '''\n''';
+    assert ("" .. 13C) == '''\r''';
+    assert ("" .. 12C) == '''\f''';
+    assert ("" .. 39C) == '''\'''';
+    assert ("" .. 34C) == '''\"''';
+    assert ("" .. 92C) == '''\\''';
+    assert ("ABC") == '''A\00066C''';
+
+
+
+    # Double Quotes - Verbatim
+    assert "\\t" == @ "\t";
+    assert "\\b" == @ "\b";
+    assert "\\n" == @ "\n";
+    assert "\\r" == @ "\r";
+    assert "\\f" == @ "\f";
+    assert "\\'" == @ "\'";
+    assert "\\\"" == @ "\"";
+    assert "\\\\" == @ "\\";
+    assert "A\\00066C" == @ "A\00066C";
+
+
+
+    # Triple Quotes - Verbatim
+    assert "\\t" == @ '''\t''';
+    assert "\\b" == @ '''\b''';
+    assert "\\n" == @ '''\n''';
+    assert "\\r" == @ '''\r''';
+    assert "\\f" == @ '''\f''';
+    assert "\\'" == @ '''\'''';
+    assert "\\\"" == @ '''\"''';
+    assert "\\\\" == @ '''\\''';
+    assert "A\\00066C" == @'''A\00066C''';
+
+
+
+    # Double Quotes - Multiple Lines
+    var s1 = "A
+              B
+              C";
+
+    s1 = s1.replace(" ", "");
+
+    assert s1 == "A\nB\nC";
+
+
+
+    # Triple Quotes - Multiple Lines
+    var s2 = '''A
+                B
+                C''';
+
+    s2 = s2.replace(" ", "");
+
+    assert s2 == "A\nB\nC";
+
+}

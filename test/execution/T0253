@@ -1,0 +1,23 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    # This tests multiple things.
+    # 1. This tests whether the type-analyzer correctly infers the return-type.
+    # 2. This tests whether the code-generator inserts a checked-cast.
+    #    If the code-generator does not, then the bytecode verifier will loudly complain.
+    #
+    assert My::moo(My::boo("123")) == "(moo (boo 123))";
+}
+
+@Infer
+defun boo (x : Object) : Object
+{
+    return "(boo " .. x .. ")";
+}
+
+defun moo (x : String) : String
+{
+    return "(moo " .. x .. ")";
+}

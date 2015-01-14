@@ -1,0 +1,23 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    val letters = new StringBuilder();
+
+    var i = 90C;
+
+    until (i > 90C)
+    {
+        call letters.append(i);
+
+        let i = i + 1C;
+    }
+
+    val expected = "Z";
+
+    val actual = call letters.toString();
+
+    assert expected == actual;
+}
+

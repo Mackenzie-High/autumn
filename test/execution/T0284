@@ -1,0 +1,69 @@
+module Main in execution;
+
+
+functor Boo (x : int) : Object;
+
+functor Moo (x : int) : CharSequence extends Boo;
+
+functor Foo (x : int) : String extends Moo;
+
+
+@Start
+defun main (args : String[]) : void
+{
+    delegate p : Foo => My::moo;
+    val q = p is Moo;
+    val r = q is Boo;
+
+
+
+    # The invocations must actually work.
+    #
+    val x = p.invoke(3);
+    val y = q.invoke(5);
+    val z = r.invoke(7);
+
+    assert x == "30";
+    assert y == "50";
+    assert z == "70";
+
+
+
+    # Ensure that the correct invoke(*) methods were actually invoked.
+    #
+    assert (locals).typeOf("x") == (class String);
+    assert (locals).typeOf("y") == (class CharSequence);
+    assert (locals).typeOf("z") == (class Object);
+
+
+
+    # Double check that subtyping worked.
+    #
+    assert (instanceof p : Boo);
+    assert (instanceof p : Moo);
+    assert (instanceof p : Foo);
+
+
+
+    # Double check that no funny business is going on.
+    #
+    assert p === q;
+    assert p === r;
+
+
+
+    # Ensure that the compiler correctly figured out the return-type.
+    #
+    assert p.returnType() == (class String);
+}
+
+
+defun moo (x : int) : String
+{
+    return F::str(x * 10);
+}
+
+
+
+
+

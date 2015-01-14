@@ -1,0 +1,13 @@
+module Main in execution;
+
+struct Person (name : String, age : int, ssn : long);
+
+
+@Start
+defun main (args : String[]) : void
+{
+    var p = new Person(24, "Molly", 123456789);
+
+    assert p.keys() == ["age", "name", "ssn"];
+}
+

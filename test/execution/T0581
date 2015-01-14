@@ -1,0 +1,11 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    val array = F::newArray((class boolean), 17) is boolean[];
+
+    assert F::len(array) == 17;
+}
+
+

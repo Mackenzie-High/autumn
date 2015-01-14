@@ -1,0 +1,21 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    var s = "";
+
+    foreach (x : String in ["A", "B", "C", "D", "E"])
+    {
+        try
+        {
+            s = s .. x;
+        }
+        catch(ex : Exception)
+        {
+            s = s .. x;
+        }
+    }
+
+    assert s == "ABCDE";
+}

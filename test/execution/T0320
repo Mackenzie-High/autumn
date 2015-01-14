@@ -1,0 +1,19 @@
+module Main in execution;
+
+functor Boo () : void;
+
+functor Moo () : void;
+
+@Start
+defun main (args : String[]) : void
+{
+    val module = My::instance();
+
+    val info = module.moduleInfo();
+
+    val actual = info.functors();
+
+    val expected = [(class Boo), (class Moo)];
+
+    assert actual == expected;
+}

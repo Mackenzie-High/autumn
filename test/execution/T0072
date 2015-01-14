@@ -1,0 +1,16 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    // Variable X is a java.lang.Integer.
+    var X = 100 as Integer;
+
+    assert (locals).typeOf ("X") == (class Integer);
+
+    // Assign a primitive int to an Integer variable.
+    // This requires auto-boxing.
+    let X = 250;
+
+    assert (locals).typeOf ("X") == (class Integer);
+}

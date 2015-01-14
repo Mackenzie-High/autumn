@@ -1,0 +1,9 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    assert F::len("ABCDE") == 5;
+}
+
+

@@ -1,0 +1,30 @@
+module * in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    assert (50B - 2B) == 48B;
+
+    assert (50S - 2S) == 48S;
+
+    assert (50  - 2)  == 48;
+
+    assert (50L - 2L) == 48L;
+
+    assert (50.0F - 2.0F) == 48.0F;
+
+    assert (50.0 - 2.0) == 48.0;
+
+    assert 50BI - 2BI == 48BI;
+
+    assert 50.0BD - 2.0BD == 48.0BD;
+
+    assert ((null is BigInteger) - (null is BigInteger)) == 0BI;
+
+    assert ((null is BigDecimal) - (null is BigDecimal)) == 0.0BD;
+}
+
+
+
+
+

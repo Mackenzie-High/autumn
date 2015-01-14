@@ -1,0 +1,48 @@
+module Main in execution;
+
+import high.mackenzie.autumn.resources.InstanceFieldTester;
+
+
+@Start
+defun main (args : String[]) : void
+{
+    val tester = new InstanceFieldTester();
+
+    # Case: Widen to a Short
+
+    (field tester.value4 = 10B);
+    assert (field tester.value4) == 10S;
+
+
+
+    # Case: Widen to a Integer
+
+    (field tester.value5 = 10B);
+    assert (field tester.value5) == 10S;
+
+    (field tester.value5 = 20S);
+    assert (field tester.value5) == 20S;
+
+
+
+    # Case: Widen to a Long
+
+    (field tester.value6 = 10B);
+    assert (field tester.value6) == 10S;
+
+    (field tester.value6 = 20S);
+    assert (field tester.value6) == 20S;
+
+    (field tester.value6 = 30);
+    assert (field tester.value6) == 30;
+
+    (field tester.value6 = 40L);
+    assert (field tester.value6) == 40L;
+
+
+
+    # Case: Widen to a Double
+
+    (field tester.value8 = 50.0F);
+    assert (field tester.value8) == 50.0;
+}

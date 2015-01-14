@@ -1,0 +1,88 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    # Note: The loop is used to detect operand-stack leakage.
+
+    var i = 0;
+
+    while(i < 25000)
+    {
+        var value_Z = true;
+        var value_C = 17C;
+        var value_B = 17B;
+        var value_S = 17S;
+        var value_I = 17;
+        var value_J = 17L;
+        var value_F = 17.0F;
+        var value_D = 17.0;
+        var value_T = "Soi";
+
+        assert Main::F (value_Z) == "Z";
+        assert Main::F (value_C) == "C";
+        assert Main::F (value_B) == "B";
+        assert Main::F (value_S) == "S";
+        assert Main::F (value_I) == "I";
+        assert Main::F (value_J) == "J";
+        assert Main::F (value_F) == "F";
+        assert Main::F (value_D) == "D";
+        assert Main::F (value_T) == "T";
+
+        let i = i + 1;
+    }
+}
+
+defun F(x : boolean) : String
+{
+    return "Z";
+}
+
+defun F(x : char) : String
+{
+    return "C";
+}
+
+defun F(x : byte) : String
+{
+    return "B";
+}
+
+defun F(x : short) : String
+{
+    return "S";
+}
+
+defun F(x : int) : String
+{
+    return "I";
+}
+
+defun F(x : long) : String
+{
+    return "J";
+}
+
+defun F(x : float) : String
+{
+    return "F";
+}
+
+defun F(x : double) : String
+{
+    return "D";
+}
+
+defun F(x : String) : String
+{
+    return "T";
+}
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,16 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    delegate p : Predicate => My::function;
+
+    val inner = p.inner() as Delegate;
+
+    assert inner.module() === My::instance();
+}
+
+defun function (value : Object) : boolean
+{
+    return false;
+}

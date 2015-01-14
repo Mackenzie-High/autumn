@@ -1,0 +1,23 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    assert F::big(11C) == 11.0BD;
+
+    assert F::big(13B) == 13.0BD;
+
+    assert F::big(15S) == 15.0BD;
+
+    assert F::big(17) == 17.0BD;
+
+    assert F::big(19L) == 19.0BD;
+
+    assert F::big(21.0F) == 21.0BD;
+
+    assert F::big(23.0) == 23.0BD;
+
+    assert F::big(25BI) == 25.0BD;
+
+    assert F::big(27.0BD) == 27.0BD;
+}

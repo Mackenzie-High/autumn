@@ -1,0 +1,14 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    # Create some data.
+    val ages = [19, 18, 20, 24, 25, 23, 21, 22];
+
+    # Compute the average.
+    val average = F::average(ages);
+
+    # Verify the results.
+    assert average == 21.5BD;
+}

@@ -1,0 +1,9 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    assert 3 == (if true then 3 else 5);
+
+    assert 5 == (if false then 3 else 5);
+}

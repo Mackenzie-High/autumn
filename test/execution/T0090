@@ -1,0 +1,68 @@
+module * in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    val T = true;
+    val F = false;
+
+    // boolean
+    assert (F < F) == F;
+    assert (F < T) == T;
+    assert (T < F) == F;
+    assert (T < T) == F;
+
+    // char
+    assert (2C < 3C) == T;
+    assert (3C < 3C) == F;
+    assert (3C < 2C) == F;
+
+    // byte
+    assert (2B < 3B) == T;
+    assert (3B < 3B) == F;
+    assert (3B < 2B) == F;
+
+    // short
+    assert (2S < 3S) == T;
+    assert (3S < 3S) == F;
+    assert (3S < 2S) == F;
+
+    // int
+    assert (2 < 3) == T;
+    assert (3 < 3) == F;
+    assert (3 < 2) == F;
+
+    // long
+    assert (2L < 3L) == T;
+    assert (3L < 3L) == F;
+    assert (3L < 2L) == F;
+
+    // float
+    assert (2.0F < 3.0F) == T;
+    assert (3.0F < 3.0F) == F;
+    assert (3.0F < 2.0F) == F;
+
+    // double
+    assert (2.0 < 3.0) == T;
+    assert (3.0 < 3.0) == F;
+    assert (3.0 < 2.0) == F;
+
+    // Object - Neither operand is null.
+    assert ("A" < "B") == T;
+    assert ("B" < "B") == F;
+    assert ("B" < "A") == F;
+
+    // Object - One operand is null.
+    assert (null < "Venus") == T;
+    assert ("Venus" < null) == F;
+
+    // Object - Both operands are null.
+    assert (null < null) == F;
+}
+
+
+
+
+
+
+

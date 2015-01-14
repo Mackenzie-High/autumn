@@ -1,0 +1,16 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    try
+    {
+        F::parseFloat("XYZ");
+
+        assert false;
+    }
+    catch(ex : NumberFormatException)
+    {
+        nop;
+    }
+}

@@ -1,0 +1,14 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    try
+    {
+        F::isFunctorType(null);
+    }
+    catch(ex : NullPointerException)
+    {
+        nop;
+    }
+}

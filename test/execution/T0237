@@ -1,0 +1,34 @@
+module Main in execution;
+
+import high.mackenzie.autumn.resources.InstanceFieldTester;
+
+
+@Start
+defun main (args : String[]) : void
+{
+    val tester = new InstanceFieldTester();
+
+    (field tester.object = true);
+    assert (field tester.object) == true;
+
+    (field tester.object = 'X');
+    assert (field tester.object) == 'X';
+
+    (field tester.object = 10B);
+    assert (field tester.object) == 10B;
+
+    (field tester.object = 20S);
+    assert (field tester.object) == 20S;
+
+    (field tester.object = 30);
+    assert (field tester.object) == 30;
+
+    (field tester.object = 40L);
+    assert (field tester.object) == 40L;
+
+    (field tester.object = 50.0F);
+    assert (field tester.object) == 50.0F;
+
+    (field tester.object = 60.0);
+    assert (field tester.object) == 60.0;
+}

@@ -1,0 +1,43 @@
+module Main in execution;
+
+import high.mackenzie.autumn.resources.InstanceFieldTester;
+
+
+@Start
+defun main (args : String[]) : void
+{
+    val value1 = true is Boolean;
+    val value2 = 'X' is Character;
+    val value3 = 10B is Byte;
+    val value4 = 20S is Short;
+    val value5 = 30 is Integer;
+    val value6 = 40L is Long;
+    val value7 = 50.0F is Float;
+    val value8 = 60.0 is Double;
+
+    val tester = new InstanceFieldTester();
+
+    (field tester.value1 = value1);
+    assert (field tester.value1) == true;
+
+    (field tester.value2 = value2);
+    assert (field tester.value2) == 'X';
+
+    (field tester.value3 = value3);
+    assert (field tester.value3) == 10B;
+
+    (field tester.value4 = value4);
+    assert (field tester.value4) == 20S;
+
+    (field tester.value5 = value5);
+    assert (field tester.value5) == 30;
+
+    (field tester.value6 = value6);
+    assert (field tester.value6) == 40L;
+
+    (field tester.value7 = value7);
+    assert (field tester.value7) == 50.0F;
+
+    (field tester.value8 = value8);
+    assert (field tester.value8) == 60.0;
+}

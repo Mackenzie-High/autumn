@@ -1,0 +1,48 @@
+module Main in execution;
+
+functor Function (z : boolean,
+                  c : char,
+                  b : byte,
+                  s : short,
+                  i : int,
+                  j : long,
+                  f : float,
+                  d : double) : List;
+
+@Start
+defun main (args : String[]) : void
+{
+    delegate p : Function => My::function;
+
+    val stack = autumn.lang.internals.ArgumentStack::getThreadStack();
+
+    # Push boxed values onto the stack.
+    stack.push(true  is Boolean);
+    stack.push('X'   is Character);
+    stack.push(11B   is Byte);
+    stack.push(13S   is Short);
+    stack.push(17    is Integer);
+    stack.push(19L   is Long);
+    stack.push(21.0F is Float);
+    stack.push(23.0  is Double);
+
+    # Invoke the delegate, which should result in unboxing being performed.
+    p.apply(stack);
+
+    # Get the return-value.
+    val result = stack.popO();
+
+    assert result == [true, 'X', 11B, 13S, 17, 19L, 21.0F, 23.0];
+}
+
+defun function (z : boolean,
+                c : char,
+                b : byte,
+                s : short,
+                i : int,
+                j : long,
+                f : float,
+                d : double) : List
+{
+    return [z, c, b, s, i, j, f, d];
+}

@@ -1,0 +1,26 @@
+module Main in execution;
+
+
+functor StringPredicate (x : String) : boolean extends Predicate;
+
+
+@Start
+defun main (args : String[]) : void
+{
+    delegate p : StringPredicate => My::check;
+
+
+    assert p.invoke("Mercury") == false;
+
+    assert p.invoke("Venus") == false;
+
+    assert p.invoke("Earth") == true;
+
+    assert p.invoke("Mars") == false;
+}
+
+
+defun check (x : String) : boolean
+{
+    return x == "Earth";
+}

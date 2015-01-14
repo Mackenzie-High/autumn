@@ -1,0 +1,19 @@
+module Main in execution;
+
+annotation Boo;
+
+annotation Moo;
+
+@Start
+defun main (args : String[]) : void
+{
+    val module = My::instance();
+
+    val info = module.moduleInfo();
+
+    val actual = info.annotations();
+
+    val expected = [(class Boo), (class Moo)];
+
+    assert actual == expected;
+}

@@ -1,0 +1,29 @@
+module Main in execution;
+
+tuple T ();
+
+
+@Start
+defun main (args : String[]) : void
+{
+    # The clear() method for a tuple is .
+    # The Record interface defines clear() : Record.
+    # A specific Record type, say T, declares clear() : T.
+    # T is a subtype of Record.
+    #
+    # We can use variables to test resolution of covariant method overloads,
+    #   since the type of a variable is inferred.
+
+
+    val object1 = new T() is T;
+    val object2 = object1 is Record;
+
+    assert object1 === object2;
+
+    # The type of these variables are the return-types of the invoked methods.
+    val result1 = F::clear(object1);
+    val result2 = F::clear(object2);
+
+    assert (locals).get("result1").type() == (class T);
+    assert (locals).get("result2").type() == (class Record);
+}

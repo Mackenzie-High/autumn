@@ -1,0 +1,46 @@
+module Main in execution;
+
+functor Moo () : List;
+
+@Start
+defun main (args : String[]) : void
+{
+    val a = true;
+    val b = 'X';
+    val c = 3B;
+    val d = 5S;
+    val e = 7;
+    val f = 9L;
+    val g = 11.0F;
+    val h = 13.0;
+    val i = "Venus";
+
+    lambda p : Moo => [a, b, c, d, e, f, g, h, i, (locals)];
+
+    val list = p.invoke();
+
+    assert a == true;
+    assert b == 'X';
+    assert c == 3B;
+    assert d == 5S;
+    assert e == 7;
+    assert f == 9L;
+    assert g == 11.0F;
+    assert h == 13.0;
+    assert i == "Venus";
+
+    val variables = F::get(list, 9) is LocalsMap;
+
+    assert variables.typeOf("a") == (class boolean);
+    assert variables.typeOf("b") == (class char);
+    assert variables.typeOf("c") == (class byte);
+    assert variables.typeOf("d") == (class short);
+    assert variables.typeOf("e") == (class int);
+    assert variables.typeOf("f") == (class long);
+    assert variables.typeOf("g") == (class float);
+    assert variables.typeOf("h") == (class double);
+    assert variables.typeOf("i") == (class String);
+
+    // $0, a, b, c, d, e, f, g, h, i, args
+    assert variables.locals().size() == 11;
+}

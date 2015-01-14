@@ -1,0 +1,15 @@
+module Main in execution;
+
+enum City ( Paris, London, Moscow );
+
+@Start
+defun main (args : String[]) : void
+{
+    val values = City::values();
+
+    assert (field City::Paris) === F::get(values, 0);
+    assert (field City::London) === F::get(values, 1);
+    assert (field City::Moscow) === F::get(values, 2);
+
+    assert City::values() !== City::values();
+}

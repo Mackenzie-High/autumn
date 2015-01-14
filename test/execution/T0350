@@ -1,0 +1,18 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    assert Autumn::isAssumeOn();
+    Autumn::disableAssume();
+    {
+        assume My::condition();
+    }
+    Autumn::enableAssume();
+    assert Autumn::isAssumeOn();
+}
+
+defun condition () : boolean
+{
+    assert false;
+}

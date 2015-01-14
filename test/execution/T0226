@@ -1,0 +1,71 @@
+module Main in execution;
+
+import execution.Helpers$StaticMethodTester;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.ArrayList;
+
+@Start
+defun main (args : String[]) : void
+{
+    assert call Main::box(true)  == (class Boolean);
+    assert call Main::box('X')   == (class Character);
+    assert call Main::box(10B)   == (class Byte);
+    assert call Main::box(20S)   == (class Short);
+    assert call Main::box(30)    == (class Integer);
+    assert call Main::box(40L)   == (class Long);
+    assert call Main::box(50.0F) == (class Float);
+    assert call Main::box(60.0)  == (class Double);
+}
+
+defun box (x : Boolean) : Class
+{
+    assert x == true;
+    return (class Boolean);
+}
+
+defun box (x : Character) : Class
+{
+    assert x == 'X';
+    return (class Character);
+}
+
+defun box (x : Byte) : Class
+{
+    assert x == 10B;
+    return (class Byte);
+}
+
+defun box (x : Short) : Class
+{
+    assert x == 20S;
+    return (class Short);
+}
+
+defun box (x : Integer) : Class
+{
+    assert x == 30;
+    return (class Integer);
+}
+
+defun box (x : Long) : Class
+{
+    assert x == 40L;
+    return (class Long);
+}
+
+defun box (x : Float) : Class
+{
+    assert x == 50.0F;
+    return (class Float);
+}
+
+defun box (x : Double) : Class
+{
+    assert x == 60.0;
+    return (class Double);
+}
+
+
+
+

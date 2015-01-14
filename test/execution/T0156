@@ -1,0 +1,36 @@
+module Main in execution;
+
+functor Function (a : boolean,
+                  b : char,
+                  c : byte,
+                  d : short,
+                  e : int,
+                  f : long,
+                  g : float,
+                  h : double,
+                  i : String) : List;
+
+@Start
+defun main (args : String[]) : void
+{
+    delegate p : Function => Main::moo;
+
+    val expected = [true, 'X', 10B, 20S, 30, 40L, 50.0F, 60.0, "Venus"];
+
+    val actual = p.invoke(true, 'X', 10B, 20S, 30, 40L, 50.0F, 60.0, "Venus");
+
+    assert expected == actual;
+}
+
+defun moo (a : boolean,
+           b : char,
+           c : byte,
+           d : short,
+           e : int,
+           f : long,
+           g : float,
+           h : double,
+           i : String) : List
+{
+    return [a, b, c, d, e, f, g, h, i];
+}
