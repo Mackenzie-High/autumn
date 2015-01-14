@@ -17,7 +17,7 @@ defun main (args : String[]) : void
     val value11 = F::defaultValueOf(class Object);
 
     F::println(value00);
-    F::println(value01 as int);
+    F::println(value01 as Integer);
     F::println(value02);
     F::println(value03);
     F::println(value04);
