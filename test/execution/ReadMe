@@ -762,10 +762,6 @@ Standard Library
 . . readln
 . . recall
 . . . T0653 = null owner
-. . reduce
-. . . null functor
-. . . null iterable
-. . . normal
 . . remember
 . . . T0654 = null owner
 . . reset

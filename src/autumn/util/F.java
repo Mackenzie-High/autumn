@@ -70,7 +70,7 @@ public final class F
     public static int compare (final java.lang.Comparable left, final java.lang.Comparable right) 
     {
 
-        return (left == null && right == null ? 0 : (left == null ? -1 : (right == null ? 1 : left.compareTo(right))));
+        return T.compare(left, right);
     }
 
     
@@ -92,9 +92,10 @@ public final class F
     }
 
     
-    public static java.lang.Object defaultValueOf (final java.lang.Class type) throws java.lang.IllegalArgumentException
+    public static java.lang.Object defaultValueOf (final java.lang.Class type) throws java.lang.NullPointerException, java.lang.IllegalArgumentException
     {
 
+        if(type == null) { throw new java.lang.NullPointerException(); }
         if(type == void.class) { throw new java.lang.IllegalArgumentException(); }
         return T.defaultValue(type);
     }
@@ -983,15 +984,6 @@ public final class F
 
         if(target == null) { throw new java.lang.NullPointerException(); }
         return T.recall(target, key);
-    }
-
-    
-    public static java.lang.Object reduce (final java.lang.Iterable elements, final autumn.util.functors.Function2 functor) throws java.lang.NullPointerException, java.lang.NullPointerException, java.lang.Throwable
-    {
-
-        if(elements == null) { throw new java.lang.NullPointerException(); }
-        if(functor == null) { throw new java.lang.NullPointerException(); }
-        return T.reduce(elements, functor);
     }
 
     

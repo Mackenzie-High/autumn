@@ -1,7 +1,0 @@
-module Main in execution;
-
-@Start
-defun main (args : String[]) : void
-{
-    assert F::parseBigDecimal("17") == 17.0BD;
-}

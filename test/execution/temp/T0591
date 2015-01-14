@@ -1,9 +1,0 @@
-module Main in execution;
-
-@Start
-defun main (args : String[]) : void
-{
-    val list = [100, 200, 300, 400, 500];
-
-    assert F::len(list) == 5;
-}

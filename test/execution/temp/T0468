@@ -1,7 +1,0 @@
-module Main in execution;
-
-@Start
-defun main (args : String[]) : void
-{
-    assert F::format("X = %d, %d", [2, 3]) == "X = 2, 3";
-}

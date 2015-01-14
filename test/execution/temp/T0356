@@ -1,9 +1,0 @@
-module Enterprise in starships;
-
-@Start
-defun main (args : String[]) : void
-{
-    val type = My::instance().getClass();
-
-    assert type.getName() == "starships.Enterprise";
-}

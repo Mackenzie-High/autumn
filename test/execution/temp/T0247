@@ -1,9 +1,0 @@
-module Main in execution;
-
-@Start
-defun main (args : String[]) : void
-{
-    assert "Venus" == (if true then "Venus" else "Mars");
-
-    assert "Mars" == (if false then "Venus" else "Mars");
-}

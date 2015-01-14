@@ -1,9 +1,0 @@
-module Main in execution;
-
-functor T () : void;
-
-@Start
-defun main (args : String[]) : void
-{
-    assert (class T).getName() == "execution.T";
-}

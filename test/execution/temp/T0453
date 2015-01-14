@@ -1,9 +1,0 @@
-module Main in execution;
-
-@Start
-defun main (args : String[]) : void
-{
-    val ctor = F::findConstructor((class String), [(class void)]);
-
-    assert ctor == null;
-}

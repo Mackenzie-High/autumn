@@ -1,23 +1,17 @@
 package typechecks;
 
 import autumn.lang.compiler.Autumn;
-import autumn.lang.compiler.AutumnParser;
-import autumn.lang.compiler.ast.nodes.Module;
 import autumn.lang.compiler.errors.BasicErrorReporter;
 import autumn.lang.compiler.errors.ErrorCode;
 import static autumn.lang.compiler.errors.ErrorCode.*;
-import com.google.common.collect.ImmutableSet;
-import com.google.common.io.Files;
+import com.google.common.collect.Lists;
 import com.google.common.io.Resources;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.OutputStream;
 import java.io.PrintStream;
 import java.net.URL;
-import java.nio.charset.Charset;
-import java.util.Arrays;
-import java.util.Set;
+import java.util.List;
+import org.junit.Assert;
+import org.junit.Test;
 
 public final class Runner
 {
@@ -29,7 +23,7 @@ public final class Runner
 
     private static int failed_count;
 
-    private static Set<ErrorCode> actual;
+    private static List<ErrorCode> codes;
 
     /**
      * This method runs tests to determine whether the language's is type-checks work.
@@ -38,7 +32,6 @@ public final class Runner
      * @param args are ignored.
      */
     public static void main(final String[] args)
-            throws IOException
     {
         failed_count = 0;
 
@@ -294,13 +287,12 @@ public final class Runner
      */
     private static void test(final String test,
                              final ErrorCode... errors)
-            throws IOException
     {
         for (int i = 0; i < 10; i++)
         {
             if (singleTest(test, errors) == FAILED)
             {
-                System.out.println("Test Failed: " + test + "!!!!! - " + actual);
+                System.out.println("Test Failed: " + test + "!!!!! - " + codes);
                 ++failed_count;
                 return;
             }
@@ -313,56 +305,39 @@ public final class Runner
      * This method runs a specified test one time and then returns a value indicating the result.
      *
      * @param test is the test to run.
-     * @param errors are the expected error codes.
+     * @param expected are the expected error codes.
      * @return true, iff the test was successful.
      */
     private static boolean singleTest(final String test,
                                       final ErrorCode[] errors)
-            throws IOException
     {
-        final String path = "/typechecks/" + test;
-
-        final File stdout = new File(STDOUT + test + ".stdout");
-
-        final FileOutputStream fos = new FileOutputStream(stdout);
-
-        final BufferedOutputStream bos = new BufferedOutputStream(fos);
-
         try
         {
+            final String path = "/typechecks/" + test;
 
-            final URL url = Resources.getResource(Runner.class, path);
+            final URL url = Resources.getResource(execution.Runner.class, path);
 
-            final String code = Resources.toString(url, Charset.defaultCharset());
-
-            Files.write(code, new File(STDOUT + test + ".code"), Charset.defaultCharset());
-
-            final PrintStream stream = new PrintStream(bos);
-
-            final BasicErrorReporter reporter = new BasicErrorReporter(stream);
-
-            final AutumnParser parser = new AutumnParser(new BasicErrorReporter());
-
-            final Module module = parser.parse(code, new File(path));
-
-            if (module == null)
-            {
-                return FAILED;
-            }
+            final BasicErrorReporter reporter = new BasicErrorReporter(devnull());
 
             final Autumn cmp = new Autumn();
 
             cmp.setErrorReporter(reporter);
 
-            cmp.src(module);
+            cmp.srcURL(url);
 
             cmp.compile();
 
-            final Set<ErrorCode> expected = ImmutableSet.copyOf(Arrays.asList(errors));
+            final List<ErrorCode> expected = Lists.newArrayList(errors);
 
-            actual = ImmutableSet.copyOf(reporter.codes());
+            final List<ErrorCode> actual = reporter.codes();
 
-            return expected.equals(actual) ? PASSED : FAILED;
+            codes = actual;
+
+            if (actual != null && actual.containsAll(expected) == false)
+            {
+                System.out.println(errors);
+                return FAILED;
+            }
         }
         catch (Exception ex)
         {
@@ -370,9 +345,43 @@ public final class Runner
             ex.printStackTrace(System.out);
             return FAILED;
         }
-        finally
+
+        return PASSED;
+    }
+
+    /**
+     * This method creates PrintStream that ignores everything.
+     *
+     * @return the aforesaid stream.
+     */
+    private static PrintStream devnull()
+    {
+        final OutputStream inner = new OutputStream()
         {
-            bos.close();
-        }
+            @Override
+            public void write(int b)
+            {
+                // Pass
+            }
+        };
+
+        return new PrintStream(inner);
+    }
+
+    /**
+     * This method allows NetBeans to automatically run the tests herein.
+     */
+    @Test
+    public void main()
+    {
+        /**
+         * Perform the tests.
+         */
+        main(null);
+
+        /**
+         * All of the tests should have passed.
+         */
+        Assert.assertEquals(0, failed_count);
     }
 }

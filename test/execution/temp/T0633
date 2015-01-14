@@ -1,8 +1,0 @@
-module Main in execution;
-
-@Start
-defun main (args : String[]) : void
-{
-    assert F::parseBoolean("true") == true;
-    assert F::parseBoolean("false") == false;
-}

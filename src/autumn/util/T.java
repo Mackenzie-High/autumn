@@ -748,17 +748,17 @@ public final class T
      * This method compares to comparable values.
      *
      * <p>
-     * A negative result indicates that the left operand is less than the right operand.
-     * A positive result indicates that the left operand is greater than the right operand.
-     * A zero result indicates that the operands are equals.
+     * A result of negative one indicates that the left operand is less than the right operand.
+     * A result of positive one indicates that the left operand is greater than the right operand.
+     * A zero result indicates that the operands are equal.
      * </p>
      *
      * </p>
      * This method considers null to be less than an object.
      * </p>
      *
-     * @param left
-     * @param right
+     * @param left is the left operand.
+     * @param right is the right operand.
      * @return an integer that represents the relationship between the operands.
      */
     public static int compare(final Comparable left,
@@ -778,7 +778,20 @@ public final class T
         }
         else
         {
-            return ((Comparable) left).compareTo(right);
+            final int relationship = ((Comparable) left).compareTo(right);
+
+            if (relationship == 0)
+            {
+                return 0;
+            }
+            else if (relationship > 0)
+            {
+                return 1;
+            }
+            else // relationship < 0
+            {
+                return -1;
+            }
         }
     }
 

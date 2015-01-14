@@ -1,9 +1,0 @@
-module Main in execution;
-
-@Start
-defun main (args : String[]) : void
-{
-    val x = field Boolean::TRUE;
-
-    assert x;
-}

@@ -8,7 +8,7 @@ import java.lang.annotation.RetentionPolicy;
  * This annotation indicates that a bytecode-level method is a getter.
  *
  * <p>
- * This annotation is used inside of structs.
+ * This annotation is used inside of structs, tuples, and designs.
  * </p>
  *
  * @author Mackenzie High

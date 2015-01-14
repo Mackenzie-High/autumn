@@ -6,6 +6,8 @@ import autumn.lang.exceptions.AssertionFailedException;
 import com.google.common.io.Resources;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
+import org.junit.Assert;
+import org.junit.Test;
 
 public final class Runner
 {
@@ -763,5 +765,22 @@ public final class Runner
         }
 
         return PASSED;
+    }
+
+    /**
+     * This method allows NetBeans to automatically run the tests herein.
+     */
+    @Test
+    public void main()
+    {
+        /**
+         * Perform the tests.
+         */
+        main(null);
+
+        /**
+         * All of the tests should have passed.
+         */
+        Assert.assertEquals(0, failed_count);
     }
 }
