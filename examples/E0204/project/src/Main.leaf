@@ -1,0 +1,15 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    val original = new HashSet([100, 200, 300]);
+
+    val copy = F::mutable(original is Set);
+
+    original.add(400);
+    copy.add(500);
+
+    F::println(original);
+    F::println(copy);
+}

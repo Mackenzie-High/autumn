@@ -1,0 +1,19 @@
+module Main in execution;
+
+tuple Planet (name : String, type : String);
+
+@Start
+defun main (args : String[]) : void
+{
+    # Create some planets.
+    val planet1 = new Planet("Venus", "Terrestrial");
+    val planet2 = new Planet("Earth", "Terrestrial");
+    val planet3 = new Planet("Saturn", "Jovian");
+    val planet4 = new Planet("Uranus", "Jovian");
+
+    # Place the planets into a list.
+    val planets = [planet1, planet2, planet3, planet4];
+
+    # Print the planets.
+    F::printlns(planets);
+}

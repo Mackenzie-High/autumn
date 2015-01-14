@@ -1,0 +1,11 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    val input = ["Mercury", "Venus", "Earth", "Mars"];
+
+    val size = F::len(input);
+
+    F::println("Size = " .. size);
+}

@@ -1,0 +1,30 @@
+module Main in execution;
+
+struct T (a : boolean,
+          b : char,
+          c : byte,
+          d : short,
+          e : int,
+          f : long,
+          g : float,
+          h : double,
+          i : Object);
+
+@Start
+defun main (args : String[]) : void
+{
+    var p = T::instance();
+    p = p.a(true);
+    p = p.b(65C);
+    p = p.c(100B);
+    p = p.d(200S);
+    p = p.e(300);
+    p = p.f(400L);
+    p = p.g(500.0F);
+    p = p.h(600.0);
+    p = p.i("Venus");
+
+    F::println(p);
+    p = F::reset(p);
+    F::println(p);
+}

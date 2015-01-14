@@ -1,0 +1,16 @@
+Venus
+  Name: Venus
+  Type: Terrestrial
+
+Earth
+  Name: Earth
+  Type: Terrestrial
+
+Saturn
+  Name: Saturn
+  Type: Jovian
+
+Uranus
+  Name: Uranus
+  Type: Jovian
+
