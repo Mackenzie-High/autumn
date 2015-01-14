@@ -5,5 +5,5 @@ int = 2
 long = 2
 float = 2.0
 double = 2.0
-BigInteger = 2
+BigInteger = 2.00000000000000000000000000000000
 BigDecimal = 2.00000000000000000000000000000000

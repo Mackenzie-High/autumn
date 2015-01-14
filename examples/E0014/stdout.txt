@@ -5,6 +5,6 @@ int = 5
 long = 5
 float = 5.0
 double = 5.0
-BigInteger = 5
+BigInteger = 5.00000000000000000000000000000000
 BigDecimal = 5.00000000000000000000000000000000
 Associativity = 2
