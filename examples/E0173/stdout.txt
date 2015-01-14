@@ -1,4 +1,0 @@
-Volcano #1: (Mount Rainier, USA)
-Volcano #2: (Mount Baker, USA)
-Volcano #3: (Mount St. Helens, USA)
-Volcano #4: null
