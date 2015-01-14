@@ -1,0 +1,3 @@
+Name: Mount Baker
+Range: Cascade
+Elevation: 10781
