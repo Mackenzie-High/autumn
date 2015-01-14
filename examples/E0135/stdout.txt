@@ -1,6 +1,0 @@
-Length = 5
-Value[0] = Mercury
-Value[1] = Venus
-Value[2] = Earth
-Value[3] = Mars
-Value[4] = Jupiter
