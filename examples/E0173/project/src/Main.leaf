@@ -1,0 +1,32 @@
+module Main in execution;
+
+tuple Volcano (name : String, country : String);
+
+@Start
+defun main (args : String[]) : void
+{
+    # Create some volcanoes. 
+    val v1 = new Volcano("Mount Etna",       "Italy");
+    val v2 = new Volcano("Mount Rainier",    "USA");
+    val v3 = new Volcano("Mount Pinatubo",   "Philippines");
+    val v4 = new Volcano("Mount Baker",      "USA");
+    val v5 = new Volcano("Mount Vesuvius",   "Italy");
+    val v6 = new Volcano("Mount St. Helens", "USA");
+    val v7 = new Volcano("Mount Vesuvius",   "Italy");
+   
+    # Put the volcanoes into a list. 
+    val volcanoes = [v1, v2, v3, v4, v5, v6, v7];
+
+    # Create a predicate that only matches USA volcanoes.
+    lambda p : Predicate => ($1 is Volcano).country() == "USA";
+
+    # Find the matching volcanoes.
+    val match1 = F::find(p, 0, volcanoes);
+    val match2 = F::find(p, 0, volcanoes);
+    val match3 = F::find(p, 0, volcanoes);
+
+    # Print the results.
+    F::println("Volcano #1: " .. match1);
+    F::println("Volcano #2: " .. match2);
+    F::println("Volcano #3: " .. match3);
+}
