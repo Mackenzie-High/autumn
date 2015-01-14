@@ -22,11 +22,13 @@ defun main (args : String[]) : void
 
     # Find the matching volcanoes.
     val match1 = F::find(p, 0, volcanoes);
-    val match2 = F::find(p, 0, volcanoes);
-    val match3 = F::find(p, 0, volcanoes);
+    val match2 = F::find(p, 1, volcanoes);
+    val match3 = F::find(p, 2, volcanoes);
+    val match4 = F::find(p, 3, volcanoes);
 
     # Print the results.
     F::println("Volcano #1: " .. match1);
     F::println("Volcano #2: " .. match2);
     F::println("Volcano #3: " .. match3);
+    F::println("Volcano #4: " .. match4);
 }
