@@ -5,7 +5,9 @@ defun main (args : String[]) : void
 {
     val capitals = ["London", "Berlin", "Paris", "Rome"];
 
-    val result = F::iter(capitals);
+    val iterator = capitals.iterator();
+
+    val result = F::iter(iterator);
 
     foreach (capital : String in result)
     {
