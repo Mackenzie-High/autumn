@@ -2453,7 +2453,7 @@ public class Main
                                 final Class return_type,
                                 final String return_value)
     {
-        c.addDetail(0, "Return Type: " + return_type.getName());
+        c.addDetail(0, "Return Type: " + JSONBuilder.link(return_type));
         c.addDetail(0, "Return " + return_value + '.');
     }
 
