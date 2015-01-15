@@ -1,8 +1,8 @@
 package autumnspecification;
 
-import high.mackenzie.autumn.util.json.JsonEncoder;
 import com.google.common.collect.Lists;
 import com.google.common.io.Files;
+import high.mackenzie.autumn.util.json.JsonEncoder;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map.Entry;
 
 /**
- * This class represents the site's main index page.
+ * This class is used to generate page: http://www.mackenziehigh.me/autumn/
  *
  * @author Mackenzie High
  */
@@ -94,7 +94,7 @@ public final class Index
         /**
          * Write the JSON file.
          */
-        final String content = (new JsonEncoder(false)).encode(index);
+        final String content = (new JsonEncoder()).encode(index);
         final File file = new File(JSONBuilder.SPECIFICATION, "index.json");
         Files.write(content, file, Charset.defaultCharset());
     }

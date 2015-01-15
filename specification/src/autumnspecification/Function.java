@@ -386,7 +386,7 @@ public final class Function
         /**
          * Write the JSON file.
          */
-        final String content = (new JsonEncoder(false)).encode(page);
+        final String content = (new JsonEncoder()).encode(page);
         final File file = new File(JSONBuilder.FUNCTIONS, this.toString() + ".json");
         Files.write(content, file, Charset.defaultCharset());
     }

@@ -33,8 +33,9 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 
 /**
+ * This class is used to generate page: http://www.mackenziehigh.me/autumn/FunctionIndexPage.html
  *
- * @author mackenzie
+ * @author Mackenzie High
  */
 public final class FunctionIndex
 {
@@ -208,7 +209,6 @@ public final class FunctionIndex
         f.name = "encodeJson";
         f.formal("object", Object.class, "is the object to convert to a JSON string.");
         f.returns(String.class, "Return the <i>object</i> as a JSON string.");
-        f.raise(NullPointerException.class, "if <i>object</i> is null.", "object == null");
         f.body = "return T.json(object);";
 
         // Finished!
@@ -1728,7 +1728,7 @@ public final class FunctionIndex
         /**
          * Write the JSON file.
          */
-        final String content = (new JsonEncoder(false)).encode(index);
+        final String content = (new JsonEncoder()).encode(index);
         final File file = new File(JSONBuilder.SPECIFICATION, "index-of-functions.json");
         Files.write(content, file, Charset.defaultCharset());
     }

@@ -1,1 +1,1 @@
-{ "summary" : "A namespace construct is used to represent a package.", "ast" : "autumn.lang.compiler.ast.nodes.Namespace", "syntax" : [[0, "<i></i>"]], "details" : [], "static-checks" : [] }
+{ "summary" : "A namespace construct is used to represent a package.", "ast" : "autumn.lang.compiler.ast.nodes.Namespace", "syntax" : [[E-32, "<i></i>"]], "details" : [], "static-checks" : [] }

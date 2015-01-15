@@ -1069,15 +1069,6 @@ public class Main
         c.addExample(EXAMPLE_1, 74);
         Index.add(c);
 
-        c = Construct.newInstance();
-        c.name = "Debug Statement";
-        c.klass = DebugStatement.class;
-        c.summary = "A debug-statement invokes the builtin debugger.";
-        c.addSyntax(0, "$debug$ ;");
-        c.addDetail(0, "Debug-statements can be disabled; in which case, no bytecode is generated therefor.");
-        c.addDetail(0, "The builtin debugger can be dynamically replaced programmatically.");
-        Index.add(c);
-
         // Finished!
         c = Construct.newInstance();
         c.name = "Expression Statement";
@@ -1104,7 +1095,6 @@ public class Main
         c.summary = "A return-statement causes execution to immediately exit the invocation of a function.";
         c.addSyntax(0, "$return$ ;");
         c.addDetail(0, "A return-void statement can only be used in a function whose return-type is void.");
-        c.addDetail(0, "If the enclosing function is a memoized-function, then memoization will occur.");
         c.addCheck(ErrorCode.EXPECTED_VOID, "The <i>return-type</i> of the enclosing function must be void.");
         c.addExample(EXAMPLE_1, 92);
         Index.add(c);
@@ -1116,7 +1106,6 @@ public class Main
         c.summary = "A return-value statement causes execution to immediately exit the invocation of a function.";
         c.addSyntax(0, "$return$ <i>$value$</i> ;");
         c.addDetail(0, "A return-value statement cannot be used in a function whose return-type is void.");
-        c.addDetail(0, "If the enclosing function is a memoized-function, then memoization will occur.");
         c.addDetail(0, "The <i>value</i> will be boxed, if necessary.");
         c.addDetail(0, "The <i>value</i> will be unboxed, if necessary.");
         c.addDetail(0, "The <i>value</i> will be coerced, if necessary.");
@@ -1911,14 +1900,16 @@ public class Main
         c.addExample(EXAMPLE_1, 83);
         Index.add(c);
 
-        // TODO: When dispatching ignore the enclosing method in order to avoid potential stackoverflows in factory style functions.
         c = Construct.newInstance();
         c.name = "Dispatch Expression";
         c.klass = DispatchExpression.class;
         c.summary = "A dispatch-expression dispatches an invocation to a nearby function using multiple dispatch.";
         c.addSyntax(0, "$dispatch$ $name$ ( <i>$argument$<sub>1</sub></i> , ... , <i>$argument$<sub>n</sub></i> )");
         usetype(c, "<i>module</i>");
-        c.addDetail(0, "The sorted function overloads will be selected using the $Dispatch Resolution Algorithm$.");
+        c.addDetail(0, "The possible function overloads will be selected statically using the $Dispatch Resolution Algorithm$.");
+        c.addDetail(1, "The overloads will be sorted topologically from the most specific to the most generalized.");
+        c.addDetail(1, "Only overloads whose parameters are all reference-types are applicable for selection.");
+        c.addDetail(1, "The enclosing function is not applicable for selection, because this would too easily result in infinitely recursive code.");
         c.addDetail(0, "At runtime, the overload to execute is selected as follows.");
         c.addDetail(1, "Let A<sub>1</sub> ... A<sub>n</sub> denote the arguments.");
         c.addDetail(1, "Select the first overload from the sorted list of overloads, where each argument matches the related parameter.");

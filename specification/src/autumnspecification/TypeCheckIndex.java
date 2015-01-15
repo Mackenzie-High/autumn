@@ -3,11 +3,11 @@ package autumnspecification;
 import autumn.lang.compiler.ast.nodes.*;
 import autumn.lang.compiler.errors.ErrorCode;
 import static autumn.lang.compiler.errors.ErrorCode.*;
-import high.mackenzie.autumn.util.json.JsonEncoder;
 import static autumnspecification.JSONBuilder.*;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.io.Files;
+import high.mackenzie.autumn.util.json.JsonEncoder;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -16,8 +16,9 @@ import java.util.Map;
 import java.util.SortedMap;
 
 /**
+ * This class is used to generate page: http://www.mackenziehigh.me/autumn/TypeCheckingExamplesIndexPage.html
  *
- * @author mackenzie
+ * @author Mackenzie High
  */
 public final class TypeCheckIndex
 {
@@ -76,7 +77,7 @@ public final class TypeCheckIndex
         /**
          * Write the JSON file.
          */
-        final String content = (new JsonEncoder(false)).encode(index);
+        final String content = (new JsonEncoder()).encode(index);
         final File file = new File(JSONBuilder.SPECIFICATION, "index-of-type-checking-examples.json");
         Files.write(content, file, Charset.defaultCharset());
     }
