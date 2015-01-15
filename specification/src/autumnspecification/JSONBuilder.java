@@ -192,6 +192,8 @@ public class JSONBuilder
 
         s = s.replace("$AutumnLangExceptionsAssertionFailedException$", link("AssertionFailedException", "http://mackenzie-high.github.io/autumn/javadoc/autumn/lang/exceptions/AssertionFailedException.html"));
         s = s.replace("$AutumnLangExceptionsAssumptionFailedException$", link("AssumptionFailedException", "http://mackenzie-high.github.io/autumn/javadoc/autumn/lang/exceptions/AssumptionFailedException.html"));
+        s = s.replace("$AutumnLangExceptionsDispatchException$", link("DispatchException", "http://mackenzie-high.github.io/autumn/javadoc/autumn/lang/exceptions/DispatchException.html"));
+        s = s.replace("$AutumnLangExceptionsUnexpectedTerminationException$", link("UnexpectedTerminationException", "http://mackenzie-high.github.io/autumn/javadoc/autumn/lang/exceptions/UnexpectedTerminationException.html"));
 
         s = s.replace("$AutumnLangInternalsArgumentStack$", link("ArgumentStack", "http://mackenzie-high.github.io/autumn/javadoc/autumn/lang/internals/ArgumentStack.html"));
         s = s.replace("$AutumnLangInternalsAbstractDefinedFunctor$", link("AbstractDefinedFunctor", "http://mackenzie-high.github.io/autumn/javadoc/autumn/lang/internals/AbstractDefinedFunctor.html"));
