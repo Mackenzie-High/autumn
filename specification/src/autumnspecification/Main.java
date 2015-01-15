@@ -1905,11 +1905,11 @@ public class Main
         c.klass = DispatchExpression.class;
         c.summary = "A dispatch-expression dispatches an invocation to a nearby function using multiple dispatch.";
         c.addSyntax(0, "$dispatch$ $name$ ( <i>$argument$<sub>1</sub></i> , ... , <i>$argument$<sub>n</sub></i> )");
-        usetype(c, "<i>module</i>");
         c.addDetail(0, "The potentially applicable function overloads will be selected statically.");
         c.addDetail(1, "The overloads will be sorted topologically from the most specific to the most generalized.");
         c.addDetail(1, "An overload is not applicable, if it takes a non reference-type parameter.");
-        c.addDetail(1, "An overload is not applicable, if its return-type is not a reference-type.");
+        c.addDetail(1, "An overload is not applicable, if its return-type is not either a reference-type or the void-type.");
+        c.addDetail(2, "If the return-type of an overload is the void-type, then the overload will appear to return null.");
         c.addDetail(1, "The enclosing function is not applicable for selection.");
         c.addDetail(2, "However, other overloads with the same name may be applicable.");
         c.addDetail(2, "This rule helps prevent accidental infinite recursion.");
@@ -1923,16 +1923,9 @@ public class Main
         c.addDetail(3, "A<sub>i</sub> matches P<sub>i</sub>, iff:");
         c.addDetail(3, "A<sub>i</sub> is null.");
         c.addDetail(3, "A<sub>i</sub> is an instance of P<sub>i</sub>.");
-        c.addDetail(0, "Return Type:");
-        c.addDetail(1, "Let R<sub>1</sub> ... R<sub>n</sub> be the return-types of the selected method overloads.");
-        c.addDetail(1, "Let S denote the return-type of the dispatch-expression itself.");
-        c.addDetail(2, "If R<sub>x</sub> equals R<sub>y</sub> ∀ (x, y), then S is R<sub>x</sub>.");
-        c.addDetail(2, "If R<sub>x</sub> is not equal to R<sub>y</sub> ∃ (x, y), then S is $JavaLangObject$.");
-        c.addDetail(3, "This implies that the return-types of some of the overloads will may need to be automatically boxed.");
-        returns(c, Object.class, "Return the value returned by invoking the dynamically selected function overload.");
+        returns(c, Object.class, "the value returned by invoking the dynamically selected function overload.");
         c.addDetail(0, "A $AutumnLangExceptionsDispatchException$ will be thrown, if none of the selected overloads will accept the arguments at runtime.");
-        expression(c, "argument", false);
-        c.addCheck(ErrorCode.NO_SUCH_METHOD, "No acceptable method overload was found.");
+        c.addCheck(ErrorCode.NO_SUCH_METHOD, "No applicable method overloads exist.");
         Index.add(c);
 
         --Index.indent; // OOP
