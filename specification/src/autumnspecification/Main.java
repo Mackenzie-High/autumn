@@ -1913,9 +1913,6 @@ public class Main
         c.addDetail(1, "The enclosing function is not applicable for selection.");
         c.addDetail(2, "However, other overloads with the same name may be applicable.");
         c.addDetail(2, "This rule helps prevent accidental infinite recursion.");
-        c.addDetail(0, "Boxing of the arguments will be performed, when necessary.");
-        c.addDetail(0, "Unboxing of the arguments will not be performed.");
-        c.addDetail(0, "Coercion of the arguments will not be performed.");
         c.addDetail(0, "At runtime, the overload to invoke is selected as follows:");
         c.addDetail(1, "Let A<sub>1</sub> ... A<sub>n</sub> denote the arguments.");
         c.addDetail(1, "Select the first overload from the sorted list of overloads, where each argument matches the related parameter.");
@@ -1923,9 +1920,12 @@ public class Main
         c.addDetail(3, "A<sub>i</sub> matches P<sub>i</sub>, iff:");
         c.addDetail(3, "A<sub>i</sub> is null.");
         c.addDetail(3, "A<sub>i</sub> is an instance of P<sub>i</sub>.");
-        returns(c, Object.class, "the value returned by invoking the dynamically selected function overload.");
+        c.addDetail(0, "Boxing of the arguments will be performed, when necessary.");
+        c.addDetail(0, "Unboxing of the arguments will not be performed.");
+        c.addDetail(0, "Coercion of the arguments will not be performed.");
+        returns(c, Object.class, "the value returned by invoking the dynamically selected function overload");
         c.addDetail(0, "A $AutumnLangExceptionsDispatchException$ will be thrown, if none of the selected overloads will accept the arguments at runtime.");
-        c.addCheck(ErrorCode.NO_SUCH_METHOD, "No applicable method overloads exist.");
+        c.addCheck(ErrorCode.NO_SUCH_METHOD, "No applicable function overload(s) exist.");
         Index.add(c);
 
         --Index.indent; // OOP
