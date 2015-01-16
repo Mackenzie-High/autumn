@@ -1907,9 +1907,9 @@ public class Main
         c.addSyntax(0, "$dispatch$ $name$ ( <i>$argument$<sub>1</sub></i> , ... , <i>$argument$<sub>n</sub></i> )");
         c.addDetail(0, "The potentially applicable function overloads will be selected statically.");
         c.addDetail(1, "The overloads will be sorted topologically from the most specific to the most generalized.");
+        c.addDetail(1, "An overload is not applicable, if the number of arguments differs from the number of parameters.");
         c.addDetail(1, "An overload is not applicable, if it takes a non reference-type parameter.");
         c.addDetail(1, "An overload is not applicable, if its return-type is not either a reference-type or the void-type.");
-        c.addDetail(2, "If the return-type of an overload is the void-type, then the overload will appear to return null.");
         c.addDetail(0, "At runtime, the overload to invoke is selected as follows:");
         c.addDetail(1, "Let A<sub>1</sub> ... A<sub>n</sub> denote the arguments.");
         c.addDetail(1, "Select the first overload from the sorted list of overloads, where each argument matches the related parameter.");
