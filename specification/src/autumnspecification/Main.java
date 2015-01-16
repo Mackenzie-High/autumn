@@ -1910,9 +1910,6 @@ public class Main
         c.addDetail(1, "An overload is not applicable, if it takes a non reference-type parameter.");
         c.addDetail(1, "An overload is not applicable, if its return-type is not either a reference-type or the void-type.");
         c.addDetail(2, "If the return-type of an overload is the void-type, then the overload will appear to return null.");
-        c.addDetail(1, "The enclosing function is not applicable for selection.");
-        c.addDetail(2, "However, other overloads with the same name may be applicable.");
-        c.addDetail(2, "This rule helps prevent accidental infinite recursion.");
         c.addDetail(0, "At runtime, the overload to invoke is selected as follows:");
         c.addDetail(1, "Let A<sub>1</sub> ... A<sub>n</sub> denote the arguments.");
         c.addDetail(1, "Select the first overload from the sorted list of overloads, where each argument matches the related parameter.");
@@ -1926,6 +1923,8 @@ public class Main
         returns(c, Object.class, "the value returned by invoking the dynamically selected function overload");
         c.addDetail(0, "A $AutumnLangExceptionsDispatchException$ will be thrown, if none of the selected overloads will accept the arguments at runtime.");
         c.addCheck(ErrorCode.NO_SUCH_METHOD, "No applicable function overload(s) exist.");
+        c.addExample(EXAMPLE_1, 217);
+        c.addExample(EXAMPLE_2, 218);
         Index.add(c);
 
         --Index.indent; // OOP

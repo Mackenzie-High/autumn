@@ -1,0 +1,46 @@
+module Main in execution;
+
+design Animal (name : String);
+
+tuple Cat (name : String) extends Animal;
+
+tuple Dog (name : String) extends Animal;
+
+tuple Cow (name : String) extends Animal;
+
+@Start
+defun main (args : String[]) : void
+{
+    # Create some animals. 
+    val owner_1 = new Cat("Fluffy");
+    val owner_2 = new Dog("Jet");
+    val owner_3 = new Cow("Moo");
+
+    # Print a description of each animal. 
+    My::describe(owner_1);
+    My::describe(owner_2);
+    My::describe(owner_3);
+}
+
+defun describe (owner : Animal) : void
+{
+    val message = dispatch about (owner) is String;
+
+    F::println(message);
+}
+
+defun about (owner : Cat) : String
+{
+    return "Cat: " .. owner.name();
+}
+
+defun about (owner : Dog) : String
+{
+    return "Dog: " .. owner.name();
+}
+
+defun about (owner : Cow) : String
+{
+    return "Cow: " .. owner.name();
+}
+
