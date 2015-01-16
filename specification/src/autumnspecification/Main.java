@@ -1900,6 +1900,7 @@ public class Main
         c.addExample(EXAMPLE_1, 83);
         Index.add(c);
 
+        // Finished!
         c = Construct.newInstance();
         c.name = "Dispatch Expression";
         c.klass = DispatchExpression.class;
