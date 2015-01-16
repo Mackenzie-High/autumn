@@ -9,8 +9,11 @@ import java.util.List;
 import java.util.concurrent.Callable;
 
 /**
+ * <code>
+ * functor Function0 () : Object
+ * </code>
  *
- * @author mackenzie
+ * @author Mackenzie High
  */
 public class Function0
         extends AbstractDefinedFunctor

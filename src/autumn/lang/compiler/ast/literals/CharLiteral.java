@@ -52,7 +52,7 @@ public final class CharLiteral
         }
         else if (source.matches("[0-9]+C"))
         {
-            final int digits = Integer.valueOf(sourceWithoutUnderscores().trim().replace("C", ""));
+            final int digits = Integer.valueOf(sourceWithoutUnderscores().trim().replace("C", "").replaceFirst("c", ""));
 
             final boolean conversion_is_safe = digits <= MAXIMUM;
 
@@ -72,6 +72,6 @@ public final class CharLiteral
     @Override
     public boolean isParsable()
     {
-        return sourceWithoutUnderscores().matches("[0-9]+C") || source().matches("'(.|\n)'");
+        return sourceWithoutUnderscores().matches("[0-9]+[Cc]") || source().matches("'(.|\n)'");
     }
 }

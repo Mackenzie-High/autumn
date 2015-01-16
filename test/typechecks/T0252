@@ -1,0 +1,17 @@
+module Main in typechecks;
+
+@Start
+defun main (args : String[]) : void
+{
+    dispatch handler ( My::moo() );
+}
+
+defun moo () : void
+{
+    # The sole purpose of this function is to provide a void return-type.
+}
+
+defun handler (value : Object) : void
+{
+    nop;
+}

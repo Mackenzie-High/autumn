@@ -553,12 +553,6 @@ public final class StatementTypeChecker
     }
 
     @Override
-    public void visit(final DebugStatement object)
-    {
-        // Pass
-    }
-
-    @Override
     public void visit(final TryCatchStatement object)
     {
         /**
@@ -733,15 +727,6 @@ public final class StatementTypeChecker
     @Override
     public void visit(final RecurStatement object)
     {
-        /**
-         * A recur-statement cannot be used inside of a memoized function.
-         */
-        if (function.isMemoized())
-        {
-            // This will throw an exception.
-            program.checker.reportRecurInMemoizedFunction(object);
-        }
-
         /**
          * The number of arguments must match the number of parameters.
          */

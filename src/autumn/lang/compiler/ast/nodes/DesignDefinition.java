@@ -65,7 +65,7 @@ import java.util.TreeSet;
  * </table>
  * </p>
  * 
- * <p> This file was auto-generated on (Thu Jan 08 00:47:19 EST 2015).</p>
+ * <p> This file was auto-generated on (Thu Jan 15 07:23:26 EST 2015).</p>
  */
 @SuppressWarnings("unchecked")
 public final class DesignDefinition extends Object implements IAnnotated, IDocumented, IRecord

@@ -17,31 +17,6 @@ import java.util.Map.Entry;
  */
 public final class JsonEncoder
 {
-    private boolean typed = true;
-
-    public JsonEncoder()
-    {
-        this.typed = true;
-    }
-
-    public JsonEncoder(final boolean typed)
-    {
-        this.typed = typed;
-    }
-
-    private String encodeTypedAtom(final String type,
-                                   final String value)
-    {
-        if (typed)
-        {
-            return String.format("{ \"class\" : \"%s\", \"value\" : %s }", type, value);
-        }
-        else
-        {
-            return value;
-        }
-    }
-
     public String encode(final Object value)
     {
         if (value == null)
@@ -51,10 +26,6 @@ public final class JsonEncoder
         else if (value instanceof Record)
         {
             return encode((Record) value);
-        }
-        else if (value instanceof Enum)
-        {
-            return encode((Enum) value);
         }
         else if (value instanceof Boolean)
         {
@@ -66,35 +37,35 @@ public final class JsonEncoder
         }
         else if (value instanceof Byte)
         {
-            return encode((byte) (Byte) value);
+            return encode(F.big(value));
         }
         else if (value instanceof Short)
         {
-            return encode((short) (Short) value);
+            return encode(F.big(value));
         }
         else if (value instanceof Integer)
         {
-            return encode((int) (Integer) value);
+            return encode(F.big(value));
         }
         else if (value instanceof Long)
         {
-            return encode((long) (Long) value);
+            return encode(F.big(value));
         }
         else if (value instanceof Float)
         {
-            return encode((float) (Float) value);
+            return encode(F.big(value));
         }
         else if (value instanceof Double)
         {
-            return encode((double) (Double) value);
+            return encode(F.big(value));
         }
         else if (value instanceof BigInteger)
         {
-            return encode((BigInteger) value);
+            return encode(F.big(value));
         }
         else if (value instanceof BigDecimal)
         {
-            return encode((BigDecimal) value);
+            return encode(F.big(value));
         }
         else if (value instanceof String)
         {
@@ -118,8 +89,6 @@ public final class JsonEncoder
     {
         final List<String> pairs = Lists.newLinkedList();
 
-        pairs.add(String.format("\"class\" : \"%s\"", record.getClass().getName()));
-
         for (String key : record.keys())
         {
             final String value = encode(F.get(record, key));
@@ -130,15 +99,6 @@ public final class JsonEncoder
         }
 
         final String result = F.str(pairs, "{ ", ", ", " }");
-
-        return result;
-    }
-
-    public String encode(final Enum value)
-    {
-        final String text = value.toString();
-
-        final String result = encodeTypedAtom(value.getClass().getSimpleName(), text);
 
         return result;
     }
@@ -154,105 +114,26 @@ public final class JsonEncoder
     {
         final String text = F.str((int) value);
 
-        final String result = encodeTypedAtom(char.class.getSimpleName(), text);
-
-        return result;
-    }
-
-    public String encode(final byte value)
-    {
-        final String text = F.str(value);
-
-        final String result = encodeTypedAtom(byte.class.getSimpleName(), text);
-
-        return result;
-    }
-
-    public String encode(final short value)
-    {
-        final String text = F.str(value);
-
-        final String result = encodeTypedAtom(short.class.getSimpleName(), text);
-
-        return result;
-    }
-
-    public String encode(final int value)
-    {
-        final String text = F.str(value);
-
-        final String result = encodeTypedAtom(int.class.getSimpleName(), text);
-
-        return result;
-    }
-
-    public String encode(final long value)
-    {
-        final String text = F.str(value);
-
-        final String result = encodeTypedAtom(long.class.getSimpleName(), text);
-
-        return result;
-    }
-
-    public String encode(final float value)
-    {
-        final String text = F.str(value);
-
-        final String result = encodeTypedAtom(float.class.getSimpleName(), text);
-
-        return result;
-    }
-
-    public String encode(final double value)
-    {
-        final String text = F.str(value);
-
-        final String result = encodeTypedAtom(double.class.getSimpleName(), text);
-
-        return result;
-    }
-
-    public String encode(final BigInteger value)
-    {
-        final String text = F.str(value);
-
-        final String result = encodeTypedAtom(BigInteger.class.getSimpleName(), text);
+        final String result = text;
 
         return result;
     }
 
     public String encode(final BigDecimal value)
     {
-        final String text = F.str(value);
-
-        final StringBuilder result = new StringBuilder();
-
-        boolean add = false;
-
-        for (int i = text.length() - 1; i >= 0; i--)
+        if (value.equals(F.big(0)))
         {
-            final char chr = text.charAt(i);
-
-            if (chr != '0')
-            {
-                add = true;
-            }
-
-            if (add)
-            {
-                result.append(chr);
-            }
+            return "0";
         }
 
-        result.reverse();
+        final String result = value
+                .toString()
+                .replaceAll("0*[Ee]", "E")
+                .replaceAll("\\.0*$", "");
 
-        if (result.charAt(result.length() - 1) == '.')
-        {
-            result.append('0');
-        }
+        assert F.parseBigDecimal(result).equals(F.big(value));
 
-        return result.toString();
+        return result;
     }
 
     public String encode(final String value)

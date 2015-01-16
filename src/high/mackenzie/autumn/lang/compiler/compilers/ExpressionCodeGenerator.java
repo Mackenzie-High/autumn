@@ -648,8 +648,15 @@ public class ExpressionCodeGenerator
     @Override
     public void visit(final DispatchExpression object)
     {
+        /**
+         * Dispatch-expressions are compiled using a specialized object,
+         * because of the intricacy of such expressions.
+         */
         final DispatchCompiler cmp = program.symbols.dispatches.get(object);
 
+        /**
+         * Generate the bytecode.
+         */
         cmp.compile(this);
     }
 

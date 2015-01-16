@@ -35,7 +35,9 @@ public final class BigIntegerLiteral
         {
             if (value == null)
             {
-                final String source = sourceWithoutUnderscores().trim().replaceFirst("BI", "");
+                final String source = sourceWithoutUnderscores()
+                        .trim()
+                        .replaceAll("[Bb][Ii]", "");
 
                 final BigInteger result = new BigInteger(source);
 
@@ -59,6 +61,6 @@ public final class BigIntegerLiteral
     @Override
     public boolean isParsable()
     {
-        return sourceWithoutUnderscores().matches("-?[0-9]+BI");
+        return sourceWithoutUnderscores().matches("-?[0-9]+[Bb][Ii]");
     }
 }

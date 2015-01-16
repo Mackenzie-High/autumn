@@ -7,7 +7,7 @@ import high.mackenzie.snowflake.ITreeNodeVisitor;
 /**
  * This class was auto-generated using the Snowflake parser-generator.
  *
- * <p>Generated On: Fri Dec 12 09:03:19 EST 2014</p>
+ * <p>Generated On: Thu Jan 15 04:31:08 EST 2015</p>
  */
 public abstract class AbstractVisitor implements ITreeNodeVisitor
 {
@@ -57,7 +57,6 @@ public abstract class AbstractVisitor implements ITreeNodeVisitor
         else if("branch_statement".equals(name)) { visit_branch_statement(node); }
         else if("index".equals(name)) { visit_index(node); }
         else if("labels".equals(name)) { visit_labels(node); }
-        else if("debug_statement".equals(name)) { visit_debug_statement(node); }
         else if("assert_statement".equals(name)) { visit_assert_statement(node); }
         else if("assertion_echo_opt".equals(name)) { visit_assertion_echo_opt(node); }
         else if("assertion_echo_empty".equals(name)) { visit_assertion_echo_empty(node); }
@@ -1013,16 +1012,6 @@ public abstract class AbstractVisitor implements ITreeNodeVisitor
      * This method visits a parse-tree node created by rule "datum".
      */
     protected void visit_datum(ITreeNode node)
-    {
-        // You should *not* place your code right here. 
-        // Instead, you should override this method via a subclass.
-        visitUnknown(node); // Default Behavior
-    }
-
-    /**
-     * This method visits a parse-tree node created by rule "debug_statement".
-     */
-    protected void visit_debug_statement(ITreeNode node)
     {
         // You should *not* place your code right here. 
         // Instead, you should override this method via a subclass.

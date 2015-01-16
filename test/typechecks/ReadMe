@@ -221,7 +221,9 @@ Test Index
 . . . T0244 = Impossible Assignment
 . Expressions
 . . Dispatch
-. . . No Such Method
+. . . T0250 = No Such Method - Invalid Name
+. . . T0251 = No Such Method - No Applicable Overloads
+. . . T0252 = Value Required - Void Argument
 . . New
 . . . T0063 = No Such Type
 . . . T0064 = Inaccessible Type

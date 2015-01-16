@@ -56,11 +56,9 @@ public final class Importer
         importClass(autumn.lang.Lambda.class);
         importClass(autumn.lang.Local.class);
         importClass(autumn.lang.LocalsMap.class);
-        importClass(autumn.lang.Memoizer.class);
         importClass(autumn.lang.Module.class);
         importClass(autumn.lang.ModuleInfo.class);
         importClass(autumn.lang.Record.class);
-        importClass(autumn.lang.RecordEntry.class);
         importClass(autumn.lang.DefinedFunctor.class);
         importClass(autumn.lang.TypedFunctor.class);
 
@@ -68,8 +66,6 @@ public final class Importer
         importClass(autumn.lang.annotations.Author.class);
         importClass(autumn.lang.annotations.Hide.class);
         importClass(autumn.lang.annotations.Infer.class);
-        importClass(autumn.lang.annotations.Memoize.class);
-        importClass(autumn.lang.annotations.Once.class);
         importClass(autumn.lang.annotations.Setup.class);
         importClass(autumn.lang.annotations.Start.class);
         importClass(autumn.lang.annotations.Sync.class);
@@ -81,12 +77,13 @@ public final class Importer
         importClass(autumn.lang.exceptions.AssertionFailedException.class);
         importClass(autumn.lang.exceptions.AssumptionFailedException.class);
         importClass(autumn.lang.exceptions.CheckedException.class);
+        importClass(autumn.lang.exceptions.DispatchException.class);
+        importClass(autumn.lang.exceptions.UnexpectedTerminationException.class);
 
         // autumn.util
         importClass(autumn.util.Bitwise.class);
         importClass(autumn.util.F.class);
         importClass(autumn.util.FileIO.class);
-        importClass(autumn.util.Vars.class);
 
         // autumn.util.test
         importClass(autumn.util.test.MalformedTestException.class);

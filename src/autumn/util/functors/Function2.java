@@ -7,8 +7,11 @@ import com.google.common.collect.ImmutableList;
 import java.util.List;
 
 /**
+ * <code>
+ * functor Function2 (Object, Object) : Object
+ * </code>
  *
- * @author mackenzie
+ * @author Mackenzie High
  */
 public class Function2
         extends AbstractDefinedFunctor

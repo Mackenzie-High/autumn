@@ -1,0 +1,26 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    assert dispatch handler (17b) == "number";
+
+    assert dispatch handler (19) == null;
+
+    assert dispatch handler (true) == "object";
+}
+
+defun handler (value : Number) : String
+{
+    return "number";
+}
+
+defun handler (value : Integer) : void
+{
+    return;
+}
+
+defun handler (value : Object) : String
+{
+    return "object";
+}

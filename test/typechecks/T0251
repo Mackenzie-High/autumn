@@ -1,0 +1,19 @@
+module Main in typechecks;
+
+@Start
+defun main (args : String[]) : void
+{
+    dispatch handler (1, 2, 3);
+}
+
+defun handler (x : int) : Object
+{
+    # This is not an applicable overload,
+    # because the parameter is primitive.
+}
+
+defun handler (x : Object) : int
+{
+    # This is not an applicable overload,
+    # because the return-type is primitive.
+}

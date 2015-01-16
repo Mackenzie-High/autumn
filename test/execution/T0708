@@ -1,0 +1,21 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    val result = dispatch handler (true);
+
+    assert result == 17b;
+
+    assert (locals).typeOf("result") == (class Object);
+}
+
+defun handler (value : Boolean) : Byte
+{
+    return 17b;
+}
+
+defun handler (value : Integer) : Short
+{
+    return 19s;
+}

@@ -151,15 +151,6 @@ public interface ModuleInfo
     public boolean isStart();
 
     /**
-     * This method retrieves the memoizer associated with a named function.
-     *
-     * @param name is the unique name of the function.
-     * @return the memoizer that is associated with the named function.
-     * @throws IllegalArgumentException if the named function is not memoized.
-     */
-    public Memoizer memoizerOf(final String name);
-
-    /**
      * This method creates a string representation of the module.
      *
      * @return <code>name()</code>

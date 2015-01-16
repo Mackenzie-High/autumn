@@ -638,10 +638,6 @@ defun main (args : String[]) : void
 
     val xoo = ( locals ) ;
 
-    nop;
-
-    debug ;
-
     nop ;
 
     forever

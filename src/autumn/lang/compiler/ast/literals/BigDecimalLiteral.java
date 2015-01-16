@@ -38,7 +38,9 @@ public final class BigDecimalLiteral
         {
             if (value == null)
             {
-                final String source = sourceWithoutUnderscores().trim().replaceFirst("BD", "");
+                final String source = sourceWithoutUnderscores()
+                        .trim()
+                        .replaceAll("[Bb][Dd]", "");
 
                 result = Helpers.createBigDecimal(source);
             }
@@ -62,6 +64,6 @@ public final class BigDecimalLiteral
     @Override
     public boolean isParsable()
     {
-        return sourceWithoutUnderscores().matches("-?[0-9]+([.][0-9]*)?([eE][\\-\\+]?[0-9]+)?BD");
+        return sourceWithoutUnderscores().matches("-?[0-9]+([.][0-9]*)?([eE][\\-\\+]?[0-9]+)?[Bb][Dd]");
     }
 }

@@ -8,7 +8,9 @@ import com.google.common.collect.ImmutableList;
 import java.util.List;
 
 /**
+ * <code>
  * functor Action () : void
+ * </code>
  *
  * @author Mackenzie High
  */
@@ -16,23 +18,19 @@ public class Action
         extends AbstractDefinedFunctor
         implements Runnable
 {
+    /**
+     * Sole Constructor.
+     *
+     * @param inner is the functor that provides the actual functionality.
+     */
     public Action(final TypedFunctor functor)
     {
         super(functor);
     }
 
-    @Override
-    public List<Class> parameterTypes()
-    {
-        return ImmutableList.<Class>of();
-    }
-
-    @Override
-    public Class returnType()
-    {
-        return void.class;
-    }
-
+    /**
+     * This method invokes the inner functor.
+     */
     public void invoke()
             throws Throwable
     {
@@ -43,6 +41,27 @@ public class Action
         inner().apply(stack);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<Class> parameterTypes()
+    {
+        return ImmutableList.<Class>of();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Class returnType()
+    {
+        return void.class;
+    }
+
+    /**
+     * This method invokes the inner functor.
+     */
     @Override
     public void run()
     {

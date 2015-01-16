@@ -38,6 +38,9 @@ public final class Runner
 
 
 
+        test("T0252", VALUE_REQUIRED);
+        test("T0251", NO_SUCH_METHOD);
+        test("T0250", NO_SUCH_METHOD);
         test("T0249", EXPECTED_CLASS_TYPE);
         test("T0248", INCOMPATIBLE_DELEGATE);
         test("T0247", INCOMPATIBLE_DELEGATE);
@@ -237,44 +240,42 @@ public final class Runner
         test("T0042", EXPECTED_THROWABLE);
         test("T0041", DUPLICATE_TYPE);
         test("T0039", DUPLICATE_TYPE);
-
-        //
-        test("T0001", EXPECTED_CONDITION);
-        test("T0002", EXPECTED_CONDITION);
-        test("T0003", EXPECTED_CONDITION);
-        test("T0004", EXPECTED_CONDITION);
-        test("T0005", EXPECTED_CONDITION);
-        test("T0006", EXPECTED_CONDITION);
-        test("T0007", EXPECTED_CONDITION);
-        test("T0008", EXPECTED_CONDITION);
-        test("T0009", EXPECTED_STRING);
-        test("T0010", EXPECTED_THROWABLE);
-        test("T0011", DUPLICATE_VARIABLE);
-        test("T0012", EXPECTED_THROWABLE);
-        test("T0013", DUPLICATE_EXCEPTION_HANDLER);
-        test("T0014", NO_SUCH_TYPE);
-        test("T0015", DUPLICATE_VARIABLE);
-        test("T0016", DUPLICATE_VARIABLE);
-        test("T0017", NO_SUCH_VARIABLE);
-        test("T0019", EXPECTED_CONDITION);
-        test("T0020", DUPLICATE_LABEL);
-        test("T0021", NO_SUCH_LABEL);
-        test("T0022", NO_SUCH_BINARY_OPERATOR);
-        test("T0023", NO_SUCH_UNARY_OPERATOR);
-        test("T0024", EXPECTED_REFERENCE_TYPE);
-        test("T0025", EXPECTED_REFERENCE_TYPE);
-        test("T0026", EXPECTED_REFERENCE_TYPE);
-        test("T0027", INCOMPATIBLE_OPERANDS);
-        test("T0028", EXPECTED_CONDITION);
-        test("T0029", EXPECTED_CONDITION);
-        test("T0030", EXPECTED_CONDITION);
-        test("T0031", EXPECTED_CONDITION);
-        test("T0032", EXPECTED_REFERENCE_TYPE);
-        test("T0033", EXPECTED_REFERENCE_TYPE);
-        test("T0034", IMPOSSIBLE_CONVERSION);
-        test("T0035", IMPOSSIBLE_CONVERSION);
-        test("T0036", VALUE_REQUIRED);
         test("T0037", EXPECTED_CONDITION, NO_SUCH_VARIABLE);
+        test("T0036", VALUE_REQUIRED);
+        test("T0035", IMPOSSIBLE_CONVERSION);
+        test("T0034", IMPOSSIBLE_CONVERSION);
+        test("T0033", EXPECTED_REFERENCE_TYPE);
+        test("T0032", EXPECTED_REFERENCE_TYPE);
+        test("T0031", EXPECTED_CONDITION);
+        test("T0030", EXPECTED_CONDITION);
+        test("T0029", EXPECTED_CONDITION);
+        test("T0028", EXPECTED_CONDITION);
+        test("T0027", INCOMPATIBLE_OPERANDS);
+        test("T0026", EXPECTED_REFERENCE_TYPE);
+        test("T0025", EXPECTED_REFERENCE_TYPE);
+        test("T0024", EXPECTED_REFERENCE_TYPE);
+        test("T0023", NO_SUCH_UNARY_OPERATOR);
+        test("T0022", NO_SUCH_BINARY_OPERATOR);
+        test("T0021", NO_SUCH_LABEL);
+        test("T0020", DUPLICATE_LABEL);
+        test("T0019", EXPECTED_CONDITION);
+        test("T0017", NO_SUCH_VARIABLE);
+        test("T0016", DUPLICATE_VARIABLE);
+        test("T0015", DUPLICATE_VARIABLE);
+        test("T0014", NO_SUCH_TYPE);
+        test("T0013", DUPLICATE_EXCEPTION_HANDLER);
+        test("T0012", EXPECTED_THROWABLE);
+        test("T0011", DUPLICATE_VARIABLE);
+        test("T0010", EXPECTED_THROWABLE);
+        test("T0009", EXPECTED_STRING);
+        test("T0008", EXPECTED_CONDITION);
+        test("T0007", EXPECTED_CONDITION);
+        test("T0006", EXPECTED_CONDITION);
+        test("T0005", EXPECTED_CONDITION);
+        test("T0004", EXPECTED_CONDITION);
+        test("T0003", EXPECTED_CONDITION);
+        test("T0002", EXPECTED_CONDITION);
+        test("T0001", EXPECTED_CONDITION);
 
         System.out.println("Number of Failed Tests: " + failed_count);
     }
@@ -335,7 +336,7 @@ public final class Runner
 
             if (actual != null && actual.containsAll(expected) == false)
             {
-                System.out.println(errors);
+                System.out.println(actual);
                 return FAILED;
             }
         }

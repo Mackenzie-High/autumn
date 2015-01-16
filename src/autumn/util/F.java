@@ -101,10 +101,9 @@ public final class F
     }
 
     
-    public static java.lang.String encodeJson (final java.lang.Object object) throws java.lang.NullPointerException
+    public static java.lang.String encodeJson (final java.lang.Object object) 
     {
 
-        if(object == null) { throw new java.lang.NullPointerException(); }
         return T.json(object);
     }
 
@@ -988,15 +987,6 @@ public final class F
     }
 
     
-    public static java.lang.Object search (final java.util.ArrayList list, final autumn.util.functors.Ordering ordering) throws java.lang.NullPointerException, java.lang.NullPointerException
-    {
-
-        if(list == null) { throw new java.lang.NullPointerException(); }
-        if(ordering == null) { throw new java.lang.NullPointerException(); }
-        return null;
-    }
-
-    
     public static java.math.BigDecimal[] set (final java.math.BigDecimal[] array, final int index, final java.math.BigDecimal value) throws java.lang.NullPointerException, java.lang.IndexOutOfBoundsException
     {
 
@@ -1141,15 +1131,6 @@ public final class F
         if(owner == null) { throw new java.lang.NullPointerException(); }
         if(name == null) { throw new java.lang.NullPointerException(); }
         return set(owner, (owner.keys().indexOf(name)), value);
-    }
-
-    
-    public static void sort (final java.util.ArrayList list, final autumn.util.functors.Ordering ordering) throws java.lang.NullPointerException, java.lang.NullPointerException
-    {
-
-        if(list == null) { throw new java.lang.NullPointerException(); }
-        if(ordering == null) { throw new java.lang.NullPointerException(); }
-        Collections.sort(list, ordering);
     }
 
     

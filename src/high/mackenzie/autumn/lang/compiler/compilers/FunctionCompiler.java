@@ -1,6 +1,5 @@
 package high.mackenzie.autumn.lang.compiler.compilers;
 
-import autumn.lang.annotations.Memoize;
 import autumn.lang.annotations.Setup;
 import autumn.lang.compiler.ast.nodes.FormalParameter;
 import autumn.lang.compiler.ast.nodes.FunctionDefinition;
@@ -15,13 +14,11 @@ import high.mackenzie.autumn.lang.compiler.typesystem.design.IAnnotationType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IFormalParameter;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IMethod;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IVariableType;
-import high.mackenzie.autumn.lang.compiler.utils.Memoization;
 import high.mackenzie.autumn.lang.compiler.utils.TypeSystemUtils;
 import high.mackenzie.autumn.lang.compiler.utils.Utils;
 import java.util.List;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.AbstractInsnNode;
-import org.objectweb.asm.tree.FieldNode;
 import org.objectweb.asm.tree.InsnNode;
 import org.objectweb.asm.tree.LabelNode;
 import org.objectweb.asm.tree.MethodInsnNode;
@@ -48,20 +45,9 @@ public final class FunctionCompiler
     public final CustomMethod type;
 
     /**
-     * This is field-node represents the field that stores the state of the function
-     * between invocations. Thus, if this field is non-null, the function is a generator function.
-     */
-    private FieldNode yield_field = null;
-
-    /**
      * This label marks the location that recur-statements redirect execution to.
      */
     public final LabelNode recur_label = new LabelNode();
-
-    /**
-     * These labels mark the reentry points of yield statements.
-     */
-    public final List<LabelNode> yields = Lists.newLinkedList();
 
     /**
      * These are the formal-parameter variables.
@@ -72,8 +58,6 @@ public final class FunctionCompiler
      * These are the formal-parameter types.
      */
     private final List<IVariableType> param_types = Lists.newArrayList();
-
-    public final Memoization memoization;
 
     /**
      * Sole Constructor.
@@ -89,8 +73,6 @@ public final class FunctionCompiler
         this.node = node;
 
         this.type = new CustomMethod(module.program.typesystem.typefactory(), false);
-
-        this.memoization = new Memoization(this);
     }
 
     /**
@@ -209,18 +191,12 @@ public final class FunctionCompiler
         //
         // LABEL @RECUR
         //
-        // <memoization-short-circuit>
         // <init-variables>
-        // <restoration-code>
-        // <reentry-table>
         // <body>
         // <default-termination>
         //
         //
         ///////////////////////////////////////////////////////////////////////////////////////////
-
-        // TODO: This should be done in the type initiailiztion phase.
-        final int sync = yield_field == null ? 0 : Opcodes.ACC_SYNCHRONIZED;
 
         final MethodNode method = Utils.bytecodeOf(module, type);
 
@@ -229,8 +205,6 @@ public final class FunctionCompiler
             final StatementCodeGenerator codegen = new StatementCodeGenerator(this);
 
             method.instructions.add(recur_label);
-
-            addMemoizationShortCircuit();
 
             vars.initScope();
 
@@ -251,17 +225,6 @@ public final class FunctionCompiler
         method.tryCatchBlocks = ImmutableList.copyOf(trycatches);
 
         return method;
-    }
-
-    /**
-     * This method generates the bytecode that handles returning previously memoized values.
-     */
-    private void addMemoizationShortCircuit()
-    {
-        if (this.isMemoized())
-        {
-            memoization.shortcircuit(instructions);
-        }
     }
 
     /**
@@ -308,36 +271,6 @@ public final class FunctionCompiler
         return "void".equals(node.getReturnType().getName().getName())
                && node.getReturnType().getDimensions() == null
                && node.getReturnType().getNamespace() == null;
-    }
-
-    /**
-     * This method determines whether the function is a generator function.
-     *
-     * <p>
-     * A generator function is a function that contains some form of yield statement.
-     * </p>
-     *
-     * @return true, if the function is a generator function.
-     */
-    public boolean isGenerator()
-    {
-        return yield_field != null;
-    }
-
-    /**
-     * This method determines whether the function is a memoized function.
-     *
-     * <p>
-     * A memoized function is a function that has the Memoize annotation applied to it.
-     * </p>
-     *
-     * @return true, if the function is a memoized function.
-     */
-    public boolean isMemoized()
-    {
-        assert type != null;
-
-        return TypeSystemUtils.isAnnotationPresent(type, Memoize.class);
     }
 
     /**

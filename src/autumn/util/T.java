@@ -18,6 +18,7 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import high.mackenzie.autumn.util.json.JsonDecoder;
 import high.mackenzie.autumn.util.json.JsonEncoder;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
@@ -1617,7 +1618,11 @@ public final class T
     public static Object json(final String input,
                               final Module module)
     {
-        return null;
+        final JsonDecoder decoder = new JsonDecoder();
+
+        final Object result = decoder.decode(module, input);
+
+        return result;
     }
 
     public static void remember(final Object target,

@@ -1,10 +1,7 @@
 package autumn.lang.internals;
 
 import autumn.lang.Delegate;
-import autumn.lang.LocalsMap;
 import autumn.lang.Module;
-import autumn.lang.compiler.Autumn;
-import autumn.lang.debugger.IDebugger;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
@@ -111,30 +108,6 @@ public final class Helpers
         }
 
         return Collections.unmodifiableMap(map);
-    }
-
-    /**
-     * This method is invoked by debug-statements in order to implement breakpoints.
-     *
-     * @param file is the file that contains the breakpoint.
-     * @param line is the line-number where the breakpoint is located.
-     * @param column is the column-number where the the breakpoint is located.
-     * @param locals describes the local variables in at the time the breakpoint was hit.
-     */
-    public static void debug(final String file,
-                             final int line,
-                             final int column,
-                             final LocalsMap locals)
-    {
-        /**
-         * If the debugger is turned on, then hit a breakpoint; otherwise, do nothing.
-         */
-        if (Autumn.isDebugOn())
-        {
-            final IDebugger debugger = Autumn.getDebugger();
-
-            debugger.debug(file, line, column, locals);
-        }
     }
 
     /**

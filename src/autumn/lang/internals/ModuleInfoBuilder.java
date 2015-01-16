@@ -1,18 +1,15 @@
 package autumn.lang.internals;
 
 import autumn.lang.Delegate;
-import autumn.lang.Memoizer;
 import autumn.lang.Module;
 import autumn.lang.ModuleInfo;
 import autumn.lang.annotations.Start;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -178,8 +175,6 @@ public final class ModuleInfoBuilder
 
             private final List<Delegate> delegates = Collections.unmodifiableList(SELF.delegates);
 
-            private final Map<String, Memoizer> memoizers = Maps.newTreeMap();
-
             @Override
             public Module instance()
             {
@@ -282,19 +277,6 @@ public final class ModuleInfoBuilder
                 result.addAll(tuples());
 
                 return Collections.unmodifiableSet(result);
-            }
-
-            @Override
-            public Memoizer memoizerOf(final String name)
-            {
-                // TODO: This is only a temporary implementation!!!!
-
-                if (memoizers.containsKey(name) == false)
-                {
-                    memoizers.put(name, new Memoizer());
-                }
-
-                return memoizers.get(name);
             }
 
             @Override

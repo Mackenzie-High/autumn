@@ -40,6 +40,14 @@ public final class Runner
 
 
 
+        test("T0712");
+        test("T0711");
+        test("T0710");
+        test("T0709");
+        test("T0708");
+        test("T0707");
+        test("T0706");
+        test("T0705");
         test("T0704");
         test("T0703");
         test("T0702");

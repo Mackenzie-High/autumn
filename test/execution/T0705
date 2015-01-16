@@ -1,0 +1,30 @@
+module Main in execution;
+
+struct Company (name : String);
+
+tuple Person (name : String, age : BigDecimal);
+
+@Start
+defun main (args : String[]) : void
+{
+    val json = '''[null, 13, 17.19, "Venus", true, false, { "name":"Mackrosoft" }, { "name" : "Erin", "age" : 38 }]''';
+
+    val list = F::decodeJson(My::instance(), json) is List;
+
+    assert list.get(0) == null;
+
+    assert list.get(1) == 13.0bd;
+    assert list.get(2) == 17.19bd;
+
+    assert list.get(3) == "Venus";
+
+    assert list.get(4) == true;
+    assert list.get(5) == false;
+
+    val company = list.get(6) is Company;
+    assert F::get(company, "name") == "Mackrosoft";
+
+    val person = list.get(7) is Person;
+    assert F::get(person, "name") == "Erin";
+    assert F::get(person, "age") == 38.0bd;
+}

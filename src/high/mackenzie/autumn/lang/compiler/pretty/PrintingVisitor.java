@@ -853,16 +853,6 @@ public final class PrintingVisitor
     }
 
     @Override
-    public void visit(final DebugStatement object)
-    {
-        record(object);
-
-        p.addLine();
-        p.addText("debug;");
-        p.addEmptyLine();
-    }
-
-    @Override
     public void visit(final TryCatchStatement object)
     {
         record(object);

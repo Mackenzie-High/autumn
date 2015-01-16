@@ -329,35 +329,6 @@ public final class Visitor
      * {@inheritDoc}
      */
     @Override
-    public void visit_case_doc(final ITreeNode node)
-    {
-        visitChildren(node);
-
-        /**
-         * Load the project.
-         */
-        try
-        {
-            final File project = resolveProject();
-
-            cmp.loadProject(project);
-        }
-        catch (IOException ex)
-        {
-            System.out.println("The project coult not be loaded.");
-            ex.printStackTrace(System.out);
-        }
-
-        /**
-         * Generate the documentation.
-         */
-        cmp.document();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public void visit_case_create(final ITreeNode node)
     {
         visitChildren(node);

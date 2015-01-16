@@ -319,10 +319,13 @@ Test Index
 . Expressions
 . . Dispatch
 . . . T0301 = Very Basic Usage
-. . . Resolution Order
-. . . Null Argument
-. . . Primitive Argument
-. . . Infer Return Type
+. . . T0710 = Resolution Order
+. . . T0706 = Auto Boxing
+. . . T0707 = Return Type - Same
+. . . T0708 = Return Type - Different
+. . . T0711 = Return Type - Void
+. . . T0709 = Dispatch Failed
+. . . T0712 = Recursive
 . . New
 . . . T0213 = Different Types of Arguments
 . . . T0214 = Resolution Order
@@ -471,7 +474,7 @@ Standard Library
 . . decodeJson
 . . . T0426 = null module
 . . . T0427 = null string
-. . . normal
+. . . T0705 = normal
 . . . ambiguity
 . . defaultValueOf
 . . . T0428 = null argument
@@ -480,7 +483,7 @@ Standard Library
 . . encodeJson
 . . . T0431 = null argument
 . . . unexpected type
-. . . normal
+. . . T0704 = normal
 . . enumerate
 . . . T0433 = null iterable
 . . . T0434 = normal
@@ -817,6 +820,23 @@ Standard Library
 . . . T0679 = normal         // TODO
 
 
+. autumn.util.functors
+. . Action
+. . Function0
+. . Function1
+. . Function2
+. . Function3
+. . Function4
+. . Function5
+. . Function6
+. . Function7
+. . Function8
+. . Function9
+. . Ordering
+. . Predicate
+. . ProxyHandler
+
 . autumn.util.test
 . . T0218 = Test Cases, Test Results, and most of UnitTester
 . . T0219 = UnitTester - Load Non-Existent Class
+

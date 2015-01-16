@@ -46,7 +46,10 @@ public final class ShortLiteral
         {
             if (value == null)
             {
-                final String source = sourceWithoutUnderscores().trim().replaceFirst("S", "");
+                final String source = sourceWithoutUnderscores()
+                        .trim()
+                        .replaceFirst("S", "")
+                        .replaceFirst("s", "");
 
                 final Short result = Short.valueOf(source);
 
@@ -70,6 +73,6 @@ public final class ShortLiteral
     @Override
     public boolean isParsable()
     {
-        return sourceWithoutUnderscores().matches("-?[0-9]+S");
+        return sourceWithoutUnderscores().matches("-?[0-9]+[Ss]");
     }
 }

@@ -1,0 +1,26 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    try
+    {
+        dispatch handler (true is Object);
+
+        assert false;
+    }
+    catch (ex : DispatchException)
+    {
+        nop;
+    }
+}
+
+defun handler (value : Short) : Byte
+{
+    return 17b;
+}
+
+defun handler (value : Integer) : Byte
+{
+    return 19b;
+}

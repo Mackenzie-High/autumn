@@ -46,7 +46,10 @@ public final class LongLiteral
         {
             if (value == null)
             {
-                final String source = sourceWithoutUnderscores().trim().replaceFirst("L", "");
+                final String source = sourceWithoutUnderscores()
+                        .trim()
+                        .replaceFirst("L", "")
+                        .replaceFirst("l", "");
 
                 final Long result = Long.valueOf(source);
 
@@ -70,6 +73,6 @@ public final class LongLiteral
     @Override
     public boolean isParsable()
     {
-        return sourceWithoutUnderscores().matches("-?[0-9]+L");
+        return sourceWithoutUnderscores().matches("-?[0-9]+[Ll]");
     }
 }

@@ -1,0 +1,80 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    assert dispatch handler(true) == "#1 = true";
+
+    assert dispatch handler(false) == "#1 = false";
+
+    assert dispatch handler('A') == "#2 = A";
+
+    assert dispatch handler(17b) == "#3 = 17";
+
+    assert dispatch handler(19s) == "#4 = 19";
+
+    assert dispatch handler(21) == "#5 = 21";
+
+    assert dispatch handler(23L) == "#6 = 23";
+
+    assert dispatch handler(27.0f) == "#7 = 27.0";
+
+    assert dispatch handler(29.0) == "#8 = 29.0";
+
+    assert dispatch handler("Venus") == "#9 = Venus";
+}
+
+defun handler (value : Boolean) : String
+{
+    return "#1 = " .. value;
+}
+
+defun handler (value : Character) : String
+{
+    return "#2 = " .. value;
+}
+
+defun handler (value : Byte) : String
+{
+    return "#3 = " .. value;
+}
+
+defun handler (value : Short) : String
+{
+    return "#4 = " .. value;
+}
+
+defun handler (value : Integer) : String
+{
+    return "#5 = " .. value;
+}
+
+defun handler (value : Long) : String
+{
+    return "#6 = " .. value;
+}
+
+defun handler (value : Float) : String
+{
+    return "#7 = " .. value;
+}
+
+defun handler (value : Double) : String
+{
+    return "#8 = " .. value;
+}
+
+defun handler (value : Object) : String
+{
+    return "#9 = " .. value;
+}
+
+
+
+
+
+
+
+
+
+

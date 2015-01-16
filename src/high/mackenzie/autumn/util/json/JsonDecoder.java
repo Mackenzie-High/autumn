@@ -2,13 +2,15 @@ package high.mackenzie.autumn.util.json;
 
 import autumn.lang.Module;
 import autumn.lang.Record;
-import autumn.util.F;
 import com.google.common.collect.Maps;
 import high.mackenzie.autumn.util.json.parser.Parser;
+import high.mackenzie.autumn.util.json.parser.Visitor;
+import high.mackenzie.snowflake.ITreeNode;
 import high.mackenzie.snowflake.ParserOutput;
 import high.mackenzie.snowflake.ParsingFailedException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
-import java.util.SortedSet;
+import java.util.Set;
 import java.util.TreeSet;
 
 /**
@@ -18,7 +20,7 @@ import java.util.TreeSet;
  */
 public final class JsonDecoder
 {
-    private final Map<String, Record> types = Maps.newTreeMap();
+    private final Map<Set<String>, Record> types = Maps.newHashMap();
 
     public Object decode(final Module module,
                          final String input)
@@ -33,9 +35,17 @@ public final class JsonDecoder
 
             output.requireSuccess();
 
+            final ITreeNode tree = output.parseTree();
 
+            final Visitor converter = new Visitor();
 
-            return null;
+            converter.prototypes.putAll(types);
+
+            converter.visitUnknown(tree);
+
+            final Object result = converter.stack.pop();
+
+            return result;
         }
         catch (ParsingFailedException ex)
         {
@@ -60,28 +70,27 @@ public final class JsonDecoder
     {
         try
         {
-            final Record instance = (Record) type.newInstance();
+            final Record instance = (Record) type.getMethod("instance").invoke(null);
 
-            final String signatrue = signatureOf(instance);
+            final Set<String> keys = new TreeSet(instance.keys());
 
-            types.put(signatrue, instance);
-        }
-        catch (InstantiationException ex)
-        {
-            throw new IllegalArgumentException(ex);
+            types.put(keys, instance);
         }
         catch (IllegalAccessException ex)
         {
             throw new IllegalArgumentException(ex);
         }
-    }
-
-    private String signatureOf(final Record instance)
-    {
-        final SortedSet<String> keys = new TreeSet(instance.keys());
-
-        final String result = F.str(keys, "(", ", ", ")");
-
-        return result;
+        catch (NoSuchMethodException ex)
+        {
+            throw new IllegalArgumentException(ex);
+        }
+        catch (SecurityException ex)
+        {
+            throw new IllegalArgumentException(ex);
+        }
+        catch (InvocationTargetException ex)
+        {
+            throw new IllegalArgumentException(ex);
+        }
     }
 }

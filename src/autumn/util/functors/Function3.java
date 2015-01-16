@@ -4,12 +4,14 @@ import autumn.lang.TypedFunctor;
 import autumn.lang.internals.AbstractDefinedFunctor;
 import autumn.lang.internals.ArgumentStack;
 import com.google.common.collect.ImmutableList;
-import java.lang.reflect.Method;
 import java.util.List;
 
 /**
+ * <code>
+ * functor Function3 (Object, Object, Object) : Object
+ * </code>
  *
- * @author mackenzie
+ * @author Mackenzie High
  */
 public class Function3
         extends AbstractDefinedFunctor
@@ -32,8 +34,8 @@ public class Function3
      * @param arg3 is the 3rd argument.
      */
     public Object invoke(final Object arg1,
-                         final Method arg2,
-                         final Object[] arg3)
+                         final Object arg2,
+                         final Object arg3)
             throws Throwable
     {
         // Get the stack that is associated with this thread.
@@ -61,7 +63,7 @@ public class Function3
     @Override
     public List<Class> parameterTypes()
     {
-        return ImmutableList.<Class>of(Object.class, Method.class, Object[].class);
+        return ImmutableList.<Class>of(Object.class, Object.class, Object.class);
     }
 
     /**

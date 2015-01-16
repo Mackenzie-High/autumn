@@ -5,7 +5,6 @@ import autumn.lang.compiler.ast.nodes.ModuleDirective;
 import autumn.lang.compiler.ast.nodes.Name;
 import autumn.lang.compiler.errors.BasicErrorReporter;
 import autumn.lang.compiler.errors.IErrorReporter;
-import autumn.lang.debugger.IDebugger;
 import autumn.util.F;
 import autumn.util.FileIO;
 import autumn.util.test.TestResults;
@@ -14,8 +13,6 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.common.io.Files;
 import com.google.common.io.Resources;
-import high.mackenzie.autumn.compiler.documentor.Documentor;
-import high.mackenzie.autumn.lang.debugger.DefaultDebugger;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -33,11 +30,6 @@ import java.util.List;
  */
 public final class Autumn
 {
-    /**
-     * This is the debugger that is currently being used.
-     */
-    private static IDebugger debugger = new DefaultDebugger();
-
     private URLClassLoader loader;
 
     /**
@@ -146,16 +138,6 @@ public final class Autumn
         Preconditions.checkNotNull(reporter);
 
         this.reporter = reporter;
-    }
-
-    /**
-     * This method retrieves the debugger that is currently in use.
-     *
-     * @return the current debugger.
-     */
-    public static IDebugger getDebugger()
-    {
-        return debugger;
     }
 
     /**
@@ -668,28 +650,5 @@ public final class Autumn
         }
 
         // TODO: load resources, libs, etc
-    }
-
-    /**
-     * This method compiles the program and generates browsable documentation.
-     *
-     * @return the results of running the unit-tests.
-     */
-    public void document()
-    {
-        if (reporter.errorCount() > 0)
-        {
-            return;
-        }
-
-        final CompiledProgram program = compile();
-
-        final DynamicLoader loader = program.load();
-
-        final File folder = new File("/home/mackenzie/test/doc/");
-
-        final Documentor docgen = new Documentor(loader, modules, folder);
-
-        docgen.generate();
     }
 }

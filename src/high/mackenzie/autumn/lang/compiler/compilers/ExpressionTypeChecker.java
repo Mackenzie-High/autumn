@@ -372,16 +372,35 @@ public class ExpressionTypeChecker
             arg.accept(this);
         }
 
-        final DispatchCompiler cmp = new DispatchCompiler(module,
+        /**
+         * This object will be used to perform both type-checking
+         * and code-generation of the dispatch-expression.
+         */
+        final DispatchCompiler cmp = new DispatchCompiler(object,
+                                                          module,
                                                           allocator,
                                                           function().vars,
                                                           object.getName().getName(),
                                                           object.getArguments().asMutableList());
 
+        /**
+         * Find the overloads that will be included in the dispatch-table.
+         */
         cmp.resolve();
+
+        /**
+         * Perform type-checking of the dispatch-expression itself.
+         */
         cmp.check();
 
+        /**
+         * We will need the dispatch-expression compiler later.
+         */
         program.symbols.dispatches.put(object, cmp);
+
+        /**
+         * The return-type of the expression is Object.
+         */
         infer(object, program.typesystem.utils.OBJECT);
     }
 

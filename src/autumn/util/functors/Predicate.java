@@ -14,23 +14,21 @@ import java.util.List;
 public class Predicate
         extends AbstractDefinedFunctor
 {
+    /**
+     * Sole Constructor.
+     *
+     * @param inner is the functor that provides the actual functionality.
+     */
     public Predicate(final TypedFunctor functor)
     {
         super(functor);
     }
 
-    @Override
-    public List<Class> parameterTypes()
-    {
-        return ImmutableList.<Class>of(Object.class);
-    }
-
-    @Override
-    public Class returnType()
-    {
-        return boolean.class;
-    }
-
+    /**
+     * This method invokes the inner functor.
+     *
+     * @param argument is the value to test.
+     */
     public boolean invoke(final Object argument)
             throws Throwable
     {
@@ -45,5 +43,23 @@ public class Predicate
         stack.clear();
 
         return result;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<Class> parameterTypes()
+    {
+        return ImmutableList.<Class>of(Object.class);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Class returnType()
+    {
+        return boolean.class;
     }
 }

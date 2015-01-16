@@ -1,23 +1,86 @@
 module Main in execution;
 
-import java.lang.annotation.Retention;
+tuple Alien (name : String, type : String);
 
 @Start
 defun main (args : String[]) : void
 {
-    try
-    {
-        # The Start class has an Retention annotation applied to it.
-        # Do not be confused by the fact that Start is an annotation.
-        # This was just a convenient way of getting a non Autumn-style annotation.
-        val anno = F::findAnnotation(class Start, class Retention);
+    # Case: null
+    assert F::encodeJson(null) == "null";
 
-        F::get(anno, 0);
 
-        assert false;
-    }
-    catch(ex : IllegalArgumentException)
-    {
-        nop;
-    }
+
+    # Case: true
+    assert F::encodeJson(true) == "true";
+
+
+
+    # Case: false
+    assert F::encodeJson(false) == "false";
+
+
+
+    # Case: byte
+    assert F::encodeJson(13b) == "13";
+
+
+
+    # Case: short
+    assert F::encodeJson(17s) == "17";
+
+
+
+    # Case: int
+    assert F::encodeJson(19) == "19";
+
+
+
+    # Case: long
+    assert F::encodeJson(21L) == "21";
+
+
+
+    # Case: float
+    assert F::encodeJson(23.0f) == "23";
+
+
+
+    # Case: double
+    assert F::encodeJson(27.0) == "27";
+
+
+
+    # Case: BigInteger
+    assert F::encodeJson(29bi) == "29";
+
+
+
+    # Case: BigDecimal
+    assert F::encodeJson(31.0bd) == "31";
+
+
+
+    # Case: String
+    assert F::encodeJson("Venus is a planet.") == '''"Venus is a planet."''';
+
+
+
+    # Case: List
+    assert F::encodeJson([]) == "[]";
+
+
+
+    # Case: List
+    assert F::encodeJson([100]) == "[100]";
+
+
+
+    # Case: List
+    assert F::encodeJson([100, 200, 300]) == "[100, 200, 300]";
+
+
+
+    # Case: Record
+    val record_1 = new Alien("T'Pol", "Vulcan");
+    assert F::encodeJson(record_1) == '''{ "name" : "T'Pol", "type" : "Vulcan" }''';
 }

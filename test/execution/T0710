@@ -1,0 +1,28 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    # This test ensures that the order of the handlers does not interfere.
+
+    assert dispatch handler (17b) == "number";
+
+    assert dispatch handler (19) == "integer";
+
+    assert dispatch handler (true) == "object";
+}
+
+defun handler (value : Number) : String
+{
+    return "number";
+}
+
+defun handler (value : Integer) : String
+{
+    return "integer";
+}
+
+defun handler (value : Object) : String
+{
+    return "object";
+}

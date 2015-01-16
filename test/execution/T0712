@@ -1,0 +1,31 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    assert My::handler(0) == "x = 200";
+}
+
+defun handler (value : Number) : Object
+{
+    val number = value is Long;
+
+    return dispatch handler ( F::str(number * 2) );
+}
+
+defun handler (value : Integer) : Object
+{
+    if (value < 100)
+    {
+        return dispatch handler (value + 1);
+    }
+    else
+    {
+        return dispatch handler (value is int is long);
+    }
+}
+
+defun handler (value : Object) : Object
+{
+    return "x = " .. value;
+}

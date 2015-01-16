@@ -893,25 +893,6 @@ public final class StatementCodeGenerator
     }
 
     @Override
-    public void visit(final DebugStatement object)
-    {
-        /**
-         * Embed the line number in the bytecode for debugging purposes.
-         */
-        Utils.addLineNumber(code, object);
-
-        code.add(new LdcInsnNode(object.getLocation().getFile().toString()));
-        code.add(new LdcInsnNode(object.getLocation().getLine()));
-        code.add(new LdcInsnNode(object.getLocation().getColumn()));
-        super.loadLocalsMap(object.getLocation(), allocator.getVariables());
-
-        final String owner = Utils.internalName(program.typesystem.utils.HELPERS);
-        final String name = "debug";
-        final String desc = "(Ljava/lang/String;IILautumn/lang/LocalsMap;)V";
-        code.add(new MethodInsnNode(Opcodes.INVOKESTATIC, owner, name, desc));
-    }
-
-    @Override
     public void visit(final TryCatchStatement object)
     {
         /**
@@ -1124,14 +1105,6 @@ public final class StatementCodeGenerator
         Utils.addLineNumber(code, object);
 
         /**
-         * Memoize the invocation, if necessary.
-         */
-        if (function.isMemoized())
-        {
-            function.memoization.internVoid(code);
-        }
-
-        /**
          * Return from the function immediately.
          */
         code.add(new InsnNode(Opcodes.RETURN));
@@ -1150,14 +1123,6 @@ public final class StatementCodeGenerator
          * Evaluate the expression that produces the value to return.
          */
         object.getValue().accept(this);
-
-        /**
-         * Memoize the value being returned, if necessary.
-         */
-        if (function.isMemoized())
-        {
-            function.memoization.intern(code, program.symbols.expressions.get(object.getValue()));
-        }
 
         /**
          * Perform auto-boxing or auto-unboxing, if needed.
