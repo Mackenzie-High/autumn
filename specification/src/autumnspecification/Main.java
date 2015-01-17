@@ -1910,7 +1910,6 @@ public class Main
         c.addDetail(1, "The overloads will be sorted topologically from the most specific to the most generalized.");
         c.addDetail(1, "An overload is not applicable, if the number of arguments differs from the number of parameters.");
         c.addDetail(1, "An overload is not applicable, if it takes a non reference-type parameter.");
-        c.addDetail(1, "An overload is not applicable, if its return-type is not either a reference-type or the void-type.");
         c.addDetail(0, "At runtime, the overload to invoke is selected as follows:");
         c.addDetail(1, "Let A<sub>1</sub> ... A<sub>n</sub> denote the arguments.");
         c.addDetail(1, "Select the first overload from the sorted list of overloads, where each argument matches the related parameter.");
@@ -1921,11 +1920,13 @@ public class Main
         c.addDetail(0, "Boxing of the arguments will be performed, when necessary.");
         c.addDetail(0, "Unboxing of the arguments will not be performed.");
         c.addDetail(0, "Coercion of the arguments will not be performed.");
+        c.addDetail(0, "Boxing of the return-value will be performed, when necessary.");
         c.addDetail(0, "Return Type: " + JSONBuilder.link(Object.class));
         c.addDetail(1, "If the return-type of the dynamically selected overload is the void-type, then return null.");
         c.addDetail(1, "Otherwise, return the value returned by invoking the dynamically selected overload.");
         c.addDetail(0, "A $AutumnLangExceptionsDispatchException$ will be thrown, if none of the selected overloads will accept the arguments at runtime.");
         c.addCheck(ErrorCode.NO_SUCH_METHOD, "No applicable function overload(s) exist.");
+        c.addCheck(ErrorCode.INCOMPLETE_DISPATCH_TABLE, "All the overloads of the named function must be potentially applicable.");
         c.addExample(EXAMPLE_1, 217);
         c.addExample(EXAMPLE_2, 218);
         Index.add(c);
