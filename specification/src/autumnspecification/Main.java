@@ -1921,10 +1921,10 @@ public class Main
         c.addDetail(0, "Boxing of the arguments will be performed, when necessary.");
         c.addDetail(0, "Unboxing of the arguments will not be performed.");
         c.addDetail(0, "Coercion of the arguments will not be performed.");
-        c.addDetail(0, "Boxing of the return-value will be performed, when necessary.");
         c.addDetail(0, "Return Type: " + JSONBuilder.link(Object.class));
         c.addDetail(1, "If the return-type of the dynamically selected overload is the void-type, then return null.");
         c.addDetail(1, "Otherwise, return the value returned by invoking the dynamically selected overload.");
+        c.addDetail(2, "Box the return-value, if the return-type is a primitive-type.");
         c.addDetail(0, "A $AutumnLangExceptionsDispatchException$ will be thrown, if none of the selected overloads will accept the arguments at runtime.");
         c.addCheck(ErrorCode.NO_SUCH_METHOD, "No applicable function overload(s) exist.");
         c.addExample(EXAMPLE_1, 217);
