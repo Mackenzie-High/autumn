@@ -116,6 +116,7 @@ public class Main
         c.addDetail(3, "This method is a low-level method that is not intended for direct use by programmers.");
         c.addDetail(3, "This method is used to implement delegates.");
         c.addDetail(2, "For each function F in M, there is a #public# $static$ method in T.");
+        specialAnnotation(c, autumn.lang.internals.annotations.ModuleDefinition.class);
         c.addCheck(ErrorCode.MISSING_MODULE_DIRECTIVE, "A module must contain a module-directive.");
         c.addCheck(ErrorCode.DUPLICATE_MODULE_DIRECTIVE, "A module can only contain one module-directive.");
         typedec(c);
@@ -214,6 +215,7 @@ public class Main
         c.addDetail(2, "The method does not take any formal-parameters.");
         c.addDetail(2, "The return-type of the method is $JavaLangString$[].");
         c.addDetail(2, "The method is an annotation-method.");
+        specialAnnotation(c, autumn.lang.internals.annotations.AnnotationDefinition.class);
         c.addExample(EXAMPLE_1, 52);
         c.addExample(EXAMPLE_2, 51);
         Index.add(c);
@@ -238,6 +240,7 @@ public class Main
         c.addDetail(2, "Consequently, T is not instantiatable, if no constructors are actually inherited.");
         c.addDetail(1, "T does not have any direct superinterfaces.");
         c.addDetail(1, "T does not declare any fields or methods.");
+        specialAnnotation(c, autumn.lang.internals.annotations.ExceptionDefinition.class);
         typedec(c);
         usetype(c, "super");
         c.addCheck(ErrorCode.EXPECTED_CLASS_TYPE, "The type of <i>super</i> must be a class-type.");
@@ -276,6 +279,7 @@ public class Main
         c.addDetail(3, "This method retrieves an enum-constant based on its name.");
         c.addDetail(3, "This method throws a $JavaLangNullPointerException$, if name is null.");
         c.addDetail(3, "This method throws a $JavaLangIllegalArgumentException$, if the named enum-constant cannot be found.");
+        specialAnnotation(c, autumn.lang.internals.annotations.EnumDefinition.class);
         c.addCheck(ErrorCode.DUPLICATE_CONSTANT, "Enum constants cannot share their name.");
         c.addExample(EXAMPLE_1, 54);
         c.addExample(EXAMPLE_2, 55);
@@ -315,6 +319,7 @@ public class Main
         c.addDetail(2, "T declares bridge methods for method set(int, $JavaLangObject$).");
         c.addDetail(3, "For X, where X is T or a supertype thereof, such that X is also a subtype of $AutumnLangRecord$:");
         c.addDetail(4, "set(int, $JavaLangObject$) : X is a bridge method in T.");
+        specialAnnotation(c, autumn.lang.internals.annotations.DesignDefinition.class);
         c.addDetail(2, "T inherits the following method declarations from its supertypes.");
         inheritMethods(c, 3, AbstractRecord.class);
         typedec(c);
@@ -379,6 +384,7 @@ public class Main
         c.addDetail(2, "T provides a special static method instance() : T.");
         c.addDetail(3, "The method returns an instance of T in which each element is set to is default value.");
         c.addDetail(3, "The method always returns the same object.");
+        specialAnnotation(c, autumn.lang.internals.annotations.StructDefinition.class);
         c.addDetail(2, "T inherits the following method declarations from its supertypes.");
         inheritMethods(c, 3, AbstractRecord.class);
         typedec(c);
@@ -446,6 +452,7 @@ public class Main
         c.addDetail(2, "T provides a special static method instance() : T.");
         c.addDetail(3, "The method returns an instance of T in which each element is set to is default value.");
         c.addDetail(3, "The method always returns the same object.");
+        specialAnnotation(c, autumn.lang.internals.annotations.TupleDefinition.class);
         c.addDetail(2, "T inherits the following method declarations from its supertypes.");
         inheritMethods(c, 3, AbstractRecord.class);
         typedec(c);
@@ -503,6 +510,7 @@ public class Main
         c.addDetail(4, "T.formals.length must equal S.formals.length");
         c.addDetail(4, "T.formals<sub>i</sub> must be a subtype of S.formals<sub>i</sub> ∀ <i>i</i>");
         c.addDetail(4, "T.return-type must be a subtype of S.return-type");
+        specialAnnotation(c, autumn.lang.internals.annotations.FunctorDefinition.class);
         typedec(c);
         usetype(c, "super");
         usetype(c, "param<sub>i</sub>");
@@ -529,7 +537,6 @@ public class Main
         c.addSyntax(0, "}");
         c.addDetail(0, "Special Topics:");
         c.addDetail(1, "$Infer Functions$");
-        c.addDetail(1, "$Memoized Functions$");
         c.addDetail(1, "$Start Functions$");
         c.addDetail(1, "$Setup Functions$");
         c.addDetail(1, "$Sync Functions$");
@@ -543,7 +550,7 @@ public class Main
         c.addDetail(1, "A function creates a new scope for variables.");
         c.addDetail(1, "A function creates a new scope for labels.");
         c.addDetail(0, "Runtime Checks:");
-        c.addDetail(1, "A XXX exception is thrown automatically, if execution reaches the end of a function.");
+        c.addDetail(1, "A $AutumnLangExceptions$UnexpectedTerminationException$ is thrown automatically, if execution reaches the end of a function.");
         c.addCheck(ErrorCode.TOO_MANY_STARTS, "A compilation-unit can only contain one @Start function.");
         c.addCheck(ErrorCode.WRONG_SIGNATURE_FOR_START, "A start-function must have a signature of: main(String[]) : void");
         c.addCheck(ErrorCode.WRONG_SIGNATURE_FOR_SETUP, "A setup-function must have a signature of: () : void");
@@ -2631,6 +2638,12 @@ public class Main
                                          final Class type)
     {
         c.addDetail(0, "Related Boxed Type: " + type.getName());
+    }
+
+    private static void specialAnnotation(final Construct c,
+                                          final Class annotation)
+    {
+        c.addDetail(0, "The " + JSONBuilder.link(annotation) + " annotation is automatically applied.");
     }
 
     /**

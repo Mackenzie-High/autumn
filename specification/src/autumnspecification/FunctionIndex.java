@@ -1,10 +1,10 @@
 package autumnspecification;
 
-import autumn.util.AsyncTask;
 import autumn.lang.Module;
 import autumn.lang.Record;
 import autumn.lang.TypedFunctor;
 import autumn.lang.exceptions.CheckedException;
+import autumn.util.AsyncTask;
 import autumn.util.functors.Action;
 import autumn.util.functors.Function1;
 import autumn.util.functors.Predicate;
@@ -1650,7 +1650,9 @@ public final class FunctionIndex
         f.summary = "This function returns a unique integer as a result of each invocation.";
         f.name = "unique";
         f.returns(BigInteger.class, "Return a value that was not previously returned by this function during the current runtime.");
-        f.body = "return T.unique();";
+        f.detail(0, "This function is thread-safe.");
+        f.body = "synchronized (F.class) { return T.unique(); }";
+        // TODO: example
 
         // Finished!
         f = add();
