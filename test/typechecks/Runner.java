@@ -48,7 +48,6 @@ public final class Runner
         test("T0245", OVERLOADED_METHOD);
         test("T0244", IMPOSSIBLE_ASSIGNMENT);
         test("T0243", BAD_ARGUMENT_COUNT);
-        test("T0242", RECUR_IN_MEMOIZED_FUNCTION);
         test("T0241", DUPLICATE_ANNOTATION);
         test("T0240", EXPECTED_STRING);
         test("T0239", EXPECTED_CONDITION);
@@ -336,7 +335,6 @@ public final class Runner
 
             if (actual != null && actual.containsAll(expected) == false)
             {
-                System.out.println(actual);
                 return FAILED;
             }
         }

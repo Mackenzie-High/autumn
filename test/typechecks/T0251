@@ -9,11 +9,5 @@ defun main (args : String[]) : void
 defun handler (x : int) : Object
 {
     # This is not an applicable overload,
-    # because the parameter is primitive.
-}
-
-defun handler (x : Object) : int
-{
-    # This is not an applicable overload,
-    # because the return-type is primitive.
+    # because the parameter is of a primitive-type.
 }

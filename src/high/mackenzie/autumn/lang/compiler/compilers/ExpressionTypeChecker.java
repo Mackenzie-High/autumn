@@ -5,7 +5,6 @@ import autumn.lang.compiler.ast.nodes.*;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-import high.mackenzie.autumn.lang.compiler.exceptions.TypeCheckFailed;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IClassType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IConstructor;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IDeclaredType;
@@ -26,7 +25,7 @@ import java.util.Set;
  *
  * @author Mackenzie High
  */
-public class ExpressionTypeChecker
+class ExpressionTypeChecker
         extends AbstractTypeChecker
 {
     /**
@@ -753,6 +752,15 @@ public class ExpressionTypeChecker
          * The return-type of a locals-expression is always LocalsMap.
          */
         infer(object, program.typesystem.utils.LOCALS_MAP);
+    }
+
+    @Override
+    public void visit(final OnceExpression object)
+    {
+        /**
+         * The return-type of a locals-expression is always LocalsMap.
+         */
+        infer(object, program.typesystem.utils.OBJECT);
     }
 
     @Override

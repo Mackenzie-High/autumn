@@ -9,7 +9,7 @@ defun main (args : String[]) : void
 
     assert F::len((class Moo).getDeclaredConstructors()) == 1;
 
-    val ctor = Reflect::getConstructor((class Moo), [ (class String) ]);
+    val ctor = F::findConstructor((class Moo), [ (class String) ]);
 
     assert ctor != null;
 }

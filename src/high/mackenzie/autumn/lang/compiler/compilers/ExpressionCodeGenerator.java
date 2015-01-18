@@ -39,7 +39,7 @@ import org.objectweb.asm.tree.TypeInsnNode;
  *
  * @author Mackenzie High
  */
-public class ExpressionCodeGenerator
+class ExpressionCodeGenerator
         extends AbstractAstVisitor
 {
     /**
@@ -1260,6 +1260,11 @@ public class ExpressionCodeGenerator
             object.getRightOperand().accept(this);
         }
         code.add(END);
+    }
+
+    @Override
+    public void visit(final OnceExpression object)
+    {
     }
 
     @Override

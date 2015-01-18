@@ -38,7 +38,7 @@ import org.objectweb.asm.tree.TypeInsnNode;
 import org.objectweb.asm.tree.VarInsnNode;
 
 /**
- * This class contains utility methods needed during code-generation.
+ * This class contains utility methods needed during bytecode-generation.
  *
  * @author Mackenzie High
  */

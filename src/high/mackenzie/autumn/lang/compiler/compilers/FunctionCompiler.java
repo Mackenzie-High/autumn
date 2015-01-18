@@ -6,7 +6,6 @@ import autumn.lang.compiler.ast.nodes.FunctionDefinition;
 import autumn.lang.compiler.ast.nodes.Variable;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
-import high.mackenzie.autumn.lang.compiler.exceptions.TypeCheckFailed;
 import high.mackenzie.autumn.lang.compiler.typesystem.CustomFormalParameter;
 import high.mackenzie.autumn.lang.compiler.typesystem.CustomMethod;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IAnnotation;
@@ -30,7 +29,7 @@ import org.objectweb.asm.tree.TypeInsnNode;
  *
  * @author Mackenzie High
  */
-public final class FunctionCompiler
+final class FunctionCompiler
         extends AbstractFunctionCompiler
         implements ICompiler
 {

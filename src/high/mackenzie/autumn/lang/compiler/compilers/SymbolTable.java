@@ -27,7 +27,7 @@ import org.objectweb.asm.tree.LabelNode;
  *
  * @author Mackenzie High
  */
-public final class SymbolTable
+final class SymbolTable
 {
     /**
      * This map maps an AST node that represents an expression to the expression's output type.

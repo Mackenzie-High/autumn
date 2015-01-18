@@ -1348,6 +1348,21 @@ struct LocalsExpression
 end
 
 ###################################################################################################
+# Expressions --> Once
+###################################################################################################
+
+doc An instance of this class is an AST node that represents a once-expression. 
+struct OnceExpression
+  implement IExpression;
+
+  doc This expression produces the value to memoize. 
+  data value : IExpression;
+
+  doc This is the source-location information regarding this construct.
+  data location : SourceLocation = { new SourceLocation() };
+end
+
+###################################################################################################
 # Operators --> Conversions --> As
 ###################################################################################################
 

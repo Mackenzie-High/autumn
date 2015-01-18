@@ -7,7 +7,7 @@ import autumn.lang.compiler.ast.nodes.StructDefinition;
  *
  * @author Mackenzie High
  */
-public class StructCompiler
+class StructCompiler
         extends AbstractStructTupleCompiler
 {
     /**

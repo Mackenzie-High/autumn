@@ -124,11 +124,6 @@ Test Index
 . . Annotation Lists
 . . Parameter Lists
 . . T0063 = Return Types                   # TODO: Add array return-types to the test.
-. . Memoization
-. . . T0323 = High Speed Fibonacci
-. . . T0322 = Ensure memoization is actually occurring.
-. . . Different Types of Return Types
-. . . Auto Conversion of Memoized Values
 . Statements
 . . Nop = No Test Needed
 . . Expression = No Test Needed
@@ -305,7 +300,6 @@ Test Index
 . . . T0328 = Auto Boxing
 . . . T0329 = Auto Unboxing
 . . . T0330 = Auto Coercions
-. . . T0332 = Memoization
 . . Recur
 . . . T0372 = Very Deep Recursion
 . . . T0367 = Parameter Count - None
@@ -323,6 +317,7 @@ Test Index
 . . . T0706 = Auto Boxing
 . . . T0707 = Return Type - Same
 . . . T0708 = Return Type - Different
+. . . T0713 = Return Type - Primitive
 . . . T0711 = Return Type - Void
 . . . T0709 = Dispatch Failed
 . . . T0712 = Recursive
@@ -370,6 +365,8 @@ Test Index
 . . . T0247 = Object Operands
 . . Locals
 . . . T0249 = All Cases
+. . Once
+. . . Normal
 . . Progn
 . . . T0335 = Basic Usage
 . . . T0336 = Operand Stack Leakage
@@ -481,7 +478,6 @@ Standard Library
 . . . T0429 = void-type
 . . . T0430 = normal
 . . encodeJson
-. . . T0431 = null argument
 . . . unexpected type
 . . . T0704 = normal
 . . enumerate

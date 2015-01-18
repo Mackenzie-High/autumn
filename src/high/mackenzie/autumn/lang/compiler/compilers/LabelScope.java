@@ -26,7 +26,7 @@ import org.objectweb.asm.tree.LabelNode;
  * @author Mackenzie High
  */
 @Finished("2014/07/12")
-public final class LabelScope
+final class LabelScope
 {
     /**
      * This is essentially the program that is being compiled.

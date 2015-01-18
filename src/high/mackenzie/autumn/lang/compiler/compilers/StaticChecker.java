@@ -31,7 +31,6 @@ import autumn.lang.compiler.errors.IErrorReporter;
 import autumn.util.F;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-import high.mackenzie.autumn.lang.compiler.exceptions.TypeCheckFailed;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IAnnotation;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IClassType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IDeclaredType;
@@ -54,7 +53,7 @@ import java.util.Set;
  *
  * @author Mackenzie High
  */
-public final class StaticChecker
+final class StaticChecker
 {
     /**
      * This is the program that is being compiled.
@@ -1620,25 +1619,6 @@ public final class StaticChecker
         final ErrorReport report = new ErrorReport(site, ERROR_CODE, MESSAGE);
 
         report.addDetail("Variable", site.getName());
-
-        /**
-         * Issue the error-report to the user.
-         */
-        report(report);
-    }
-
-    /**
-     * This method reports that a recur-statement is being used inside of a memoized-function.
-     *
-     * @param site is the recur-statement itself.
-     */
-    public void reportRecurInMemoizedFunction(RecurStatement site)
-    {
-        final ErrorCode ERROR_CODE = ErrorCode.RECUR_IN_MEMOIZED_FUNCTION;
-
-        final String MESSAGE = "A recur-statement cannot be used inside of a memoized function.";
-
-        final ErrorReport report = new ErrorReport(site, ERROR_CODE, MESSAGE);
 
         /**
          * Issue the error-report to the user.

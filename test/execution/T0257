@@ -8,7 +8,5 @@ defun main (args : String[]) : void
 {
     var p = new Person("Avril", 30);
 
-    val k = new BitSet
-
-    assert p.hashCode() == F::bitwiseXor(p.keys().hashCode(), p.values().hashCode());
+    assert p.hashCode() == Bitwise::xor(p.keys().hashCode(), p.values().hashCode());
 }

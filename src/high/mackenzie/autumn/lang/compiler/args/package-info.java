@@ -1,4 +1,4 @@
 /**
- * This package facilitates the processing of the compiler's command-line arguments.
+ * (Private) Autumn's Command-Line Parser
  */
 package high.mackenzie.autumn.lang.compiler.args;

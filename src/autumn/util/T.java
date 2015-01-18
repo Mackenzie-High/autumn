@@ -1,6 +1,5 @@
 package autumn.util;
 
-import autumn.lang.AsyncTask;
 import autumn.lang.Module;
 import autumn.lang.Record;
 import autumn.lang.TypedFunctor;

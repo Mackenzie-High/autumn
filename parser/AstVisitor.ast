@@ -1725,6 +1725,25 @@ rule locals_expression
 }
 
 ###################################################################################################
+# Expressions --> Once
+###################################################################################################
+
+rule once_expression
+{
+  # Get the AST builder.
+  builder : TreeBuilder = call Utils.builder();
+
+  # Create the AST node.
+  call builder.createExpressionOnce();
+
+  # Set the source-location information.
+  call Utils.setSourceLocation($node);
+
+  # Merge the upper stack with the next lower stack.
+  call builder.popStack();
+}
+
+###################################################################################################
 # Expressions --> Sequence
 ###################################################################################################
 

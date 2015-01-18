@@ -5,7 +5,6 @@ import autumn.lang.compiler.ast.commons.IStatement;
 import autumn.lang.compiler.ast.nodes.*;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Sets;
-import high.mackenzie.autumn.lang.compiler.exceptions.TypeCheckFailed;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IClassType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IExpressionType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IReferenceType;
@@ -21,7 +20,7 @@ import java.util.Set;
  *
  * @author Mackenzie High
  */
-public final class StatementTypeChecker
+final class StatementTypeChecker
         extends ExpressionTypeChecker
 {
     private int loop_nesting_level = 0;

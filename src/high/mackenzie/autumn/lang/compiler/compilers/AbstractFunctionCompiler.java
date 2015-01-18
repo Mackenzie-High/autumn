@@ -10,7 +10,7 @@ import org.objectweb.asm.tree.TryCatchBlockNode;
  *
  * @author Mackenzie High
  */
-public abstract class AbstractFunctionCompiler
+abstract class AbstractFunctionCompiler
         implements ICompiler
 {
     /**

@@ -25,7 +25,7 @@ import org.objectweb.asm.tree.MethodNode;
  *
  * @author Mackenzie High
  */
-public class DesignCompiler
+class DesignCompiler
         extends AbstractRecordCompiler
 {
     /**

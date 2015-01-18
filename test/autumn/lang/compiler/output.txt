@@ -759,6 +759,10 @@ defun main (args : String[]) : void
     val xoo = call call call boo.goo (1, 2).moo (3, 4).zoo (5, 6);
 
     val xoo = ((- call x.boo ()) / (- call y.goo ()));
+
+    nop;
+
+    val xoo = (once (1 + 2));
 }
 
 defun main (aoo : int, boo : int, xoo : int, zoo : int) : void

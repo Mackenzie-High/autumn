@@ -37,7 +37,7 @@ import org.objectweb.asm.tree.VarInsnNode;
  *
  * @author Mackenzie High
  */
-public final class FunctorCompiler
+final class FunctorCompiler
         implements ICompiler
 {
     private final ProgramCompiler program;

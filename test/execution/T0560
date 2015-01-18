@@ -12,15 +12,5 @@ defun main (args : String[]) : void
     val result = F::iter(map);
 
     assert result.size() == 3;
-    assert F::newList(result) == ["A", "B", "C"];
-
-    var i = 0;
-
-    foreach (value : Object in result)
-    {
-        assert value == F::newList(result).get(i);
-        assert map.containsKey(value);
-
-        i = i + 1;
-    }
+    assert F::immutable(result) == new TreeSet(["A", "B", "C"]);
 }

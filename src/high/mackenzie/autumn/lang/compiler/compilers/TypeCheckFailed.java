@@ -1,4 +1,4 @@
-package high.mackenzie.autumn.lang.compiler.exceptions;
+package high.mackenzie.autumn.lang.compiler.compilers;
 
 import high.mackenzie.autumn.resources.Finished;
 

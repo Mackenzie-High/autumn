@@ -322,14 +322,6 @@ public enum ErrorCode
      */
     WRONG_SIGNATURE_FOR_INFER,
     /**
-     * Meaning: A recur-statement cannot be used inside of a generator-function.
-     */
-    RECUR_IN_GENERATOR_FUNCTION,
-    /**
-     * Meaning: A recur-statement cannot be used inside of a memoized-function.
-     */
-    RECUR_IN_MEMOIZED_FUNCTION,
-    /**
      * Meaning: An anonymous module cannot contain any functions.
      */
     FUNCTION_IN_ANONYMOUS_MODULE,
@@ -365,4 +357,8 @@ public enum ErrorCode
      * Meaning: The name of one entity conflicts with the name of another entity.
      */
     NAME_CONFLICT,
+    /**
+     * Meaning: Some overloads of a function cannot be used by a dispatch-expression.
+     */
+    INCOMPLETE_DISPATCH_TABLE,
 }

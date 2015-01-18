@@ -15,7 +15,7 @@ import org.objectweb.asm.tree.TypeInsnNode;
  * @author Mackenzie High
  */
 @Finished("2014/07/12")
-public abstract class CollectionCompiler<T>
+abstract class CollectionCompiler<T>
 {
     /**
      * This method is invoked in order to compile an element in the list.

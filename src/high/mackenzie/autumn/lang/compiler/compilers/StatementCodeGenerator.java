@@ -28,7 +28,7 @@ import org.objectweb.asm.tree.TypeInsnNode;
  *
  * @author Mackenzie High
  */
-public final class StatementCodeGenerator
+final class StatementCodeGenerator
         extends ExpressionCodeGenerator
 {
     private final FunctionCompiler function;

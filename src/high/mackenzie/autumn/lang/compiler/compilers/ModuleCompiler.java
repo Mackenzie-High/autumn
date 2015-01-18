@@ -15,6 +15,8 @@ import autumn.lang.compiler.ast.nodes.Name;
 import autumn.lang.compiler.ast.nodes.StructDefinition;
 import autumn.lang.compiler.ast.nodes.TupleDefinition;
 import autumn.lang.compiler.ast.nodes.TypeSpecifier;
+import autumn.util.F;
+import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
@@ -55,6 +57,29 @@ import org.objectweb.asm.tree.VarInsnNode;
 public final class ModuleCompiler
         implements ICompiler
 {
+    /**
+     * An instance of this class represents a hidden field within the module class.
+     *
+     * <p>
+     * Hidden fields are used to implement once-expressions, etc.
+     * </p>
+     */
+    static final class HiddenField
+    {
+        public final String name = "autumn$hidden$field$" + F.unique();
+
+        public final IVariableType type;
+
+        public InsnList initializer = new InsnList();
+
+        public HiddenField(final IVariableType type)
+        {
+            Preconditions.checkNotNull(type);
+
+            this.type = type;
+        }
+    }
+
     private static int count = 0;
 
     private int index = ++count;

@@ -43,7 +43,7 @@ public final class F
     }
 
     
-    public static autumn.lang.AsyncTask async (final autumn.util.functors.Action action) throws java.lang.NullPointerException
+    public static autumn.util.AsyncTask async (final autumn.util.functors.Action action) throws java.lang.NullPointerException
     {
 
         if(action == null) { throw new java.lang.NullPointerException(); }
@@ -1188,7 +1188,7 @@ public final class F
     {
 
         if(original == null) { throw new java.lang.NullPointerException(); }
-        return Collections.unmodifiableList(new ArrayList(original));
+        return Collections.unmodifiableList(original);
     }
 
     
@@ -1196,7 +1196,7 @@ public final class F
     {
 
         if(original == null) { throw new java.lang.NullPointerException(); }
-        return Collections.unmodifiableMap(new HashMap(original));
+        return Collections.unmodifiableMap(original);
     }
 
     
@@ -1204,7 +1204,7 @@ public final class F
     {
 
         if(original == null) { throw new java.lang.NullPointerException(); }
-        return Collections.unmodifiableSet(new HashSet(original));
+        return Collections.unmodifiableSet(original);
     }
 
     

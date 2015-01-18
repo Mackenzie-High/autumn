@@ -21,8 +21,8 @@ defun main (args : String[]) : void
     assert object1 === object2;
 
     # The type of these variables are the return-types of the invoked methods.
-    val result1 = F::clear(object1);
-    val result2 = F::clear(object2);
+    val result1 = F::reset(object1);
+    val result2 = F::reset(object2);
 
     assert (locals).get("result1").type() == (class T);
     assert (locals).get("result2").type() == (class Record);

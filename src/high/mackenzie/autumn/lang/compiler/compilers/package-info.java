@@ -1,4 +1,4 @@
 /**
- * This packages contains most of the actual compiler implementation.
+ * (Private) Autumn's Compiler.
  */
 package high.mackenzie.autumn.lang.compiler.compilers;

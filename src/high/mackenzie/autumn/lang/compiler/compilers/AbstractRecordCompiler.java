@@ -42,7 +42,7 @@ import org.objectweb.asm.Opcodes;
  *
  * @author Mackenzie High
  */
-public abstract class AbstractRecordCompiler
+abstract class AbstractRecordCompiler
         implements ICompiler
 {
     /**

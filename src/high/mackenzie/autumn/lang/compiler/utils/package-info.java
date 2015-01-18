@@ -1,4 +1,4 @@
 /**
- * This package contains utility code that is needed by the compiler implementation.
+ * (Private) Internal Compiler Utilities.
  */
 package high.mackenzie.autumn.lang.compiler.utils;

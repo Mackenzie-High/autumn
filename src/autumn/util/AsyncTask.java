@@ -1,4 +1,4 @@
-package autumn.lang;
+package autumn.util;
 
 import autumn.util.functors.Action;
 

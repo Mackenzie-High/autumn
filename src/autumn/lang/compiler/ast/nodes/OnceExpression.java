@@ -51,13 +51,12 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 
 /**
- * An instance of this class is an AST node that represents an element in a struct or tuple.
+ * An instance of this class is an AST node that represents a once-expression.
  * 
  * <p> 
  * <table border="1">
  *     <tr> <td> <b>Property Name</b> </td> <td> <b>Property Description</b> </td> </tr>
- *     <tr> <td> <code>name</code> </td> <td>This is the name of the element.</td> </tr>
- *     <tr> <td> <code>type</code> </td> <td>This is the static-type of the element.</td> </tr>
+ *     <tr> <td> <code>value</code> </td> <td>This expression produces the value to memoize.</td> </tr>
  *     <tr> <td> <code>location</code> </td> <td>This is the source-location information regarding this construct.</td> </tr>
  * </table>
  * </p>
@@ -65,59 +64,33 @@ import java.util.TreeSet;
  * <p> This file was auto-generated on (Fri Jan 16 12:58:12 EST 2015).</p>
  */
 @SuppressWarnings("unchecked")
-public final class Element extends Object implements IConstruct
+public final class OnceExpression extends Object implements IExpression
 {
-    private Name name;
-
-    private TypeSpecifier type;
+    private IExpression value;
 
     private SourceLocation location = new SourceLocation();
 
     /**
      * Setter.
      * 
-     * @param value is the new value of property <code>name</code>.
-     * @return a copy of this object with property <code>name</code> set to value.
+     * @param value is the new value of property <code>value</code>.
+     * @return a copy of this object with property <code>value</code> set to value.
      */
-    public Element setName(final Name value)
+    public OnceExpression setValue(final IExpression value)
     {
-        final Element result = this.copy();
-        result.name = value;
+        final OnceExpression result = this.copy();
+        result.value = value;
         return result;
     }
 
     /**
      * Getter.
      * 
-     * @return the value of property <code>name</code>.
+     * @return the value of property <code>value</code>.
      */
-    public Name getName()
+    public IExpression getValue()
     {
-        final Name value = this.name;
-        return value;
-    }
-
-    /**
-     * Setter.
-     * 
-     * @param value is the new value of property <code>type</code>.
-     * @return a copy of this object with property <code>type</code> set to value.
-     */
-    public Element setType(final TypeSpecifier value)
-    {
-        final Element result = this.copy();
-        result.type = value;
-        return result;
-    }
-
-    /**
-     * Getter.
-     * 
-     * @return the value of property <code>type</code>.
-     */
-    public TypeSpecifier getType()
-    {
-        final TypeSpecifier value = this.type;
+        final IExpression value = this.value;
         return value;
     }
 
@@ -127,9 +100,9 @@ public final class Element extends Object implements IConstruct
      * @param value is the new value of property <code>location</code>.
      * @return a copy of this object with property <code>location</code> set to value.
      */
-    public Element setLocation(final SourceLocation value)
+    public OnceExpression setLocation(final SourceLocation value)
     {
-        final Element result = this.copy();
+        final OnceExpression result = this.copy();
         result.location = value;
         return result;
     }
@@ -148,16 +121,14 @@ public final class Element extends Object implements IConstruct
     /**
      * This method creates a new instance of this class.
      * 
-     * @param name is the value for property <code>name</code>.
-     * @param type is the value for property <code>type</code>.
+     * @param value is the value for property <code>value</code>.
      * @param location is the value for property <code>location</code>.
      * @return a new instance of this class.
      */
-    public static Element create(Name name, TypeSpecifier type, SourceLocation location)
+    public static OnceExpression create(IExpression value, SourceLocation location)
     {
-        Element object = new Element();
-        object = object.setName(name);
-        object = object.setType(type);
+        OnceExpression object = new OnceExpression();
+        object = object.setValue(value);
         object = object.setLocation(location);
         return object;
     }
@@ -177,11 +148,10 @@ public final class Element extends Object implements IConstruct
      * 
      * @return a shallow copy of this object.
      */
-    public Element copy()
+    public OnceExpression copy()
     {
-        final Element result = new Element();
-        result.name = this.name;
-        result.type = this.type;
+        final OnceExpression result = new OnceExpression();
+        result.value = this.value;
         result.location = this.location;
         return result;
     }
@@ -199,8 +169,7 @@ public final class Element extends Object implements IConstruct
     public Map<String, Object> toMap()
     {
         final Map<String, Object> map = new TreeMap<String, Object>();
-        map.put("name", this.getName());
-        map.put("type", this.getType());
+        map.put("value", this.getValue());
         map.put("location", this.getLocation());
 
         return map;

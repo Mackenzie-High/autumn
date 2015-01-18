@@ -1310,6 +1310,16 @@ public final class PrintingVisitor
     }
 
     @Override
+    public void visit(final OnceExpression object)
+    {
+        record(object);
+
+        p.addText("(once ");
+        object.getValue().accept(this);
+        p.addText(")");
+    }
+
+    @Override
     public void visit(final AsOperation object)
     {
         visitConversionOperation("as", object);

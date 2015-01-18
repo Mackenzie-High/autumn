@@ -9,7 +9,7 @@ import high.mackenzie.autumn.resources.Finished;
  * @author Mackenzie High
  */
 @Finished("2014/07/12")
-public class AbstractAstVisitor
+class AbstractAstVisitor
         implements IAstVisitor
 {
     @Override
@@ -440,6 +440,12 @@ public class AbstractAstVisitor
 
     @Override
     public void visit(LocalsExpression object)
+    {
+        throw new UnsupportedOperationException("This should never happen.");
+    }
+
+    @Override
+    public void visit(OnceExpression object)
     {
         throw new UnsupportedOperationException("This should never happen.");
     }

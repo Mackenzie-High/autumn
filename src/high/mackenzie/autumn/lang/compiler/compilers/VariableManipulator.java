@@ -12,7 +12,7 @@ import org.objectweb.asm.tree.InsnList;
  * @author Mackenzie High
  */
 @Finished("2014/07/12")
-public final class VariableManipulator
+final class VariableManipulator
 {
     /**
      * This object manages the allocation of local variables.

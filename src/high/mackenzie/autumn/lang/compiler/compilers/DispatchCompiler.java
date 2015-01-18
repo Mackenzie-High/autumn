@@ -167,22 +167,6 @@ final class DispatchCompiler
     private boolean isApplicable(final IMethod function)
     {
         /**
-         * Dispatch-expressions can only invoke functions that return reference-types or the void-type.
-         */
-        if (function.getReturnType().isReferenceType())
-        {
-            // OK
-        }
-        else if (function.getReturnType().isVoidType())
-        {
-            // OK
-        }
-        else
-        {
-            return false;
-        }
-
-        /**
          * Dispatch-expressions can only invoke functions whose parameters are reference-types.
          */
         for (IFormalParameter parameter : function.getParameters())
@@ -447,6 +431,13 @@ final class DispatchCompiler
         if (function.getReturnType().isVoidType())
         {
             code.add(new InsnNode(Opcodes.ACONST_NULL));
+        }
+        /**
+         * If the function returns a primitive-type, box the return-value.
+         */
+        else if (function.getReturnType().isPrimitiveType())
+        {
+            module.program.typesystem.utils.autoboxToObject(code, function.getReturnType());
         }
     }
 

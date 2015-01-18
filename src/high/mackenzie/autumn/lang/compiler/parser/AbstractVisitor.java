@@ -7,7 +7,7 @@ import high.mackenzie.snowflake.ITreeNodeVisitor;
 /**
  * This class was auto-generated using the Snowflake parser-generator.
  *
- * <p>Generated On: Thu Jan 15 04:31:08 EST 2015</p>
+ * <p>Generated On: Fri Jan 16 12:55:49 EST 2015</p>
  */
 public abstract class AbstractVisitor implements ITreeNodeVisitor
 {
@@ -192,6 +192,7 @@ public abstract class AbstractVisitor implements ITreeNodeVisitor
         else if("get_static_expression".equals(name)) { visit_get_static_expression(node); }
         else if("set_static_expression".equals(name)) { visit_set_static_expression(node); }
         else if("instanceof_expression".equals(name)) { visit_instanceof_expression(node); }
+        else if("once_expression".equals(name)) { visit_once_expression(node); }
         else if("argument_list".equals(name)) { visit_argument_list(node); }
         else if("arguments".equals(name)) { visit_arguments(node); }
         else if("argument".equals(name)) { visit_argument(node); }
@@ -2042,6 +2043,16 @@ public abstract class AbstractVisitor implements ITreeNodeVisitor
      * This method visits a parse-tree node created by rule "numeric_char_value".
      */
     protected void visit_numeric_char_value(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+        visitUnknown(node); // Default Behavior
+    }
+
+    /**
+     * This method visits a parse-tree node created by rule "once_expression".
+     */
+    protected void visit_once_expression(ITreeNode node)
     {
         // You should *not* place your code right here. 
         // Instead, you should override this method via a subclass.

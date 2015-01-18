@@ -7,7 +7,7 @@ import autumn.lang.compiler.ast.nodes.TupleDefinition;
  *
  * @author Mackenzie High
  */
-public final class TupleCompiler
+final class TupleCompiler
         extends AbstractStructTupleCompiler
 {
     /**

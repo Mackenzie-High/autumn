@@ -665,6 +665,10 @@ defun main (args : String[]) : void
     val xoo = boo.goo (1, 2).moo (3, 4).zoo (5, 6) ;
 
     val xoo = - x.boo() / - y.goo();
+
+    nop;
+
+    val xoo = once 1 + 2 ;
 }
 
 

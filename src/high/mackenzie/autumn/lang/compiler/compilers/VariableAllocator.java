@@ -20,7 +20,7 @@ import java.util.Set;
  *
  * @author Mackenzie High
  */
-public final class VariableAllocator
+final class VariableAllocator
 {
     /**
      * These are the different types of local variables.

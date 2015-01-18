@@ -6,7 +6,6 @@ import autumn.lang.internals.Helpers;
 import autumn.util.F;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
-import high.mackenzie.autumn.lang.compiler.exceptions.TypeCheckFailed;
 import high.mackenzie.autumn.lang.compiler.typesystem.CustomDeclaredType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IClassType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IExpressionType;
@@ -33,7 +32,7 @@ import org.objectweb.asm.tree.VarInsnNode;
  *
  * @author Mackenzie High
  */
-public final class LambdaCompiler
+final class LambdaCompiler
         extends AbstractFunctionCompiler
         implements ICompiler
 {

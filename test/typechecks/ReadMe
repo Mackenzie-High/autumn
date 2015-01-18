@@ -268,6 +268,9 @@ Test Index
 . . . T0114 = Incompatible Operands
 . . . T0115 = Value Required - Left Operand
 . . . T0116 = Value Required - Right Operand
+. . Once
+. . . Value Required
+. . . Expected Non Null
 . . Progn
 . . . T0230 = Empty
 . . . T0231 = Last Element - Value Required

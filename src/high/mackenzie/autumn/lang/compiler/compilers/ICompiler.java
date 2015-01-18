@@ -8,7 +8,7 @@ import high.mackenzie.autumn.resources.Finished;
  * @author Mackenzie High
  */
 @Finished("2014/07/12")
-public interface ICompiler
+interface ICompiler
 {
     /**
      * This 1st compiler pass.

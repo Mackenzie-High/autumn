@@ -44,7 +44,7 @@ import org.objectweb.asm.tree.VarInsnNode;
  *
  * @author Mackenzie High
  */
-public class AbstractStructTupleCompiler
+class AbstractStructTupleCompiler
         extends AbstractRecordCompiler
 {
     /**

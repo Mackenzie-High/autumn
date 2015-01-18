@@ -60,7 +60,7 @@ defun main (args : String[]) : void
 
     # Check that the return-type of the method.
     # The name of the method is "value".
-    assert Reflect::getMethod(anno, "value", []).getReturnType() == (class String[]);
+    assert F::findMethod(anno, "value", []).getReturnType() == (class String[]);
 }
 
 

@@ -3104,7 +3104,7 @@ public final class TreeBuilder
     }
 
     /**
-     * This method creates a delegate-expression.
+     * This method creates a locals-expression.
      *
      * <p>
      * <b>Precondition of the Stack</b>
@@ -3126,6 +3126,39 @@ public final class TreeBuilder
 
         // Create the AST node.
         LocalsExpression node = new LocalsExpression();
+
+        // Push the AST node onto the stack.
+        stack.push(node);
+
+        assert stack.size() == 1;
+    }
+
+    /**
+     * This method creates a once-expression.
+     *
+     * <p>
+     * <b>Precondition of the Stack</b>
+     * <ul>
+     * <li> value : IExpression </li>
+     * </ul>
+     * </p>
+     *
+     * <p>
+     * <b>Postcondition of the Stack</b>
+     * <ul>
+     * <li> result : OnceExpression </li>
+     * </ul>
+     * </p>
+     */
+    public void createExpressionOnce()
+    {
+        Preconditions.checkState(stack.size() == 1);
+
+        // Create the AST node.
+        OnceExpression node = new OnceExpression();
+
+        // Initialize the AST node.
+        node = node.setValue((IExpression) stack.pop());
 
         // Push the AST node onto the stack.
         stack.push(node);
