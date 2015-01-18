@@ -89,7 +89,7 @@ final class VariableManipulator
         // Get the address where the variable is stored in the stack-frame.
         final int address = allocator.addressOf(name);
 
-        // Load the variable onto the operand-stack.
+        // Generate bytecode that loads the variable onto the operand-stack.
         code.add(Utils.selectLoadVarInsn(type, address));
     }
 
@@ -100,10 +100,15 @@ final class VariableManipulator
      */
     public void store(final String name)
     {
+        Preconditions.checkNotNull(name);
+
+        // Get the type of the variable.
         final IVariableType type = allocator.typeOf(name);
 
+        // Get the address where the variable is stored in the stack-frame.
         final int address = allocator.addressOf(name);
 
+        // Generate bytecode that pops a value off of the operand-stack into a variable.
         code.add(Utils.selectStoreVarInsn(type, address));
     }
 }

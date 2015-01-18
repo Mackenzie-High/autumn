@@ -3,6 +3,7 @@ package autumn.util.functors;
 import autumn.lang.TypedFunctor;
 import autumn.lang.internals.AbstractDefinedFunctor;
 import autumn.lang.internals.ArgumentStack;
+import autumn.lang.internals.annotations.FunctorDefinition;
 import com.google.common.collect.ImmutableList;
 import java.util.List;
 
@@ -13,6 +14,7 @@ import java.util.List;
  *
  * @author Mackenzie High
  */
+@FunctorDefinition
 public class Function3
         extends AbstractDefinedFunctor
 {

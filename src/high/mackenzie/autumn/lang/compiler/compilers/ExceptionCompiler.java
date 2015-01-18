@@ -171,6 +171,11 @@ final class ExceptionCompiler
         this.type.setMethods(ImmutableList.<IMethod>of());
 
         /**
+         * Add a special annotation.
+         */
+        module.anno_utils.add(type, autumn.lang.internals.annotations.ExceptionDefinition.class);
+
+        /**
          * Check the list of annotations.
          */
         program.checker.checkAnnotations(node.getAnnotations(), type.getAnnotations());

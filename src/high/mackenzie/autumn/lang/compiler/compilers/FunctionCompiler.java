@@ -123,6 +123,11 @@ final class FunctionCompiler
         type.setReturnType(module.imports.resolveReturnType(node.getReturnType()));
 
         /**
+         * Add a special annotation.
+         */
+        module.anno_utils.add(type, autumn.lang.internals.annotations.FunctionDefinition.class);
+
+        /**
          * Check the list of annotations.
          */
         program.checker.checkAnnotations(node.getAnnotations(), type.getAnnotations());

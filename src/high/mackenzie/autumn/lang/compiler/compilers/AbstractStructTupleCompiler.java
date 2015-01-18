@@ -138,7 +138,7 @@ class AbstractStructTupleCompiler
         final ClassNode clazz = new ClassNode();
         {
             clazz.version = Opcodes.V1_6;
-            clazz.visibleAnnotations = Lists.newLinkedList();
+            clazz.visibleAnnotations = module.anno_utils.compileAnnotationList(type.getAnnotations());
             clazz.access = type.getModifiers();
             clazz.name = internal_name;
             clazz.superName = Utils.internalName(type.getSuperclass());

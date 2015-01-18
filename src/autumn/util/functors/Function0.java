@@ -4,6 +4,7 @@ import autumn.lang.TypedFunctor;
 import autumn.lang.exceptions.CheckedException;
 import autumn.lang.internals.AbstractDefinedFunctor;
 import autumn.lang.internals.ArgumentStack;
+import autumn.lang.internals.annotations.FunctorDefinition;
 import com.google.common.collect.ImmutableList;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -15,6 +16,7 @@ import java.util.concurrent.Callable;
  *
  * @author Mackenzie High
  */
+@FunctorDefinition
 public class Function0
         extends AbstractDefinedFunctor
         implements Callable

@@ -1,0 +1,11 @@
+module Main in execution;
+
+functor Echo () : void;
+
+@Start
+defun main (args : String[]) : void
+{
+    val anno = F::findAnnotation(class Echo, class autumn.lang.internals.annotations.FunctorDefinition);
+
+    assert anno != null;
+}

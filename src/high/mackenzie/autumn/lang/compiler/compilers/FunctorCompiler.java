@@ -94,7 +94,7 @@ final class FunctorCompiler
         final ClassNode clazz = new ClassNode();
         {
             clazz.version = Opcodes.V1_6;
-            clazz.visibleAnnotations = Lists.newArrayList();
+            clazz.visibleAnnotations = module.anno_utils.compileAnnotationList(type.getAnnotations());
             clazz.access = type.getModifiers();
             clazz.name = internal_name;
             clazz.superName = Utils.internalName(type.getSuperclass());
@@ -159,6 +159,11 @@ final class FunctorCompiler
          * Create the type-system representations of the annotation-list.
          */
         type.setAnnotations(module.anno_utils.typesOf(node.getAnnotations()));
+
+        /**
+         * Add a special annotation.
+         */
+        module.anno_utils.add(type, autumn.lang.internals.annotations.FunctorDefinition.class);
 
         /**
          * Check the list of annotations.

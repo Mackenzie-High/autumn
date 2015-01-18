@@ -229,7 +229,7 @@ final class StaticChecker
     public void checkAnnotations(final AnnotationList site,
                                  final List<IAnnotation> annotations)
     {
-        assert site.getAnnotations().size() == annotations.size();
+        assert site.getAnnotations().size() <= annotations.size();
 
         final Set<IType> types = Sets.newHashSet();
 

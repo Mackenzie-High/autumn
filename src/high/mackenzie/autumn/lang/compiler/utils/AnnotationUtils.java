@@ -7,9 +7,11 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import high.mackenzie.autumn.lang.compiler.compilers.ModuleCompiler;
 import high.mackenzie.autumn.lang.compiler.typesystem.CustomAnnotation;
+import high.mackenzie.autumn.lang.compiler.typesystem.ICustomAnnotatable;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IAnnotation;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IAnnotationType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IType;
+import java.util.LinkedList;
 import java.util.List;
 import org.objectweb.asm.tree.AnnotationNode;
 
@@ -166,5 +168,39 @@ public final class AnnotationUtils
         final IAnnotation result = new CustomAnnotation(null, null, annotation_type);
 
         return result;
+    }
+
+    /**
+     * This method adds a marker annotation to an annotatable custom entity.
+     *
+     * @param annotated is the annotatable custom entity.
+     * @param type is the type of the annotation.
+     */
+    public void add(final ICustomAnnotatable annotated,
+                    final Class type)
+    {
+        Preconditions.checkNotNull(annotated);
+        Preconditions.checkNotNull(type);
+
+        /**
+         * Get the type-system representation of the marker annotation.
+         */
+        final IAnnotation annotation = typeOf(type);
+
+        /**
+         * Get the annotations that are already applied to the entity.
+         */
+        final List<IAnnotation> immutable = annotated.getAnnotations();
+
+        /**
+         * We need an immutable list in order to add the new annotation.
+         */
+        final List<IAnnotation> mutable = new LinkedList<IAnnotation>(immutable);
+
+        /**
+         * Add the new marker annotation to the entity.
+         */
+        mutable.add(annotation);
+        annotated.setAnnotations(mutable);
     }
 }

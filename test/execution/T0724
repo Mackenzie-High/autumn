@@ -1,0 +1,11 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    val function = F::findMethod(class Main, "main", [class String[]]);
+
+    val anno = F::findAnnotation(function, class autumn.lang.internals.annotations.FunctionDefinition);
+
+    assert anno != null;
+}

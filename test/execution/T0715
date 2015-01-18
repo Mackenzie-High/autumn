@@ -1,0 +1,14 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    # This will hopefully cause a problem, if the implementation is leaky.
+
+    val input = [13, 17, 19];
+
+    for(i = 0; i < 50_000; i + 1)
+    {
+        assert (once input) === input;
+    }
+}

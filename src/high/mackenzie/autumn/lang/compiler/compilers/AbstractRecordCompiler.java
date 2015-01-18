@@ -178,6 +178,22 @@ abstract class AbstractRecordCompiler
         type.setAnnotations(module.anno_utils.typesOf(node.getAnnotations()));
 
         /**
+         * Add a special annotation.
+         */
+        if (struct)
+        {
+            module.anno_utils.add(type, autumn.lang.internals.annotations.StructDefinition.class);
+        }
+        else if (tuple)
+        {
+            module.anno_utils.add(type, autumn.lang.internals.annotations.TupleDefinition.class);
+        }
+        else if (design)
+        {
+            module.anno_utils.add(type, autumn.lang.internals.annotations.DesignDefinition.class);
+        }
+
+        /**
          * Check the list of annotations.
          */
         program.checker.checkAnnotations(node.getAnnotations(), type.getAnnotations());

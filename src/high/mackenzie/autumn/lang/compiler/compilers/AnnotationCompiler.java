@@ -170,6 +170,11 @@ final class AnnotationCompiler
         type.setAnnotations(module.anno_utils.typesOf(node.getAnnotations()));
 
         /**
+         * Add a special annotation.
+         */
+        module.anno_utils.add(type, autumn.lang.internals.annotations.AnnotationDefinition.class);
+
+        /**
          * Check the list of annotations.
          */
         program.checker.checkAnnotations(node.getAnnotations(), type.getAnnotations());

@@ -26,7 +26,8 @@ public final class CustomDeclaredType
         implements IAnnotationType,
                    IClassType,
                    IEnumType,
-                   IInterfaceType
+                   IInterfaceType,
+                   ICustomAnnotatable
 {
     private static enum SpecificType
     {

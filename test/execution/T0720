@@ -1,0 +1,11 @@
+module Main in execution;
+
+design City ();
+
+@Start
+defun main (args : String[]) : void
+{
+    val anno = F::findAnnotation(class City, class autumn.lang.internals.annotations.DesignDefinition);
+
+    assert anno != null;
+}

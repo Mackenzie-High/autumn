@@ -6,6 +6,7 @@ import high.mackenzie.autumn.lang.compiler.typesystem.design.IAnnotation;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IFormalParameter;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IVariableType;
 import high.mackenzie.autumn.resources.Finished;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -15,7 +16,8 @@ import java.util.List;
  */
 @Finished("2014/07/12")
 public final class CustomFormalParameter
-        implements IFormalParameter
+        implements IFormalParameter,
+                   ICustomAnnotatable
 {
     private ImmutableList<IAnnotation> annotations = ImmutableList.of();
 
@@ -44,7 +46,8 @@ public final class CustomFormalParameter
      *
      * @param annotations are the annotations applied to this formal-parameter.
      */
-    public void setAnnotations(final List<IAnnotation> annotations)
+    @Override
+    public void setAnnotations(final Collection<IAnnotation> annotations)
     {
         this.annotations = ImmutableList.copyOf(annotations);
     }

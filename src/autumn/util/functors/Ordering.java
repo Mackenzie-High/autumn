@@ -2,6 +2,7 @@ package autumn.util.functors;
 
 import autumn.lang.TypedFunctor;
 import autumn.lang.exceptions.CheckedException;
+import autumn.lang.internals.annotations.FunctorDefinition;
 import com.google.common.collect.ImmutableList;
 import java.util.Comparator;
 import java.util.List;
@@ -10,6 +11,7 @@ import java.util.List;
  *
  * @author mackenzie
  */
+@FunctorDefinition
 public class Ordering
         extends Function2
         implements Comparator<Object>

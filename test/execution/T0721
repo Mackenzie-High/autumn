@@ -1,0 +1,11 @@
+module Main in execution;
+
+struct City ();
+
+@Start
+defun main (args : String[]) : void
+{
+    val anno = F::findAnnotation(class City, class autumn.lang.internals.annotations.StructDefinition);
+
+    assert anno != null;
+}

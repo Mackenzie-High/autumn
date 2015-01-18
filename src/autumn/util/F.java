@@ -1180,7 +1180,7 @@ public final class F
     public static java.math.BigInteger unique () 
     {
 
-        return T.unique();
+        synchronized (F.class) { return T.unique(); }
     }
 
     

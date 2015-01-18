@@ -1,0 +1,11 @@
+module Main in execution;
+
+exception Asteroid extends RuntimeException;
+
+@Start
+defun main (args : String[]) : void
+{
+    val anno = F::findAnnotation(class Asteroid, class autumn.lang.internals.annotations.ExceptionDefinition);
+
+    assert anno != null;
+}

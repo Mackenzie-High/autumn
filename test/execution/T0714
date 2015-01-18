@@ -1,0 +1,21 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    val input = [1, 2, 3];
+
+    # The initial call memoize the value.
+    assert My::memoize(input) === input;
+
+    # Subsequent calls must return the original value,
+    # regardless of the new input value.
+    assert My::memoize([1, 2, 3]) === input;
+    assert My::memoize([2, 3, 4]) === input;
+    assert My::memoize([4, 5, 6]) === input;
+}
+
+defun memoize (value : List) : List
+{
+    return once value;
+}

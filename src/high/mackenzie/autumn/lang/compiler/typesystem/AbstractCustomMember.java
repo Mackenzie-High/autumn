@@ -17,6 +17,7 @@ import java.util.List;
 @Finished("2014/07/12")
 public abstract class AbstractCustomMember
         extends AbstractMember
+        implements ICustomAnnotatable
 {
     private IDeclaredType owner;
 

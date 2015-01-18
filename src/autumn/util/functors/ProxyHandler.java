@@ -2,6 +2,7 @@ package autumn.util.functors;
 
 import autumn.lang.TypedFunctor;
 import autumn.lang.internals.AbstractDefinedFunctor;
+import autumn.lang.internals.annotations.FunctorDefinition;
 import com.google.common.collect.ImmutableList;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -11,6 +12,7 @@ import java.util.List;
  *
  * @author mackenzie
  */
+@FunctorDefinition
 public class ProxyHandler
         extends AbstractDefinedFunctor
         implements InvocationHandler

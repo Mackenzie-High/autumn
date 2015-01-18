@@ -194,6 +194,11 @@ final class EnumCompiler
         type.setAnnotations(module.anno_utils.typesOf(node.getAnnotations()));
 
         /**
+         * Add a special annotation.
+         */
+        module.anno_utils.add(type, autumn.lang.internals.annotations.EnumDefinition.class);
+
+        /**
          * Check the list of annotations.
          */
         program.checker.checkAnnotations(node.getAnnotations(), type.getAnnotations());
@@ -253,7 +258,6 @@ final class EnumCompiler
         /**
          * Initialize the type that represents the enum being compiled.
          */
-        type.setAnnotations(module.anno_utils.typesOf(node.getAnnotations()));
         type.setModifiers(Opcodes.ACC_PUBLIC | Opcodes.ACC_FINAL | Opcodes.ACC_ENUM);
         type.setSuperclass(program.typesystem.utils.ENUM);
         type.setSuperinterfaces(ImmutableList.<IInterfaceType>of());

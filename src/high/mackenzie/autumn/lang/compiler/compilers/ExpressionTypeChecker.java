@@ -46,7 +46,7 @@ class ExpressionTypeChecker
     /**
      * Essentially, this is the enclosing function that is being compiled.
      */
-    protected final AbstractFunctionCompiler function;
+    protected final AbstractFunctionCompiler abstract_function;
 
     /**
      * Sole Constructor.
@@ -62,7 +62,7 @@ class ExpressionTypeChecker
         Preconditions.checkNotNull(function);
         Preconditions.checkNotNull(allocator);
 
-        this.function = function;
+        this.abstract_function = function;
 
         this.allocator = allocator;
 
@@ -86,7 +86,7 @@ class ExpressionTypeChecker
     @Override
     public AbstractFunctionCompiler function()
     {
-        return function;
+        return abstract_function;
     }
 
     @Override
@@ -758,9 +758,17 @@ class ExpressionTypeChecker
     public void visit(final OnceExpression object)
     {
         /**
-         * The return-type of a locals-expression is always LocalsMap.
+         * Visit and type-check the expression that produces the value to memoize.
          */
-        infer(object, program.typesystem.utils.OBJECT);
+        object.getValue().accept(this);
+
+        program.checker.requireReferenceType(object.getValue());
+        program.checker.requireNonNull(object.getValue());
+
+        /**
+         * The return-type of a once-expression is the type of the memoized value.
+         */
+        infer(object, program.symbols.expressions.get(object.getValue()));
     }
 
     @Override

@@ -15,6 +15,7 @@ import autumn.lang.compiler.ast.nodes.Name;
 import autumn.lang.compiler.ast.nodes.StructDefinition;
 import autumn.lang.compiler.ast.nodes.TupleDefinition;
 import autumn.lang.compiler.ast.nodes.TypeSpecifier;
+import autumn.lang.internals.annotations.ModuleDefinition;
 import autumn.util.F;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
@@ -66,38 +67,89 @@ public final class ModuleCompiler
      */
     static final class HiddenField
     {
+        /**
+         * At the bytecode level, all fields must have a name.
+         */
         public final String name = "autumn$hidden$field$" + F.unique();
 
+        /**
+         * This is the static-type of the field.
+         */
         public final IVariableType type;
 
+        /**
+         * This is true, iff the field is final.
+         */
+        public final boolean readonly;
+
+        /**
+         * These are instructions to add to the static constructor.
+         */
         public InsnList initializer = new InsnList();
 
-        public HiddenField(final IVariableType type)
+        /**
+         * Sole Constructor.
+         *
+         * @param type is the static-type of the new hidden field.
+         * @param readonly is true, iff the field is final.
+         * @throws NullPointerException if type is null.
+         */
+        public HiddenField(final IVariableType type,
+                           final boolean readonly)
         {
             Preconditions.checkNotNull(type);
 
             this.type = type;
+            this.readonly = readonly;
+        }
+
+        /**
+         * This method generates the bytecode representation of the field.
+         */
+        public FieldNode build()
+        {
+            final int access = Opcodes.ACC_PRIVATE | Opcodes.ACC_STATIC | (readonly ? Opcodes.ACC_FINAL : 0);
+
+            final FieldNode field = new FieldNode(access, name, type.getDescriptor(), null, null);
+
+            return field;
         }
     }
-
-    private static int count = 0;
-
-    private int index = ++count;
 
     /**
      * This is the full name of the module being compiled.
      * This field is initialized during the type-declaration pass.
      */
-    private String name;
+    private String module_name;
 
+    /**
+     * Essentially, this is the program that is being compiled.
+     */
     public final ProgramCompiler program;
 
+    /**
+     * This is the Abstract-Syntax-Tree representation of the module.
+     */
     public final Module node;
 
+    /**
+     * This will be assigned the Abstract-Syntax-Tree of the module-directive
+     * that is contained within the module.
+     */
     private ModuleDirective module_directive;
 
+    /**
+     * This will be assigned the type-system representation of the module.
+     */
     public CustomDeclaredType type;
 
+    /**
+     * This object makes compiling annotations easier.
+     *
+     * <p>
+     * This object will be needed during the compilation of code inside the module.
+     * </p>
+     */
     public AnnotationUtils anno_utils;
 
     /**
@@ -106,24 +158,63 @@ public final class ModuleCompiler
      */
     private boolean anonymous;
 
+    /**
+     * Essentially, this object implements the import-directives contained in the module.
+     */
     public final Importer imports;
 
-    public final List<AnnotationCompiler> annotations = Lists.newLinkedList();
+    /**
+     * Essentially, these are the annotations that are defined in the module.
+     */
+    final List<AnnotationCompiler> annotations = Lists.newLinkedList();
 
-    public final List<ExceptionCompiler> exceptions = Lists.newLinkedList();
+    /**
+     * Essentially, these are the exceptions that are defined in the module.
+     */
+    final List<ExceptionCompiler> exceptions = Lists.newLinkedList();
 
-    public final List<DesignCompiler> designs = Lists.newLinkedList();
+    /**
+     * Essentially, these are the designs that are defined in the module.
+     */
+    final List<DesignCompiler> designs = Lists.newLinkedList();
 
-    public final List<StructCompiler> structs = Lists.newLinkedList();
+    /**
+     * Essentially, these are the structs that are defined in the module.
+     */
+    final List<StructCompiler> structs = Lists.newLinkedList();
 
-    public final List<TupleCompiler> tuples = Lists.newLinkedList();
+    /**
+     * Essentially, these are the tuples that are defined in the module.
+     */
+    final List<TupleCompiler> tuples = Lists.newLinkedList();
 
-    public final List<EnumCompiler> enums = Lists.newLinkedList();
+    /**
+     * Essentially, these are the enums that are defined in the module.
+     */
+    final List<EnumCompiler> enums = Lists.newLinkedList();
 
-    public final List<FunctorCompiler> functors = Lists.newLinkedList();
+    /**
+     * Essentially, these are the functors that are defined in the module.
+     */
+    final List<FunctorCompiler> functors = Lists.newLinkedList();
 
-    public final List<FunctionCompiler> functions = Lists.newLinkedList();
+    /**
+     * Essentially, these are the functions that are defined in the module.
+     */
+    final List<FunctionCompiler> functions = Lists.newLinkedList();
 
+    /**
+     * These objects represent the hidden fields to add to the module.
+     *
+     * <p>
+     * Hidden fields are needed to implement some constructs, such as once-expressions.
+     * </p>
+     */
+    final List<HiddenField> hidden = Lists.newLinkedList();
+
+    /**
+     * This bytecode field caches the ModuleInfo object that describes the module.
+     */
     private final FieldNode info = new FieldNode(Opcodes.ACC_PRIVATE + Opcodes.ACC_FINAL,
                                                  "module_info",
                                                  "Lautumn/lang/ModuleInfo;",
@@ -131,7 +222,7 @@ public final class ModuleCompiler
                                                  null);
 
     /**
-     * This field stores a list of delegates.
+     * This bytecode field stores a list of delegates.
      * Each element is a delegate that refers to a function in this module.
      */
     private final FieldNode delegates = new FieldNode(Opcodes.ACC_PRIVATE + Opcodes.ACC_FINAL,
@@ -141,7 +232,7 @@ public final class ModuleCompiler
                                                       null);
 
     /**
-     * This field stores the only instance of the module's class.
+     * This bytecode field stores the only instance of the module's class.
      */
     private FieldNode instance_field;
 
@@ -202,6 +293,11 @@ public final class ModuleCompiler
         this.anno_utils = new AnnotationUtils(this);
     }
 
+    /**
+     * This method performs the bytecode-generation of the module and the code therein.
+     *
+     * @return the objects that contain the generated bytecode.
+     */
     public Set<ClassFile> build()
     {
         final Set<ClassFile> classes = Sets.newHashSet();
@@ -241,30 +337,61 @@ public final class ModuleCompiler
             classes.add(x.build());
         }
 
+        /**
+         * Generate the bytecode of the module itself.
+         */
         classes.add(buildModule());
 
         return classes;
     }
 
+    /**
+     * This method performs the bytecode-generation of a module itself.
+     *
+     * <p>
+     * Basically, a module compiles to a JVM class.
+     * </p>
+     *
+     * @return an object that contains the generated bytecode.
+     */
     private ClassFile buildModule()
     {
+        final List<FieldNode> fields = Lists.newLinkedList();
+
         final List<MethodNode> methods = Lists.newLinkedList();
 
+        /**
+         * Generate the bytecode that implements the special methods of the module.
+         */
         methods.add(buildClinit());
         methods.add(buildInit());
         methods.add(buildModuleInfo());
         methods.add(buildInstance());
         methods.add(buildModuleInvokeFunction());
 
+        /**
+         * Generate the bytecode that implements the user-defined functions.
+         */
         for (FunctionCompiler x : functions)
         {
             methods.add(x.build());
+        }
+
+        /**
+         * Generate the bytecode that implements the hidden fields.
+         */
+        for (HiddenField field : hidden)
+        {
+            fields.add(field.build());
         }
 
         final String module_internal_name = Utils.internalName(type);
 
         final String module_source_name = Utils.sourceName(type);
 
+        /**
+         * Generate the bytecode of the class that is the module.
+         */
         final ClassNode clazz = new ClassNode();
         {
             clazz.version = Opcodes.V1_6;
@@ -277,6 +404,7 @@ public final class ModuleCompiler
             clazz.fields.add(info);
             clazz.fields.add(delegates);
             clazz.fields.add(instance_field);
+            clazz.fields.addAll(fields);
             clazz.methods = ImmutableList.copyOf(methods);
             clazz.sourceFile = String.valueOf(node.getLocation().getFile());
 
@@ -284,12 +412,16 @@ public final class ModuleCompiler
             assert clazz.access == Opcodes.ACC_PUBLIC + Opcodes.ACC_FINAL;
         }
 
+        /**
+         * Convert ObjectWeb ASM representation of the bytecode to an array of bytes.
+         */
         final ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_MAXS);
-
         clazz.accept(writer);
-
         final byte[] bytecode = writer.toByteArray();
 
+        /**
+         * Wrap the bytecode in an object.
+         */
         final ClassFile file = new ClassFile(module_source_name, bytecode);
 
         return file;
@@ -326,6 +458,14 @@ public final class ModuleCompiler
         name = "instance";
         desc = type.getDescriptor();
         m.instructions.add(new FieldInsnNode(Opcodes.PUTSTATIC, owner, name, desc));
+
+        /**
+         * Initialize the hidden fields.
+         */
+        for (HiddenField field : hidden)
+        {
+            m.instructions.add(field.initializer);
+        }
 
         /**
          * Invoke the setup functions.
@@ -847,6 +987,11 @@ public final class ModuleCompiler
         type.setAnnotations(anno_utils.typesOf(module_directive.getAnnotations()));
 
         /**
+         * Add a special annotation.
+         */
+        anno_utils.add(type, ModuleDefinition.class);
+
+        /**
          * Check the list of annotations.
          */
         program.checker.checkAnnotations(module_directive.getAnnotations(), type.getAnnotations());
@@ -923,7 +1068,7 @@ public final class ModuleCompiler
         /**
          * Import the module itself.
          */
-        imports.importType(name.substring(name.lastIndexOf('.') + 1),
+        imports.importType(module_name.substring(module_name.lastIndexOf('.') + 1),
                            Utils.sourceName(type));
 
         // The module name "My" is used to generically refer to the current module.
@@ -1048,7 +1193,7 @@ public final class ModuleCompiler
                 : directive.getName().getName();
 
         // Remember the full name of the module for later use.
-        name = module_package.toString().replace('/', '.') + module_name;
+        this.module_name = module_package.toString().replace('/', '.') + module_name;
 
         final String module_descriptor = "L" + module_package + module_name + ";";
 
@@ -1062,7 +1207,7 @@ public final class ModuleCompiler
      */
     private String createNameForAnonymousModule()
     {
-        return "Module$" + index;
+        return "Module$" + F.unique();
     }
 
     /**

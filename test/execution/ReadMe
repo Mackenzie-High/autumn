@@ -27,6 +27,7 @@ Test Index
 . . . T0356 = Name and Namespace
 . Modules
 . . Reflective Testing of the Module's Class
+. . T0716 = Special Annotations
 . . Special Methods - instance()
 . . Special Method - moduleInfo()
 . . Special Method - moduleInvokeFunction(int, ArgumentStack)
@@ -48,6 +49,7 @@ Test Index
 . . . Invocation  // TODO: fix
 . Annotation Definitions
 . . T0140 = Reflective Testing of the Annotation's Class
+. . T0717 = Special Annotations
 . . T0160 = Annotation Applied to Itself
 . . T0161 = Annotations Applied to an Annotation
 . . T0141 = Usage of a Defined Annotation - No Values
@@ -55,11 +57,13 @@ Test Index
 . . T0326 = Usage of a Defined Annotation - Multiple Values
 . . T0327 = Escape Sequence in Annotation Value
 . Exception Definitions
+. . T0718 = Special Annotations
 . . T0164 = Applied Annotations are Present
 . . T0163 = Inherited Constructors
 . . T0162 = Usage of a Declared Exception
 . Enum Definitions
 . . T0170 = Reflective Testing of the Enum's Class
+. . T0719 = Special Annotations
 . . T0167 = Applied Annotations are Present
 . . T0051 = Basic Enum
 . . T0165 = Special Method - valueOf(String) - Normal Operation
@@ -67,11 +71,13 @@ Test Index
 . . T0169 = Special Method - valueOf(String) - No Such Enum Constant
 . . T0166 = Special Method - values()
 . Design Definitions
+. . T0720 = Special Annotations
 . . T0279 = Reflective Testing of the Tuple's Class                  // TODO: finish
 . . T0280 = Inherited Elements                                       // TODO: finish
 . . Covariant Elements
 . Tuple Definitions
 . . T0128 = Reflective Testing of the Tuple's Class                  // TODO: finish
+. . T0722 = Special Annotations
 . . T0114 = Sole Constructor
 . . T0126 = Setters
 . . T0117 = Getters
@@ -95,6 +101,7 @@ Test Index
 . . T0254 - Inheritance of Elements                           // TODO: finish
 . . T0255 = Covariant Elements                                // TODO: finish
 . Struct Definitions
+. . T0721 = Special Annotations
 . . T0250 = Basic Test
 . . Setters
 . . Getters
@@ -108,6 +115,7 @@ Test Index
 . . Subtyping
 . Functor Definition
 . . Reflective Testing of the Functor's Class
+. . T0723 = Special Annotations
 . . T0143 = Very Basic Functor Usage
 . . T0286 = Functor Usage
 . . T0142 = Special Method - inner()
@@ -120,6 +128,7 @@ Test Index
 . . T0285 = Covariance - Parameters
 . Functions
 . . Reflective Testing of the Reflective Method Object
+. . T0724 = Special Annotations
 . . T0064 = Checked Exceptions
 . . Annotation Lists
 . . Parameter Lists
@@ -366,7 +375,10 @@ Test Index
 . . Locals
 . . . T0249 = All Cases
 . . Once
-. . . Normal
+. . . T0714 = Normal
+. . . Synchronization
+. . . Different Types of Values
+. . . T0715 = Operand Stack Leakage
 . . Progn
 . . . T0335 = Basic Usage
 . . . T0336 = Operand Stack Leakage
