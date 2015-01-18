@@ -543,7 +543,6 @@ public class Main
         c.addDetail(1, "A function creates a new scope for variables.");
         c.addDetail(1, "A function creates a new scope for labels.");
         c.addDetail(0, "Runtime Checks:");
-        c.addDetail(1, "A XXX exception is thrown automatically, if a memoized function is recursive given equal arguments.");
         c.addDetail(1, "A XXX exception is thrown automatically, if execution reaches the end of a function.");
         c.addCheck(ErrorCode.TOO_MANY_STARTS, "A compilation-unit can only contain one @Start function.");
         c.addCheck(ErrorCode.WRONG_SIGNATURE_FOR_START, "A start-function must have a signature of: main(String[]) : void");
@@ -1126,7 +1125,6 @@ public class Main
         c.addDetail(0, "Each <i>argument</i> will be coerced, if necessary.");
         c.addDetail(0, "The <i>return-type</i> of the enclosing function can be void.");
         c.addDetail(0, "The <i>return-type</i> of the enclosing function can be non-void.");
-        c.addCheck(ErrorCode.RECUR_IN_MEMOIZED_FUNCTION, "A recur-statement cannot be used inside of a memoized-function.");
         c.addCheck(ErrorCode.BAD_ARGUMENT_COUNT, "There must be exactly one <i>argument</i> for each <i>parameter</i> in the enclosing function.");
         c.addCheck(ErrorCode.IMPOSSIBLE_ASSIGNMENT, "The type of <i>argument<sub>i</sub></i> must be assignable to the type of <i>parameter<sub>i</sub></i> of the enclosing function.");
         c.addExample(EXAMPLE_1, 115);

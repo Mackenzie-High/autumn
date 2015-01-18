@@ -1,6 +1,6 @@
 package autumnspecification;
 
-import autumn.lang.AsyncTask;
+import autumn.util.AsyncTask;
 import autumn.lang.Module;
 import autumn.lang.Record;
 import autumn.lang.TypedFunctor;
@@ -1659,7 +1659,7 @@ public final class FunctionIndex
         f.formal("original", List.class, "is the data-structure to copy.");
         f.returns(List.class, "Return an unmodifiable view of the <i>original</i>.");
         f.raise(NullPointerException.class, "if <i>original</i> is null.", "original == null");
-        f.body = "return Collections.unmodifiableList(new ArrayList(original));";
+        f.body = "return Collections.unmodifiableList(original);";
         f.example(EXAMPLE_1, 208);
 
         // Finished!
@@ -1669,7 +1669,7 @@ public final class FunctionIndex
         f.formal("original", Set.class, "is the data-structure to copy.");
         f.returns(Set.class, "Return an unmodifiable view of the <i>original</i>.");
         f.raise(NullPointerException.class, "if <i>original</i> is null.", "original == null");
-        f.body = "return Collections.unmodifiableSet(new HashSet(original));";
+        f.body = "return Collections.unmodifiableSet(original);";
         f.example(EXAMPLE_1, 207);
 
         // Finished!
@@ -1679,7 +1679,7 @@ public final class FunctionIndex
         f.formal("original", Map.class, "is the data-structure to copy.");
         f.returns(Map.class, "Return an unmodifiable view of the <i>original</i>.");
         f.raise(NullPointerException.class, "if <i>original</i> is null.", "original == null");
-        f.body = "return Collections.unmodifiableMap(new HashMap(original));";
+        f.body = "return Collections.unmodifiableMap(original);";
         f.example(EXAMPLE_1, 206);
 
         // Finished!
