@@ -1908,9 +1908,9 @@ public class Main
         c.addSyntax(0, "$dispatch$ $name$ ( <i>$argument$<sub>1</sub></i> , ... , <i>$argument$<sub>n</sub></i> )");
         c.addDetail(0, "At compile-time, the compiler creates a dispatch table containing the overloads of the named function.");
         c.addDetail(1, "The overloads will be sorted topologically from the most specific to the most generalized.");
-        c.addDetail(1, "In order for an overload X to be included in the dispatch table:");
-        c.addDetail(2, "The number of provided arguments must equal the number of parameters in X.");
-        c.addDetail(2, "The type of each parameter in X must be a reference-type.");
+        c.addDetail(1, "In order for an overload to be included in the dispatch table:");
+        c.addDetail(2, "The number of provided arguments must equal the number of parameters.");
+        c.addDetail(2, "The type of each parameter must be a reference-type.");
         c.addDetail(0, "At runtime, the overload to invoke is selected as follows:");
         c.addDetail(1, "Let A<sub>1</sub> ... A<sub>n</sub> denote the arguments.");
         c.addDetail(1, "Select the first overload from the sorted list of overloads, where each argument matches the related parameter.");
