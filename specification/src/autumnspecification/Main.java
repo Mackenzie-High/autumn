@@ -546,11 +546,12 @@ public class Main
         c.addDetail(1, "T is $synchronized$, if F is a sync-function.");
         c.addDetail(1, "T's throws clause implicitly includes $JavaLangThrowable$.");
         c.addDetail(1, "T is a member of the enclosing module-type.");
+        specialAnnotation(c, autumn.lang.internals.annotations.FunctionDefinition.class);
         c.addDetail(0, "Scopes:");
         c.addDetail(1, "A function creates a new scope for variables.");
         c.addDetail(1, "A function creates a new scope for labels.");
         c.addDetail(0, "Runtime Checks:");
-        c.addDetail(1, "A $AutumnLangExceptions$UnexpectedTerminationException$ is thrown automatically, if execution reaches the end of a function.");
+        c.addDetail(1, "A $AutumnLangExceptionsUnexpectedTerminationException$ is thrown automatically, if execution reaches the end of a function.");
         c.addCheck(ErrorCode.TOO_MANY_STARTS, "A compilation-unit can only contain one @Start function.");
         c.addCheck(ErrorCode.WRONG_SIGNATURE_FOR_START, "A start-function must have a signature of: main(String[]) : void");
         c.addCheck(ErrorCode.WRONG_SIGNATURE_FOR_SETUP, "A setup-function must have a signature of: () : void");
