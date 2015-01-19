@@ -102,11 +102,12 @@ public class Main
         c.addSyntax(0, "<i>$module-member$<sub>n</sub></i>");
         c.addDetail(0, "A module is a component of a compilation-unit that usually corresponds to a source file.");
         c.addDetail(0, "Regarding the module-type T of created by a definition M:");
+        c.addDetail(1, "T is a form of class-type.");
+        c.addDetail(1, "T has the " + JSONBuilder.link(autumn.lang.internals.annotations.ModuleDefinition.class) + " annotation applied directly to it.");
         c.addDetail(1, "T is both $public$ and $final$.");
         c.addDetail(1, "T's fully-qualified name is obtained from the one and only module-directive in M.");
         c.addDetail(1, "T is a subtype of $AutumnLangModule$.");
         c.addDetail(1, "T is a subtype of $AutumnLangInternalsAbstractModule$.");
-        c.addDetail(1, "T has the " + JSONBuilder.link(autumn.lang.internals.annotations.ModuleDefinition.class) + " annotation applied directly to it.");
         c.addDetail(1, "T does not define any $public$ constructors.");
         c.addDetail(2, "This is because an instance of a module is a singleton object.");
         c.addDetail(1, "T defines a special method: instance() : T");
