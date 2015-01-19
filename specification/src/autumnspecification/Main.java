@@ -348,7 +348,7 @@ public class Main
         usetype(c, "element.type");
         c.addCheck(ErrorCode.EXPECTED_VARIABLE_TYPE, "The <i>type</i> of each <i>element</i> must be a variable-type.");
         c.addCheck(ErrorCode.RETYPED_ELEMENT, "The type of an element must be the same in all the declarations of the element.");
-        c.addCheck(ErrorCode.NAME_CONFLICT, "The name of an element cannot be the name of an inherited method.");
+        c.addCheck(ErrorCode.NAME_CONFLICT, "The name of an element cannot also be the name of an inherited method.");
         c.addExample(EXAMPLE_1, 123);
         Index.add(c);
 
@@ -416,7 +416,7 @@ public class Main
         usetype(c, "element.type");
         c.addCheck(ErrorCode.EXPECTED_VARIABLE_TYPE, "The <i>type</i> of each <i>element</i> must be a variable-type.");
         c.addCheck(ErrorCode.RETYPED_ELEMENT, "The type of an element must be the same in all the declarations of the element.");
-        c.addCheck(ErrorCode.NAME_CONFLICT, "The name of an element cannot be the name of an inherited method.");
+        c.addCheck(ErrorCode.NAME_CONFLICT, "The name of an element cannot also be the name of an inherited method.");
         c.addExample(EXAMPLE_1, 122);
         c.addExample(EXAMPLE_2, 121);
         c.addExample(EXAMPLE_3, 120);
@@ -469,6 +469,13 @@ public class Main
         c.addDetail(4, "G does not take any formal-parameters.");
         c.addDetail(4, "The return-type of G is the static-type of element E.");
         c.addDetail(4, "G returns the value stored in element E in instance I.");
+
+        c.addDetail(2, "T provides bridge methods for each setter method S of an element E.");
+        c.addDetail(3, "For X, where X is a supertype of T, such that X also declares E:");
+        c.addDetail(4, "S (E) : X is a bridge method in T");
+        c.addDetail(4, "S (E) : T is invoked by the bridge method.");
+        c.addDetail(4, "Although the bridge method must downcast the return-value, the cast always succeeds.");
+
         c.addDetail(2, "T provides bridge methods for method set(int, $JavaLangObject$).");
         c.addDetail(3, "For X, where X is T or a supertype thereof, such that X is also a subtype of $AutumnLangRecord$:");
         c.addDetail(4, "set(int, $JavaLangObject$) : X is a bridge method in T.");
@@ -485,7 +492,7 @@ public class Main
         c.addCheck(ErrorCode.EXPECTED_VARIABLE_TYPE, "The <i>type</i> of each <i>element</i> must be a variable-type.");
         c.addCheck(ErrorCode.RETYPED_ELEMENT, "The type of an element must be the same in all the declarations of the element.");
         c.addCheck(ErrorCode.TOTAL_ORDERING_REQUIRED, "A tuple must explicitly declare all of its elements, including inherited elements. ");
-        c.addCheck(ErrorCode.NAME_CONFLICT, "The name of an element cannot be the name of an inherited method.");
+        c.addCheck(ErrorCode.NAME_CONFLICT, "The name of an element cannot also be the name of an inherited method.");
         c.addExample(EXAMPLE_1, 117);
         c.addExample(EXAMPLE_2, 118);
         c.addExample(EXAMPLE_3, 119);
