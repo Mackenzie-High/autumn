@@ -356,6 +356,9 @@ public class Main
         // Struct Definitions
         ////////////////////////////////////////////////////////////////////////////////////////////
 
+        // The documentation of structs is finished.
+        // TODO: Finish the implementation and testing.
+        //
         c = Construct.newInstance();
         c.name = "Struct Definition";
         c.klass = StructDefinition.class;
@@ -382,7 +385,7 @@ public class Main
         c.addDetail(3, "C takes one formal-parameter P for each element E.");
         c.addDetail(4, "P's static-type is the static-type of the element E.");
         c.addDetail(4, "C will assign the value of P to element E in the new instance.");
-        c.addDetail(3, "The order of the parameters in C is the same as the order of the elements in T.");
+        c.addDetail(3, "The order of the formal-parameters in C is the same as the order of the elements in T.");
         c.addDetail(2, "For each element E in T:");
         c.addDetail(3, "Let I represent an instance of T.");
         c.addDetail(3, "T contains a setter method S for element E.");
@@ -414,9 +417,9 @@ public class Main
         c.addCheck(ErrorCode.EXPECTED_VARIABLE_TYPE, "The <i>type</i> of each <i>element</i> must be a variable-type.");
         c.addCheck(ErrorCode.RETYPED_ELEMENT, "The type of an element must be the same in all the declarations of the element.");
         c.addCheck(ErrorCode.NAME_CONFLICT, "The name of an element cannot be the name of an inherited method.");
-        c.addExample(EXAMPLE_1, 120);
+        c.addExample(EXAMPLE_1, 122);
         c.addExample(EXAMPLE_2, 121);
-        c.addExample(EXAMPLE_3, 122);
+        c.addExample(EXAMPLE_3, 120);
         Index.add(c);
 
         ////////////////////////////////////////////////////////////////////////////////////////////
@@ -440,19 +443,19 @@ public class Main
         c.addDetail(1, "T is a subtype of interface $AutumnLangRecord$.");
         c.addDetail(1, "T is a subtype of class $AutumnLangInternalsAbstractRecord$.");
         c.addDetail(1, "T inherits all the elements that are declared in its supertypes.");
-        c.addDetail(2, "Because T is a tuple-type, there must exist an explicit declaration <i>element<sub>i</sub></i> in T for every element.");
-        c.addDetail(3, "As a consequence, a tuple imposes a user-defined total-ordering on its elements.");
-        c.addDetail(4, "The order of the elements in a tuple is the same as in the list of elements.");
-        c.addDetail(4, "On the other hand, the order of the elements in a struct is lexicographical.");
+        c.addDetail(1, "Because T is a tuple-type, there must exist an explicit declaration <i>element<sub>i</sub></i> in T for every element.");
+        c.addDetail(2, "As a consequence, a tuple imposes a user-defined total-ordering on its elements.");
+        c.addDetail(3, "The order of the elements in a tuple is the same as in the list of elements.");
+        c.addDetail(3, "On the other hand, the order of the elements in a struct is lexicographical.");
         c.addDetail(1, "T declares the following methods and constructors:");
         c.addDetail(2, "Let C denote the sole constructor declared by T:");
         c.addDetail(3, "C creates an immutable instance of T.");
         c.addDetail(3, "C takes one formal-parameter P for each element E.");
         c.addDetail(4, "P's static-type is the static-type of the element E.");
         c.addDetail(4, "C will assign the value of P to element E in the new instance.");
-        c.addDetail(3, "The order of C's formal-parameters is the same as the elements in the list of elements.");
-        c.addDetail(4, "This is a consequence of the aforedescribed user-defined total-ordering of the elements.");
-        c.addDetail(2, "For each element E in an instance I of T:");
+        c.addDetail(3, "The order of the formal-parameters in C is the same as the order of the elements in T.");
+        c.addDetail(2, "For each element E in T:");
+        c.addDetail(3, "Let I represent an instance of T.");
         c.addDetail(3, "T contains a setter method S for element E.");
         c.addDetail(4, "The name of S is the name of E.");
         c.addDetail(4, "S takes a single formal-parameter P.");
@@ -474,7 +477,7 @@ public class Main
         c.addDetail(2, "T provides a special static method instance() : T.");
         c.addDetail(3, "The method returns an instance of T in which each element is set to is default value.");
         c.addDetail(3, "The method always returns the same object.");
-        c.addDetail(2, "T inherits the following special methods from its supertypes.");
+        c.addDetail(2, "T inherits the following special method declarations from its supertypes.");
         inheritMethods(c, 3, AbstractRecord.class);
         typedec(c);
         c.addCheck(ErrorCode.DUPLICATE_ELEMENT, "The <i>name</i> of each element must be unique within the enclosing definition.");
@@ -482,7 +485,7 @@ public class Main
         c.addCheck(ErrorCode.EXPECTED_VARIABLE_TYPE, "The <i>type</i> of each <i>element</i> must be a variable-type.");
         c.addCheck(ErrorCode.RETYPED_ELEMENT, "The type of an element must be the same in all the declarations of the element.");
         c.addCheck(ErrorCode.TOTAL_ORDERING_REQUIRED, "A tuple must explicitly declare all of its elements, including inherited elements. ");
-        c.addCheck(ErrorCode.NAME_CONFLICT, "The name of an element cannot be the name of a predefined method.");
+        c.addCheck(ErrorCode.NAME_CONFLICT, "The name of an element cannot be the name of an inherited method.");
         c.addExample(EXAMPLE_1, 117);
         c.addExample(EXAMPLE_2, 118);
         c.addExample(EXAMPLE_3, 119);
