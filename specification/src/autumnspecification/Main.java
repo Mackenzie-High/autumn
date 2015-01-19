@@ -507,6 +507,11 @@ public class Main
         // Functor Definitions
         ////////////////////////////////////////////////////////////////////////////////////////////
 
+        // The documentation of functor-defintitions is finished; however, reread it carefully to make sure.
+        // Finish the implementenation and testing.
+        // Notice the changes to the EXPECTED_DEFINED_FUNCTOR_TYPE.
+        // Notice that you must also ensure that the parameters are variable types.
+        // TODO: On the EXPECTED_DEFINED_FUNCTOR_TYPE line, the FunctionDefinition should be a link.
         c = Construct.newInstance();
         c.name = "Functor Definition";
         c.klass = FunctorDefinition.class;
@@ -541,9 +546,9 @@ public class Main
         c.addDetail(2, "method: apply ($AutumnLangInternalsArgumentStack$) : void");
         c.addDetail(3, "This method is the low-level method that handles invocations of the functor.");
         c.addDetail(3, "This method is not intended for direct use by programmers.");
-        c.addDetail(1, "T is covariant in terms of a supertype S, iff:");
-        c.addDetail(2, "Ǝ <i>i</i> such that T.formals<sub>i</sub> is a subtype of S.formals<sub>i</sub>");
-        c.addDetail(2, "T.return-type is a subtype of S.return-type");
+        c.addDetail(1, "T is covariant in terms of a supertype S, iff either:");
+        c.addDetail(2, "Ǝ <i>i</i> such that T.formals<sub>i</sub> is a proper subtype of S.formals<sub>i</sub>");
+        c.addDetail(2, "T.return-type is a proper subtype of S.return-type");
         c.addDetail(1, "Subtyping Requirements:");
         c.addDetail(2, "Let S be any of the super functor-types of T.");
         c.addDetail(2, "T.formals.length must equal S.formals.length");
@@ -557,7 +562,7 @@ public class Main
         usetype(c, "return-type");
         usetype(c, "super");
         c.addCheck(ErrorCode.EXPECTED_CLASS_TYPE, "The type of <i>super</i> must be a class-type.");
-        c.addCheck(ErrorCode.EXPECTED_DEFINED_FUNCTOR_TYPE, "The type of <i>super</i> must have the FunctorDefinition annotation applied directly to it."); // TODO: link to the type
+        c.addCheck(ErrorCode.EXPECTED_DEFINED_FUNCTOR_TYPE, "The type of <i>super</i> must have the FunctorDefinition annotation applied directly to it.");
         c.addCheck(ErrorCode.CIRCULAR_INHERITANCE, "The new type cannot be a subtype of itself either directly or indirectly.");
         c.addCheck(ErrorCode.COVARIANCE_VIOLATION, "The subtyping requirements must be obeyed.");
         c.addExample(EXAMPLE_1, 91);
