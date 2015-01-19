@@ -469,13 +469,10 @@ public class Main
         c.addDetail(4, "G does not take any formal-parameters.");
         c.addDetail(4, "The return-type of G is the static-type of element E.");
         c.addDetail(4, "G returns the value stored in element E in instance I.");
-
         c.addDetail(2, "T provides bridge methods for each setter method S of an element E.");
         c.addDetail(3, "For X, where X is a supertype of T, such that X also declares E:");
-        c.addDetail(4, "S (E) : X is a bridge method in T");
+        c.addDetail(4, "S (E) : X is a bridge method in T.");
         c.addDetail(4, "S (E) : T is invoked by the bridge method.");
-        c.addDetail(4, "Although the bridge method must downcast the return-value, the cast always succeeds.");
-
         c.addDetail(2, "T provides bridge methods for method set(int, $JavaLangObject$).");
         c.addDetail(3, "For X, where X is T or a supertype thereof, such that X is also a subtype of $AutumnLangRecord$:");
         c.addDetail(4, "set(int, $JavaLangObject$) : X is a bridge method in T.");
