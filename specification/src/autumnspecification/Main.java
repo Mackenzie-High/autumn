@@ -5,6 +5,7 @@ import autumn.lang.Record;
 import autumn.lang.compiler.ast.nodes.*;
 import autumn.lang.compiler.errors.ErrorCode;
 import autumn.lang.internals.AbstractFunctor;
+import autumn.lang.internals.AbstractModule;
 import autumn.lang.internals.AbstractRecord;
 import com.google.common.collect.Maps;
 import high.mackenzie.autumn.lang.compiler.compilers.Importer;
@@ -119,6 +120,8 @@ public class Main
         c.addDetail(3, "This method is a low-level method that is not intended for direct use by programmers.");
         c.addDetail(3, "This method is used to implement delegates.");
         c.addDetail(2, "For each function F in M, there is a #public# $static$ method in T.");
+        c.addDetail(1, "T inherits the following special methods from its supertypes.");
+        inheritMethods(c, 2, AbstractModule.class);
         c.addCheck(ErrorCode.MISSING_MODULE_DIRECTIVE, "A module must contain a module-directive.");
         c.addCheck(ErrorCode.DUPLICATE_MODULE_DIRECTIVE, "A module can only contain one module-directive.");
         typedec(c);
@@ -219,7 +222,7 @@ public class Main
         c.addDetail(2, "The return-type of the method is $JavaLangString$[].");
         c.addDetail(2, "The method is an annotation-method.");
         c.addDetail(1, "T inherits the following special methods from its supertypes.");
-        inheritMethods(c, 2, Annotation.class);
+        inheritMethods(c, 2, java.lang.annotation.Annotation.class);
         c.addExample(EXAMPLE_1, 52);
         c.addExample(EXAMPLE_2, 51);
         Index.add(c);
