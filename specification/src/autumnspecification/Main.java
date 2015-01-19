@@ -103,6 +103,7 @@ public class Main
         c.addDetail(1, "T's fully-qualified name is obtained from the one and only module-directive in M.");
         c.addDetail(1, "T is a subtype of $AutumnLangModule$.");
         c.addDetail(1, "T is a subtype of $AutumnLangInternalsAbstractModule$.");
+        c.addDetail(1, "T has the " + JSONBuilder.link(autumn.lang.internals.annotations.ModuleDefinition.class) + " annotation applied directly to it.");
         c.addDetail(1, "T does not define any $public$ constructors.");
         c.addDetail(2, "This is because an instance of a module is a singleton object.");
         c.addDetail(1, "T defines a special method: instance() : T");
@@ -116,7 +117,6 @@ public class Main
         c.addDetail(3, "This method is a low-level method that is not intended for direct use by programmers.");
         c.addDetail(3, "This method is used to implement delegates.");
         c.addDetail(2, "For each function F in M, there is a #public# $static$ method in T.");
-        specialAnnotation(c, autumn.lang.internals.annotations.ModuleDefinition.class);
         c.addCheck(ErrorCode.MISSING_MODULE_DIRECTIVE, "A module must contain a module-directive.");
         c.addCheck(ErrorCode.DUPLICATE_MODULE_DIRECTIVE, "A module can only contain one module-directive.");
         typedec(c);
@@ -204,6 +204,7 @@ public class Main
         c.addSyntax(0, "$annotation$ <i>$name$</i> ;");
         typedec(c);
         c.addDetail(0, "Regarding the annotation-type T defined by a definition:");
+        c.addDetail(1, "T has the " + JSONBuilder.link(autumn.lang.internals.annotations.AnnotationDefinition.class) + " annotation applied directly to it.");
         c.addDetail(1, "T is $public$.");
         c.addDetail(1, "T is a subtype of class $JavaLangObject$.");
         c.addDetail(1, "T is a subtype of interface $JavaLangAnnotationAnnotation$.");
@@ -215,7 +216,7 @@ public class Main
         c.addDetail(2, "The method does not take any formal-parameters.");
         c.addDetail(2, "The return-type of the method is $JavaLangString$[].");
         c.addDetail(2, "The method is an annotation-method.");
-        specialAnnotation(c, autumn.lang.internals.annotations.AnnotationDefinition.class);
+        inheritMethods(c, 1, Annotation.class);
         c.addExample(EXAMPLE_1, 52);
         c.addExample(EXAMPLE_2, 51);
         Index.add(c);
@@ -233,14 +234,16 @@ public class Main
         c.addSyntax(0, "$exception$ <i>$name$</i> $extends$ <i>$super$</i> ;");
         c.addDetail(0, "Regarding the exception-type T created by a definition:");
         c.addDetail(1, "T is a form of class-type.");
+        c.addDetail(1, "T has the " + JSONBuilder.link(autumn.lang.internals.annotations.ExceptionDefinition.class) + " annotation applied directly to it.");
         c.addDetail(1, "T is $public$.");
         c.addDetail(1, "T must be a subtype of $JavaLangThrowable$.");
         c.addDetail(1, "T inherits all the $public$ constructors of its direct supertype.");
         c.addDetail(2, "Really, T declares equivalent constructors that simply invoke the super constructors.");
         c.addDetail(2, "Consequently, T is not instantiatable, if no constructors are actually inherited.");
         c.addDetail(1, "T does not have any direct superinterfaces.");
-        c.addDetail(1, "T does not declare any fields or methods.");
-        specialAnnotation(c, autumn.lang.internals.annotations.ExceptionDefinition.class);
+        c.addDetail(1, "T does not directly declare any fields or methods.");
+        c.addDetail(2, "T inherits all the non $private$ fields of its supertypes.");
+        c.addDetail(2, "T inherits all the non $private$ methods of its supertypes.");
         typedec(c);
         usetype(c, "super");
         c.addCheck(ErrorCode.EXPECTED_CLASS_TYPE, "The type of <i>super</i> must be a class-type.");
@@ -262,6 +265,7 @@ public class Main
         c.addSyntax(0, "$enum$ <i>$name$</i> ( <i>$constant$<sub>1</sub></i> , ... , <i>$constant$<sub>n</sub></i> ) ;");
         typedec(c);
         c.addDetail(0, "Regarding the enum-type T created by a definition:");
+        c.addDetail(1, "T has the " + JSONBuilder.link(autumn.lang.internals.annotations.EnumDefinition.class) + " annotation applied directly to it.");
         c.addDetail(1, "T is both $public$ and $final$.");
         c.addDetail(1, "T is a subtype of class $JavaLangEnum$.");
         c.addDetail(1, "T does not have any direct superinterfaces.");
@@ -279,7 +283,7 @@ public class Main
         c.addDetail(3, "This method retrieves an enum-constant based on its name.");
         c.addDetail(3, "This method throws a $JavaLangNullPointerException$, if name is null.");
         c.addDetail(3, "This method throws a $JavaLangIllegalArgumentException$, if the named enum-constant cannot be found.");
-        specialAnnotation(c, autumn.lang.internals.annotations.EnumDefinition.class);
+        inheritMethods(c, 1, Enum.class);
         c.addCheck(ErrorCode.DUPLICATE_CONSTANT, "Enum constants cannot share their name.");
         c.addExample(EXAMPLE_1, 54);
         c.addExample(EXAMPLE_2, 55);
@@ -302,6 +306,7 @@ public class Main
         c.addDetail(0, "A design is an abstract record-style user-defined datatype.");
         c.addDetail(0, "Regarding the design-type T created by a definition:");
         c.addDetail(1, "T is form of interface-type.");
+        c.addDetail(1, "T has the " + JSONBuilder.link(autumn.lang.internals.annotations.DesignDefinition.class) + " annotation applied directly to it.");
         c.addDetail(1, "T is both $public$ and $abstract$.");
         c.addDetail(1, "T is a subtype of interface $AutumnLangRecord$.");
         c.addDetail(1, "T inherits all the elements that are declared in its supertypes.");
@@ -319,7 +324,6 @@ public class Main
         c.addDetail(2, "T declares bridge methods for method set(int, $JavaLangObject$).");
         c.addDetail(3, "For X, where X is T or a supertype thereof, such that X is also a subtype of $AutumnLangRecord$:");
         c.addDetail(4, "set(int, $JavaLangObject$) : X is a bridge method in T.");
-        specialAnnotation(c, autumn.lang.internals.annotations.DesignDefinition.class);
         c.addDetail(2, "T inherits the following method declarations from its supertypes.");
         inheritMethods(c, 3, AbstractRecord.class);
         typedec(c);
@@ -347,6 +351,7 @@ public class Main
         c.addDetail(0, "A struct is an immutable user-defined datatype.");
         c.addDetail(0, "Regarding the struct-type T created by a definition:");
         c.addDetail(1, "T is form of class-type.");
+        c.addDetail(1, "T has the " + JSONBuilder.link(autumn.lang.internals.annotations.StructDefinition.class) + " annotation applied directly to it.");
         c.addDetail(1, "T is both $public$ and $final$.");
         c.addDetail(1, "T is a subtype of interface $AutumnLangRecord$.");
         c.addDetail(1, "T is a subtype of class $AutumnLangInternalsAbstractRecord$.");
@@ -384,7 +389,6 @@ public class Main
         c.addDetail(2, "T provides a special static method instance() : T.");
         c.addDetail(3, "The method returns an instance of T in which each element is set to is default value.");
         c.addDetail(3, "The method always returns the same object.");
-        specialAnnotation(c, autumn.lang.internals.annotations.StructDefinition.class);
         c.addDetail(2, "T inherits the following method declarations from its supertypes.");
         inheritMethods(c, 3, AbstractRecord.class);
         typedec(c);
@@ -414,6 +418,7 @@ public class Main
         c.addDetail(0, "A tuple is an immutable user-defined datatype.");
         c.addDetail(0, "Regarding the tuple-type T created by a definition:");
         c.addDetail(1, "T is form of class-type.");
+        c.addDetail(1, "T has the " + JSONBuilder.link(autumn.lang.internals.annotations.TupleDefinition.class) + " annotation applied directly to it.");
         c.addDetail(1, "T is both $public$ and $final$.");
         c.addDetail(1, "T is a subtype of interface $AutumnLangRecord$.");
         c.addDetail(1, "T is a subtype of class $AutumnLangInternalsAbstractRecord$.");
@@ -452,7 +457,6 @@ public class Main
         c.addDetail(2, "T provides a special static method instance() : T.");
         c.addDetail(3, "The method returns an instance of T in which each element is set to is default value.");
         c.addDetail(3, "The method always returns the same object.");
-        specialAnnotation(c, autumn.lang.internals.annotations.TupleDefinition.class);
         c.addDetail(2, "T inherits the following method declarations from its supertypes.");
         inheritMethods(c, 3, AbstractRecord.class);
         typedec(c);
@@ -481,6 +485,8 @@ public class Main
         annotationList(c);
         c.addSyntax(0, "$functor$ <i>$name$</i> ( <i>$param$<sub>1</sub></i> , ... , <i>$param$<sub>n</sub></i> ) : <i>$return-type$</i> $extends$ </i>$super$</i> ;");
         c.addDetail(0, "Regarding the type T created by a functor-definition:");
+        c.addDetail(1, "T is a form of class-type.");
+        c.addDetail(1, "T has the " + JSONBuilder.link(autumn.lang.internals.annotations.FunctorDefinition.class) + " annotation applied directly to it.");
         c.addDetail(1, "T is $public$.");
         c.addDetail(1, "T is a subtype of interface $AutumnLangDefinedFunctor$");
         c.addDetail(1, "T is a subtype of interface $AutumnLangTypedFunctor$");
@@ -510,7 +516,6 @@ public class Main
         c.addDetail(4, "T.formals.length must equal S.formals.length");
         c.addDetail(4, "T.formals<sub>i</sub> must be a subtype of S.formals<sub>i</sub> ∀ <i>i</i>");
         c.addDetail(4, "T.return-type must be a subtype of S.return-type");
-        specialAnnotation(c, autumn.lang.internals.annotations.FunctorDefinition.class);
         typedec(c);
         usetype(c, "super");
         usetype(c, "param<sub>i</sub>");
@@ -533,7 +538,7 @@ public class Main
         annotationList(c);
         c.addSyntax(0, "$defun$ <i>$name$</i> ( <i>$param$<sub>1</sub></i> , ... , <i>$param$<sub>n</sub></i> ) : <i>$return-type$</i>");
         c.addSyntax(0, "{");
-        c.addSyntax(1, "    <i>body</i>");
+        c.addSyntax(1, "    <i>$body$</i>");
         c.addSyntax(0, "}");
         c.addDetail(0, "Special Topics:");
         c.addDetail(1, "$Infer Functions$");
@@ -542,11 +547,11 @@ public class Main
         c.addDetail(1, "$Sync Functions$");
         c.addDetail(1, "$Test Functions$");
         c.addDetail(0, "Let T denote the type system representation of a function F.");
-        c.addDetail(1, "T is the type of a $public$ $static$ method.");
+        c.addDetail(1, "T has the " + JSONBuilder.link(autumn.lang.internals.annotations.FunctionDefinition.class) + " annotation applied directly to it.");
+        c.addDetail(1, "T is the type of a $public$ $static$ $final$ method.");
         c.addDetail(1, "T is $synchronized$, if F is a sync-function.");
         c.addDetail(1, "T's throws clause implicitly includes $JavaLangThrowable$.");
         c.addDetail(1, "T is a member of the enclosing module-type.");
-        specialAnnotation(c, autumn.lang.internals.annotations.FunctionDefinition.class);
         c.addDetail(0, "Scopes:");
         c.addDetail(1, "A function creates a new scope for variables.");
         c.addDetail(1, "A function creates a new scope for labels.");
@@ -1957,8 +1962,8 @@ public class Main
 
         c = Construct.newInstance();
         c.name = "Once Expression";
-        c.klass = TernaryConditionalExpression.class; // TODO
-        c.summary = "A once-expression can be used to cache a value.";
+        c.klass = OnceExpression.class;
+        c.summary = "(Under Development) A once-expression can be used to cache a value.";
         c.addSyntax(0, "once $value$");
         c.addDetail(0, "Behavior:");
         c.addDetail(1, "During the first time the once-expression is evaluated:");
@@ -2639,12 +2644,6 @@ public class Main
                                          final Class type)
     {
         c.addDetail(0, "Related Boxed Type: " + type.getName());
-    }
-
-    private static void specialAnnotation(final Construct c,
-                                          final Class annotation)
-    {
-        c.addDetail(0, "The " + JSONBuilder.link(annotation) + " annotation is automatically applied.");
     }
 
     /**
