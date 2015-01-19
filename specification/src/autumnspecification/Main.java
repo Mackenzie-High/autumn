@@ -1,8 +1,10 @@
 package autumnspecification;
 
 import autumn.lang.LocalsMap;
+import autumn.lang.Record;
 import autumn.lang.compiler.ast.nodes.*;
 import autumn.lang.compiler.errors.ErrorCode;
+import autumn.lang.internals.AbstractFunctor;
 import autumn.lang.internals.AbstractRecord;
 import com.google.common.collect.Maps;
 import high.mackenzie.autumn.lang.compiler.compilers.Importer;
@@ -216,7 +218,8 @@ public class Main
         c.addDetail(2, "The method does not take any formal-parameters.");
         c.addDetail(2, "The return-type of the method is $JavaLangString$[].");
         c.addDetail(2, "The method is an annotation-method.");
-        inheritMethods(c, 1, Annotation.class);
+        c.addDetail(1, "T inherits the following special methods from its supertypes.");
+        inheritMethods(c, 2, Annotation.class);
         c.addExample(EXAMPLE_1, 52);
         c.addExample(EXAMPLE_2, 51);
         Index.add(c);
@@ -244,6 +247,8 @@ public class Main
         c.addDetail(1, "T does not directly declare any fields or methods.");
         c.addDetail(2, "T inherits all the non $private$ fields of its supertypes.");
         c.addDetail(2, "T inherits all the non $private$ methods of its supertypes.");
+        c.addDetail(2, "In particular, T inherits the following special methods from its supertypes.");
+        inheritMethods(c, 3, Throwable.class);
         typedec(c);
         usetype(c, "super");
         c.addCheck(ErrorCode.EXPECTED_CLASS_TYPE, "The type of <i>super</i> must be a class-type.");
@@ -283,7 +288,8 @@ public class Main
         c.addDetail(3, "This method retrieves an enum-constant based on its name.");
         c.addDetail(3, "This method throws a $JavaLangNullPointerException$, if name is null.");
         c.addDetail(3, "This method throws a $JavaLangIllegalArgumentException$, if the named enum-constant cannot be found.");
-        inheritMethods(c, 1, Enum.class);
+        c.addDetail(1, "T inherits the following special methods from its supertypes.");
+        inheritMethods(c, 2, Enum.class);
         c.addCheck(ErrorCode.DUPLICATE_CONSTANT, "Enum constants cannot share their name.");
         c.addExample(EXAMPLE_1, 54);
         c.addExample(EXAMPLE_2, 55);
@@ -324,8 +330,8 @@ public class Main
         c.addDetail(2, "T declares bridge methods for method set(int, $JavaLangObject$).");
         c.addDetail(3, "For X, where X is T or a supertype thereof, such that X is also a subtype of $AutumnLangRecord$:");
         c.addDetail(4, "set(int, $JavaLangObject$) : X is a bridge method in T.");
-        c.addDetail(2, "T inherits the following method declarations from its supertypes.");
-        inheritMethods(c, 3, AbstractRecord.class);
+        c.addDetail(2, "T inherits the following special method declarations from its supertypes.");
+        inheritMethods(c, 3, Record.class);
         typedec(c);
         c.addCheck(ErrorCode.DUPLICATE_ELEMENT, "The <i>name</i> of each element must be unique within the enclosing definition.");
         usetype(c, "element.type");
@@ -389,7 +395,7 @@ public class Main
         c.addDetail(2, "T provides a special static method instance() : T.");
         c.addDetail(3, "The method returns an instance of T in which each element is set to is default value.");
         c.addDetail(3, "The method always returns the same object.");
-        c.addDetail(2, "T inherits the following method declarations from its supertypes.");
+        c.addDetail(2, "T inherits the following special methods from its supertypes.");
         inheritMethods(c, 3, AbstractRecord.class);
         typedec(c);
         c.addCheck(ErrorCode.DUPLICATE_ELEMENT, "The <i>name</i> of each element must be unique within the enclosing definition.");
@@ -457,7 +463,7 @@ public class Main
         c.addDetail(2, "T provides a special static method instance() : T.");
         c.addDetail(3, "The method returns an instance of T in which each element is set to is default value.");
         c.addDetail(3, "The method always returns the same object.");
-        c.addDetail(2, "T inherits the following method declarations from its supertypes.");
+        c.addDetail(2, "T inherits the following special methods from its supertypes.");
         inheritMethods(c, 3, AbstractRecord.class);
         typedec(c);
         c.addCheck(ErrorCode.DUPLICATE_ELEMENT, "The <i>name</i> of each element must be unique within the enclosing definition.");
@@ -516,6 +522,8 @@ public class Main
         c.addDetail(4, "T.formals.length must equal S.formals.length");
         c.addDetail(4, "T.formals<sub>i</sub> must be a subtype of S.formals<sub>i</sub> ∀ <i>i</i>");
         c.addDetail(4, "T.return-type must be a subtype of S.return-type");
+        c.addDetail(1, "T inherits the following special methods from its supertypes.");
+        inheritMethods(c, 2, AbstractFunctor.class);
         typedec(c);
         usetype(c, "super");
         usetype(c, "param<sub>i</sub>");
