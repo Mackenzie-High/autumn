@@ -338,6 +338,9 @@ public class Main
         c.addDetail(4, "The name of G is the name of E.");
         c.addDetail(4, "G does not take any formal-parameters.");
         c.addDetail(4, "The return-type of G is the static-type of element E.");
+        c.addDetail(2, "T provides bridge methods for each setter method S of an element E.");
+        c.addDetail(3, "For X, where X is a supertype of T, such that X also declares E:");
+        c.addDetail(4, "S : T is a setter method declared in T.");
         c.addDetail(2, "T declares bridge methods for method set(int, $JavaLangObject$).");
         c.addDetail(3, "For X, where X is T or a supertype thereof, such that X is also a subtype of $AutumnLangRecord$:");
         c.addDetail(4, "set(int, $JavaLangObject$) : X is a bridge method in T.");
@@ -358,7 +361,6 @@ public class Main
 
         // The documentation of structs is finished.
         // TODO: Finish the implementation and testing.
-        //
         c = Construct.newInstance();
         c.name = "Struct Definition";
         c.klass = StructDefinition.class;
@@ -401,6 +403,10 @@ public class Main
         c.addDetail(4, "G does not take any formal-parameters.");
         c.addDetail(4, "The return-type of G is the static-type of element E.");
         c.addDetail(4, "G returns the value stored in element E in instance I.");
+        c.addDetail(2, "T provides bridge methods for each setter method S of an element E.");
+        c.addDetail(3, "For X, where X is a supertype of T, such that X also declares E:");
+        c.addDetail(4, "S : X is a bridge method in T.");
+        c.addDetail(4, "S : T is invoked by the bridge method.");
         c.addDetail(2, "T provides bridge methods for method set(int, $JavaLangObject$).");
         c.addDetail(3, "For X, where X is T or a supertype thereof, such that X is also a subtype of $AutumnLangRecord$:");
         c.addDetail(4, "set(int, $JavaLangObject$) : X is a bridge method in T.");
@@ -426,6 +432,8 @@ public class Main
         // Tuple Definitions
         ////////////////////////////////////////////////////////////////////////////////////////////
 
+        // The documentation of tuples is finished.
+        // TODO: Finish the implementation and testing.
         c = Construct.newInstance();
         c.name = "Tuple Definition";
         c.klass = TupleDefinition.class;
