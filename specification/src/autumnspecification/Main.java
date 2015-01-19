@@ -338,7 +338,7 @@ public class Main
         c.addDetail(4, "The name of G is the name of E.");
         c.addDetail(4, "G does not take any formal-parameters.");
         c.addDetail(4, "The return-type of G is the static-type of element E.");
-        c.addDetail(2, "T provides a bridge setter methods for each inherited element E.");
+        c.addDetail(2, "T provides bridge setter methods for each inherited element E.");
         c.addDetail(3, "For X, where X is a supertype of T, such that X also declares E:");
         c.addDetail(4, "S : T is a setter method declared in T.");
         c.addDetail(2, "T declares bridge methods for method set(int, $JavaLangObject$).");
@@ -403,7 +403,7 @@ public class Main
         c.addDetail(4, "G does not take any formal-parameters.");
         c.addDetail(4, "The return-type of G is the static-type of element E.");
         c.addDetail(4, "G returns the value stored in element E in instance I.");
-        c.addDetail(2, "T provides a bridge setter methods for each inherited element E.");
+        c.addDetail(2, "T provides bridge setter methods for each inherited element E.");
         c.addDetail(3, "For X, where X is a supertype of T, such that X also declares E:");
         c.addDetail(4, "S : X is a bridge method in T.");
         c.addDetail(4, "S : T is invoked by the bridge method.");
@@ -477,7 +477,7 @@ public class Main
         c.addDetail(4, "G does not take any formal-parameters.");
         c.addDetail(4, "The return-type of G is the static-type of element E.");
         c.addDetail(4, "G returns the value stored in element E in instance I.");
-        c.addDetail(2, "T provides a bridge setter methods for each inherited element E.");
+        c.addDetail(2, "T provides bridge setter methods for each inherited element E.");
         c.addDetail(3, "For X, where X is a supertype of T, such that X also declares E:");
         c.addDetail(4, "S : X is a bridge method in T.");
         c.addDetail(4, "S : T is invoked by the bridge method.");
