@@ -93,6 +93,7 @@ public class Main
         // Modules
         ////////////////////////////////////////////////////////////////////////////////////////////
 
+        // Remove the prohibition on anonymous modules containing functions.
         c = Construct.newInstance();
         c.name = "Module";
         c.klass = Module.class;
@@ -101,7 +102,7 @@ public class Main
         c.addSyntax(0, "<i>$module-member$<sub>2</sub></i>");
         c.addSyntax(0, "<i>$module-member$<sub>n</sub></i>");
         c.addDetail(0, "A module is a component of a compilation-unit that usually corresponds to a source file.");
-        c.addDetail(0, "Regarding the module-type T of created by a definition M:");
+        c.addDetail(0, "Regarding the module-type T created by a definition M:");
         c.addDetail(1, "T is a form of class-type.");
         c.addDetail(1, "T has the " + JSONBuilder.link(autumn.lang.internals.annotations.ModuleDefinition.class) + " annotation applied directly to it.");
         c.addDetail(1, "T is both $public$ and $final$.");
@@ -111,7 +112,7 @@ public class Main
         c.addDetail(1, "T does not define any $public$ constructors.");
         c.addDetail(2, "This is because an instance of a module is a singleton object.");
         c.addDetail(1, "T defines a special method: instance() : T");
-        c.addDetail(2, "This method is $public$ and $static$.");
+        c.addDetail(2, "This method is $public$ and $static$ and $final$.");
         c.addDetail(2, "This method always returns the singleton instance of the module.");
         c.addDetail(1, "T defines a special method: moduleInfo () : $AutumnLangModuleInfo$");
         c.addDetail(2, "This method is $public$ and $final$.");
@@ -120,15 +121,14 @@ public class Main
         c.addDetail(2, "This method is $public$ and $final$.");
         c.addDetail(3, "This method is a low-level method that is not intended for direct use by programmers.");
         c.addDetail(3, "This method is used to implement delegates.");
-        c.addDetail(2, "For each function F in M, there is a #public# $static$ method in T.");
-        c.addDetail(1, "T inherits the following special methods from its supertypes.");
+        c.addDetail(1, "T inherits the following method declarations from its supertypes.");
         inheritMethods(c, 2, AbstractModule.class);
         c.addCheck(ErrorCode.MISSING_MODULE_DIRECTIVE, "A module must contain a module-directive.");
         c.addCheck(ErrorCode.DUPLICATE_MODULE_DIRECTIVE, "A module can only contain one module-directive.");
         typedec(c);
-        c.addCheck(ErrorCode.FUNCTION_IN_ANONYMOUS_MODULE, "An anonymous module cannot contain any functions.");
+        // c.addCheck(ErrorCode.FUNCTION_IN_ANONYMOUS_MODULE, "An anonymous module cannot contain any functions.");
         c.addCheck(ErrorCode.DUPLICATE_FUNCTION, "No two functions in the same module can share their name and parameter-list descriptor.");
-        c.addCheck(ErrorCode.NAME_CONFLICT, "The name of a user-defined function cannot also be the name of a predefined function.");
+        c.addCheck(ErrorCode.NAME_CONFLICT, "The name of a user-defined function cannot also be the name of a predefined $static$ method.");
         c.addExample(EXAMPLE_1, 0);
         Index.add(c);
 
@@ -375,8 +375,6 @@ public class Main
         c.addDetail(3, "C takes one formal-parameter P for each element E.");
         c.addDetail(4, "P's static-type is the static-type of the element E.");
         c.addDetail(4, "C will assign the value of P to element E in the new instance.");
-        c.addDetail(3, "The order of C's formal-parameters is the same as the elements in the list of elements.");
-        c.addDetail(4, "This is a consequence of the aforedescribed user-defined total-ordering of the elements.");
         c.addDetail(2, "For each element E in an instance I of T:");
         c.addDetail(3, "T contains a setter method S for element E.");
         c.addDetail(4, "The name of S is the name of E.");
@@ -494,7 +492,7 @@ public class Main
         c.addSyntaxHR();
         annotationList(c);
         c.addSyntax(0, "$functor$ <i>$name$</i> ( <i>$param$<sub>1</sub></i> , ... , <i>$param$<sub>n</sub></i> ) : <i>$return-type$</i> $extends$ </i>$super$</i> ;");
-        c.addDetail(0, "Regarding the type T created by a functor-definition:");
+        c.addDetail(0, "Regarding the functor-type T created by a functor-definition:");
         c.addDetail(1, "T is a form of class-type.");
         c.addDetail(1, "T has the " + JSONBuilder.link(autumn.lang.internals.annotations.FunctorDefinition.class) + " annotation applied directly to it.");
         c.addDetail(1, "T is $public$.");
@@ -518,14 +516,14 @@ public class Main
         c.addDetail(3, "This method retrieves the functor that the T functor wraps");
         c.addDetail(2, "method: apply ($AutumnLangInternalsArgumentStack$) : void");
         c.addDetail(3, "This method is the low-level method that handles invocations of the functor.");
-        c.addDetail(3, "T is covariant in terms of a supertype S, iff:");
-        c.addDetail(4, "Ǝ <i>i</i> such that T.formals<sub>i</sub> is a subtype of S.formals<sub>i</sub>");
-        c.addDetail(4, "T.return-type is a subtype of S.return-type");
-        c.addDetail(3, "Subtyping Requirements:");
-        c.addDetail(4, "Let S be any of the super functor-types of T.");
-        c.addDetail(4, "T.formals.length must equal S.formals.length");
-        c.addDetail(4, "T.formals<sub>i</sub> must be a subtype of S.formals<sub>i</sub> ∀ <i>i</i>");
-        c.addDetail(4, "T.return-type must be a subtype of S.return-type");
+        c.addDetail(1, "T is covariant in terms of a supertype S, iff:");
+        c.addDetail(2, "Ǝ <i>i</i> such that T.formals<sub>i</sub> is a subtype of S.formals<sub>i</sub>");
+        c.addDetail(2, "T.return-type is a subtype of S.return-type");
+        c.addDetail(1, "Subtyping Requirements:");
+        c.addDetail(2, "Let S be any of the super functor-types of T.");
+        c.addDetail(2, "T.formals.length must equal S.formals.length");
+        c.addDetail(2, "T.formals<sub>i</sub> must be a subtype of S.formals<sub>i</sub> ∀ <i>i</i>");
+        c.addDetail(2, "T.return-type must be a subtype of S.return-type");
         c.addDetail(1, "T inherits the following special methods from its supertypes.");
         inheritMethods(c, 2, AbstractFunctor.class);
         typedec(c);
@@ -543,6 +541,8 @@ public class Main
         // Functions
         ////////////////////////////////////////////////////////////////////////////////////////////
 
+        // Function is done, except we need to finish documentation about @Infer, @Setup, @Start, @Test, and @Sync.
+        // Function is completely tested.
         c = Construct.newInstance();
         c.name = "Function Definition";
         c.klass = FunctionDefinition.class;
@@ -577,6 +577,7 @@ public class Main
         usetype(c, "<i>param<sub>i</sub></i>.type");
         c.addCheck(ErrorCode.EXPECTED_VARIABLE_TYPE, "The type of each parameter must be a variable-type.");
         usetype(c, "<i>return-type</i>");
+        c.addExample(EXAMPLE_1, 0);
         Index.add(c);
 
         ////////////////////////////////////////////////////////////////////////////////////////////
