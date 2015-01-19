@@ -93,7 +93,10 @@ public class Main
         // Modules
         ////////////////////////////////////////////////////////////////////////////////////////////
 
-        // Remove the prohibition on anonymous modules containing functions.
+        // The documentation of modules is finished.
+        // TODO: Remove the prohibition on anonymous modules containing functions.
+        // TODO: Finish implementation and testing.
+        // TODO: Add some more examples.
         c = Construct.newInstance();
         c.name = "Module";
         c.klass = Module.class;
@@ -304,6 +307,10 @@ public class Main
         // Design Definitions
         ////////////////////////////////////////////////////////////////////////////////////////////
 
+        // The documentation of designs is finished.
+        // TODO: Finish the implementation and testing.
+        // TODO: Add an example that shows that an inherited element can have the smae name as a newly declared element.
+        // TODO: Do something about that repeated DUPLICATE_ANNOTATION static-check in the documentation.
         c = Construct.newInstance();
         c.name = "Design Definition";
         c.klass = DesignDefinition.class;
@@ -321,7 +328,7 @@ public class Main
         c.addDetail(1, "T is a subtype of interface $AutumnLangRecord$.");
         c.addDetail(1, "T inherits all the elements that are declared in its supertypes.");
         c.addDetail(1, "T declares the following methods:");
-        c.addDetail(2, "For each element E in an instance I of T:");
+        c.addDetail(2, "For each element E in T:");
         c.addDetail(3, "T contains a setter method S for element E.");
         c.addDetail(4, "The name of S is the name of E.");
         c.addDetail(4, "S takes a single formal-parameter P.");
@@ -334,14 +341,14 @@ public class Main
         c.addDetail(2, "T declares bridge methods for method set(int, $JavaLangObject$).");
         c.addDetail(3, "For X, where X is T or a supertype thereof, such that X is also a subtype of $AutumnLangRecord$:");
         c.addDetail(4, "set(int, $JavaLangObject$) : X is a bridge method in T.");
-        c.addDetail(2, "T inherits the following special method declarations from its supertypes.");
+        c.addDetail(2, "T inherits the following method declarations from its supertypes.");
         inheritMethods(c, 3, Record.class);
         typedec(c);
-        c.addCheck(ErrorCode.DUPLICATE_ELEMENT, "The <i>name</i> of each element must be unique within the enclosing definition.");
+        c.addCheck(ErrorCode.DUPLICATE_ELEMENT, "The <i>name</i> of each element must be unique within the definition itself.");
         usetype(c, "element.type");
         c.addCheck(ErrorCode.EXPECTED_VARIABLE_TYPE, "The <i>type</i> of each <i>element</i> must be a variable-type.");
         c.addCheck(ErrorCode.RETYPED_ELEMENT, "The type of an element must be the same in all the declarations of the element.");
-        c.addCheck(ErrorCode.NAME_CONFLICT, "The name of an element cannot be the name of a predefined method.");
+        c.addCheck(ErrorCode.NAME_CONFLICT, "The name of an element cannot be the name of an inherited method.");
         c.addExample(EXAMPLE_1, 123);
         Index.add(c);
 
@@ -366,16 +373,18 @@ public class Main
         c.addDetail(1, "T is a subtype of interface $AutumnLangRecord$.");
         c.addDetail(1, "T is a subtype of class $AutumnLangInternalsAbstractRecord$.");
         c.addDetail(1, "T inherits all the elements that are declared in its supertypes.");
-        c.addDetail(2, "The order of the elements in T is lexicographical.");
-        c.addDetail(3, "On the other hand, the order of the elements in a tuple is user-defined.");
-        c.addDetail(3, "As a consequence, T can implicitly inherit elements.");
+        c.addDetail(1, "The order of the elements in T is lexicographical.");
+        c.addDetail(2, "On the other hand, the order of the elements in a tuple is user-defined.");
+        c.addDetail(2, "As a consequence, T can implicitly inherit elements.");
         c.addDetail(1, "T declares the following methods and constructors:");
         c.addDetail(2, "Let C denote the sole constructor declared by T:");
         c.addDetail(3, "C creates an immutable instance of T.");
         c.addDetail(3, "C takes one formal-parameter P for each element E.");
         c.addDetail(4, "P's static-type is the static-type of the element E.");
         c.addDetail(4, "C will assign the value of P to element E in the new instance.");
-        c.addDetail(2, "For each element E in an instance I of T:");
+        c.addDetail(3, "The order of the parameters in C is the same as the order of the elements in T.");
+        c.addDetail(2, "For each element E in T:");
+        c.addDetail(3, "Let I represent an instance of T.");
         c.addDetail(3, "T contains a setter method S for element E.");
         c.addDetail(4, "The name of S is the name of E.");
         c.addDetail(4, "S takes a single formal-parameter P.");
@@ -397,14 +406,14 @@ public class Main
         c.addDetail(2, "T provides a special static method instance() : T.");
         c.addDetail(3, "The method returns an instance of T in which each element is set to is default value.");
         c.addDetail(3, "The method always returns the same object.");
-        c.addDetail(2, "T inherits the following special methods from its supertypes.");
+        c.addDetail(2, "T inherits the following special method declarations from its supertypes.");
         inheritMethods(c, 3, AbstractRecord.class);
         typedec(c);
         c.addCheck(ErrorCode.DUPLICATE_ELEMENT, "The <i>name</i> of each element must be unique within the enclosing definition.");
         usetype(c, "element.type");
         c.addCheck(ErrorCode.EXPECTED_VARIABLE_TYPE, "The <i>type</i> of each <i>element</i> must be a variable-type.");
         c.addCheck(ErrorCode.RETYPED_ELEMENT, "The type of an element must be the same in all the declarations of the element.");
-        c.addCheck(ErrorCode.NAME_CONFLICT, "The name of an element cannot be the name of a predefined method.");
+        c.addCheck(ErrorCode.NAME_CONFLICT, "The name of an element cannot be the name of an inherited method.");
         c.addExample(EXAMPLE_1, 120);
         c.addExample(EXAMPLE_2, 121);
         c.addExample(EXAMPLE_3, 122);
