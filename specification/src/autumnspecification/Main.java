@@ -553,10 +553,11 @@ public class Main
         inheritMethods(c, 2, AbstractFunctor.class);
         typedec(c);
         usetype(c, "param<sub>i</sub>");
+        c.addCheck(ErrorCode.EXPECTED_VARIABLE_TYPE, "The type of param<sub>i</sub> must be a variable-type.");
         usetype(c, "return-type");
         usetype(c, "super");
         c.addCheck(ErrorCode.EXPECTED_CLASS_TYPE, "The type of <i>super</i> must be a class-type.");
-        c.addCheck(ErrorCode.EXPECTED_DEFINED_FUNCTOR_TYPE, "The type of <i>super</i> must be a class-type with the FunctorDefinition annotation applied to it."); // TODO
+        c.addCheck(ErrorCode.EXPECTED_DEFINED_FUNCTOR_TYPE, "The type of <i>super</i> must have the FunctorDefinition annotation applied directly to it."); // TODO: link to the type
         c.addCheck(ErrorCode.CIRCULAR_INHERITANCE, "The new type cannot be a subtype of itself either directly or indirectly.");
         c.addCheck(ErrorCode.COVARIANCE_VIOLATION, "The subtyping requirements must be obeyed.");
         c.addExample(EXAMPLE_1, 91);
