@@ -21,5 +21,7 @@ high.mackenzie.autumn.lang.compiler.typesystem
 high.mackenzie.autumn.lang.compiler.typesystem.design
 high.mackenzie.autumn.lang.compiler.utils
 high.mackenzie.autumn.resources
+high.mackenzie.autumn.resources.dev
+high.mackenzie.autumn.util
 high.mackenzie.autumn.util.json
 high.mackenzie.autumn.util.json.parser
