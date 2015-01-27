@@ -1,0 +1,24 @@
+module Main in execution;
+
+import java.lang.reflect.Modifier;
+
+@Start
+defun main (args : String[]) : void
+{
+    val boo = F::findMethod(class Main, "boo", []);
+    val moo = F::findMethod(class Main, "moo", []);
+
+    assert Modifier::isSynchronized(boo.getModifiers()) == false;
+    assert Modifier::isSynchronized(moo.getModifiers()) == true;
+}
+
+defun boo () : void
+{
+    nop;
+}
+
+@Sync
+defun moo () : void
+{
+    nop;
+}

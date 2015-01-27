@@ -3,7 +3,7 @@ package autumn.util.test;
 import autumn.lang.Delegate;
 import autumn.lang.Module;
 import autumn.util.F;
-import autumn.util.T;
+import high.mackenzie.autumn.util.T;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
@@ -212,7 +212,7 @@ public final class UnitTester
                       final AtomicLong time,
                       final Module module)
     {
-        for (Delegate function : module.moduleInfo().functions())
+        for (Delegate function : module.info().functions())
         {
             // Get the reflective view of the function.
             final Method method = function.method();

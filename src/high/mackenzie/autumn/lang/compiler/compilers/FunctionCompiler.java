@@ -1,9 +1,10 @@
 package high.mackenzie.autumn.lang.compiler.compilers;
 
-import autumn.lang.annotations.Setup;
 import autumn.lang.compiler.ast.nodes.FormalParameter;
 import autumn.lang.compiler.ast.nodes.FunctionDefinition;
 import autumn.lang.compiler.ast.nodes.Variable;
+import autumn.lang.compiler.errors.ErrorCode;
+import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import high.mackenzie.autumn.lang.compiler.typesystem.CustomFormalParameter;
@@ -13,8 +14,9 @@ import high.mackenzie.autumn.lang.compiler.typesystem.design.IAnnotationType;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IFormalParameter;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IMethod;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IVariableType;
-import high.mackenzie.autumn.lang.compiler.utils.TypeSystemUtils;
 import high.mackenzie.autumn.lang.compiler.utils.Utils;
+import high.mackenzie.autumn.resources.Finished;
+import java.lang.reflect.Modifier;
 import java.util.List;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.AbstractInsnNode;
@@ -29,6 +31,7 @@ import org.objectweb.asm.tree.TypeInsnNode;
  *
  * @author Mackenzie High
  */
+@Finished("2015/01/18")
 final class FunctionCompiler
         extends AbstractFunctionCompiler
         implements ICompiler
@@ -80,7 +83,7 @@ final class FunctionCompiler
     @Override
     public void performTypeDeclaration()
     {
-        // Do not do anything during this pass.
+        // Pass
     }
 
     /**
@@ -89,13 +92,17 @@ final class FunctionCompiler
     @Override
     public void performTypeInitialization()
     {
-        // Add this function's type to the collection of functions in the module's type.
+        /**
+         * Add this function's type to the collection of functions in the module's type.
+         */
         final List<IMethod> functions = Lists.newLinkedList(module.type.getMethods());
         functions.add(type);
         module.type.setMethods(functions);
 
-        final int modifiers = Opcodes.ACC_PUBLIC + Opcodes.ACC_STATIC + Opcodes.ACC_FINAL;
-
+        /**
+         * Convert the Abstract-Syntax-Tree representations of the formal-parameters
+         * to their type-system representations.
+         */
         final List<IFormalParameter> params = Lists.newArrayList();
         {
             for (FormalParameter p : node.getParameters().getParameters())
@@ -103,11 +110,8 @@ final class FunctionCompiler
                 final IVariableType param_type = module.imports.resolveVariableType(p.getType());
 
                 final CustomFormalParameter param = new CustomFormalParameter();
-
                 param.setAnnotations(ImmutableList.<IAnnotation>of());
-
                 param.setType(param_type);
-
                 params.add(param);
 
                 param_vars.add(p.getVariable());
@@ -115,9 +119,12 @@ final class FunctionCompiler
             }
         }
 
+        /**
+         * Create the type-system representation the function.
+         */
         type.setOwner(module.type);
         type.setAnnotations(module.anno_utils.typesOf(node.getAnnotations()));
-        type.setModifiers(modifiers);
+        type.setModifiers(Opcodes.ACC_PUBLIC | Opcodes.ACC_STATIC | Opcodes.ACC_FINAL | (isAnnotationPresent(program.typesystem.utils.SYNC) ? Modifier.SYNCHRONIZED : 0));
         type.setName(node.getName().getName());
         type.setParameters(params);
         type.setReturnType(module.imports.resolveReturnType(node.getReturnType()));
@@ -126,11 +133,6 @@ final class FunctionCompiler
          * Add a special annotation.
          */
         module.anno_utils.add(type, autumn.lang.internals.annotations.FunctionDefinition.class);
-
-        /**
-         * Check the list of annotations.
-         */
-        program.checker.checkAnnotations(node.getAnnotations(), type.getAnnotations());
     }
 
     /**
@@ -139,6 +141,74 @@ final class FunctionCompiler
     @Override
     public void performTypeStructureChecking()
     {
+        /**
+         * Check the list of annotations.
+         */
+        program.checker.checkAnnotations(node.getAnnotations(), type.getAnnotations());
+
+        /**
+         * Some names cannot be used.
+         */
+        program.checker.checkName(node.getName(), "instance");
+
+        /**
+         * Check the signature of a infer-function.
+         */
+        if (isAnnotationPresent(program.typesystem.utils.INFER))
+        {
+            boolean error = false;
+
+            if (param_types.isEmpty())
+            {
+                error = true;
+            }
+            else if (param_types.get(0).isReferenceType() == false)
+            {
+                error = true;
+            }
+            else if (type.getReturnType().equals(param_types.get(0)) == false)
+            {
+                error = true;
+            }
+
+            if (error)
+            {
+                program.checker.reportWrongSignatureForAnnotation(this, ErrorCode.WRONG_SIGNATURE_FOR_INFER, "(T, ...) : T, where T is some reference-type");
+            }
+        }
+
+        /**
+         * Check the signature of a start-function.
+         */
+        if (isAnnotationPresent(program.typesystem.utils.START))
+        {
+            if (type.getNamePlusDescriptor().equals("main([Ljava/lang/String;)V") == false)
+            {
+                program.checker.reportWrongSignatureForAnnotation(this, ErrorCode.WRONG_SIGNATURE_FOR_START, "main (String[]) : void");
+            }
+        }
+
+        /**
+         * Check the signature of a setup-function.
+         */
+        if (isAnnotationPresent(program.typesystem.utils.SETUP))
+        {
+            if (type.getDescriptor().equals("()V") == false)
+            {
+                program.checker.reportWrongSignatureForAnnotation(this, ErrorCode.WRONG_SIGNATURE_FOR_SETUP, "() : void");
+            }
+        }
+
+        /**
+         * Check the signature of a test-function.
+         */
+        if (isAnnotationPresent(program.typesystem.utils.TEST))
+        {
+            if (type.getDescriptor().equals("(Lautumn/util/test/TestCase;)V") == false)
+            {
+                program.checker.reportWrongSignatureForAnnotation(this, ErrorCode.WRONG_SIGNATURE_FOR_TEST, "(TestCase) : void");
+            }
+        }
     }
 
     /**
@@ -189,6 +259,11 @@ final class FunctionCompiler
         allocator.checkExitStatus();
     }
 
+    /**
+     * This method generates the bytecode representation of the function.
+     *
+     * @return the aforedescribed bytecode.
+     */
     public MethodNode build()
     {
         // Generated Bytecode:
@@ -202,32 +277,56 @@ final class FunctionCompiler
         //
         ///////////////////////////////////////////////////////////////////////////////////////////
 
+        /**
+         * Generate the bytecode, excluding the body.
+         */
         final MethodNode method = Utils.bytecodeOf(module, type);
 
-        method.instructions.clear();
+        /**
+         * The body of the function is simply a statement.
+         * So, we will use a statement-compiler to compile the body.
+         */
+        final StatementCodeGenerator codegen = new StatementCodeGenerator(this);
+
+        /**
+         * At runtime, execution will goto the recur-label,
+         * whenever a recur-statement is executed inside the function.
+         */
+        method.instructions.add(recur_label);
+
+        /**
+         * Generate bytecode that assigns default-values to the local-variables.
+         */
+        vars.initScope();
+
+        /**
+         * Generate the bytecode of the body.
+         */
+        node.getBody().accept(codegen);
+
+        /**
+         * Transfer the generated instructions into the generated method.
+         */
+        for (AbstractInsnNode insn : instructions.toArray())
         {
-            final StatementCodeGenerator codegen = new StatementCodeGenerator(this);
-
-            method.instructions.add(recur_label);
-
-            vars.initScope();
-
-            node.getBody().accept(codegen);
-
-            for (AbstractInsnNode x : instructions.toArray())
-            {
-                method.instructions.add(x);
-            }
+            method.instructions.add(insn);
         }
-//        method.instructions.add(new FieldInsnNode(Opcodes.GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;"));
-//        method.instructions.add(new LdcInsnNode("Hello World!"));
-//        method.instructions.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL, "java/io/PrintStream", "println", "(Ljava/lang/String;)V"));
-//        method.instructions.add(new InsnNode(Opcodes.RETURN));
 
+        /**
+         * Generate bytecode that throws an exception,
+         * if the function unexpectedly terminates.
+         */
         addDefaultMethodTermination(method);
 
+        /**
+         * If any bytecode level try-catch blocks were created,
+         * then add them to the generated method.
+         */
         method.tryCatchBlocks = ImmutableList.copyOf(trycatches);
 
+        /**
+         * Return the generated bytecode representation of the function.
+         */
         return method;
     }
 
@@ -270,27 +369,11 @@ final class FunctionCompiler
      *
      * @return true, iff the function returns void.
      */
-    public boolean isReturnTypeVoid()
+    private boolean isReturnTypeVoid()
     {
         return "void".equals(node.getReturnType().getName().getName())
                && node.getReturnType().getDimensions() == null
                && node.getReturnType().getNamespace() == null;
-    }
-
-    /**
-     * This method determines whether the function is a setup function.
-     *
-     * <p>
-     * A setup function is a function that has the Setup annotation applied to it.
-     * </p>
-     *
-     * @return true, if the function is a setup function.
-     */
-    public boolean isSetup()
-    {
-        assert type != null;
-
-        return TypeSystemUtils.isAnnotationPresent(type, Setup.class);
     }
 
     /**
@@ -299,9 +382,9 @@ final class FunctionCompiler
      * @param anno is the type of the annotation.
      * @return true, iff an annotation of the specified type is applied to this function.
      */
-    public boolean isAnnotationPresent(final IAnnotationType anno)
+    public final boolean isAnnotationPresent(final IAnnotationType anno)
     {
-        assert anno != null;
+        Preconditions.checkNotNull(anno);
 
         for (IAnnotation x : type.getAnnotations())
         {

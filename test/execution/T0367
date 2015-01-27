@@ -6,10 +6,9 @@ defun main (args : String[]) : void
     assert My::recursive() == "OK";
 }
 
-@Memoize
 defun state () : StringBuilder
 {
-    return new StringBuilder();
+    return once (new StringBuilder());
 }
 
 defun recursive () : String

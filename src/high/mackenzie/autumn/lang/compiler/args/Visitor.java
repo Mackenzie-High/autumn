@@ -270,39 +270,6 @@ public final class Visitor
      * {@inheritDoc}
      */
     @Override
-    public void visit_case_debug(final ITreeNode node)
-    {
-        visitChildren(node);
-
-        final Invokable function = new Invokable()
-        {
-            @Override
-            public void invoke()
-                    throws ClassNotFoundException,
-                           NoSuchMethodException,
-                           InvocationTargetException,
-                           IllegalAccessException
-            {
-                /**
-                 * Enter debug mode.
-                 */
-                Autumn.enableDebugger();
-                Autumn.enableAssume();
-
-                /**
-                 * Run the program.
-                 */
-                cmp.run(args);
-            }
-        };
-
-        run(function);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public void visit_case_test(final ITreeNode node)
     {
         visitChildren(node);

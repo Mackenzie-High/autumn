@@ -1,4 +1,4 @@
-package autumn.util;
+package high.mackenzie.autumn.resources.dev;
 
 import autumn.util.functors.Action;
 

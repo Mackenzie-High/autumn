@@ -1,0 +1,15 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    # This test shows that functions do not conflict with instance methods.
+    # This is true, even if they share their name and parameter-types.
+
+    assert My::hashCode() == My::instance().hashCode() + 17;
+}
+
+defun hashCode () : int
+{
+    return My::instance().hashCode() + 17;
+}

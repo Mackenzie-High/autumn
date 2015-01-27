@@ -15,6 +15,7 @@ import autumn.lang.compiler.ast.nodes.ContinueStatement;
 import autumn.lang.compiler.ast.nodes.DelegateStatement;
 import autumn.lang.compiler.ast.nodes.Element;
 import autumn.lang.compiler.ast.nodes.ExceptionHandler;
+import autumn.lang.compiler.ast.nodes.FunctionDefinition;
 import autumn.lang.compiler.ast.nodes.InstanceOfExpression;
 import autumn.lang.compiler.ast.nodes.IsOperation;
 import autumn.lang.compiler.ast.nodes.Label;
@@ -29,6 +30,7 @@ import autumn.lang.compiler.errors.ErrorCode;
 import autumn.lang.compiler.errors.ErrorReport;
 import autumn.lang.compiler.errors.IErrorReporter;
 import autumn.util.F;
+import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import high.mackenzie.autumn.lang.compiler.typesystem.design.IAnnotation;
@@ -1722,5 +1724,109 @@ final class StaticChecker
          * Issue the error-report to the user.
          */
         report(report);
+    }
+
+    /**
+     * This method reports that a function is a duplicate.
+     *
+     * @param function is basically the function itself.
+     */
+    public void reportDuplicateFunction(final FunctionCompiler function)
+    {
+        Preconditions.checkNotNull(function);
+
+        final ErrorCode ERROR_CODE = ErrorCode.DUPLICATE_FUNCTION;
+
+        final String MESSAGE = "Functions in the same module cannot share both their name and parameters.";
+
+        final ErrorReport report = new ErrorReport(function.node, ERROR_CODE, MESSAGE);
+
+        report.addDetail("Name", function.type.getName());
+
+        // TODO: Improve error details
+
+        /**
+         * Issue the error-report to the user.
+         */
+        report(report);
+    }
+
+    /**
+     * This method ensures that a name is not a given forbidden name.
+     *
+     * @param name is the name that may be forbidden.
+     * @param forbidden is the name that is unspeakable.
+     */
+    public void checkName(final Name name,
+                          final String forbidden)
+    {
+        Preconditions.checkNotNull(name);
+        Preconditions.checkNotNull(forbidden);
+
+        if (forbidden.equals(name.getName()))
+        {
+
+            final ErrorCode ERROR_CODE = ErrorCode.NAME_CONFLICT;
+
+            final String MESSAGE = "An unspeakable name was spoken.";
+
+            final ErrorReport report = new ErrorReport(name, ERROR_CODE, MESSAGE);
+
+            report.addDetail("Name", forbidden);
+
+            /**
+             * Issue the error-report to the user.
+             */
+            report(report);
+        }
+    }
+
+    /**
+     * This method reports that a compilation-unit contains more than one entry-point.
+     *
+     * @param function is one of the entry-points.
+     */
+    public void reportTooManyStarts(final FunctionDefinition node)
+    {
+        Preconditions.checkNotNull(node);
+
+        final ErrorCode ERROR_CODE = ErrorCode.TOO_MANY_STARTS;
+
+        final String MESSAGE = "A compilation-unit can only contain a single start-function.";
+
+        final ErrorReport report = new ErrorReport(node, ERROR_CODE, MESSAGE);
+
+        /**
+         * Issue the error-report to the user.
+         */
+        report(report);
+
+    }
+
+    /**
+     * This method reports that the signature of a function is inappropriate given a particular annotation.
+     *
+     * @param function is basically the function itself..
+     * @param code is the error-code to issue.
+     * @param signature is a description of what the function signature should be.
+     */
+    public void reportWrongSignatureForAnnotation(final FunctionCompiler function,
+                                                final ErrorCode code,
+                                                final String signature)
+    {
+        Preconditions.checkNotNull(function);
+        Preconditions.checkNotNull(code);
+
+        final String MESSAGE = "A different function signature is required.";
+
+        final ErrorReport report = new ErrorReport(function.node, code, MESSAGE);
+
+        report.addDetail("Required Signature", signature);
+
+        /**
+         * Issue the error-report to the user.
+         */
+        report(report);
+
     }
 }

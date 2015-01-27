@@ -8,11 +8,21 @@ import java.nio.charset.Charset;
 import autumn.lang.annotations.*;
 import autumn.lang.exceptions.*;
 import autumn.lang.internals.*;
+import autumn.lang.internals.annotations.*;
 import autumn.lang.*;
 import java.lang.reflect.*;
 import java.util.*;
 import com.google.common.collect.*;
+import high.mackenzie.autumn.util.*;
 
+
+/** 
+ * Special Functions
+ * 
+ * <p>
+ * <b>Implementation Note:</b> This class was auto-generated using a script.
+ * </p>
+ */ 
 public final class F 
 {
     
@@ -43,7 +53,7 @@ public final class F
     }
 
     
-    public static autumn.util.AsyncTask async (final autumn.util.functors.Action action) throws java.lang.NullPointerException
+    public static high.mackenzie.autumn.resources.dev.AsyncTask async (final autumn.util.functors.Action action) throws java.lang.NullPointerException
     {
 
         if(action == null) { throw new java.lang.NullPointerException(); }
@@ -439,7 +449,7 @@ public final class F
     {
 
         if(type == null) { throw new java.lang.NullPointerException(); }
-        return Struct.class.isAssignableFrom(type);
+        return type.isAnnotationPresent(StructDefinition.class);
     }
 
     
@@ -454,7 +464,7 @@ public final class F
     {
 
         if(type == null) { throw new java.lang.NullPointerException(); }
-        return Tuple.class.isAssignableFrom(type);
+        return type.isAnnotationPresent(TupleDefinition.class);
     }
 
     

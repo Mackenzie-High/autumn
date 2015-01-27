@@ -1,0 +1,7 @@
+module Main in typechecks;
+
+@Infer
+defun moo (x : int) : Object
+{
+    return null;
+}

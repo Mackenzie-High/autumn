@@ -38,6 +38,21 @@ public final class Runner
 
 
 
+
+        test("T0266", WRONG_SIGNATURE_FOR_TEST);
+        test("T0265", WRONG_SIGNATURE_FOR_TEST);
+        test("T0264", WRONG_SIGNATURE_FOR_TEST);
+        test("T0263", WRONG_SIGNATURE_FOR_START);
+        test("T0262", WRONG_SIGNATURE_FOR_START);
+        test("T0261", WRONG_SIGNATURE_FOR_START);
+        test("T0260", WRONG_SIGNATURE_FOR_SETUP);
+        test("T0259", WRONG_SIGNATURE_FOR_SETUP);
+        test("T0258", WRONG_SIGNATURE_FOR_INFER);
+        test("T0257", WRONG_SIGNATURE_FOR_INFER);
+        test("T0256", WRONG_SIGNATURE_FOR_INFER);
+        test("T0255", TOO_MANY_STARTS);
+        test("T0254", NAME_CONFLICT);
+        test("T0253", DUPLICATE_FUNCTION);
         test("T0252", VALUE_REQUIRED);
         test("T0251", NO_SUCH_METHOD);
         test("T0250", NO_SUCH_METHOD);

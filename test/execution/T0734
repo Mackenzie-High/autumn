@@ -1,0 +1,23 @@
+module Main in execution;
+
+import java.lang.reflect.Modifier;
+
+@Start
+defun main (args : String[]) : void
+{
+    val function = F::findMethod(class Main, "main", [class String[]]);
+
+    assert function.getName() == "main";
+
+    val parameters = F::iter(function.getParameterTypes());
+
+    assert parameters == [class String[]];
+
+    val modifiers = function.getModifiers();
+
+    assert Modifier::isPublic(modifiers);
+    assert Modifier::isStatic(modifiers);
+    assert Modifier::isFinal(modifiers);
+
+    assert function.getReturnType() == class void;
+}

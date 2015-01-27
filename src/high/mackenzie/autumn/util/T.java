@@ -1,4 +1,4 @@
-package autumn.util;
+package high.mackenzie.autumn.util;
 
 import autumn.lang.Module;
 import autumn.lang.Record;
@@ -8,6 +8,8 @@ import autumn.lang.exceptions.CheckedException;
 import autumn.lang.internals.ArgumentStack;
 import autumn.lang.internals.Helpers;
 import autumn.lang.internals.Operators;
+import high.mackenzie.autumn.resources.dev.AsyncTask;
+import autumn.util.F;
 import autumn.util.functors.Action;
 import autumn.util.functors.Function1;
 import autumn.util.functors.Function2;

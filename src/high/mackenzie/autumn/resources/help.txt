@@ -25,13 +25,13 @@ How to Use:
 
         autumn run <argument-0> <argument-1> ... <argument-n>
 
-        Note: The current directory must be an project folder.
+        Note: The current directory must be a project folder.
 
     To test a project:
 
         autumn test
 
-        Note: The current directory must be an project folder.
+        Note: The current directory must be a project folder.
 
     To print the version:
 

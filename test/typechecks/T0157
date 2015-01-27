@@ -4,7 +4,7 @@ annotation Anno;
 
 @Anno
 @Anno
-defun main (args : String) : void
+defun main (args : String[]) : void
 {
     nop;
 }

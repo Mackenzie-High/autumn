@@ -12,10 +12,22 @@ import java.util.Stack;
 /**
  * This class provides a few static utility methods for dealing with files.
  *
+ * <p>
+ * <b>Warning: This class is still under development.</b>
+ * </p>
+ *
  * @author Mackenzie High
  */
 public final class FileIO
 {
+    /**
+     * Sole Constructor.
+     */
+    private FileIO()
+    {
+        // Pass, because this is merely a static utility class.
+    }
+
     /**
      * This method creates an iterable whose iterator can iterate over all the files in a directory.
      *

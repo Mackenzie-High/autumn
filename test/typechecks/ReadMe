@@ -10,6 +10,7 @@ Test Index
 . . Duplicate Type
 . . Illegal Package - autumn
 . . Illegal Package - java
+. . T0253 = Duplicate Function
 . Module Directive
 . . T0241 = Duplicate Annotation
 . Annotation Definitions
@@ -95,20 +96,29 @@ Test Index
 . . Covariance Violation - Non Covariant Parameters
 . . Covariance Violation - Non Covariant Return Type
 . Function Definitions
-. . Duplicate Function
 . . T0157 = Duplicate Annotation
-. . Name - Illegal - instance
-. . Name - Illegal - module info
+. . T0254 = Name Conflict - "instance"
 . . T0182 = Parameter - No Such Type
 . . T0183 = Parameter - Inaccessible Type
 . . T0184 = Parameter - Expected Variable Type
 . . T0185 = Returns - No Such Type
 . . T0186 = Returns - Inaccessible Type
-. . Returns - Expected Return Type - (impossible to test)
+. . T0255 = Too Many Starts
+. . Wrong Signature for Annotation - @Infer
+. . . T0256 = Bad Parameter List
+. . . T0257 = Bad Parameter
+. . . T0258 = Bad Return Type
 . . Wrong Signature for Annotation - @Setup
+. . . T0259 = Bad Parameter List
+. . . T0260 = Bad Return Type
 . . Wrong Signature for Annotation - @Start
+. . . T0261 = Bad Name
+. . . T0262 = Bad Parameter List
+. . . T0263 = Bad Return Type
 . . Wrong Signature for Annotation - @Test
-. . Too Many Starts
+. . . T0264 = Bad Parameter List
+. . . T0265 = Bad Parameter
+. . . T0266 = Bad Return Type
 . .
 . Statements
 . . If-Elif-Else
@@ -318,6 +328,8 @@ Test Index
 . . . T0159 = Inaccessible Type
 . . . T0034 = Impossible Conversion
 . . Is
+. . . T0160 = No Such Type
+. . . T0161 = Inaccessible Type
 . . . T0035 = Impossible Conversion
 . Datums
 . . Boolean

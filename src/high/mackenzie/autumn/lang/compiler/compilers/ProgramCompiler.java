@@ -7,7 +7,6 @@ import autumn.lang.compiler.errors.IErrorReporter;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.common.io.Files;
-import high.mackenzie.autumn.lang.compiler.typesystem.design.IMethod;
 import high.mackenzie.autumn.lang.compiler.utils.Utils;
 import java.io.File;
 import java.util.List;
@@ -80,10 +79,15 @@ public final class ProgramCompiler
             classes.add(x.build());
         }
 
-        final List<IMethod> starts = this.findStart();
+        final List<FunctionCompiler> starts = this.findStart();
+
+        if (starts.size() > 1)
+        {
+            checker.reportTooManyStarts(starts.get(0).node);
+        }
 
         final String main_class = starts.size() == 1
-                ? Utils.sourceName(starts.get(0).getOwner())
+                ? Utils.sourceName(starts.get(0).type.getOwner())
                 : null;
 
         final CompiledProgram result = new CompiledProgram(main_class, dependencies, classes);
@@ -118,11 +122,11 @@ public final class ProgramCompiler
      * because only one function can be the program's entry-point.
      * </p>
      *
-     * @return the types of the functions that may be the program's entry-point.
+     * @return the functions that may be the program's entry-point.
      */
-    private List<IMethod> findStart()
+    private List<FunctionCompiler> findStart()
     {
-        final List<IMethod> result = Lists.newLinkedList();
+        final List<FunctionCompiler> result = Lists.newLinkedList();
 
         for (ModuleCompiler module : modules)
         {
@@ -130,7 +134,7 @@ public final class ProgramCompiler
             {
                 if (function.isAnnotationPresent(typesystem.utils.START))
                 {
-                    result.add(function.type);
+                    result.add(function);
                 }
             }
         }
@@ -173,6 +177,19 @@ public final class ProgramCompiler
     @Override
     public void performTypeStructureChecking()
     {
+        /**
+         * A compilation-unit can only contain a single start-function.
+         */
+        final List<FunctionCompiler> starts = this.findStart();
+
+        if (starts.size() > 1)
+        {
+            checker.reportTooManyStarts(starts.get(0).node);
+        }
+
+        /**
+         * Perform type-structure-checking on all the modules, etc.
+         */
         for (ModuleCompiler m : modules)
         {
             m.performTypeStructureChecking();
@@ -197,8 +214,7 @@ public final class ProgramCompiler
      * @param input are the modules in the program that will be compiled.
      * @param reporter is used to report errors.
      * @param loader is the class-loader used to find previously loaded types.
-     * @return the bytecode representation of the compiled program;
-     * or null, if compilation fails.
+     * @return the bytecode representation of the compiled program; or null, if compilation fails.
      */
     public static CompiledProgram compile(final List<Module> input,
                                           final IErrorReporter reporter,
@@ -244,6 +260,11 @@ public final class ProgramCompiler
         catch (TypeCheckFailed ex)
         {
             // Pass, because the error will be reported via the error-reporter object.
+        }
+        catch (Exception ex)
+        {
+            // TODO: should a generalized exception handler go here, in case of compiler bugs?
+            throw new RuntimeException(ex);
         }
 
         return null;

@@ -47,6 +47,10 @@ defun main (args : String[]) : void
     assert Main::F21() == "Chicky";
     assert Main::F22() == "Picky";
 
+    Main::F23();
+
+    assert F::iter( Main::F24() ) == [11, 13, 17, 19, 23];
+
     ////////////////////////////////////////////////////////////////////////////////////////////////
     // Check Return Types
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -147,6 +151,10 @@ defun main (args : String[]) : void
     let method = type.getMethod("F23", arguments);
     let returns = method.getReturnType();
     assert returns === (class void);
+
+    let method = type.getMethod("F24", arguments);
+    let returns = method.getReturnType();
+    assert returns === (class Object[]);
 }
 
 defun F01() : boolean
@@ -262,4 +270,17 @@ defun F22() : Object
 defun F23() : void
 {
     return;
+}
+
+defun F24() : Object[]
+{
+    val array = F::newArray(class Integer, 5) is Object[];
+
+    F::set(array, 0, 11);
+    F::set(array, 1, 13);
+    F::set(array, 2, 17);
+    F::set(array, 3, 19);
+    F::set(array, 4, 23);
+
+    return array;
 }

@@ -176,7 +176,7 @@ public final class Helpers
         /**
          * Otherwise, the delegate must refer to a user-defined function.
          */
-        for (Delegate d : module.moduleInfo().functions())
+        for (Delegate d : module.info().functions())
         {
             if (method.equals(d.name()))
             {

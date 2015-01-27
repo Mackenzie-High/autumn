@@ -126,7 +126,7 @@ public final class ModuleDelegate
     public void apply(ArgumentStack stack)
             throws Throwable
     {
-        owner.moduleInvokeFunction(index, stack);
+        owner.invoke(index, stack);
     }
 
     /**

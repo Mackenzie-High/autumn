@@ -29,8 +29,8 @@ Test Index
 . . Reflective Testing of the Module's Class
 . . T0716 = Special Annotations
 . . Special Methods - instance()
-. . Special Method - moduleInfo()
-. . Special Method - moduleInvokeFunction(int, ArgumentStack)
+. . Special Method - info()
+. . Special Method - invoke(int, ArgumentStack)
 . . Module Info
 . . . T0310 = Special Method - instance()
 . . . T0312 = Special Method - name()
@@ -127,12 +127,20 @@ Test Index
 . . TO284 = Covariance - Return Type
 . . T0285 = Covariance - Parameters
 . Functions
-. . Reflective Testing of the Reflective Method Object
+. . T0734 = Reflective Testing of the Reflective Method Object
+. . T0726 = Synchronized
+. . T0727 = Setup
 . . T0724 = Special Annotations
 . . T0064 = Checked Exceptions
-. . Annotation Lists
-. . Parameter Lists
-. . T0063 = Return Types                   # TODO: Add array return-types to the test.
+. . T0725 = Annotation Lists
+. . T0730 = Parameter List - Empty
+. . T0731 = Parameter List - Single
+. . T0732 = Parameter List - Multiple
+. . T0733 = Parameter List - Different Types of Elements
+. . T0063 = Different Types of Return Types
+. . T0728 = Default Termination - Non Void
+. . T0729 = Default Termination - Void
+. . T0735 = Functions do not conflict with instance methods.
 . Statements
 . . Nop = No Test Needed
 . . Expression = No Test Needed

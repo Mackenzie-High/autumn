@@ -22,7 +22,7 @@ public interface Module
      *
      * @return the singleton object that stores information regarding this module.
      */
-    public ModuleInfo moduleInfo();
+    public ModuleInfo info();
 
     /**
      * This method invokes a function within this module.
@@ -43,7 +43,7 @@ public interface Module
      * @param arguments contains the arguments to pass to the function.
      * @throws Throwable Any unhandled exception thrown by the function will be rethrown.
      */
-    public void moduleInvokeFunction(final int index,
+    public void invoke(final int index,
                                      final ArgumentStack arguments)
             throws Throwable;
 }

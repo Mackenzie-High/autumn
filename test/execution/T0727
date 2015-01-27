@@ -1,0 +1,21 @@
+module Main in execution;
+
+@Setup
+defun load () : void
+{
+    My::state(17);
+}
+
+defun state (value : Integer) : Integer
+{
+    return once value;
+}
+
+@Start
+defun main (args : String[]) : void
+{
+    # If the setup function executed,
+    # then the state should have already been initialized.
+
+    assert My::state(23) == 17;
+}

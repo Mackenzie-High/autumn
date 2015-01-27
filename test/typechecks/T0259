@@ -1,0 +1,7 @@
+module Main in typechecks;
+
+@Setup
+defun moo (x : int) : void
+{
+    nop;
+}

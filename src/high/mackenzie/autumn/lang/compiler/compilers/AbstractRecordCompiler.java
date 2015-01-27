@@ -233,22 +233,6 @@ abstract class AbstractRecordCompiler
         superinterfaces.add(program.typesystem.utils.RECORD);
 
         /**
-         * Structs implement the Struct interface.
-         */
-        if (struct)
-        {
-            superinterfaces.add(program.typesystem.utils.STRUCT);
-        }
-
-        /**
-         * Tuples implement the Tuple interface.
-         */
-        if (tuple)
-        {
-            superinterfaces.add(program.typesystem.utils.TUPLE);
-        }
-
-        /**
          * Each user-specified supertype of a record is really a superinterface.
          */
         for (TypeSpecifier supertype : node.getSupers())

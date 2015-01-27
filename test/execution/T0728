@@ -1,0 +1,21 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    try
+    {
+        My::moo();
+
+        assert false;
+    }
+    catch (ex : UnexpectedTerminationException)
+    {
+        nop;
+    }
+}
+
+defun moo () : int
+{
+    nop;
+}

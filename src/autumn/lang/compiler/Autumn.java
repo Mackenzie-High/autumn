@@ -26,6 +26,10 @@ import java.util.List;
 /**
  * An instance of this class simplifies the use of Autumn.
  *
+ * <p>
+ * <b>Warning: This class is still under development therefore, changes may be made in the near future. (TODO: remove)</b>
+ * </p>
+ *
  * @author Mackenzie High
  */
 public final class Autumn
@@ -49,11 +53,6 @@ public final class Autumn
     private final List<Module> modules = Lists.newLinkedList();
 
     /**
-     * This flag is true, if the debug-statements are turned on.
-     */
-    private static boolean debug = false;
-
-    /**
      * This flag is true, if assume-statements are turned on.
      */
     private static boolean assume = true;
@@ -64,32 +63,6 @@ public final class Autumn
     public Autumn()
     {
         loader = new URLClassLoader(new URL[0]);
-    }
-
-    /**
-     * This method turns the debug-statements on.
-     */
-    public static void enableDebugger()
-    {
-        debug = true;
-    }
-
-    /**
-     * This method turns the debug-statements off.
-     */
-    public static void disableDebugger()
-    {
-        debug = false;
-    }
-
-    /**
-     * This method determines whether the debugger is turned on.
-     *
-     * @return true, iff the debugger is turned on.
-     */
-    public static boolean isDebugOn()
-    {
-        return debug;
     }
 
     /**

@@ -1,0 +1,18 @@
+module Main in execution;
+
+annotation Planet;
+annotation Galaxy;
+
+@Planet ("Earth")
+@Galaxy ("Milky Way")
+@Start
+defun main (args : String[]) : void
+{
+    val function = F::findMethod(class Main, "main", [class String[]]);
+
+    val anno1 = F::findAnnotation(function, class Planet);
+    val anno2 = F::findAnnotation(function, class Galaxy);
+
+    assert F::iter(anno1) == ["Earth"];
+    assert F::iter(anno2) == ["Milky Way"];
+}

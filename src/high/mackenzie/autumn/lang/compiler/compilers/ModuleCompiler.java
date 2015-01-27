@@ -20,6 +20,7 @@ import autumn.util.F;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import high.mackenzie.autumn.lang.compiler.typesystem.CustomDeclaredType;
 import high.mackenzie.autumn.lang.compiler.typesystem.CustomFormalParameter;
@@ -34,6 +35,7 @@ import high.mackenzie.autumn.lang.compiler.utils.AnnotationUtils;
 import high.mackenzie.autumn.lang.compiler.utils.Utils;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Opcodes;
@@ -472,7 +474,7 @@ public final class ModuleCompiler
          */
         for (FunctionCompiler function : functions)
         {
-            if (function.isSetup())
+            if (function.isAnnotationPresent(program.typesystem.utils.SETUP))
             {
                 owner = Utils.internalName(type);
                 name = function.type.getName();
@@ -671,7 +673,7 @@ public final class ModuleCompiler
     }
 
     /**
-     * This method generates the moduleInfo() special method.
+     * This method generates the info() special method.
      *
      * @return an object representation of the special method.
      */
@@ -680,7 +682,7 @@ public final class ModuleCompiler
         final MethodNode m = new MethodNode();
 
         m.access = Opcodes.ACC_PUBLIC + Opcodes.ACC_FINAL;
-        m.name = "moduleInfo";
+        m.name = "info";
         m.desc = "()Lautumn/lang/ModuleInfo;";
         m.exceptions = ImmutableList.of();
 
@@ -799,7 +801,7 @@ public final class ModuleCompiler
     {
         final MethodNode m = new MethodNode();
 
-        m.access = (anonymous ? 0 : Opcodes.ACC_PUBLIC) + Opcodes.ACC_STATIC;
+        m.access = Opcodes.ACC_PUBLIC + Opcodes.ACC_STATIC + Opcodes.ACC_FINAL;
         m.name = "instance";
         m.desc = "()" + type.getDescriptor();
         m.exceptions = ImmutableList.of();
@@ -818,7 +820,7 @@ public final class ModuleCompiler
     }
 
     /**
-     * This method generates the moduleInvokeFunction(int, ArgumentStack) special method.
+     * This method generates the invoke(int, ArgumentStack) special method.
      *
      * @return an object representation of the special method.
      */
@@ -831,7 +833,7 @@ public final class ModuleCompiler
         String desc;
 
         m.access = Opcodes.ACC_PUBLIC + Opcodes.ACC_FINAL;
-        m.name = "moduleInvokeFunction";
+        m.name = "invoke";
         m.desc = "(ILautumn/lang/internals/ArgumentStack;)V";
         m.exceptions = ImmutableList.of("java/lang/Throwable");
 
@@ -992,11 +994,6 @@ public final class ModuleCompiler
         anno_utils.add(type, ModuleDefinition.class);
 
         /**
-         * Check the list of annotations.
-         */
-        program.checker.checkAnnotations(module_directive.getAnnotations(), type.getAnnotations());
-
-        /**
          * Initialize the module's type.
          */
         this.type.setModifiers(Opcodes.ACC_PUBLIC + Opcodes.ACC_FINAL);
@@ -1035,16 +1032,63 @@ public final class ModuleCompiler
     @Override
     public void performTypeStructureChecking()
     {
-        // TODO:
-        // . No duplicate methods.
-        // . No methods that hide/override a method from OBJECT.
-        // . Chack annotation-list on the module directive.
-        // . The name of the module cannot be a forbidden name.
-        //
-
+        /**
+         * Perform type-structure-checking on all of the functions, etc.
+         */
         for (ICompiler x : compilers())
         {
             x.performTypeStructureChecking();
+        }
+
+        /**
+         * Check the list of annotations.
+         */
+        program.checker.checkAnnotations(module_directive.getAnnotations(), type.getAnnotations());
+
+        /**
+         * No two functions can have the exact same name and parameters.
+         */
+        reportDuplicateFunctions();
+    }
+
+    /**
+     * This method ensures that the module does not contain duplicate functions.
+     *
+     * <p>
+     * A function is a duplicate, if it has the same name and parameter-types as another function.
+     * </p>
+     */
+    private void reportDuplicateFunctions()
+    {
+        final Map<String, FunctionCompiler> signatures = Maps.newTreeMap();
+
+        /**
+         * For each function F, map the signature of F to the compiler of F.
+         */
+        for (FunctionCompiler function : functions)
+        {
+            /**
+             * Note: If the map already contains an entry for the signature,
+             * the old entry will be replaced, which is fine.
+             */
+            signatures.put(function.type.getNamePlusParameterListDescriptor(), function);
+        }
+
+        /**
+         * For each function compiler F, ensure that the signature of F is mapped to F.
+         */
+        for (FunctionCompiler function : functions)
+        {
+            /**
+             * Yes, I really do mean identity inequality here.
+             */
+            if (function != signatures.get(function.type.getNamePlusParameterListDescriptor()))
+            {
+                /**
+                 * This will throw an exception and issue a compiler-warning.
+                 */
+                program.checker.reportDuplicateFunction(function);
+            }
         }
     }
 

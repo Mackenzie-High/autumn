@@ -3,6 +3,10 @@ package autumn.util;
 /**
  * This class provides bitwise manipulations, since the language does not have bitwise operators.
  *
+ * <p>
+ * <b>Warning: This class is still under development.</b>
+ * </p>
+ *
  * @author Mackenzie High
  */
 public final class Bitwise
@@ -66,7 +70,7 @@ public final class Bitwise
                               final int index,
                               final boolean value)
     {
-        return bits; // TODO
+        return (1 << index) | bits;
     }
 
     /**
@@ -76,10 +80,10 @@ public final class Bitwise
      * @param index is the index of the bit to get.
      * @return the selected bit.
      */
-    public static long getBit(final long bits,
-                              final int index)
+    public static boolean getBit(final long bits,
+                                 final int index)
     {
-        return bits; // TODO
+        return ((bits >> index) & 1) == 1;
     }
 
     /**

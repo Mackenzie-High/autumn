@@ -1,0 +1,7 @@
+module Main in typechecks;
+
+@Test
+defun test (x : Object) : void
+{
+    nop;
+}

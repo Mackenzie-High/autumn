@@ -1,0 +1,7 @@
+module Main in typechecks;
+
+@Start
+defun moo (args : String[]) : void
+{
+    nop;
+}

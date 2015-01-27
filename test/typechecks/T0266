@@ -1,0 +1,7 @@
+module Main in typechecks;
+
+@Test
+defun test (about : TestCase) : int
+{
+    return 0;
+}

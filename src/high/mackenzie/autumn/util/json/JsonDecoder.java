@@ -55,12 +55,12 @@ public final class JsonDecoder
 
     private void loadTypes(final Module module)
     {
-        for (Class type : module.moduleInfo().structs())
+        for (Class type : module.info().structs())
         {
             loadType(type);
         }
 
-        for (Class type : module.moduleInfo().tuples())
+        for (Class type : module.info().tuples())
         {
             loadType(type);
         }

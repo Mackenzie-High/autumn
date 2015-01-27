@@ -3,7 +3,7 @@ module Main in execution;
 @Start
 defun main (args : String[]) : void
 {
-    val info = My::instance().moduleInfo();
+    val info = My::instance().info();
 
     val memory = info.memoizerOf("memory1");
 

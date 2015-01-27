@@ -6,6 +6,10 @@ import java.util.List;
 /**
  * An instance of this class provides a mechanism of manipulation Autumn project folder.
  *
+ *  * <p>
+ * <b>Warning: Do NOT use this class yet. (TODO: remove)</b>
+ * </p>
+ *
  * @author Mackenzie High
  */
 public final class AutumnProject

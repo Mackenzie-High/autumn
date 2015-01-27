@@ -15,7 +15,7 @@ defun main (args : String[]) : void
 {
     val module = My::instance();
 
-    val info = module.moduleInfo();
+    val info = module.info();
 
     val functions = info.functions();
 

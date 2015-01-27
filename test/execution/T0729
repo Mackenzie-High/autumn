@@ -1,0 +1,14 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    # No exception should be thrown.
+
+    My::moo();
+}
+
+defun moo () : void
+{
+    nop;
+}

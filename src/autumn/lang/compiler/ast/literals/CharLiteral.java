@@ -50,7 +50,7 @@ public final class CharLiteral
         {
             return source.charAt(1);
         }
-        else if (source.matches("[0-9]+C"))
+        else if (source.matches("[0-9]+[Cc]"))
         {
             final int digits = Integer.valueOf(sourceWithoutUnderscores().trim().replace("C", "").replaceFirst("c", ""));
 

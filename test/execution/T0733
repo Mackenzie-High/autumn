@@ -1,0 +1,22 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    val output = [true, 11c, 13b, 17s, 19, 23L, 27.0f, 29.0, "Venus"];
+
+    assert My::moo(true, 11c, 13b, 17s, 19, 23L, 27.0f, 29.0, "Venus") == output;
+}
+
+defun moo (a : boolean,
+           b : char,
+           c : byte,
+           d : short,
+           e : int,
+           f : long,
+           g : float,
+           h : double,
+           i : Object) : List
+{
+    return [a, b, c, d, e, f, g, h, i];
+}

@@ -1,0 +1,12 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    assert My::moo(13, 19) == [13, 17, 19];
+}
+
+defun moo (x : int, y : int) : List
+{
+    return [x, 17, y];
+}

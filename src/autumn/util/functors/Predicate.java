@@ -62,6 +62,6 @@ public class Predicate
     @Override
     public Class returnType()
     {
-        return boolean.class;
+        return Boolean.class;
     }
 }

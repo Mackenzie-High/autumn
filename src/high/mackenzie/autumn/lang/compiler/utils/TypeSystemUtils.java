@@ -8,10 +8,11 @@ import autumn.lang.LocalsMap;
 import autumn.lang.Module;
 import autumn.lang.ModuleInfo;
 import autumn.lang.Record;
-import autumn.lang.Struct;
-import autumn.lang.Tuple;
 import autumn.lang.TypedFunctor;
+import autumn.lang.annotations.Infer;
+import autumn.lang.annotations.Setup;
 import autumn.lang.annotations.Start;
+import autumn.lang.annotations.Sync;
 import autumn.lang.compiler.ast.nodes.Name;
 import autumn.lang.compiler.ast.nodes.TypeSpecifier;
 import autumn.lang.internals.AbstractDefinedFunctor;
@@ -25,6 +26,7 @@ import autumn.lang.internals.Helpers;
 import autumn.lang.internals.ModuleDelegate;
 import autumn.lang.internals.ModuleInfoBuilder;
 import autumn.lang.internals.Operators;
+import autumn.util.test.Test;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
@@ -178,9 +180,13 @@ public final class TypeSystemUtils
 
     public final IInterfaceType MODULE_INFO;
 
-    public final IInterfaceType STRUCT;
+    public final IAnnotationType SETUP;
 
-    public final IInterfaceType TUPLE;
+    public final IAnnotationType SYNC;
+
+    public final IAnnotationType INFER;
+
+    public final IAnnotationType TEST;
 
     /**
      * Sole Constructor.
@@ -280,9 +286,13 @@ public final class TypeSystemUtils
 
         this.MODULE_INFO = (IInterfaceType) factory.fromClass(ModuleInfo.class);
 
-        this.STRUCT = (IInterfaceType) factory.fromClass(Struct.class);
+        this.SETUP = (IAnnotationType) factory.fromClass(Setup.class);
 
-        this.TUPLE = (IInterfaceType) factory.fromClass(Tuple.class);
+        this.SYNC = (IAnnotationType) factory.fromClass(Sync.class);
+
+        this.INFER = (IAnnotationType) factory.fromClass(Infer.class);
+
+        this.TEST = (IAnnotationType) factory.fromClass(Test.class);
     }
 
     /**
