@@ -1,4 +1,4 @@
-# Generator Functions
+# Infer Functions
 
 ## Definition
 

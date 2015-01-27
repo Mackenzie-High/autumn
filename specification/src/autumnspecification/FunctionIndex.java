@@ -4,7 +4,6 @@ import autumn.lang.Module;
 import autumn.lang.Record;
 import autumn.lang.TypedFunctor;
 import autumn.lang.exceptions.CheckedException;
-import autumn.util.AsyncTask;
 import autumn.util.functors.Action;
 import autumn.util.functors.Function1;
 import autumn.util.functors.Predicate;
@@ -12,6 +11,7 @@ import autumn.util.functors.ProxyHandler;
 import autumnspecification.Function.Group;
 import com.google.common.collect.Lists;
 import com.google.common.io.Files;
+import high.mackenzie.autumn.resources.dev.AsyncTask;
 import high.mackenzie.autumn.util.json.JsonEncoder;
 import java.io.File;
 import java.io.IOException;
@@ -106,7 +106,7 @@ public final class FunctionIndex
         f.example(EXAMPLE_1, 151);
 
         f = add();
-        f.summary = "This function creates, but does not run, a new asynchronous task.";
+        f.summary = "(Under Development) - This function creates, but does not run, a new asynchronous task.";
         f.name = "async";
         f.formal("action", Action.class, "is the task to perform asynchronously.");
         f.returns(AsyncTask.class, "Return an object that can perform the action asynchronously.");
@@ -174,7 +174,7 @@ public final class FunctionIndex
         f.example(EXAMPLE_1, 148);
 
         f = add();
-        f.summary = "This function converts a string to an object.";
+        f.summary = "(Under Development) - This function converts a string to an object.";
         f.name = "decodeJson";
         f.formal("module", Module.class, "is the module that defines the tuples and structs that will be used.");
         f.formal("string", String.class, "is the string to convert to an object.");
@@ -205,7 +205,7 @@ public final class FunctionIndex
         f.example(EXAMPLE_1, 157);
 
         f = add();
-        f.summary = "This function converts an object to a JSON string.";
+        f.summary = "(Under Development) - This function converts an object to a JSON string.";
         f.name = "encodeJson";
         f.formal("object", Object.class, "is the object to convert to a JSON string.");
         f.returns(String.class, "Return the <i>object</i> as a JSON string.");
@@ -1065,7 +1065,7 @@ public final class FunctionIndex
         f.example(EXAMPLE_1, 136);
 
         f = add();
-        f.summary = "This function can be used to implement interfaces created using other languages.";
+        f.summary = "(Under Development) - This function can be used to implement interfaces created using other languages.";
         f.name = "newProxy";
         f.formal("type", Class.class, "is the type of the interface.");
         f.formal("handler", ProxyHandler.class, "is used to implement interface's method.");
@@ -1628,7 +1628,7 @@ public final class FunctionIndex
         f.example(EXAMPLE_1, 172);
 
         f = add();
-        f.summary = "This function synchronizes access to an object while running a task.";
+        f.summary = "(Under Development) - This function synchronizes access to an object while running a task.";
         f.name = "sync";
         f.formal("locked", Object.class, "is the object to synchronous access to.");
         f.formal("action", Action.class, "is the task to perform synchronously.");
@@ -1696,7 +1696,7 @@ public final class FunctionIndex
         f.example(EXAMPLE_1, 170);
 
         f = add();
-        f.summary = "This function creates a list of lists from the equally indexed elements in a list of lists.";
+        f.summary = "(Under Development) - This function creates a list of lists from the equally indexed elements in a list of lists.";
         f.name = "zip";
         f.formal("iterables", Iterable.class, "");
         f.returns(List.class, "Return a list containing the values obtained from <i>iterable</i> in a randomly scrambled order.");
@@ -1757,8 +1757,17 @@ public final class FunctionIndex
         klass.append("import java.lang.reflect.*;\n");
         klass.append("import java.util.*;\n");
         klass.append("import com.google.common.collect.*;\n");
+        klass.append("import high.mackenzie.autumn.util.*;\n");
 
         klass.append("\n");
+        klass.append("\n");
+        klass.append("/** \n");
+        klass.append(" * Special Functions\n");
+        klass.append(" * \n");
+        klass.append(" * <p>\n");
+        klass.append(" * <b>Implementation Note:</b> This class was auto-generated using a script.\n");
+        klass.append(" * </p>\n");
+        klass.append(" */ \n");
         klass.append("public final class F \n{\n");
 
         for (Function x : functions)

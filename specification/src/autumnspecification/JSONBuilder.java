@@ -2,9 +2,11 @@ package autumnspecification;
 
 import autumn.util.F;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import java.io.File;
 import java.lang.reflect.Method;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -23,6 +25,10 @@ public class JSONBuilder
     public static final String EXAMPLES = "/media/disk/Code/EclipseProjects/AutumnSpecification/autumn/examples/";
 
     public static final File AUTUMN_UTIL_F = new File("/media/disk/Code/NetBeansProjects/autumn/src/autumn/util/F.java");
+
+    private static final Map<String, String> statements = Maps.newHashMap();
+
+    private static final Map<String, String> expressions = Maps.newHashMap();
 
     public static void write()
             throws Exception
@@ -389,6 +395,10 @@ public class JSONBuilder
             return "https://docs.oracle.com/javase/7/docs/api/" + name + ".html";
         }
         else if (name.startsWith("autumn/"))
+        {
+            return "http://mackenzie-high.github.io/autumn/javadoc/" + name + ".html";
+        }
+        else if (name.startsWith("high/mackenzie/autumn/"))
         {
             return "http://mackenzie-high.github.io/autumn/javadoc/" + name + ".html";
         }

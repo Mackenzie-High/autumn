@@ -1072,7 +1072,7 @@ public class Main
         c = Construct.newInstance();
         c.name = "Delegate Statement";
         c.klass = DelegateStatement.class;
-        c.summary = "A delegate-statement creates function-object that is essentially a type-safe function-pointer.";
+        c.summary = "(Under Development) - A delegate-statement creates function-object that is essentially a type-safe function-pointer.";
         c.addSyntax(0, "$delegate$ <i>$assignee$</i> : <i>$type$</i> => <i>$Owner$</i>::<i>$name$</i> ;");
         c.addDetail(0, "The <i>assignee</i> will be declared in the enclosing scope as a readonly local variable.");
         variables(c, "assignee");
@@ -1097,7 +1097,7 @@ public class Main
         c = Construct.newInstance();
         c.name = "Lambda Statement";
         c.klass = LambdaStatement.class;
-        c.summary = "A lambda-statement creates an anonymous function.";
+        c.summary = "(Under Development) - A lambda-statement creates an anonymous function.";
         c.addSyntax(0, "$lambda$ <i>$variable$</i> : <i>$type$</i> => <i>$expression$</i> ;");
         c.addDetail(0, "The newly created anonymous function captures the state of the variables declared in the enclosing function.");
         c.addDetail(1, "In other words, the lambda function closes over the enclosing scope.");
@@ -2110,48 +2110,50 @@ public class Main
         // Annotations
         ////////////////////////////////////////////////////////////////////////////////////////////
 
+        // TODO
         c = Construct.newInstance();
         c.name = "Annotation List";
         c.klass = AnnotationList.class;
         c.summary = "An annotation-list is a set of annotations.";
-        c.addSyntax(0, "<i>$annotation$<sub>1</sub></i>");
-        c.addSyntax(0, "<i>$annotation$<sub>2</sub></i>");
-        c.addSyntax(0, "<i>$annotation$<sub>n</sub></i>");
-        c.addCheck(ErrorCode.DUPLICATE_ANNOTATION, "An annotation can oly appear once in a single annotation-list.");
+        c.addSyntax(0, "<i>$annotation-usage$<sub>1</sub></i>");
+        c.addSyntax(0, "<i>$annotation-usage$<sub>2</sub></i>");
+        c.addSyntax(0, "<i>$annotation-usage$<sub>n</sub></i>");
         Index.add(c);
 
+        // TODO
         c = Construct.newInstance();
         c.name = "Annotation";
         c.klass = Annotation.class;
-        c.summary = "An annotation is a metadata applied to code.";
+        c.summary = "An annotation allows metadata to be applied to a module, function, etc.";
         c.addSyntax(0, "@<i>$type$</i>");
-        usetype(c, "<i>type</i>");
-        c.addCheck(ErrorCode.EXPECTED_ANNOTATION, "The <i>type</i> must be an annotation-type.");
+        Index.add(c);
         Index.add(c);
 
         ////////////////////////////////////////////////////////////////////////////////////////////
         // Element Lists
         ////////////////////////////////////////////////////////////////////////////////////////////
 
+        // TODO
         c = Construct.newInstance();
         c.name = "Element List";
         c.klass = ElementList.class;
-        c.summary = "An element-list is a list of elements.";
+        c.summary = "An element-list is a list of elements in a struct, design, or tuple.";
         c.addSyntax(0, "( <i>$element$<sub>1</sub></i> , ... , <i>$element$<sub>n</sub></i> )");
         Index.add(c);
 
+        // TODO
         c = Construct.newInstance();
         c.name = "Element";
         c.klass = Element.class;
-        c.summary = "An element declares an entry in a user-defined data-type.";
+        c.summary = "An element declares an entry in a struct, design, or tuple.";
         c.addSyntax(0, "<i>$name$</i> : <i>$type$</i>");
-        usetype(c, "<i>type</i>");
         Index.add(c);
 
         ////////////////////////////////////////////////////////////////////////////////////////////
         // Formal Parameters
         ////////////////////////////////////////////////////////////////////////////////////////////
 
+        // TODO
         c = Construct.newInstance();
         c.name = "Formal Parameter List";
         c.klass = FormalParameterList.class;
@@ -2159,19 +2161,19 @@ public class Main
         c.addSyntax(0, "( <i>$formal$<sub>1</sub></i> , ... , <i>$formal$<sub>n</sub></i> )");
         Index.add(c);
 
+        // TODO
         c = Construct.newInstance();
         c.name = "Formal Parameter";
         c.klass = FormalParameter.class;
         c.summary = "A formal-parameter is an explicitly typed variable declaration.";
         c.addSyntax(0, "<i>$variable$</i> : <i>$type$</i>");
-        variables(c, "variable");
-        usetype(c, "<i>type</i>");
         Index.add(c);
 
         ////////////////////////////////////////////////////////////////////////////////////////////
         // Other Components
         ////////////////////////////////////////////////////////////////////////////////////////////
 
+        // TODO
         c = Construct.newInstance();
         c.name = "Name";
         c.klass = Name.class;
@@ -2182,13 +2184,15 @@ public class Main
         c.addDetail(0, "A <i>name</i> is case-sensitive.");
         Index.add(c);
 
+        // TODO
         c = Construct.newInstance();
         c.name = "Namespace";
         c.klass = Namespace.class;
-        c.summary = "A namespace construct is used to represent a package.";
+        c.summary = "A namespace construct is used to represent the name of a package.";
         c.addSyntax(0, "<i></i>");
         Index.add(c);
 
+        // TODO
         c = Construct.newInstance();
         c.name = "Type Specifier";
         c.klass = TypeSpecifier.class;
@@ -2196,16 +2200,13 @@ public class Main
         c.addSyntax(0, "");
         c.addDetail(0, "If the number of dimensions is non-zero, then an array-type is specified.");
         c.addDetail(0, "One cannot specify the null-type using a type-specifier.");
-        //
-        c.addDetail(0, "Automatically Imported Types:");
-        //
-        usetype(c, "<i>type</i>");
         Index.add(c);
 
         ////////////////////////////////////////////////////////////////////////////////////////////
         // Documentation Comments
         ////////////////////////////////////////////////////////////////////////////////////////////
 
+        // TODO
         c = Construct.newInstance();
         c.name = "Doc Comment";
         c.klass = FormalParameter.class; // TODO
@@ -2215,6 +2216,7 @@ public class Main
         c.addSyntax(0, "<i>$DocLine$</i>");
         Index.add(c);
 
+        // TODO
         c = Construct.newInstance();
         c.name = "Doc Comment Line";
         c.klass = FormalParameter.class; // TODO
@@ -2258,11 +2260,6 @@ public class Main
         Index.add(p);
 
         p = Page.newInstance();
-        p.name = "Special Names";
-        p.markdown = new File("Names.md");
-        Index.add(p);
-
-        p = Page.newInstance();
         p.name = "Accessibility";
         p.markdown = new File("Accessibility.md");
         Index.add(p);
@@ -2281,16 +2278,8 @@ public class Main
         ////////////////////////////////////////////////////////////////////////////////////////////
 
         p = Page.newInstance();
-        p.name = "Generator Functions";
-        p.markdown = new File("functions/Generator Functions.md");
-
-        p = Page.newInstance();
         p.name = "Infer Functions";
         p.markdown = new File("functions/Infer Functions.md");
-
-        p = Page.newInstance();
-        p.name = "Memoized Functions";
-        p.markdown = new File("functions/Memoized Functions.md");
 
         p = Page.newInstance();
         p.name = "Start Functions";
