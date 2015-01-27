@@ -1,10 +1,7 @@
 Autumn Programming Language
 ======
-Warning: 
---------
-Autumn is still currently undergoing late alpha phase development. 
-The beta release is expected to be released in late November to mid December of 2014.
-The first production quality release should occur sometime in January. 
+For the most part, Autumn is at a late Beta level of development. 
+However, there remain some parts of Autumn that are undergoing Alpha development.  
 
 About:
 ------
@@ -22,8 +19,4 @@ Dependencies:
 + Google Guava
 + Snowflake Parser
 
-Detailed Status:
-----------------
-The compiler itself is largely completed and tested. Only about ten constructs are not sufficently test or implemented. The largest remaining section of the project is the standard library. 
-
-Last Release: November 17, 2014
+Latest Binary Release: January 27, 2015
