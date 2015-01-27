@@ -665,7 +665,7 @@ public final class FunctionIndex
         f.formal("type", Class.class, "may be a struct-type.");
         f.returns(boolean.class, "Return true, iff <i>type</i> is a struct-type.");
         f.raise(NullPointerException.class, "if <i>type</i> is null.", "type == null");
-        f.body = "return Struct.class.isAssignableFrom(type);";
+        f.body = "return type.isAnnotationPresent(StructDefinition.class);";
         f.example(EXAMPLE_1, 166);
 
         f = add();
@@ -682,7 +682,7 @@ public final class FunctionIndex
         f.formal("type", Class.class, "may be a tuple-type.");
         f.returns(boolean.class, "Return true, iff <i>type</i> is a tuple-type.");
         f.raise(NullPointerException.class, "if <i>type</i> is null.", "type == null");
-        f.body = "return Tuple.class.isAssignableFrom(type);";
+        f.body = "return type.isAnnotationPresent(TupleDefinition.class);";
         f.example(EXAMPLE_1, 166);
 
         // Finished!
@@ -1753,6 +1753,7 @@ public final class FunctionIndex
         klass.append("import autumn.lang.annotations.*;\n");
         klass.append("import autumn.lang.exceptions.*;\n");
         klass.append("import autumn.lang.internals.*;\n");
+        klass.append("import autumn.lang.internals.annotations.*;\n");
         klass.append("import autumn.lang.*;\n");
         klass.append("import java.lang.reflect.*;\n");
         klass.append("import java.util.*;\n");

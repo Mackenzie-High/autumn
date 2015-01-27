@@ -117,10 +117,10 @@ public class Main
         c.addDetail(1, "T defines a special method: instance() : T");
         c.addDetail(2, "This method is $public$ and $static$ and $final$.");
         c.addDetail(2, "This method always returns the singleton instance of the module.");
-        c.addDetail(1, "T defines a special method: moduleInfo () : $AutumnLangModuleInfo$");
+        c.addDetail(1, "T defines a special method: info () : $AutumnLangModuleInfo$");
         c.addDetail(2, "This method is $public$ and $final$.");
         c.addDetail(2, "This method returns a singleton object that describes the module.");
-        c.addDetail(1, "T defines a special method: moduleInvokeFunction ($AutumnLangInternalsArgumentStack$, int) : $JavaLangObject$");
+        c.addDetail(1, "T defines a special method: invoke ($AutumnLangInternalsArgumentStack$, int) : $JavaLangObject$");
         c.addDetail(2, "This method is $public$ and $final$.");
         c.addDetail(3, "This method is a low-level method that is not intended for direct use by programmers.");
         c.addDetail(3, "This method is used to implement delegates.");
