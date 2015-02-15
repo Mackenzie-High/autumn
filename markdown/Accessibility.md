@@ -8,5 +8,6 @@ A type T is accessible from within the definition of a type U, iff either:
 
 # Type Member Accessibility
 A member M of a type T is accessible in the definition of a type U, iff both:
+
 + T is accessible from U.
 + Either (M has public-access) or ((T and U are in the same package) and (M is not private)). 

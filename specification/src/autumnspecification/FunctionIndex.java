@@ -11,7 +11,6 @@ import autumn.util.functors.ProxyHandler;
 import autumnspecification.Function.Group;
 import com.google.common.collect.Lists;
 import com.google.common.io.Files;
-import high.mackenzie.autumn.resources.dev.AsyncTask;
 import high.mackenzie.autumn.util.json.JsonEncoder;
 import java.io.File;
 import java.io.IOException;
@@ -105,13 +104,14 @@ public final class FunctionIndex
         f.body = "return T.apply(functor, arguments);";
         f.example(EXAMPLE_1, 151);
 
-        f = add();
-        f.summary = "(Under Development) - This function creates, but does not run, a new asynchronous task.";
-        f.name = "async";
-        f.formal("action", Action.class, "is the task to perform asynchronously.");
-        f.returns(AsyncTask.class, "Return an object that can perform the action asynchronously.");
-        f.raise(NullPointerException.class, "if <i>action</i> is null.", "action == null");
-        f.body = "return T.async(action);";
+        // TODO: Future Release?
+//        f = add();
+//        f.summary = "(Under Development) - This function creates, but does not run, a new asynchronous task.";
+//        f.name = "async";
+//        f.formal("action", Action.class, "is the task to perform asynchronously.");
+//        f.returns(AsyncTask.class, "Return an object that can perform the action asynchronously.");
+//        f.raise(NullPointerException.class, "if <i>action</i> is null.", "action == null");
+//        f.body = "return T.async(action);";
 
         // Finished!
         f = add();
@@ -224,7 +224,7 @@ public final class FunctionIndex
         f.example(EXAMPLE_1, 158);
 
         f = add();
-        f.summary = "This function replaces escape sequences with their expansions.";
+        f.summary = "(Under Development) - This function replaces escape sequences with their expansions.";
         f.name = "escape";
         f.formal("string", String.class, "is the string that contains the escape sequences.");
         f.returns(String.class, "Return the <i>string</i> with the escape sequences therein replaced with their expansions.");
@@ -588,7 +588,7 @@ public final class FunctionIndex
         f.example(EXAMPLE_1, 181);
 
         f = add();
-        f.summary = "This method determines whether a $JavaLangClass$ represents the type of an annotation.";
+        f.summary = "(Under Development) - This method determines whether a $JavaLangClass$ represents the type of an annotation.";
         f.name = "isAnnotationType";
         f.formal("type", Class.class, "may represent the type of an annotation.");
         f.returns(boolean.class, "Return true, iff <i>type</i> represents the type of an annotation.");
@@ -597,7 +597,7 @@ public final class FunctionIndex
         f.example(EXAMPLE_1, 166);
 
         f = add();
-        f.summary = "This function determines whether one type is assignable to annother type in Autumn.";
+        f.summary = "(Under Development) - This function determines whether one type is assignable to annother type in Autumn.";
         f.name = "isAssignableTo";
         f.formal("assignee", Class.class, "is the the type of the entity being assigned to.");
         f.formal("value", Class.class, "is the type of the value that is being assigned to the assignee.");
@@ -605,7 +605,7 @@ public final class FunctionIndex
         f.body = "return T.isAssignableTo(assignee, value);";
 
         f = add();
-        f.summary = "This function determines whether a $JavaLangClass$ represents the type of a design.";
+        f.summary = "(Under Development) - This function determines whether a $JavaLangClass$ represents the type of a design.";
         f.name = "isDesignType";
         f.formal("type", Class.class, "may be a design-type.");
         f.returns(boolean.class, "Return true, iff <i>type</i> is a design-type.");
@@ -614,7 +614,7 @@ public final class FunctionIndex
         f.example(EXAMPLE_1, 166);
 
         f = add();
-        f.summary = "This function determines whether a $JavaLangClass$ represents the type of an enum.";
+        f.summary = "(Under Development) - This function determines whether a $JavaLangClass$ represents the type of an enum.";
         f.name = "isEnumType";
         f.formal("type", Class.class, "may be an enum-type.");
         f.returns(boolean.class, "Return true, iff <i>type</i> is an enum-type.");
@@ -623,7 +623,7 @@ public final class FunctionIndex
         f.example(EXAMPLE_1, 166);
 
         f = add();
-        f.summary = "This function determines whether a $JavaLangClass$ represents the type of an exception.";
+        f.summary = "(Under Development) - This function determines whether a $JavaLangClass$ represents the type of an exception.";
         f.name = "isExceptionType";
         f.formal("type", Class.class, "may be an exception-type.");
         f.returns(boolean.class, "Return true, iff <i>type</i> is an exception-type.");
@@ -632,7 +632,7 @@ public final class FunctionIndex
         f.example(EXAMPLE_1, 166);
 
         f = add();
-        f.summary = "This function determines whether a $JavaLangClass$ represents the type of a functor.";
+        f.summary = "(Under Development) - This function determines whether a $JavaLangClass$ represents the type of a functor.";
         f.name = "isFunctorType";
         f.formal("type", Class.class, "may be a functor-type.");
         f.returns(boolean.class, "Return true, iff <i>type</i> is a functor-type.");
@@ -642,7 +642,7 @@ public final class FunctionIndex
         f.example(EXAMPLE_1, 166);
 
         f = add();
-        f.summary = "This function determines whether a $JavaLangClass$ represents the type of a module.";
+        f.summary = "(Under Development) - This function determines whether a $JavaLangClass$ represents the type of a module.";
         f.name = "isModuleType";
         f.formal("type", Class.class, "may be a module-type.");
         f.returns(boolean.class, "Return true, iff <i>type</i> is a module-type.");
@@ -651,7 +651,7 @@ public final class FunctionIndex
         f.example(EXAMPLE_1, 166);
 
         f = add();
-        f.summary = "This function determines whether a $JavaLangClass$ represents the type of a record.";
+        f.summary = "(Under Development) - This function determines whether a $JavaLangClass$ represents the type of a record.";
         f.name = "isRecordType";
         f.formal("type", Class.class, "may be a record-type.");
         f.returns(boolean.class, "Return true, iff <i>type</i> is a record-type.");
@@ -660,7 +660,7 @@ public final class FunctionIndex
         f.example(EXAMPLE_1, 166);
 
         f = add();
-        f.summary = "This function determines whether a $JavaLangClass$ represents the type of a struct.";
+        f.summary = "(Under Development) - This function determines whether a $JavaLangClass$ represents the type of a struct.";
         f.name = "isStructType";
         f.formal("type", Class.class, "may be a struct-type.");
         f.returns(boolean.class, "Return true, iff <i>type</i> is a struct-type.");
@@ -669,7 +669,7 @@ public final class FunctionIndex
         f.example(EXAMPLE_1, 166);
 
         f = add();
-        f.summary = "This function determines whether one type is a subtype of another.";
+        f.summary = "(Under Development) - This function determines whether one type is a subtype of another.";
         f.name = "isSubtypeOf";
         f.formal("subtype", Class.class, "may be a subtype of the <i>supertype</i>.");
         f.formal("supertype", Class.class, "may be a supertype of the <i>subtype</i>.");
@@ -677,7 +677,7 @@ public final class FunctionIndex
         f.body = "return T.isSubtypeOf(subtype, supertype);";
 
         f = add();
-        f.summary = "This function determines whether a $JavaLangClass$ represents the type of a tuple.";
+        f.summary = "(Under Development) - This function determines whether a $JavaLangClass$ represents the type of a tuple.";
         f.name = "isTupleType";
         f.formal("type", Class.class, "may be a tuple-type.");
         f.returns(boolean.class, "Return true, iff <i>type</i> is a tuple-type.");
@@ -989,7 +989,6 @@ public final class FunctionIndex
         f.body = "return T.map(elements, functor);";
         f.example(EXAMPLE_1, 201);
 
-
         // Finished!
         f = add();
         f.summary = "This function transverses an iterable in order to find the maximum value therein.";
@@ -1272,7 +1271,7 @@ public final class FunctionIndex
         f.example(EXAMPLE_1, 213);
 
         f = add();
-        f.summary = "This function prints a formated string to standard-output.";
+        f.summary = "(Under Development) - This function prints a formated string to standard-output.";
         f.name = "printf";
         f.formal("format", String.class, "is the format specifier.");
         f.formal("args", Iterable.class, "are the formatting arguments.");
@@ -1280,7 +1279,7 @@ public final class FunctionIndex
         f.body = "System.out.printf(format, immutable(args).toArray());";
 
         f = add();
-        f.summary = "This function prints a formated string to standard-error.";
+        f.summary = "(Under Development) - This function prints a formated string to standard-error.";
         f.name = "printerrf";
         f.formal("format", String.class, "is the format specifier.");
         f.formal("args", Iterable.class, "are the formatting arguments.");
@@ -1299,7 +1298,7 @@ public final class FunctionIndex
         f.example(EXAMPLE_1, 214);
 
         f = add();
-        f.summary = "This function creates an iterable whose iterator produces a sequence of integers.";
+        f.summary = "(Under Development) - This function creates an iterable whose iterator produces a sequence of integers.";
         f.name = "range";
         f.formal("minimum", int.class, "is the minimum integer in the sequence.");
         f.formal("maximum", int.class, "is the maximum integer in the sequence.");
@@ -1307,7 +1306,7 @@ public final class FunctionIndex
         f.body = "return T.range(minimum, maximum, 1);";
 
         f = add();
-        f.summary = "This function creates an iterable whose iterator produces a sequence of integers.";
+        f.summary = "(Under Development) - This function creates an iterable whose iterator produces a sequence of integers.";
         f.name = "range";
         f.formal("minimum", int.class, "is the minimum integer in the sequence.");
         f.formal("maximum", int.class, "is the maximum integer in the sequence.");
@@ -1316,13 +1315,13 @@ public final class FunctionIndex
         f.body = "return T.range(minimum, maximum, step);";
 
         f = add();
-        f.summary = "This function reads a line of input from standard-input.";
+        f.summary = "(Under Development) - This function reads a line of input from standard-input.";
         f.name = "readln";
         f.returns(String.class, "The line of input, excluding the trailing newline.");
         f.body = "final Scanner stdin = new Scanner(System.in); return stdin.nextLine();";
 
         f = add();
-        f.summary = "This function retrieves a previously interned value.";
+        f.summary = "(Under Development) - This function retrieves a previously interned value.";
         f.name = "recall";
         f.formal("target", Object.class, "is the object that the key-value pair will be weakly attached to.");
         f.formal("key", Object.class, "is the key part of the key-value pair.");
@@ -1331,7 +1330,7 @@ public final class FunctionIndex
         f.body = "return T.recall(target, key);";
 
         f = add();
-        f.summary = "This function weakly interns a key-value pair for later recollection.";
+        f.summary = "(Under Development) - This function weakly interns a key-value pair for later recollection.";
         f.name = "remember";
         f.formal("target", Object.class, "is the object that the key-value pair will be weakly attached to.");
         f.formal("key", Object.class, "is the key part of the key-value pair.");
@@ -1519,7 +1518,7 @@ public final class FunctionIndex
         f.example(EXAMPLE_1, 136);
 
         f = add();
-        f.summary = "This function sets the value of a list element.";
+        f.summary = "(Under Development) - This function sets the value of a list element.";
         f.name = "set";
         f.formal("list", List.class, "is the list that contains the element.");
         f.formal("index", int.class, "is the location of the element in the list.");
@@ -1530,7 +1529,7 @@ public final class FunctionIndex
         f.body = "list.set(index, value); return list;";
 
         f = add();
-        f.summary = "This function sets the value of a map entry.";
+        f.summary = "(Under Development) - This function sets the value of a map entry.";
         f.name = "set";
         f.formal("map", Map.class, "is the map that contains the entry.");
         f.formal("key", Object.class, "is the key that identifies the entry.");
@@ -1540,7 +1539,7 @@ public final class FunctionIndex
         f.body = "map.put(key, value); return map;";
 
         f = add();
-        f.summary = "This function sets the value of an element in a record.";
+        f.summary = "(Under Development) - This function sets the value of an element in a record.";
         f.name = "set";
         f.infer = true;
         f.formal("owner", Record.class, "is the record that contains the element.");
@@ -1553,7 +1552,7 @@ public final class FunctionIndex
         f.body = "return owner.set(index, value);";
 
         f = add();
-        f.summary = "This function sets the value of an element in a record.";
+        f.summary = "(Under Development) - This function sets the value of an element in a record.";
         f.name = "set";
         f.infer = true;
         f.formal("owner", Record.class, "is the record that contains the element.");
@@ -1567,7 +1566,7 @@ public final class FunctionIndex
         f.body = "return set(owner, (owner.keys().indexOf(name)), value);";
 
         f = add();
-        f.summary = "This function sets the value of multiple elements in a record simultaneously.";
+        f.summary = "(Under Development) - This function sets the value of multiple elements in a record simultaneously.";
         f.name = "set";
         f.infer = true;
         f.formal("assignee", Record.class, "is the record that contains the elements.");
@@ -1578,7 +1577,7 @@ public final class FunctionIndex
         f.body = "return T.set(assignee, values);";
 
         f = add();
-        f.summary = "This function sets the value of multiple elements in a record simultaneously.";
+        f.summary = "(Under Development) - This function sets the value of multiple elements in a record simultaneously.";
         f.name = "set";
         f.infer = true;
         f.formal("assignee", Record.class, "is the record that contains the elements to set.");
@@ -1638,7 +1637,7 @@ public final class FunctionIndex
         f.body = "return;";
 
         f = add();
-        f.summary = "This function replaces escapable characters with equivalent escape sequences.";
+        f.summary = "(Under Development) - This function replaces escapable characters with equivalent escape sequences.";
         f.name = "unescape";
         f.formal("string", String.class, "is the string that contains the escapable characters.");
         f.returns(String.class, "Return the <i>string</i> with the escapable characters therein replaced with escape sequences.");
@@ -1647,7 +1646,7 @@ public final class FunctionIndex
 
         // Finished!
         f = add();
-        f.summary = "This function returns a unique integer as a result of each invocation.";
+        f.summary = "(Under Development) - This function returns a unique integer as a result of each invocation.";
         f.name = "unique";
         f.returns(BigInteger.class, "Return a value that was not previously returned by this function during the current runtime.");
         f.detail(0, "This function is thread-safe.");

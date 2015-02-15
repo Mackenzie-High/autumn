@@ -2269,6 +2269,11 @@ public class Main
         p.markdown = new File("Resolution.md");
         Index.add(p);
 
+        p = Page.newInstance();
+        p.name = "Variable Scoping";
+        p.markdown = new File("Variable Scoping.md");
+        Index.add(p);
+
         Index.add("Examples of Type Errors", "TypeCheckingExamplesIndexPage.html");
 
         --Index.indent;

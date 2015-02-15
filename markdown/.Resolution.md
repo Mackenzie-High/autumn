@@ -28,9 +28,6 @@ TODO
         + A<sub>i</sub> is assignable to M.formals<sub>i</sub> ∀ i
     + If those conditions hold, return M, because it is the sought after method. 
 
-## Dispatch Resolution
-
-
 ## Sorting Methods and/or Constructors
 
 + Let X be a method or constructor. 
