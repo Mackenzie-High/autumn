@@ -21,7 +21,7 @@ import java.util.jar.Attributes;
 import java.util.jar.JarFile;
 
 /**
- * An instance of this class represents an Autumn project.
+ * <b>(Under Active Development)</b> - An instance of this class represents an Autumn project.
  *
  * @author Mackenzie High
  */
@@ -193,7 +193,13 @@ public final class AutumnProject
                    InvocationTargetException,
                    NoSuchMethodException
     {
-        execute(program, libFiles(), args);
+        final List<File> jars = Lists.newArrayList();
+
+        jars.add(program);
+
+        jars.addAll(libFiles());
+
+        execute(jars, args);
     }
 
     public static void create(final File project)
@@ -246,8 +252,7 @@ public final class AutumnProject
         Files.write(code, test_main, Charset.defaultCharset());
     }
 
-    public static void execute(final File program,
-                               final List<File> libraries,
+    public static void execute(final List<File> program,
                                final String[] args)
             throws MalformedURLException,
                    IOException,
@@ -258,17 +263,15 @@ public final class AutumnProject
                    NoSuchMethodException
     {
         /**
-         * Step 1. Load the program's main jar and all of the library jars.
+         * Step 1. Load all the jar files.
          */
-        final URL[] jars = new URL[libraries.size() + 1];
+        final URL[] jars = new URL[program.size()];
 
-        jars[0] = program.toURI().toURL();
+        int i = 0;
 
-        int i = 1;
-
-        for (File library : libraries)
+        for (File jar : program)
         {
-            jars[i++] = library.toURI().toURL();
+            jars[i++] = jar.toURI().toURL();
         }
 
         final URLClassLoader loader = new URLClassLoader(jars);
@@ -276,9 +279,15 @@ public final class AutumnProject
         /**
          * Step 2. Find the main class.
          */
-        final String main_class = new JarFile(program).getManifest().getMainAttributes().getValue(Attributes.Name.MAIN_CLASS);
+        String name = null;
 
-        final Class klass = Class.forName(main_class, true, loader);
+        for (File jar : program)
+        {
+            name = new JarFile(jar).getManifest().getMainAttributes().getValue(Attributes.Name.MAIN_CLASS);
+        }
+
+        final Class klass = Class.forName(name, true, loader);
+
 
         /**
          * Reflectively find the main function.

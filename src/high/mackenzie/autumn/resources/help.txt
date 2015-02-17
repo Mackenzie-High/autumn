@@ -13,7 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-----------------------------
+------------------------------------------------------------------------
 
 How to Use:
 
@@ -32,6 +32,22 @@ How to Use:
         autumn test
 
         Note: The current directory must be a project folder.
+
+    To compile a project to a JAR file:
+
+        autumn compile
+
+        Note: The current directory must be a project folder.
+
+    To execute a JAR file containing a previously compiled program:
+
+        autumn <path-0> <path-1> ... <path-n> execute <argument-0> <argument-1> ... <argument-n>
+
+        Each <path> must be the path to a JAR file.
+
+        Multiple paths are allowed, since some of them may be libraries.
+
+        Libraries may be created using Autumn or other JVM languages.
 
     To print the version:
 

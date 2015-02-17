@@ -1,6 +1,7 @@
 package high.mackenzie.autumn.lang.compiler.args;
 
 import autumn.lang.compiler.Autumn;
+import autumn.lang.compiler.AutumnProject;
 import autumn.lang.exceptions.AssertionFailedException;
 import autumn.lang.exceptions.AssumptionFailedException;
 import autumn.util.test.TestResults;
@@ -12,9 +13,12 @@ import high.mackenzie.snowflake.ITreeNode;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.nio.file.NoSuchFileException;
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  * An instance of this class is used to process the command-line arguments given to the compiler.
@@ -28,10 +32,7 @@ public final class Visitor
     private static interface Invokable
     {
         public void invoke()
-                throws ClassNotFoundException,
-                       NoSuchMethodException,
-                       InvocationTargetException,
-                       IllegalAccessException;
+                throws Exception;
     }
 
     private static final String HELP = "/high/mackenzie/autumn/resources/help.txt";
@@ -43,6 +44,11 @@ public final class Visitor
     private String name;
 
     private static final Autumn cmp = new Autumn();
+
+    /**
+     * These are the paths to the jar files.
+     */
+    private static final LinkedList<File> paths = Lists.newLinkedList();
 
     /**
      * These are the command-line arguments to pass to the interpreted program.
@@ -98,6 +104,49 @@ public final class Visitor
                && new File(folder, "src").exists()
                && new File(folder, "lib").exists()
                && new File(folder, "test").exists();
+    }
+
+    /**
+     * This method resolves the name of a file.
+     *
+     * <p>
+     * The file may already be resolved, or the file may be in the current directory,
+     * or the file may be in the home directory.
+     * </p>
+     *
+     * @param file is the file to resolve.
+     * @return the actual path to the file.
+     * @throws NoSuchFileException if the file cannot be found.
+     */
+    private static File resolve(final File file)
+            throws NoSuchFileException
+    {
+        final File CURRENT = new File(System.getProperty("user.dir"));
+
+        final File HOME = new File(System.getProperty("user.home"));
+
+        final boolean atom = file.getPath().contains(System.getProperty("file.separator")) == false;
+
+        final File possibility1 = new File(CURRENT, file.getName());
+
+        final File possibility2 = new File(HOME, file.getName());
+
+        if (file.exists())
+        {
+            return file;
+        }
+        else if (atom && possibility1.exists())
+        {
+            return possibility1;
+        }
+        else if (atom && possibility2.exists())
+        {
+            return possibility2;
+        }
+        else
+        {
+            throw new NoSuchFileException(file.toString());
+        }
     }
 
     /**
@@ -163,6 +212,14 @@ public final class Visitor
             ex.getCause().printStackTrace(System.out);
         }
         catch (IllegalAccessException ex)
+        {
+            ex.printStackTrace(System.out);
+        }
+        catch (MalformedURLException ex)
+        {
+            ex.printStackTrace(System.out);
+        }
+        catch (Exception ex)
         {
             ex.printStackTrace(System.out);
         }
@@ -296,6 +353,34 @@ public final class Visitor
      * {@inheritDoc}
      */
     @Override
+    public void visit_case_execute(final ITreeNode node)
+    {
+        visitChildren(node);
+
+        final Invokable function = new Invokable()
+        {
+            @Override
+            public void invoke()
+                    throws Exception
+            {
+                final List<File> jars = new LinkedList<File>();
+
+                for (File path : paths)
+                {
+                    jars.add(resolve(path));
+                }
+
+                AutumnProject.execute(jars, args.toArray(new String[0]));
+            }
+        };
+
+        run(function);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void visit_case_create(final ITreeNode node)
     {
         visitChildren(node);
@@ -331,6 +416,17 @@ public final class Visitor
      * {@inheritDoc}
      */
     @Override
+    public void visit_path(final ITreeNode node)
+    {
+        visitChildren(node);
+
+        paths.add(new File(argument));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void visit_arg(final ITreeNode node)
     {
         visitChildren(node);
@@ -344,7 +440,7 @@ public final class Visitor
     @Override
     public void visit_qstring(final ITreeNode node)
     {
-        final String text = node.text().substring(0, node.length() - 2);
+        final String text = node.childAt(2).text().substring(0, node.length() - 2);
 
         argument = text;
     }
@@ -355,7 +451,7 @@ public final class Visitor
     @Override
     public void visit_pstring(final ITreeNode node)
     {
-        final String text = node.text();
+        final String text = node.childAt(1).text();
 
         argument = text;
     }
