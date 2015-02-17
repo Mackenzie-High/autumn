@@ -551,18 +551,6 @@ public final class Autumn
         test.mkdirs();
 
         /**
-         * Create the project/lib directory.
-         */
-        final File lib = new File(project, "lib");
-        lib.mkdirs();
-
-        /**
-         * Create the project/data directory.
-         */
-        final File data = new File(project, "data");
-        data.mkdirs();
-
-        /**
          * Create the project/src/Main.leaf file.
          */
         url = Resources.getResource(Autumn.class, "/high/mackenzie/autumn/resources/default-src-main.leaf");
@@ -572,7 +560,7 @@ public final class Autumn
         Files.write(code, src_main, Charset.defaultCharset());
 
         /**
-         * Create the project/test/Main.leaf file.
+         * Create the project/test/MainTest.leaf file.
          */
         url = Resources.getResource(Autumn.class, "/high/mackenzie/autumn/resources/default-test-main.leaf");
         code = Resources.toString(url, Charset.defaultCharset());

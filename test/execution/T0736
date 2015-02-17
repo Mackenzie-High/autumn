@@ -1,0 +1,12 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    for (i = -1000; i <= 1000; i + 1)
+    {
+        val x = i as long;
+
+        assert Bitwise::not(x) == ((- x) - 1L);
+    }
+}

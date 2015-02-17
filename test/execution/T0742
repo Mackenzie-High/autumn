@@ -1,0 +1,24 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    # The operation is actually implemented by the JVM.
+    # So, we only need to verify that the compiler generates the correct instruction.
+
+    var x = 8L;  # 0b01000
+    var y = 2;   #
+    var z = 2L;  # 0b00010
+
+    assert Bitwise::shiftRightUnsigned(x, y) == z;
+
+
+
+    # Make sure that the sign-bit gets handled correctly.
+
+    x = field Long::MIN_VALUE;
+    y = 63;
+    z = 1L;
+
+    assert Bitwise::shiftRightUnsigned(x, y) == z;
+}

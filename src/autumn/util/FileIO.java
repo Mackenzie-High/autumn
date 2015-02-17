@@ -1,6 +1,7 @@
 package autumn.util;
 
 import com.google.common.base.Preconditions;
+import com.google.common.io.Files;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -138,7 +139,7 @@ public final class FileIO
                                  final Charset charset)
             throws IOException
     {
-        com.google.common.io.Files.write(data, file, charset);
+        Files.write(data, file, charset);
     }
 
     /**
@@ -167,38 +168,75 @@ public final class FileIO
                                   final byte[] data)
             throws IOException
     {
-        com.google.common.io.Files.write(data, file);
+        Files.write(data, file);
     }
 
+    /**
+     * This method reads all the lines of a text file into a list of strings.
+     *
+     * @param file is the file to read.
+     * @return a list containing the lines as strings.
+     * @throws IOException if the file does not exist or is unreadable.
+     */
     public static List<String> readLines(final File file)
             throws IOException
     {
-        return com.google.common.io.Files.readLines(file, Charset.defaultCharset());
+        return Files.readLines(file, Charset.defaultCharset());
     }
 
-    public static String readLines(final File file,
-                                   final Charset charset)
+    /**
+     * This method reads all the lines of a text file into a list of strings.
+     *
+     * @param file is the file to read.
+     * @param charset is the encoding of the file.
+     * @return a list containing the lines as strings.
+     * @throws IOException if the file does not exist or is unreadable.
+     */
+    public static List<String> readLines(final File file,
+                                         final Charset charset)
             throws IOException
     {
-        return null;
+        return Files.readLines(file, charset);
     }
 
+    /**
+     * This method reads a text file into a string.
+     *
+     * @param file is the file to read.
+     * @return the content of the file as a string.
+     * @throws IOException if the file does not exist or is unreadable.
+     */
     public static String readText(final File file)
             throws IOException
     {
         return readText(file, Charset.defaultCharset());
     }
 
+    /**
+     * This method reads a text file into a string.
+     *
+     * @param file is the file to read.
+     * @param charset is the encoding of the file.
+     * @return the content of the file as a string.
+     * @throws IOException if the file does not exist or is unreadable.
+     */
     public static String readText(final File file,
                                   final Charset charset)
             throws IOException
     {
-        return com.google.common.io.Files.toString(file, charset);
+        return Files.toString(file, charset);
     }
 
+    /**
+     * This method reads a binary file into an array of bytes.
+     *
+     * @param file is the file to read.
+     * @return the content of the file as an array of bytes.
+     * @throws IOException if the file does not exist or is unreadable.
+     */
     public static byte[] readBytes(final File file)
             throws IOException
     {
-        return null;
+        return Files.toByteArray(file);
     }
 }

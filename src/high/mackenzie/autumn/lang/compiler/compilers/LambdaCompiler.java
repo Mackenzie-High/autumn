@@ -200,8 +200,12 @@ final class LambdaCompiler
 
             /**
              * The return-type of the expression must match the return-type of the lambda.
+             * However, the type of the body is not important, if the return-type is void.
              */
-            program.checker.checkReturn(node, invoke.getReturnType(), node.getBody());
+            if (invoke.getReturnType().isVoidType() == false)
+            {
+                program.checker.checkReturn(node, invoke.getReturnType(), node.getBody());
+            }
 
         }
         catch (TypeCheckFailed ex)

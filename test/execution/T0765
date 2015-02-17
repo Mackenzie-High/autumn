@@ -1,0 +1,23 @@
+module Main in execution;
+
+import autumn.lang.internals.AbstractDefinedFunctor;
+import autumn.lang.internals.ModuleDelegate;
+
+@Start
+defun main (args : String[]) : void
+{
+    delegate p : Function7 => My::handler;
+
+    assert p.invoke(1, 2, 3, 4, 5, 6, 7) == [1, 2, 3, 4, 5, 6, 7];
+}
+
+defun handler (a : Object,
+               b : Object,
+               c : Object,
+               d : Object,
+               e : Object,
+               f : Object,
+               g : Object) : Object
+{
+    return [a, b, c, d, e, f, g];
+}

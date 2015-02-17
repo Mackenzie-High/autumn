@@ -72,8 +72,8 @@ Test Index
 . . T0166 = Special Method - values()
 . Design Definitions
 . . T0720 = Special Annotations
-. . T0279 = Reflective Testing of the Tuple's Class                  // TODO: finish
-. . T0280 = Inherited Elements                                       // TODO: finish
+. . T0279 = Reflective Testing of the Designs's Class                  // TODO: finish
+. . T0280 = Inherited Elements                                         // TODO: finish
 . . Covariant Elements
 . Tuple Definitions
 . . T0128 = Reflective Testing of the Tuple's Class                  // TODO: finish
@@ -457,6 +457,17 @@ Test Index
 
 
 Standard Library
+. autumn.util.Bitwise
+. . T0736 = NOT
+. . T0737 = AND
+. . T0738 = OR
+. . T0739 = XOR
+. . T0740 = Shift Left
+. . T0741 = Shift Right
+. . T0742 = Unsigned Shift Right
+. . T0743 = Get Bit
+. . T0744 = Set Bit
+.
 . autumn.util.F
 . . all
 . . . T0404 = null condition
@@ -834,21 +845,45 @@ Standard Library
 . . zip
 . . . T0678 = null argument
 . . . T0679 = normal         // TODO
-
-
+.
+.
 . autumn.util.functors
 . . Action
+. . . T0745 = Meta Data
+. . . T0757 = Usage
 . . Function0
+. . . T0746 = Meta Data
+. . . T0758 = Usage
 . . Function1
+. . . T0747 = Meta Data
+. . . T0759 = Usage
 . . Function2
+. . . T0748 = Meta Data
+. . . T0760 = Usage
 . . Function3
+. . . T0749 = Meta Data
+. . . T0761 = Usage
 . . Function4
+. . . T0750 = Meta Data
+. . . T0762 = Usage
 . . Function5
+. . . T0751 = Meta Data
+. . . T0763 = Usage
 . . Function6
+. . . T0752 = Meta Data
+. . . T0764 = Usage
 . . Function7
+. . . T0753 = Meta Data
+. . . T0765 = Usage
 . . Function8
+. . . T0754 = Meta Data
+. . . T0766 = Usage
 . . Function9
+. . . T0755 = Meta Data
+. . . T0767 = Usage
 . . Ordering
+. . . T0768 = Meta Data
+. . . T0769 = Usage
 . . Predicate
 . . ProxyHandler
 

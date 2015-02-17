@@ -1,0 +1,21 @@
+module Main in execution;
+
+import autumn.lang.internals.AbstractDefinedFunctor;
+import autumn.lang.internals.ModuleDelegate;
+
+@Start
+defun main (args : String[]) : void
+{
+    val flags = once new StringBuilder();
+
+    lambda p : Action => flags.append(flags.length());
+
+    p.invoke(); # 0
+    p.invoke(); # 1
+    p.invoke(); # 2
+    p.invoke(); # 3
+    p.invoke(); # 4
+    p.invoke(); # 5
+
+    assert flags.toString() == "012345";
+}

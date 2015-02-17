@@ -41,6 +41,40 @@ public final class Runner
 //        test("T0255"); // covariant elements
 
 
+
+        test("T0769");
+        test("T0768");
+        test("T0767");
+        test("T0766");
+        test("T0765");
+        test("T0764");
+        test("T0763");
+        test("T0762");
+        test("T0761");
+        test("T0760");
+        test("T0759");
+        test("T0758");
+        test("T0757");
+        test("T0755");
+        test("T0754");
+        test("T0753");
+        test("T0752");
+        test("T0751");
+        test("T0750");
+        test("T0749");
+        test("T0748");
+        test("T0747");
+        test("T0746");
+        test("T0745");
+        test("T0744");
+        test("T0743");
+        test("T0742");
+        test("T0741");
+        test("T0740");
+        test("T0739");
+        test("T0738");
+        test("T0737");
+        test("T0736");
         test("T0735");
         test("T0734");
         test("T0733");

@@ -1,0 +1,20 @@
+module Main in execution;
+
+import autumn.lang.internals.AbstractDefinedFunctor;
+import autumn.lang.internals.ModuleDelegate;
+import java.util.Comparator;
+
+@Start
+defun main (args : String[]) : void
+{
+    delegate p : Ordering => My::handler;
+
+    assert p.invoke("Mercury", "Venus") == p.compare("Mercury", "Venus");
+
+    assert p.invoke("Mercury", "Venus") == ("Mercury".hashCode() + "Venus".hashCode());
+}
+
+defun handler (x : Object, y : Object) : Integer
+{
+    return x.hashCode() + y.hashCode();
+}

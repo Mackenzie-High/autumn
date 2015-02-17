@@ -46,7 +46,7 @@ public class Ordering
     @Override
     public List<Class> parameterTypes()
     {
-        return ImmutableList.<Class>of(Comparable.class, Comparable.class);
+        return ImmutableList.<Class>of(Object.class, Object.class);
     }
 
     /**

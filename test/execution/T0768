@@ -1,0 +1,25 @@
+module Main in execution;
+
+import autumn.lang.internals.AbstractDefinedFunctor;
+import autumn.lang.internals.ModuleDelegate;
+import java.util.Comparator;
+
+@Start
+defun main (args : String[]) : void
+{
+    delegate p : Ordering => My::handler;
+
+    assert instanceof p : AbstractDefinedFunctor;
+    assert instanceof p : Comparator;
+
+    assert p.returnType() == (class Integer);
+
+    assert p.parameterTypes() == [class Object, class Object];
+
+    assert (p.inner() as ModuleDelegate).name() == "handler";
+}
+
+defun handler (x : Object, y : Object) : Integer
+{
+    nop;
+}

@@ -1,0 +1,14 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    # The operation is actually implemented by the JVM.
+    # So, we only need to verify that the compiler generates the correct instruction.
+
+    val x = 5L;  # 0b00101
+    val y = 2;   #
+    val z = 20L; # 0b10100
+
+    assert Bitwise::shiftLeft(x, y) == z;
+}

@@ -53,14 +53,6 @@ public final class F
     }
 
     
-    public static high.mackenzie.autumn.resources.dev.AsyncTask async (final autumn.util.functors.Action action) throws java.lang.NullPointerException
-    {
-
-        if(action == null) { throw new java.lang.NullPointerException(); }
-        return T.async(action);
-    }
-
-    
     public static java.math.BigDecimal average (final java.lang.Iterable values) throws java.lang.NullPointerException, java.lang.NullPointerException, java.lang.IllegalArgumentException
     {
 

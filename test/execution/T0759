@@ -1,0 +1,17 @@
+module Main in execution;
+
+import autumn.lang.internals.AbstractDefinedFunctor;
+import autumn.lang.internals.ModuleDelegate;
+
+@Start
+defun main (args : String[]) : void
+{
+    delegate p : Function1 => My::handler;
+
+    assert p.invoke(1) == [1];
+}
+
+defun handler (a : Object) : Object
+{
+    return [a];
+}

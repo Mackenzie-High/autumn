@@ -1,0 +1,37 @@
+module Main in execution;
+
+import autumn.lang.internals.AbstractDefinedFunctor;
+import autumn.lang.internals.ModuleDelegate;
+
+@Start
+defun main (args : String[]) : void
+{
+    delegate p : Function8 => My::handler;
+
+    assert instanceof p : AbstractDefinedFunctor;
+
+    assert p.returnType() == (class Object);
+
+    assert p.parameterTypes() == [class Object,
+                                  class Object,
+                                  class Object,
+                                  class Object,
+                                  class Object,
+                                  class Object,
+                                  class Object,
+                                  class Object];
+
+    assert (p.inner() as ModuleDelegate).name() == "handler";
+}
+
+defun handler (a : Object,
+               b : Object,
+               c : Object,
+               d : Object,
+               e : Object,
+               f : Object,
+               g : Object,
+               h : Object) : Object
+{
+    nop;
+}

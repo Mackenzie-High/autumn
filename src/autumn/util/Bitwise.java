@@ -66,9 +66,9 @@ public final class Bitwise
      * @param value the new value of the bit.
      * @return the modified version of bits.
      */
-    public static long setBit(final long bits,
-                              final int index,
-                              final boolean value)
+    public static long set(final long bits,
+                           final int index,
+                           final boolean value)
     {
         return (1 << index) | bits;
     }
@@ -80,8 +80,8 @@ public final class Bitwise
      * @param index is the index of the bit to get.
      * @return the selected bit.
      */
-    public static boolean getBit(final long bits,
-                                 final int index)
+    public static boolean get(final long bits,
+                              final int index)
     {
         return ((bits >> index) & 1) == 1;
     }
