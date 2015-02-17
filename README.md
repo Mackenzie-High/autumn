@@ -2,6 +2,11 @@ Autumn Programming Language
 ======
 Latest Binary Release: February 17, 2015
 
+Quick Links:
+------------
++ [Website and Language Specification](http://mackenzie-high.github.io/autumn/)
++ [Download Page](http://mackenzie-high.github.io/autumn/TextPage.html?page=Downloads)
+
 Status:
 ------
 + Most of the project is at a late Beta level of development.
@@ -18,11 +23,6 @@ About:
 + Autumn can be used as a plugin in order to facilitate scripting in other programs.
 + Autumn has an integrated unit-testing framework. 
 + Autumn is licensed under the terms of the [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0) license. 
-
-Quick Links:
-------------
-+ [Website and Language Specification](http://mackenzie-high.github.io/autumn/)
-+ [Download Page](http://mackenzie-high.github.io/autumn/TextPage.html?page=Downloads)
 
 Dependencies:
 -------------
