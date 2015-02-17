@@ -7,7 +7,7 @@ import high.mackenzie.snowflake.ITreeNodeVisitor;
 /**
  * This class was auto-generated using the Snowflake parser-generator.
  *
- * <p>Generated On: Tue Feb 17 07:08:21 EST 2015</p>
+ * <p>Generated On: Tue Feb 17 09:10:25 EST 2015</p>
  */
 public abstract class AbstractVisitor implements ITreeNodeVisitor
 {

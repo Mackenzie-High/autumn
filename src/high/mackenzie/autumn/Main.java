@@ -63,6 +63,12 @@ public final class Main
      */
     private static String concatArgs(String[] args)
     {
+        // TODO: There is a bug here.
+        // Autumn expect that the qstring arguments will be wrapped in quotes.
+        // However, Java removes the quotes.
+        // As a result, quoted arguments passed to Autumn, which contain spaces, will get split.
+        // This is a major problem. 
+
         final StringBuilder result = new StringBuilder();
 
         for (String arg : args)

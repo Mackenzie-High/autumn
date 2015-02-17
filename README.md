@@ -6,6 +6,7 @@ Quick Links:
 ------------
 + [Website and Language Specification](http://mackenzie-high.github.io/autumn/)
 + [Download Page](http://mackenzie-high.github.io/autumn/TextPage.html?page=Downloads)
++ [Known Issues](http://www.mackenziehigh.me/autumn/TextPage.html?page=Known%20Bugs)
 
 About:
 ------
