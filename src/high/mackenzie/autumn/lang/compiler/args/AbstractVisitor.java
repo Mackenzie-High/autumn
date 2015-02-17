@@ -7,7 +7,7 @@ import high.mackenzie.snowflake.ITreeNodeVisitor;
 /**
  * This class was auto-generated using the Snowflake parser-generator.
  *
- * <p>Generated On: Tue Feb 17 07:01:47 EST 2015</p>
+ * <p>Generated On: Tue Feb 17 07:08:21 EST 2015</p>
  */
 public abstract class AbstractVisitor implements ITreeNodeVisitor
 {
@@ -27,6 +27,7 @@ public abstract class AbstractVisitor implements ITreeNodeVisitor
         else if("case_execute".equals(name)) { visit_case_execute(node); }
         else if("paths".equals(name)) { visit_paths(node); }
         else if("path".equals(name)) { visit_path(node); }
+        else if("case_compile".equals(name)) { visit_case_compile(node); }
         else if("case_create".equals(name)) { visit_case_create(node); }
         else if("name".equals(name)) { visit_name(node); }
         else if("case_run".equals(name)) { visit_case_run(node); }
@@ -100,6 +101,16 @@ public abstract class AbstractVisitor implements ITreeNodeVisitor
      * This method visits a parse-tree node created by rule "args".
      */
     protected void visit_args(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+        visitUnknown(node); // Default Behavior
+    }
+
+    /**
+     * This method visits a parse-tree node created by rule "case_compile".
+     */
+    protected void visit_case_compile(ITreeNode node)
     {
         // You should *not* place your code right here. 
         // Instead, you should override this method via a subclass.

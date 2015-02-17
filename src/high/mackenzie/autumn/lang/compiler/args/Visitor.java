@@ -2,6 +2,7 @@ package high.mackenzie.autumn.lang.compiler.args;
 
 import autumn.lang.compiler.Autumn;
 import autumn.lang.compiler.AutumnProject;
+import autumn.lang.compiler.errors.BasicErrorReporter;
 import autumn.lang.exceptions.AssertionFailedException;
 import autumn.lang.exceptions.AssumptionFailedException;
 import autumn.util.test.TestResults;
@@ -381,6 +382,29 @@ public final class Visitor
      * {@inheritDoc}
      */
     @Override
+    public void visit_case_compile(final ITreeNode node)
+    {
+        visitChildren(node);
+
+        try
+        {
+            final File userdir = new File(System.getProperty("user.dir"));
+
+            final AutumnProject project = new AutumnProject(userdir, new BasicErrorReporter(System.out));
+
+            project.compile();
+        }
+        catch (IOException ex)
+        {
+            System.out.println("Error - The project could not be compiled.");
+            ex.printStackTrace(System.out);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void visit_case_create(final ITreeNode node)
     {
         visitChildren(node);
@@ -392,7 +416,7 @@ public final class Visitor
             System.out.println("Current Directory = " + userdir);
             System.out.println("Project Name = " + name);
 
-            Autumn.createProject(userdir, name);
+            AutumnProject.create(new File(userdir, name));
         }
         catch (IOException ex)
         {

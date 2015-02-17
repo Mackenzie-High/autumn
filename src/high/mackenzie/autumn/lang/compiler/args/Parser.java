@@ -9,7 +9,7 @@ import high.mackenzie.snowflake.ParserOutput;
 /**
  * This class was auto-generated using the Snowflake parser-generator.
  *
- * <p>Generated On: Tue Feb 17 07:01:47 EST 2015</p>
+ * <p>Generated On: Tue Feb 17 07:08:21 EST 2015</p>
  */
 public final class Parser implements IParser
 {
@@ -45,57 +45,59 @@ public final class Parser implements IParser
 
         // Grammar Rules
         g.choose("@0", "accept", "error");
-        g.choose("@21", "@17", "@18", "@19", "@20");
-        g.choose("@23", "qstring", "pstring");
-        g.choose("cases", "case_execute", "case_create", "case_run", "case_debug", "case_test", "case_doc", "case_version", "case_help", "case_license");
-        g.chr("@24", "@class1");
-        g.chr("@25", "@class4");
-        g.chr("@27", "@class5");
-        g.chr("@28", "@class11");
-        g.chr("@30", "@class12");
+        g.choose("@22", "@18", "@19", "@20", "@21");
+        g.choose("@24", "qstring", "pstring");
+        g.choose("cases", "case_execute", "case_compile", "case_create", "case_run", "case_debug", "case_test", "case_doc", "case_version", "case_help", "case_license");
+        g.chr("@25", "@class1");
+        g.chr("@26", "@class4");
+        g.chr("@28", "@class5");
+        g.chr("@29", "@class11");
+        g.chr("@31", "@class12");
         g.chr("@5", "@class0");
         g.chr("WS_CHR", "@class16");
         g.not("@10", "@9");
         g.not("@4", "@3");
-        g.repeat("@26", "@25", 0, 2147483647);
-        g.repeat("@29", "@28", 1, 2147483647);
+        g.repeat("@27", "@26", 0, 2147483647);
+        g.repeat("@30", "@29", 1, 2147483647);
         g.repeat("WS", "WS_CHR", 0, 2147483647);
         g.repeat("args", "arg", 0, 2147483647);
-        g.repeat("error", "@30", 0, 2147483647);
+        g.repeat("error", "@31", 0, 2147483647);
         g.repeat("ignore", "@6", 0, 2147483647);
         g.repeat("paths", "path", 1, 2147483647);
         g.sequence("@3", "@2", "WS_CHR");
         g.sequence("@6", "@4", "@5");
         g.sequence("@9", "WS", "@8");
         g.sequence("accept", "ignore", "@1", "WS_CHR", "WS", "cases", "WS");
-        g.sequence("arg", "@23", "WS");
-        g.sequence("case_create", "@11", "WS", "name", "WS");
-        g.sequence("case_debug", "@13", "WS", "args", "WS");
-        g.sequence("case_doc", "@15", "WS");
+        g.sequence("arg", "@24", "WS");
+        g.sequence("case_compile", "@11", "WS");
+        g.sequence("case_create", "@12", "WS", "name", "WS");
+        g.sequence("case_debug", "@14", "WS", "args", "WS");
+        g.sequence("case_doc", "@16", "WS");
         g.sequence("case_execute", "paths", "WS", "@7", "WS", "args", "WS");
-        g.sequence("case_help", "@21", "WS");
-        g.sequence("case_license", "@22", "WS");
-        g.sequence("case_run", "@12", "WS", "args", "WS");
-        g.sequence("case_test", "@14", "WS");
-        g.sequence("case_version", "@16", "WS");
+        g.sequence("case_help", "@22", "WS");
+        g.sequence("case_license", "@23", "WS");
+        g.sequence("case_run", "@13", "WS", "args", "WS");
+        g.sequence("case_test", "@15", "WS");
+        g.sequence("case_version", "@17", "WS");
         g.sequence("line", "@0", "END");
         g.sequence("name", "arg");
         g.sequence("path", "@10", "arg");
-        g.sequence("pstring", "WS", "@29", "WS");
-        g.sequence("qstring", "WS", "@24", "@26", "@27", "WS");
+        g.sequence("pstring", "WS", "@30", "WS");
+        g.sequence("qstring", "WS", "@25", "@27", "@28", "WS");
         g.str("@1", "autumn");
-        g.str("@11", "create");
-        g.str("@12", "run");
-        g.str("@13", "debug");
-        g.str("@14", "test");
-        g.str("@15", "document");
-        g.str("@16", "version");
-        g.str("@17", "help");
-        g.str("@18", "-help");
-        g.str("@19", "-h");
+        g.str("@11", "compile");
+        g.str("@12", "create");
+        g.str("@13", "run");
+        g.str("@14", "debug");
+        g.str("@15", "test");
+        g.str("@16", "document");
+        g.str("@17", "version");
+        g.str("@18", "help");
+        g.str("@19", "-help");
         g.str("@2", "autumn");
-        g.str("@20", "--h");
-        g.str("@22", "license");
+        g.str("@20", "-h");
+        g.str("@21", "--h");
+        g.str("@23", "license");
         g.str("@7", "execute");
         g.str("@8", "execute");
 
