@@ -2283,6 +2283,10 @@ public class Main
         ////////////////////////////////////////////////////////////////////////////////////////////
 
         p = Page.newInstance();
+        p.name = "Known Bugs";
+        p.markdown = new File("Known Bugs.md");
+
+        p = Page.newInstance();
         p.name = "Infer Functions";
         p.markdown = new File("functions/Infer Functions.md");
 
