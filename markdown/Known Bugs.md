@@ -1,7 +1,8 @@
  
-## Bugs:
-+ Bug: The command-line is not handling quoted string correctly at all!!!
-+ Bug: The version numbers are not being embedded in the distros correctly. 
+## Bugs, etc:
++ Issue: The user-side documentation of components and the type-system is not complete. The implementations are finished however. 
++ Bug: The command-line is not handling quoted strings correctly, because of the way Java handles command-line arguments. A fix will be avilable soon.  
++ Bug: The version numbers are not being embedded in the distros correctly. The distro number is always one behind. Not a major issue right now. 
 + Bug: Annotation Usages should verify that the annotation-type is an Autumn-style annotation. 
 + Bug: $private$ on exception definitions construct page.
 + Bug: addSuppressed inherited by throwable is only available in Java 7.
@@ -34,7 +35,7 @@
 + Bug: Execution Test T0234?
 + Add a generalized error handler.
 
-## Things Needed to Finish the Compiler Itself:
+## Things Needed to Completely Finish the Compiler Itself:
 + Make sure that the predefined methods in records generate bridges, when needed.
 + Remove Tuple Covariance - Inhibits Type Safety - Already Documented
 + Finish Tuple implementation and testing.  Documentation is done.

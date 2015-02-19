@@ -1,14 +1,3 @@
-Warning: NO_SUCH_METHOD
-  File: file:/media/disk/Code/EclipseProjects/AutumnSpecification/autumn/examples/E0051/project/src/Main.leaf
-  Line: #12
-  Column: #21
-  Message: No acceptable method overload was found.
-  Invocation: Modifier::toStringklass()
-
-Warning: NO_SUCH_VARIABLE
-  File: file:/media/disk/Code/EclipseProjects/AutumnSpecification/autumn/examples/E0051/project/src/Main.leaf
-  Line: #18
-  Column: #34
-  Message: A variable was used before it was declared.
-  Variable: modifiers
-
+Name = examples.Alien
+Annotation? = true
+Modifiers = public abstract interface

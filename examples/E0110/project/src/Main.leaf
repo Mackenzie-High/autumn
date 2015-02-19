@@ -14,8 +14,8 @@ defun main (args : String[]) : void
     val anno1 = klass.getAnnotation((class Captain));
     val anno2 = klass.getAnnotation((class Scientist));
 
-    val captain = Reflect::getAnnotationValue(anno1);
-    val scientist = Reflect::getAnnotationValue(anno2);
+    val captain = F::get(anno1, 0);
+    val scientist = F::get(anno2, 0);
     
     F::println("Starship Captain = " .. captain);
     F::println("Science  Officer = " .. scientist);

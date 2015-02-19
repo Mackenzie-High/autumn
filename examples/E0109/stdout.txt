@@ -1,1 +1,1 @@
-class starships.Module$1
+class starships.Module$0

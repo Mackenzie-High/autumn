@@ -1,21 +1,9 @@
-Warning: NO_SUCH_METHOD
-  File: file:/media/disk/Code/EclipseProjects/AutumnSpecification/autumn/examples/E0055/project/src/Main.leaf
-  Line: #10
-  Column: #5
-  Message: No acceptable method overload was found.
-  Invocation: Main::println(City)
+Name: Paris
+Ordinal: 0
 
-Warning: NO_SUCH_METHOD
-  File: file:/media/disk/Code/EclipseProjects/AutumnSpecification/autumn/examples/E0055/project/src/Main.leaf
-  Line: #12
-  Column: #5
-  Message: No acceptable method overload was found.
-  Invocation: Main::println(City)
+Name: London
+Ordinal: 1
 
-Warning: NO_SUCH_METHOD
-  File: file:/media/disk/Code/EclipseProjects/AutumnSpecification/autumn/examples/E0055/project/src/Main.leaf
-  Line: #14
-  Column: #5
-  Message: No acceptable method overload was found.
-  Invocation: Main::println(City)
+Name: Rome
+Ordinal: 2
 

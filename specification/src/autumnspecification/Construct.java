@@ -250,6 +250,11 @@ public final class Construct
             final String stdout = expand(Files.toString(outfile, Charset.defaultCharset()));
 
             page.put("example-" + example.getKey(), Lists.newArrayList(code, stdout));
+
+            if (stdout.toUpperCase().contains("WARNING") || stdout.toUpperCase().contains("PARSING FAILED"))
+            {
+                System.out.println("Bad Example - Construct: " + name + ". Example Index: " + example.getValue());
+            }
         }
 
         /**

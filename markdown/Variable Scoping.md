@@ -1,3 +1,3 @@
 # The Scope of Variables
 
-TODO
+TODO: Finish this user-side documentation. 

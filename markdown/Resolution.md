@@ -10,7 +10,7 @@
 
 ## Constructor Resolution
 
-TODO
+TODO: Finish this user-side documentation. 
 
 ## Instance Method Resolution
 
