@@ -2,7 +2,6 @@
 <div class="center-text"> <h1> Downloads </h1> </div>
 
 <br>
-<br>
 
 ## Latest Binary Release of the Autumn Compiler: 
 
