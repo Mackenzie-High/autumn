@@ -32,7 +32,7 @@ function emitAdvancedIndex(json)
 			.replace("SIGNATURE", signature);
 
 		// Create a row representing the function in the index table. 
-		var row = HEADER.replace("Function", link);
+		var row = HEADER.replace("Special Functions", link);
 		
 		// Add the link to the index being displayed in the browser. 
 		$("#function-index").append(row);
