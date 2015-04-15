@@ -280,6 +280,11 @@ footer
     text-align: center;
 }
 
+#function-index
+{
+    
+}
+
 /**
  * Cite: http://www.csstablegenerator.com
  */
@@ -332,7 +337,9 @@ footer
 	
 }
 .general-table tr:nth-child(odd){ background-color:#ffffff; }
-.general-table tr:nth-child(even)    { background-color:#ffffff; }.general-table td{
+.general-table tr:nth-child(even)    { background-color:#ffffff; }
+.general-table td
+{
 	vertical-align:middle;
 	
 	
