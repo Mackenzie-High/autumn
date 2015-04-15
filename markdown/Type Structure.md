@@ -19,7 +19,7 @@ In fact, one must understand the JVM type-stystem in order to fully understand t
 + float
 + double
 
-## Structure of a Declared Type *T*:
+## Structure of a Declared Type
 + *superclass*
 + *superinterfaces*
 + *fields*
