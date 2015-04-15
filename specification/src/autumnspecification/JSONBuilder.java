@@ -244,7 +244,7 @@ public class JSONBuilder
          * Flags
          */
         s = s.replace("$public$", link("public", "https://docs.oracle.com/javase/7/docs/api/java/lang/reflect/Modifier.html#PUBLIC"));
-        s = s.replace("$private$", link("public", "https://docs.oracle.com/javase/7/docs/api/java/lang/reflect/Modifier.html#PRIVATE"));
+        s = s.replace("$private$", link("private", "https://docs.oracle.com/javase/7/docs/api/java/lang/reflect/Modifier.html#PRIVATE"));
         s = s.replace("$static$", link("static", "https://docs.oracle.com/javase/7/docs/api/java/lang/reflect/Modifier.html#STATIC"));
         s = s.replace("$final$", link("final", "https://docs.oracle.com/javase/7/docs/api/java/lang/reflect/Modifier.html#FINAL"));
         s = s.replace("$abstract$", link("abstract", "https://docs.oracle.com/javase/7/docs/api/java/lang/reflect/Modifier.html#ABSTRACT"));
