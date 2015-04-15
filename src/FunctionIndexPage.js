@@ -8,7 +8,7 @@ function emitAdvancedIndex(json)
 	var length = index.length;
 
 	// Add the header to the table. 
-	$("#index").append(HEADER);
+	$("#function-index").append(HEADER);
 	
 	// Add the entries to the table. 
 	for(var i = 0; i < length; i++)
