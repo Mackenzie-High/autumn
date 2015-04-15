@@ -35,7 +35,7 @@ function emitAdvancedIndex(json)
 		var row = HEADER.replace("Function", link);
 		
 		// Add the link to the index being displayed in the browser. 
-		$("#index").append(row);
+		$("#function-index").append(row);
 	}
 }
 
