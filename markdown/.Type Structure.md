@@ -19,11 +19,11 @@ Autumn is a statically-typed language using a type-system that is closely relate
 + double
 
 ## Structure of a Declared Type
-+ superclass
-+ superinterfaces
-+ fields
-+ constructors
-+ methods
++ *superclass*
++ *superinterfaces*
++ *fields*
++ *constructors*
++ *methods*
 
 
 

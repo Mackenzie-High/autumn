@@ -2,6 +2,7 @@
 # Type Systen
 
 Autumn is a statically-typed language using a type-system that is closely related to the JVM type-system. <br>
+In fact, one must understand the JVM type-stystem in order to fully understand the Autumn type-system.
 
 ## Hierarchy of Types
 
@@ -18,7 +19,7 @@ Autumn is a statically-typed language using a type-system that is closely relate
 + float
 + double
 
-## Structure of a Declared Type
+## Structure of a Declared Type *T*:
 + *superclass*
 + *superinterfaces*
 + *fields*
