@@ -1,5 +1,5 @@
 
-var HEADER = "<tr> <td> Function </td> </tr>";
+var HEADER = "<tr> <td> <i> Special Functions </i> </td> </tr>";
 
 function emitAdvancedIndex(json)
 {
