@@ -9,7 +9,7 @@ import high.mackenzie.snowflake.ParserOutput;
 /**
  * This class was auto-generated using the Snowflake parser-generator.
  *
- * <p>Generated On: Tue Feb 17 09:10:25 EST 2015</p>
+ * <p>Generated On: Mon Mar 30 16:55:04 EDT 2015</p>
  */
 public final class Parser implements IParser
 {
@@ -25,19 +25,19 @@ public final class Parser implements IParser
         final GrammarBuilder g = new GrammarBuilder();
 
         // Character Classes
-        g.range("@class0", (char) 0, (char) 65535);
+        g.range("@class0", (char) 34, (char) 34);
         g.range("@class1", (char) 34, (char) 34);
-        g.range("@class2", (char) 34, (char) 34);
-        g.combine("@class3", "@class2");
-        g.negate("@class4", "@class3");
-        g.range("@class5", (char) 34, (char) 34);
-        g.range("@class6", (char) 32, (char) 32);
-        g.range("@class7", (char) 34, (char) 34);
-        g.range("@class8", (char) 10, (char) 10);
-        g.range("@class9", (char) 13, (char) 13);
-        g.combine("@class10", "@class6", "@class7", "@class8", "@class9");
-        g.negate("@class11", "@class10");
-        g.range("@class12", (char) 0, (char) 65535);
+        g.combine("@class2", "@class1");
+        g.negate("@class3", "@class2");
+        g.range("@class4", (char) 34, (char) 34);
+        g.range("@class5", (char) 32, (char) 32);
+        g.range("@class6", (char) 34, (char) 34);
+        g.range("@class7", (char) 10, (char) 10);
+        g.range("@class8", (char) 13, (char) 13);
+        g.combine("@class9", "@class5", "@class6", "@class7", "@class8");
+        g.negate("@class10", "@class9");
+        g.range("@class11", (char) 0, (char) 65535);
+        g.range("@class12", (char) 34, (char) 34);
         g.range("@class13", (char) 10, (char) 10);
         g.range("@class14", (char) 13, (char) 13);
         g.range("@class15", (char) 32, (char) 32);
@@ -45,60 +45,62 @@ public final class Parser implements IParser
 
         // Grammar Rules
         g.choose("@0", "accept", "error");
-        g.choose("@22", "@18", "@19", "@20", "@21");
-        g.choose("cases", "case_execute", "case_compile", "case_create", "case_run", "case_debug", "case_test", "case_doc", "case_version", "case_help", "case_license");
-        g.chr("@24", "@class1");
-        g.chr("@25", "@class4");
-        g.chr("@27", "@class5");
-        g.chr("@28", "@class11");
-        g.chr("@30", "@class12");
-        g.chr("@5", "@class0");
+        g.choose("@19", "@15", "@16", "@17", "@18");
+        g.choose("cases", "case_execute", "case_compile", "case_create", "case_run", "case_test", "case_doc", "case_version", "case_help", "case_license");
+        g.chr("@3", "@class0");
+        g.chr("@4", "@class3");
+        g.chr("@6", "@class4");
+        g.chr("@7", "@class10");
+        g.chr("@9", "@class11");
+        g.chr("Q", "@class12");
         g.chr("WS_CHR", "@class16");
-        g.not("@10", "@9");
-        g.not("@4", "@3");
-        g.repeat("@26", "@25", 0, 2147483647);
-        g.repeat("@29", "@28", 1, 2147483647);
+        g.not("@2", "@1");
+        g.repeat("@5", "@4", 0, 2147483647);
+        g.repeat("@8", "@7", 1, 2147483647);
         g.repeat("WS", "WS_CHR", 0, 2147483647);
         g.repeat("args", "arg", 0, 2147483647);
-        g.repeat("error", "@30", 0, 2147483647);
-        g.repeat("ignore", "@6", 0, 2147483647);
-        g.repeat("paths", "path", 1, 2147483647);
-        g.sequence("@3", "@2", "WS_CHR");
-        g.sequence("@6", "@4", "@5");
-        g.sequence("@9", "WS", "@8");
-        g.sequence("accept", "ignore", "@1", "WS_CHR", "WS", "cases", "WS");
+        g.repeat("error", "@9", 0, 2147483647);
+        g.repeat("paths", "path", 0, 2147483647);
+        g.sequence("@1", "WS", "EXECUTE");
+        g.sequence("AUTUMN", "Q", "@10", "Q");
+        g.sequence("COMPILE", "Q", "@11", "Q");
+        g.sequence("CREATE", "Q", "@12", "Q");
+        g.sequence("DOCUMENT", "Q", "@13", "Q");
+        g.sequence("EXECUTE", "Q", "@14", "Q");
+        g.sequence("HELP", "Q", "@19", "Q");
+        g.sequence("LICENSE", "Q", "@20", "Q");
+        g.sequence("RUN", "Q", "@21", "Q");
+        g.sequence("TEST", "Q", "@22", "Q");
+        g.sequence("VERSION", "Q", "@23", "Q");
+        g.sequence("accept", "WS", "cases", "WS");
         g.sequence("arg", "qstring", "WS");
-        g.sequence("case_compile", "@11", "WS");
-        g.sequence("case_create", "@12", "WS", "name", "WS");
-        g.sequence("case_debug", "@14", "WS", "args", "WS");
-        g.sequence("case_doc", "@16", "WS");
-        g.sequence("case_execute", "paths", "WS", "@7", "WS", "args", "WS");
-        g.sequence("case_help", "@22", "WS");
-        g.sequence("case_license", "@23", "WS");
-        g.sequence("case_run", "@13", "WS", "args", "WS");
-        g.sequence("case_test", "@15", "WS");
-        g.sequence("case_version", "@17", "WS");
+        g.sequence("case_compile", "COMPILE", "WS");
+        g.sequence("case_create", "CREATE", "WS", "name", "WS");
+        g.sequence("case_doc", "DOCUMENT", "WS");
+        g.sequence("case_execute", "paths", "WS", "EXECUTE", "WS", "args", "WS");
+        g.sequence("case_help", "HELP", "WS");
+        g.sequence("case_license", "LICENSE", "WS");
+        g.sequence("case_run", "RUN", "WS", "args", "WS");
+        g.sequence("case_test", "TEST", "WS");
+        g.sequence("case_version", "VERSION", "WS");
         g.sequence("line", "@0", "END");
         g.sequence("name", "arg");
-        g.sequence("path", "@10", "arg");
-        g.sequence("pstring", "WS", "@29", "WS");
-        g.sequence("qstring", "WS", "@24", "@26", "@27", "WS");
-        g.str("@1", "autumn");
+        g.sequence("path", "@2", "arg");
+        g.sequence("pstring", "WS", "@8", "WS");
+        g.sequence("qstring", "WS", "@3", "@5", "@6", "WS");
+        g.str("@10", "autumn");
         g.str("@11", "compile");
         g.str("@12", "create");
-        g.str("@13", "run");
-        g.str("@14", "debug");
-        g.str("@15", "test");
-        g.str("@16", "document");
-        g.str("@17", "version");
-        g.str("@18", "help");
-        g.str("@19", "-help");
-        g.str("@2", "autumn");
-        g.str("@20", "-h");
-        g.str("@21", "--h");
-        g.str("@23", "license");
-        g.str("@7", "execute");
-        g.str("@8", "execute");
+        g.str("@13", "document");
+        g.str("@14", "execute");
+        g.str("@15", "help");
+        g.str("@16", "-help");
+        g.str("@17", "-h");
+        g.str("@18", "--h");
+        g.str("@20", "license");
+        g.str("@21", "run");
+        g.str("@22", "test");
+        g.str("@23", "version");
 
         // Specify which rule is the root of the grammar.
         g.setRoot("line");

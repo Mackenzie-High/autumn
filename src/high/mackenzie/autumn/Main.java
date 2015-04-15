@@ -58,22 +58,20 @@ public final class Main
     /**
      * This method concatenates a series of argument strings together.
      *
+     * <p>
+     * Each argument will be enclosed inside of quotation marks.
+     * </p>
+     *
      * @param args are the strings to concatenate.
      * @return the args as a single space separated string.
      */
     private static String concatArgs(String[] args)
     {
-        // TODO: There is a bug here.
-        // Autumn expect that the qstring arguments will be wrapped in quotes.
-        // However, Java removes the quotes.
-        // As a result, quoted arguments passed to Autumn, which contain spaces, will get split.
-        // This is a major problem. 
-
         final StringBuilder result = new StringBuilder();
 
-        for (String arg : args)
+        for (int i = 0; i < args.length; i++)
         {
-            result.append(arg);
+            result.append("\"").append(args[i]).append("\"");
 
             result.append(' ');
         }

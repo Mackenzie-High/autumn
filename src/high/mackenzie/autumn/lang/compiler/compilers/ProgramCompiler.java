@@ -5,10 +5,9 @@ import autumn.lang.compiler.CompiledProgram;
 import autumn.lang.compiler.ast.nodes.Module;
 import autumn.lang.compiler.errors.IErrorReporter;
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
-import com.google.common.io.Files;
 import high.mackenzie.autumn.lang.compiler.utils.Utils;
-import java.io.File;
 import java.util.List;
 
 /**
@@ -27,7 +26,7 @@ public final class ProgramCompiler
 
     public final IErrorReporter reporter;
 
-    public final List<File> dependencies = Lists.newLinkedList();
+    public final List<Class> imported;
 
     private final List<ModuleCompiler> modules = Lists.newLinkedList();
 
@@ -36,10 +35,12 @@ public final class ProgramCompiler
      *
      * @param reporter is used to report errors.
      * @param loader is the class-loader used to find previously loaded types.
+     * @param imported are types to automatically import into every module.
      * @param mules are the modules that will be compiled.
      */
     private ProgramCompiler(final IErrorReporter reporter,
                             final ClassLoader loader,
+                            final List<Class> imported,
                             final List<Module> mules)
     {
         Preconditions.checkNotNull(reporter);
@@ -51,6 +52,11 @@ public final class ProgramCompiler
 
         this.checker = new StaticChecker(this);
 
+        this.imported = ImmutableList.copyOf(imported);
+
+        /**
+         * Create a ModuleCompiler for each module AST node.
+         */
         for (Module m : mules)
         {
             if (ModuleCompiler.isEmpty(m) == false)
@@ -67,49 +73,51 @@ public final class ProgramCompiler
      */
     private CompiledProgram build()
     {
+        /**
+         * The generated class-files will be added to this list.
+         */
         final List<ClassFile> classes = Lists.newLinkedList();
 
+        /**
+         * Add all the class-files, which represent modules, to the list.
+         */
         for (ModuleCompiler m : modules)
         {
             classes.addAll(m.build());
         }
 
+        /**
+         * Add all the class-files, which represent lambdas, to the list.
+         */
         for (LambdaCompiler x : symbols.lambdas.values())
         {
             classes.add(x.build());
         }
 
+        /**
+         * Find all of the entry-point functions, if any.
+         */
         final List<FunctionCompiler> starts = this.findStart();
 
+        /**
+         * There should only be one entry-point function.
+         */
         if (starts.size() > 1)
         {
             checker.reportTooManyStarts(starts.get(0).node);
         }
 
+        /**
+         * Compute the name of the module that contains the entry-point function.
+         */
         final String main_class = starts.size() == 1
                 ? Utils.sourceName(starts.get(0).type.getOwner())
                 : null;
 
-        final CompiledProgram result = new CompiledProgram(main_class, dependencies, classes);
-
-        // TODO: Remove this
-        try
-        {
-            for (ClassFile klass : classes)
-            {
-                if ((new File("/home/mackenzie")).isDirectory() == false)
-                {
-                    break;
-                }
-
-                final File file = new File("/home/mackenzie/test/" + klass.name() + ".class");
-                Files.write(klass.bytecode(), file);
-            }
-        }
-        catch (Exception x)
-        {
-            // PASS
-        }
+        /**
+         * Create an object representation of the compiled program.
+         */
+        final CompiledProgram result = new CompiledProgram(main_class, classes);
 
         return result;
     }
@@ -214,16 +222,18 @@ public final class ProgramCompiler
      * @param input are the modules in the program that will be compiled.
      * @param reporter is used to report errors.
      * @param loader is the class-loader used to find previously loaded types.
+     * @param imported are types to automatically import into every module.
      * @return the bytecode representation of the compiled program; or null, if compilation fails.
      */
     public static CompiledProgram compile(final List<Module> input,
                                           final IErrorReporter reporter,
-                                          final ClassLoader loader)
+                                          final ClassLoader loader,
+                                          final List<Class> imported)
     {
 
         try
         {
-            final ProgramCompiler compiler = new ProgramCompiler(reporter, loader, input);
+            final ProgramCompiler compiler = new ProgramCompiler(reporter, loader, imported, input);
 
             compiler.performTypeDeclaration();
 

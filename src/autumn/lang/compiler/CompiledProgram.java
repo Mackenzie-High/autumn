@@ -7,6 +7,7 @@ import high.mackenzie.autumn.resources.Finished;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URL;
 import java.util.List;
 import java.util.jar.Attributes;
 import java.util.jar.JarEntry;
@@ -23,12 +24,12 @@ public final class CompiledProgram
 {
     private final String main_class;
 
-    private final List<File> dependencies = Lists.newLinkedList();
-
     private final List<ClassFile> classes = Lists.newLinkedList();
 
+    private final List<URL> libraries = Lists.newLinkedList();
+
     /**
-     * Sole Constructor.
+     * Constructor.
      *
      * <p>
      * The main-class parameter must be null, if no entry-point is specified.
@@ -40,22 +41,33 @@ public final class CompiledProgram
      * </p>
      *
      * @param main_class is the name of the class that contains the program's entry-point.
-     * @param dependencies are the Jar files that the program relies on.
      * @param classes are the classes that the compiled program is composed of.
      */
     public CompiledProgram(final String main_class,
-                           final List<File> dependencies,
                            final List<ClassFile> classes)
     {
         Preconditions.checkNotNull(classes);
 
         this.main_class = main_class;
         this.classes.addAll(classes);
+    }
 
-        if (dependencies != null)
-        {
-            this.dependencies.addAll(dependencies);
-        }
+    /**
+     * Constructor.
+     *
+     * @param program is the original compiled program.
+     * @param libraries are the paths to libraries that the program relies upon.
+     * @throws NullPointerException if program is null.
+     * @throws NullPointerException if libraries is null.
+     */
+    public CompiledProgram(final CompiledProgram program,
+                           final List<URL> libraries)
+    {
+        this(program.main_class, program.classes);
+
+        Preconditions.checkNotNull(libraries);
+
+        this.libraries.addAll(libraries);
     }
 
     /**
@@ -73,16 +85,6 @@ public final class CompiledProgram
     }
 
     /**
-     * This method retrieves the paths to the dependency JAR files, if any.
-     *
-     * @return the paths to the program's dependencies.
-     */
-    public List<File> dependencies()
-    {
-        return ImmutableList.copyOf(dependencies);
-    }
-
-    /**
      * This method retrieves the class-files that are part of the compiled program.
      *
      * @return the program's class-files.
@@ -90,6 +92,16 @@ public final class CompiledProgram
     public List<ClassFile> classes()
     {
         return ImmutableList.copyOf(classes);
+    }
+
+    /**
+     * This method retrieves the list of libraries that this program relies upon.
+     *
+     * @return an immutable list containing the URLs of the aforesaid libraries.
+     */
+    public List<URL> libraries()
+    {
+        return ImmutableList.copyOf(libraries);
     }
 
     /**
@@ -140,22 +152,6 @@ public final class CompiledProgram
         {
             manifest.getMainAttributes().put(Attributes.Name.MAIN_CLASS, mainClass());
         }
-
-        /**
-         * Add the dependency files to the manifest as part of the class-path attribute.
-         */
-        final StringBuilder entries = new StringBuilder();
-
-        for (File file : dependencies)
-        {
-            Preconditions.checkState(file.toString().contains(" ") == false);
-
-            entries.append(file.toString()).append(" ");
-        }
-
-        final String paths = entries.toString().trim();
-
-        manifest.getMainAttributes().put(Attributes.Name.CLASS_PATH, paths);
 
         return manifest;
     }

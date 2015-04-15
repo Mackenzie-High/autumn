@@ -5,6 +5,8 @@ import com.google.common.collect.Maps;
 import high.mackenzie.autumn.resources.Finished;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.Map;
 
 /**
@@ -14,7 +16,7 @@ import java.util.Map;
  */
 @Finished("2014/08/18")
 public final class DynamicLoader
-        extends ClassLoader
+        extends URLClassLoader
 {
     /**
      * This map maps a name to its related class-object.
@@ -35,7 +37,7 @@ public final class DynamicLoader
     public DynamicLoader(final ClassLoader parent,
                          final CompiledProgram program)
     {
-        super(parent);
+        super(program.libraries().toArray(new URL[0]), parent);
 
         this.program = program;
     }
@@ -66,7 +68,7 @@ public final class DynamicLoader
             }
         }
 
-        return Class.forName(name, false, getParent());
+        return super.findClass(name);
     }
 
     /**

@@ -353,7 +353,7 @@ Test Index
 . . Double
 . . . No Tests are Needed
 . . Big Integer
-. . . T = Malformed Literal
+. . . Malformed Literal
 . . Big Decimal
 . . . No Tests are Needed
 . . Null

@@ -53,6 +53,12 @@ public final class Autumn
     private final List<Module> modules = Lists.newLinkedList();
 
     /**
+     * These are additional classes to automatically import inside each module.
+     * This is a list, because order is important in Autumn imports.
+     */
+    private final List<Class> imported = Lists.newLinkedList();
+
+    /**
      * This flag is true, if assume-statements are turned on.
      */
     private static boolean assume = true;
@@ -111,6 +117,19 @@ public final class Autumn
         Preconditions.checkNotNull(reporter);
 
         this.reporter = reporter;
+    }
+
+    /**
+     * This method specifies that a particular class should be imported in every module.
+     *
+     * @param klass is the type to import in every module automatically.
+     * @throws NullPointerException if klass is null.
+     */
+    public void addImport(final Class klass)
+    {
+        Preconditions.checkNotNull(klass);
+
+        imported.add(klass);
     }
 
     /**
@@ -286,7 +305,25 @@ public final class Autumn
 
         final AutumnCompiler cmp = new AutumnCompiler(reporter, loader);
 
-        final CompiledProgram program = cmp.compile(modules);
+        for (Class type : imported)
+        {
+            cmp.addImport(type);
+        }
+
+        final CompiledProgram compiled = cmp.compile(modules);
+
+        /**
+         * If compilation failed, then the compiler returned null.
+         */
+        if (compiled == null)
+        {
+            return null;
+        }
+
+        /**
+         * In case dynamic loading will be performed, include the loaded libraries.
+         */
+        final CompiledProgram program = new CompiledProgram(compiled, libraries);
 
         return program;
     }
@@ -351,7 +388,7 @@ public final class Autumn
             return;
         }
 
-        final DynamicLoader dyn_loader = program.load();
+        final DynamicLoader dyn_loader = program.load(loader);
 
         dyn_loader.invokeMain(args);
     }
@@ -393,7 +430,7 @@ public final class Autumn
 
         final CompiledProgram program = compile();
 
-        final DynamicLoader loader = program.load();
+        final DynamicLoader dyn_loader = program.load(loader);
 
         for (Module module : modules)
         {
@@ -406,7 +443,7 @@ public final class Autumn
 
             try
             {
-                final Class clazz = Class.forName(name, false, loader);
+                final Class clazz = Class.forName(name, false, dyn_loader);
 
                 tester.add(clazz);
             }
@@ -508,108 +545,5 @@ public final class Autumn
         Preconditions.checkNotNull(path);
 
         loadFile(path);
-    }
-
-    /**
-     * This method creates a new project folder in a specified directory.
-     *
-     * @param folder is the directory where the new project folder will be created.
-     * @param name is the name of the new project.
-     * @throws IllegalArgumentException if the name is not a valid name in Autumn.
-     * @throws IllegalArgumentException if a folder with the given name already exists.
-     * @throws IOException if name cannot be the name of a folder.
-     * @throws IOException if the project folder cannot be created.
-     */
-    public static void createProject(final File folder,
-                                     final String name)
-            throws IOException
-    {
-        Preconditions.checkNotNull(folder);
-        Preconditions.checkNotNull(name);
-        Preconditions.checkArgument(name.matches("[A-Za-z_$][A-Za-z_$0-9]*"),
-                                    "The name of a project folder must be a valid Autumn name: " + name);
-
-        URL url;
-        String code;
-
-        /**
-         * Create the project folder itself.
-         */
-        final File project = new File(folder, name);
-        project.mkdirs();
-
-        /**
-         * Create the project/src directory.
-         */
-        final File src = new File(project, "src");
-        src.mkdirs();
-
-        /**
-         * Create the project/test directory.
-         */
-        final File test = new File(project, "test");
-        test.mkdirs();
-
-        /**
-         * Create the project/src/Main.leaf file.
-         */
-        url = Resources.getResource(Autumn.class, "/high/mackenzie/autumn/resources/default-src-main.leaf");
-        code = Resources.toString(url, Charset.defaultCharset());
-
-        final File src_main = new File(src, "Main.leaf");
-        Files.write(code, src_main, Charset.defaultCharset());
-
-        /**
-         * Create the project/test/MainTest.leaf file.
-         */
-        url = Resources.getResource(Autumn.class, "/high/mackenzie/autumn/resources/default-test-main.leaf");
-        code = Resources.toString(url, Charset.defaultCharset());
-
-        final File test_main = new File(test, "MainTest.leaf");
-        Files.write(code, test_main, Charset.defaultCharset());
-
-    }
-
-    /**
-     * This method loads all the source-files and library-files associated with a project.
-     *
-     * @param folder is the path to the project-directory.
-     * @throws IOException if the folder does not exist.
-     * @throws IOException if the files cannot be read.
-     */
-    public void loadProject(final File folder)
-            throws IOException
-    {
-        /**
-         * Load all the source code files.
-         */
-        final File src = new File(folder, "src");
-
-        for (Object path : F.iter(FileIO.filesOf(src, true)))
-        {
-            final File file = (File) path;
-
-            if (file.getPath().endsWith(".leaf") && !file.isHidden())
-            {
-                srcFile(file);
-            }
-        }
-
-        /**
-         * Load all the test files.
-         */
-        final File test = new File(folder, "test");
-
-        for (Object path : F.iter(FileIO.filesOf(test, true)))
-        {
-            final File file = (File) path;
-
-            if (file.getPath().endsWith(".leaf") && !file.isHidden())
-            {
-                srcFile(file);
-            }
-        }
-
-        // TODO: load resources, libs, etc
     }
 }

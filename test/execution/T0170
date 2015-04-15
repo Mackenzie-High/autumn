@@ -7,6 +7,10 @@ enum City ( Paris, London, Moscow );
 @Start
 defun main (args : String[]) : void
 {
+    assert instanceof (field City::Paris) : Enum;
+
+    #####
+
     val tester = new ReflectionTester();
 
     tester.expectField([], "Paris",  (class City));

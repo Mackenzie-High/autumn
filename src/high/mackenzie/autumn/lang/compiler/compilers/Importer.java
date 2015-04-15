@@ -179,6 +179,17 @@ public final class Importer
         importClass(java.util.TreeMap.class);
         importClass(java.util.TreeSet.class);
         importClass(java.util.Random.class);
+
+        /**
+         * When Autumn is used as a plugin, the user may specify classes to import into every module.
+         */
+        if (module != null)
+        {
+            for (Class type : module.program.imported)
+            {
+                importClass(type);
+            }
+        }
     }
 
     /**

@@ -7,7 +7,7 @@ import high.mackenzie.snowflake.ITreeNodeVisitor;
 /**
  * This class was auto-generated using the Snowflake parser-generator.
  *
- * <p>Generated On: Tue Feb 17 09:10:25 EST 2015</p>
+ * <p>Generated On: Mon Mar 30 16:55:04 EDT 2015</p>
  */
 public abstract class AbstractVisitor implements ITreeNodeVisitor
 {
@@ -22,7 +22,6 @@ public abstract class AbstractVisitor implements ITreeNodeVisitor
 
         if("line".equals(name)) { visit_line(node); }
         else if("accept".equals(name)) { visit_accept(node); }
-        else if("ignore".equals(name)) { visit_ignore(node); }
         else if("cases".equals(name)) { visit_cases(node); }
         else if("case_execute".equals(name)) { visit_case_execute(node); }
         else if("paths".equals(name)) { visit_paths(node); }
@@ -31,7 +30,6 @@ public abstract class AbstractVisitor implements ITreeNodeVisitor
         else if("case_create".equals(name)) { visit_case_create(node); }
         else if("name".equals(name)) { visit_name(node); }
         else if("case_run".equals(name)) { visit_case_run(node); }
-        else if("case_debug".equals(name)) { visit_case_debug(node); }
         else if("case_test".equals(name)) { visit_case_test(node); }
         else if("case_doc".equals(name)) { visit_case_doc(node); }
         else if("case_version".equals(name)) { visit_case_version(node); }
@@ -42,6 +40,17 @@ public abstract class AbstractVisitor implements ITreeNodeVisitor
         else if("qstring".equals(name)) { visit_qstring(node); }
         else if("pstring".equals(name)) { visit_pstring(node); }
         else if("error".equals(name)) { visit_error(node); }
+        else if("AUTUMN".equals(name)) { visit_AUTUMN(node); }
+        else if("COMPILE".equals(name)) { visit_COMPILE(node); }
+        else if("CREATE".equals(name)) { visit_CREATE(node); }
+        else if("DOCUMENT".equals(name)) { visit_DOCUMENT(node); }
+        else if("EXECUTE".equals(name)) { visit_EXECUTE(node); }
+        else if("HELP".equals(name)) { visit_HELP(node); }
+        else if("LICENSE".equals(name)) { visit_LICENSE(node); }
+        else if("RUN".equals(name)) { visit_RUN(node); }
+        else if("TEST".equals(name)) { visit_TEST(node); }
+        else if("VERSION".equals(name)) { visit_VERSION(node); }
+        else if("Q".equals(name)) { visit_Q(node); }
         else if("WS".equals(name)) { visit_WS(node); }
         else if("WS_CHR".equals(name)) { visit_WS_CHR(node); }
         else { visitUnknown(node); }
@@ -55,6 +64,116 @@ public abstract class AbstractVisitor implements ITreeNodeVisitor
     {
         // You should *not* place your code right here.
         // Instead, you should override this method via a subclass.
+    }
+
+    /**
+     * This method visits a parse-tree node created by rule "AUTUMN".
+     */
+    protected void visit_AUTUMN(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+        visitUnknown(node); // Default Behavior
+    }
+
+    /**
+     * This method visits a parse-tree node created by rule "COMPILE".
+     */
+    protected void visit_COMPILE(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+        visitUnknown(node); // Default Behavior
+    }
+
+    /**
+     * This method visits a parse-tree node created by rule "CREATE".
+     */
+    protected void visit_CREATE(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+        visitUnknown(node); // Default Behavior
+    }
+
+    /**
+     * This method visits a parse-tree node created by rule "DOCUMENT".
+     */
+    protected void visit_DOCUMENT(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+        visitUnknown(node); // Default Behavior
+    }
+
+    /**
+     * This method visits a parse-tree node created by rule "EXECUTE".
+     */
+    protected void visit_EXECUTE(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+        visitUnknown(node); // Default Behavior
+    }
+
+    /**
+     * This method visits a parse-tree node created by rule "HELP".
+     */
+    protected void visit_HELP(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+        visitUnknown(node); // Default Behavior
+    }
+
+    /**
+     * This method visits a parse-tree node created by rule "LICENSE".
+     */
+    protected void visit_LICENSE(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+        visitUnknown(node); // Default Behavior
+    }
+
+    /**
+     * This method visits a parse-tree node created by rule "Q".
+     */
+    protected void visit_Q(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+        visitUnknown(node); // Default Behavior
+    }
+
+    /**
+     * This method visits a parse-tree node created by rule "RUN".
+     */
+    protected void visit_RUN(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+        visitUnknown(node); // Default Behavior
+    }
+
+    /**
+     * This method visits a parse-tree node created by rule "TEST".
+     */
+    protected void visit_TEST(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+        visitUnknown(node); // Default Behavior
+    }
+
+    /**
+     * This method visits a parse-tree node created by rule "VERSION".
+     */
+    protected void visit_VERSION(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+        visitUnknown(node); // Default Behavior
     }
 
     /**
@@ -121,16 +240,6 @@ public abstract class AbstractVisitor implements ITreeNodeVisitor
      * This method visits a parse-tree node created by rule "case_create".
      */
     protected void visit_case_create(ITreeNode node)
-    {
-        // You should *not* place your code right here. 
-        // Instead, you should override this method via a subclass.
-        visitUnknown(node); // Default Behavior
-    }
-
-    /**
-     * This method visits a parse-tree node created by rule "case_debug".
-     */
-    protected void visit_case_debug(ITreeNode node)
     {
         // You should *not* place your code right here. 
         // Instead, you should override this method via a subclass.
@@ -221,16 +330,6 @@ public abstract class AbstractVisitor implements ITreeNodeVisitor
      * This method visits a parse-tree node created by rule "error".
      */
     protected void visit_error(ITreeNode node)
-    {
-        // You should *not* place your code right here. 
-        // Instead, you should override this method via a subclass.
-        visitUnknown(node); // Default Behavior
-    }
-
-    /**
-     * This method visits a parse-tree node created by rule "ignore".
-     */
-    protected void visit_ignore(ITreeNode node)
     {
         // You should *not* place your code right here. 
         // Instead, you should override this method via a subclass.

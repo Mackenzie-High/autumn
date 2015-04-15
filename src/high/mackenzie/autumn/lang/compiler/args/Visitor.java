@@ -1,6 +1,5 @@
 package high.mackenzie.autumn.lang.compiler.args;
 
-import autumn.lang.compiler.Autumn;
 import autumn.lang.compiler.AutumnProject;
 import autumn.lang.compiler.errors.BasicErrorReporter;
 import autumn.lang.exceptions.AssertionFailedException;
@@ -44,7 +43,7 @@ public final class Visitor
 
     private String name;
 
-    private static final Autumn cmp = new Autumn();
+    private static AutumnProject project;
 
     /**
      * These are the paths to the jar files.
@@ -165,17 +164,9 @@ public final class Visitor
         /**
          * Load the project.
          */
-        try
-        {
-            final File project = resolveProject();
-
-            cmp.loadProject(project);
-        }
-        catch (IOException ex)
-        {
-            System.out.println("The project coult not be loaded.");
-            ex.printStackTrace(System.out);
-        }
+        final File folder = resolveProject();
+        final BasicErrorReporter reporter = new BasicErrorReporter(System.out);
+        project = new AutumnProject(folder, reporter);
 
         /**
          * Execute the script.
@@ -312,12 +303,13 @@ public final class Visitor
                     throws ClassNotFoundException,
                            NoSuchMethodException,
                            InvocationTargetException,
-                           IllegalAccessException
+                           IllegalAccessException,
+                           IOException
             {
                 /**
                  * Run the program.
                  */
-                cmp.run(args);
+                project.run(args.toArray(new String[0]));
             }
         };
 
@@ -339,9 +331,10 @@ public final class Visitor
                     throws ClassNotFoundException,
                            NoSuchMethodException,
                            InvocationTargetException,
-                           IllegalAccessException
+                           IllegalAccessException,
+                           IOException
             {
-                final TestResults results = cmp.test();
+                final TestResults results = project.test();
 
                 results.print(System.out);
             }
@@ -444,7 +437,7 @@ public final class Visitor
     {
         visitChildren(node);
 
-        paths.add(new File(argument));
+        paths.add(new File(args.pollLast()));
     }
 
     /**
@@ -464,7 +457,7 @@ public final class Visitor
     @Override
     public void visit_qstring(final ITreeNode node)
     {
-        final String text = node.childAt(2).text().substring(0, node.length() - 2);
+        final String text = node.childAt(2).text().substring(0, node.childAt(2).text().length());
 
         argument = text;
     }
