@@ -448,7 +448,7 @@ footer
         border-width:0px 1px 1px 0px;
         text-align:left;
         padding:7px;
-        font-size:16px;
+        font-size:13px;
         font-family:Arial;
         font-weight:normal;
         color:#000000;
@@ -460,8 +460,8 @@ footer
         border-width:0px 0px 0px 0px;
 }
 .left-aligned-table tr:first-child td{
-                background:-o-linear-gradient(bottom, #ff7f00 5%, #bf5f00 100%);        
-                background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #ff7f00), color-stop(1, #bf5f00) );
+        background:-o-linear-gradient(bottom, #ff7f00 5%, #bf5f00 100%);        
+        background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #ff7f00), color-stop(1, #bf5f00) );
         background:-moz-linear-gradient( center top, #ff7f00 5%, #bf5f00 100% );
         filter:progid:DXImageTransform.Microsoft.gradient(startColorstr="#ff7f00", endColorstr="#bf5f00");      background: -o-linear-gradient(top,#ff7f00,bf5f00);
 
