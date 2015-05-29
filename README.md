@@ -12,7 +12,7 @@ About:
 ------
 + Autumn is a multi-paradigm statically-typed programming language for the JVM.
 + Autumn can seamlessly use jar-file based libraries created using Java.
-+ Autumn can be either compile-on-run or be precompiled to a jar file. 
++ Autumn can either compile-on-run or be precompiled into a jar file. 
 + Autumn can be used as a plugin in order to facilitate scripting in other programs.
 + Autumn has an integrated unit-testing framework. 
 + Autumn is licensed under the terms of the [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0) license. 

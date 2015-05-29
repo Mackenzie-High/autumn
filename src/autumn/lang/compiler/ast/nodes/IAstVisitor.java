@@ -53,7 +53,7 @@ import java.util.TreeSet;
 /**
  * An instance of this interface is a visitor that can visit the nodes in an Autumn abstract-syntax-tree.
  * 
- * <p> This file was auto-generated on (Mon Mar 30 16:55:44 EDT 2015).</p>
+ * <p> This file was auto-generated on (Sun May 24 06:57:14 EDT 2015).</p>
  */
 public interface IAstVisitor
 {
