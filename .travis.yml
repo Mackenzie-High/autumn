@@ -3,4 +3,9 @@ language: java
 jdk:
   - openjdk6
 
-install: set CLASSPATH="/home/travis/build/Mackenzie-High/autumn/lib/"
+install: 
+- echo $CLASSPATH
+- set CLASSPATH="/home/travis/build/Mackenzie-High/autumn/lib/;$CLASSPATH"
+- echo $CLASSPATH
+- ls . 
+- ls "lib"
