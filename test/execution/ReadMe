@@ -482,9 +482,6 @@ Standard Library
 . . . T0411 = null arguments
 . . . T0412 = len(arguments) != len(parameters)
 . . . T0413 = normal
-. . async
-. . . T0414 = null action
-. . . normal
 . . average
 . . . T0415 = null values (variable)
 . . . T0416 = null value  (element)

@@ -72,8 +72,6 @@ public class ReflectiveDeclaredTypeTest
             {
                 try
                 {
-                    System.out.println(line);
-
                     final Class clazz = Class.forName(line.trim());
 
                     checkDeclaredType(clazz);

@@ -1,9 +1,0 @@
-module Main in typechecks;
-
-functor Action () : void;
-
-@Start
-defun main (args : String[]) : void
-{
-    lambda p : Action => 5;
-}

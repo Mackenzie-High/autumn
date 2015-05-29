@@ -93,7 +93,6 @@ public final class Runner
         test("T0214", NO_SUCH_TYPE);
         test("T0213", DUPLICATE_VARIABLE);
         //test("T0212", DUPLICATE_VARIABLE);
-        test("T0211", WRONG_TYPE);
         test("T0210", WRONG_TYPE);
         test("T0209", EXPECTED_DEFINED_FUNCTOR_TYPE);
         test("T0208", INACCESSIBLE_TYPE);

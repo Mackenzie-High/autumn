@@ -9,6 +9,6 @@ defun main (args : String[]) : void
     var inner = p.inner() is Lambda;
 
     assert p !== inner;
+    assert p.returnType() == (class Boolean);
     assert inner.returnType() == (class boolean);
-    assert inner.returnType() == p.returnType();
 }

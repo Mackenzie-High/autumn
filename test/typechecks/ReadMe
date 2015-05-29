@@ -216,8 +216,7 @@ Test Index
 . . . T0207 = Type - No Such Type
 . . . T0208 = Type - Inaccessible Type
 . . . T0209 = Type - Expected Functor Type
-. . . T0210 = Returns - Wrong Type - Non Void
-. . . T0211 = Returns - Wrong Type - Non Void
+. . . T0210 = Returns - Wrong Type
 . . . T0212 = Conflict with Predefined Variable - $0
 . . . Conflict with Predefined Variable - $1 to $9
 . . Return Void
