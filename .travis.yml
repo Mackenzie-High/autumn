@@ -8,11 +8,11 @@ env:
     - CLASSPATH="$CLASSPATH;/home/travis/build/Mackenzie-High/autumn/lib/snowflake.jar"
     - CLASSPATH="$CLASSPATH;/home/travis/build/Mackenzie-High/autumn/lib/guava-12.0.jar"
     - CLASSPATH="$CLASSPATH;/home/travis/build/Mackenzie-High/autumn/lib/asm-all-4.1.jar"
-    - CLASSPATH="$CLASSPATH;/home/travis/build/Mackenzie-High/autumn/lib/hamcrest-core-1.3.jar"
-    - CLASSPATH="$CLASSPATH;/home/travis/build/Mackenzie-High/autumn/lib/junit-4.12.jar"
+    - CLASSPATH="$CLASSPATH;/usr/share/java/junit4.jar"    
+    - CLASSPATH="$CLASSPATH;/usr/share/java/hamcrest-core-1.3.jar"
 
 install: 
-- find / -name "*junit*"
+- ls "/usr/share/java/"
 - echo $CLASSPATH
 - echo $ANT_HOME
 - ls $ANT_HOME
