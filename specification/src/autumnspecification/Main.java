@@ -2127,7 +2127,6 @@ public class Main
         c.summary = "An annotation allows metadata to be applied to a module, function, etc.";
         c.addSyntax(0, "@<i>$type$</i>");
         Index.add(c);
-        Index.add(c);
 
         ////////////////////////////////////////////////////////////////////////////////////////////
         // Element Lists

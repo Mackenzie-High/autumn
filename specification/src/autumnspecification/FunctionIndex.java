@@ -104,15 +104,6 @@ public final class FunctionIndex
         f.body = "return T.apply(functor, arguments);";
         f.example(EXAMPLE_1, 151);
 
-        // TODO: Future Release?
-//        f = add();
-//        f.summary = "(Under Development) - This function creates, but does not run, a new asynchronous task.";
-//        f.name = "async";
-//        f.formal("action", Action.class, "is the task to perform asynchronously.");
-//        f.returns(AsyncTask.class, "Return an object that can perform the action asynchronously.");
-//        f.raise(NullPointerException.class, "if <i>action</i> is null.", "action == null");
-//        f.body = "return T.async(action);";
-
         // Finished!
         f = add();
         f.summary = "This function computes the average of a series of numbers.";
