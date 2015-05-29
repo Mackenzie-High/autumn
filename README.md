@@ -25,6 +25,17 @@ Status:
 + The majority of the core language features are fully completed.
 + All of the core language features currently work to some degree, but some are not fully completed. 
 
+How To Install Autumn on Linux:
+------------------------
+1. [Download](http://mackenzie-high.github.io/autumn/TextPage.html?page=Downloads) the latest release. 
+2. Unzip the download into a convenient location.  
+3. Follow the instructions located in the README.pdf file therein. 
+
+How To Use Autumn as a Plugin in Java Program: 
+----------------------------------------------
++ See example Java code here (). 
++ The JAR file containing the Autumn compiler must be on the class-path. 
+
 Dependencies:
 -------------
 + ObjectWeb ASM
