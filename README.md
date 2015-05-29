@@ -35,7 +35,7 @@ How To Use Autumn as a Plugin in a Java Program:
 ----------------------------------------------
 As you can see [here](https://github.com/Mackenzie-High/autumn/blob/gh-pages/other/How-To-Use-Autumn-As-A-Plugin/src/example/Main.java) Autumn can easily be used as a plugin.  
 You can download the complete example project [here](https://drive.google.com/open?id=0B2am-qoFTOsTbmRWZHl6N3R4akE&authuser=0).  
-In order to download the zipped example file, click the download button at the top of the linked page.  
+*In order to download the zipped example file, click the download button at the top of the linked page.*  
 
 Dependencies:
 -------------
