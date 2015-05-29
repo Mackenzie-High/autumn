@@ -7,4 +7,4 @@
 
 
 cd example_builder 
-autumn run "/media/disk/Code/EclipseProjects/AutumnSpecification/autumn/examples"
+autumn run "../examples"
