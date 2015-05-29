@@ -9,3 +9,6 @@ env:
 
 install: 
 - echo $CLASSPATH
+- echo $ANT_HOME
+- ls $ANT_HOME
+- ls $ANT_HOME/lib
