@@ -31,10 +31,10 @@ How To Install Autumn on Linux:
 2. Unzip the download into a convenient location.  
 3. Follow the instructions located in the README.pdf file therein. 
 
-How To Use Autumn as a Plugin in Java Program: 
+How To Use Autumn as a Plugin in a Java Program: 
 ----------------------------------------------
-+ See example Java code here (). 
-+ The JAR file containing the Autumn compiler must be on the class-path. 
+As you can see [here](http://mackenzie-high.github.io/autumn/other/How-To-Use-Autumn-As-A-Plugin/src/example/Main.java) Autumn can easily be used as a plugin.
+You can download the complete example project [here](https://drive.google.com/open?id=0B2am-qoFTOsTbmRWZHl6N3R4akE&authuser=0). 
 
 Dependencies:
 -------------

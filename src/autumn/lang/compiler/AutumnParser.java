@@ -46,13 +46,15 @@ public final class AutumnParser
      *
      * @param code is the source-code itself.
      * @param file denotes the location of the module, if error reporting occurs.
-     * This may be null; however, that is usually not recommended.
+     * @throws NullPointerException if code is null.
+     * @throws NullPointerException if file is null.
      * @return a module created via parsing, or null, if parsing fails.
      */
     public Module parse(final String code,
                         final URL file)
     {
         Preconditions.checkNotNull(code);
+        Preconditions.checkNotNull(file);
 
         // Callers should not be using multiple threads to invoke this parser.
         // However, this will provide some extra safety, just in case.
@@ -100,14 +102,16 @@ public final class AutumnParser
      *
      * @param code is the source-code itself.
      * @param file denotes the location of the module, if error reporting occurs.
-     * This may be null; however, that is usually not recommended.
      * @return a module created via parsing, or null, if parsing fails.
+     * @throws NullPointerException if code is null.
+     * @throws NullPointerException if file is null.
      * @throws IllegalArgumentException if the file cannot be converted to a URL.
      */
     public Module parse(final String code,
                         final File file)
     {
         Preconditions.checkNotNull(code);
+        Preconditions.checkNotNull(file);
 
         try
         {
