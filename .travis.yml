@@ -3,3 +3,4 @@ jdk:
   - openjdk6
 
 install: ls .
+         ls lib
