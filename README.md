@@ -40,7 +40,7 @@ You can download the complete example project [here](https://drive.google.com/op
 Dependencies:
 -------------
 + [ObjectWeb ASM](http://asm.ow2.org/)
-+ [Google Guava](https://code.google.com/p/guava-libraries/)
++ [Google Guava](https://github.com/google/guava)
 + [Snowflake Parser](http://www.mackenziehigh.me/snowflake/)
 
 Contact:
