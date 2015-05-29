@@ -1,5 +1,7 @@
 Autumn Programming Language
 ======
+<img src="https://travis-ci.org/Mackenzie-High/autumn.svg">
+======
 Latest Binary Release: February 17, 2015
 
 Quick Links:
