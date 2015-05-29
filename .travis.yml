@@ -5,7 +5,7 @@ jdk:
 
 env:
   global:
-    - env: CLASSPATH="/home/travis/build/Mackenzie-High/autumn/lib/"
+    - CLASSPATH="/home/travis/build/Mackenzie-High/autumn/lib/"
 
 install: 
 - echo $CLASSPATH
