@@ -31,7 +31,7 @@ import java.util.Stack;
  * </p>
  *
  * <p>
- * This stack-machine employees a primary-stack and a stack-of-stacks.
+ * This stack-machine employs a primary-stack and a stack-of-stacks.
  * The primary stack is the stack that is manipulated when building an AST node.
  * Sometimes it is necessary to limit the scope of a node construction operation.
  * As a result, it is possible to push the current primary-stack onto the stack-of-stacks.

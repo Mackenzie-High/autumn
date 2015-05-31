@@ -468,6 +468,24 @@ Standard Library
 . . T0743 = Get Bit
 . . T0744 = Set Bit
 .
+. autumn.util.FileIO                                      // TODO: Add more null checks and charset tests?
+. . filesOf
+. . . T0770 = normal - non-recursive
+. . . T0771 = normal - recursive
+. . . T0772 = null folder
+. . readText
+. . . T0773 = normal
+. . readLines
+. . . T0774 = normal
+. . readBytes
+. . . T0775 = normal
+. . writeText
+. . . T0776 = normal
+. . writeLines
+. . . normal
+. . writeBytes
+. . . normal
+.
 . autumn.util.F
 . . all
 . . . T0404 = null condition
@@ -601,17 +619,21 @@ Standard Library
 . . isAnnotationType
 . . . T0512 = null argument
 . . . T0513 = normal
+. . . T0777 = Java based Annotation
 . . isAssignableTo
 . . . T0534 = normal
 . . isDesignType
 . . . T0516 = null argument
 . . . T0517 = normal
+. . . T0778 = Java based Interface
 . . isEnumType
 . . . T0518 = null argument
 . . . T0519 = normal
+. . . T0779 = Java based Enum
 . . isExceptionType
 . . . T0520 = null argument
 . . . T0521 normal
+. . . T0780 = Java based Exception
 . . isFunctorType
 . . . T0522 = null argument
 . . . T0523 = normal

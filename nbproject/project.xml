@@ -25,6 +25,8 @@
             <word>executionTime</word>
             <word>expectField</word>
             <word>expectMethod</word>
+            <word>FallingSky</word>
+            <word>filesOf</word>
             <word>FloatTypes</word>
             <word>getAnnotation</word>
             <word>getClass</word>
@@ -65,6 +67,9 @@
             <word>modulos</word>
             <word>newArray</word>
             <word>parameterTypes</word>
+            <word>readBytes</word>
+            <word>readLines</word>
+            <word>readText</word>
             <word>ReflectionTester</word>
             <word>ReflectiveTester</word>
             <word>RetentionPolicy</word>
@@ -77,8 +82,12 @@
             <word>TestCase</word>
             <word>ThisTypeDoesNotExist</word>
             <word>toMap</word>
+            <word>TypedFunctor</word>
             <word>UnitTester</word>
             <word>valueOf</word>
+            <word>writeBytes</word>
+            <word>writeLines</word>
+            <word>writeText</word>
             <word>XA</word>
             <word>XE</word>
         </spellchecker-wordlist>

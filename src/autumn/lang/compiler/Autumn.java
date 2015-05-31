@@ -292,6 +292,39 @@ public final class Autumn
     }
 
     /**
+     * This method adds a module to the list of modules.
+     *
+     * <p>
+     * This method will parse the code.
+     * </p>
+     *
+     * @param code is the source-code representation of the module.
+     * @return node.
+     */
+    public Module src(final String code)
+    {
+        if (reporter.errorCount() > 0)
+        {
+            return null;
+        }
+
+        Preconditions.checkNotNull(code);
+
+        final File fake = new File("<script>");
+
+        final AutumnParser parser = new AutumnParser(reporter);
+
+        final Module node = parser.parse(code, fake);
+
+        if (reporter.errorCount() > 0)
+        {
+            return null;
+        }
+
+        return src(node);
+    }
+
+    /**
      * This method compiles the list of modules to bytecode.
      *
      * @return the bytecode representation the program.

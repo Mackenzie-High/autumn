@@ -1,0 +1,9 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    # Designs in Autumn compile to interfaces;
+    # however, an interface is not always a design.
+    assert F::isDesignType(class List) == false;
+}

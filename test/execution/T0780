@@ -1,0 +1,11 @@
+module Main in execution;
+
+import java.lang.annotation.RetentionPolicy;
+
+@Start
+defun main (args : String[]) : void
+{
+    # The function should only return true,
+    # if the exception was compiled using Autumn.
+    assert F::isExceptionType(class RuntimeException) == false;
+}

@@ -378,7 +378,7 @@ public final class F
     {
 
         if(type == null) { throw new java.lang.NullPointerException(); }
-        return type.isAnnotation();
+        return type.isAnnotationPresent(AnnotationDefinition.class);
     }
 
     
@@ -393,7 +393,7 @@ public final class F
     {
 
         if(type == null) { throw new java.lang.NullPointerException(); }
-        return type.isInterface() && Record.class.isAssignableFrom(type);
+        return type.isAnnotationPresent(DesignDefinition.class);
     }
 
     
@@ -401,7 +401,7 @@ public final class F
     {
 
         if(type == null) { throw new java.lang.NullPointerException(); }
-        return type.isEnum();
+        return type.isAnnotationPresent(EnumDefinition.class);
     }
 
     
@@ -409,7 +409,7 @@ public final class F
     {
 
         if(type == null) { throw new java.lang.NullPointerException(); }
-        return Throwable.class.isAssignableFrom(type);
+        return type.isAnnotationPresent(ExceptionDefinition.class);
     }
 
     
@@ -417,7 +417,7 @@ public final class F
     {
 
         if(type == null) { throw new java.lang.NullPointerException(); }
-        return Functor.class.isAssignableFrom(type);
+        return type.isAnnotationPresent(FunctorDefinition.class);
     }
 
     
@@ -425,7 +425,7 @@ public final class F
     {
 
         if(type == null) { throw new java.lang.NullPointerException(); }
-        return Module.class.isAssignableFrom(type);
+        return type.isAnnotationPresent(ModuleDefinition.class);
     }
 
     

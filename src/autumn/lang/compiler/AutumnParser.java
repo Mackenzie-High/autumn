@@ -22,6 +22,9 @@ import java.net.URL;
 @Finished("2014/08/19")
 public final class AutumnParser
 {
+    /**
+     * This object is used to report syntax-errors.
+     */
     private final IErrorReporter reporter;
 
     /**
@@ -73,16 +76,26 @@ public final class AutumnParser
             // If a syntax-error was detected, then report it.
             if (!output.success())
             {
+                // Detect the style of newline used within the code.
+                // This varies based on the platform (Windows, Linux, etc) on which the code was created.
+                // Code may have been created on different platforms.
+                // So, we will guess the newline style based on the souce-code.
+                // This method is more reliable than simply using the default newline style.
                 final NewlineStyles newline = NewlineStyles.fromGuess(code, NewlineStyles.fromSystem());
 
+                // Compute the line-numbers and column-numbers for each character in the input.
                 final LinesAndColumns finder = new LinesAndColumns(code.toCharArray(), newline);
 
+                // Get the line-number of where the syntax-error is located.
                 final int line = finder.lineNumbers()[output.lengthOfConsumption()];
 
+                // Get the column-number of where the syntax-error is located.
                 final int column = finder.columnNumbers()[output.lengthOfConsumption()];
 
+                // Issue the syntax-error.
                 reporter.reportSyntaxError(file, line, column);
 
+                // No Abstract-Syntax-Tree can be returned, because none could be created.
                 return null;
             }
 

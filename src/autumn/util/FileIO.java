@@ -1,6 +1,7 @@
 package autumn.util;
 
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.io.Files;
 import java.io.File;
 import java.io.IOException;
@@ -8,6 +9,7 @@ import java.nio.charset.Charset;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Set;
 import java.util.Stack;
 
 /**
@@ -41,15 +43,13 @@ public final class FileIO
      * @return the aforedescribed iterator.
      * @throws IllegalArgumentException if root is not a directory.
      */
-    public static Iterable<File> filesOf(final File root,
-                                         final boolean recur)
+    public static Set<File> filesOf(final File root,
+                                    final boolean recur)
     {
-        // TODO: buggy
-
         Preconditions.checkNotNull(root);
         Preconditions.checkArgument(root.isDirectory(), "Expected a Directory: " + root);
 
-        // This stack stores fiels and directories that have not yet been returned.
+        // This stack stores files and directories that have not yet been returned.
         final Stack<File> stack = new Stack();
 
         // Push the files that are in the root directory.
@@ -61,7 +61,7 @@ public final class FileIO
         /**
          * Create the iterable, which basically performs a preorder depth-first transversal.
          */
-        return new Iterable<File>()
+        final Iterable<File> enumerator = new Iterable<File>()
         {
             @Override
             public Iterator<File> iterator()
@@ -78,7 +78,7 @@ public final class FileIO
                     public File next()
                     {
                         // This is required by the iterator interface.
-                        if (stack.isEmpty())
+                        if (hasNext() == false)
                         {
                             throw new NoSuchElementException("Out of Files");
                         }
@@ -106,6 +106,13 @@ public final class FileIO
                 };
             }
         };
+
+        /**
+         * Find all of the files.
+         */
+        final Set<File> files = ImmutableSet.copyOf(enumerator);
+
+        return files;
     }
 
     /**
@@ -139,6 +146,10 @@ public final class FileIO
                                  final Charset charset)
             throws IOException
     {
+        Preconditions.checkNotNull(file);
+        Preconditions.checkNotNull(data);
+        Preconditions.checkNotNull(charset);
+
         Files.write(data, file, charset);
     }
 
@@ -155,6 +166,15 @@ public final class FileIO
                                   final Charset charset)
             throws IOException
     {
+        Preconditions.checkNotNull(file);
+        Preconditions.checkNotNull(lines);
+        Preconditions.checkNotNull(charset);
+
+        for (CharSequence line : lines)
+        {
+            Preconditions.checkNotNull(line);
+            Files.append(line, file, charset);
+        }
     }
 
     /**
@@ -168,6 +188,9 @@ public final class FileIO
                                   final byte[] data)
             throws IOException
     {
+        Preconditions.checkNotNull(file);
+        Preconditions.checkNotNull(data);
+
         Files.write(data, file);
     }
 
@@ -181,6 +204,8 @@ public final class FileIO
     public static List<String> readLines(final File file)
             throws IOException
     {
+        Preconditions.checkNotNull(file);
+
         return Files.readLines(file, Charset.defaultCharset());
     }
 
@@ -196,6 +221,9 @@ public final class FileIO
                                          final Charset charset)
             throws IOException
     {
+        Preconditions.checkNotNull(file);
+        Preconditions.checkNotNull(charset);
+
         return Files.readLines(file, charset);
     }
 
@@ -209,6 +237,8 @@ public final class FileIO
     public static String readText(final File file)
             throws IOException
     {
+        Preconditions.checkNotNull(file);
+
         return readText(file, Charset.defaultCharset());
     }
 
@@ -224,6 +254,9 @@ public final class FileIO
                                   final Charset charset)
             throws IOException
     {
+        Preconditions.checkNotNull(file);
+        Preconditions.checkNotNull(charset);
+
         return Files.toString(file, charset);
     }
 
@@ -237,6 +270,8 @@ public final class FileIO
     public static byte[] readBytes(final File file)
             throws IOException
     {
+        Preconditions.checkNotNull(file);
+
         return Files.toByteArray(file);
     }
 }

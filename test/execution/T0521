@@ -2,6 +2,10 @@ module Main in execution;
 
 import java.lang.annotation.RetentionPolicy;
 
+enum Animals (DOG, CAT, SHEEP);
+
+exception FallingSky extends RuntimeException;
+
 design Blueprint ();
 
 struct Account ();
@@ -25,13 +29,13 @@ defun main (args : String[]) : void
     assert F::isExceptionType((class List)) == false;
 
     # Case: enum
-    assert F::isExceptionType((class RetentionPolicy)) == false;
+    assert F::isExceptionType((class Animals)) == false;
 
     # Case: module
     assert F::isExceptionType((class Main)) == false;
 
     # Case: exception
-    assert F::isExceptionType((class Throwable)) == true;
+    assert F::isExceptionType((class FallingSky)) == true;
 
     # Case: design
     assert F::isExceptionType((class Blueprint)) == false;

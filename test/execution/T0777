@@ -1,0 +1,11 @@
+module Main in execution;
+
+import java.lang.annotation.Retention;
+
+@Start
+defun main (args : String[]) : void
+{
+    # The function should only return true,
+    # if the annotation was compiled using Autumn.
+    assert F::isAnnotationType(class Retention) == false;
+}

@@ -2,13 +2,11 @@
 ======
 Autumn Programming Language
 ======
-Latest Binary Release: February 17, 2015
 
 Quick Links:
 ------------
 + [Website and Language Specification](http://mackenzie-high.github.io/autumn/)
-+ [Download Page](http://mackenzie-high.github.io/autumn/TextPage.html?page=Downloads)
-+ [Known Issues](http://www.mackenziehigh.me/autumn/TextPage.html?page=Known%20Bugs)
++ [Latest Builds](https://drive.google.com/folderview?id=0B2am-qoFTOsTfjhCd3lNMGc1cXdrZEw5WDFGZFVBaEpDbkxGM08xMGZVZkhFTVBNaHFpN2c&usp=sharing)
 
 About:
 ------
@@ -29,15 +27,14 @@ Status:
 
 How To Install Autumn on Linux:
 ------------------------
-1. [Download](http://mackenzie-high.github.io/autumn/TextPage.html?page=Downloads) the latest release. 
+1. [Download](https://drive.google.com/folderview?id=0B2am-qoFTOsTfjhCd3lNMGc1cXdrZEw5WDFGZFVBaEpDbkxGM08xMGZVZkhFTVBNaHFpN2c&usp=sharing) the latest release. 
 2. Unzip the download into a convenient location.  
 3. Follow the instructions located in the README.pdf file therein. 
 
 How To Use Autumn as a Plugin in a Java Program: 
 ----------------------------------------------
 As you can see [here](https://github.com/Mackenzie-High/autumn/blob/gh-pages/other/How-To-Use-Autumn-As-A-Plugin/src/example/Main.java) Autumn can easily be used as a plugin.  
-You can download the complete example project [here](https://drive.google.com/open?id=0B2am-qoFTOsTbmRWZHl6N3R4akE&authuser=0).  
-*In order to download the zipped example file, click the download button at the top of the linked page.*  
+You can download the complete example project [here](https://drive.google.com/uc?export=download&id=0B2am-qoFTOsTbmRWZHl6N3R4akE).  
 
 Dependencies:
 -------------

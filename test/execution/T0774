@@ -1,0 +1,23 @@
+# Chicky
+# Picky
+
+module Main in execution;
+
+import java.io.File;
+
+@Start
+defun main (args : String[]) : void
+{
+    # Get the path to this file.
+    val file = new File(new File(new File(new File(new File(new File((class Local).getProtectionDomain().getCodeSource().getLocation().getPath()).getParent()).getParent()), "test"), "execution"), "T0774");
+
+    assert file.exists();
+
+    # Read the file.
+    val content = FileIO::readLines(file);
+
+    # Check that the file was really read.
+    assert F::len(content) == 23;
+    assert content.get(0) == "# Chicky";
+    assert content.get(1) == "# Picky";
+}

@@ -1,0 +1,23 @@
+module Main in execution;
+
+import java.io.File;
+
+@Start
+defun main (args : String[]) : void
+{
+    # This test can only be run on a Linux-like system that allows the creation of temporary files.
+    when (new File("/tmp").exists() == false) then return;
+
+    # This is the path to the new temporary file.
+    val file = new File("/tmp/Autumn-Execution-Test-T0776.txt");
+
+    # Write some text to the file.
+    val content = "The Martians have landed!";
+    FileIO::writeText(file, content);
+
+    # Ensure that the text was written.
+    assert FileIO::readText(file) == content;
+
+    # Delete the temporary file.
+    file.delete();
+}
