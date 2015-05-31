@@ -5,9 +5,7 @@
 
 ## Latest Binary Release of the Autumn Compiler: 
 
-**Download Link** (Zip File): [Click Here](https://googledrive.com/host/0B2am-qoFTOsTTFhuaFV2ME1tdVk)
-
-*You will have to click on the file-link (autumn-latest.zip) on the download-page*. 
+**Download Link** (Zip File): [Click Here](https://drive.google.com/uc?export=download&id=0B2am-qoFTOsTWHhLbTNLOWFaMnc)
 
 **Contents**
 
