@@ -578,13 +578,14 @@ public final class FunctionIndex
         f.body = "return Collections.unmodifiableMap(new HashMap(original));";
         f.example(EXAMPLE_1, 181);
 
+        // Finished!
         f = add();
-        f.summary = "(Under Development) - This method determines whether a $JavaLangClass$ represents the type of an annotation.";
+        f.summary = "This method determines whether a $JavaLangClass$ represents the type of an annotation.";
         f.name = "isAnnotationType";
         f.formal("type", Class.class, "may represent the type of an annotation.");
-        f.returns(boolean.class, "Return true, iff <i>type</i> represents the type of an annotation.");
+        f.returns(boolean.class, "Return true, iff <i>type</i> is the type of an annotation that was created using Autumn.");
         f.raise(NullPointerException.class, "if <i>type</i> is null.", "type == null");
-        f.body = "return type.isAnnotation();";
+        f.body = "return type.isAnnotationPresent(AnnotationDefinition.class);";
         f.example(EXAMPLE_1, 166);
 
         f = add();
@@ -595,66 +596,72 @@ public final class FunctionIndex
         f.returns(boolean.class, "Return true, iff Autumn allows the <i>value</i> type to be assigned to the <i>assignee</i> type.");
         f.body = "return T.isAssignableTo(assignee, value);";
 
+        // Finished!
         f = add();
-        f.summary = "(Under Development) - This function determines whether a $JavaLangClass$ represents the type of a design.";
+        f.summary = "This function determines whether a $JavaLangClass$ represents the type of a design.";
         f.name = "isDesignType";
         f.formal("type", Class.class, "may be a design-type.");
-        f.returns(boolean.class, "Return true, iff <i>type</i> is a design-type.");
+        f.returns(boolean.class, "Return true, iff <i>type</i> is the type of a design that was created using Autumn.");
         f.raise(NullPointerException.class, "if <i>type</i> is null.", "type == null");
-        f.body = "return type.isInterface() && Record.class.isAssignableFrom(type);";
+        f.body = "return type.isAnnotationPresent(DesignDefinition.class);";
         f.example(EXAMPLE_1, 166);
 
+        // Finished!
         f = add();
-        f.summary = "(Under Development) - This function determines whether a $JavaLangClass$ represents the type of an enum.";
+        f.summary = "This function determines whether a $JavaLangClass$ represents the type of an enum.";
         f.name = "isEnumType";
         f.formal("type", Class.class, "may be an enum-type.");
-        f.returns(boolean.class, "Return true, iff <i>type</i> is an enum-type.");
+        f.returns(boolean.class, "Return true, iff <i>type</i> is the type of an enum that was created using Autumn.");
         f.raise(NullPointerException.class, "if <i>type</i> is null.", "type == null");
-        f.body = "return type.isEnum();";
+        f.body = "return type.isAnnotationPresent(EnumDefinition.class);";
         f.example(EXAMPLE_1, 166);
 
+        // Finished!
         f = add();
-        f.summary = "(Under Development) - This function determines whether a $JavaLangClass$ represents the type of an exception.";
+        f.summary = "This function determines whether a $JavaLangClass$ represents the type of an exception.";
         f.name = "isExceptionType";
         f.formal("type", Class.class, "may be an exception-type.");
-        f.returns(boolean.class, "Return true, iff <i>type</i> is an exception-type.");
+        f.returns(boolean.class, "Return true, iff <i>type</i> is the type of an exception that was created using Autumn.");
         f.raise(NullPointerException.class, "if <i>type</i> is null.", "type == null");
-        f.body = "return Throwable.class.isAssignableFrom(type);";
+        f.body = "return type.isAnnotationPresent(ExceptionDefinition.class);";
         f.example(EXAMPLE_1, 166);
 
+        // Finished!
         f = add();
-        f.summary = "(Under Development) - This function determines whether a $JavaLangClass$ represents the type of a functor.";
+        f.summary = "This function determines whether a $JavaLangClass$ represents the type of a functor.";
         f.name = "isFunctorType";
         f.formal("type", Class.class, "may be a functor-type.");
-        f.returns(boolean.class, "Return true, iff <i>type</i> is a functor-type.");
+        f.returns(boolean.class, "Return true, iff <i>type</i> is the type of a functor that was created using Autumn.");
         f.raise(NullPointerException.class, "if <i>type</i> is null.", "type == null");
-        f.detail(0, "Only concrete funtor-type are recognized.");
-        f.body = "return Functor.class.isAssignableFrom(type);";
+        f.body = "return type.isAnnotationPresent(FunctorDefinition.class);";
         f.example(EXAMPLE_1, 166);
 
+        // Finished!
         f = add();
-        f.summary = "(Under Development) - This function determines whether a $JavaLangClass$ represents the type of a module.";
+        f.summary = "This function determines whether a $JavaLangClass$ represents the type of a module.";
         f.name = "isModuleType";
         f.formal("type", Class.class, "may be a module-type.");
-        f.returns(boolean.class, "Return true, iff <i>type</i> is a module-type.");
+        f.returns(boolean.class, "Return true, iff <i>type</i> is the type of a module that was created using Autumn.");
         f.raise(NullPointerException.class, "if <i>type</i> is null.", "type == null");
-        f.body = "return Module.class.isAssignableFrom(type);";
+        f.body = "return type.isAnnotationPresent(ModuleDefinition.class);";
         f.example(EXAMPLE_1, 166);
 
+        // Finished!
         f = add();
-        f.summary = "(Under Development) - This function determines whether a $JavaLangClass$ represents the type of a record.";
+        f.summary = "This function determines whether a $JavaLangClass$ represents the type of a record.";
         f.name = "isRecordType";
         f.formal("type", Class.class, "may be a record-type.");
-        f.returns(boolean.class, "Return true, iff <i>type</i> is a record-type.");
+        f.returns(boolean.class, "Return true, iff <i>type</i> is a record-type (tuple | struct | design).");
         f.raise(NullPointerException.class, "if <i>type</i> is null.", "type == null");
         f.body = "return isDesignType(type) || isStructType(type) || isTupleType(type);";
         f.example(EXAMPLE_1, 166);
 
+        // Finished!
         f = add();
-        f.summary = "(Under Development) - This function determines whether a $JavaLangClass$ represents the type of a struct.";
+        f.summary = "This function determines whether a $JavaLangClass$ represents the type of a struct.";
         f.name = "isStructType";
         f.formal("type", Class.class, "may be a struct-type.");
-        f.returns(boolean.class, "Return true, iff <i>type</i> is a struct-type.");
+        f.returns(boolean.class, "Return true, iff <i>type</i> is the type of a struct that was created using Autumn.");
         f.raise(NullPointerException.class, "if <i>type</i> is null.", "type == null");
         f.body = "return type.isAnnotationPresent(StructDefinition.class);";
         f.example(EXAMPLE_1, 166);
@@ -667,11 +674,12 @@ public final class FunctionIndex
         f.returns(boolean.class, "Return true, iff <i>subtype</i> is in fact a subtype of <i>supertype</i>.");
         f.body = "return T.isSubtypeOf(subtype, supertype);";
 
+        // Finished!
         f = add();
-        f.summary = "(Under Development) - This function determines whether a $JavaLangClass$ represents the type of a tuple.";
+        f.summary = "This function determines whether a $JavaLangClass$ represents the type of a tuple.";
         f.name = "isTupleType";
         f.formal("type", Class.class, "may be a tuple-type.");
-        f.returns(boolean.class, "Return true, iff <i>type</i> is a tuple-type.");
+        f.returns(boolean.class, "Return true, iff <i>type</i> is the type of a tuple that was created using Autumn.");
         f.raise(NullPointerException.class, "if <i>type</i> is null.", "type == null");
         f.body = "return type.isAnnotationPresent(TupleDefinition.class);";
         f.example(EXAMPLE_1, 166);

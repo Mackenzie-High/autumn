@@ -66,33 +66,40 @@ In fact, one must understand the JVM type-stystem in order to fully understand t
 ## Structure of a Field
 + *annotations*
 + *modifiers*
-&nbsp;&nbsp;&nbsp;&nbsp;+ *public* | *protected* | *package* | *private*
-&nbsp;&nbsp;&nbsp;&nbsp;+ *static*
-&nbsp;&nbsp;&nbsp;&nbsp;+ *final*
+__+ *public* | *protected* | *package* | *private*
+__+ *static*
+__+ *final*
 + *name*
 + *type*
 
 ## Structure of a Constructor
 + *annotations*
 + *modifiers*
-&nbsp;&nbsp;&nbsp;&nbsp;+ *public* | *protected* | *package* | *private*
-&nbsp;&nbsp;&nbsp;&nbsp;+ *static*
-&nbsp;&nbsp;&nbsp;&nbsp;+ *final*
+__+ *public* | *protected* | *package* | *private*
+__+ *static*
+__+ *final*
 + *parameters*
 + *throws-clause*
 
 ## Structure of a Method
 + *annotations*
 + *modifiers*
-&nbsp;&nbsp;&nbsp;&nbsp;+ *public* | *protected* | *package* | *private*
-&nbsp;&nbsp;&nbsp;&nbsp;+ *static*
-&nbsp;&nbsp;&nbsp;&nbsp;+ *final*
+__+ *public* | *protected* | *package* | *private*
+__+ *static*
+__+ *final*
 + *name*
 + *parameters*
 + *return-type*
 + *throws-clause*
 
-
+## Structure of an Enum Constant
++ *annotations*
++ *modifiers*
+__+ *public* | *protected* | *package* | *private*
+__+ *static*
+__+ *final*
++ *name*
++ *type*
 
 
 
