@@ -258,8 +258,8 @@ public class JSONBuilder
         s = s.replace("$format$", link("format(String, Object[])", "http://docs.oracle.com/javase/7/docs/api/java/lang/String.html#format(java.lang.String,%20java.lang.Object...)"));
         s = s.replace("$enable-assume$", link("enableAssume()", "http://www.mackenziehigh.me/autumn/javadoc/autumn/lang/compiler/Autumn.html#enableAssume()"));
         s = s.replace("$disable-assume$", link("disableAssume()", "http://www.mackenziehigh.me/autumn/javadoc/autumn/lang/compiler/Autumn.html#disableAssume()"));
-        s = s.replace("$subtyping", link("subtyping", "http://www.mackenziehigh.me/autumn/TextPage.html?page=Type%20Conversions%20and%20Assignability"));
-        s = s.replace("$assignability", link("$assignability", "http://www.mackenziehigh.me/autumn/TextPage.html?page=Type%20Conversions%20and%20Assignability"));
+        s = s.replace("$subtyping$", link("subtyping", "http://www.mackenziehigh.me/autumn/TextPage.html?page=Type%20Conversions%20and%20Assignability"));
+        s = s.replace("$assignability$", link("assignability", "http://www.mackenziehigh.me/autumn/TextPage.html?page=Type%20Conversions%20and%20Assignability"));
 
         /**
          * Syntax Components
