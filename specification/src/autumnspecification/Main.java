@@ -1378,15 +1378,15 @@ public class Main
         c.addSyntaxHR();
         c.addSyntax(0, "@ '''<i>string of characters</i>'''");
         c.addDetail(0, "Escape Sequences");
-        c.addDetail(1, "    Tab: &$92t");
-        c.addDetail(1, "    Backspace: &$92b");
-        c.addDetail(1, "    Newline: &$92n");
-        c.addDetail(1, "    Carriage Return: &$92r");
-        c.addDetail(1, "    Form Feed: &$92f");
-        c.addDetail(1, "    Single Quote: &$92'");
-        c.addDetail(1, "    Double Quote: &$92&$34;");
-        c.addDetail(1, "    Backslash: &$92&$92");
-        c.addDetail(1, "    Character Code: &$92<i>D<sub>1</sub>D<sub>2</sub>D<sub>3</sub>D<sub>4</sub>D<sub>5</sub></i> (where <i>D<sub>i</sub></i> is a decimal digit)");
+        c.addDetail(1, "    Tab: &#92;t");
+        c.addDetail(1, "    Backspace: &#92;b");
+        c.addDetail(1, "    Newline: &#92;n");
+        c.addDetail(1, "    Carriage Return: &#92;r");
+        c.addDetail(1, "    Form Feed: &#92;f");
+        c.addDetail(1, "    Single Quote: &#92;'");
+        c.addDetail(1, "    Double Quote: &#92;&#34;");
+        c.addDetail(1, "    Backslash: &#92;&#92;");
+        c.addDetail(1, "    Character Code: &#92;<i>D<sub>1</sub>D<sub>2</sub>D<sub>3</sub>D<sub>4</sub>D<sub>5</sub></i> (where <i>D<sub>i</sub></i> is a decimal digit)");
         c.addDetail(2, "        The character-code must be between 0 and 65536.");
         c.addDetail(0, "The two syntactic forms that are prefixed with an '@' are verbose-strings.");
         c.addDetail(0, "Escape sequences are ignored in verbose strings.");
@@ -2114,10 +2114,11 @@ public class Main
         c = Construct.newInstance();
         c.name = "Annotation List";
         c.klass = AnnotationList.class;
-        c.summary = "An annotation-list is a set of annotations.";
-        c.addSyntax(0, "<i>$annotation-usage$<sub>1</sub></i>");
-        c.addSyntax(0, "<i>$annotation-usage$<sub>2</sub></i>");
-        c.addSyntax(0, "<i>$annotation-usage$<sub>n</sub></i>");
+        c.summary = "An annotation-list is a list of annotations.";
+        c.addSyntax(0, "<i>$Annotation$<sub>1</sub></i>");
+        c.addSyntax(0, "<i>$Annotation$<sub>2</sub></i>");
+        c.addSyntax(0, "<i>$Annotation$<sub>n</sub></i>");
+        c.addExample(EXAMPLE_1, 223);
         Index.add(c);
 
         // TODO
@@ -2126,6 +2127,9 @@ public class Main
         c.klass = Annotation.class;
         c.summary = "An annotation allows metadata to be applied to a module, function, etc.";
         c.addSyntax(0, "@<i>$type$</i>");
+        c.addSyntaxHR();
+        c.addSyntax(0, "@<i>$type$</i> ( <i>$string$<sub>1</sub></i> , ... , <i>$string$<sub>n</sub></i> )");
+        c.addExample(EXAMPLE_1, 223);
         Index.add(c);
 
         ////////////////////////////////////////////////////////////////////////////////////////////
@@ -2213,7 +2217,7 @@ public class Main
         c.addSyntax(0, "<i>$Doc Comment Line$</i>");
         c.addSyntax(0, "<i>$Doc Comment Line$</i>");
         c.addSyntax(0, "<i>$Doc Comment Line$</i>");
-        c.addDetail(0, "Unlike regular comments, doc-comments are stored in the Abstract-Syntax-Tree of a program.");
+        c.addDetail(0, "Unlike regular comments, doc-comments are part of the Abstract-Syntax-Tree of a program.");
         c.addExample(EXAMPLE_1, 221);
         Index.add(c);
 

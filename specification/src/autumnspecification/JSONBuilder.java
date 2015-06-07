@@ -298,6 +298,8 @@ public class JSONBuilder
         s = placeholder2(s, "$name$", "Name");
         s = placeholder2(s, "$constant$", "Name");
 
+        s = placeholder2(s, "$string$", "String Datum");
+
         s = placeholder2(s, "$Owner$", "TypeSpecifier");
         s = placeholder2(s, "$type$", "TypeSpecifier");
         s = placeholder2(s, "$return-type$", "TypeSpecifier");
@@ -332,6 +334,7 @@ public class JSONBuilder
         s = placeholder2(s, "$Assume Statement$", "Assume Statement");
         s = placeholder2(s, "$Doc Comment$", "Doc Comment");
         s = placeholder2(s, "$Doc Comment Line$", "Doc Comment Line");
+        s = placeholder2(s, "$Annotation$", "Annotation");
 
         /**
          * Pages
