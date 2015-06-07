@@ -58,7 +58,7 @@ function emitDetails()
     {
         var indent = details[i][0];
         
-                var detail = details[i][1];
+        var detail = details[i][1];
         
         $("#construct-page-details").append('<li class="indent-' + indent + '">' + detail + '</li>');
     }
@@ -113,6 +113,7 @@ function emitAstClass()
     if(klass == null)
     {
         $("#construct-page-ast").empty();
+        return;
     }
     
     var link = ast_link(klass);

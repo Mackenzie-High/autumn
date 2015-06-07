@@ -330,6 +330,8 @@ public class JSONBuilder
         s = placeholder2(s, "$Throw Statement$", "Throw Statement");
         s = placeholder2(s, "$Assert Statement$", "Assert Statement");
         s = placeholder2(s, "$Assume Statement$", "Assume Statement");
+        s = placeholder2(s, "$Doc Comment$", "Doc Comment");
+        s = placeholder2(s, "$Doc Comment Line$", "Doc Comment Line");
 
         /**
          * Pages
