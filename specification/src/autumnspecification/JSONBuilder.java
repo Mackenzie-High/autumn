@@ -291,7 +291,7 @@ public class JSONBuilder
         s = placeholder2(s, "$variable$", "Variable");
         s = placeholder2(s, "$parameter$", "Variable");
 
-        s = placeholder2(s, "$param$", "FormalParameter");
+        s = placeholder2(s, "$param$", "Formal Parameter");
 
         s = placeholder2(s, "$label$", "Label");
 
