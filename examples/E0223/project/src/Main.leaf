@@ -1,0 +1,13 @@
+module Main in execution;
+
+
+/// This function has three annotations applied to it. 
+@Author ("Mackenzie High")
+@Hide
+@Start
+defun main (args : String[]) : void
+{
+    return;
+}
+
+
