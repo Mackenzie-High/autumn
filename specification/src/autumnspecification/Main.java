@@ -2205,22 +2205,23 @@ public class Main
         // Documentation Comments
         ////////////////////////////////////////////////////////////////////////////////////////////
 
-        // TODO
         c = Construct.newInstance();
         c.name = "Doc Comment";
-        c.klass = FormalParameter.class; // TODO
+        c.klass = DocComment.class;
         c.summary = "A doc-comment is a comment that can be processed by documentation generators.";
         c.addSyntax(0, "<i>$DocLine$</i>");
         c.addSyntax(0, "<i>$DocLine$</i>");
         c.addSyntax(0, "<i>$DocLine$</i>");
+        c.addDetail(0, "Doc-comments will be stored in the Abstract-Syntax-Tree of a program.");
+        c.addExample(EXAMPLE_1, 221);
         Index.add(c);
 
-        // TODO
         c = Construct.newInstance();
         c.name = "Doc Comment Line";
-        c.klass = FormalParameter.class; // TODO
+        c.klass = DocCommentLine.class;
         c.summary = "A doc-comment-line that is a single line in a doc-comment.";
         c.addSyntax(0, "/// <i>text</i>");
+        c.addExample(EXAMPLE_1, 221);
         Index.add(c);
 
         ////////////////////////////////////////////////////////////////////////////////////////////
@@ -2229,7 +2230,7 @@ public class Main
 
         c = Construct.newInstance();
         c.name = "Comments";
-        c.klass = TypeSpecifier.class; // TODO
+        c.klass = null;
         c.summary = "Comments allow programmers to leave notes inside of code.";
         c.addSyntax(0, "<b>//&nbsp;&nbsp;&nbsp;</b><i>body of single-line comment</i>");
         c.addSyntaxHR();
@@ -2237,6 +2238,7 @@ public class Main
         c.addSyntaxHR();
         c.addSyntax(0, "<b>/*&nbsp;&nbsp;&nbsp;</b><i>body of multi-line comment</i><b>&nbsp;&nbsp;&nbsp;*/</b>");
         c.addDetail(0, "Comments are simply ignored by the compiler.");
+        c.addExample(EXAMPLE_1, 222);
         Index.add(c);
 
         ////////////////////////////////////////////////////////////////////////////////////////////

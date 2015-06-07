@@ -588,13 +588,16 @@ public final class FunctionIndex
         f.body = "return type.isAnnotationPresent(AnnotationDefinition.class);";
         f.example(EXAMPLE_1, 166);
 
+        // Finished!
         f = add();
-        f.summary = "(Under Development) - This function determines whether one type is assignable to annother type in Autumn.";
+        f.summary = "This function determines whether one type is assignable to another type in Autumn.";
         f.name = "isAssignableTo";
         f.formal("assignee", Class.class, "is the the type of the entity being assigned to.");
         f.formal("value", Class.class, "is the type of the value that is being assigned to the assignee.");
         f.returns(boolean.class, "Return true, iff Autumn allows the <i>value</i> type to be assigned to the <i>assignee</i> type.");
+        f.detail(0, "The $assignability$ rules are given elsewhere in this specification.");
         f.body = "return T.isAssignableTo(assignee, value);";
+        f.example(EXAMPLE_1, 220);
 
         // Finished!
         f = add();
@@ -666,13 +669,16 @@ public final class FunctionIndex
         f.body = "return type.isAnnotationPresent(StructDefinition.class);";
         f.example(EXAMPLE_1, 166);
 
+        // Finished!
         f = add();
-        f.summary = "(Under Development) - This function determines whether one type is a subtype of another.";
+        f.summary = "This function determines whether one type is a subtype of another.";
         f.name = "isSubtypeOf";
         f.formal("subtype", Class.class, "may be a subtype of the <i>supertype</i>.");
         f.formal("supertype", Class.class, "may be a supertype of the <i>subtype</i>.");
+        f.detail(0, "The $subtyping$ rules are given elsewhere in this specification.");
         f.returns(boolean.class, "Return true, iff <i>subtype</i> is in fact a subtype of <i>supertype</i>.");
         f.body = "return T.isSubtypeOf(subtype, supertype);";
+        f.example(EXAMPLE_1, 219);
 
         // Finished!
         f = add();

@@ -1,0 +1,25 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    # A LinkedList is both an Object and a Collection.  
+    val case1 = F::isSubtypeOf(class LinkedList, class Object);
+    val case2 = F::isSubtypeOf(class LinkedList, class Collection);
+
+    # A String is an Object, but an Object is not a String. 
+    val case3 = F::isSubtypeOf(class String, class Object);
+    val case4 = F::isSubtypeOf(class Object, class String);
+
+    # Null is a String, because null is the bottom-type. 
+    val case5 = F::isSubtypeOf(null, class String);
+
+    # Print the results. 
+    F::println(case1);
+    F::println(case2);
+    F::println(case3);
+    F::println(case4);
+    F::println(case5);
+}
+
+

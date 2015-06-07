@@ -196,7 +196,7 @@ public final class Construct
         /**
          * Add the AST class.
          */
-        page.put("ast", klass.getName());
+        page.put("ast", klass == null ? null : klass.getName());
 
         /**
          * Add the syntax.
