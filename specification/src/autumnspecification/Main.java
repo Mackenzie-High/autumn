@@ -2205,17 +2205,19 @@ public class Main
         // Documentation Comments
         ////////////////////////////////////////////////////////////////////////////////////////////
 
+        // Finished!
         c = Construct.newInstance();
         c.name = "Doc Comment";
         c.klass = DocComment.class;
         c.summary = "A doc-comment is a comment that can be processed by documentation generators.";
-        c.addSyntax(0, "<i>$DocLine$</i>");
-        c.addSyntax(0, "<i>$DocLine$</i>");
-        c.addSyntax(0, "<i>$DocLine$</i>");
-        c.addDetail(0, "Doc-comments will be stored in the Abstract-Syntax-Tree of a program.");
+        c.addSyntax(0, "<i>$Doc Comment Line$</i>");
+        c.addSyntax(0, "<i>$Doc Comment Line$</i>");
+        c.addSyntax(0, "<i>$Doc Comment Line$</i>");
+        c.addDetail(0, "Unlike regular comments, doc-comments are stored in the Abstract-Syntax-Tree of a program.");
         c.addExample(EXAMPLE_1, 221);
         Index.add(c);
 
+        // Finished!
         c = Construct.newInstance();
         c.name = "Doc Comment Line";
         c.klass = DocCommentLine.class;
@@ -2228,6 +2230,7 @@ public class Main
         // Regular Comments
         ////////////////////////////////////////////////////////////////////////////////////////////
 
+        // Finished!
         c = Construct.newInstance();
         c.name = "Comments";
         c.klass = null;
