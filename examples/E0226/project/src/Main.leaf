@@ -1,0 +1,19 @@
+module Main in execution;
+
+/// This little tuple has a name that starts with an underscore.
+tuple _P ();
+
+/// This little tuple does not. 
+tuple Q ();
+
+/// This little tuple has a name containing digits.
+tuple T2995 ();
+
+/// This little tuple does not. 
+tuple Big_Bad_Wolf ();
+
+/// This little tuple has a name in CamelCase. 
+tuple ThreeLittlePigs ();
+
+
+

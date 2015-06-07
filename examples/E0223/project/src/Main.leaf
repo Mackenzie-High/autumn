@@ -13,7 +13,7 @@ annotation Location;
 @Start
 defun main (args : String[]) : void
 {
-    # Get this function. 
+    # Get the reflection of this function. 
     val function = F::findMethod(class Main, "main", [class String[]]);
 
     # Get the author and location annotations that are applied thereto. 

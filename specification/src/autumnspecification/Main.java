@@ -2142,6 +2142,7 @@ public class Main
         c.klass = ElementList.class;
         c.summary = "An element-list is a list of elements in a struct, design, or tuple.";
         c.addSyntax(0, "( <i>$element$<sub>1</sub></i> , ... , <i>$element$<sub>n</sub></i> )");
+        c.addExample(EXAMPLE_1, 224);
         Index.add(c);
 
         // TODO
@@ -2150,6 +2151,7 @@ public class Main
         c.klass = Element.class;
         c.summary = "An element declares an entry in a struct, design, or tuple.";
         c.addSyntax(0, "<i>$name$</i> : <i>$type$</i>");
+        c.addExample(EXAMPLE_1, 224);
         Index.add(c);
 
         ////////////////////////////////////////////////////////////////////////////////////////////
@@ -2161,7 +2163,8 @@ public class Main
         c.name = "Formal Parameter List";
         c.klass = FormalParameterList.class;
         c.summary = "A formal-parameter-list is a list of formal-parameters.";
-        c.addSyntax(0, "( <i>$formal$<sub>1</sub></i> , ... , <i>$formal$<sub>n</sub></i> )");
+        c.addSyntax(0, "( <i>$param$<sub>1</sub></i> , ... , <i>$param$<sub>n</sub></i> )");
+        c.addExample(EXAMPLE_1, 225);
         Index.add(c);
 
         // TODO
@@ -2170,6 +2173,7 @@ public class Main
         c.klass = FormalParameter.class;
         c.summary = "A formal-parameter is an explicitly typed variable declaration.";
         c.addSyntax(0, "<i>$variable$</i> : <i>$type$</i>");
+        c.addExample(EXAMPLE_1, 225);
         Index.add(c);
 
         ////////////////////////////////////////////////////////////////////////////////////////////
@@ -2185,6 +2189,7 @@ public class Main
         c.addDetail(0, "A <i>name</i> is a sequence of letters, digits, underscores, and/or dollar signs.");
         c.addDetail(0, "A <i>name</i> cannot start with a digit.");
         c.addDetail(0, "A <i>name</i> is case-sensitive.");
+        c.addExample(EXAMPLE_1, 226);
         Index.add(c);
 
         // TODO
@@ -2193,6 +2198,19 @@ public class Main
         c.klass = Namespace.class;
         c.summary = "A namespace construct is used to represent the name of a package.";
         c.addSyntax(0, "<i></i>");
+        c.addExample(EXAMPLE_1, 229);
+        Index.add(c);
+
+        // TODO
+        c = Construct.newInstance();
+        c.name = "Variable";
+        c.klass = Variable.class;
+        c.summary = "A variable construct is used to represent a local variable.";
+        c.addSyntax(0, "<i>name</i>");
+        c.addDetail(0, "The <i>name</i> is a sequence of letters, digits, underscores, and/or dollar signs.");
+        c.addDetail(0, "The <i>name</i> cannot start with a digit.");
+        c.addDetail(0, "The <i>name</i> is case-sensitive.");
+        c.addExample(EXAMPLE_1, 227);
         Index.add(c);
 
         // TODO
@@ -2203,6 +2221,7 @@ public class Main
         c.addSyntax(0, "");
         c.addDetail(0, "If the number of dimensions is non-zero, then an array-type is specified.");
         c.addDetail(0, "One cannot specify the null-type using a type-specifier.");
+        c.addExample(EXAMPLE_1, 228);
         Index.add(c);
 
         ////////////////////////////////////////////////////////////////////////////////////////////

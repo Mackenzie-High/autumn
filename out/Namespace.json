@@ -1,1 +1,1 @@
-{ "summary" : "A namespace construct is used to represent the name of a package.", "ast" : "autumn.lang.compiler.ast.nodes.Namespace", "syntax" : [[0, "<i></i>"]], "details" : [], "static-checks" : [] }
+{ "summary" : "A namespace construct is used to represent the name of a package.", "ast" : "autumn.lang.compiler.ast.nodes.Namespace", "syntax" : [[0, "<i></i>"]], "details" : [], "static-checks" : [], "example-1" : ["/// Namespace: execution.examples;%0A///%0Amodule Main in execution.examples;%0A%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    nop;%0A}", ""] }

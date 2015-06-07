@@ -1,0 +1,32 @@
+module Main in execution;
+
+
+@Start
+defun main (args : String[]) : void
+{
+    # Primitive Type
+    # Type Specifier: int
+    val type1 = class int;
+
+    # Array Type: 1-Dimensional
+    # Type Specifier: int[]
+    val type2 = class int[];
+
+    # Array Type: 2-Dimensional
+    # Type Specifier: int[][]
+    val type3 = class int;
+
+    # Array Type: 3-Dimensional
+    # Type Specifier: int[][][]
+    val type4 = class int[][][];
+
+    # Reference Type
+    # Type Specifier: String
+    val type5 = class String;
+
+    # Fully Qualified
+    val type6 = class java.lang.String;
+}
+
+
+
