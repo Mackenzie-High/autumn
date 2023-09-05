@@ -5,7 +5,7 @@ Autumn Programming Language
 
 Quick Links:
 ------------
-+ [Website and Language Specification](http://mackenzie-high.github.io/autumn/)
++ [Website and Language Specification](https://www.mackenziehigh.com/autumn/)
 + [Latest Builds](https://drive.google.com/folderview?id=0B2am-qoFTOsTfjhCd3lNMGc1cXdrZEw5WDFGZFVBaEpDbkxGM08xMGZVZkhFTVBNaHFpN2c&usp=sharing)
 
 About:
@@ -45,5 +45,3 @@ Dependencies:
 Contact:
 -------------
 Email: MackenzieHigh2995+Autumn@Gmail.com
-
-
