@@ -1,0 +1,18 @@
+@Authors("Larry", "Moe", "Curly")
+module Main in execution;
+
+annotation Authors;
+
+@Start
+defun main (args : String[]) : void
+{
+    val anno = F::findAnnotation(class Main, class Authors);
+
+    val author1 = F::get(anno, 0);
+    val author2 = F::get(anno, 1);    
+    val author3 = F::get(anno, 2);
+
+    F::println("Author #1: " .. author1);
+    F::println("Author #2: " .. author2);
+    F::println("Author #3: " .. author3);
+}

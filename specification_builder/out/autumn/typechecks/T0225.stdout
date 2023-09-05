@@ -1,0 +1,9 @@
+Warning: INACCURATE_NUMERIC_LITERAL
+  File: file:/typechecks/T0225
+  Line: #6
+  Column: #5
+  Message: A literal cannot be accurately compiled.
+  Minimum: -9223372036854775808
+  Maximum: 9223372036854775807
+  Value: 9223372036854775808L
+

@@ -1,0 +1,19 @@
+module Main in examples;
+
+@Start
+defun main (args : String[]) : void
+{
+    # Create an iterable that iterates over the interval [0, 100].
+    val input = F::range(0, 100);
+
+    # Select the numbers that are evenly divisible by three. 
+    val selected = [n for n : Integer in input if n % 3 == 0];
+
+    # Create a list of lists.
+    # Each inner list is a number, its square, and its cube.
+    val output = [[x, (x * x), (x * x * x)] for x : Integer in selected];
+
+    F::printlns(output);
+}
+ 
+

@@ -1,0 +1,18 @@
+module Main in program;
+
+@Start
+defun main (args : String[]) : void
+{
+    val x = My::cube(1);
+    val y = My::cube(2);
+    val z = My::cube(3);
+
+    F::println(x);
+    F::println(y);
+    F::println(z);
+}
+
+defun cube (n : int) : int
+{
+    return n * n * n; 
+}

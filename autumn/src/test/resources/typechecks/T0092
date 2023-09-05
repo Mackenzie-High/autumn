@@ -1,0 +1,11 @@
+module Main in typechecks;
+
+import com.mackenziehigh.autumn.resources.StaticFieldTester;
+
+@Start
+defun main (args : String[]) : void
+{
+    # An integer cannot be assigned to a boolean.
+
+    (field StaticFieldTester::value1 = 23);
+}

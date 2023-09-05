@@ -1,0 +1,7 @@
+Warning: VARIABLE_OUTSIDE_OF_SCOPE
+  File: file:/typechecks/T0068
+  Line: #11
+  Column: #5
+  Message: A variable was outside of its declared scope.
+  Variable: x
+

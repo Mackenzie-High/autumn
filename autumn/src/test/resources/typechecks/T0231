@@ -1,0 +1,14 @@
+module Main in typechecks;
+
+@Start
+defun main (args : String[]) : void
+{
+    # The last element cannot be void.
+
+    progn (1, 2, 3, My::moo());
+}
+
+defun moo () : void
+{
+    nop;
+}

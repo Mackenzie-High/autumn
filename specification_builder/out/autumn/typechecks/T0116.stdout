@@ -1,0 +1,6 @@
+Warning: VALUE_REQUIRED
+  File: file:/typechecks/T0116
+  Line: #6
+  Column: #27
+  Message: The type of an expression is void when it is forbidden to be.
+

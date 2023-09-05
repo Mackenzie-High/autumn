@@ -1,0 +1,3 @@
+module Main in typechecks;
+
+tuple Places () extends List;

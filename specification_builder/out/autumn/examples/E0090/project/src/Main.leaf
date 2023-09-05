@@ -1,0 +1,37 @@
+module Main in examples;
+
+enum PetType (DOG, CAT, CHICKEN, GOAT, SHEEP, DUCK);
+
+tuple Pet (name : String, type : PetType);
+
+
+@Start
+defun main (args : String[]) : void
+{
+    # Create a list of my pets. 
+    val pets = [];
+
+    pets.add(new Pet("Eyeball",    (field PetType::SHEEP)));
+    pets.add(new Pet("Michael",    (field PetType::SHEEP)));
+    pets.add(new Pet("Molly",      (field PetType::SHEEP)));
+    pets.add(new Pet("Chicky Sr.", (field PetType::CHICKEN)));
+    pets.add(new Pet("Picky Sr.",  (field PetType::CHICKEN)));
+    pets.add(new Pet("Daffy",      (field PetType::DUCK)));
+    pets.add(new Pet("Sikorsky",   (field PetType::CHICKEN)));
+    pets.add(new Pet("Lucky",      (field PetType::CHICKEN)));
+    pets.add(new Pet("Jet",        (field PetType::DOG)));
+    pets.add(new Pet("Chicky Jr.", (field PetType::CHICKEN)));
+    pets.add(new Pet("Picky Jr.",  (field PetType::CHICKEN)));
+    pets.add(new Pet("Fluffy",     (field PetType::CAT)));
+    pets.add(new Pet("Angel",      (field PetType::CHICKEN)));
+    pets.add(new Pet("Nanny",      (field PetType::GOAT)));
+
+    # Select the pets that are chickens. 
+    val chickens = [pet for pet : Pet in pets 
+                         if pet.type() == (field PetType::CHICKEN)];
+
+    # Print those pets. 
+    F::printlns(chickens);
+}
+ 
+

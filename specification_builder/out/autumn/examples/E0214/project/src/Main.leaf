@@ -1,0 +1,18 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    val t = new RuntimeException(); 
+
+    try
+    {
+        F::raise(t);
+
+        F::println("The exception was not thrown.");
+    }
+    catch(ex : RuntimeException)
+    {
+        F::println("The exception was thrown.");
+    }
+}

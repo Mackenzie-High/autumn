@@ -1,0 +1,16 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    val integers = new TreeSet();
+
+    F::println(integers.size());
+
+    for(i = 0; i < 1000; i + 1)
+    {
+        integers.add( F::unique() );
+    }
+
+    F::println(integers.size());
+}

@@ -1,0 +1,6 @@
+Warning: EXPECTED_INTERFACE_TYPE
+  File: file:/typechecks/T0191
+  Line: #3
+  Column: #24
+  Message: An interface-type was expected.
+

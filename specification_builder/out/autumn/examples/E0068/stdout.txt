@@ -1,0 +1,13 @@
+void
+boolean
+char
+byte
+short
+int
+long
+float
+double
+class java.lang.String
+class [Ljava.lang.String;
+class [[Ljava.lang.String;
+class [[[Ljava.lang.String;

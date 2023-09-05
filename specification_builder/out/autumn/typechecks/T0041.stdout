@@ -1,0 +1,7 @@
+Warning: DUPLICATE_TYPE
+  File: file:/typechecks/T0041
+  Line: #4
+  Column: #11
+  Message: The fully-qualified name of a type must be unique.
+  Type: Moo
+

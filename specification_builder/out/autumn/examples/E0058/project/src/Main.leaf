@@ -1,0 +1,32 @@
+module Main in examples;
+
+import java.util.LinkedList;
+
+tuple Pet (kind : String, name : String);
+
+@Start
+defun main (args : String[]) : void
+{
+    val barn = new LinkedList();
+
+    barn.add(new Pet("Chicken", "Chicky")); 
+    barn.add(new Pet("Chicken", "Picky"));
+    barn.add(new Pet("Dog",     "Jet"));
+    barn.add(new Pet("Chicken", "Sikorsky"));
+    barn.add(new Pet("Cat",     "Fluffy"));
+    barn.add(new Pet("Sheep",   "Eyeball"));
+    barn.add(new Pet("Chicken", "Lucky"));
+
+    foreach (pet : Pet in barn)
+    {
+        when (pet.kind() != "Chicken") then continue;
+
+        F::println("Name of Chicken: " .. pet.name());
+    }
+}
+
+
+
+
+ 
+

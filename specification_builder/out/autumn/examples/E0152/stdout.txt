@@ -1,0 +1,3 @@
+Maximum = 25
+Minimum = 18
+Average = 21.5

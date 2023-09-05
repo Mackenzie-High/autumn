@@ -1,0 +1,16 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    val map = new TreeMap();
+
+    map.put("Mercury", "Terrestrial");
+    map.put("Mars",    "Terrestrial");
+    map.put("Saturn",  "Jovian");
+    map.put("Neptune", "Jovian");
+
+    val size = F::len(map);
+
+    F::println("Size = " .. size);
+}

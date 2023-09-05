@@ -1,0 +1,9 @@
+module Main in typechecks;
+
+import java.util.LinkedList;
+
+@Start
+defun main (args : String[]) : void
+{
+    new LinkedList("string of characters");
+}

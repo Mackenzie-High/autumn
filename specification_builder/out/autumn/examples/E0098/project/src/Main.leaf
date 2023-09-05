@@ -1,0 +1,36 @@
+module Main in examples;
+
+@Start
+defun main (args : String[]) : void
+{
+    # Exceptions can propagate through multiple invocations.
+
+    try
+    {
+        F::println ("before");
+
+        Main::trouble(0);
+
+        F::println ("after");
+    }
+    catch (ex : Exception)
+    {
+        F::println ("handle");
+    }
+}
+
+defun trouble (n : int) : void
+{
+    F::println ("enter");
+
+    if (n == 5)
+    {
+        throw new Exception();
+    }
+    else
+    {
+        Main::trouble(n + 1);
+    }
+
+    F::println ("exit");
+}

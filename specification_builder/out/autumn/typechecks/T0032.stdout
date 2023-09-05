@@ -1,0 +1,6 @@
+Warning: EXPECTED_REFERENCE_TYPE
+  File: file:/typechecks/T0032
+  Line: #6
+  Column: #5
+  Message: The type of a particular expression must be a reference-type.
+

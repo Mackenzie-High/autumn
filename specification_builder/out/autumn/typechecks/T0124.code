@@ -1,0 +1,5 @@
+module Main in typechecks;
+
+struct Taxable ();
+
+struct Person () extends Taxable & Taxable;

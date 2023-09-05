@@ -1,0 +1,7 @@
+Warning: NO_SUCH_LABEL
+  File: file:/typechecks/T0127
+  Line: #6
+  Column: #33
+  Message: A label was used, but not declared.
+  Label: CASE_ELSE
+

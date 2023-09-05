@@ -1,0 +1,23 @@
+module Main in examples;
+
+@Start
+defun main (args : String[]) : void
+{
+    My::write("Europa", false);
+    My::write("Titan", false);
+    My::write("Ceres", false);
+    My::write("Mimas", false);
+
+    My::write("Mercury", true);
+    My::write("Venus", true);
+    My::write("Earth", true);
+    My::write("Mars", true);
+}
+
+defun write(name : String, planet : boolean) : void
+{
+    when (planet) then F::println(name .. " is a planet.");
+}
+
+ 
+

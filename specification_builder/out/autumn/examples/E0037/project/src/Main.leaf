@@ -1,0 +1,26 @@
+module Main in examples;
+
+@Start
+defun main (args : String[]) : void
+{
+    # Case: Predefined Conversion (int ==> char). 
+    val value1 = 65 as char;
+
+    # Generalized Input
+    val input = "Mars" is Object;
+
+    # Case: Successful Cast
+    val value2 = input as CharSequence;
+
+    # Case: Unsuccessful Cast
+    val value3 = input as List;
+
+    # Print the results.
+    F::println("Case 1: " .. value1);
+    F::println("Case 2: " .. value2);
+    F::println("Case 3: " .. value3);
+}
+
+
+ 
+

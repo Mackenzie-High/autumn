@@ -1,0 +1,5 @@
+module Main in typechecks;
+
+design Person (name : String);
+
+tuple Employee (name : Object) extends Person;

@@ -1,0 +1,13 @@
+/// Namespace: execution.examples;
+///
+module Main in execution.examples;
+
+
+@Start
+defun main (args : String[]) : void
+{
+    nop;
+}
+
+
+

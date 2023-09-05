@@ -1,0 +1,6 @@
+Warning: EXPECTED_DEFINED_FUNCTOR_TYPE
+  File: file:/typechecks/T0209
+  Line: #6
+  Column: #16
+  Message: An autumn.lang.DefinedFunctor was expected.
+

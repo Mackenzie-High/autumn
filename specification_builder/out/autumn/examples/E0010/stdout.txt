@@ -1,0 +1,11 @@
+Value = true
+Value = A
+Value = 11
+Value = 13
+Value = 17
+Value = 19
+Value = 23.0
+Value = Venus
+Value = [Jupiter, Saturn, Uranus, Neptune]
+Value = 20
+Value = 37

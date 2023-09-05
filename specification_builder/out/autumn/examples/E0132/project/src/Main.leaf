@@ -1,0 +1,35 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    # Create a new array. 
+    val array = F::newArray((class double), 5) is double[];
+
+    # Compute the length of the array. 
+    val length = F::len(array);
+
+    # Print the length of the array. 
+    F::println("Length = " .. length);
+
+    # Set the values of the elements in the array.
+    F::set(array, 0, 10.0);
+    F::set(array, 1, 20.0);
+    F::set(array, 2, 30.0);
+    F::set(array, 3, 40.0);
+    F::set(array, 4, 50.0);
+
+    # Retrieve the values of the elements in the array.
+    val value0 = F::get(array, 0);
+    val value1 = F::get(array, 1);
+    val value2 = F::get(array, 2);
+    val value3 = F::get(array, 3);
+    val value4 = F::get(array, 4);
+
+    # Print the aforesaid values. 
+    F::println("Value[0] = " .. value0);
+    F::println("Value[1] = " .. value1);
+    F::println("Value[2] = " .. value2);
+    F::println("Value[3] = " .. value3);
+    F::println("Value[4] = " .. value4);
+}

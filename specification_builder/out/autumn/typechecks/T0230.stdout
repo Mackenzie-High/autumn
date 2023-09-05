@@ -1,0 +1,6 @@
+Warning: EMPTY_PROGN
+  File: file:/typechecks/T0230
+  Line: #6
+  Column: #5
+  Message: A progn-expression cannot be empty.
+

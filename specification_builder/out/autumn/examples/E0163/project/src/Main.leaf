@@ -1,0 +1,17 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    val values = [301, 401, 500, 402, 302];
+
+    val first = F::first(values);
+    val last = F::last(values);
+    val min = F::minimum(values);
+    val max = F::maximum(values);
+
+    F::println("First = " .. first);
+    F::println("Last = " .. last);
+    F::println("Min = " .. min);
+    F::println("Max = " .. max);
+}

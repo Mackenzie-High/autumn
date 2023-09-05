@@ -1,0 +1,6 @@
+Warning: EXPECTED_INTEGER
+  File: file:/typechecks/T0058
+  Line: #6
+  Column: #24
+  Message: An integer was expected.
+

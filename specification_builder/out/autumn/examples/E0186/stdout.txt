@@ -1,0 +1,9 @@
+Key: Russia
+Value: Moscow
+
+Key: UK
+Value: London
+
+Key: USA
+Value: Washington
+

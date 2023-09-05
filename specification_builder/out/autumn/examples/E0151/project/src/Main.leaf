@@ -1,0 +1,30 @@
+module Main in execution;
+
+functor MyFunction (x : int, y : int) : int;
+
+@Start
+defun main (args : String[]) : void
+{
+    # Create a function object. 
+    delegate p : MyFunction => My::sum2;
+
+    # Perform some applications. 
+    val result1 = F::apply(p, [2, 3]);
+    val result2 = F::apply(p, [3, 5]);
+    val result3 = F::apply(p, [2, 8]);
+
+    # Verify the results. 
+    assert (2 + 3) * (2 + 3) == result1;
+    assert (3 + 5) * (3 + 5) == result2;
+    assert (2 + 8) * (2 + 8) == result3;
+
+    # Print the results.
+    F::println(result1);
+    F::println(result2);
+    F::println(result3);
+}
+
+defun sum2 (x : int, y : int) : int
+{
+    return (x + y) * (x + y);
+}

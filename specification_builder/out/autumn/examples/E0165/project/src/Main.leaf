@@ -1,0 +1,17 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    val planets = ["Mercury", "Venus", "Earth", "Mars"];
+
+    val hash1 = F::hash(null);
+    val hash2 = F::hash(planets);
+    val hash3 = planets.hashCode();
+
+    F::println(hash1);
+    F::println(hash2);
+    F::println(hash3);
+
+    assert hash2 == hash3;
+}

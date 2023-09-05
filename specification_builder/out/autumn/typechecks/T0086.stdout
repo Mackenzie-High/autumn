@@ -1,0 +1,6 @@
+Warning: EXPECTED_DECLARED_TYPE
+  File: file:/typechecks/T0086
+  Line: #6
+  Column: #5
+  Message: A declared-type was expected.
+

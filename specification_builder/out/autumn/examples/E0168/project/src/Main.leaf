@@ -1,0 +1,15 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    val string1 = F::padStart("123", 0, 'X');
+    val string2 = F::padStart("123", 3, 'X');
+    val string3 = F::padStart("123", 5, 'X');
+    val string4 = F::padStart("123", 7, 'X');
+
+    F::println(string1);
+    F::println(string2);
+    F::println(string3);
+    F::println(string4);
+}

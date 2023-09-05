@@ -1,0 +1,21 @@
+module Main in examples;
+
+@Start
+defun main (args : String[]) : void
+{
+    # This example shows that some types, 
+    # such as ArrayList, are already imported. 
+    
+    val chickens = new ArrayList();
+
+    chickens.add("Chicky Jr.");
+    chickens.add("Picky Jr.");
+    chickens.add("Sikorsky");
+    chickens.add("Lucky");
+
+    F::println(chickens);
+}
+
+
+
+

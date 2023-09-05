@@ -1,0 +1,22 @@
+module Main in execution;
+
+design Taxable (income : int, rate : int);
+
+design Human (name : String);
+
+design Citizen () extends Human & Taxable;
+
+struct Employee (title : String) extends Citizen;
+
+@Start
+defun main (args : String[]) : void
+{
+    var p = Employee::instance();
+
+    p = p.name("Sarah");
+    p = p.income(75_000);
+    p = p.rate(30);
+    p = p.title("Virologist");
+    
+    F::println (p);
+}

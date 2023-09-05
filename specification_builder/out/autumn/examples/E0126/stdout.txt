@@ -1,0 +1,6 @@
+Length = 5
+Value[0] = A
+Value[1] = B
+Value[2] = C
+Value[3] = D
+Value[4] = E

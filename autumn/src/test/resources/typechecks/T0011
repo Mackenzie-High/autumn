@@ -1,0 +1,18 @@
+module Main in typechecks;
+
+@Start
+defun main (args : String[]) : void
+{
+    try
+    {
+        nop;
+    }
+    catch(ex : Exception)
+    {
+        nop;
+    }
+    catch(ex : RuntimeException)
+    {
+        nop;
+    }
+}

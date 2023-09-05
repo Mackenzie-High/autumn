@@ -1,0 +1,15 @@
+module Main in examples;
+
+@Start
+defun main (args : String[]) : void
+{
+    {
+        F::println("A");
+        F::println("B");
+        F::println("C");
+    }
+}
+
+
+ 
+

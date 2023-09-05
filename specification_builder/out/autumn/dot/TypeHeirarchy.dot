@@ -1,0 +1,45 @@
+
+digraph
+{
+    rankdir = BT;
+
+    TYPE       [label = "Type"];
+    EXPRESSION [label = "Expression Type"];
+    REFERENCE  [label = "Reference Type"];
+    RETURN     [label = "Return Type"];
+    VARIABLE   [label = "Variable Type"];
+    DECLARED   [label = "Declared Type"];
+    ANNOTATION [label = "Annotation Type"];
+    CLASS      [label = "Class Type"];
+    INTERFACE  [label = "Interface Type"];
+    ENUM       [label = "Enum Type"];
+    ELEMENT    [label = "Element Type"];
+
+    ARRAY      [label = "Array Type"];
+    PRIMITIVE  [label = "Primitive Type"];
+    VOID       [label = "Void Type"];
+    NULL       [label = "Null Type"];
+
+    EXPRESSION -> TYPE;
+    
+    REFERENCE -> EXPRESSION;
+    RETURN -> EXPRESSION;
+
+    VARIABLE -> RETURN;
+
+    ELEMENT -> VARIABLE;
+
+    ARRAY->REFERENCE;
+    ARRAY -> VARIABLE;
+    DECLARED -> REFERENCE;
+    DECLARED -> ELEMENT;
+    PRIMITIVE -> ELEMENT;
+    VOID -> RETURN;
+    NULL -> REFERENCE;
+
+    ANNOTATION -> DECLARED;
+    CLASS -> DECLARED;
+    INTERFACE -> DECLARED;
+    
+    ENUM -> CLASS;
+} 

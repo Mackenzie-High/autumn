@@ -1,0 +1,30 @@
+module Main in execution;
+
+import com.mackenziehigh.autumn.resources.StaticFieldTester;
+
+
+@Start
+defun main (args : String[]) : void
+{
+    # This code is used to test both set-static-field and get-static-field expressions.
+
+    (field StaticFieldTester::value1 = true);
+    (field StaticFieldTester::value2 = 'X');
+    (field StaticFieldTester::value3 = 10B);
+    (field StaticFieldTester::value4 = 20S);
+    (field StaticFieldTester::value5 = 30);
+    (field StaticFieldTester::value6 = 40L);
+    (field StaticFieldTester::value7 = 50.0F);
+    (field StaticFieldTester::value8 = 60.0);
+    (field StaticFieldTester::value9 = "Venus");
+
+    assert (field StaticFieldTester::value1) == true;
+    assert (field StaticFieldTester::value2) == 'X';
+    assert (field StaticFieldTester::value3) == 10B;
+    assert (field StaticFieldTester::value4) == 20S;
+    assert (field StaticFieldTester::value5) == 30;
+    assert (field StaticFieldTester::value6) == 40L;
+    assert (field StaticFieldTester::value7) == 50.0F;
+    assert (field StaticFieldTester::value8) == 60.0;
+    assert (field StaticFieldTester::value9) == "Venus";
+}

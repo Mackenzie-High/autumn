@@ -1,0 +1,7 @@
+Warning: DUPLICATE_VARIABLE
+  File: file:/typechecks/T0011
+  Line: #14
+  Column: #11
+  Message: A variable was declared more than once in the same scope.
+  Variable: ex
+

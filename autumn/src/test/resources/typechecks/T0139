@@ -1,0 +1,5 @@
+module Main in typechecks;
+
+functor Moo () : void;
+
+functor Moo () : void;

@@ -1,0 +1,7 @@
+Warning: IMPOSSIBLE_ASSIGNMENT
+  File: file:/typechecks/T0244
+  Line: #5
+  Column: #5
+  Message: An impossible assignment operation was detected.
+  Assignment: String (Target) = int (Value)
+

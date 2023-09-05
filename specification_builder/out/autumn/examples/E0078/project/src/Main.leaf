@@ -1,0 +1,14 @@
+module Main in examples;
+
+@Start
+defun main (args : String[]) : void
+{
+    # Create an object.
+    val sentence = "Hello Home World";
+
+    # Invoke an instance method. 
+    val word = call sentence.substring(6, 10);
+
+    # Print the result.
+    F::println("Type of World: " .. word);
+}

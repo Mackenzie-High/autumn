@@ -1,0 +1,45 @@
+Case: boolean
+true
+false
+false
+true
+
+Case: char
+false
+true
+false
+
+Case: byte
+false
+true
+false
+
+Case: short
+false
+true
+false
+
+Case: int
+false
+true
+false
+
+Case: long
+false
+true
+false
+
+Case: float
+false
+true
+false
+
+Case: double
+false
+true
+false
+
+Case: Comparable
+false
+true
+false

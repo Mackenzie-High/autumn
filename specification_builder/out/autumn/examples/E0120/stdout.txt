@@ -1,0 +1,14 @@
+X = (France, Paris)
+X.name = Paris
+X.country = France
+
+Y = (United States, Paris)
+Y.name = Paris
+Y.country = United States
+
+Z = (France, Paris)
+Z.name = Paris
+Z.country = France
+
+Value Equality: true
+Identity Equality: false

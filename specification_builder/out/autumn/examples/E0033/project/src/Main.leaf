@@ -1,0 +1,27 @@
+module Main in examples;
+
+@Start
+defun main (args : String[]) : void
+{
+    val value1 = "Mercury";
+    val value2 = "Venus";
+    val value3 = "Earth";
+
+    # Case: The left operand is non-null.
+    val value4 = (value1 ?? value2) is String;
+
+    # Case: The left-operand is null.
+    val value5 = (null ?? value3) is String;
+
+    # Case: Both operands are null.
+    val value6 = (null ?? null) is String;
+
+    # Print the results.
+    F::println(value4);
+    F::println(value5);
+    F::println(value6);
+}
+
+
+ 
+

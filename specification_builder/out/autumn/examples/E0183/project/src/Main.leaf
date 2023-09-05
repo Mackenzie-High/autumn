@@ -1,0 +1,14 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    val capitals = ["London", "Berlin", "Paris", "Rome"];
+
+    val result = F::iter(capitals);
+
+    foreach (capital : String in result)
+    {
+        F::println(capital);
+    }
+}

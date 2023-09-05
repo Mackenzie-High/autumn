@@ -1,0 +1,6 @@
+Length = 5
+Value[0] = 10.0
+Value[1] = 20.0
+Value[2] = 30.0
+Value[3] = 40.0
+Value[4] = 50.0

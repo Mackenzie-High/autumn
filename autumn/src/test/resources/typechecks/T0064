@@ -1,0 +1,9 @@
+module Main in typechecks;
+
+import typechecks.inaccessible.InaccessibleClass;
+
+@Start
+defun main (args : String[]) : void
+{
+    new InaccessibleClass();
+}

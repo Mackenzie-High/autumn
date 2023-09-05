@@ -1,0 +1,15 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    val original = new LinkedList([100, 200, 300]);
+
+    val derived = F::unmodifiable(original is List);
+
+    original.add(400);
+    original.add(500);
+
+    F::println(original);
+    F::println(derived);
+}

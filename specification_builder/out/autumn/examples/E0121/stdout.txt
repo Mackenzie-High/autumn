@@ -1,0 +1,12 @@
+Keys = [country, name]
+
+Values = [France, Paris]
+
+Size = 2
+
+Tuple? = false
+
+Struct? = true
+
+Value = France
+Value = Paris

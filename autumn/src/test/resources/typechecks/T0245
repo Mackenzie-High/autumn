@@ -1,0 +1,17 @@
+module Main in typechecks;
+
+@Start
+defun main (args : String[]) : void
+{
+    delegate p : Predicate => My::condition;
+}
+
+defun condition (value : Object) : boolean
+{
+    nop;
+}
+
+defun condition (value : String) : boolean
+{
+    nop;
+}

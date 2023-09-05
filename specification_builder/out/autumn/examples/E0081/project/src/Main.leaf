@@ -1,0 +1,22 @@
+module Main in examples;
+
+import high.mackenzie.autumn.resources.InstanceFieldTester;
+
+@Start
+defun main (args : String[]) : void
+{
+    # Create an object that has a mutable field. 
+    val object = new InstanceFieldTester();
+
+    # Set the field.
+    field object.value5 = 17;
+
+    # Print the value stored in the field. 
+    F::println(field object.value5);
+
+    # Set the field.
+    field object.value5 = 23;
+
+    # Print the value stored in the field. 
+    F::println(field object.value5);
+}

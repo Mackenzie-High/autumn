@@ -1,0 +1,27 @@
+module Main in examples;
+
+@Start
+defun main (args : String[]) : void
+{
+    # Create an empty list.
+    val empty = [];
+
+    # Create a list with a single element. 
+    val home = ["Earth"];
+
+    # Create a list with two elements. 
+    val hot = ["Mercury", "Venus"];
+
+    # Create a list with multiple elements.
+    val jovian = ["Jupiter", "Saturn", "Uranus", "Neptune"];
+
+    # Print the results.
+    F::println(empty);
+    F::println(home);
+    F::println(hot);
+    F::println(jovian);
+}
+
+
+ 
+

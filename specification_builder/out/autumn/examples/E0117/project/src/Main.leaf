@@ -1,0 +1,32 @@
+module Main in execution;
+
+tuple City (name : String, 
+            country : String);
+
+@Start
+defun main (args : String[]) : void
+{
+    val x = new City ("Paris", "France");
+    
+    val y = x.country ("United States");
+
+    val z = y.country ("France");
+
+    F::println ("X = " .. x);
+    F::println ("X.name = " .. x.name());
+    F::println ("X.country = " .. x.country());
+    F::println ();
+
+    F::println ("Y = " .. y);
+    F::println ("Y.name = " .. y.name());
+    F::println ("Y.country = " .. y.country());
+    F::println ();
+
+    F::println ("Z = " .. z);
+    F::println ("Z.name = " .. z.name());
+    F::println ("Z.country = " .. z.country());
+    F::println ();
+
+    F::println ("Value Equality: " .. (x == z));
+    F::println ("Identity Equality: " .. (x === z));
+}

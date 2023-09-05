@@ -1,0 +1,7 @@
+Warning: NO_SUCH_TYPE
+  File: file:/typechecks/T0014
+  Line: #10
+  Column: #15
+  Message: The specified type does not exist.
+  Type: Pluto
+

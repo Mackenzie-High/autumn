@@ -1,0 +1,9 @@
+char = P
+byte = 20
+short = 20
+int = 20
+long = 20
+float = 20.0
+double = 20.0
+BigInteger = 20.00000000000000000000000000000000
+BigDecimal = 20.00000000000000000000000000000000

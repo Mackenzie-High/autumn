@@ -1,0 +1,59 @@
+module Main in examples;
+
+@Start
+defun main (args : String[]) : void
+{
+    val B = 17B;
+    val S = 17S;
+    val I = 17;
+    val L = 17L;
+    val F = 17.0F;
+    val D = 17.0;
+    val BI = (F::big 17);
+    val BD = (F::big 17.0);
+
+    var value = null as Object;
+    
+    # Negate a byte and print it. 
+    value = - B;
+    (My::print value);
+
+    # Negate a short and print it. 
+    value = - S;
+    (My::print value);
+
+    # Negate an int and print it. 
+    value = - I;
+    (My::print value);
+
+    # Negate a long and print it. 
+    value = - L;
+    (My::print value);
+
+    # Negate a float and print it. 
+    value = - F;
+    (My::print value);
+
+    # Negate a double and print it. 
+    value = - D;
+    (My::print value);
+
+    # Negate a BigInteger and print it. 
+    value = - BI;
+    (My::print value);
+
+    # Negate a BigDecimal and print it. 
+    value = - BD;
+    (My::print value);
+}
+
+defun print(value : Object) : void
+{
+    (F::println ((value.getClass).getSimpleName) .. " = " .. value);
+}
+
+
+
+
+ 
+

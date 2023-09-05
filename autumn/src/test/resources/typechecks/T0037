@@ -1,0 +1,10 @@
+module Main in typechecks;
+
+@Start
+defun main (args : String[]) : void
+{
+    {
+        assert 12; // expected condition
+        x;         // no such variable
+    }
+}

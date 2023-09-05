@@ -1,0 +1,19 @@
+module Main in examples;
+
+@Start
+defun main (args : String[]) : void
+{
+    var i = 0;
+
+    while (i < 5)
+    {
+        i = i + 1;
+
+        when (i == 3) then continue;
+
+        (F::print "X = ");
+        (F::println i);
+    }
+} 
+
+

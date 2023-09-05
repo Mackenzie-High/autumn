@@ -1,0 +1,18 @@
+module Main in execution;
+
+import java.io.File;
+
+@Start
+defun main (args : String[]) : void
+{
+    # Get the path to this file.
+    val file = new File("src/test/resources/execution/T0773");
+
+    assert file.exists();
+
+    # Read the file.
+    val content = FileIO::readText(file);
+
+    # Check that the file was really read.
+    assert content.contains("Try not to burst a brain cell figuring this out!");
+}

@@ -1,0 +1,15 @@
+module Main in examples;
+
+@Start
+defun main (args : String[]) : void
+{
+    val value = 23B + -5B + 1B;
+
+    F::println(value);
+}
+
+
+
+
+ 
+

@@ -1,0 +1,11 @@
+Truth Table:
+  F -> F = true
+  F -> T = true
+  T -> F = false
+  T -> T = true
+
+Short Circuit:
+  L
+  L
+  LR
+  LR

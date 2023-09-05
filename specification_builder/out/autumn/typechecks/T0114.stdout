@@ -1,0 +1,8 @@
+Warning: INCOMPATIBLE_OPERANDS
+  File: file:/typechecks/T0114
+  Line: #6
+  Column: #5
+  Message: One of the operands must be a subtype of the other.
+  left.type: String
+  right.type: List
+

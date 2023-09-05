@@ -1,0 +1,26 @@
+module Main in examples;
+
+@Start
+defun main (args : String[]) : void
+{
+    var i = 0;
+
+    var very = "";
+
+    forever 
+    {
+        F::println("Forever is a" .. very .. " long time.");
+
+        very = very .. " very";
+
+        i = i + 1;
+
+        when (i == 8) then break;
+    }
+}
+
+
+
+
+ 
+

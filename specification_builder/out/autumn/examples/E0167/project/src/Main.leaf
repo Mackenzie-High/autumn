@@ -1,0 +1,29 @@
+module Main in execution;
+
+tuple Pet (name : String, type : String);
+
+@Start
+defun main (args : String[]) : void
+{
+    # Create some pet objects. 
+    val pet1 = new Pet("Lizzy",    "Lizard");
+    val pet2 = new Pet("Chicky",   "Chicken");
+    val pet3 = new Pet("Jet",      "Dog");
+    val pet4 = new Pet("Picky",    "Chicken");
+    val pet5 = new Pet("Sikorsky", "Chicken");
+    val pet6 = new Pet("Fluffy",   "Cat");
+    val pet7 = new Pet("Lucky",    "Chicken");
+    val pet8 = new Pet("Eyeball",  "Sheep");
+
+    # Create a list containing the pets. 
+    val pets = [pet1, pet2, pet3, pet4, pet5, pet6, pet7, pet8];
+
+    # Create a transformation that simply extracts the name.
+    lambda p : Function1 => ($1 is Pet).name();
+
+    # Create a list containing the names of the pets. 
+    val names = F::map(p, pets);
+
+    # Print the results. 
+    F::printlns(names);
+}

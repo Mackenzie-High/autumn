@@ -1,0 +1,9 @@
+Name: Paris
+Ordinal: 0
+
+Name: London
+Ordinal: 1
+
+Name: Rome
+Ordinal: 2
+

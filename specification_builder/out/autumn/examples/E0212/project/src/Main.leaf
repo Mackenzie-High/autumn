@@ -1,0 +1,27 @@
+module Main in execution;
+
+tuple Planet (name : String, type : String);
+
+@Start
+defun main (args : String[]) : void
+{
+    val planet1 = new Planet("Venus", "Terrestrial");
+    val planet2 = new Planet("Earth", "Terrestrial");
+    val planet3 = new Planet("Saturn", "Jovian");
+    val planet4 = new Planet("Uranus", "Jovian");
+
+    My::describe(planet1);
+    My::describe(planet2);
+    My::describe(planet3);
+    My::describe(planet4);
+}
+
+defun describe (p : Planet) : void
+{
+    F::println(p.name());
+    F::print("  Name: ");
+    F::println(p.name());
+    F::print("  Type: ");
+    F::println(p.type());
+    F::println();
+}

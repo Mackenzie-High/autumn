@@ -1,0 +1,11 @@
+module Main in typechecks;
+
+import com.mackenziehigh.autumn.resources.InstanceFieldTester;
+
+@Start
+defun main (args : String[]) : void
+{
+    val object = new InstanceFieldTester();
+
+    field object.answer = 3;
+}

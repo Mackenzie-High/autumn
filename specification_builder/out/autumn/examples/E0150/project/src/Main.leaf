@@ -1,0 +1,15 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    F::println( F::compare(2, 3) );
+    F::println( F::compare(3, 3) );
+    F::println( F::compare(3, 2) );
+    F::println();
+
+    F::println( F::compare(null,    0) );
+    F::println( F::compare(null, null) );
+    F::println( F::compare(   0, null) );
+    F::println();
+}

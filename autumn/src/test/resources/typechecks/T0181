@@ -1,0 +1,3 @@
+module Main in typechecks;
+
+design Person () extends void;

@@ -1,0 +1,21 @@
+module Main in examples;
+
+@Start
+defun main (args : String[]) : void
+{
+    val case1 = false & false;
+    val case2 = false & true;
+    val case3 = true & false;
+    val case4 = true & true;
+
+    (F::println case1);
+    (F::println case2);
+    (F::println case3);
+    (F::println case4);
+}
+
+
+
+
+ 
+

@@ -1,0 +1,7 @@
+Warning: NO_SUCH_METHOD
+  File: file:/typechecks/T0085
+  Line: #8
+  Column: #5
+  Message: No acceptable method overload was found.
+  Invocation: F::print()
+

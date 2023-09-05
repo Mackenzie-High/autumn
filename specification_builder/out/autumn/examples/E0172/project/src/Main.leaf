@@ -1,0 +1,11 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    val values = [100, 200, 300];
+
+    val total = F::sum(values);
+
+    F::println(total);
+}

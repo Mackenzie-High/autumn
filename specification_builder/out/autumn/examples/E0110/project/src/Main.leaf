@@ -1,0 +1,26 @@
+@Captain ("Jonathan Archer")
+@Scientist ("T'Pol")
+module Enterprise in starships;
+
+annotation Captain;
+
+annotation Scientist;
+
+@Start
+defun main (args : String[]) : void
+{
+    val klass = My::instance().getClass();
+
+    val anno1 = klass.getAnnotation((class Captain));
+    val anno2 = klass.getAnnotation((class Scientist));
+
+    val captain = F::get(anno1, 0);
+    val scientist = F::get(anno2, 0);
+    
+    F::println("Starship Captain = " .. captain);
+    F::println("Science  Officer = " .. scientist);
+}
+
+
+
+

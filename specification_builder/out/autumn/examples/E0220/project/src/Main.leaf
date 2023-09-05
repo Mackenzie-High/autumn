@@ -1,0 +1,33 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    # Identity
+    val case1 = F::isAssignableTo(class String, class String);
+
+    # Subtyping
+    val case2 = F::isAssignableTo(class Object, class String);
+
+    # Boxing
+    val case3 = F::isAssignableTo(class Integer, class int);
+
+    # Unboxing
+    val case4 = F::isAssignableTo(class int, class Integer);
+
+    # Coercion
+    val case5 = F::isAssignableTo(class long, class int);
+
+    # Forbidden
+    val case6 = F::isAssignableTo(class List, class int);
+
+    # Print the results. 
+    F::println(case1);
+    F::println(case2);
+    F::println(case3);
+    F::println(case4);
+    F::println(case5);
+    F::println(case6);
+}
+
+

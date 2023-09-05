@@ -1,0 +1,7 @@
+Warning: IMPOSSIBLE_ASSIGNMENT
+  File: file:/typechecks/T0101
+  Line: #11
+  Column: #5
+  Message: An impossible assignment operation was detected.
+  Assignment: boolean (Target) = int (Value)
+

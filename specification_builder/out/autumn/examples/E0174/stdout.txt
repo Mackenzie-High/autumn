@@ -1,0 +1,3 @@
+Author #1: Larry
+Author #2: Moe
+Author #3: Curly

@@ -1,0 +1,4 @@
+(Venus, Terrestrial)
+(Earth, Terrestrial)
+(Saturn, Jovian)
+(Uranus, Jovian)

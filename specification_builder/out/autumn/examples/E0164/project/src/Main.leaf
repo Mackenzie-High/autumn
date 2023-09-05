@@ -1,0 +1,12 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    val name = "Emma";
+    val age = 24;
+
+    val about = F::format("Name = %s; Age = %d", [name, age]);
+
+    F::println(about);
+}

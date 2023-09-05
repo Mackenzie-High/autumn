@@ -1,0 +1,8 @@
+Warning: BAD_ARGUMENT_COUNT
+  File: file:/typechecks/T0243
+  Line: #5
+  Column: #5
+  Message: The number of arguments must match the number of parameters.
+  Argument Count: 3
+  Parameter Count: 0
+

@@ -1,0 +1,41 @@
+module Main in execution;
+
+import com.mackenziehigh.autumn.resources.StaticFieldTester;
+
+
+@Start
+defun main (args : String[]) : void
+{
+    val value1 = true is Boolean;
+    val value2 = 'X' is Character;
+    val value3 = 10B is Byte;
+    val value4 = 20S is Short;
+    val value5 = 30 is Integer;
+    val value6 = 40L is Long;
+    val value7 = 50.0F is Float;
+    val value8 = 60.0 is Double;
+
+    (field StaticFieldTester::value1 = value1);
+    assert (field StaticFieldTester::value1) == true;
+
+    (field StaticFieldTester::value2 = value2);
+    assert (field StaticFieldTester::value2) == 'X';
+
+    (field StaticFieldTester::value3 = value3);
+    assert (field StaticFieldTester::value3) == 10B;
+
+    (field StaticFieldTester::value4 = value4);
+    assert (field StaticFieldTester::value4) == 20S;
+
+    (field StaticFieldTester::value5 = value5);
+    assert (field StaticFieldTester::value5) == 30;
+
+    (field StaticFieldTester::value6 = value6);
+    assert (field StaticFieldTester::value6) == 40L;
+
+    (field StaticFieldTester::value7 = value7);
+    assert (field StaticFieldTester::value7) == 50.0F;
+
+    (field StaticFieldTester::value8 = value8);
+    assert (field StaticFieldTester::value8) == 60.0;
+}

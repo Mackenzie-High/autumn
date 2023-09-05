@@ -1,0 +1,29 @@
+module Main in examples;
+
+@Start
+defun main (args : String[]) : void
+{
+    # An exception can cause an invocation to terminate early.
+
+    try
+    {
+        F::println ("before");
+
+        Main::trouble();
+
+        F::println ("after");
+    }
+    catch (ex : Exception)
+    {
+        F::println ("handle");
+    }
+}
+
+defun trouble () : void
+{
+    F::println ("enter");
+
+    throw new Exception();
+
+    F::println ("exit");
+}

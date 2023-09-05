@@ -1,0 +1,11 @@
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    val message = "Hello World!";
+
+    val size = F::len(message);
+
+    F::println("Size = " .. size);
+}

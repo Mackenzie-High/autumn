@@ -1,0 +1,7 @@
+Warning: NO_SUCH_VARIABLE
+  File: file:/typechecks/T0069
+  Line: #6
+  Column: #14
+  Message: A variable was used before it was declared.
+  Variable: i
+

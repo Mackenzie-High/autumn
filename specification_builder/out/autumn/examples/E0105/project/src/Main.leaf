@@ -1,0 +1,28 @@
+module Main in examples;
+
+@Start
+defun main (args : String[]) : void
+{
+    for (i = 1; i <= 9; i + 1)
+    {
+        try
+        {
+            My::oddSquare(i);
+        }
+        catch (ex : AssertionFailedException)
+        {
+            F::println("Error - " .. ex.getMessage());
+        }
+    }
+}
+
+defun oddSquare (n : int) : void
+{
+    assert n % 2 != 0 echo (n .. " is even.");
+
+    F::println(n .. " => " .. n * n);
+}
+
+
+
+
