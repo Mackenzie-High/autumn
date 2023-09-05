@@ -40,7 +40,7 @@ Dependencies:
 -------------
 + [ObjectWeb ASM](http://asm.ow2.org/)
 + [Google Guava](https://github.com/google/guava)
-+ [Snowflake Parser](http://www.mackenziehigh.me/snowflake/)
++ [Snowflake Parser](https://www.mackenziehigh.com/snowflake/)
 
 Contact:
 -------------
