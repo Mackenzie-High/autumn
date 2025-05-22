@@ -1,6 +1,6 @@
 package autumn.lang.exceptions;
 
-import high.mackenzie.autumn.resources.Finished;
+import com.mackenziehigh.autumn.resources.Finished;
 
 /**
  * An instance of this class prevents the need for throws clauses by wrapping a checked-exception.

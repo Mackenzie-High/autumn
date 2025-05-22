@@ -3,7 +3,7 @@ package autumn.lang.compiler;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
-import high.mackenzie.autumn.resources.Finished;
+import com.mackenziehigh.autumn.resources.Finished;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;

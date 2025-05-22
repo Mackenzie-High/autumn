@@ -1,7 +1,7 @@
 package autumn.lang.internals;
 
 import com.google.common.base.Objects;
-import high.mackenzie.autumn.resources.Finished;
+import com.mackenziehigh.autumn.resources.Finished;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 

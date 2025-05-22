@@ -5,8 +5,8 @@ import autumn.lang.compiler.errors.IErrorReporter;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
-import high.mackenzie.autumn.lang.compiler.compilers.ProgramCompiler;
-import high.mackenzie.autumn.resources.Finished;
+import com.mackenziehigh.autumn.lang.compiler.compilers.ProgramCompiler;
+import com.mackenziehigh.autumn.resources.Finished;
 import java.util.List;
 
 /**

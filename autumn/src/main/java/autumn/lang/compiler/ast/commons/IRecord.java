@@ -5,7 +5,7 @@ import autumn.lang.compiler.ast.nodes.DocComment;
 import autumn.lang.compiler.ast.nodes.ElementList;
 import autumn.lang.compiler.ast.nodes.Name;
 import autumn.lang.compiler.ast.nodes.TypeSpecifier;
-import high.mackenzie.autumn.resources.Finished;
+import com.mackenziehigh.autumn.resources.Finished;
 
 /**
  * An instance of this interface is the definition of a record type.

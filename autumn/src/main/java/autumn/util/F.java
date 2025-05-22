@@ -1,5 +1,6 @@
 package autumn.util;
 
+import com.mackenziehigh.autumn.util.T;
 import java.math.BigInteger;
 import java.math.BigDecimal;
 import com.google.common.io.Files;
@@ -13,7 +14,6 @@ import autumn.lang.*;
 import java.lang.reflect.*;
 import java.util.*;
 import com.google.common.collect.*;
-import high.mackenzie.autumn.util.*;
 
 
 /** 

@@ -1,6 +1,6 @@
 package autumn.lang;
 
-import high.mackenzie.autumn.resources.Finished;
+import com.mackenziehigh.autumn.resources.Finished;
 import java.util.Iterator;
 import java.util.List;
 

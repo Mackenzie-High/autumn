@@ -1,7 +1,7 @@
 package autumn.lang.compiler.ast.commons;
 
 import autumn.lang.compiler.ast.nodes.AnnotationList;
-import high.mackenzie.autumn.resources.Finished;
+import com.mackenziehigh.autumn.resources.Finished;
 
 /**
  * An instance of this interface is an AST node that represents an annotatable construct.

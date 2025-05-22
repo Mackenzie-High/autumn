@@ -1,6 +1,6 @@
 module Main in execution;
 
-import high.mackenzie.autumn.resources.StaticFieldTester;
+import com.mackenziehigh.autumn.resources.StaticFieldTester;
 
 
 @Start

@@ -1,6 +1,6 @@
 package autumn.lang.compiler.ast.literals;
 
-import high.mackenzie.autumn.resources.Finished;
+import com.mackenziehigh.autumn.resources.Finished;
 import java.math.BigInteger;
 
 /**

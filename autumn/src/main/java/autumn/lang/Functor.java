@@ -1,7 +1,7 @@
 package autumn.lang;
 
 import autumn.lang.internals.ArgumentStack;
-import high.mackenzie.autumn.resources.Finished;
+import com.mackenziehigh.autumn.resources.Finished;
 
 /**
  * An instance of this interface is a function object.

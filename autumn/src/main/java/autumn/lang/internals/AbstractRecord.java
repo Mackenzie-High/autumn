@@ -2,7 +2,7 @@ package autumn.lang.internals;
 
 import autumn.lang.Record;
 import autumn.util.F;
-import high.mackenzie.autumn.util.T;
+import com.mackenziehigh.autumn.util.T;
 import com.google.common.collect.Lists;
 import java.util.Collections;
 import java.util.Iterator;

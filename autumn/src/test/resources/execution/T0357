@@ -1,9 +1,9 @@
 module Main in execution;
 
-import high.mackenzie.autumn.lang.compiler.compilers.ModuleCompiler;
+import com.mackenziehigh.autumn.lang.compiler.compilers.ModuleCompiler;
 
 @Start
 defun main (args : String[]) : void
 {
-    assert (class ModuleCompiler).getName() == "high.mackenzie.autumn.lang.compiler.compilers.ModuleCompiler";
+    assert (class ModuleCompiler).getName() == "com.mackenziehigh.autumn.lang.compiler.compilers.ModuleCompiler";
 }

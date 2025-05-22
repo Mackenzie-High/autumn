@@ -1,7 +1,7 @@
 module Main in execution;
 
-import high.mackenzie.autumn.lang.compiler.typesystem.TypeFactory;
-import high.mackenzie.autumn.lang.compiler.utils.TypeSystemUtils;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.TypeFactory;
+import com.mackenziehigh.autumn.lang.compiler.utils.TypeSystemUtils;
 import java.util.AbstractList;
 import java.io.Serializable;
 

@@ -1,7 +1,7 @@
 package autumn.lang.compiler.errors;
 
 import com.google.common.base.Preconditions;
-import high.mackenzie.autumn.resources.Finished;
+import com.mackenziehigh.autumn.resources.Finished;
 import java.net.URL;
 
 /**

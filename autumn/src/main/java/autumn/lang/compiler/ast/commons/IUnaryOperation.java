@@ -1,6 +1,6 @@
 package autumn.lang.compiler.ast.commons;
 
-import high.mackenzie.autumn.resources.Finished;
+import com.mackenziehigh.autumn.resources.Finished;
 
 /**
  * An instance of this interface is an AST node that is a unary-operation.

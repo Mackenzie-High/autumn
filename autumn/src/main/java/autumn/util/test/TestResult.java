@@ -1,7 +1,7 @@
 package autumn.util.test;
 
 import autumn.lang.Delegate;
-import high.mackenzie.autumn.resources.Finished;
+import com.mackenziehigh.autumn.resources.Finished;
 import java.io.PrintStream;
 
 /**

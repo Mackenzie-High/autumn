@@ -1,6 +1,6 @@
 module Main in execution;
 
-import high.mackenzie.autumn.resources.Parent;
+import com.mackenziehigh.autumn.resources.Parent;
 
 design Citizen (name : CharSequence);
 
