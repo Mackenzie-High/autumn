@@ -1,7 +1,7 @@
 package autumn.lang.internals;
 
 import autumn.lang.Module;
-import high.mackenzie.autumn.resources.Finished;
+import com.mackenziehigh.autumn.resources.Finished;
 
 /**
  * This class is the superclass of all Autumn modules.

@@ -1,6 +1,6 @@
 module Main in execution;
 
-import high.mackenzie.autumn.resources.InstanceFieldTester;
+import com.mackenziehigh.autumn.resources.InstanceFieldTester;
 
 
 @Start

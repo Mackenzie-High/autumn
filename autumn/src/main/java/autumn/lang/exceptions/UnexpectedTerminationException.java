@@ -1,6 +1,6 @@
 package autumn.lang.exceptions;
 
-import high.mackenzie.autumn.resources.Finished;
+import com.mackenziehigh.autumn.resources.Finished;
 
 /**
  * This type of exception indicates that execution reached the end a function without

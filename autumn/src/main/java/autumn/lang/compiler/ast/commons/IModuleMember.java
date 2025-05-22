@@ -1,6 +1,6 @@
 package autumn.lang.compiler.ast.commons;
 
-import high.mackenzie.autumn.resources.Finished;
+import com.mackenziehigh.autumn.resources.Finished;
 
 /**
  * An instance instance of this interface is an AST node that represents a member of a module.

@@ -1,6 +1,6 @@
 package autumn.lang.internals;
 
-import high.mackenzie.autumn.resources.Finished;
+import com.mackenziehigh.autumn.resources.Finished;
 
 /**
  * This class provides the static utility methods that perform the predefined conversions.

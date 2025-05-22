@@ -1,7 +1,7 @@
 package autumn.lang.compiler.ast.literals;
 
 import com.google.common.base.Preconditions;
-import high.mackenzie.autumn.resources.Finished;
+import com.mackenziehigh.autumn.resources.Finished;
 
 /**
  * Instances of this class represent numeric literals in Autumn source-code.

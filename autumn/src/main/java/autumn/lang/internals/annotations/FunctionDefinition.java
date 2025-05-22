@@ -1,6 +1,6 @@
 package autumn.lang.internals.annotations;
 
-import high.mackenzie.autumn.resources.Finished;
+import com.mackenziehigh.autumn.resources.Finished;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 

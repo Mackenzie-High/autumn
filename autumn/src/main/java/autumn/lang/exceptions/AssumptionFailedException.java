@@ -1,7 +1,7 @@
 package autumn.lang.exceptions;
 
 import com.google.common.base.Preconditions;
-import high.mackenzie.autumn.resources.Finished;
+import com.mackenziehigh.autumn.resources.Finished;
 
 /**
  * This type of exception is thrown by assume-statements, when a required condition does not hold.

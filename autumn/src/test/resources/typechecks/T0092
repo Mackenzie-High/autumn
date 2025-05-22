@@ -1,6 +1,6 @@
 module Main in typechecks;
 
-import high.mackenzie.autumn.resources.StaticFieldTester;
+import com.mackenziehigh.autumn.resources.StaticFieldTester;
 
 @Start
 defun main (args : String[]) : void

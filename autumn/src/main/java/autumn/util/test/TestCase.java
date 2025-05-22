@@ -1,7 +1,7 @@
 package autumn.util.test;
 
 import autumn.lang.Delegate;
-import high.mackenzie.autumn.resources.Finished;
+import com.mackenziehigh.autumn.resources.Finished;
 
 /**
  * An instance of this interface stores vital information regarding a single unit-test.

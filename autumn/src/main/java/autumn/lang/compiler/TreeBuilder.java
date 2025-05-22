@@ -13,7 +13,7 @@ import autumn.lang.compiler.ast.literals.ShortLiteral;
 import autumn.lang.compiler.ast.nodes.*;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
-import high.mackenzie.autumn.resources.Finished;
+import com.mackenziehigh.autumn.resources.Finished;
 import java.net.URL;
 import java.util.Collections;
 import java.util.LinkedList;

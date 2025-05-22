@@ -2,7 +2,7 @@ package autumn.lang.compiler.exceptions;
 
 import autumn.lang.compiler.ast.commons.IConstruct;
 import com.google.common.base.Preconditions;
-import high.mackenzie.autumn.resources.Finished;
+import com.mackenziehigh.autumn.resources.Finished;
 
 /**
  * This type of exception indicates that a node occurs more than once in an Abstract Syntax Tree.

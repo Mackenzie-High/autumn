@@ -3,7 +3,7 @@ package autumn.lang.compiler.errors;
 import autumn.lang.compiler.ast.commons.IConstruct;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
-import high.mackenzie.autumn.resources.Finished;
+import com.mackenziehigh.autumn.resources.Finished;
 import java.util.LinkedHashMap;
 
 /**

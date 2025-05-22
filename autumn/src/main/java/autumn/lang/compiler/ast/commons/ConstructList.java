@@ -3,7 +3,7 @@ package autumn.lang.compiler.ast.commons;
 import autumn.lang.compiler.ast.nodes.IAstVisitor;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
-import high.mackenzie.autumn.resources.Finished;
+import com.mackenziehigh.autumn.resources.Finished;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
