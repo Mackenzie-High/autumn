@@ -28,6 +28,3 @@ once <a href="Expression.md">value</a><br>
 + The result obtained from the <i>value</i> may be void.
 + The result is stored for the lifetime of the enclosing module.
 
-## Static Checks
-
-

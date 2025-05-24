@@ -19,9 +19,6 @@ A nop-statement does not perform any operation.
 + A nop-statement should generate a nop bytecode instruction.
 + An optimizer is free to remove nop bytecode instructions.
 
-## Static Checks
-
-
 ## Example
 
 **Source Code:**

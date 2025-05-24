@@ -21,6 +21,3 @@ A big-integer datum is a literal $BigInteger$ value.
 + Return Type: [BigInteger](https://docs.oracle.com/javase/7/docs/api/java/math/BigInteger.html)
 + Return the value of the constant.
 
-## Static Checks
-
-

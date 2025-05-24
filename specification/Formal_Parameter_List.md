@@ -14,12 +14,6 @@ A formal-parameter-list is a list of formal-parameters.
 
 [autumn.lang.compiler.ast.nodes.FormalParameterList](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/ast/nodes/FormalParameterList.html)
 
-## Details
-
-
-## Static Checks
-
-
 ## Example
 
 **Source Code:**

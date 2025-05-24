@@ -22,9 +22,6 @@ A sequence-statement executes a series of statements one after another.
 
 + There can be zero or more statements in the sequence.
 
-## Static Checks
-
-
 ## Example
 
 **Source Code:**

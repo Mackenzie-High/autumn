@@ -20,9 +20,6 @@ A variable construct is used to represent a local variable.
 + The <i>name</i> cannot start with a digit.
 + The <i>name</i> is case-sensitive.
 
-## Static Checks
-
-
 ## Example
 
 **Source Code:**

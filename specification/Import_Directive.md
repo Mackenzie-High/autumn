@@ -121,9 +121,6 @@ An import-directive simplifies access to a type within the enclosing module.
   + [TreeMap](https://docs.oracle.com/javase/7/docs/api/java/util/TreeMap.html)
   + [TreeSet](https://docs.oracle.com/javase/7/docs/api/java/util/TreeSet.html)
 
-## Static Checks
-
-
 ## Example 1
 
 **Source Code:**

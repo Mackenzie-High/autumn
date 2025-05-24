@@ -23,9 +23,6 @@ A forever-statement is an infinite loop.
 + The <i>body</i> of a loop can contain continue-statements.
 + The <i>body</i> of a loop can contain redo-statements.
 
-## Static Checks
-
-
 ## Example
 
 **Source Code:**

@@ -19,9 +19,6 @@ A null-datum is the literal value null.
 + Return Type: null-type
 + Return the value of the constant.
 
-## Static Checks
-
-
 ## Example
 
 **Source Code:**

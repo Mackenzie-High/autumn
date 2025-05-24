@@ -14,12 +14,6 @@ A formal-parameter is an explicitly typed variable declaration.
 
 [autumn.lang.compiler.ast.nodes.FormalParameter](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/ast/nodes/FormalParameter.html)
 
-## Details
-
-
-## Static Checks
-
-
 ## Example
 
 **Source Code:**

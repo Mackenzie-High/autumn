@@ -18,9 +18,6 @@ Comments allow programmers to leave notes inside of code.
 
 + Comments are simply ignored by the compiler.
 
-## Static Checks
-
-
 ## Example
 
 **Source Code:**

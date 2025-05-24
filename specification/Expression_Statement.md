@@ -18,9 +18,6 @@ An expression-statement facilitates the use of an expression as a statement.
 
 + The return-value, if any, of the expression is simply ignored.
 
-## Static Checks
-
-
 ## Example
 
 **Source Code:**

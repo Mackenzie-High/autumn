@@ -16,12 +16,6 @@ An annotation-list is a list of annotations.
 
 [autumn.lang.compiler.ast.nodes.AnnotationList](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/ast/nodes/AnnotationList.html)
 
-## Details
-
-
-## Static Checks
-
-
 ## Example
 
 **Source Code:**

@@ -30,9 +30,6 @@ A double-datum is a literal double value.
 + Return the value of the constant.
 + Related Boxed Type: java.lang.Double
 
-## Static Checks
-
-
 ## Example
 
 **Source Code:**

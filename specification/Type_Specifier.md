@@ -19,9 +19,6 @@ A type-specifier specifies a type by its name and dimensions.
 + If the number of dimensions is non-zero, then an array-type is specified.
 + One cannot specify the null-type using a type-specifier.
 
-## Static Checks
-
-
 ## Example
 
 **Source Code:**

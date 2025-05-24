@@ -30,9 +30,6 @@ A float-datum is a literal float value.
 + Return the value of the constant.
 + Related Boxed Type: java.lang.Float
 
-## Static Checks
-
-
 ## Example
 
 **Source Code:**

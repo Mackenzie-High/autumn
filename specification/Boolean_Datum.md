@@ -22,9 +22,6 @@ A boolean-datum is a literal boolean value.
 + Return the value of the constant.
 + Related Boxed Type: java.lang.Boolean
 
-## Static Checks
-
-
 ## Example
 
 **Source Code:**

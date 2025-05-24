@@ -20,9 +20,6 @@ A name construct is used to represent a name that does not denote a type.
 + A <i>name</i> cannot start with a digit.
 + A <i>name</i> is case-sensitive.
 
-## Static Checks
-
-
 ## Example
 
 **Source Code:**

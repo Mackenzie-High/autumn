@@ -22,9 +22,6 @@ A locals-expression creates an object that describes the local variables in the 
 + Return Type: [LocalsMap](https://mackenzie-high.github.io/autumn/javadoc/autumn/lang/LocalsMap.html)
 + Return an object that describes the local variables in the enclosing scope.
 
-## Static Checks
-
-
 ## Example
 
 **Source Code:**

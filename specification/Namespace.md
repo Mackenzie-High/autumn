@@ -14,12 +14,6 @@ A namespace construct is used to represent the name of a package.
 
 [autumn.lang.compiler.ast.nodes.Namespace](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/ast/nodes/Namespace.html)
 
-## Details
-
-
-## Static Checks
-
-
 ## Example
 
 **Source Code:**

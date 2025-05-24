@@ -23,6 +23,3 @@ A big-decimal datum is a literal $BigDecimal$ value.
 + Return Type: [BigInteger](https://docs.oracle.com/javase/7/docs/api/java/math/BigInteger.html)
 + Return the value of the constant.
 
-## Static Checks
-
-

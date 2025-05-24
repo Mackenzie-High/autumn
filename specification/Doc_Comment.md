@@ -20,9 +20,6 @@ A doc-comment is a comment that can be processed by documentation generators.
 
 + Unlike regular comments, doc-comments are part of the Abstract-Syntax-Tree of a program.
 
-## Static Checks
-
-
 ## Example
 
 **Source Code:**

@@ -14,12 +14,6 @@ An element declares an entry in a struct, design, or tuple.
 
 [autumn.lang.compiler.ast.nodes.Element](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/ast/nodes/Element.html)
 
-## Details
-
-
-## Static Checks
-
-
 ## Example
 
 **Source Code:**
