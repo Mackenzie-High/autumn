@@ -22,7 +22,7 @@ A progn-expression executes a series of expressions sequentially.
 ## Static Checks
 
 + [EMPTY_PROGN](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#EMPTY_PROGN): There must be at least one element in the sequence.
-+ [VALUE_REQUIRED](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#VALUE_REQUIRED): The type of each <i>argument</i> must be either a primitive-type or a reference-type.
++ [VALUE_REQUIRED](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#VALUE_REQUIRED): The type of the <i><a href="Expression.md">argument</a><sub>n</sub></i> must be either a primitive-type or a reference-type.
 
 ## Example
 
