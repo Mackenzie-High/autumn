@@ -17,8 +17,8 @@ Return the value stored in the <i>array</i> element that is identified by the gi
 
 ## Throws
 
-+ [NullPointerException](https://docs.oracle.com/javase/7/docs/api/java/lang/NullPointerException.html)if <i>array</i> is null.
-+ [IndexOutOfBoundsException](https://docs.oracle.com/javase/7/docs/api/java/lang/IndexOutOfBoundsException.html)if <i>index</i> is out of bounds.
++ [NullPointerException](https://docs.oracle.com/javase/7/docs/api/java/lang/NullPointerException.html): if <i>array</i> is null.
++ [IndexOutOfBoundsException](https://docs.oracle.com/javase/7/docs/api/java/lang/IndexOutOfBoundsException.html): if <i>index</i> is out of bounds.
 
 ## Details
 

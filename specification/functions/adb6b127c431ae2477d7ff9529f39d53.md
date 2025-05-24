@@ -16,8 +16,8 @@ Return the <i>value</i> as a number.
 
 ## Throws
 
-+ [NullPointerException](https://docs.oracle.com/javase/7/docs/api/java/lang/NullPointerException.html)if <i>value</i> is null.
-+ [NumberFormatException](https://docs.oracle.com/javase/7/docs/api/java/lang/NumberFormatException.html)if the <i>value</i> cannot be parsed.
++ [NullPointerException](https://docs.oracle.com/javase/7/docs/api/java/lang/NullPointerException.html): if <i>value</i> is null.
++ [NumberFormatException](https://docs.oracle.com/javase/7/docs/api/java/lang/NumberFormatException.html): if the <i>value</i> cannot be parsed.
 
 ## Details
 

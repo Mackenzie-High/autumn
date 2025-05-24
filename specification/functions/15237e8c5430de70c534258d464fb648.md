@@ -16,7 +16,7 @@ Return an unmodifiable view of the <i>original</i>.
 
 ## Throws
 
-+ [NullPointerException](https://docs.oracle.com/javase/7/docs/api/java/lang/NullPointerException.html)if <i>original</i> is null.
++ [NullPointerException](https://docs.oracle.com/javase/7/docs/api/java/lang/NullPointerException.html): if <i>original</i> is null.
 
 ## Details
 
