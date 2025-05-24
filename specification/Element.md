@@ -22,7 +22,7 @@ An element declares an entry in a struct, design, or tuple.
 
 ## Example
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in execution;

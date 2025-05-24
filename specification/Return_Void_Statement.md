@@ -24,7 +24,7 @@ A return-statement causes execution to immediately exit the invocation of a func
 
 ## Example
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in program;

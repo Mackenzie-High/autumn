@@ -44,7 +44,7 @@ This operator performs an arithmetic subtraction operation.
 
 ## Example
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in examples;

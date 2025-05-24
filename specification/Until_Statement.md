@@ -30,7 +30,7 @@ An until-statement is a loop that iterates until a condition becomes true.
 
 ## Example
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in examples;

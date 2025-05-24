@@ -37,7 +37,7 @@ A module-directive is used to specify the name and namespace of the enclosing mo
 
 ## Example 1
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Enterprise in starships;
@@ -59,7 +59,7 @@ class starships.Enterprise
 
 ## Example 2
 
-**Code:**
+**Source Code:**
 
 ```plain
 module * in starships;
@@ -81,7 +81,7 @@ class starships.Module$0
 
 ## Example 3
 
-**Code:**
+**Source Code:**
 
 ```plain
 @Captain ("Jonathan Archer")

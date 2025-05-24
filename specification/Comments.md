@@ -23,7 +23,7 @@ Comments allow programmers to leave notes inside of code.
 
 ## Example
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in execution;

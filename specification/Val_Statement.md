@@ -29,7 +29,7 @@ A val-statement declares a new readonly local variable.
 
 ## Example 1
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in examples;
@@ -102,7 +102,7 @@ Value = 37
 
 ## Example 2
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in examples;

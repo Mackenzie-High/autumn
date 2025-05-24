@@ -32,7 +32,7 @@ A continue-statement causes execution to immediately enter the next iteration of
 
 ## Example 1
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in examples;
@@ -74,7 +74,7 @@ Name of Chicken: Lucky
 
 ## Example 2
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in examples;

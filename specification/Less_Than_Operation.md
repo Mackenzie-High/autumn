@@ -45,7 +45,7 @@ This operator performs a less-than comparison operation.
 
 ## Example
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in examples;

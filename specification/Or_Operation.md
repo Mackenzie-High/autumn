@@ -31,7 +31,7 @@ This operator performs a non-short-circuit logical OR-operation.
 
 ## Example 1
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in examples;
@@ -62,7 +62,7 @@ T | T = true
 
 ## Example 2
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in examples;

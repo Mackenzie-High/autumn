@@ -29,7 +29,7 @@ A get-static-field-expression gets the value of a static field.
 
 ## Example
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in examples;

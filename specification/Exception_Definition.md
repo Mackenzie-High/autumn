@@ -66,7 +66,7 @@ An exception-definition creates a new exception-type in the enclosing package.
 
 ## Example
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in examples;

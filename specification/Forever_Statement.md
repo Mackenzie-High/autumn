@@ -28,7 +28,7 @@ A forever-statement is an infinite loop.
 
 ## Example
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in examples;

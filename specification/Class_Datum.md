@@ -27,7 +27,7 @@ A class-datum is a literal [Class](https://docs.oracle.com/javase/7/docs/api/jav
 
 ## Example
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in examples;

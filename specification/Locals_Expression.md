@@ -27,7 +27,7 @@ A locals-expression creates an object that describes the local variables in the 
 
 ## Example
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in examples;

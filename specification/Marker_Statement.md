@@ -26,7 +26,7 @@ A marker-statement declares a label in the enclosing function.
 
 ## Example
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in examples;

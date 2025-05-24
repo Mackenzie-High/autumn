@@ -38,7 +38,7 @@ This operator performs an arithmetic negation operation.
 
 ## Example
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in examples;

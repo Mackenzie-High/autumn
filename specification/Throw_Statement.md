@@ -28,7 +28,7 @@ A throw-statement throws an exception that is provided as an argument thereto.
 
 ## Example 1
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in examples;
@@ -62,7 +62,7 @@ handle
 
 ## Example 2
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in examples;
@@ -106,7 +106,7 @@ handle
 
 ## Example 3
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in examples;
@@ -162,7 +162,7 @@ handle
 
 ## Example 4
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in examples;

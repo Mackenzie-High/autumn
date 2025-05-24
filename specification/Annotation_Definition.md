@@ -45,7 +45,7 @@ An annotation-definition creates a new annotation-type in the enclosing package.
 
 ## Example 1
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in examples;
@@ -76,7 +76,7 @@ defun main (args : String[]) : void
 
 ## Example 2
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in examples;

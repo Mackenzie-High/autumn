@@ -22,7 +22,7 @@ A formal-parameter-list is a list of formal-parameters.
 
 ## Example
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in execution;

@@ -43,7 +43,7 @@ A dispatch-expression dispatches an invocation to a nearby function using multip
 
 ## Example 1
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in execution;
@@ -103,7 +103,7 @@ Cow: Moo
 
 ## Example 2
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in execution;

@@ -22,7 +22,7 @@ A doc-comment-line that is a single line in a doc-comment.
 
 ## Example
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in execution;

@@ -126,7 +126,7 @@ An import-directive simplifies access to a type within the enclosing module.
 
 ## Example 1
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in examples;
@@ -153,7 +153,7 @@ java.util.zip.Deflater
 
 ## Example 2
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in examples;
@@ -183,7 +183,7 @@ defun main (args : String[]) : void
 
 ## Example 3
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Enterprise in starships;
@@ -208,7 +208,7 @@ starships.Enterprise
 
 ## Example 4
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in execution;

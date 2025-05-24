@@ -142,7 +142,7 @@ An is-operation converts a value to another type after performing a runtime chec
 
 ## Example 1
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in examples;
@@ -175,7 +175,7 @@ Case 2: Mars
 
 ## Example 2
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in examples;

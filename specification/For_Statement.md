@@ -39,7 +39,7 @@ A for-statement is a loop that iterates based on a control variable and a condit
 
 ## Example
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in examples;

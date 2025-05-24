@@ -27,7 +27,7 @@ A boolean-datum is a literal boolean value.
 
 ## Example
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in examples;

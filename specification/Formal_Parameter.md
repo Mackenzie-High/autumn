@@ -22,7 +22,7 @@ A formal-parameter is an explicitly typed variable declaration.
 
 ## Example
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in execution;

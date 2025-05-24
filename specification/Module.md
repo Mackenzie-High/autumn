@@ -61,7 +61,7 @@ A module creates a new module-type in the enclosing package.
 
 ## Example
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in examples;

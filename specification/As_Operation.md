@@ -142,7 +142,7 @@ An as-operation converts a value to another type.
 
 ## Example
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in examples;

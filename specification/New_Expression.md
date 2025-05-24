@@ -33,7 +33,7 @@ A new-expression creates a new instance of a specified class-type.
 
 ## Example
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in examples;

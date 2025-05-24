@@ -51,7 +51,7 @@ A try-statement provides a mechanism for catching exceptions.
 
 ## Example 1
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in examples;
@@ -105,7 +105,7 @@ Error: 8 is even.
 
 ## Example 2
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in examples;
@@ -202,7 +202,7 @@ Good. No Disaster.
 
 ## Example 3
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in examples;

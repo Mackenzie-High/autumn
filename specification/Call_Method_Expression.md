@@ -34,7 +34,7 @@ A call-expression performs an invocation of an instance method.
 
 ## Example 1
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in examples;
@@ -61,7 +61,7 @@ Type of World: Alien
 
 ## Example 2
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in examples;

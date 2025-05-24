@@ -64,7 +64,7 @@ An enum-definition creates a new enum-type in the enclosing package.
 
 ## Example 1
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in examples;
@@ -107,7 +107,7 @@ Ordinal: 2
 
 ## Example 2
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in examples;
@@ -150,7 +150,7 @@ Ordinal: 2
 
 ## Example 3
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in examples;

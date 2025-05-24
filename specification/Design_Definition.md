@@ -81,7 +81,7 @@ A design-definition creates a new design-type in the enclosing package.
 
 ## Example
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in execution;

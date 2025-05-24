@@ -32,7 +32,7 @@ A break-statement causes execution to immediately exit the nearest enclosing loo
 
 ## Example
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in examples;

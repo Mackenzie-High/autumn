@@ -25,7 +25,7 @@ A name construct is used to represent a name that does not denote a type.
 
 ## Example
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in execution;

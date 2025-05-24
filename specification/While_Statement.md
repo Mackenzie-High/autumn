@@ -30,7 +30,7 @@ A while-statement is a loop that iterates while a condition holds true.
 
 ## Example
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in examples;

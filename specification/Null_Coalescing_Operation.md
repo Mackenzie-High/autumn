@@ -31,7 +31,7 @@ A null-coalescing provides an alternate value when a primary value is null.
 
 ## Example 1
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in examples;
@@ -69,7 +69,7 @@ null
 
 ## Example 2
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in examples;

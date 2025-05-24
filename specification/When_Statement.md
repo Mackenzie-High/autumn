@@ -26,7 +26,7 @@ A when-statement makes the execution of another statement conditional.
 
 ## Example 1
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in examples;
@@ -62,7 +62,7 @@ Mars is a planet.
 
 ## Example 2
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in examples;

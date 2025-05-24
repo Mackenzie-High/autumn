@@ -30,7 +30,7 @@ A long-datum is a literal long value.
 
 ## Example
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in examples;

@@ -26,7 +26,7 @@ A progn-expression executes a series of expressions sequentially.
 
 ## Example
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in examples;

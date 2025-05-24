@@ -22,7 +22,7 @@ An element-list is a list of elements in a struct, design, or tuple.
 
 ## Example
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in execution;

@@ -44,7 +44,7 @@
 
 ## Example
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in execution;

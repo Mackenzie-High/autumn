@@ -110,7 +110,7 @@ A tuple-definition creates a new tuple-type in the enclosing package.
 
 ## Example 1
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in execution;
@@ -168,7 +168,7 @@ Identity Equality: false
 
 ## Example 2
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in execution;
@@ -218,7 +218,7 @@ Value = France
 
 ## Example 3
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in execution;

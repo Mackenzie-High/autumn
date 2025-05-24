@@ -30,7 +30,7 @@ A int-datum is a literal int value.
 
 ## Example
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in examples;

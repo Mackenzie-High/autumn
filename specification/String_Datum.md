@@ -45,7 +45,7 @@ A string-datum is a literal text value.
 
 ## Example
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in examples;

@@ -32,7 +32,7 @@ A do-until-statement is a loop that iterates until a postcondition becomes true.
 
 ## Example
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in examples;

@@ -31,7 +31,7 @@ A ternary-conditional-expression conditionally chooses one of two values.
 
 ## Example
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in examples;

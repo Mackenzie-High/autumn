@@ -30,7 +30,7 @@ An assert-statement enforces an invariant.
 
 ## Example 1
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in examples;
@@ -98,7 +98,7 @@ Taxes = 750
 
 ## Example 2
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in examples;

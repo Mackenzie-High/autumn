@@ -23,7 +23,7 @@ An expression-statement facilitates the use of an expression as a statement.
 
 ## Example
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in examples;

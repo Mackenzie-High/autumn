@@ -108,7 +108,7 @@ A struct-definition creates a new struct-type in the enclosing package.
 
 ## Example 1
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in execution;
@@ -172,7 +172,7 @@ Tax  = 2500
 
 ## Example 2
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in execution;
@@ -222,7 +222,7 @@ Value = Paris
 
 ## Example 3
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in execution;

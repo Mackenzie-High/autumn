@@ -32,7 +32,7 @@ A do-while-statement is a loop that iterates while a postcondition holds true.
 
 ## Example
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in examples;

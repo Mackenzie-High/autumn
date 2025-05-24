@@ -24,7 +24,7 @@ A nop-statement does not perform any operation.
 
 ## Example
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in examples;

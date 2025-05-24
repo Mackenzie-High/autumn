@@ -47,7 +47,7 @@ This operator performs an inequality comparison operation.
 
 ## Example
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in examples;

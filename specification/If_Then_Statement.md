@@ -48,7 +48,7 @@ An if-statement conditionally executes one or more other statements.
 
 ## Example 1
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in examples;
@@ -109,7 +109,7 @@ defun write(index : int) : void
 
 ## Example 2
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in examples;
@@ -159,7 +159,7 @@ Neptune is a jovian planet.
 
 ## Example 3
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in examples;

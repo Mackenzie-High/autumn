@@ -24,7 +24,7 @@ A goto-statement causes execution to immediately jump to a labeled location.
 
 ## Example 1
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in examples;
@@ -53,7 +53,7 @@ California
 
 ## Example 2
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in examples;
@@ -112,7 +112,7 @@ defun main (args : String[]) : void
 
 ## Example 3
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in examples;

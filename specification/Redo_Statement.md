@@ -32,7 +32,7 @@ A redo-statement causes execution to immediately restart the current iteration o
 
 ## Example
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in examples;

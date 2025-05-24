@@ -24,7 +24,7 @@ An annotation allows metadata to be applied to a module, function, etc.
 
 ## Example
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in execution;

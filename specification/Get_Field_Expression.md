@@ -27,7 +27,7 @@ A get-field-expression gets the value of an instance field.
 
 ## Example
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in examples;

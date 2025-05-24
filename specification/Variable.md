@@ -25,7 +25,7 @@ A variable construct is used to represent a local variable.
 
 ## Example
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in execution;

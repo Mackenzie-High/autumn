@@ -34,7 +34,7 @@ A set-static-field-expression sets the value of a static field.
 
 ## Example
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in examples;

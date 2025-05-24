@@ -35,7 +35,7 @@ A float-datum is a literal float value.
 
 ## Example
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in examples;

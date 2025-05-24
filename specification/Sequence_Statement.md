@@ -27,7 +27,7 @@ A sequence-statement executes a series of statements one after another.
 
 ## Example
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in examples;

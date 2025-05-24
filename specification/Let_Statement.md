@@ -30,7 +30,7 @@ A let-statement assigns a value to a local variable.
 
 ## Example
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in examples;

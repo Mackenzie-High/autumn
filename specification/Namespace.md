@@ -22,7 +22,7 @@ A namespace construct is used to represent the name of a package.
 
 ## Example
 
-**Code:**
+**Source Code:**
 
 ```plain
 /// Namespace: execution.examples;

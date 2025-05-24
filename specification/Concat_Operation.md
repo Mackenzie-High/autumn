@@ -34,7 +34,7 @@ This operator performs a string concatenation operation.
 
 ## Example
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in examples;

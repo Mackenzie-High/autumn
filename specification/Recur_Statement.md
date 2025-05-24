@@ -30,7 +30,7 @@ A recur-statement performs a tail-recursive invocation of the enclosing function
 
 ## Example
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in execution;

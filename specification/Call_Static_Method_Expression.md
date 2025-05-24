@@ -36,7 +36,7 @@ A call-static-expression performs an invocation of a static method or function.
 
 ## Example
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in examples;

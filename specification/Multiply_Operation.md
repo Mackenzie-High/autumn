@@ -44,7 +44,7 @@ This operator performs an arithmetic multiplication operation.
 
 ## Example
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in examples;

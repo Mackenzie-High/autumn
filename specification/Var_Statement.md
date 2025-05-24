@@ -28,7 +28,7 @@ A var-statement declares a new mutable local variable.
 
 ## Example
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in examples;

@@ -31,7 +31,7 @@ This operator performs an inequality comparison operation based on object identi
 
 ## Example
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in examples;

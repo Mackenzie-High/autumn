@@ -30,7 +30,7 @@ A char-datum is a literal character.
 
 ## Example
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in examples;

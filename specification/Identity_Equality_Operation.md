@@ -31,7 +31,7 @@ This operator performs an equality comparison operation based on object identity
 
 ## Example
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in examples;

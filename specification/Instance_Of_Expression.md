@@ -34,7 +34,7 @@ An instance-of-expression determines whether a value is an instance of a particu
 
 ## Example
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in examples;

@@ -26,7 +26,7 @@ A list-expression creates a new mutable list from a list of expressions.
 
 ## Example 1
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in examples;
@@ -65,7 +65,7 @@ defun main (args : String[]) : void
 
 ## Example 2
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in examples;

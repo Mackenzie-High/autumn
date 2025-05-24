@@ -24,7 +24,7 @@ A null-datum is the literal value null.
 
 ## Example
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in examples;

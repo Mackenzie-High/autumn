@@ -31,7 +31,7 @@ This operator performs a logical XOR-operation.
 
 ## Example
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in examples;

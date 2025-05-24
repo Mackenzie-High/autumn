@@ -25,7 +25,7 @@ A doc-comment is a comment that can be processed by documentation generators.
 
 ## Example
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in execution;

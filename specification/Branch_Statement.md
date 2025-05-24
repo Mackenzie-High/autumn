@@ -36,7 +36,7 @@ A branch-statement creates an unstructured jump-table.
 
 ## Example
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in examples;

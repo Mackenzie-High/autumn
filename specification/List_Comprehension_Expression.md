@@ -54,7 +54,7 @@ A list-comprehension creates a new mutable list based on another iterable data-s
 
 ## Example 1
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in examples;
@@ -117,7 +117,7 @@ defun main (args : String[]) : void
 
 ## Example 2
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in examples;

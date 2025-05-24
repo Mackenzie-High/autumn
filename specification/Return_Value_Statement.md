@@ -28,7 +28,7 @@ A return-value statement causes execution to immediately exit the invocation of 
 
 ## Example
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in program;

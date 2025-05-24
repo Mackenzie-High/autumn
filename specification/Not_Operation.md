@@ -29,7 +29,7 @@ This operator performs a logical-NOT operation.
 
 ## Example
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in examples;

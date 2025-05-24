@@ -24,7 +24,7 @@ A type-specifier specifies a type by its name and dimensions.
 
 ## Example
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in execution;

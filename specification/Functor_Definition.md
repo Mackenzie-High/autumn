@@ -88,7 +88,7 @@ A functor-definition creates a new functor-type in the enclosing package.
 
 ## Example
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in examples;

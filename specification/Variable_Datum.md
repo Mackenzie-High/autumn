@@ -27,7 +27,7 @@ A variable-datum retrieves the values stored in a variable.
 
 ## Example 1
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in examples;
@@ -54,7 +54,7 @@ defun main (args : String[]) : void
 
 ## Example 2
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in examples;

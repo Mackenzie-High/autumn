@@ -37,7 +37,7 @@ A foreach-statement is a loop that iterates over the elements in an iterable ent
 
 ## Example
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in examples;

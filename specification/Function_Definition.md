@@ -56,7 +56,7 @@ An function-definition creates a new function within the enclosing module.
 
 ## Example
 
-**Code:**
+**Source Code:**
 
 ```plain
 module Main in examples;
