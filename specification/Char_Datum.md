@@ -14,7 +14,7 @@ A char-datum is a literal character.
 
 ## AST Class
 
-autumn.lang.compiler.ast.nodes.CharDatum
+[autumn.lang.compiler.ast.nodes.CharDatum](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/ast/nodes/CharDatum.html)
 
 ## Details
 

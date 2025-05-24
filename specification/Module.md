@@ -14,7 +14,7 @@ A module creates a new module-type in the enclosing package.
 
 ## AST Class
 
-autumn.lang.Module
+[autumn.lang.Module](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/Module.html)
 
 ## Details
 

@@ -12,7 +12,7 @@ This operator performs a less-than comparison operation.
 
 ## AST Class
 
-autumn.lang.compiler.ast.nodes.LessThanOperation
+[autumn.lang.compiler.ast.nodes.LessThanOperation](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/ast/nodes/LessThanOperation.html)
 
 ## Details
 

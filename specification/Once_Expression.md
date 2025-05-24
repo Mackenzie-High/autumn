@@ -12,7 +12,7 @@ once <a href="Expression.md">value</a><br>
 
 ## AST Class
 
-autumn.lang.compiler.ast.nodes.OnceExpression
+[autumn.lang.compiler.ast.nodes.OnceExpression](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/ast/nodes/OnceExpression.html)
 
 ## Details
 

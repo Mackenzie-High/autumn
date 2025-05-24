@@ -14,7 +14,7 @@ A doc-comment is a comment that can be processed by documentation generators.
 
 ## AST Class
 
-autumn.lang.compiler.ast.nodes.DocComment
+[autumn.lang.compiler.ast.nodes.DocComment](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/ast/nodes/DocComment.html)
 
 ## Details
 

@@ -12,7 +12,7 @@ A goto-statement causes execution to immediately jump to a labeled location.
 
 ## AST Class
 
-autumn.lang.compiler.ast.nodes.GotoStatement
+[autumn.lang.compiler.ast.nodes.GotoStatement](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/ast/nodes/GotoStatement.html)
 
 ## Details
 

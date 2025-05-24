@@ -31,7 +31,7 @@ An if-statement conditionally executes one or more other statements.
 
 ## AST Class
 
-autumn.lang.compiler.ast.nodes.IfStatement
+[autumn.lang.compiler.ast.nodes.IfStatement](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/ast/nodes/IfStatement.html)
 
 ## Details
 

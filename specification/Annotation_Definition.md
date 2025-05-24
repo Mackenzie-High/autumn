@@ -15,7 +15,7 @@ An annotation-definition creates a new annotation-type in the enclosing package.
 
 ## AST Class
 
-autumn.lang.compiler.ast.nodes.AnnotationDefinition
+[autumn.lang.compiler.ast.nodes.AnnotationDefinition](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/ast/nodes/AnnotationDefinition.html)
 
 ## Details
 

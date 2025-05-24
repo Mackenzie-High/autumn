@@ -14,7 +14,7 @@ A short-datum is a literal short value.
 
 ## AST Class
 
-autumn.lang.compiler.ast.nodes.ShortDatum
+[autumn.lang.compiler.ast.nodes.ShortDatum](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/ast/nodes/ShortDatum.html)
 
 ## Details
 

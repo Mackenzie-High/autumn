@@ -12,7 +12,7 @@ A new-expression creates a new instance of a specified class-type.
 
 ## AST Class
 
-autumn.lang.compiler.ast.nodes.NewExpression
+[autumn.lang.compiler.ast.nodes.NewExpression](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/ast/nodes/NewExpression.html)
 
 ## Details
 

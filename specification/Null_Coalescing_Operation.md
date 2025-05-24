@@ -12,7 +12,7 @@ A null-coalescing provides an alternate value when a primary value is null.
 
 ## AST Class
 
-autumn.lang.compiler.ast.nodes.NullCoalescingOperation
+[autumn.lang.compiler.ast.nodes.NullCoalescingOperation](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/ast/nodes/NullCoalescingOperation.html)
 
 ## Details
 

@@ -12,7 +12,7 @@ This operator performs an arithmetic negation operation.
 
 ## AST Class
 
-autumn.lang.compiler.ast.nodes.NegateOperation
+[autumn.lang.compiler.ast.nodes.NegateOperation](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/ast/nodes/NegateOperation.html)
 
 ## Details
 

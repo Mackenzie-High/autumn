@@ -12,7 +12,7 @@ A ternary-conditional-expression conditionally chooses one of two values.
 
 ## AST Class
 
-autumn.lang.compiler.ast.nodes.TernaryConditionalExpression
+[autumn.lang.compiler.ast.nodes.TernaryConditionalExpression](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/ast/nodes/TernaryConditionalExpression.html)
 
 ## Details
 

@@ -12,7 +12,7 @@
 
 ## AST Class
 
-autumn.lang.compiler.ast.nodes.LambdaStatement
+[autumn.lang.compiler.ast.nodes.LambdaStatement](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/ast/nodes/LambdaStatement.html)
 
 ## Details
 

@@ -12,7 +12,7 @@ This operator performs an arithmetic multiplication operation.
 
 ## AST Class
 
-autumn.lang.compiler.ast.nodes.MultiplyOperation
+[autumn.lang.compiler.ast.nodes.MultiplyOperation](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/ast/nodes/MultiplyOperation.html)
 
 ## Details
 

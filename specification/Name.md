@@ -12,7 +12,7 @@ A name construct is used to represent a name that does not denote a type.
 
 ## AST Class
 
-autumn.lang.compiler.ast.nodes.Name
+[autumn.lang.compiler.ast.nodes.Name](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/ast/nodes/Name.html)
 
 ## Details
 

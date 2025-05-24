@@ -12,7 +12,7 @@ An expression-statement facilitates the use of an expression as a statement.
 
 ## AST Class
 
-autumn.lang.compiler.ast.nodes.ExpressionStatement
+[autumn.lang.compiler.ast.nodes.ExpressionStatement](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/ast/nodes/ExpressionStatement.html)
 
 ## Details
 

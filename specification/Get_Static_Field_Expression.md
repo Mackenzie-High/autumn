@@ -12,7 +12,7 @@ A get-static-field-expression gets the value of a static field.
 
 ## AST Class
 
-autumn.lang.compiler.ast.nodes.GetStaticFieldExpression
+[autumn.lang.compiler.ast.nodes.GetStaticFieldExpression](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/ast/nodes/GetStaticFieldExpression.html)
 
 ## Details
 

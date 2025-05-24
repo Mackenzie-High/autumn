@@ -20,7 +20,7 @@ A struct-definition creates a new struct-type in the enclosing package.
 
 ## AST Class
 
-autumn.lang.compiler.ast.nodes.StructDefinition
+[autumn.lang.compiler.ast.nodes.StructDefinition](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/ast/nodes/StructDefinition.html)
 
 ## Details
 

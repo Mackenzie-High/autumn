@@ -18,7 +18,7 @@ An function-definition creates a new function within the enclosing module.
 
 ## AST Class
 
-autumn.lang.compiler.ast.nodes.FunctionDefinition
+[autumn.lang.compiler.ast.nodes.FunctionDefinition](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/ast/nodes/FunctionDefinition.html)
 
 ## Details
 

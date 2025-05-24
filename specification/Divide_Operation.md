@@ -12,7 +12,7 @@ This operator performs an arithmetic division operation.
 
 ## AST Class
 
-autumn.lang.compiler.ast.nodes.DivideOperation
+[autumn.lang.compiler.ast.nodes.DivideOperation](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/ast/nodes/DivideOperation.html)
 
 ## Details
 

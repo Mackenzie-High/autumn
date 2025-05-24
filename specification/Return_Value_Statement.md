@@ -12,7 +12,7 @@ A return-value statement causes execution to immediately exit the invocation of 
 
 ## AST Class
 
-autumn.lang.compiler.ast.nodes.ReturnValueStatement
+[autumn.lang.compiler.ast.nodes.ReturnValueStatement](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/ast/nodes/ReturnValueStatement.html)
 
 ## Details
 

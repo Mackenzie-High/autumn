@@ -14,7 +14,7 @@ An assert-statement enforces an invariant.
 
 ## AST Class
 
-autumn.lang.compiler.ast.nodes.AssertStatement
+[autumn.lang.compiler.ast.nodes.AssertStatement](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/ast/nodes/AssertStatement.html)
 
 ## Details
 

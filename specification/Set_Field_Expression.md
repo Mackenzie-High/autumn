@@ -12,7 +12,7 @@ A set-field-expression sets the value of an instance field.
 
 ## AST Class
 
-autumn.lang.compiler.ast.nodes.SetFieldExpression
+[autumn.lang.compiler.ast.nodes.SetFieldExpression](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/ast/nodes/SetFieldExpression.html)
 
 ## Details
 

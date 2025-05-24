@@ -14,7 +14,7 @@ A call-expression performs an invocation of an instance method.
 
 ## AST Class
 
-autumn.lang.compiler.ast.nodes.CallMethodExpression
+[autumn.lang.compiler.ast.nodes.CallMethodExpression](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/ast/nodes/CallMethodExpression.html)
 
 ## Details
 

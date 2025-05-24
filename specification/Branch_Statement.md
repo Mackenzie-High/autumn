@@ -12,7 +12,7 @@ A branch-statement creates an unstructured jump-table.
 
 ## AST Class
 
-autumn.lang.compiler.ast.nodes.BranchStatement
+[autumn.lang.compiler.ast.nodes.BranchStatement](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/ast/nodes/BranchStatement.html)
 
 ## Details
 

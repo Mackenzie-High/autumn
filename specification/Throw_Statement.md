@@ -12,7 +12,7 @@ A throw-statement throws an exception that is provided as an argument thereto.
 
 ## AST Class
 
-autumn.lang.compiler.ast.nodes.ThrowStatement
+[autumn.lang.compiler.ast.nodes.ThrowStatement](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/ast/nodes/ThrowStatement.html)
 
 ## Details
 

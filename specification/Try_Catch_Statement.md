@@ -27,7 +27,7 @@ A try-statement provides a mechanism for catching exceptions.
 
 ## AST Class
 
-autumn.lang.compiler.ast.nodes.TryCatchStatement
+[autumn.lang.compiler.ast.nodes.TryCatchStatement](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/ast/nodes/TryCatchStatement.html)
 
 ## Details
 

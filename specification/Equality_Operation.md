@@ -12,7 +12,7 @@ This operator performs an equality comparison operation.
 
 ## AST Class
 
-autumn.lang.compiler.ast.nodes.EqualsOperation
+[autumn.lang.compiler.ast.nodes.EqualsOperation](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/ast/nodes/EqualsOperation.html)
 
 ## Details
 

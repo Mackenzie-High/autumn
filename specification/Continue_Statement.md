@@ -12,7 +12,7 @@ A continue-statement causes execution to immediately enter the next iteration of
 
 ## AST Class
 
-autumn.lang.compiler.ast.nodes.ContinueStatement
+[autumn.lang.compiler.ast.nodes.ContinueStatement](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/ast/nodes/ContinueStatement.html)
 
 ## Details
 

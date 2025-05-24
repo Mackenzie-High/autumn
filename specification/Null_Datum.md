@@ -12,7 +12,7 @@ A null-datum is the literal value null.
 
 ## AST Class
 
-autumn.lang.compiler.ast.nodes.NullDatum
+[autumn.lang.compiler.ast.nodes.NullDatum](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/ast/nodes/NullDatum.html)
 
 ## Details
 

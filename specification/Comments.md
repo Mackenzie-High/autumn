@@ -14,10 +14,6 @@ Comments allow programmers to leave notes inside of code.
 **/*&nbsp;&nbsp;&nbsp;**<i>body of multi-line comment</i>**&nbsp;&nbsp;&nbsp;*/**<br>
 </div>
 
-## AST Class
-
-null
-
 ## Details
 
 + Comments are simply ignored by the compiler.

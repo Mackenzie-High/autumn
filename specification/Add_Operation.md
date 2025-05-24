@@ -12,7 +12,7 @@ This operator performs an arithmetic addition operation.
 
 ## AST Class
 
-autumn.lang.compiler.ast.nodes.AddOperation
+[autumn.lang.compiler.ast.nodes.AddOperation](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/ast/nodes/AddOperation.html)
 
 ## Details
 

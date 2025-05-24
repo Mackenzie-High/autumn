@@ -12,7 +12,7 @@ A variable-datum retrieves the values stored in a variable.
 
 ## AST Class
 
-autumn.lang.compiler.ast.nodes.VariableDatum
+[autumn.lang.compiler.ast.nodes.VariableDatum](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/ast/nodes/VariableDatum.html)
 
 ## Details
 

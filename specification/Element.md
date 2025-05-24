@@ -12,7 +12,7 @@ An element declares an entry in a struct, design, or tuple.
 
 ## AST Class
 
-autumn.lang.compiler.ast.nodes.Element
+[autumn.lang.compiler.ast.nodes.Element](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/ast/nodes/Element.html)
 
 ## Details
 

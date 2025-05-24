@@ -12,7 +12,7 @@ This operator performs an inequality comparison operation.
 
 ## AST Class
 
-autumn.lang.compiler.ast.nodes.NotEqualsOperation
+[autumn.lang.compiler.ast.nodes.NotEqualsOperation](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/ast/nodes/NotEqualsOperation.html)
 
 ## Details
 

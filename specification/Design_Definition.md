@@ -20,7 +20,7 @@ A design-definition creates a new design-type in the enclosing package.
 
 ## AST Class
 
-autumn.lang.compiler.ast.nodes.DesignDefinition
+[autumn.lang.compiler.ast.nodes.DesignDefinition](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/ast/nodes/DesignDefinition.html)
 
 ## Details
 

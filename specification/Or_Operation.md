@@ -12,7 +12,7 @@ This operator performs a non-short-circuit logical OR-operation.
 
 ## AST Class
 
-autumn.lang.compiler.ast.nodes.OrOperation
+[autumn.lang.compiler.ast.nodes.OrOperation](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/ast/nodes/OrOperation.html)
 
 ## Details
 

@@ -20,7 +20,7 @@ A module-directive is used to specify the name and namespace of the enclosing mo
 
 ## AST Class
 
-autumn.lang.compiler.ast.nodes.ModuleDirective
+[autumn.lang.compiler.ast.nodes.ModuleDirective](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/ast/nodes/ModuleDirective.html)
 
 ## Details
 

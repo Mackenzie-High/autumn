@@ -14,7 +14,7 @@ A call-static-expression performs an invocation of a static method or function.
 
 ## AST Class
 
-autumn.lang.compiler.ast.nodes.CallStaticMethodExpression
+[autumn.lang.compiler.ast.nodes.CallStaticMethodExpression](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/ast/nodes/CallStaticMethodExpression.html)
 
 ## Details
 

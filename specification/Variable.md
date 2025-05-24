@@ -12,7 +12,7 @@ A variable construct is used to represent a local variable.
 
 ## AST Class
 
-autumn.lang.compiler.ast.nodes.Variable
+[autumn.lang.compiler.ast.nodes.Variable](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/ast/nodes/Variable.html)
 
 ## Details
 

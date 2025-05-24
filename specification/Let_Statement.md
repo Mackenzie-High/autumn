@@ -14,7 +14,7 @@ A let-statement assigns a value to a local variable.
 
 ## AST Class
 
-autumn.lang.compiler.ast.nodes.LetStatement
+[autumn.lang.compiler.ast.nodes.LetStatement](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/ast/nodes/LetStatement.html)
 
 ## Details
 

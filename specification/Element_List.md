@@ -12,7 +12,7 @@ An element-list is a list of elements in a struct, design, or tuple.
 
 ## AST Class
 
-autumn.lang.compiler.ast.nodes.ElementList
+[autumn.lang.compiler.ast.nodes.ElementList](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/ast/nodes/ElementList.html)
 
 ## Details
 

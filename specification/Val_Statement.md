@@ -12,7 +12,7 @@ A val-statement declares a new readonly local variable.
 
 ## AST Class
 
-autumn.lang.compiler.ast.nodes.ValStatement
+[autumn.lang.compiler.ast.nodes.ValStatement](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/ast/nodes/ValStatement.html)
 
 ## Details
 

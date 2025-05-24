@@ -12,7 +12,7 @@ This operator performs a logical-NOT operation.
 
 ## AST Class
 
-autumn.lang.compiler.ast.nodes.NotOperation
+[autumn.lang.compiler.ast.nodes.NotOperation](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/ast/nodes/NotOperation.html)
 
 ## Details
 

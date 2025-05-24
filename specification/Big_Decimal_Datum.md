@@ -16,7 +16,7 @@ A big-decimal datum is a literal $BigDecimal$ value.
 
 ## AST Class
 
-autumn.lang.compiler.ast.nodes.BigDecimalDatum
+[autumn.lang.compiler.ast.nodes.BigDecimalDatum](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/ast/nodes/BigDecimalDatum.html)
 
 ## Details
 

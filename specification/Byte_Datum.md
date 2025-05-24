@@ -14,7 +14,7 @@ A byte-datum is a literal byte value.
 
 ## AST Class
 
-autumn.lang.compiler.ast.nodes.ByteDatum
+[autumn.lang.compiler.ast.nodes.ByteDatum](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/ast/nodes/ByteDatum.html)
 
 ## Details
 

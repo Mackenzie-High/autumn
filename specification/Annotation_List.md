@@ -14,7 +14,7 @@ An annotation-list is a list of annotations.
 
 ## AST Class
 
-autumn.lang.compiler.ast.nodes.AnnotationList
+[autumn.lang.compiler.ast.nodes.AnnotationList](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/ast/nodes/AnnotationList.html)
 
 ## Details
 

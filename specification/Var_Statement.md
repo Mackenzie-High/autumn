@@ -12,7 +12,7 @@ A var-statement declares a new mutable local variable.
 
 ## AST Class
 
-autumn.lang.compiler.ast.nodes.VarStatement
+[autumn.lang.compiler.ast.nodes.VarStatement](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/ast/nodes/VarStatement.html)
 
 ## Details
 

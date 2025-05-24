@@ -12,7 +12,7 @@ This operator performs a greater-or-equals comparison operation.
 
 ## AST Class
 
-autumn.lang.compiler.ast.nodes.GreaterThanOrEqualsOperation
+[autumn.lang.compiler.ast.nodes.GreaterThanOrEqualsOperation](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/ast/nodes/GreaterThanOrEqualsOperation.html)
 
 ## Details
 

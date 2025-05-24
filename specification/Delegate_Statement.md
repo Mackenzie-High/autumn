@@ -12,7 +12,7 @@
 
 ## AST Class
 
-autumn.lang.compiler.ast.nodes.DelegateStatement
+[autumn.lang.compiler.ast.nodes.DelegateStatement](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/ast/nodes/DelegateStatement.html)
 
 ## Details
 

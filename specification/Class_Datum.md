@@ -12,7 +12,7 @@ A class-datum is a literal [Class](https://docs.oracle.com/javase/7/docs/api/jav
 
 ## AST Class
 
-autumn.lang.compiler.ast.nodes.ClassDatum
+[autumn.lang.compiler.ast.nodes.ClassDatum](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/ast/nodes/ClassDatum.html)
 
 ## Details
 

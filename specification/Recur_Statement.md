@@ -12,7 +12,7 @@ A recur-statement performs a tail-recursive invocation of the enclosing function
 
 ## AST Class
 
-autumn.lang.compiler.ast.nodes.RecurStatement
+[autumn.lang.compiler.ast.nodes.RecurStatement](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/ast/nodes/RecurStatement.html)
 
 ## Details
 

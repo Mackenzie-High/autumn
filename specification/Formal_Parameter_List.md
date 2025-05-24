@@ -12,7 +12,7 @@ A formal-parameter-list is a list of formal-parameters.
 
 ## AST Class
 
-autumn.lang.compiler.ast.nodes.FormalParameterList
+[autumn.lang.compiler.ast.nodes.FormalParameterList](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/ast/nodes/FormalParameterList.html)
 
 ## Details
 

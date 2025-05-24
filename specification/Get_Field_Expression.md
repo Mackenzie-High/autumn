@@ -12,7 +12,7 @@ A get-field-expression gets the value of an instance field.
 
 ## AST Class
 
-autumn.lang.compiler.ast.nodes.GetFieldExpression
+[autumn.lang.compiler.ast.nodes.GetFieldExpression](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/ast/nodes/GetFieldExpression.html)
 
 ## Details
 

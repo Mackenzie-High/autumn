@@ -16,7 +16,7 @@ A do-while-statement is a loop that iterates while a postcondition holds true.
 
 ## AST Class
 
-autumn.lang.compiler.ast.nodes.DoWhileStatement
+[autumn.lang.compiler.ast.nodes.DoWhileStatement](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/ast/nodes/DoWhileStatement.html)
 
 ## Details
 

@@ -12,7 +12,7 @@ A redo-statement causes execution to immediately restart the current iteration o
 
 ## AST Class
 
-autumn.lang.compiler.ast.nodes.RedoStatement
+[autumn.lang.compiler.ast.nodes.RedoStatement](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/ast/nodes/RedoStatement.html)
 
 ## Details
 

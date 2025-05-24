@@ -12,7 +12,7 @@ An instance-of-expression determines whether a value is an instance of a particu
 
 ## AST Class
 
-autumn.lang.compiler.ast.nodes.InstanceOfExpression
+[autumn.lang.compiler.ast.nodes.InstanceOfExpression](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/ast/nodes/InstanceOfExpression.html)
 
 ## Details
 

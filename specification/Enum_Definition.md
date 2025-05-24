@@ -15,7 +15,7 @@ An enum-definition creates a new enum-type in the enclosing package.
 
 ## AST Class
 
-autumn.lang.compiler.ast.nodes.EnumDefinition
+[autumn.lang.compiler.ast.nodes.EnumDefinition](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/ast/nodes/EnumDefinition.html)
 
 ## Details
 

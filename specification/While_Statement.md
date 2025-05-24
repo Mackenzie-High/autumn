@@ -15,7 +15,7 @@ A while-statement is a loop that iterates while a condition holds true.
 
 ## AST Class
 
-autumn.lang.compiler.ast.nodes.WhileStatement
+[autumn.lang.compiler.ast.nodes.WhileStatement](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/ast/nodes/WhileStatement.html)
 
 ## Details
 

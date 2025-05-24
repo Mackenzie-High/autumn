@@ -14,7 +14,7 @@ A boolean-datum is a literal boolean value.
 
 ## AST Class
 
-autumn.lang.compiler.ast.nodes.BooleanDatum
+[autumn.lang.compiler.ast.nodes.BooleanDatum](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/ast/nodes/BooleanDatum.html)
 
 ## Details
 

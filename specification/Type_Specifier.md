@@ -12,7 +12,7 @@ A type-specifier specifies a type by its name and dimensions.
 
 ## AST Class
 
-autumn.lang.compiler.ast.nodes.TypeSpecifier
+[autumn.lang.compiler.ast.nodes.TypeSpecifier](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/ast/nodes/TypeSpecifier.html)
 
 ## Details
 

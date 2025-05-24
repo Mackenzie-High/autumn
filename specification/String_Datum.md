@@ -18,7 +18,7 @@ A string-datum is a literal text value.
 
 ## AST Class
 
-autumn.lang.compiler.ast.nodes.StringDatum
+[autumn.lang.compiler.ast.nodes.StringDatum](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/ast/nodes/StringDatum.html)
 
 ## Details
 

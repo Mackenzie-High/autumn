@@ -20,7 +20,7 @@ A tuple-definition creates a new tuple-type in the enclosing package.
 
 ## AST Class
 
-autumn.lang.compiler.ast.nodes.TupleDefinition
+[autumn.lang.compiler.ast.nodes.TupleDefinition](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/ast/nodes/TupleDefinition.html)
 
 ## Details
 

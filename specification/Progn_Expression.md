@@ -12,7 +12,7 @@ A progn-expression executes a series of expressions sequentially.
 
 ## AST Class
 
-autumn.lang.compiler.ast.nodes.PrognExpression
+[autumn.lang.compiler.ast.nodes.PrognExpression](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/ast/nodes/PrognExpression.html)
 
 ## Details
 

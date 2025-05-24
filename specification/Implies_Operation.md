@@ -12,7 +12,7 @@ This operator performs a  logical implication operation.
 
 ## AST Class
 
-autumn.lang.compiler.ast.nodes.XorOperation
+[autumn.lang.compiler.ast.nodes.XorOperation](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/ast/nodes/XorOperation.html)
 
 ## Details
 

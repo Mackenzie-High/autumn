@@ -12,7 +12,7 @@ This operator performs a non-short-circuit logical AND-operation.
 
 ## AST Class
 
-autumn.lang.compiler.ast.nodes.AndOperation
+[autumn.lang.compiler.ast.nodes.AndOperation](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/ast/nodes/AndOperation.html)
 
 ## Details
 

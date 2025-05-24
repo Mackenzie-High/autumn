@@ -22,7 +22,7 @@ A double-datum is a literal double value.
 
 ## AST Class
 
-autumn.lang.compiler.ast.nodes.DoubleDatum
+[autumn.lang.compiler.ast.nodes.DoubleDatum](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/ast/nodes/DoubleDatum.html)
 
 ## Details
 

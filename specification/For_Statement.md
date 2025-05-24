@@ -15,7 +15,7 @@ A for-statement is a loop that iterates based on a control variable and a condit
 
 ## AST Class
 
-autumn.lang.compiler.ast.nodes.ForStatement
+[autumn.lang.compiler.ast.nodes.ForStatement](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/ast/nodes/ForStatement.html)
 
 ## Details
 

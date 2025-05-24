@@ -22,7 +22,7 @@ A float-datum is a literal float value.
 
 ## AST Class
 
-autumn.lang.compiler.ast.nodes.FloatDatum
+[autumn.lang.compiler.ast.nodes.FloatDatum](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/ast/nodes/FloatDatum.html)
 
 ## Details
 

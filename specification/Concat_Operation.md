@@ -12,7 +12,7 @@ This operator performs a string concatenation operation.
 
 ## AST Class
 
-autumn.lang.compiler.ast.nodes.ConcatOperation
+[autumn.lang.compiler.ast.nodes.ConcatOperation](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/ast/nodes/ConcatOperation.html)
 
 ## Details
 

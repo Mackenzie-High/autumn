@@ -12,7 +12,7 @@ A namespace construct is used to represent the name of a package.
 
 ## AST Class
 
-autumn.lang.compiler.ast.nodes.Namespace
+[autumn.lang.compiler.ast.nodes.Namespace](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/ast/nodes/Namespace.html)
 
 ## Details
 

@@ -12,7 +12,7 @@ A break-statement causes execution to immediately exit the nearest enclosing loo
 
 ## AST Class
 
-autumn.lang.compiler.ast.nodes.BreakStatement
+[autumn.lang.compiler.ast.nodes.BreakStatement](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/ast/nodes/BreakStatement.html)
 
 ## Details
 

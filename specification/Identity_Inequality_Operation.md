@@ -12,7 +12,7 @@ This operator performs an inequality comparison operation based on object identi
 
 ## AST Class
 
-autumn.lang.compiler.ast.nodes.IdentityNotEqualsOperation
+[autumn.lang.compiler.ast.nodes.IdentityNotEqualsOperation](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/ast/nodes/IdentityNotEqualsOperation.html)
 
 ## Details
 

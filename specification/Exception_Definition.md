@@ -15,7 +15,7 @@ An exception-definition creates a new exception-type in the enclosing package.
 
 ## AST Class
 
-autumn.lang.compiler.ast.nodes.ExceptionDefinition
+[autumn.lang.compiler.ast.nodes.ExceptionDefinition](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/ast/nodes/ExceptionDefinition.html)
 
 ## Details
 

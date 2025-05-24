@@ -12,7 +12,7 @@ A marker-statement declares a label in the enclosing function.
 
 ## AST Class
 
-autumn.lang.compiler.ast.nodes.MarkerStatement
+[autumn.lang.compiler.ast.nodes.MarkerStatement](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/ast/nodes/MarkerStatement.html)
 
 ## Details
 

@@ -12,7 +12,7 @@ An import-directive simplifies access to a type within the enclosing module.
 
 ## AST Class
 
-autumn.lang.compiler.ast.nodes.ImportDirective
+[autumn.lang.compiler.ast.nodes.ImportDirective](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/ast/nodes/ImportDirective.html)
 
 ## Details
 

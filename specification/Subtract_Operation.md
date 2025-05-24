@@ -12,7 +12,7 @@ This operator performs an arithmetic subtraction operation.
 
 ## AST Class
 
-autumn.lang.compiler.ast.nodes.SubtractOperation
+[autumn.lang.compiler.ast.nodes.SubtractOperation](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/ast/nodes/SubtractOperation.html)
 
 ## Details
 

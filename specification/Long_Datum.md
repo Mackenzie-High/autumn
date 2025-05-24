@@ -14,7 +14,7 @@ A long-datum is a literal long value.
 
 ## AST Class
 
-autumn.lang.compiler.ast.nodes.LongDatum
+[autumn.lang.compiler.ast.nodes.LongDatum](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/ast/nodes/LongDatum.html)
 
 ## Details
 

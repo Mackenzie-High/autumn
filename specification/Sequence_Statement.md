@@ -16,7 +16,7 @@ A sequence-statement executes a series of statements one after another.
 
 ## AST Class
 
-autumn.lang.compiler.ast.nodes.SequenceStatement
+[autumn.lang.compiler.ast.nodes.SequenceStatement](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/ast/nodes/SequenceStatement.html)
 
 ## Details
 

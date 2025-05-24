@@ -12,7 +12,7 @@ An as-operation converts a value to another type.
 
 ## AST Class
 
-autumn.lang.compiler.ast.nodes.AsOperation
+[autumn.lang.compiler.ast.nodes.AsOperation](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/ast/nodes/AsOperation.html)
 
 ## Details
 

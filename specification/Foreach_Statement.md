@@ -15,7 +15,7 @@ A foreach-statement is a loop that iterates over the elements in an iterable ent
 
 ## AST Class
 
-autumn.lang.compiler.ast.nodes.ForeachStatement
+[autumn.lang.compiler.ast.nodes.ForeachStatement](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/ast/nodes/ForeachStatement.html)
 
 ## Details
 

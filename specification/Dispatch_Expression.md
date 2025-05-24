@@ -12,7 +12,7 @@ A dispatch-expression dispatches an invocation to a nearby function using multip
 
 ## AST Class
 
-autumn.lang.compiler.ast.nodes.DispatchExpression
+[autumn.lang.compiler.ast.nodes.DispatchExpression](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/ast/nodes/DispatchExpression.html)
 
 ## Details
 

@@ -12,7 +12,7 @@ A locals-expression creates an object that describes the local variables in the 
 
 ## AST Class
 
-autumn.lang.compiler.ast.nodes.LocalsExpression
+[autumn.lang.compiler.ast.nodes.LocalsExpression](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/ast/nodes/LocalsExpression.html)
 
 ## Details
 

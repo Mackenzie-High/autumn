@@ -14,7 +14,7 @@ A big-integer datum is a literal $BigInteger$ value.
 
 ## AST Class
 
-autumn.lang.compiler.ast.nodes.BigIntegerDatum
+[autumn.lang.compiler.ast.nodes.BigIntegerDatum](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/ast/nodes/BigIntegerDatum.html)
 
 ## Details
 

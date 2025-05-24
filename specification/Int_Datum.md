@@ -14,7 +14,7 @@ A int-datum is a literal int value.
 
 ## AST Class
 
-autumn.lang.compiler.ast.nodes.IntDatum
+[autumn.lang.compiler.ast.nodes.IntDatum](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/ast/nodes/IntDatum.html)
 
 ## Details
 

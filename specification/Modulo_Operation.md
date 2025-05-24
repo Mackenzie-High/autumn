@@ -12,7 +12,7 @@ This operator performs an arithmetic modulus operation.
 
 ## AST Class
 
-autumn.lang.compiler.ast.nodes.ModuloOperation
+[autumn.lang.compiler.ast.nodes.ModuloOperation](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/ast/nodes/ModuloOperation.html)
 
 ## Details
 

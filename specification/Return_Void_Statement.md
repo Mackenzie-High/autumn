@@ -12,7 +12,7 @@ A return-statement causes execution to immediately exit the invocation of a func
 
 ## AST Class
 
-autumn.lang.compiler.ast.nodes.ReturnVoidStatement
+[autumn.lang.compiler.ast.nodes.ReturnVoidStatement](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/ast/nodes/ReturnVoidStatement.html)
 
 ## Details
 

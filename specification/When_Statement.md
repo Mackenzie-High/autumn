@@ -12,7 +12,7 @@ A when-statement makes the execution of another statement conditional.
 
 ## AST Class
 
-autumn.lang.compiler.ast.nodes.WhenStatement
+[autumn.lang.compiler.ast.nodes.WhenStatement](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/ast/nodes/WhenStatement.html)
 
 ## Details
 

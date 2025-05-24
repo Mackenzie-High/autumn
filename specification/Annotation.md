@@ -14,7 +14,7 @@ An annotation allows metadata to be applied to a module, function, etc.
 
 ## AST Class
 
-autumn.lang.compiler.ast.nodes.Annotation
+[autumn.lang.compiler.ast.nodes.Annotation](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/ast/nodes/Annotation.html)
 
 ## Details
 

@@ -12,7 +12,7 @@ A list-expression creates a new mutable list from a list of expressions.
 
 ## AST Class
 
-autumn.lang.compiler.ast.nodes.ListExpression
+[autumn.lang.compiler.ast.nodes.ListExpression](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/ast/nodes/ListExpression.html)
 
 ## Details
 

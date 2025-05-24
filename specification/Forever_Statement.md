@@ -15,7 +15,7 @@ A forever-statement is an infinite loop.
 
 ## AST Class
 
-autumn.lang.compiler.ast.nodes.ForeverStatement
+[autumn.lang.compiler.ast.nodes.ForeverStatement](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/ast/nodes/ForeverStatement.html)
 
 ## Details
 

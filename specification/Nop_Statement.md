@@ -12,7 +12,7 @@ A nop-statement does not perform any operation.
 
 ## AST Class
 
-autumn.lang.compiler.ast.nodes.NopStatement
+[autumn.lang.compiler.ast.nodes.NopStatement](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/ast/nodes/NopStatement.html)
 
 ## Details
 

@@ -12,7 +12,7 @@ An is-operation converts a value to another type after performing a runtime chec
 
 ## AST Class
 
-autumn.lang.compiler.ast.nodes.IsOperation
+[autumn.lang.compiler.ast.nodes.IsOperation](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/ast/nodes/IsOperation.html)
 
 ## Details
 

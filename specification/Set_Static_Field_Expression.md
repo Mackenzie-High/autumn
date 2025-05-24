@@ -12,7 +12,7 @@ A set-static-field-expression sets the value of a static field.
 
 ## AST Class
 
-autumn.lang.compiler.ast.nodes.SetStaticFieldExpression
+[autumn.lang.compiler.ast.nodes.SetStaticFieldExpression](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/ast/nodes/SetStaticFieldExpression.html)
 
 ## Details
 

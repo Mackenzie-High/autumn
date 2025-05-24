@@ -20,7 +20,7 @@ A functor-definition creates a new functor-type in the enclosing package.
 
 ## AST Class
 
-autumn.lang.compiler.ast.nodes.FunctorDefinition
+[autumn.lang.compiler.ast.nodes.FunctorDefinition](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/ast/nodes/FunctorDefinition.html)
 
 ## Details
 

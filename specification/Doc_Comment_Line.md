@@ -12,7 +12,7 @@ A doc-comment-line that is a single line in a doc-comment.
 
 ## AST Class
 
-autumn.lang.compiler.ast.nodes.DocCommentLine
+[autumn.lang.compiler.ast.nodes.DocCommentLine](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/ast/nodes/DocCommentLine.html)
 
 ## Details
 
