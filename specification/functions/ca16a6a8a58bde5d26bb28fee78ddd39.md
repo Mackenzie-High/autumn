@@ -18,6 +18,3 @@ Return an unmodifiable list containing the names of the entries in the <i>input<
 
 + [NullPointerException](https://docs.oracle.com/javase/7/docs/api/java/lang/NullPointerException.html): if <i>input</i> is null.
 
-## Details
-
-
