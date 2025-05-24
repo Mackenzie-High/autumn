@@ -8,10 +8,15 @@ get (record : [Record](https://mackenzie-high.github.io/autumn/javadoc/autumn/la
 
 ## Formals
 
-contains the entry.
-is the index of the entry.
+Parameterrecordcontains the entry.
+Parameterindexis the index of the entry.
 
 ## Returns
 
 Return the value stored in the <i>record</i> entry that is identified by the given <i>index</i>.
+
+## Throws
+
+[NullPointerException](https://docs.oracle.com/javase/7/docs/api/java/lang/NullPointerException.html)if <i>record</i> is null.
+[IndexOutOfBoundsException](https://docs.oracle.com/javase/7/docs/api/java/lang/IndexOutOfBoundsException.html)if <i>index</i> is out of bounds.
 

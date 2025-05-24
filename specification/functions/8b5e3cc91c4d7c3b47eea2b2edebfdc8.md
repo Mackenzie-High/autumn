@@ -8,9 +8,13 @@ reset (record : [Record](https://mackenzie-high.github.io/autumn/javadoc/autumn/
 
 ## Formals
 
-is the record to clear.
+Parameterrecordis the record to clear.
 
 ## Returns
 
 Return a cleared copy of the <i>record</i>.
+
+## Throws
+
+[NullPointerException](https://docs.oracle.com/javase/7/docs/api/java/lang/NullPointerException.html)if <i>record</i> is null.
 

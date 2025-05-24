@@ -8,9 +8,13 @@ iter (input : [Record](https://mackenzie-high.github.io/autumn/javadoc/autumn/la
 
 ## Formals
 
-is the record itself.
+Parameterinputis the record itself.
 
 ## Returns
 
 Return an unmodifiable list containing the names of the entries in the <i>input</i>.
+
+## Throws
+
+[NullPointerException](https://docs.oracle.com/javase/7/docs/api/java/lang/NullPointerException.html)if <i>input</i> is null.
 

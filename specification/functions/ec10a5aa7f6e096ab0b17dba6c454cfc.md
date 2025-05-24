@@ -8,9 +8,14 @@ defaultValueOf (type : [Class](https://docs.oracle.com/javase/7/docs/api/java/la
 
 ## Formals
 
-is the type whose default value will be returned.
+Parametertypeis the type whose default value will be returned.
 
 ## Returns
 
 Return the default value of the <i>type</i>.
+
+## Throws
+
+[NullPointerException](https://docs.oracle.com/javase/7/docs/api/java/lang/NullPointerException.html)if the <i>type</i> is null.
+[IllegalArgumentException](https://docs.oracle.com/javase/7/docs/api/java/lang/IllegalArgumentException.html)if the <i>type</i> is the void-type.
 

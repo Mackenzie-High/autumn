@@ -8,9 +8,13 @@ unmodifiable (original : [Map](https://docs.oracle.com/javase/7/docs/api/java/ut
 
 ## Formals
 
-is the data-structure to copy.
+Parameteroriginalis the data-structure to copy.
 
 ## Returns
 
 Return an unmodifiable view of the <i>original</i>.
+
+## Throws
+
+[NullPointerException](https://docs.oracle.com/javase/7/docs/api/java/lang/NullPointerException.html)if <i>original</i> is null.
 
