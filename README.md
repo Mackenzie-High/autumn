@@ -1,9 +1,5 @@
-+ [**GitHub Page**](https://github.com/Mackenzie-High/autumn)
-+ [Downloads](specification/Downloads.md)
-+ [Introduction](specification/Introduction.md)
-+ [Special Thanks](specification/Special_Thanks.md)
 + **Standard Library**
-    + [API Documentation](javadoc/index.html)
+    + [API Documentation](https://www.mackenziehigh.com/autumn/javadoc/index.html)
     + [Special Functions](https://www.mackenziehigh.me/autumn/FunctionIndexPage.html)
 + **Language Constructs**
     + [Module](specification/Module.md)
