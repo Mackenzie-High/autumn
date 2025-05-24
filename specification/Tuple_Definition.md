@@ -97,16 +97,16 @@ autumn.lang.compiler.ast.nodes.TupleDefinition
 
 ## Static Checks
 
-[DUPLICATE_ANNOTATION, Each annotation in an annotation-list must be uniquely typed., null]
-[DUPLICATE_ANNOTATION, Each annotation in an annotation-list must be uniquely typed., null]
-[DUPLICATE_TYPE, No two types can share the same descriptor., null]
-[DUPLICATE_ELEMENT, The <i>name</i> of each element must be unique within the enclosing definition., null]
-[NO_SUCH_TYPE, The type specified by <i>element.type</i> must exist., null]
-[INACCESSIBLE_TYPE, The type specified by <i>element.type</i> must be accessible., null]
-[EXPECTED_VARIABLE_TYPE, The <i>type</i> of each <i>element</i> must be a variable-type., null]
-[RETYPED_ELEMENT, The type of an element must be the same in all the declarations of the element., null]
-[TOTAL_ORDERING_REQUIRED, A tuple must explicitly declare all of its elements, including inherited elements., null]
-[NAME_CONFLICT, The name of an element cannot also be the name of an inherited method., null]
++ [DUPLICATE_ANNOTATION](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#DUPLICATE_ANNOTATION): Each annotation in an annotation-list must be uniquely typed.
++ [DUPLICATE_ANNOTATION](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#DUPLICATE_ANNOTATION): Each annotation in an annotation-list must be uniquely typed.
++ [DUPLICATE_TYPE](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#DUPLICATE_TYPE): No two types can share the same descriptor.
++ [DUPLICATE_ELEMENT](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#DUPLICATE_ELEMENT): The <i>name</i> of each element must be unique within the enclosing definition.
++ [NO_SUCH_TYPE](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#NO_SUCH_TYPE): The type specified by <i>element.type</i> must exist.
++ [INACCESSIBLE_TYPE](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#INACCESSIBLE_TYPE): The type specified by <i>element.type</i> must be accessible.
++ [EXPECTED_VARIABLE_TYPE](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#EXPECTED_VARIABLE_TYPE): The <i>type</i> of each <i>element</i> must be a variable-type.
++ [RETYPED_ELEMENT](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#RETYPED_ELEMENT): The type of an element must be the same in all the declarations of the element.
++ [TOTAL_ORDERING_REQUIRED](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#TOTAL_ORDERING_REQUIRED): A tuple must explicitly declare all of its elements, including inherited elements.
++ [NAME_CONFLICT](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#NAME_CONFLICT): The name of an element cannot also be the name of an inherited method.
 
 ## Example 1
 

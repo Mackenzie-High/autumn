@@ -23,8 +23,8 @@ autumn.lang.compiler.ast.nodes.ReturnValueStatement
 
 ## Static Checks
 
-[VALUE_REQUIRED, The type of the <i>value</i> must be either a primitive-type or a reference-type., null]
-[WRONG_TYPE, The type of the <i>value</i> must be assignable to the <i>return-type</i> of the enclosing function., null]
++ [VALUE_REQUIRED](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#VALUE_REQUIRED): The type of the <i>value</i> must be either a primitive-type or a reference-type.
++ [WRONG_TYPE](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#WRONG_TYPE): The type of the <i>value</i> must be assignable to the <i>return-type</i> of the enclosing function.
 
 ## Example
 

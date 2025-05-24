@@ -24,8 +24,8 @@ autumn.lang.compiler.ast.nodes.ValStatement
 
 ## Static Checks
 
-[DUPLICATE_VARIABLE, The <i>assignee</i> cannot share its name with another variable declared in the same scope., null]
-[EXPECTED_VARIABLE_TYPE, The type of the <i>value</i> must be a variable-type., null]
++ [DUPLICATE_VARIABLE](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#DUPLICATE_VARIABLE): The <i>assignee</i> cannot share its name with another variable declared in the same scope.
++ [EXPECTED_VARIABLE_TYPE](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#EXPECTED_VARIABLE_TYPE): The type of the <i>value</i> must be a variable-type.
 
 ## Example 1
 

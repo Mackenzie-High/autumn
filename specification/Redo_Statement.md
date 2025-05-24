@@ -28,7 +28,7 @@ autumn.lang.compiler.ast.nodes.RedoStatement
 
 ## Static Checks
 
-[REDO_OUTSIDE_OF_LOOP, A redo-statement must be in the <i>body</i> of a loop., null]
++ [REDO_OUTSIDE_OF_LOOP](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#REDO_OUTSIDE_OF_LOOP): A redo-statement must be in the <i>body</i> of a loop.
 
 ## Example
 

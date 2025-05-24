@@ -25,8 +25,8 @@ autumn.lang.compiler.ast.nodes.AssertStatement
 
 ## Static Checks
 
-[EXPECTED_CONDITION, The type of <i><i>condition</i></i> must be assignable to type boolean., null]
-[EXPECTED_STRING, The type of <i>message</i> must be assignable to type java.lang.String., null]
++ [EXPECTED_CONDITION](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#EXPECTED_CONDITION): The type of <i><i>condition</i></i> must be assignable to type boolean.
++ [EXPECTED_STRING](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#EXPECTED_STRING): The type of <i>message</i> must be assignable to type java.lang.String.
 
 ## Example 1
 

@@ -56,13 +56,13 @@ autumn.lang.compiler.ast.nodes.ExceptionDefinition
 
 ## Static Checks
 
-[DUPLICATE_ANNOTATION, Each annotation in an annotation-list must be uniquely typed., null]
-[DUPLICATE_TYPE, No two types can share the same descriptor., null]
-[NO_SUCH_TYPE, The type specified by <i>super</i> must exist., null]
-[INACCESSIBLE_TYPE, The type specified by <i>super</i> must be accessible., null]
-[EXPECTED_CLASS_TYPE, The type of <i>super</i> must be a class-type., null]
-[EXPECTED_THROWABLE, The <i>super</i> must be a subtype of [Throwable](https://docs.oracle.com/javase/7/docs/api/java/lang/Throwable.html)., null]
-[CIRCULAR_INHERITANCE, The new type cannot be a subtype of itself either directly or indirectly., null]
++ [DUPLICATE_ANNOTATION](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#DUPLICATE_ANNOTATION): Each annotation in an annotation-list must be uniquely typed.
++ [DUPLICATE_TYPE](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#DUPLICATE_TYPE): No two types can share the same descriptor.
++ [NO_SUCH_TYPE](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#NO_SUCH_TYPE): The type specified by <i>super</i> must exist.
++ [INACCESSIBLE_TYPE](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#INACCESSIBLE_TYPE): The type specified by <i>super</i> must be accessible.
++ [EXPECTED_CLASS_TYPE](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#EXPECTED_CLASS_TYPE): The type of <i>super</i> must be a class-type.
++ [EXPECTED_THROWABLE](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#EXPECTED_THROWABLE): The <i>super</i> must be a subtype of [Throwable](https://docs.oracle.com/javase/7/docs/api/java/lang/Throwable.html).
++ [CIRCULAR_INHERITANCE](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#CIRCULAR_INHERITANCE): The new type cannot be a subtype of itself either directly or indirectly.
 
 ## Example
 

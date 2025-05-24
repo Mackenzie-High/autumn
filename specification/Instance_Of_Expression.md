@@ -26,11 +26,11 @@ autumn.lang.compiler.ast.nodes.InstanceOfExpression
 
 ## Static Checks
 
-[NO_SUCH_TYPE, The type specified by <i><i>type</i></i> must exist., null]
-[INACCESSIBLE_TYPE, The type specified by <i><i>type</i></i> must be accessible., null]
-[EXPECTED_DECLARED_TYPE, The type of <i>value</i> must be a declared-type., null]
-[EXPECTED_DECLARED_TYPE, The type of <i>type</i> must be a declared-type., null]
-[NON_VIABLE_INSTANCEOF, The operation must be viable at compile-time., null]
++ [NO_SUCH_TYPE](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#NO_SUCH_TYPE): The type specified by <i><i>type</i></i> must exist.
++ [INACCESSIBLE_TYPE](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#INACCESSIBLE_TYPE): The type specified by <i><i>type</i></i> must be accessible.
++ [EXPECTED_DECLARED_TYPE](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#EXPECTED_DECLARED_TYPE): The type of <i>value</i> must be a declared-type.
++ [EXPECTED_DECLARED_TYPE](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#EXPECTED_DECLARED_TYPE): The type of <i>type</i> must be a declared-type.
++ [NON_VIABLE_INSTANCEOF](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#NON_VIABLE_INSTANCEOF): The operation must be viable at compile-time.
 
 ## Example
 

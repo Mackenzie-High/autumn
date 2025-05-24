@@ -40,8 +40,8 @@ autumn.lang.compiler.ast.nodes.AnnotationDefinition
 
 ## Static Checks
 
-[DUPLICATE_ANNOTATION, Each annotation in an annotation-list must be uniquely typed., null]
-[DUPLICATE_TYPE, No two types can share the same descriptor., null]
++ [DUPLICATE_ANNOTATION](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#DUPLICATE_ANNOTATION): Each annotation in an annotation-list must be uniquely typed.
++ [DUPLICATE_TYPE](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#DUPLICATE_TYPE): No two types can share the same descriptor.
 
 ## Example 1
 

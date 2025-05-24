@@ -39,8 +39,8 @@ autumn.lang.compiler.ast.nodes.SubtractOperation
 
 ## Static Checks
 
-[NO_SUCH_BINARY_OPERATOR, None of the overloads will accept the left-operand due to its type., null]
-[NO_SUCH_BINARY_OPERATOR, None of the overloads will accept the right-operand due to its type., null]
++ [NO_SUCH_BINARY_OPERATOR](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#NO_SUCH_BINARY_OPERATOR): None of the overloads will accept the left-operand due to its type.
++ [NO_SUCH_BINARY_OPERATOR](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#NO_SUCH_BINARY_OPERATOR): None of the overloads will accept the right-operand due to its type.
 
 ## Example
 

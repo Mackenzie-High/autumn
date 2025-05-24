@@ -44,7 +44,7 @@ autumn.lang.compiler.ast.nodes.IfStatement
 
 ## Static Checks
 
-[EXPECTED_CONDITION, The type of each condition must be assignable to primitive-type boolean., null]
++ [EXPECTED_CONDITION](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#EXPECTED_CONDITION): The type of each condition must be assignable to primitive-type boolean.
 
 ## Example 1
 

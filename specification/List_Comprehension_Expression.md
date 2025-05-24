@@ -44,13 +44,13 @@ autumn.lang.compiler.ast.nodes.ListComprehensionExpression
 
 ## Static Checks
 
-[VALUE_REQUIRED, The type of the <i>modifier</i> must be either a primitive-type or a reference-type., null]
-[DUPLICATE_VARIABLE, The <i>assignee</i> cannot share its name with another variable declared in the same scope., null]
-[NO_SUCH_TYPE, The type specified by <i><i>type</i></i> must exist., null]
-[INACCESSIBLE_TYPE, The type specified by <i><i>type</i></i> must be accessible., null]
-[EXPECTED_REFERENCE_TYPE, The type specified by the <i>type</i> must be a reference-type., null]
-[EXPECTED_ITERABLE, The type of the <i>iterable</i> must be a subtype of [Iterable](https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html)., null]
-[EXPECTED_CONDITION, The type of <i><i>condition</i></i> must be assignable to type boolean., null]
++ [VALUE_REQUIRED](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#VALUE_REQUIRED): The type of the <i>modifier</i> must be either a primitive-type or a reference-type.
++ [DUPLICATE_VARIABLE](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#DUPLICATE_VARIABLE): The <i>assignee</i> cannot share its name with another variable declared in the same scope.
++ [NO_SUCH_TYPE](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#NO_SUCH_TYPE): The type specified by <i><i>type</i></i> must exist.
++ [INACCESSIBLE_TYPE](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#INACCESSIBLE_TYPE): The type specified by <i><i>type</i></i> must be accessible.
++ [EXPECTED_REFERENCE_TYPE](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#EXPECTED_REFERENCE_TYPE): The type specified by the <i>type</i> must be a reference-type.
++ [EXPECTED_ITERABLE](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#EXPECTED_ITERABLE): The type of the <i>iterable</i> must be a subtype of [Iterable](https://docs.oracle.com/javase/7/docs/api/java/lang/Iterable.html).
++ [EXPECTED_CONDITION](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#EXPECTED_CONDITION): The type of <i><i>condition</i></i> must be assignable to type boolean.
 
 ## Example 1
 

@@ -32,8 +32,8 @@ autumn.lang.compiler.ast.nodes.ModuleDirective
 
 ## Static Checks
 
-[DUPLICATE_ANNOTATION, Each annotation in an annotation-list must be uniquely typed., null]
-[DUPLICATE_ANNOTATION, Each annotation in an annotation-list must be uniquely typed., null]
++ [DUPLICATE_ANNOTATION](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#DUPLICATE_ANNOTATION): Each annotation in an annotation-list must be uniquely typed.
++ [DUPLICATE_ANNOTATION](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#DUPLICATE_ANNOTATION): Each annotation in an annotation-list must be uniquely typed.
 
 ## Example 1
 

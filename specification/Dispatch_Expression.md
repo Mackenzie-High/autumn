@@ -39,7 +39,7 @@ autumn.lang.compiler.ast.nodes.DispatchExpression
 
 ## Static Checks
 
-[NO_SUCH_METHOD, No applicable function overload(s) exist., null]
++ [NO_SUCH_METHOD](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#NO_SUCH_METHOD): No applicable function overload(s) exist.
 
 ## Example 1
 

@@ -24,7 +24,7 @@ autumn.lang.compiler.ast.nodes.ThrowStatement
 
 ## Static Checks
 
-[EXPECTED_THROWABLE, The type of <i>argument</i> must be assignable to type java.lang.Throwable., null]
++ [EXPECTED_THROWABLE](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#EXPECTED_THROWABLE): The type of <i>argument</i> must be assignable to type java.lang.Throwable.
 
 ## Example 1
 

@@ -25,8 +25,8 @@ autumn.lang.compiler.ast.nodes.RecurStatement
 
 ## Static Checks
 
-[BAD_ARGUMENT_COUNT, There must be exactly one <i>argument</i> for each <i>parameter</i> in the enclosing function., null]
-[IMPOSSIBLE_ASSIGNMENT, The type of <i>argument<sub>i</sub></i> must be assignable to the type of <i>parameter<sub>i</sub></i> of the enclosing function., null]
++ [BAD_ARGUMENT_COUNT](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#BAD_ARGUMENT_COUNT): There must be exactly one <i>argument</i> for each <i>parameter</i> in the enclosing function.
++ [IMPOSSIBLE_ASSIGNMENT](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#IMPOSSIBLE_ASSIGNMENT): The type of <i>argument<sub>i</sub></i> must be assignable to the type of <i>parameter<sub>i</sub></i> of the enclosing function.
 
 ## Example
 

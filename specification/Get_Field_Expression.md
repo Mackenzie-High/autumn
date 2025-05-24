@@ -22,8 +22,8 @@ autumn.lang.compiler.ast.nodes.GetFieldExpression
 
 ## Static Checks
 
-[EXPECTED_DECLARED_TYPE, The type of <i>owner</i> must be a declared-type., null]
-[NO_SUCH_FIELD, No acceptable field was found., null]
++ [EXPECTED_DECLARED_TYPE](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#EXPECTED_DECLARED_TYPE): The type of <i>owner</i> must be a declared-type.
++ [NO_SUCH_FIELD](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#NO_SUCH_FIELD): No acceptable field was found.
 
 ## Example
 

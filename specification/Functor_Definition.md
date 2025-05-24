@@ -71,20 +71,20 @@ autumn.lang.compiler.ast.nodes.FunctorDefinition
 
 ## Static Checks
 
-[DUPLICATE_ANNOTATION, Each annotation in an annotation-list must be uniquely typed., null]
-[DUPLICATE_ANNOTATION, Each annotation in an annotation-list must be uniquely typed., null]
-[DUPLICATE_TYPE, No two types can share the same descriptor., null]
-[NO_SUCH_TYPE, The type specified by <i>param<sub>i</sub></i> must exist., null]
-[INACCESSIBLE_TYPE, The type specified by <i>param<sub>i</sub></i> must be accessible., null]
-[EXPECTED_VARIABLE_TYPE, The type of param<sub>i</sub> must be a variable-type., null]
-[NO_SUCH_TYPE, The type specified by <i>return-type</i> must exist., null]
-[INACCESSIBLE_TYPE, The type specified by <i>return-type</i> must be accessible., null]
-[NO_SUCH_TYPE, The type specified by <i>super</i> must exist., null]
-[INACCESSIBLE_TYPE, The type specified by <i>super</i> must be accessible., null]
-[EXPECTED_CLASS_TYPE, The type of <i>super</i> must be a class-type., null]
-[EXPECTED_DEFINED_FUNCTOR_TYPE, The type of <i>super</i> must have the FunctorDefinition annotation applied directly to it., null]
-[CIRCULAR_INHERITANCE, The new type cannot be a subtype of itself either directly or indirectly., null]
-[COVARIANCE_VIOLATION, The subtyping requirements must be obeyed., null]
++ [DUPLICATE_ANNOTATION](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#DUPLICATE_ANNOTATION): Each annotation in an annotation-list must be uniquely typed.
++ [DUPLICATE_ANNOTATION](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#DUPLICATE_ANNOTATION): Each annotation in an annotation-list must be uniquely typed.
++ [DUPLICATE_TYPE](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#DUPLICATE_TYPE): No two types can share the same descriptor.
++ [NO_SUCH_TYPE](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#NO_SUCH_TYPE): The type specified by <i>param<sub>i</sub></i> must exist.
++ [INACCESSIBLE_TYPE](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#INACCESSIBLE_TYPE): The type specified by <i>param<sub>i</sub></i> must be accessible.
++ [EXPECTED_VARIABLE_TYPE](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#EXPECTED_VARIABLE_TYPE): The type of param<sub>i</sub> must be a variable-type.
++ [NO_SUCH_TYPE](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#NO_SUCH_TYPE): The type specified by <i>return-type</i> must exist.
++ [INACCESSIBLE_TYPE](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#INACCESSIBLE_TYPE): The type specified by <i>return-type</i> must be accessible.
++ [NO_SUCH_TYPE](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#NO_SUCH_TYPE): The type specified by <i>super</i> must exist.
++ [INACCESSIBLE_TYPE](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#INACCESSIBLE_TYPE): The type specified by <i>super</i> must be accessible.
++ [EXPECTED_CLASS_TYPE](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#EXPECTED_CLASS_TYPE): The type of <i>super</i> must be a class-type.
++ [EXPECTED_DEFINED_FUNCTOR_TYPE](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#EXPECTED_DEFINED_FUNCTOR_TYPE): The type of <i>super</i> must have the FunctorDefinition annotation applied directly to it.
++ [CIRCULAR_INHERITANCE](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#CIRCULAR_INHERITANCE): The new type cannot be a subtype of itself either directly or indirectly.
++ [COVARIANCE_VIOLATION](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#COVARIANCE_VIOLATION): The subtyping requirements must be obeyed.
 
 ## Example
 

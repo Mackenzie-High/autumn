@@ -25,12 +25,12 @@ autumn.lang.compiler.ast.nodes.SetStaticFieldExpression
 
 ## Static Checks
 
-[NO_SUCH_TYPE, The type specified by <i><i>owner</i></i> must exist., null]
-[INACCESSIBLE_TYPE, The type specified by <i><i>owner</i></i> must be accessible., null]
-[EXPECTED_DECLARED_TYPE, The type of <i>owner</i> must be a declared-type., null]
-[NO_SUCH_FIELD, No acceptable field was found., null]
-[ASSIGNMENT_TO_READONLY, A value cannot be assigned to a final field, because it is readonly., null]
-[IMPOSSIBLE_ASSIGNMENT, The type of the <i>value</i> must be assignable to the <i>type</i> of the selected field., null]
++ [NO_SUCH_TYPE](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#NO_SUCH_TYPE): The type specified by <i><i>owner</i></i> must exist.
++ [INACCESSIBLE_TYPE](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#INACCESSIBLE_TYPE): The type specified by <i><i>owner</i></i> must be accessible.
++ [EXPECTED_DECLARED_TYPE](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#EXPECTED_DECLARED_TYPE): The type of <i>owner</i> must be a declared-type.
++ [NO_SUCH_FIELD](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#NO_SUCH_FIELD): No acceptable field was found.
++ [ASSIGNMENT_TO_READONLY](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#ASSIGNMENT_TO_READONLY): A value cannot be assigned to a final field, because it is readonly.
++ [IMPOSSIBLE_ASSIGNMENT](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#IMPOSSIBLE_ASSIGNMENT): The type of the <i>value</i> must be assignable to the <i>type</i> of the selected field.
 
 ## Example
 

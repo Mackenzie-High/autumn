@@ -26,10 +26,10 @@ autumn.lang.compiler.ast.nodes.NewExpression
 
 ## Static Checks
 
-[NO_SUCH_TYPE, The type specified by <i><i>type</i></i> must exist., null]
-[INACCESSIBLE_TYPE, The type specified by <i><i>type</i></i> must be accessible., null]
-[EXPECTED_CLASS_TYPE, The <i>type</i> must be a class-type., null]
-[NO_SUCH_CONSTRUCTOR, No acceptable constructor overload was found., null]
++ [NO_SUCH_TYPE](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#NO_SUCH_TYPE): The type specified by <i><i>type</i></i> must exist.
++ [INACCESSIBLE_TYPE](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#INACCESSIBLE_TYPE): The type specified by <i><i>type</i></i> must be accessible.
++ [EXPECTED_CLASS_TYPE](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#EXPECTED_CLASS_TYPE): The <i>type</i> must be a class-type.
++ [NO_SUCH_CONSTRUCTOR](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#NO_SUCH_CONSTRUCTOR): No acceptable constructor overload was found.
 
 ## Example
 

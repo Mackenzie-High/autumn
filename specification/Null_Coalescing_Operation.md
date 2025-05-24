@@ -25,9 +25,9 @@ autumn.lang.compiler.ast.nodes.NullCoalescingOperation
 
 ## Static Checks
 
-[EXPECTED_REFERENCE_TYPE, The type of the left-operand must be a reference-type., null]
-[EXPECTED_REFERENCE_TYPE, The type of the right-operand must be a reference-type., null]
-[INCOMPATIBLE_OPERANDS, The type of one of the operands must be a subtype of the other., null]
++ [EXPECTED_REFERENCE_TYPE](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#EXPECTED_REFERENCE_TYPE): The type of the left-operand must be a reference-type.
++ [EXPECTED_REFERENCE_TYPE](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#EXPECTED_REFERENCE_TYPE): The type of the right-operand must be a reference-type.
++ [INCOMPATIBLE_OPERANDS](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#INCOMPATIBLE_OPERANDS): The type of one of the operands must be a subtype of the other.
 
 ## Example 1
 

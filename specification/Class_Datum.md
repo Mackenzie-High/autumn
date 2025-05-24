@@ -21,9 +21,9 @@ autumn.lang.compiler.ast.nodes.ClassDatum
 
 ## Static Checks
 
-[NO_SUCH_TYPE, The type specified by <i><i>type</i></i> must exist., null]
-[INACCESSIBLE_TYPE, The type specified by <i><i>type</i></i> must be accessible., null]
-[EXPECTED_RETURN_TYPE, The type specified by <i>type</i> must be a return-type., null]
++ [NO_SUCH_TYPE](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#NO_SUCH_TYPE): The type specified by <i><i>type</i></i> must exist.
++ [INACCESSIBLE_TYPE](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#INACCESSIBLE_TYPE): The type specified by <i><i>type</i></i> must be accessible.
++ [EXPECTED_RETURN_TYPE](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#EXPECTED_RETURN_TYPE): The type specified by <i>type</i> must be a return-type.
 
 ## Example
 

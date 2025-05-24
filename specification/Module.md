@@ -53,11 +53,11 @@ autumn.lang.Module
 
 ## Static Checks
 
-[MISSING_MODULE_DIRECTIVE, A module must contain a module-directive., null]
-[DUPLICATE_MODULE_DIRECTIVE, A module can only contain one module-directive., null]
-[DUPLICATE_TYPE, No two types can share the same descriptor., null]
-[DUPLICATE_FUNCTION, No two functions in the same module can share their name and parameter-list descriptor., null]
-[NAME_CONFLICT, The name of a user-defined function cannot also be the name of a predefined [static](https://docs.oracle.com/javase/7/docs/api/java/lang/reflect/Modifier.html#STATIC) method., null]
++ [MISSING_MODULE_DIRECTIVE](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#MISSING_MODULE_DIRECTIVE): A module must contain a module-directive.
++ [DUPLICATE_MODULE_DIRECTIVE](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#DUPLICATE_MODULE_DIRECTIVE): A module can only contain one module-directive.
++ [DUPLICATE_TYPE](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#DUPLICATE_TYPE): No two types can share the same descriptor.
++ [DUPLICATE_FUNCTION](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#DUPLICATE_FUNCTION): No two functions in the same module can share their name and parameter-list descriptor.
++ [NAME_CONFLICT](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#NAME_CONFLICT): The name of a user-defined function cannot also be the name of a predefined [static](https://docs.oracle.com/javase/7/docs/api/java/lang/reflect/Modifier.html#STATIC) method.
 
 ## Example
 

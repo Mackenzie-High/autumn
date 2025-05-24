@@ -42,17 +42,17 @@ autumn.lang.compiler.ast.nodes.FunctionDefinition
 
 ## Static Checks
 
-[DUPLICATE_ANNOTATION, Each annotation in an annotation-list must be uniquely typed., null]
-[TOO_MANY_STARTS, A compilation-unit can only contain one @Start function., null]
-[WRONG_SIGNATURE_FOR_START, A start-function must have a signature of: main(String[]) : void, null]
-[WRONG_SIGNATURE_FOR_SETUP, A setup-function must have a signature of: () : void, null]
-[WRONG_SIGNATURE_FOR_TEST, A test-function must have a signature of: ([TestCase](https://mackenzie-high.github.io/autumn/javadoc/autumn/util/test/TestCase.html)) : void, null]
-[WRONG_SIGNATURE_FOR_INFER, An infer-function must have a signature of: (<i>T</i>, ...) : <i>T</i>, where <i>T</i> is some reference-type., null]
-[NO_SUCH_TYPE, The type specified by <i><i>param<sub>i</sub></i>.type</i> must exist., null]
-[INACCESSIBLE_TYPE, The type specified by <i><i>param<sub>i</sub></i>.type</i> must be accessible., null]
-[EXPECTED_VARIABLE_TYPE, The type of each parameter must be a variable-type., null]
-[NO_SUCH_TYPE, The type specified by <i><i>return-type</i></i> must exist., null]
-[INACCESSIBLE_TYPE, The type specified by <i><i>return-type</i></i> must be accessible., null]
++ [DUPLICATE_ANNOTATION](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#DUPLICATE_ANNOTATION): Each annotation in an annotation-list must be uniquely typed.
++ [TOO_MANY_STARTS](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#TOO_MANY_STARTS): A compilation-unit can only contain one @Start function.
++ [WRONG_SIGNATURE_FOR_START](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#WRONG_SIGNATURE_FOR_START): A start-function must have a signature of: main(String[]) : void
++ [WRONG_SIGNATURE_FOR_SETUP](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#WRONG_SIGNATURE_FOR_SETUP): A setup-function must have a signature of: () : void
++ [WRONG_SIGNATURE_FOR_TEST](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#WRONG_SIGNATURE_FOR_TEST): A test-function must have a signature of: ([TestCase](https://mackenzie-high.github.io/autumn/javadoc/autumn/util/test/TestCase.html)) : void
++ [WRONG_SIGNATURE_FOR_INFER](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#WRONG_SIGNATURE_FOR_INFER): An infer-function must have a signature of: (<i>T</i>, ...) : <i>T</i>, where <i>T</i> is some reference-type.
++ [NO_SUCH_TYPE](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#NO_SUCH_TYPE): The type specified by <i><i>param<sub>i</sub></i>.type</i> must exist.
++ [INACCESSIBLE_TYPE](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#INACCESSIBLE_TYPE): The type specified by <i><i>param<sub>i</sub></i>.type</i> must be accessible.
++ [EXPECTED_VARIABLE_TYPE](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#EXPECTED_VARIABLE_TYPE): The type of each parameter must be a variable-type.
++ [NO_SUCH_TYPE](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#NO_SUCH_TYPE): The type specified by <i><i>return-type</i></i> must exist.
++ [INACCESSIBLE_TYPE](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#INACCESSIBLE_TYPE): The type specified by <i><i>return-type</i></i> must be accessible.
 
 ## Example
 

@@ -30,17 +30,17 @@ autumn.lang.compiler.ast.nodes.DelegateStatement
 
 ## Static Checks
 
-[DUPLICATE_VARIABLE, The <i>assignee</i> cannot share its name with another variable declared in the same scope., null]
-[NO_SUCH_TYPE, The type specified by <i>type</i> must exist., null]
-[INACCESSIBLE_TYPE, The type specified by <i>type</i> must be accessible., null]
-[EXPECTED_DEFINED_FUNCTOR_TYPE, The type specified by <i>type</i> must be a subtype of [DefinedFunctor](https://mackenzie-high.github.io/autumn/javadoc/autumn/lang/DefinedFunctor.html)., null]
-[EXPECTED_CLASS_TYPE, The type specified by <i>type</i> must be a class-type., null]
-[NO_SUCH_TYPE, The type specified by <i>Owner</i> must exist., null]
-[INACCESSIBLE_TYPE, The type specified by <i>Owner</i> must be accessible., null]
-[EXPECTED_MODULE_TYPE, The type specified by <i>Owner</i> must be a subtype of [Module](https://mackenzie-high.github.io/autumn/javadoc/autumn/lang/Module.html)., null]
-[NO_SUCH_METHOD, The type specified by <i>Owner</i> must contain a function with the given <i>name</i>., null]
-[OVERLOADED_METHOD, The <i>name</i> can only refer to one function in the type specified by <i>Owner</i>., null]
-[INCOMPATIBLE_DELEGATE, The signature of the targeted function must be compatible with the functor-type specified by <i>type</i>., null]
++ [DUPLICATE_VARIABLE](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#DUPLICATE_VARIABLE): The <i>assignee</i> cannot share its name with another variable declared in the same scope.
++ [NO_SUCH_TYPE](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#NO_SUCH_TYPE): The type specified by <i>type</i> must exist.
++ [INACCESSIBLE_TYPE](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#INACCESSIBLE_TYPE): The type specified by <i>type</i> must be accessible.
++ [EXPECTED_DEFINED_FUNCTOR_TYPE](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#EXPECTED_DEFINED_FUNCTOR_TYPE): The type specified by <i>type</i> must be a subtype of [DefinedFunctor](https://mackenzie-high.github.io/autumn/javadoc/autumn/lang/DefinedFunctor.html).
++ [EXPECTED_CLASS_TYPE](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#EXPECTED_CLASS_TYPE): The type specified by <i>type</i> must be a class-type.
++ [NO_SUCH_TYPE](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#NO_SUCH_TYPE): The type specified by <i>Owner</i> must exist.
++ [INACCESSIBLE_TYPE](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#INACCESSIBLE_TYPE): The type specified by <i>Owner</i> must be accessible.
++ [EXPECTED_MODULE_TYPE](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#EXPECTED_MODULE_TYPE): The type specified by <i>Owner</i> must be a subtype of [Module](https://mackenzie-high.github.io/autumn/javadoc/autumn/lang/Module.html).
++ [NO_SUCH_METHOD](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#NO_SUCH_METHOD): The type specified by <i>Owner</i> must contain a function with the given <i>name</i>.
++ [OVERLOADED_METHOD](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#OVERLOADED_METHOD): The <i>name</i> can only refer to one function in the type specified by <i>Owner</i>.
++ [INCOMPATIBLE_DELEGATE](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#INCOMPATIBLE_DELEGATE): The signature of the targeted function must be compatible with the functor-type specified by <i>type</i>.
 
 ## Example
 

@@ -24,9 +24,9 @@ autumn.lang.compiler.ast.nodes.LetStatement
 
 ## Static Checks
 
-[NO_SUCH_VARIABLE, The <i>assignee</i> must be declared somewhere in the enclosing function., null]
-[MUTABLE_VARIABLE_REQUIRED, The <i>assignee</i> must be a mutable variable., null]
-[IMPOSSIBLE_ASSIGNMENT, The type of the <i>value</i> must be assignable to the type of the <i>assignee</i>., null]
++ [NO_SUCH_VARIABLE](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#NO_SUCH_VARIABLE): The <i>assignee</i> must be declared somewhere in the enclosing function.
++ [MUTABLE_VARIABLE_REQUIRED](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#MUTABLE_VARIABLE_REQUIRED): The <i>assignee</i> must be a mutable variable.
++ [IMPOSSIBLE_ASSIGNMENT](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#IMPOSSIBLE_ASSIGNMENT): The type of the <i>value</i> must be assignable to the type of the <i>assignee</i>.
 
 ## Example
 

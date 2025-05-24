@@ -22,7 +22,7 @@ autumn.lang.compiler.ast.nodes.ListExpression
 
 ## Static Checks
 
-[VALUE_REQUIRED, The type of each <i>element</i> must be either a primitive-type or a reference-type., null]
++ [VALUE_REQUIRED](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#VALUE_REQUIRED): The type of each <i>element</i> must be either a primitive-type or a reference-type.
 
 ## Example 1
 

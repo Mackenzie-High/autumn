@@ -26,8 +26,8 @@ autumn.lang.compiler.ast.nodes.XorOperation
 
 ## Static Checks
 
-[EXPECTED_CONDITION, The type of the left-operand must be either boolean or [Boolean](https://docs.oracle.com/javase/7/docs/api/java/lang/Boolean.html)., null]
-[EXPECTED_CONDITION, The type of the right-operand must be either boolean or [Boolean](https://docs.oracle.com/javase/7/docs/api/java/lang/Boolean.html)., null]
++ [EXPECTED_CONDITION](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#EXPECTED_CONDITION): The type of the left-operand must be either boolean or [Boolean](https://docs.oracle.com/javase/7/docs/api/java/lang/Boolean.html).
++ [EXPECTED_CONDITION](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#EXPECTED_CONDITION): The type of the right-operand must be either boolean or [Boolean](https://docs.oracle.com/javase/7/docs/api/java/lang/Boolean.html).
 
 ## Example 1
 

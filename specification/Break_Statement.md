@@ -28,7 +28,7 @@ autumn.lang.compiler.ast.nodes.BreakStatement
 
 ## Static Checks
 
-[BREAK_OUTSIDE_OF_LOOP, A break-statement must be in the <i>body</i> of a loop., null]
++ [BREAK_OUTSIDE_OF_LOOP](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#BREAK_OUTSIDE_OF_LOOP): A break-statement must be in the <i>body</i> of a loop.
 
 ## Example
 

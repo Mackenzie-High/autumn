@@ -31,8 +31,8 @@ autumn.lang.compiler.ast.nodes.BranchStatement
 
 ## Static Checks
 
-[EXPECTED_INTEGER, The type of <i>index</i> must be assignable to type int., null]
-[NO_SUCH_LABEL, Each <i>label<sub>i</sub></i> must be declared somewhere in the enclosing function., null]
++ [EXPECTED_INTEGER](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#EXPECTED_INTEGER): The type of <i>index</i> must be assignable to type int.
++ [NO_SUCH_LABEL](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#NO_SUCH_LABEL): Each <i>label<sub>i</sub></i> must be declared somewhere in the enclosing function.
 
 ## Example
 

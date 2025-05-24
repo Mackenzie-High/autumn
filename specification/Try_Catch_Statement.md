@@ -43,11 +43,11 @@ autumn.lang.compiler.ast.nodes.TryCatchStatement
 
 ## Static Checks
 
-[DUPLICATE_VARIABLE, The <i><i>variable<sub>i</sub></i></i> cannot share its name with another variable declared in the same scope., null]
-[NO_SUCH_TYPE, The type specified by <i><i>type<sub>i</sub></i></i> must exist., null]
-[INACCESSIBLE_TYPE, The type specified by <i><i>type<sub>i</sub></i></i> must be accessible., null]
-[EXPECTED_THROWABLE, Each <i>type<sub>i</sub></i> must be a subtype of [Throwable](https://docs.oracle.com/javase/7/docs/api/java/lang/Throwable.html)., null]
-[DUPLICATE_EXCEPTION_HANDLER, No two handlers can catch exactly the same type., null]
++ [DUPLICATE_VARIABLE](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#DUPLICATE_VARIABLE): The <i><i>variable<sub>i</sub></i></i> cannot share its name with another variable declared in the same scope.
++ [NO_SUCH_TYPE](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#NO_SUCH_TYPE): The type specified by <i><i>type<sub>i</sub></i></i> must exist.
++ [INACCESSIBLE_TYPE](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#INACCESSIBLE_TYPE): The type specified by <i><i>type<sub>i</sub></i></i> must be accessible.
++ [EXPECTED_THROWABLE](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#EXPECTED_THROWABLE): Each <i>type<sub>i</sub></i> must be a subtype of [Throwable](https://docs.oracle.com/javase/7/docs/api/java/lang/Throwable.html).
++ [DUPLICATE_EXCEPTION_HANDLER](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#DUPLICATE_EXCEPTION_HANDLER): No two handlers can catch exactly the same type.
 
 ## Example 1
 

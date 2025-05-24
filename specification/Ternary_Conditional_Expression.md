@@ -24,10 +24,10 @@ autumn.lang.compiler.ast.nodes.TernaryConditionalExpression
 
 ## Static Checks
 
-[EXPECTED_CONDITION, The type of <i><i>condition</i></i> must be assignable to type boolean., null]
-[VALUE_REQUIRED, The type of the <i>left</i> must be either a primitive-type or a reference-type., null]
-[VALUE_REQUIRED, The type of the <i>right</i> must be either a primitive-type or a reference-type., null]
-[INCOMPATIBLE_OPERANDS, The type of one of the operands must be a subtype of the other., null]
++ [EXPECTED_CONDITION](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#EXPECTED_CONDITION): The type of <i><i>condition</i></i> must be assignable to type boolean.
++ [VALUE_REQUIRED](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#VALUE_REQUIRED): The type of the <i>left</i> must be either a primitive-type or a reference-type.
++ [VALUE_REQUIRED](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#VALUE_REQUIRED): The type of the <i>right</i> must be either a primitive-type or a reference-type.
++ [INCOMPATIBLE_OPERANDS](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#INCOMPATIBLE_OPERANDS): The type of one of the operands must be a subtype of the other.
 
 ## Example
 

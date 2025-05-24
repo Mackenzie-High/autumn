@@ -22,7 +22,7 @@ autumn.lang.compiler.ast.nodes.MarkerStatement
 
 ## Static Checks
 
-[DUPLICATE_LABEL, No two labels in the same function can share a name., null]
++ [DUPLICATE_LABEL](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#DUPLICATE_LABEL): No two labels in the same function can share a name.
 
 ## Example
 

@@ -20,7 +20,7 @@ autumn.lang.compiler.ast.nodes.GotoStatement
 
 ## Static Checks
 
-[NO_SUCH_LABEL, The <i>label</i> must be declared somewhere in the enclosing function., null]
++ [NO_SUCH_LABEL](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#NO_SUCH_LABEL): The <i>label</i> must be declared somewhere in the enclosing function.
 
 ## Example 1
 

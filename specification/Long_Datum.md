@@ -26,7 +26,7 @@ autumn.lang.compiler.ast.nodes.LongDatum
 
 ## Static Checks
 
-[INACCURATE_NUMERIC_LITERAL, The value must be inclusively between the minimum and maximum., null]
++ [INACCURATE_NUMERIC_LITERAL](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#INACCURATE_NUMERIC_LITERAL): The value must be inclusively between the minimum and maximum.
 
 ## Example
 

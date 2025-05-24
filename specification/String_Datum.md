@@ -41,7 +41,7 @@ autumn.lang.compiler.ast.nodes.StringDatum
 
 ## Static Checks
 
-[MALFORMED_STRING_LITERAL, A non-verbatim string cannot contain malformed escape-sequences., null]
++ [MALFORMED_STRING_LITERAL](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#MALFORMED_STRING_LITERAL): A non-verbatim string cannot contain malformed escape-sequences.
 
 ## Example
 

@@ -22,8 +22,8 @@ autumn.lang.compiler.ast.nodes.VariableDatum
 
 ## Static Checks
 
-[NO_SUCH_VARIABLE, The <i>variable</i> must be declared somewhere within the enclosing scope., null]
-[VARIABLE_OUTSIDE_OF_SCOPE, The <i>variable</i> cannot be used outside of the scope in which it was declared., null]
++ [NO_SUCH_VARIABLE](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#NO_SUCH_VARIABLE): The <i>variable</i> must be declared somewhere within the enclosing scope.
++ [VARIABLE_OUTSIDE_OF_SCOPE](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#VARIABLE_OUTSIDE_OF_SCOPE): The <i>variable</i> cannot be used outside of the scope in which it was declared.
 
 ## Example 1
 

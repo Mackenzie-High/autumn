@@ -22,10 +22,10 @@ autumn.lang.compiler.ast.nodes.GetStaticFieldExpression
 
 ## Static Checks
 
-[NO_SUCH_TYPE, The type specified by <i><i>owner</i></i> must exist., null]
-[INACCESSIBLE_TYPE, The type specified by <i><i>owner</i></i> must be accessible., null]
-[EXPECTED_DECLARED_TYPE, The type of <i>owner</i> must be a declared-type., null]
-[NO_SUCH_FIELD, No acceptable field was found., null]
++ [NO_SUCH_TYPE](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#NO_SUCH_TYPE): The type specified by <i><i>owner</i></i> must exist.
++ [INACCESSIBLE_TYPE](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#INACCESSIBLE_TYPE): The type specified by <i><i>owner</i></i> must be accessible.
++ [EXPECTED_DECLARED_TYPE](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#EXPECTED_DECLARED_TYPE): The type of <i>owner</i> must be a declared-type.
++ [NO_SUCH_FIELD](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#NO_SUCH_FIELD): No acceptable field was found.
 
 ## Example
 

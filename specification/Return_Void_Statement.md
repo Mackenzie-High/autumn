@@ -20,7 +20,7 @@ autumn.lang.compiler.ast.nodes.ReturnVoidStatement
 
 ## Static Checks
 
-[EXPECTED_VOID, The <i>return-type</i> of the enclosing function must be void., null]
++ [EXPECTED_VOID](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#EXPECTED_VOID): The <i>return-type</i> of the enclosing function must be void.
 
 ## Example
 

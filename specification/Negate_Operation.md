@@ -34,7 +34,7 @@ autumn.lang.compiler.ast.nodes.NegateOperation
 
 ## Static Checks
 
-[NO_SUCH_UNARY_OPERATOR, None of the overloads will accept the operand due to its type., null]
++ [NO_SUCH_UNARY_OPERATOR](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#NO_SUCH_UNARY_OPERATOR): None of the overloads will accept the operand due to its type.
 
 ## Example
 

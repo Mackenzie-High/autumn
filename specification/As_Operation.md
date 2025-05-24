@@ -136,9 +136,9 @@ autumn.lang.compiler.ast.nodes.AsOperation
 
 ## Static Checks
 
-[NO_SUCH_TYPE, The type specified by <i>type</i> must exist., null]
-[INACCESSIBLE_TYPE, The type specified by <i>type</i> must be accessible., null]
-[IMPOSSIBLE_CONVERSION, The conversion must be either predefined or a valid cast., null]
++ [NO_SUCH_TYPE](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#NO_SUCH_TYPE): The type specified by <i>type</i> must exist.
++ [INACCESSIBLE_TYPE](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#INACCESSIBLE_TYPE): The type specified by <i>type</i> must be accessible.
++ [IMPOSSIBLE_CONVERSION](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#IMPOSSIBLE_CONVERSION): The conversion must be either predefined or a valid cast.
 
 ## Example
 

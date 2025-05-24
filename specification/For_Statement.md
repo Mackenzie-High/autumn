@@ -32,10 +32,10 @@ autumn.lang.compiler.ast.nodes.ForStatement
 
 ## Static Checks
 
-[DUPLICATE_VARIABLE, The <i>assignee</i> cannot share its name with another variable declared in the same scope., null]
-[EXPECTED_INTEGER, The type of <i>initializer</i> must be assignable to type int., null]
-[EXPECTED_CONDITION, The type of <i><i>condition</i></i> must be assignable to type boolean., null]
-[EXPECTED_INTEGER, The type of <i>modifier</i> must be assignable to type int., null]
++ [DUPLICATE_VARIABLE](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#DUPLICATE_VARIABLE): The <i>assignee</i> cannot share its name with another variable declared in the same scope.
++ [EXPECTED_INTEGER](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#EXPECTED_INTEGER): The type of <i>initializer</i> must be assignable to type int.
++ [EXPECTED_CONDITION](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#EXPECTED_CONDITION): The type of <i><i>condition</i></i> must be assignable to type boolean.
++ [EXPECTED_INTEGER](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#EXPECTED_INTEGER): The type of <i>modifier</i> must be assignable to type int.
 
 ## Example
 

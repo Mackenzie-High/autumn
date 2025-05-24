@@ -28,7 +28,7 @@ autumn.lang.compiler.ast.nodes.ContinueStatement
 
 ## Static Checks
 
-[CONTINUE_OUTSIDE_OF_LOOP, A continue-statement must be in the <i>body</i> of a loop., null]
++ [CONTINUE_OUTSIDE_OF_LOOP](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#CONTINUE_OUTSIDE_OF_LOOP): A continue-statement must be in the <i>body</i> of a loop.
 
 ## Example 1
 

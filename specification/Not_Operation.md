@@ -25,7 +25,7 @@ autumn.lang.compiler.ast.nodes.NotOperation
 
 ## Static Checks
 
-[NO_SUCH_UNARY_OPERATOR, The overload will not accept the operand due to its type., null]
++ [NO_SUCH_UNARY_OPERATOR](https://www.mackenziehigh.com/autumn/javadoc/autumn/lang/compiler/errors/ErrorCode.html#NO_SUCH_UNARY_OPERATOR): The overload will not accept the operand due to its type.
 
 ## Example
 
