@@ -6,10 +6,10 @@ A long-datum is a literal long value.
 
 ## Syntax
 
-<div id="syntax">
-<i>digits</i><b class='keyword'>L**<br>
+<div class="syntax">
+digits</i><b class='keyword'>L**<br>
 <hr class=&#92%22syntax-hr&#92%22><br>
-**-**<i>digits</i><b class='keyword'>L**<br>
+**-**digits</i><b class='keyword'>L**<br>
 </div>
 
 ## AST Class
@@ -49,4 +49,22 @@ defun main (args : String[]) : void
 ```plain
 19
 ```
+
+<style>
+    .syntax
+    {
+        font-family: monospace, monospace;
+    }
+
+    .keyword
+    {
+        color: blue;
+        font-weight: bold;
+    }
+
+    .synvar
+    {
+        font-style: italic;
+    }
+</style>
 

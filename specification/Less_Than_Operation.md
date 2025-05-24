@@ -6,8 +6,8 @@ This operator performs a less-than comparison operation.
 
 ## Syntax
 
-<div id="syntax">
-<i>[left](TextPage.html?page=Expression)</i> &lt; <i>[right](TextPage.html?page=Expression)</i><br>
+<div class="syntax">
+<a href="Expression.md">left</a></i> &lt; <a href="Expression.md">right</a></i><br>
 </div>
 
 ## AST Class
@@ -210,4 +210,22 @@ true
 false
 false
 ```
+
+<style>
+    .syntax
+    {
+        font-family: monospace, monospace;
+    }
+
+    .keyword
+    {
+        color: blue;
+        font-weight: bold;
+    }
+
+    .synvar
+    {
+        font-style: italic;
+    }
+</style>
 

@@ -6,13 +6,13 @@ An function-definition creates a new function within the enclosing module.
 
 ## Syntax
 
-<div id="syntax">
-@<i>annotation<sub>1</sub></i><br>
-@<i>annotation<sub>2</sub></i><br>
-@<i>annotation<sub>n</sub></i><br>
-<span class=\"keyword\">defun</span> <i>[name](ConstructPage.html?construct=Name)</i> ( <i>[param](ConstructPage.html?construct=Formal Parameter)<sub>1</sub></i> , ... , <i>[param](ConstructPage.html?construct=Formal Parameter)<sub>n</sub></i> ) : <i>[return-type](ConstructPage.html?construct=TypeSpecifier)</i><br>
+<div class="syntax">
+@annotation<sub>1</sub></i><br>
+@annotation<sub>2</sub></i><br>
+@annotation<sub>n</sub></i><br>
+<span class="keyword">defun</span> <a class="synvar" href="Name.md">name</a></i> ( <a class="synvar" href="Formal_Parameter.md">param</a><sub>1</sub></i> , ... , <a class="synvar" href="Formal_Parameter.md">param</a><sub>n</sub></i> ) : <a class="synvar" href="TypeSpecifier.md">return-type</a></i><br>
 {<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<i>[body](TextPage.html?page=Statement)</i><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Statement.md">body</a></i><br>
 }<br>
 </div>
 
@@ -23,11 +23,11 @@ autumn.lang.compiler.ast.nodes.FunctionDefinition
 ## Details
 
 + Special Topics:
-  + [Infer Functions](TextPage.html?page=Infer Functions)
-  + [Start Functions](TextPage.html?page=Start Functions)
-  + [Setup Functions](TextPage.html?page=Setup Functions)
-  + [Sync Functions](TextPage.html?page=Sync Functions)
-  + [Test Functions](TextPage.html?page=Test Functions)
+  + <a href="Infer_Functions.md">Infer Functions</a>
+  + <a href="Start_Functions.md">Start Functions</a>
+  + <a href="Setup_Functions.md">Setup Functions</a>
+  + <a href="Sync_Functions.md">Sync Functions</a>
+  + <a href="Test_Functions.md">Test Functions</a>
 + Let T denote the type system representation of a function F.
   + T has the [FunctionDefinition](https://mackenzie-high.github.io/autumn/javadoc/autumn/lang/internals/annotations/FunctionDefinition.html) annotation applied directly to it.
   + T is the type of a [public](https://docs.oracle.com/javase/7/docs/api/java/lang/reflect/Modifier.html#PUBLIC) [static](https://docs.oracle.com/javase/7/docs/api/java/lang/reflect/Modifier.html#STATIC) [final](https://docs.oracle.com/javase/7/docs/api/java/lang/reflect/Modifier.html#FINAL) method.
@@ -73,4 +73,22 @@ defun main (args : String[]) : void
 ```plain
 Hello World!
 ```
+
+<style>
+    .syntax
+    {
+        font-family: monospace, monospace;
+    }
+
+    .keyword
+    {
+        color: blue;
+        font-weight: bold;
+    }
+
+    .synvar
+    {
+        font-style: italic;
+    }
+</style>
 

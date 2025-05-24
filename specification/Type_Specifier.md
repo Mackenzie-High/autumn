@@ -6,7 +6,7 @@ A type-specifier specifies a type by its name and dimensions.
 
 ## Syntax
 
-<div id="syntax">
+<div class="syntax">
 <br>
 </div>
 
@@ -63,4 +63,22 @@ defun main (args : String[]) : void
 ```plain
 
 ```
+
+<style>
+    .syntax
+    {
+        font-family: monospace, monospace;
+    }
+
+    .keyword
+    {
+        color: blue;
+        font-weight: bold;
+    }
+
+    .synvar
+    {
+        font-style: italic;
+    }
+</style>
 

@@ -6,8 +6,8 @@ A null-datum is the literal value null.
 
 ## Syntax
 
-<div id="syntax">
-<span class=\"keyword\">null</span><br>
+<div class="syntax">
+<span class="keyword">null</span><br>
 </div>
 
 ## AST Class
@@ -49,4 +49,22 @@ defun main (args : String[]) : void
 ```plain
 nil is null
 ```
+
+<style>
+    .syntax
+    {
+        font-family: monospace, monospace;
+    }
+
+    .keyword
+    {
+        color: blue;
+        font-weight: bold;
+    }
+
+    .synvar
+    {
+        font-style: italic;
+    }
+</style>
 

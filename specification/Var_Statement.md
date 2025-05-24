@@ -6,8 +6,8 @@ A var-statement declares a new mutable local variable.
 
 ## Syntax
 
-<div id="syntax">
-<span class=\"keyword\">var</span> <i>[assignee](ConstructPage.html?construct=Variable)</i> = <i>[value](TextPage.html?page=Expression)</i> ;<br>
+<div class="syntax">
+<span class="keyword">var</span> <a class="synvar" href="Variable.md">assignee</a></i> = <a href="Expression.md">value</a></i> ;<br>
 </div>
 
 ## AST Class
@@ -98,4 +98,22 @@ Value = [Jupiter, Saturn, Uranus, Neptune]
 Value = 20
 Value = 37
 ```
+
+<style>
+    .syntax
+    {
+        font-family: monospace, monospace;
+    }
+
+    .keyword
+    {
+        color: blue;
+        font-weight: bold;
+    }
+
+    .synvar
+    {
+        font-style: italic;
+    }
+</style>
 

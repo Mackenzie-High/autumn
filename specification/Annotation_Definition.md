@@ -6,11 +6,11 @@ An annotation-definition creates a new annotation-type in the enclosing package.
 
 ## Syntax
 
-<div id="syntax">
-@<i>annotation<sub>1</sub></i><br>
-@<i>annotation<sub>2</sub></i><br>
-@<i>annotation<sub>n</sub></i><br>
-<span class=\"keyword\">annotation</span> <i>[name](ConstructPage.html?construct=Name)</i> ;<br>
+<div class="syntax">
+@annotation<sub>1</sub></i><br>
+@annotation<sub>2</sub></i><br>
+@annotation<sub>n</sub></i><br>
+<span class="keyword">annotation</span> <a class="synvar" href="Name.md">name</a></i> ;<br>
 </div>
 
 ## AST Class
@@ -107,4 +107,22 @@ Name = examples.Alien
 Annotation? = true
 Modifiers = public abstract interface
 ```
+
+<style>
+    .syntax
+    {
+        font-family: monospace, monospace;
+    }
+
+    .keyword
+    {
+        color: blue;
+        font-weight: bold;
+    }
+
+    .synvar
+    {
+        font-style: italic;
+    }
+</style>
 

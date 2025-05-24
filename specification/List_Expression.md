@@ -6,8 +6,8 @@ A list-expression creates a new mutable list from a list of expressions.
 
 ## Syntax
 
-<div id="syntax">
-[ <i>[value](TextPage.html?page=Expression)<sub>1</sub></i> , <i>[value](TextPage.html?page=Expression)<sub>2</sub></i> , ... , <i>[value](TextPage.html?page=Expression)<sub>n</sub></i> ]<br>
+<div class="syntax">
+[ <a href="Expression.md">value</a><sub>1</sub></i> , <a href="Expression.md">value</a><sub>2</sub></i> , ... , <a href="Expression.md">value</a><sub>n</sub></i> ]<br>
 </div>
 
 ## AST Class
@@ -95,4 +95,22 @@ defun main (args : String[]) : void
 ```plain
 [Jet, Fluffy, Chicky, Picky, Sikorsky, Lucky, Eyeball]
 ```
+
+<style>
+    .syntax
+    {
+        font-family: monospace, monospace;
+    }
+
+    .keyword
+    {
+        color: blue;
+        font-weight: bold;
+    }
+
+    .synvar
+    {
+        font-style: italic;
+    }
+</style>
 

@@ -6,16 +6,16 @@ A functor-definition creates a new functor-type in the enclosing package.
 
 ## Syntax
 
-<div id="syntax">
-@<i>annotation<sub>1</sub></i><br>
-@<i>annotation<sub>2</sub></i><br>
-@<i>annotation<sub>n</sub></i><br>
-<span class=\"keyword\">functor</span> <i>[name](ConstructPage.html?construct=Name)</i> ( <i>[param](ConstructPage.html?construct=Formal Parameter)<sub>1</sub></i> , ... , <i>[param](ConstructPage.html?construct=Formal Parameter)<sub>n</sub></i> ) : <i>[return-type](ConstructPage.html?construct=TypeSpecifier)</i> ;<br>
+<div class="syntax">
+@annotation<sub>1</sub></i><br>
+@annotation<sub>2</sub></i><br>
+@annotation<sub>n</sub></i><br>
+<span class="keyword">functor</span> <a class="synvar" href="Name.md">name</a></i> ( <a class="synvar" href="Formal_Parameter.md">param</a><sub>1</sub></i> , ... , <a class="synvar" href="Formal_Parameter.md">param</a><sub>n</sub></i> ) : <a class="synvar" href="TypeSpecifier.md">return-type</a></i> ;<br>
 <hr class=&#92%22syntax-hr&#92%22><br>
-@<i>annotation<sub>1</sub></i><br>
-@<i>annotation<sub>2</sub></i><br>
-@<i>annotation<sub>n</sub></i><br>
-<span class=\"keyword\">functor</span> <i>[name](ConstructPage.html?construct=Name)</i> ( <i>[param](ConstructPage.html?construct=Formal Parameter)<sub>1</sub></i> , ... , <i>[param](ConstructPage.html?construct=Formal Parameter)<sub>n</sub></i> ) : <i>[return-type](ConstructPage.html?construct=TypeSpecifier)</i> <span class=\"keyword\">extends</span> </i>[super](ConstructPage.html?construct=TypeSpecifier)</i> ;<br>
+@annotation<sub>1</sub></i><br>
+@annotation<sub>2</sub></i><br>
+@annotation<sub>n</sub></i><br>
+<span class="keyword">functor</span> <a class="synvar" href="Name.md">name</a></i> ( <a class="synvar" href="Formal_Parameter.md">param</a><sub>1</sub></i> , ... , <a class="synvar" href="Formal_Parameter.md">param</a><sub>n</sub></i> ) : <a class="synvar" href="TypeSpecifier.md">return-type</a></i> <span class="keyword">extends</span> </i><a class="synvar" href="TypeSpecifier.md">super</a></i> ;<br>
 </div>
 
 ## AST Class
@@ -148,4 +148,22 @@ defun cube (x : int) : int
 [8, 64, 512]
 [9, 81, 729]
 ```
+
+<style>
+    .syntax
+    {
+        font-family: monospace, monospace;
+    }
+
+    .keyword
+    {
+        color: blue;
+        font-weight: bold;
+    }
+
+    .synvar
+    {
+        font-style: italic;
+    }
+</style>
 

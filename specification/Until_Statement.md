@@ -6,10 +6,10 @@ An until-statement is a loop that iterates until a condition becomes true.
 
 ## Syntax
 
-<div id="syntax">
-<span class=\"keyword\">until</span> ( <i>[condition](TextPage.html?page=Expression)</i> )<br>
+<div class="syntax">
+<span class="keyword">until</span> ( <a href="Expression.md">condition</a></i> )<br>
 {<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<i>[body](TextPage.html?page=Statement)</i><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Statement.md">body</a></i><br>
 }<br>
 </div>
 
@@ -59,4 +59,22 @@ i = 3
 i = 4
 i = 5
 ```
+
+<style>
+    .syntax
+    {
+        font-family: monospace, monospace;
+    }
+
+    .keyword
+    {
+        color: blue;
+        font-weight: bold;
+    }
+
+    .synvar
+    {
+        font-style: italic;
+    }
+</style>
 

@@ -6,8 +6,8 @@ This operator performs an arithmetic negation operation.
 
 ## Syntax
 
-<div id="syntax">
-- <i>[value](TextPage.html?page=Expression)</i><br>
+<div class="syntax">
+- <a href="Expression.md">value</a></i><br>
 </div>
 
 ## AST Class
@@ -103,4 +103,22 @@ double = -17.0
 BigInteger = -17.00000000000000000000000000000000
 BigDecimal = -17.00000000000000000000000000000000
 ```
+
+<style>
+    .syntax
+    {
+        font-family: monospace, monospace;
+    }
+
+    .keyword
+    {
+        color: blue;
+        font-weight: bold;
+    }
+
+    .synvar
+    {
+        font-style: italic;
+    }
+</style>
 

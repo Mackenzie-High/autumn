@@ -6,11 +6,11 @@ An exception-definition creates a new exception-type in the enclosing package.
 
 ## Syntax
 
-<div id="syntax">
-@<i>annotation<sub>1</sub></i><br>
-@<i>annotation<sub>2</sub></i><br>
-@<i>annotation<sub>n</sub></i><br>
-<span class=\"keyword\">exception</span> <i>[name](ConstructPage.html?construct=Name)</i> <span class=\"keyword\">extends</span> <i>[super](ConstructPage.html?construct=TypeSpecifier)</i> ;<br>
+<div class="syntax">
+@annotation<sub>1</sub></i><br>
+@annotation<sub>2</sub></i><br>
+@annotation<sub>n</sub></i><br>
+<span class="keyword">exception</span> <a class="synvar" href="Name.md">name</a></i> <span class="keyword">extends</span> <a class="synvar" href="TypeSpecifier.md">super</a></i> ;<br>
 </div>
 
 ## AST Class
@@ -101,4 +101,22 @@ Oh look, a meteor?
 Oh no, an asteroid!
 Ah well, back to the stone age.
 ```
+
+<style>
+    .syntax
+    {
+        font-family: monospace, monospace;
+    }
+
+    .keyword
+    {
+        color: blue;
+        font-weight: bold;
+    }
+
+    .synvar
+    {
+        font-style: italic;
+    }
+</style>
 

@@ -6,8 +6,8 @@
 
 ## Syntax
 
-<div id="syntax">
-once [value](TextPage.html?page=Expression)<br>
+<div class="syntax">
+once <a href="Expression.md">value</a><br>
 </div>
 
 ## AST Class
@@ -30,4 +30,22 @@ autumn.lang.compiler.ast.nodes.OnceExpression
 
 ## Static Checks
 
+
+<style>
+    .syntax
+    {
+        font-family: monospace, monospace;
+    }
+
+    .keyword
+    {
+        color: blue;
+        font-weight: bold;
+    }
+
+    .synvar
+    {
+        font-style: italic;
+    }
+</style>
 

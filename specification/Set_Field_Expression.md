@@ -6,8 +6,8 @@ A set-field-expression sets the value of an instance field.
 
 ## Syntax
 
-<div id="syntax">
-<span class=\"keyword\">field</span> <i>[owner](TextPage.html?page=Expression)</i>.<i>[name](ConstructPage.html?construct=Name)</i> = <i>[value](TextPage.html?page=Expression)</i><br>
+<div class="syntax">
+<span class="keyword">field</span> <a href="Expression.md">owner</a></i>.<a class="synvar" href="Name.md">name</a></i> = <a href="Expression.md">value</a></i><br>
 </div>
 
 ## AST Class
@@ -16,7 +16,7 @@ autumn.lang.compiler.ast.nodes.SetFieldExpression
 
 ## Details
 
-+ The field will be selected using the [Instance Field Resolution Algorithm](TextPage.html?page=Resolution).
++ The field will be selected using the <a href="Resolution.md">Instance Field Resolution Algorithm</a>.
 + Boxing of the value will be performed, when necessary.
 + Unboxing of the value will be performed, when necessary.
 + Coercion of the value will be performed, when necessary.
@@ -66,4 +66,22 @@ defun main (args : String[]) : void
 17
 23
 ```
+
+<style>
+    .syntax
+    {
+        font-family: monospace, monospace;
+    }
+
+    .keyword
+    {
+        color: blue;
+        font-weight: bold;
+    }
+
+    .synvar
+    {
+        font-style: italic;
+    }
+</style>
 

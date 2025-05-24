@@ -6,8 +6,8 @@ A get-field-expression gets the value of an instance field.
 
 ## Syntax
 
-<div id="syntax">
-<span class=\"keyword\">field</span> <i>[owner](TextPage.html?page=Expression)</i>.<i>[name](ConstructPage.html?construct=Name)</i><br>
+<div class="syntax">
+<span class="keyword">field</span> <a href="Expression.md">owner</a></i>.<a class="synvar" href="Name.md">name</a></i><br>
 </div>
 
 ## AST Class
@@ -16,7 +16,7 @@ autumn.lang.compiler.ast.nodes.GetFieldExpression
 
 ## Details
 
-+ The field will be selected using the [Instance Field Resolution Algorithm](TextPage.html?page=Resolution).
++ The field will be selected using the <a href="Resolution.md">Instance Field Resolution Algorithm</a>.
 + Return Type: [type of the selected field]
 + Return the value stored in the field.
 
@@ -50,4 +50,22 @@ defun main (args : String[]) : void
 ```plain
 Life and Everything = 42
 ```
+
+<style>
+    .syntax
+    {
+        font-family: monospace, monospace;
+    }
+
+    .keyword
+    {
+        color: blue;
+        font-weight: bold;
+    }
+
+    .synvar
+    {
+        font-style: italic;
+    }
+</style>
 

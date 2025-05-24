@@ -6,26 +6,26 @@ An if-statement conditionally executes one or more other statements.
 
 ## Syntax
 
-<div id="syntax">
-<span class=\"keyword\">if</span> ( <i>[condition](TextPage.html?page=Expression)<sub>1</sub></i> )<br>
+<div class="syntax">
+<span class="keyword">if</span> ( <a href="Expression.md">condition</a><sub>1</sub></i> )<br>
 {<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<i>body<sub>1</sub></i><br>
+&nbsp;&nbsp;&nbsp;&nbsp;body<sub>1</sub></i><br>
 }<br>
-<span class=\"keyword\">elif</span> ( <i>[condition](TextPage.html?page=Expression)<sub>2</sub></i> )<sub>1</sub><br>
+<span class="keyword">elif</span> ( <a href="Expression.md">condition</a><sub>2</sub></i> )<sub>1</sub><br>
 {<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<i>body<sub>2</sub></i><br>
+&nbsp;&nbsp;&nbsp;&nbsp;body<sub>2</sub></i><br>
 }<br>
-<span class=\"keyword\">elif</span> ( <i>[condition](TextPage.html?page=Expression)<sub>3</sub></i> )<sub>2</sub><br>
+<span class="keyword">elif</span> ( <a href="Expression.md">condition</a><sub>3</sub></i> )<sub>2</sub><br>
 {<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<i>body<sub>3</sub></i><br>
+&nbsp;&nbsp;&nbsp;&nbsp;body<sub>3</sub></i><br>
 }<br>
-<span class=\"keyword\">elif</span> ( <i>[condition](TextPage.html?page=Expression)<sub>4</sub></i> )<sub>n</sub><br>
+<span class="keyword">elif</span> ( <a href="Expression.md">condition</a><sub>4</sub></i> )<sub>n</sub><br>
 {<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<i>body<sub>4</sub></i><br>
+&nbsp;&nbsp;&nbsp;&nbsp;body<sub>4</sub></i><br>
 }<br>
-<span class=\"keyword\">else</span><sub>opt</sub><br>
+<span class="keyword">else</span><sub>opt</sub><br>
 {<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<i>body<sub>5</sub></i><br>
+&nbsp;&nbsp;&nbsp;&nbsp;body<sub>5</sub></i><br>
 }<br>
 </div>
 
@@ -197,4 +197,22 @@ defun write(number : int) : void
 7 is very odd.
 9 is very odd.
 ```
+
+<style>
+    .syntax
+    {
+        font-family: monospace, monospace;
+    }
+
+    .keyword
+    {
+        color: blue;
+        font-weight: bold;
+    }
+
+    .synvar
+    {
+        font-style: italic;
+    }
+</style>
 

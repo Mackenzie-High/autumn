@@ -6,8 +6,8 @@ This operator performs an equality comparison operation based on object identity
 
 ## Syntax
 
-<div id="syntax">
-<i>[left](TextPage.html?page=Expression)</i> === <i>[right](TextPage.html?page=Expression)</i><br>
+<div class="syntax">
+<a href="Expression.md">left</a></i> === <a href="Expression.md">right</a></i><br>
 </div>
 
 ## AST Class
@@ -56,4 +56,22 @@ defun main (args : String[]) : void
 true
 false
 ```
+
+<style>
+    .syntax
+    {
+        font-family: monospace, monospace;
+    }
+
+    .keyword
+    {
+        color: blue;
+        font-weight: bold;
+    }
+
+    .synvar
+    {
+        font-style: italic;
+    }
+</style>
 

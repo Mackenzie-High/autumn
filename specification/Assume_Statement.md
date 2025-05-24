@@ -6,10 +6,10 @@ An assume-statement enforces an invariant.
 
 ## Syntax
 
-<div id="syntax">
-<span class=\"keyword\">assume</span> <i>[condition](TextPage.html?page=Expression)</i> ;<br>
+<div class="syntax">
+<span class="keyword">assume</span> <a href="Expression.md">condition</a></i> ;<br>
 <hr class=&#92%22syntax-hr&#92%22><br>
-<span class=\"keyword\">assume</span> <i>[condition](TextPage.html?page=Expression)</i> <span class=\"keyword\">echo</span> <i>[message](TextPage.html?page=Expression)</i> ;<br>
+<span class="keyword">assume</span> <a href="Expression.md">condition</a></i> <span class="keyword">echo</span> <a href="Expression.md">message</a></i> ;<br>
 </div>
 
 ## AST Class
@@ -18,7 +18,7 @@ autumn.lang.compiler.ast.nodes.AssertStatement
 
 ## Details
 
-+ Unlike an [Assert Statement](ConstructPage.html?construct=Assert Statement), assume-statements can be disabled.
++ Unlike an <a class="synvar" href="Assert_Statement.md">Assert Statement</a>, assume-statements can be disabled.
   + By default, assume-statements are enabled.
   + If assume-statements are disabled:
     + The runtime simply ignores all assume-statements.
@@ -179,4 +179,22 @@ Error - 6 is even.
 Error - 8 is even.
 9 => 81
 ```
+
+<style>
+    .syntax
+    {
+        font-family: monospace, monospace;
+    }
+
+    .keyword
+    {
+        color: blue;
+        font-weight: bold;
+    }
+
+    .synvar
+    {
+        font-style: italic;
+    }
+</style>
 

@@ -6,10 +6,10 @@ A forever-statement is an infinite loop.
 
 ## Syntax
 
-<div id="syntax">
-<span class=\"keyword\">forever</span><br>
+<div class="syntax">
+<span class="keyword">forever</span><br>
 {<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<i>[body](TextPage.html?page=Statement)</i><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Statement.md">body</a></i><br>
 }<br>
 </div>
 
@@ -65,4 +65,22 @@ Forever is a very very very very very long time.
 Forever is a very very very very very very long time.
 Forever is a very very very very very very very long time.
 ```
+
+<style>
+    .syntax
+    {
+        font-family: monospace, monospace;
+    }
+
+    .keyword
+    {
+        color: blue;
+        font-weight: bold;
+    }
+
+    .synvar
+    {
+        font-style: italic;
+    }
+</style>
 

@@ -6,8 +6,8 @@ An expression-statement facilitates the use of an expression as a statement.
 
 ## Syntax
 
-<div id="syntax">
-<i>[expression](TextPage.html?page=Expression)</i> ;<br>
+<div class="syntax">
+<a href="Expression.md">expression</a></i> ;<br>
 </div>
 
 ## AST Class
@@ -46,4 +46,22 @@ defun printNumber (x : int) : void
 ```plain
 x = 17
 ```
+
+<style>
+    .syntax
+    {
+        font-family: monospace, monospace;
+    }
+
+    .keyword
+    {
+        color: blue;
+        font-weight: bold;
+    }
+
+    .synvar
+    {
+        font-style: italic;
+    }
+</style>
 

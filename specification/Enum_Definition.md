@@ -6,11 +6,11 @@ An enum-definition creates a new enum-type in the enclosing package.
 
 ## Syntax
 
-<div id="syntax">
-@<i>annotation<sub>1</sub></i><br>
-@<i>annotation<sub>2</sub></i><br>
-@<i>annotation<sub>n</sub></i><br>
-<span class=\"keyword\">enum</span> <i>[name](ConstructPage.html?construct=Name)</i> ( <i>[constant](ConstructPage.html?construct=Name)<sub>1</sub></i> , ... , <i>[constant](ConstructPage.html?construct=Name)<sub>n</sub></i> ) ;<br>
+<div class="syntax">
+@annotation<sub>1</sub></i><br>
+@annotation<sub>2</sub></i><br>
+@annotation<sub>n</sub></i><br>
+<span class="keyword">enum</span> <a class="synvar" href="Name.md">name</a></i> ( <a class="synvar" href="Name.md">constant</a><sub>1</sub></i> , ... , <a class="synvar" href="Name.md">constant</a><sub>n</sub></i> ) ;<br>
 </div>
 
 ## AST Class
@@ -193,4 +193,22 @@ Ordinal: 1
 Name: Rome
 Ordinal: 2
 ```
+
+<style>
+    .syntax
+    {
+        font-family: monospace, monospace;
+    }
+
+    .keyword
+    {
+        color: blue;
+        font-weight: bold;
+    }
+
+    .synvar
+    {
+        font-style: italic;
+    }
+</style>
 

@@ -6,8 +6,8 @@
 
 ## Syntax
 
-<div id="syntax">
-<span class=\"keyword\">lambda</span> <i>[variable](ConstructPage.html?construct=Variable)</i> : <i>[type](ConstructPage.html?construct=TypeSpecifier)</i> => <i>[expression](TextPage.html?page=Expression)</i> ;<br>
+<div class="syntax">
+<span class="keyword">lambda</span> <a class="synvar" href="Variable.md">variable</a></i> : <a class="synvar" href="TypeSpecifier.md">type</a></i> => <a href="Expression.md">expression</a></i> ;<br>
 </div>
 
 ## AST Class
@@ -24,4 +24,22 @@ autumn.lang.compiler.ast.nodes.LambdaStatement
 
 [NO_SUCH_TYPE, The type specified by <i>type</i> must exist., null]
 [INACCESSIBLE_TYPE, The type specified by <i>type</i> must be accessible., null]
+
+<style>
+    .syntax
+    {
+        font-family: monospace, monospace;
+    }
+
+    .keyword
+    {
+        color: blue;
+        font-weight: bold;
+    }
+
+    .synvar
+    {
+        font-style: italic;
+    }
+</style>
 

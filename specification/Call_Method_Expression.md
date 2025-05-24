@@ -6,10 +6,10 @@ A call-expression performs an invocation of an instance method.
 
 ## Syntax
 
-<div id="syntax">
-<span class=\"keyword\">call</span> <i>[owner](TextPage.html?page=Expression)</i>.<i>[name](ConstructPage.html?construct=Name)</i> ( <i>[argument](TextPage.html?page=Expression)<sub>1</sub></i> , ... , <i>[argument](TextPage.html?page=Expression)<sub>n</sub></i> )<br>
+<div class="syntax">
+<span class="keyword">call</span> <a href="Expression.md">owner</a></i>.<a class="synvar" href="Name.md">name</a></i> ( <a href="Expression.md">argument</a><sub>1</sub></i> , ... , <a href="Expression.md">argument</a><sub>n</sub></i> )<br>
 <hr class=&#92%22syntax-hr&#92%22><br>
-<i>[owner](TextPage.html?page=Expression)</i>.<i>[name](ConstructPage.html?construct=Name)</i> ( <i>[argument](TextPage.html?page=Expression)<sub>1</sub></i> , ... , <i>[argument](TextPage.html?page=Expression)<sub>n</sub></i> )<br>
+<a href="Expression.md">owner</a></i>.<a class="synvar" href="Name.md">name</a></i> ( <a href="Expression.md">argument</a><sub>1</sub></i> , ... , <a href="Expression.md">argument</a><sub>n</sub></i> )<br>
 </div>
 
 ## AST Class
@@ -18,7 +18,7 @@ autumn.lang.compiler.ast.nodes.CallMethodExpression
 
 ## Details
 
-+ The method overload will be selected using the [Instance Method Resolution Algorithm](TextPage.html?page=Resolution).
++ The method overload will be selected using the <a href="Resolution.md">Instance Method Resolution Algorithm</a>.
 + The method overload is selected at compile-time.
 + Boxing of the arguments will be performed, when necessary.
 + Unboxing of the arguments will be performed, when necessary.
@@ -85,4 +85,22 @@ defun main (args : String[]) : void
 ```plain
 Type of World: Home
 ```
+
+<style>
+    .syntax
+    {
+        font-family: monospace, monospace;
+    }
+
+    .keyword
+    {
+        color: blue;
+        font-weight: bold;
+    }
+
+    .synvar
+    {
+        font-style: italic;
+    }
+</style>
 

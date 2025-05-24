@@ -6,8 +6,8 @@ An element declares an entry in a struct, design, or tuple.
 
 ## Syntax
 
-<div id="syntax">
-<i>[name](ConstructPage.html?construct=Name)</i> : <i>[type](ConstructPage.html?construct=TypeSpecifier)</i><br>
+<div class="syntax">
+<a class="synvar" href="Name.md">name</a></i> : <a class="synvar" href="TypeSpecifier.md">type</a></i><br>
 </div>
 
 ## AST Class
@@ -40,4 +40,22 @@ tuple Triple (element1 : Object,
 ```plain
 
 ```
+
+<style>
+    .syntax
+    {
+        font-family: monospace, monospace;
+    }
+
+    .keyword
+    {
+        color: blue;
+        font-weight: bold;
+    }
+
+    .synvar
+    {
+        font-style: italic;
+    }
+</style>
 

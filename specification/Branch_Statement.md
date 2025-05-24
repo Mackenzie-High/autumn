@@ -6,8 +6,8 @@ A branch-statement creates an unstructured jump-table.
 
 ## Syntax
 
-<div id="syntax">
-<span class=\"keyword\">branch</span> ( [index](TextPage.html?page=Expression) ) ( <i>[label](ConstructPage.html?construct=Label)<sub>0</sub></i> , ... , <i>[label](ConstructPage.html?construct=Label)<sub>n - 1</sub></i> ) <span class=\"keyword\">default</span> <i>[label](ConstructPage.html?construct=Label)<sub>n</sub></i>;<br>
+<div class="syntax">
+<span class="keyword">branch</span> ( <a href="Expression.md">index</a> ) ( <a class="synvar" href="Label.md">label</a><sub>0</sub></i> , ... , <a class="synvar" href="Label.md">label</a><sub>n - 1</sub></i> ) <span class="keyword">default</span> <a class="synvar" href="Label.md">label</a><sub>n</sub></i>;<br>
 </div>
 
 ## AST Class
@@ -25,9 +25,9 @@ autumn.lang.compiler.ast.nodes.BranchStatement
   + Let <i>N</i> be the number of labels in the branch-statement, including the default label, minus one.
   + Unbox <i>X</i>, if necessary.
   + Coerce <i>X</i>, if necessary.
-  + If <i>X</i> &lt; 0, then jump to the location denoted by <i>[label](ConstructPage.html?construct=Label)<sub>N</sub></i>, which is the default label.
-  + If <i>X</i> &gt= <i>N</i>, then jump to the location denoted by <i>[label](ConstructPage.html?construct=Label)<sub>N</sub></i>, which is the default label.
-  + Otherwise, jump to the location denoted by <i>[label](ConstructPage.html?construct=Label)<sub>X</sub></i>.
+  + If <i>X</i> &lt; 0, then jump to the location denoted by <i><a class="synvar" href="Label.md">label</a><sub>N</sub></i>, which is the default label.
+  + If <i>X</i> &gt= <i>N</i>, then jump to the location denoted by <i><a class="synvar" href="Label.md">label</a><sub>N</sub></i>, which is the default label.
+  + Otherwise, jump to the location denoted by <i><a class="synvar" href="Label.md">label</a><sub>X</sub></i>.
 
 ## Static Checks
 
@@ -114,4 +114,22 @@ defun act (x : int, n : int) : void
 25
 125
 ```
+
+<style>
+    .syntax
+    {
+        font-family: monospace, monospace;
+    }
+
+    .keyword
+    {
+        color: blue;
+        font-weight: bold;
+    }
+
+    .synvar
+    {
+        font-style: italic;
+    }
+</style>
 

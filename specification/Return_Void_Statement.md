@@ -6,8 +6,8 @@ A return-statement causes execution to immediately exit the invocation of a func
 
 ## Syntax
 
-<div id="syntax">
-<span class=\"keyword\">return</span> ;<br>
+<div class="syntax">
+<span class="keyword">return</span> ;<br>
 </div>
 
 ## AST Class
@@ -63,4 +63,22 @@ defun check (n : int) : void
 7 is very odd.
 9 is very odd.
 ```
+
+<style>
+    .syntax
+    {
+        font-family: monospace, monospace;
+    }
+
+    .keyword
+    {
+        color: blue;
+        font-weight: bold;
+    }
+
+    .synvar
+    {
+        font-style: italic;
+    }
+</style>
 

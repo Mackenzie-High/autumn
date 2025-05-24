@@ -6,8 +6,8 @@ A get-static-field-expression gets the value of a static field.
 
 ## Syntax
 
-<div id="syntax">
-<span class=\"keyword\">field</span> <i>[Owner](ConstructPage.html?construct=TypeSpecifier)</i>::<i>[name](ConstructPage.html?construct=Name)</i> = <i>[value](TextPage.html?page=Expression)</i><br>
+<div class="syntax">
+<span class="keyword">field</span> <a class="synvar" href="TypeSpecifier.md">Owner</a></i>::<a class="synvar" href="Name.md">name</a></i> = <a href="Expression.md">value</a></i><br>
 </div>
 
 ## AST Class
@@ -16,7 +16,7 @@ autumn.lang.compiler.ast.nodes.GetStaticFieldExpression
 
 ## Details
 
-+ The field will be selected using the [Static Field Resolution Algorithm](TextPage.html?page=Resolution).
++ The field will be selected using the <a href="Resolution.md">Static Field Resolution Algorithm</a>.
 + Return Type: [type of the selected field]
 + Return the value stored in the field.
 
@@ -50,4 +50,22 @@ defun main (args : String[]) : void
 ```plain
 Integer Range: [-2147483648, 2147483647]
 ```
+
+<style>
+    .syntax
+    {
+        font-family: monospace, monospace;
+    }
+
+    .keyword
+    {
+        color: blue;
+        font-weight: bold;
+    }
+
+    .synvar
+    {
+        font-style: italic;
+    }
+</style>
 

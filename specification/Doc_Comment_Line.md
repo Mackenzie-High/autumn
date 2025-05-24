@@ -6,8 +6,8 @@ A doc-comment-line that is a single line in a doc-comment.
 
 ## Syntax
 
-<div id="syntax">
-/// <i>text</i><br>
+<div class="syntax">
+/// text</i><br>
 </div>
 
 ## AST Class
@@ -46,4 +46,22 @@ defun main (args : String[]) : void
 ```plain
 
 ```
+
+<style>
+    .syntax
+    {
+        font-family: monospace, monospace;
+    }
+
+    .keyword
+    {
+        color: blue;
+        font-weight: bold;
+    }
+
+    .synvar
+    {
+        font-style: italic;
+    }
+</style>
 

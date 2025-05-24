@@ -6,8 +6,8 @@ A namespace construct is used to represent the name of a package.
 
 ## Syntax
 
-<div id="syntax">
-<i></i><br>
+<div class="syntax">
+</i><br>
 </div>
 
 ## AST Class
@@ -42,4 +42,22 @@ defun main (args : String[]) : void
 ```plain
 
 ```
+
+<style>
+    .syntax
+    {
+        font-family: monospace, monospace;
+    }
+
+    .keyword
+    {
+        color: blue;
+        font-weight: bold;
+    }
+
+    .synvar
+    {
+        font-style: italic;
+    }
+</style>
 

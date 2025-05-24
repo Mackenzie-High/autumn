@@ -6,8 +6,8 @@ A formal-parameter-list is a list of formal-parameters.
 
 ## Syntax
 
-<div id="syntax">
-( <i>[param](ConstructPage.html?construct=Formal Parameter)<sub>1</sub></i> , ... , <i>[param](ConstructPage.html?construct=Formal Parameter)<sub>n</sub></i> )<br>
+<div class="syntax">
+( <a class="synvar" href="Formal_Parameter.md">param</a><sub>1</sub></i> , ... , <a class="synvar" href="Formal_Parameter.md">param</a><sub>n</sub></i> )<br>
 </div>
 
 ## AST Class
@@ -55,4 +55,22 @@ defun main (args : String[]) : void
 12
 13
 ```
+
+<style>
+    .syntax
+    {
+        font-family: monospace, monospace;
+    }
+
+    .keyword
+    {
+        color: blue;
+        font-weight: bold;
+    }
+
+    .synvar
+    {
+        font-style: italic;
+    }
+</style>
 

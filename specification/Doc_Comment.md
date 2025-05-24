@@ -6,10 +6,10 @@ A doc-comment is a comment that can be processed by documentation generators.
 
 ## Syntax
 
-<div id="syntax">
-<i>[Doc Comment Line](ConstructPage.html?construct=Doc Comment Line)</i><br>
-<i>[Doc Comment Line](ConstructPage.html?construct=Doc Comment Line)</i><br>
-<i>[Doc Comment Line](ConstructPage.html?construct=Doc Comment Line)</i><br>
+<div class="syntax">
+<a class="synvar" href="Doc_Comment_Line.md">Doc Comment Line</a></i><br>
+<a class="synvar" href="Doc_Comment_Line.md">Doc Comment Line</a></i><br>
+<a class="synvar" href="Doc_Comment_Line.md">Doc Comment Line</a></i><br>
 </div>
 
 ## AST Class
@@ -49,4 +49,22 @@ defun main (args : String[]) : void
 ```plain
 
 ```
+
+<style>
+    .syntax
+    {
+        font-family: monospace, monospace;
+    }
+
+    .keyword
+    {
+        color: blue;
+        font-weight: bold;
+    }
+
+    .synvar
+    {
+        font-style: italic;
+    }
+</style>
 

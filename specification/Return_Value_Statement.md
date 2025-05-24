@@ -6,8 +6,8 @@ A return-value statement causes execution to immediately exit the invocation of 
 
 ## Syntax
 
-<div id="syntax">
-<span class=\"keyword\">return</span> <i>[value](TextPage.html?page=Expression)</i> ;<br>
+<div class="syntax">
+<span class="keyword">return</span> <a href="Expression.md">value</a></i> ;<br>
 </div>
 
 ## AST Class
@@ -58,4 +58,22 @@ defun cube (n : int) : int
 8
 27
 ```
+
+<style>
+    .syntax
+    {
+        font-family: monospace, monospace;
+    }
+
+    .keyword
+    {
+        color: blue;
+        font-weight: bold;
+    }
+
+    .synvar
+    {
+        font-style: italic;
+    }
+</style>
 

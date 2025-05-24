@@ -6,8 +6,8 @@ A variable construct is used to represent a local variable.
 
 ## Syntax
 
-<div id="syntax">
-<i>name</i><br>
+<div class="syntax">
+name</i><br>
 </div>
 
 ## AST Class
@@ -47,4 +47,22 @@ defun main (args : String[]) : void
 ```plain
 
 ```
+
+<style>
+    .syntax
+    {
+        font-family: monospace, monospace;
+    }
+
+    .keyword
+    {
+        color: blue;
+        font-weight: bold;
+    }
+
+    .synvar
+    {
+        font-style: italic;
+    }
+</style>
 

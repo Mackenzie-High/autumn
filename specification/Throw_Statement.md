@@ -6,8 +6,8 @@ A throw-statement throws an exception that is provided as an argument thereto.
 
 ## Syntax
 
-<div id="syntax">
-<span class=\"keyword\">throw</span> <i>[argument](TextPage.html?page=Expression)</i> ;<br>
+<div class="syntax">
+<span class="keyword">throw</span> <a href="Expression.md">argument</a></i> ;<br>
 </div>
 
 ## AST Class
@@ -16,7 +16,7 @@ autumn.lang.compiler.ast.nodes.ThrowStatement
 
 ## Details
 
-+ In order to catch an exception, use a [Try-Catch Statement](ConstructPage.html?construct=Try-Catch Statement).
++ In order to catch an exception, use a <a class="synvar" href="Try_Catch_Statement.md">Try-Catch Statement</a>.
 + An uncaught exception will cause the enclosing invocation to terminate.
   + An uncaught exception will propogate until it is caught.
   + If an exception is caught by the runtime, then the program will be terminated.
@@ -210,4 +210,22 @@ java.lang.Exception
 	at high.mackenzie.autumn.lang.compiler.args.AbstractVisitor.visit(AbstractVisitor.java:23)
 	at high.mackenzie.autumn.Main.main(Main.java:46)
 ```
+
+<style>
+    .syntax
+    {
+        font-family: monospace, monospace;
+    }
+
+    .keyword
+    {
+        color: blue;
+        font-weight: bold;
+    }
+
+    .synvar
+    {
+        font-style: italic;
+    }
+</style>
 

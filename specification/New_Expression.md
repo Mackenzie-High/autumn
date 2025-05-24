@@ -6,8 +6,8 @@ A new-expression creates a new instance of a specified class-type.
 
 ## Syntax
 
-<div id="syntax">
-<span class=\"keyword\">new</span> <i>[type](ConstructPage.html?construct=TypeSpecifier)</i> ( <i>[argument](TextPage.html?page=Expression)<sub>1</sub></i> , ... , <i>[argument](TextPage.html?page=Expression)<sub>n</sub></i> )<br>
+<div class="syntax">
+<span class="keyword">new</span> <a class="synvar" href="TypeSpecifier.md">type</a></i> ( <a href="Expression.md">argument</a><sub>1</sub></i> , ... , <a href="Expression.md">argument</a><sub>n</sub></i> )<br>
 </div>
 
 ## AST Class
@@ -16,7 +16,7 @@ autumn.lang.compiler.ast.nodes.NewExpression
 
 ## Details
 
-+ The constructor overload will be selected using the [Constructor Resolution Algorithm](TextPage.html?page=Resolution).
++ The constructor overload will be selected using the <a href="Resolution.md">Constructor Resolution Algorithm</a>.
 + The constructor overload is selected at compile-time.
 + Boxing of the arguments will be performed, when necessary.
 + Unboxing of the arguments will be performed, when necessary.
@@ -60,4 +60,22 @@ defun main (args : String[]) : void
 (German Shepherd, Jet)
 (Cat, Fluffy)
 ```
+
+<style>
+    .syntax
+    {
+        font-family: monospace, monospace;
+    }
+
+    .keyword
+    {
+        color: blue;
+        font-weight: bold;
+    }
+
+    .synvar
+    {
+        font-style: italic;
+    }
+</style>
 

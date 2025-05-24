@@ -6,8 +6,8 @@ This operator performs an arithmetic subtraction operation.
 
 ## Syntax
 
-<div id="syntax">
-<i>[left](TextPage.html?page=Expression)</i> - <i>[right](TextPage.html?page=Expression)</i><br>
+<div class="syntax">
+<a href="Expression.md">left</a></i> - <a href="Expression.md">right</a></i><br>
 </div>
 
 ## AST Class
@@ -96,4 +96,22 @@ double = 8.0
 BigInteger = 8.00000000000000000000000000000000
 BigDecimal = 8.00000000000000000000000000000000
 ```
+
+<style>
+    .syntax
+    {
+        font-family: monospace, monospace;
+    }
+
+    .keyword
+    {
+        color: blue;
+        font-weight: bold;
+    }
+
+    .synvar
+    {
+        font-style: italic;
+    }
+</style>
 

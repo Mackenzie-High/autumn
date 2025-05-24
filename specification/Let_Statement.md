@@ -6,10 +6,10 @@ A let-statement assigns a value to a local variable.
 
 ## Syntax
 
-<div id="syntax">
-<span class=\"keyword\">let</span> <i>[assignee](ConstructPage.html?construct=Variable)</i> = <i>[value](TextPage.html?page=Expression)</i> ;<br>
+<div class="syntax">
+<span class="keyword">let</span> <a class="synvar" href="Variable.md">assignee</a></i> = <a href="Expression.md">value</a></i> ;<br>
 <hr class=&#92%22syntax-hr&#92%22><br>
-<i>[assignee](ConstructPage.html?construct=Variable)</i> = <i>[value](TextPage.html?page=Expression)</i> ;<br>
+<a class="synvar" href="Variable.md">assignee</a></i> = <a href="Expression.md">value</a></i> ;<br>
 </div>
 
 ## AST Class
@@ -65,4 +65,22 @@ Venus
 Mars
 Pluto
 ```
+
+<style>
+    .syntax
+    {
+        font-family: monospace, monospace;
+    }
+
+    .keyword
+    {
+        color: blue;
+        font-weight: bold;
+    }
+
+    .synvar
+    {
+        font-style: italic;
+    }
+</style>
 

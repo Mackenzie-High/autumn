@@ -6,10 +6,10 @@ An annotation allows metadata to be applied to a module, function, etc.
 
 ## Syntax
 
-<div id="syntax">
-@<i>[type](ConstructPage.html?construct=TypeSpecifier)</i><br>
+<div class="syntax">
+@<a class="synvar" href="TypeSpecifier.md">type</a></i><br>
 <hr class=&#92%22syntax-hr&#92%22><br>
-@<i>[type](ConstructPage.html?construct=TypeSpecifier)</i> ( <i>[string](ConstructPage.html?construct=String Datum)<sub>1</sub></i> , ... , <i>[string](ConstructPage.html?construct=String Datum)<sub>n</sub></i> )<br>
+@<a class="synvar" href="TypeSpecifier.md">type</a></i> ( <a class="synvar" href="String_Datum.md">string</a><sub>1</sub></i> , ... , <a class="synvar" href="String_Datum.md">string</a><sub>n</sub></i> )<br>
 </div>
 
 ## AST Class
@@ -68,4 +68,22 @@ Author: Mackenzie High
 Country: United States
 State: Virginia
 ```
+
+<style>
+    .syntax
+    {
+        font-family: monospace, monospace;
+    }
+
+    .keyword
+    {
+        color: blue;
+        font-weight: bold;
+    }
+
+    .synvar
+    {
+        font-style: italic;
+    }
+</style>
 

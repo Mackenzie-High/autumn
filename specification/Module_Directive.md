@@ -6,16 +6,16 @@ A module-directive is used to specify the name and namespace of the enclosing mo
 
 ## Syntax
 
-<div id="syntax">
-@<i>annotation<sub>1</sub></i><br>
-@<i>annotation<sub>2</sub></i><br>
-@<i>annotation<sub>n</sub></i><br>
-<span class=\"keyword\">module</span> <i>[name](ConstructPage.html?construct=Name)</i> <span class=\"keyword\">in</span> <i>[namespace](ConstructPage.html?construct=Namespace)</i> ;<br>
+<div class="syntax">
+@annotation<sub>1</sub></i><br>
+@annotation<sub>2</sub></i><br>
+@annotation<sub>n</sub></i><br>
+<span class="keyword">module</span> <a class="synvar" href="Name.md">name</a></i> <span class="keyword">in</span> <a class="synvar" href="Namespace.md">namespace</a></i> ;<br>
 <hr class=&#92%22syntax-hr&#92%22><br>
-@<i>annotation<sub>1</sub></i><br>
-@<i>annotation<sub>2</sub></i><br>
-@<i>annotation<sub>n</sub></i><br>
-<span class=\"keyword\">module</span> * <span class=\"keyword\">in</span> <i>[namespace](ConstructPage.html?construct=Namespace)</i> ;<br>
+@annotation<sub>1</sub></i><br>
+@annotation<sub>2</sub></i><br>
+@annotation<sub>n</sub></i><br>
+<span class="keyword">module</span> * <span class="keyword">in</span> <a class="synvar" href="Namespace.md">namespace</a></i> ;<br>
 </div>
 
 ## AST Class
@@ -114,4 +114,22 @@ defun main (args : String[]) : void
 Starship Captain = Jonathan Archer
 Science  Officer = T'Pol
 ```
+
+<style>
+    .syntax
+    {
+        font-family: monospace, monospace;
+    }
+
+    .keyword
+    {
+        color: blue;
+        font-weight: bold;
+    }
+
+    .synvar
+    {
+        font-style: italic;
+    }
+</style>
 

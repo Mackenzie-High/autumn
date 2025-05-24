@@ -6,10 +6,10 @@ A for-statement is a loop that iterates based on a control variable and a condit
 
 ## Syntax
 
-<div id="syntax">
-<span class=\"keyword\">for</span> ( <i>[assignee](ConstructPage.html?construct=Variable)</i> = <i>[initializer](TextPage.html?page=Expression)</i> ; <i>[condition](TextPage.html?page=Expression)</i> ; <i>[modifier](TextPage.html?page=Expression)</i> )<br>
+<div class="syntax">
+<span class="keyword">for</span> ( <a class="synvar" href="Variable.md">assignee</a></i> = <a href="Expression.md">initializer</a></i> ; <a href="Expression.md">condition</a></i> ; <a href="Expression.md">modifier</a></i> )<br>
 {<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<i>[body](TextPage.html?page=Statement)</i><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Statement.md">body</a></i><br>
 }<br>
 </div>
 
@@ -64,4 +64,22 @@ X = 2
 X = 3
 X = 4
 ```
+
+<style>
+    .syntax
+    {
+        font-family: monospace, monospace;
+    }
+
+    .keyword
+    {
+        color: blue;
+        font-weight: bold;
+    }
+
+    .synvar
+    {
+        font-style: italic;
+    }
+</style>
 

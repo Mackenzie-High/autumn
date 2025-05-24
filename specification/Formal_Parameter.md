@@ -6,8 +6,8 @@ A formal-parameter is an explicitly typed variable declaration.
 
 ## Syntax
 
-<div id="syntax">
-<i>[variable](ConstructPage.html?construct=Variable)</i> : <i>[type](ConstructPage.html?construct=TypeSpecifier)</i><br>
+<div class="syntax">
+<a class="synvar" href="Variable.md">variable</a></i> : <a class="synvar" href="TypeSpecifier.md">type</a></i><br>
 </div>
 
 ## AST Class
@@ -55,4 +55,22 @@ defun main (args : String[]) : void
 12
 13
 ```
+
+<style>
+    .syntax
+    {
+        font-family: monospace, monospace;
+    }
+
+    .keyword
+    {
+        color: blue;
+        font-weight: bold;
+    }
+
+    .synvar
+    {
+        font-style: italic;
+    }
+</style>
 

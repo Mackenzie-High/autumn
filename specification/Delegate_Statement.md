@@ -6,8 +6,8 @@
 
 ## Syntax
 
-<div id="syntax">
-<span class=\"keyword\">delegate</span> <i>[assignee](ConstructPage.html?construct=Variable)</i> : <i>[type](ConstructPage.html?construct=TypeSpecifier)</i> => <i>[Owner](ConstructPage.html?construct=TypeSpecifier)</i>::<i>[name](ConstructPage.html?construct=Name)</i> ;<br>
+<div class="syntax">
+<span class="keyword">delegate</span> <a class="synvar" href="Variable.md">assignee</a></i> : <a class="synvar" href="TypeSpecifier.md">type</a></i> => <a class="synvar" href="TypeSpecifier.md">Owner</a></i>::<a class="synvar" href="Name.md">name</a></i> ;<br>
 </div>
 
 ## AST Class
@@ -110,4 +110,22 @@ Tax = 50000
 Income = 300000
 Tax = 75000
 ```
+
+<style>
+    .syntax
+    {
+        font-family: monospace, monospace;
+    }
+
+    .keyword
+    {
+        color: blue;
+        font-weight: bold;
+    }
+
+    .synvar
+    {
+        font-style: italic;
+    }
+</style>
 

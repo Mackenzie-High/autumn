@@ -6,8 +6,8 @@ A redo-statement causes execution to immediately restart the current iteration o
 
 ## Syntax
 
-<div id="syntax">
-<span class=\"keyword\">redo</span> ;<br>
+<div class="syntax">
+<span class="keyword">redo</span> ;<br>
 </div>
 
 ## AST Class
@@ -18,13 +18,13 @@ autumn.lang.compiler.ast.nodes.RedoStatement
 
 + A redo-statement cannot be used to exit an invocation.
 + Types of Loops:
-  + [Forever Statement](ConstructPage.html?construct=Forever Statement)s
-  + [While Statement](ConstructPage.html?construct=While Statement)s
-  + [Until Statement](ConstructPage.html?construct=Until Statement)s
-  + [Do-While Statement](ConstructPage.html?construct=Do-While Statement)s
-  + [Do-Until Statement](ConstructPage.html?construct=Do-Until Statement)s
-  + [For Statement](ConstructPage.html?construct=For Statement)s
-  + [Foreach Statement](ConstructPage.html?construct=Foreach Statement)s
+  + <a class="synvar" href="Forever_Statement.md">Forever Statement</a>s
+  + <a class="synvar" href="While_Statement.md">While Statement</a>s
+  + <a class="synvar" href="Until_Statement.md">Until Statement</a>s
+  + <a class="synvar" href="Do_While_Statement.md">Do-While Statement</a>s
+  + <a class="synvar" href="Do_Until_Statement.md">Do-Until Statement</a>s
+  + <a class="synvar" href="For_Statement.md">For Statement</a>s
+  + <a class="synvar" href="Foreach_Statement.md">Foreach Statement</a>s
 
 ## Static Checks
 
@@ -74,4 +74,22 @@ i = 3
 
 x = 4
 ```
+
+<style>
+    .syntax
+    {
+        font-family: monospace, monospace;
+    }
+
+    .keyword
+    {
+        color: blue;
+        font-weight: bold;
+    }
+
+    .synvar
+    {
+        font-style: italic;
+    }
+</style>
 

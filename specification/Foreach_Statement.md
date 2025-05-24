@@ -6,10 +6,10 @@ A foreach-statement is a loop that iterates over the elements in an iterable ent
 
 ## Syntax
 
-<div id="syntax">
-<span class=\"keyword\">foreach</span> ( <i>[assignee](ConstructPage.html?construct=Variable)</i> : <i>[type](ConstructPage.html?construct=TypeSpecifier)</i> <span class=\"keyword\">in</span> <i>[iterable](TextPage.html?page=Expression)</i> )<br>
+<div class="syntax">
+<span class="keyword">foreach</span> ( <a class="synvar" href="Variable.md">assignee</a></i> : <a class="synvar" href="TypeSpecifier.md">type</a></i> <span class="keyword">in</span> <a href="Expression.md">iterable</a></i> )<br>
 {<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<i>[body](TextPage.html?page=Statement)</i><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Statement.md">body</a></i><br>
 }<br>
 </div>
 
@@ -63,4 +63,22 @@ Pet Name = Fluffy
 Pet Name = Eyeball
 Pet Name = Molly
 ```
+
+<style>
+    .syntax
+    {
+        font-family: monospace, monospace;
+    }
+
+    .keyword
+    {
+        color: blue;
+        font-weight: bold;
+    }
+
+    .synvar
+    {
+        font-style: italic;
+    }
+</style>
 

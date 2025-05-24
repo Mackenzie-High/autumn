@@ -6,10 +6,10 @@ An annotation-list is a list of annotations.
 
 ## Syntax
 
-<div id="syntax">
-<i>[Annotation](ConstructPage.html?construct=Annotation)<sub>1</sub></i><br>
-<i>[Annotation](ConstructPage.html?construct=Annotation)<sub>2</sub></i><br>
-<i>[Annotation](ConstructPage.html?construct=Annotation)<sub>n</sub></i><br>
+<div class="syntax">
+<a class="synvar" href="Annotation.md">Annotation</a><sub>1</sub></i><br>
+<a class="synvar" href="Annotation.md">Annotation</a><sub>2</sub></i><br>
+<a class="synvar" href="Annotation.md">Annotation</a><sub>n</sub></i><br>
 </div>
 
 ## AST Class
@@ -68,4 +68,22 @@ Author: Mackenzie High
 Country: United States
 State: Virginia
 ```
+
+<style>
+    .syntax
+    {
+        font-family: monospace, monospace;
+    }
+
+    .keyword
+    {
+        color: blue;
+        font-weight: bold;
+    }
+
+    .synvar
+    {
+        font-style: italic;
+    }
+</style>
 

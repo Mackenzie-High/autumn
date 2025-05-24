@@ -6,10 +6,10 @@ A big-integer datum is a literal $BigInteger$ value.
 
 ## Syntax
 
-<div id="syntax">
-<i>digits</i><b class='keyword'>BI**<br>
+<div class="syntax">
+digits</i><b class='keyword'>BI**<br>
 <hr class=&#92%22syntax-hr&#92%22><br>
-**-**<i>digits</i><b class='keyword'>BI**<br>
+**-**digits</i><b class='keyword'>BI**<br>
 </div>
 
 ## AST Class
@@ -23,4 +23,22 @@ autumn.lang.compiler.ast.nodes.BigIntegerDatum
 
 ## Static Checks
 
+
+<style>
+    .syntax
+    {
+        font-family: monospace, monospace;
+    }
+
+    .keyword
+    {
+        color: blue;
+        font-weight: bold;
+    }
+
+    .synvar
+    {
+        font-style: italic;
+    }
+</style>
 
