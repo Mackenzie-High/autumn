@@ -6,23 +6,24 @@ A design-definition creates a new design-type in the enclosing package.
 
 ## Syntax
 
-```plain
-@<i>annotation<sub>1</sub></i>
-@<i>annotation<sub>2</sub></i>
-@<i>annotation<sub>n</sub></i>
-<span class=\"keyword\">design</span> <i>[name](ConstructPage.html?construct=Name)</i> ( <i>[element](ConstructPage.html?construct=Element)<sub>1</sub></i> , ... , <i>[element](ConstructPage.html?construct=Element)<sub>n</sub></i> ) ;
-<hr class=&#92%22syntax-hr&#92%22>
-@<i>annotation<sub>1</sub></i>
-@<i>annotation<sub>2</sub></i>
-@<i>annotation<sub>n</sub></i>
-<span class=\"keyword\">design</span> <i>[name](ConstructPage.html?construct=Name)</i> ( <i>[element](ConstructPage.html?construct=Element)<sub>1</sub></i> , ... , <i>[element](ConstructPage.html?construct=Element)<sub>n</sub></i> ) <span class=\"keyword\">extends</span> <i>[super](ConstructPage.html?construct=TypeSpecifier)<sub>1</sub></i> & ... & <i>[super](ConstructPage.html?construct=TypeSpecifier)<sub>n</sub></i>;
-```
+<div id="syntax">
+@<i>annotation<sub>1</sub></i><br>
+@<i>annotation<sub>2</sub></i><br>
+@<i>annotation<sub>n</sub></i><br>
+<span class=\"keyword\">design</span> <i>[name](ConstructPage.html?construct=Name)</i> ( <i>[element](ConstructPage.html?construct=Element)<sub>1</sub></i> , ... , <i>[element](ConstructPage.html?construct=Element)<sub>n</sub></i> ) ;<br>
+<hr class=&#92%22syntax-hr&#92%22><br>
+@<i>annotation<sub>1</sub></i><br>
+@<i>annotation<sub>2</sub></i><br>
+@<i>annotation<sub>n</sub></i><br>
+<span class=\"keyword\">design</span> <i>[name](ConstructPage.html?construct=Name)</i> ( <i>[element](ConstructPage.html?construct=Element)<sub>1</sub></i> , ... , <i>[element](ConstructPage.html?construct=Element)<sub>n</sub></i> ) <span class=\"keyword\">extends</span> <i>[super](ConstructPage.html?construct=TypeSpecifier)<sub>1</sub></i> & ... & <i>[super](ConstructPage.html?construct=TypeSpecifier)<sub>n</sub></i>;<br>
+</div>
 
 ## AST Class
 
 autumn.lang.compiler.ast.nodes.DesignDefinition
 
 ## Details
+
 + A design is an abstract record-style user-defined datatype.
 + Regarding the design-type T created by a definition:
   + T is form of interface-type.
@@ -65,4 +66,51 @@ autumn.lang.compiler.ast.nodes.DesignDefinition
       + <a href='https://mackenzie-high.github.io/autumn/javadoc/autumn/lang/Record.html#toString()'>toString ()</a>
       + <a href='https://mackenzie-high.github.io/autumn/javadoc/autumn/lang/Record.html#types()'>types ()</a>
       + <a href='https://mackenzie-high.github.io/autumn/javadoc/autumn/lang/Record.html#values()'>values ()</a>
+
+## Static Checks
+
+[DUPLICATE_ANNOTATION, Each annotation in an annotation-list must be uniquely typed., null]
+[DUPLICATE_ANNOTATION, Each annotation in an annotation-list must be uniquely typed., null]
+[DUPLICATE_TYPE, No two types can share the same descriptor., null]
+[DUPLICATE_ELEMENT, The <i>name</i> of each element must be unique within the definition itself., null]
+[NO_SUCH_TYPE, The type specified by <i>element.type</i> must exist., null]
+[INACCESSIBLE_TYPE, The type specified by <i>element.type</i> must be accessible., null]
+[EXPECTED_VARIABLE_TYPE, The <i>type</i> of each <i>element</i> must be a variable-type., null]
+[RETYPED_ELEMENT, The type of an element must be the same in all the declarations of the element., null]
+[NAME_CONFLICT, The name of an element cannot also be the name of an inherited method., null]
+
+## Example
+
+**Code:**
+
+```plain
+module Main in execution;
+
+design Taxable (income : int, rate : int);
+
+design Human (name : String);
+
+design Citizen () extends Human & Taxable;
+
+struct Employee (title : String) extends Citizen;
+
+@Start
+defun main (args : String[]) : void
+{
+    var p = Employee::instance();
+
+    p = p.name("Sarah");
+    p = p.income(75_000);
+    p = p.rate(30);
+    p = p.title("Virologist");
+    
+    F::println (p);
+}
+```
+
+**Output:**
+
+```plain
+(75000, Sarah, 30, Virologist)
+```
 

@@ -6,15 +6,16 @@ An is-operation converts a value to another type after performing a runtime chec
 
 ## Syntax
 
-```plain
-<i>value</i> <span class=\"keyword\">is</span> <i>[type](ConstructPage.html?construct=TypeSpecifier)</i>
-```
+<div id="syntax">
+<i>value</i> <span class=\"keyword\">is</span> <i>[type](ConstructPage.html?construct=TypeSpecifier)</i><br>
+</div>
 
 ## AST Class
 
 autumn.lang.compiler.ast.nodes.IsOperation
 
 ## Details
+
 + Precedence: 9
 + For every conversion provided by this operation, there is a similar conversion provided by the as-operation.
   + More formally, as-operations are symmetric to is-operations.
@@ -132,4 +133,76 @@ autumn.lang.compiler.ast.nodes.IsOperation
 + Runtime Check: If the conversion is an unsuccessful cast, then a [ClassCastException](https://docs.oracle.com/javase/7/docs/api/java/lang/ClassCastException.html) is thrown.
 + Return Type: <i>type</i>
 + Return the result of the predefined conversion or cast.
+
+## Static Checks
+
+[NO_SUCH_TYPE, The type specified by <i>type</i> must exist., null]
+[INACCESSIBLE_TYPE, The type specified by <i>type</i> must be accessible., null]
+[IMPOSSIBLE_CONVERSION, The conversion must be either predefined or a valid cast., null]
+
+## Example 1
+
+**Code:**
+
+```plain
+module Main in examples;
+
+@Start
+defun main (args : String[]) : void
+{
+    # Case: Predefined Conversion (int ==> char). 
+
+    val value1 = 65 is char;
+
+    F::println("Case 1: " .. value1);
+
+
+
+    # Case: Successful Cast
+
+    val value2 = "Mars" is CharSequence;
+
+    F::println("Case 2: " .. value2);
+}
+```
+
+**Output:**
+
+```plain
+Case 1: A
+Case 2: Mars
+```
+
+## Example 2
+
+**Code:**
+
+```plain
+module Main in examples;
+
+@Start
+defun main (args : String[]) : void
+{
+    # Generalized Input
+    val input = "Neptune" as Object;
+
+    try
+    {
+        # Case: Unsuccessful Cast
+        input is List; 
+
+        F::println("Failure: An exception was *not* thrown.");
+    }
+    catch (ex : ClassCastException)
+    {
+        F::println("Success: An exception was thrown.");
+    }
+}
+```
+
+**Output:**
+
+```plain
+Success: An exception was thrown.
+```
 

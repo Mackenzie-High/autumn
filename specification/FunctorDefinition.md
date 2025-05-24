@@ -6,23 +6,24 @@ A functor-definition creates a new functor-type in the enclosing package.
 
 ## Syntax
 
-```plain
-@<i>annotation<sub>1</sub></i>
-@<i>annotation<sub>2</sub></i>
-@<i>annotation<sub>n</sub></i>
-<span class=\"keyword\">functor</span> <i>[name](ConstructPage.html?construct=Name)</i> ( <i>[param](ConstructPage.html?construct=Formal Parameter)<sub>1</sub></i> , ... , <i>[param](ConstructPage.html?construct=Formal Parameter)<sub>n</sub></i> ) : <i>[return-type](ConstructPage.html?construct=TypeSpecifier)</i> ;
-<hr class=&#92%22syntax-hr&#92%22>
-@<i>annotation<sub>1</sub></i>
-@<i>annotation<sub>2</sub></i>
-@<i>annotation<sub>n</sub></i>
-<span class=\"keyword\">functor</span> <i>[name](ConstructPage.html?construct=Name)</i> ( <i>[param](ConstructPage.html?construct=Formal Parameter)<sub>1</sub></i> , ... , <i>[param](ConstructPage.html?construct=Formal Parameter)<sub>n</sub></i> ) : <i>[return-type](ConstructPage.html?construct=TypeSpecifier)</i> <span class=\"keyword\">extends</span> </i>[super](ConstructPage.html?construct=TypeSpecifier)</i> ;
-```
+<div id="syntax">
+@<i>annotation<sub>1</sub></i><br>
+@<i>annotation<sub>2</sub></i><br>
+@<i>annotation<sub>n</sub></i><br>
+<span class=\"keyword\">functor</span> <i>[name](ConstructPage.html?construct=Name)</i> ( <i>[param](ConstructPage.html?construct=Formal Parameter)<sub>1</sub></i> , ... , <i>[param](ConstructPage.html?construct=Formal Parameter)<sub>n</sub></i> ) : <i>[return-type](ConstructPage.html?construct=TypeSpecifier)</i> ;<br>
+<hr class=&#92%22syntax-hr&#92%22><br>
+@<i>annotation<sub>1</sub></i><br>
+@<i>annotation<sub>2</sub></i><br>
+@<i>annotation<sub>n</sub></i><br>
+<span class=\"keyword\">functor</span> <i>[name](ConstructPage.html?construct=Name)</i> ( <i>[param](ConstructPage.html?construct=Formal Parameter)<sub>1</sub></i> , ... , <i>[param](ConstructPage.html?construct=Formal Parameter)<sub>n</sub></i> ) : <i>[return-type](ConstructPage.html?construct=TypeSpecifier)</i> <span class=\"keyword\">extends</span> </i>[super](ConstructPage.html?construct=TypeSpecifier)</i> ;<br>
+</div>
 
 ## AST Class
 
 autumn.lang.compiler.ast.nodes.FunctorDefinition
 
 ## Details
+
 + Regarding the functor-type T created by a functor-definition:
   + T is a form of class-type.
   + T has the [FunctorDefinition](https://mackenzie-high.github.io/autumn/javadoc/autumn/lang/internals/annotations/FunctorDefinition.html) annotation applied directly to it.
@@ -67,4 +68,84 @@ autumn.lang.compiler.ast.nodes.FunctorDefinition
     + <a href='https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html#wait()'>wait ()</a>
     + <a href='https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html#wait(long)'>wait (long)</a>
     + <a href='https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html#wait(long, int)'>wait (long, int)</a>
+
+## Static Checks
+
+[DUPLICATE_ANNOTATION, Each annotation in an annotation-list must be uniquely typed., null]
+[DUPLICATE_ANNOTATION, Each annotation in an annotation-list must be uniquely typed., null]
+[DUPLICATE_TYPE, No two types can share the same descriptor., null]
+[NO_SUCH_TYPE, The type specified by <i>param<sub>i</sub></i> must exist., null]
+[INACCESSIBLE_TYPE, The type specified by <i>param<sub>i</sub></i> must be accessible., null]
+[EXPECTED_VARIABLE_TYPE, The type of param<sub>i</sub> must be a variable-type., null]
+[NO_SUCH_TYPE, The type specified by <i>return-type</i> must exist., null]
+[INACCESSIBLE_TYPE, The type specified by <i>return-type</i> must be accessible., null]
+[NO_SUCH_TYPE, The type specified by <i>super</i> must exist., null]
+[INACCESSIBLE_TYPE, The type specified by <i>super</i> must be accessible., null]
+[EXPECTED_CLASS_TYPE, The type of <i>super</i> must be a class-type., null]
+[EXPECTED_DEFINED_FUNCTOR_TYPE, The type of <i>super</i> must have the FunctorDefinition annotation applied directly to it., null]
+[CIRCULAR_INHERITANCE, The new type cannot be a subtype of itself either directly or indirectly., null]
+[COVARIANCE_VIOLATION, The subtyping requirements must be obeyed., null]
+
+## Example
+
+**Code:**
+
+```plain
+module Main in examples;
+
+functor Calculation (x : int) : int;
+
+@Start
+defun main (args : String[]) : void
+{
+    # Create a function object that refers to function square. 
+    delegate p : Calculation => My::square;
+
+    # Create a function object that refers to function cube. 
+    delegate q : Calculation => My::cube;
+
+    for (i = 0; i < 10; i + 1)
+    {
+        # Perform a calculation using the first function object.
+        val x = My::compute(p, i);
+
+        # Perform a calculation using the second function object.
+        val y = My::compute(q, i);
+
+        # Print the results.
+        F::println([i, x, y]);
+    }
+}
+
+defun compute (function : Calculation, 
+               value : int) : int
+{
+    return function.invoke(value);
+}
+
+defun square (x : int) : int
+{
+    return x * x;
+}
+
+defun cube (x : int) : int
+{
+    return x * x * x;
+}
+```
+
+**Output:**
+
+```plain
+[0, 0, 0]
+[1, 1, 1]
+[2, 4, 8]
+[3, 9, 27]
+[4, 16, 64]
+[5, 25, 125]
+[6, 36, 216]
+[7, 49, 343]
+[8, 64, 512]
+[9, 81, 729]
+```
 

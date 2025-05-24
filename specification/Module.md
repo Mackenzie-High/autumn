@@ -6,17 +6,18 @@ A module creates a new module-type in the enclosing package.
 
 ## Syntax
 
-```plain
-<i>[module-member](TextPage.html?page=Module Member)<sub>1</sub></i>
-<i>[module-member](TextPage.html?page=Module Member)<sub>2</sub></i>
-<i>[module-member](TextPage.html?page=Module Member)<sub>n</sub></i>
-```
+<div id="syntax">
+<i>[module-member](TextPage.html?page=Module Member)<sub>1</sub></i><br>
+<i>[module-member](TextPage.html?page=Module Member)<sub>2</sub></i><br>
+<i>[module-member](TextPage.html?page=Module Member)<sub>n</sub></i><br>
+</div>
 
 ## AST Class
 
 autumn.lang.Module
 
 ## Details
+
 + A module is a component of a compilation-unit that usually corresponds to a source file.
 + Regarding the module-type T created by a definition M:
   + T is a form of class-type.
@@ -49,4 +50,32 @@ autumn.lang.Module
     + <a href='https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html#wait()'>wait ()</a>
     + <a href='https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html#wait(long)'>wait (long)</a>
     + <a href='https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html#wait(long, int)'>wait (long, int)</a>
+
+## Static Checks
+
+[MISSING_MODULE_DIRECTIVE, A module must contain a module-directive., null]
+[DUPLICATE_MODULE_DIRECTIVE, A module can only contain one module-directive., null]
+[DUPLICATE_TYPE, No two types can share the same descriptor., null]
+[DUPLICATE_FUNCTION, No two functions in the same module can share their name and parameter-list descriptor., null]
+[NAME_CONFLICT, The name of a user-defined function cannot also be the name of a predefined [static](https://docs.oracle.com/javase/7/docs/api/java/lang/reflect/Modifier.html#STATIC) method., null]
+
+## Example
+
+**Code:**
+
+```plain
+module Main in examples;
+
+@Start
+defun main (args : String[]) : void
+{
+    F::println("Hello World!");
+}
+```
+
+**Output:**
+
+```plain
+Hello World!
+```
 

@@ -6,17 +6,18 @@ An assume-statement enforces an invariant.
 
 ## Syntax
 
-```plain
-<span class=\"keyword\">assume</span> <i>[condition](TextPage.html?page=Expression)</i> ;
-<hr class=&#92%22syntax-hr&#92%22>
-<span class=\"keyword\">assume</span> <i>[condition](TextPage.html?page=Expression)</i> <span class=\"keyword\">echo</span> <i>[message](TextPage.html?page=Expression)</i> ;
-```
+<div id="syntax">
+<span class=\"keyword\">assume</span> <i>[condition](TextPage.html?page=Expression)</i> ;<br>
+<hr class=&#92%22syntax-hr&#92%22><br>
+<span class=\"keyword\">assume</span> <i>[condition](TextPage.html?page=Expression)</i> <span class=\"keyword\">echo</span> <i>[message](TextPage.html?page=Expression)</i> ;<br>
+</div>
 
 ## AST Class
 
 autumn.lang.compiler.ast.nodes.AssertStatement
 
 ## Details
+
 + Unlike an [Assert Statement](ConstructPage.html?construct=Assert Statement), assume-statements can be disabled.
   + By default, assume-statements are enabled.
   + If assume-statements are disabled:
@@ -28,4 +29,154 @@ autumn.lang.compiler.ast.nodes.AssertStatement
 + If the <i>condition</i> evaluates to false, then an [AssumptionFailedException](https://mackenzie-high.github.io/autumn/javadoc/autumn/lang/exceptions/AssumptionFailedException.html) will be thrown.
 + If the <i>condition</i> evaluates to true, then execution simply continues onward.
 + The <i>condition</i> will be unboxed, if necessary.
+
+## Static Checks
+
+[EXPECTED_CONDITION, The type of <i><i>condition</i></i> must be assignable to type boolean., null]
+[EXPECTED_STRING, The type of <i>message</i> must be assignable to type java.lang.String., null]
+
+## Example 1
+
+**Code:**
+
+```plain
+module Main in examples;
+
+@Start
+defun main (args : String[]) : void
+{
+    Autumn::enableAssume();
+
+    Main::irs(-1000);
+    Main::irs(-2000);
+    Main::irs(-3000);
+
+    Main::irs(1000);
+    Main::irs(2000);
+    Main::irs(3000);
+
+    Autumn::disableAssume();
+
+    Main::irs(-1000);
+    Main::irs(-2000);
+    Main::irs(-3000);
+
+    Main::irs(1000);
+    Main::irs(2000);
+    Main::irs(3000);
+}
+
+defun irs (income : int) : void
+{
+    try
+    {
+        F::println("Income = " .. income);
+
+        val taxes = My::tax(income);
+
+        F::println("Taxes = " .. taxes);
+    }
+    catch (ex : AssumptionFailedException)
+    {
+        F::println("Error - Tax Computation Failed");
+    }
+
+    F::println();
+}
+
+defun tax (income : int) : int
+{
+    assume income >= 0;
+
+    # Flat Tax of 25%.
+    return income / 4; 
+}
+```
+
+**Output:**
+
+```plain
+Income = -1000
+Error - Tax Computation Failed
+
+Income = -2000
+Error - Tax Computation Failed
+
+Income = -3000
+Error - Tax Computation Failed
+
+Income = 1000
+Taxes = 250
+
+Income = 2000
+Taxes = 500
+
+Income = 3000
+Taxes = 750
+
+Income = -1000
+Taxes = -250
+
+Income = -2000
+Taxes = -500
+
+Income = -3000
+Taxes = -750
+
+Income = 1000
+Taxes = 250
+
+Income = 2000
+Taxes = 500
+
+Income = 3000
+Taxes = 750
+```
+
+## Example 2
+
+**Code:**
+
+```plain
+module Main in examples;
+
+@Start
+defun main (args : String[]) : void
+{
+    Autumn::enableAssume();
+
+    for (i = 1; i <= 9; i + 1)
+    {
+        try
+        {
+            My::oddSquare(i);
+        }
+        catch (ex : AssumptionFailedException)
+        {
+            F::println("Error - " .. ex.getMessage());
+        }
+    }
+}
+
+defun oddSquare (n : int) : void
+{
+    assume n % 2 != 0 echo (n .. " is even.");
+
+    F::println(n .. " => " .. n * n);
+}
+```
+
+**Output:**
+
+```plain
+1 => 1
+Error - 2 is even.
+3 => 9
+Error - 4 is even.
+5 => 25
+Error - 6 is even.
+7 => 49
+Error - 8 is even.
+9 => 81
+```
 

@@ -6,18 +6,19 @@ An enum-definition creates a new enum-type in the enclosing package.
 
 ## Syntax
 
-```plain
-@<i>annotation<sub>1</sub></i>
-@<i>annotation<sub>2</sub></i>
-@<i>annotation<sub>n</sub></i>
-<span class=\"keyword\">enum</span> <i>[name](ConstructPage.html?construct=Name)</i> ( <i>[constant](ConstructPage.html?construct=Name)<sub>1</sub></i> , ... , <i>[constant](ConstructPage.html?construct=Name)<sub>n</sub></i> ) ;
-```
+<div id="syntax">
+@<i>annotation<sub>1</sub></i><br>
+@<i>annotation<sub>2</sub></i><br>
+@<i>annotation<sub>n</sub></i><br>
+<span class=\"keyword\">enum</span> <i>[name](ConstructPage.html?construct=Name)</i> ( <i>[constant](ConstructPage.html?construct=Name)<sub>1</sub></i> , ... , <i>[constant](ConstructPage.html?construct=Name)<sub>n</sub></i> ) ;<br>
+</div>
 
 ## AST Class
 
 autumn.lang.compiler.ast.nodes.EnumDefinition
 
 ## Details
+
 + Regarding the enum-type T created by a definition:
   + T has the [EnumDefinition](https://mackenzie-high.github.io/autumn/javadoc/autumn/lang/internals/annotations/EnumDefinition.html) annotation applied directly to it.
   + T is both [public](https://docs.oracle.com/javase/7/docs/api/java/lang/reflect/Modifier.html#PUBLIC) and [final](https://docs.oracle.com/javase/7/docs/api/java/lang/reflect/Modifier.html#FINAL).
@@ -54,4 +55,142 @@ autumn.lang.compiler.ast.nodes.EnumDefinition
     + <a href='https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html#wait()'>wait ()</a>
     + <a href='https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html#wait(long)'>wait (long)</a>
     + <a href='https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html#wait(long, int)'>wait (long, int)</a>
+
+## Static Checks
+
+[DUPLICATE_ANNOTATION, Each annotation in an annotation-list must be uniquely typed., null]
+[DUPLICATE_TYPE, No two types can share the same descriptor., null]
+[DUPLICATE_CONSTANT, Enum constants cannot share their name., null]
+
+## Example 1
+
+**Code:**
+
+```plain
+module Main in examples;
+
+
+enum City ( Paris, London, Rome );
+
+
+@Start
+defun main (args : String[]) : void
+{
+    My::print((field City::Paris));
+
+    My::print((field City::London));
+
+    My::print((field City::Rome));
+}
+
+
+defun print (constant : Enum) : void
+{
+    F::println("Name: " .. constant.name());
+    F::println("Ordinal: " .. constant.ordinal());
+    F::println();
+}
+```
+
+**Output:**
+
+```plain
+Name: Paris
+Ordinal: 0
+
+Name: London
+Ordinal: 1
+
+Name: Rome
+Ordinal: 2
+```
+
+## Example 2
+
+**Code:**
+
+```plain
+module Main in examples;
+
+
+enum City ( Paris, London, Rome );
+
+
+@Start
+defun main (args : String[]) : void
+{
+    My::print(City::valueOf("Paris"));
+
+    My::print(City::valueOf("London"));
+
+    My::print(City::valueOf("Rome"));
+}
+
+
+defun print (constant : Enum) : void
+{
+    F::println("Name: " .. constant.name());
+    F::println("Ordinal: " .. constant.ordinal());
+    F::println();
+}
+```
+
+**Output:**
+
+```plain
+Name: Paris
+Ordinal: 0
+
+Name: London
+Ordinal: 1
+
+Name: Rome
+Ordinal: 2
+```
+
+## Example 3
+
+**Code:**
+
+```plain
+module Main in examples;
+
+
+enum City ( Paris, London, Rome );
+
+
+@Start
+defun main (args : String[]) : void
+{
+    val array = City::values();
+
+    for(i = 0; i < F::len(array); i + 1)
+    {
+        val constant = F::get(array, i) is Enum;
+
+        My::print(constant);
+    }
+}
+
+
+defun print (constant : Enum) : void
+{
+    F::println("Name: " .. constant.name());
+    F::println("Ordinal: " .. constant.ordinal());
+    F::println();
+}
+```
+
+**Output:**
+
+```plain
+Name: Paris
+Ordinal: 0
+
+Name: London
+Ordinal: 1
+
+Name: Rome
+Ordinal: 2
+```
 

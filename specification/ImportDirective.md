@@ -6,15 +6,16 @@ An import-directive simplifies access to a type within the enclosing module.
 
 ## Syntax
 
-```plain
-<span class=\"keyword\">import</span> <i>[type](ConstructPage.html?construct=TypeSpecifier)</i> ;
-```
+<div id="syntax">
+<span class=\"keyword\">import</span> <i>[type](ConstructPage.html?construct=TypeSpecifier)</i> ;<br>
+</div>
 
 ## AST Class
 
 autumn.lang.compiler.ast.nodes.ImportDirective
 
 ## Details
+
 + After importation, the imported type is accessible using only its simple-name.
 + Import Directives are processed by the compiler linearly from the top of a module to the bottom.
   + If an import directive <i>X</i> occurs after an import directive <i>Y</i> and <i>X</i> and <i>Y</i> collide, then <i>X</i> overrides <i>Y</i>.
@@ -119,4 +120,117 @@ autumn.lang.compiler.ast.nodes.ImportDirective
   + [Set](https://docs.oracle.com/javase/7/docs/api/java/util/Set.html)
   + [TreeMap](https://docs.oracle.com/javase/7/docs/api/java/util/TreeMap.html)
   + [TreeSet](https://docs.oracle.com/javase/7/docs/api/java/util/TreeSet.html)
+
+## Static Checks
+
+
+## Example 1
+
+**Code:**
+
+```plain
+module Main in examples;
+
+import java.util.zip.Deflater;
+
+@Start
+defun main (args : String[]) : void
+{
+    # Since the Deflator type was imported,
+    # it can be used using only its simple-name.
+    
+    val name = (class Deflater).getName();
+
+    F::println(name);
+}
+```
+
+**Output:**
+
+```plain
+java.util.zip.Deflater
+```
+
+## Example 2
+
+**Code:**
+
+```plain
+module Main in examples;
+
+@Start
+defun main (args : String[]) : void
+{
+    # This example shows that some types, 
+    # such as ArrayList, are already imported. 
+    
+    val chickens = new ArrayList();
+
+    chickens.add("Chicky Jr.");
+    chickens.add("Picky Jr.");
+    chickens.add("Sikorsky");
+    chickens.add("Lucky");
+
+    F::println(chickens);
+}
+```
+
+**Output:**
+
+```plain
+[Chicky Jr., Picky Jr., Sikorsky, Lucky]
+```
+
+## Example 3
+
+**Code:**
+
+```plain
+module Enterprise in starships;
+
+@Start
+defun main (args : String[]) : void
+{
+    # This example shows that the enclosing module's type
+    # is imported using both its simple-name and the name My.
+    
+    F::println((class My).getName());
+    F::println((class Enterprise).getName());
+}
+```
+
+**Output:**
+
+```plain
+starships.Enterprise
+starships.Enterprise
+```
+
+## Example 4
+
+**Code:**
+
+```plain
+module Main in execution;
+
+import java.util.List;
+
+tuple List ();
+
+@Start
+defun main (args : String[]) : void
+{
+    # This example shows that locally declared types override imports.
+
+    val name = (class List).getName();
+
+    F::println(name);
+}
+```
+
+**Output:**
+
+```plain
+execution.List
+```
 

@@ -6,17 +6,56 @@ A return-value statement causes execution to immediately exit the invocation of 
 
 ## Syntax
 
-```plain
-<span class=\"keyword\">return</span> <i>[value](TextPage.html?page=Expression)</i> ;
-```
+<div id="syntax">
+<span class=\"keyword\">return</span> <i>[value](TextPage.html?page=Expression)</i> ;<br>
+</div>
 
 ## AST Class
 
 autumn.lang.compiler.ast.nodes.ReturnValueStatement
 
 ## Details
+
 + A return-value statement cannot be used in a function whose return-type is void.
 + The <i>value</i> will be boxed, if necessary.
 + The <i>value</i> will be unboxed, if necessary.
 + The <i>value</i> will be coerced, if necessary.
+
+## Static Checks
+
+[VALUE_REQUIRED, The type of the <i>value</i> must be either a primitive-type or a reference-type., null]
+[WRONG_TYPE, The type of the <i>value</i> must be assignable to the <i>return-type</i> of the enclosing function., null]
+
+## Example
+
+**Code:**
+
+```plain
+module Main in program;
+
+@Start
+defun main (args : String[]) : void
+{
+    val x = My::cube(1);
+    val y = My::cube(2);
+    val z = My::cube(3);
+
+    F::println(x);
+    F::println(y);
+    F::println(z);
+}
+
+defun cube (n : int) : int
+{
+    return n * n * n; 
+}
+```
+
+**Output:**
+
+```plain
+1
+8
+27
+```
 

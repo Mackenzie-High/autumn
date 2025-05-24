@@ -6,15 +6,16 @@ This operator performs an arithmetic modulus operation.
 
 ## Syntax
 
-```plain
-<i>[left](TextPage.html?page=Expression)</i> &$37; <i>[right](TextPage.html?page=Expression)</i>
-```
+<div id="syntax">
+<i>[left](TextPage.html?page=Expression)</i> &$37; <i>[right](TextPage.html?page=Expression)</i><br>
+</div>
 
 ## AST Class
 
 autumn.lang.compiler.ast.nodes.ModuloOperation
 
 ## Details
+
 + Precedence: 2
 + Associativity: Left
 + Predefined Overloads:
@@ -35,4 +36,64 @@ autumn.lang.compiler.ast.nodes.ModuloOperation
   + The right-operand is evaluated second.
 + Return Type: Return-Type of Selected Overload
 + Return the result of the operation.
+
+## Static Checks
+
+[NO_SUCH_BINARY_OPERATOR, None of the overloads will accept the left-operand due to its type., null]
+[NO_SUCH_BINARY_OPERATOR, None of the overloads will accept the right-operand due to its type., null]
+
+## Example
+
+**Code:**
+
+```plain
+module Main in examples;
+
+@Start
+defun main (args : String[]) : void
+{
+    var value = null as Object;
+
+    value = 231C % 83C;
+    F::println("char = " .. value);
+
+    value = 32B % 3B;
+    F::println("byte = " .. value);
+
+    value = 32S % 3S;
+    F::println("short = " .. value);
+
+    value = 32 % 3;
+    F::println("int = " .. value);
+
+    value = 32L % 3L;
+    F::println("long = " .. value);
+
+    value = 32.0F % 3.0F;
+    F::println("float = " .. value);
+
+    value = 32.0 % 3.0;
+    F::println("double = " .. value);
+
+    value = F::big(32) % F::big(3);
+    F::println("BigInteger = " .. value);
+
+    value = F::big(32.0) % F::big(3.0);
+    F::println("BigDecimal = " .. value);
+}
+```
+
+**Output:**
+
+```plain
+char = A
+byte = 2
+short = 2
+int = 2
+long = 2
+float = 2.0
+double = 2.0
+BigInteger = 2.00000000000000000000000000000000
+BigDecimal = 2.00000000000000000000000000000000
+```
 

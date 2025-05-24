@@ -6,13 +6,44 @@ A doc-comment-line that is a single line in a doc-comment.
 
 ## Syntax
 
-```plain
-/// <i>text</i>
-```
+<div id="syntax">
+/// <i>text</i><br>
+</div>
 
 ## AST Class
 
 autumn.lang.compiler.ast.nodes.DocCommentLine
 
 ## Details
+
+
+## Static Checks
+
+
+## Example
+
+**Code:**
+
+```plain
+module Main in execution;
+
+/// This is an example of a doc-comment. 
+/// As you can see, each line of the comment starts with three slashes. 
+/// These comments will embedded in the program's Abstract-Syntax-Tree. 
+/// Thus, a documentation generator can obtain these comments. 
+/// As a result, doc-comments can be transformed into HTML, etc. 
+/// At least, that is the plan for a future version of Autumn.
+///  
+@Start
+defun main (args : String[]) : void
+{
+    return;
+}
+```
+
+**Output:**
+
+```plain
+
+```
 

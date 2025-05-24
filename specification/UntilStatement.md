@@ -6,20 +6,57 @@ An until-statement is a loop that iterates until a condition becomes true.
 
 ## Syntax
 
-```plain
-<span class=\"keyword\">until</span> ( <i>[condition](TextPage.html?page=Expression)</i> )
-{
-    <i>[body](TextPage.html?page=Statement)</i>
-}
-```
+<div id="syntax">
+<span class=\"keyword\">until</span> ( <i>[condition](TextPage.html?page=Expression)</i> )<br>
+{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<i>[body](TextPage.html?page=Statement)</i><br>
+}<br>
+</div>
 
 ## AST Class
 
 autumn.lang.compiler.ast.nodes.UntilStatement
 
 ## Details
+
 + The <i>condition</i> will be unboxed, if necessary.
 + The <i>body</i> of a loop can contain break-statements.
 + The <i>body</i> of a loop can contain continue-statements.
 + The <i>body</i> of a loop can contain redo-statements.
+
+## Static Checks
+
+[EXPECTED_CONDITION, The type of <i><i>condition</i></i> must be assignable to type boolean., null]
+
+## Example
+
+**Code:**
+
+```plain
+module Main in examples;
+
+@Start
+defun main (args : String[]) : void
+{
+    var i = 0;
+
+    until (i > 5)
+    {
+        F::println("i = " .. i);
+
+        i = i + 1;
+    }
+}
+```
+
+**Output:**
+
+```plain
+i = 0
+i = 1
+i = 2
+i = 3
+i = 4
+i = 5
+```
 

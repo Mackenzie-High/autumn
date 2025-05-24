@@ -6,15 +6,16 @@ This operator performs an arithmetic division operation.
 
 ## Syntax
 
-```plain
-<i>[left](TextPage.html?page=Expression)</i> / <i>[right](TextPage.html?page=Expression)</i>
-```
+<div id="syntax">
+<i>[left](TextPage.html?page=Expression)</i> / <i>[right](TextPage.html?page=Expression)</i><br>
+</div>
 
 ## AST Class
 
 autumn.lang.compiler.ast.nodes.DivideOperation
 
 ## Details
+
 + Precedence: 2
 + Associativity: Left
 + Predefined Overloads:
@@ -35,4 +36,68 @@ autumn.lang.compiler.ast.nodes.DivideOperation
   + The right-operand is evaluated second.
 + Return Type: Return-Type of Selected Overload
 + Return the result of the operation.
+
+## Static Checks
+
+[NO_SUCH_BINARY_OPERATOR, None of the overloads will accept the left-operand due to its type., null]
+[NO_SUCH_BINARY_OPERATOR, None of the overloads will accept the right-operand due to its type., null]
+
+## Example
+
+**Code:**
+
+```plain
+module Main in examples;
+
+@Start
+defun main (args : String[]) : void
+{
+    var value = null as Object;
+
+    value = 150C / 2C;
+    F::println("char = " .. value);
+
+    value = 10B / 2B;
+    F::println("byte = " .. value);
+
+    value = 10S / 2S;
+    F::println("short = " .. value);
+
+    value = 10 / 2;
+    F::println("int = " .. value);
+
+    value = 10L / 2L;
+    F::println("long = " .. value);
+
+    value = 10.0F / 2.0F;
+    F::println("float = " .. value);
+
+    value = 10.0 / 2.0;
+    F::println("double = " .. value);
+
+    value = F::big(10) / F::big(2);
+    F::println("BigInteger = " .. value);
+
+    value = F::big(10.0) / F::big(2.0);
+    F::println("BigDecimal = " .. value);
+
+    value = 64 / 8 / 4;
+    F::println("Associativity = " .. value);
+}
+```
+
+**Output:**
+
+```plain
+char = K
+byte = 5
+short = 5
+int = 5
+long = 5
+float = 5.0
+double = 5.0
+BigInteger = 5.00000000000000000000000000000000
+BigDecimal = 5.00000000000000000000000000000000
+Associativity = 2
+```
 

@@ -6,15 +6,16 @@ This operator performs an inequality comparison operation based on object identi
 
 ## Syntax
 
-```plain
-<i>[left](TextPage.html?page=Expression)</i> !== <i>[right](TextPage.html?page=Expression)</i>
-```
+<div id="syntax">
+<i>[left](TextPage.html?page=Expression)</i> !== <i>[right](TextPage.html?page=Expression)</i><br>
+</div>
 
 ## AST Class
 
 autumn.lang.compiler.ast.nodes.IdentityNotEqualsOperation
 
 ## Details
+
 + Precedence: 6
 + Associativity: Left
 + Both operands are greedily evaluated.
@@ -22,4 +23,37 @@ autumn.lang.compiler.ast.nodes.IdentityNotEqualsOperation
   + The right-operand is evaluated second.
 + Return Type: boolean
 + Return true when the identities of the two operands are unequal.
+
+## Static Checks
+
+[EXPECTED_REFERENCE_TYPE, The type of the left-operand must be a reference-type., null]
+[EXPECTED_REFERENCE_TYPE, The type of the right-operand must be a reference-type., null]
+
+## Example
+
+**Code:**
+
+```plain
+module Main in examples;
+
+@Start
+defun main (args : String[]) : void
+{
+    val object1 = new Object();
+    val object2 = new Object();
+
+    val case1 = object1 !== object1;
+    val case2 = object1 !== object2;
+
+    F::println(case1);
+    F::println(case2);
+}
+```
+
+**Output:**
+
+```plain
+false
+true
+```
 

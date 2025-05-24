@@ -6,14 +6,44 @@ An expression-statement facilitates the use of an expression as a statement.
 
 ## Syntax
 
-```plain
-<i>[expression](TextPage.html?page=Expression)</i> ;
-```
+<div id="syntax">
+<i>[expression](TextPage.html?page=Expression)</i> ;<br>
+</div>
 
 ## AST Class
 
 autumn.lang.compiler.ast.nodes.ExpressionStatement
 
 ## Details
+
 + The return-value, if any, of the expression is simply ignored.
+
+## Static Checks
+
+
+## Example
+
+**Code:**
+
+```plain
+module Main in examples;
+
+@Start
+defun main (args : String[]) : void
+{
+    # The following line is an expression used as a statement.
+    My::printNumber(17);
+}
+
+defun printNumber (x : int) : void
+{
+    F::println("x = " .. x);
+}
+```
+
+**Output:**
+
+```plain
+x = 17
+```
 

@@ -6,15 +6,16 @@ An as-operation converts a value to another type.
 
 ## Syntax
 
-```plain
-<i>value</i> <span class=\"keyword\">as</span> <i>[type](ConstructPage.html?construct=TypeSpecifier)</i>
-```
+<div id="syntax">
+<i>value</i> <span class=\"keyword\">as</span> <i>[type](ConstructPage.html?construct=TypeSpecifier)</i><br>
+</div>
 
 ## AST Class
 
 autumn.lang.compiler.ast.nodes.AsOperation
 
 ## Details
+
 + Precedence: 9
 + For every conversion provided by this operation, there is a similar conversion provided by the is-operation.
   + More formally, as-operations are symmetric to is-operations.
@@ -132,4 +133,47 @@ autumn.lang.compiler.ast.nodes.AsOperation
 + Return Type: <i>type</i>
 + Return the result of the predefined conversion or cast.
 + If the conversion is an unsuccessful cast, then null is returned.
+
+## Static Checks
+
+[NO_SUCH_TYPE, The type specified by <i>type</i> must exist., null]
+[INACCESSIBLE_TYPE, The type specified by <i>type</i> must be accessible., null]
+[IMPOSSIBLE_CONVERSION, The conversion must be either predefined or a valid cast., null]
+
+## Example
+
+**Code:**
+
+```plain
+module Main in examples;
+
+@Start
+defun main (args : String[]) : void
+{
+    # Case: Predefined Conversion (int ==> char). 
+    val value1 = 65 as char;
+
+    # Generalized Input
+    val input = "Mars" is Object;
+
+    # Case: Successful Cast
+    val value2 = input as CharSequence;
+
+    # Case: Unsuccessful Cast
+    val value3 = input as List;
+
+    # Print the results.
+    F::println("Case 1: " .. value1);
+    F::println("Case 2: " .. value2);
+    F::println("Case 3: " .. value3);
+}
+```
+
+**Output:**
+
+```plain
+Case 1: A
+Case 2: Mars
+Case 3: null
+```
 

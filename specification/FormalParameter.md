@@ -6,13 +6,53 @@ A formal-parameter is an explicitly typed variable declaration.
 
 ## Syntax
 
-```plain
-<i>[variable](ConstructPage.html?construct=Variable)</i> : <i>[type](ConstructPage.html?construct=TypeSpecifier)</i>
-```
+<div id="syntax">
+<i>[variable](ConstructPage.html?construct=Variable)</i> : <i>[type](ConstructPage.html?construct=TypeSpecifier)</i><br>
+</div>
 
 ## AST Class
 
 autumn.lang.compiler.ast.nodes.FormalParameter
 
 ## Details
+
+
+## Static Checks
+
+
+## Example
+
+**Code:**
+
+```plain
+module Main in execution;
+
+
+/// This function has a formal-parameter-list with three elements. 
+///
+defun f (x : int, 
+         y : int, 
+         z : int) : int
+{
+    return x * y + z;
+}
+
+@Start
+defun main (args : String[]) : void
+{
+    F::println(My::f(2, 3, 4));
+    F::println(My::f(2, 3, 5));
+    F::println(My::f(2, 3, 6));
+    F::println(My::f(2, 3, 7));
+}
+```
+
+**Output:**
+
+```plain
+10
+11
+12
+13
+```
 

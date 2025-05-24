@@ -6,15 +6,16 @@
 
 ## Syntax
 
-```plain
-once [value](TextPage.html?page=Expression)
-```
+<div id="syntax">
+once [value](TextPage.html?page=Expression)<br>
+</div>
 
 ## AST Class
 
 autumn.lang.compiler.ast.nodes.OnceExpression
 
 ## Details
+
 + Behavior:
   + During the first time the once-expression is evaluated:
     + Evaluate the <i>value</i>.
@@ -26,4 +27,7 @@ autumn.lang.compiler.ast.nodes.OnceExpression
   + In other words, the once-expression is synchronized.
 + The result obtained from the <i>value</i> may be void.
 + The result is stored for the lifetime of the enclosing module.
+
+## Static Checks
+
 

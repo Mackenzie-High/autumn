@@ -6,19 +6,49 @@ This operator performs a logical-NOT operation.
 
 ## Syntax
 
-```plain
-! <i>[value](TextPage.html?page=Expression)</i>
-```
+<div id="syntax">
+! <i>[value](TextPage.html?page=Expression)</i><br>
+</div>
 
 ## AST Class
 
 autumn.lang.compiler.ast.nodes.NotOperation
 
 ## Details
+
 + Precedence: 1
 + Predefined Overload:
   + (! boolean) &#8614; boolean
 + Unboxing will be performed, if necessary.
 + Return Type: boolean
 + Return the result of the operation.
+
+## Static Checks
+
+[NO_SUCH_UNARY_OPERATOR, The overload will not accept the operand due to its type., null]
+
+## Example
+
+**Code:**
+
+```plain
+module Main in examples;
+
+@Start
+defun main (args : String[]) : void
+{
+    val case1 = ! false;
+    val case2 = ! true;
+
+    F::println(case1);
+    F::println(case2);
+}
+```
+
+**Output:**
+
+```plain
+true
+false
+```
 

@@ -6,23 +6,24 @@ A tuple-definition creates a new tuple-type in the enclosing package.
 
 ## Syntax
 
-```plain
-@<i>annotation<sub>1</sub></i>
-@<i>annotation<sub>2</sub></i>
-@<i>annotation<sub>n</sub></i>
-<span class=\"keyword\">tuple</span> <i>[name](ConstructPage.html?construct=Name)</i> ( <i>[element](ConstructPage.html?construct=Element)<sub>1</sub></i> , ... , <i>[element](ConstructPage.html?construct=Element)<sub>n</sub></i> ) ;
-<hr class=&#92%22syntax-hr&#92%22>
-@<i>annotation<sub>1</sub></i>
-@<i>annotation<sub>2</sub></i>
-@<i>annotation<sub>n</sub></i>
-<span class=\"keyword\">tuple</span> <i>[name](ConstructPage.html?construct=Name)</i> ( <i>[element](ConstructPage.html?construct=Element)<sub>1</sub></i> , ... , <i>[element](ConstructPage.html?construct=Element)<sub>n</sub></i> ) <span class=\"keyword\">extends</span> <i>[super](ConstructPage.html?construct=TypeSpecifier)<sub>1</sub></i> & ... & <i>[super](ConstructPage.html?construct=TypeSpecifier)<sub>n</sub></i> ;
-```
+<div id="syntax">
+@<i>annotation<sub>1</sub></i><br>
+@<i>annotation<sub>2</sub></i><br>
+@<i>annotation<sub>n</sub></i><br>
+<span class=\"keyword\">tuple</span> <i>[name](ConstructPage.html?construct=Name)</i> ( <i>[element](ConstructPage.html?construct=Element)<sub>1</sub></i> , ... , <i>[element](ConstructPage.html?construct=Element)<sub>n</sub></i> ) ;<br>
+<hr class=&#92%22syntax-hr&#92%22><br>
+@<i>annotation<sub>1</sub></i><br>
+@<i>annotation<sub>2</sub></i><br>
+@<i>annotation<sub>n</sub></i><br>
+<span class=\"keyword\">tuple</span> <i>[name](ConstructPage.html?construct=Name)</i> ( <i>[element](ConstructPage.html?construct=Element)<sub>1</sub></i> , ... , <i>[element](ConstructPage.html?construct=Element)<sub>n</sub></i> ) <span class=\"keyword\">extends</span> <i>[super](ConstructPage.html?construct=TypeSpecifier)<sub>1</sub></i> & ... & <i>[super](ConstructPage.html?construct=TypeSpecifier)<sub>n</sub></i> ;<br>
+</div>
 
 ## AST Class
 
 autumn.lang.compiler.ast.nodes.TupleDefinition
 
 ## Details
+
 + A tuple is an immutable user-defined datatype.
 + Regarding the tuple-type T created by a definition:
   + T is form of class-type.
@@ -93,4 +94,191 @@ autumn.lang.compiler.ast.nodes.TupleDefinition
       + <a href='https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html#wait()'>wait ()</a>
       + <a href='https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html#wait(long)'>wait (long)</a>
       + <a href='https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html#wait(long, int)'>wait (long, int)</a>
+
+## Static Checks
+
+[DUPLICATE_ANNOTATION, Each annotation in an annotation-list must be uniquely typed., null]
+[DUPLICATE_ANNOTATION, Each annotation in an annotation-list must be uniquely typed., null]
+[DUPLICATE_TYPE, No two types can share the same descriptor., null]
+[DUPLICATE_ELEMENT, The <i>name</i> of each element must be unique within the enclosing definition., null]
+[NO_SUCH_TYPE, The type specified by <i>element.type</i> must exist., null]
+[INACCESSIBLE_TYPE, The type specified by <i>element.type</i> must be accessible., null]
+[EXPECTED_VARIABLE_TYPE, The <i>type</i> of each <i>element</i> must be a variable-type., null]
+[RETYPED_ELEMENT, The type of an element must be the same in all the declarations of the element., null]
+[TOTAL_ORDERING_REQUIRED, A tuple must explicitly declare all of its elements, including inherited elements., null]
+[NAME_CONFLICT, The name of an element cannot also be the name of an inherited method., null]
+
+## Example 1
+
+**Code:**
+
+```plain
+module Main in execution;
+
+tuple City (name : String, 
+            country : String);
+
+@Start
+defun main (args : String[]) : void
+{
+    val x = new City ("Paris", "France");
+    
+    val y = x.country ("United States");
+
+    val z = y.country ("France");
+
+    F::println ("X = " .. x);
+    F::println ("X.name = " .. x.name());
+    F::println ("X.country = " .. x.country());
+    F::println ();
+
+    F::println ("Y = " .. y);
+    F::println ("Y.name = " .. y.name());
+    F::println ("Y.country = " .. y.country());
+    F::println ();
+
+    F::println ("Z = " .. z);
+    F::println ("Z.name = " .. z.name());
+    F::println ("Z.country = " .. z.country());
+    F::println ();
+
+    F::println ("Value Equality: " .. (x == z));
+    F::println ("Identity Equality: " .. (x === z));
+}
+```
+
+**Output:**
+
+```plain
+X = (Paris, France)
+X.name = Paris
+X.country = France
+
+Y = (Paris, United States)
+Y.name = Paris
+Y.country = United States
+
+Z = (Paris, France)
+Z.name = Paris
+Z.country = France
+
+Value Equality: true
+Identity Equality: false
+```
+
+## Example 2
+
+**Code:**
+
+```plain
+module Main in execution;
+
+tuple City (name : String, 
+            country : String);
+
+@Start
+defun main (args : String[]) : void
+{
+    val city = new City ("Paris", "France");
+    
+    F::println ("Keys = " .. city.keys());
+    F::println ();
+    F::println ("Values = " .. city.values());
+    F::println ();
+    F::println ("Size = " .. city.size());
+    F::println ();
+    F::println ("Tuple? = " .. city.isTuple());
+    F::println ();
+    F::println ("Struct? = " .. city.isStruct());
+    F::println ();
+
+    foreach (value : String in city)
+    {
+        F::println ("Value = " .. value);
+    }
+}
+```
+
+**Output:**
+
+```plain
+Keys = [name, country]
+
+Values = [Paris, France]
+
+Size = 2
+
+Tuple? = true
+
+Struct? = false
+
+Value = Paris
+Value = France
+```
+
+## Example 3
+
+**Code:**
+
+```plain
+module Main in execution;
+
+design Taxable (income : int);
+
+design Citizen (id : int);
+
+tuple Person (name : String, 
+              id : int, 
+              income : int) extends Citizen & Taxable;
+
+@Start
+defun main (args : String[]) : void
+{
+    val anna = new Person ("Anna", 7_433_9_7452, 25_000);
+    val emma = new Person ("Emma", 9_214_7_6357, 50_000);
+    val kate = new Person ("Kate", 8_123_3_8721, 10_000);
+
+    My::printTax(anna);
+    My::printTax(emma);
+    My::printTax(kate);
+}
+
+defun printTax (person : Person) : void
+{
+    val name = person.name();
+
+    val id = person.id();
+
+    val tax = My::computeTax(person);
+
+    F::println("Name = " .. name);
+    F::println("ID   = " .. id);
+    F::println("Tax  = " .. tax);
+    F::println();
+}
+
+defun computeTax (taxable : Taxable) : int
+{
+    val income = taxable.income();
+
+    # 25% Tax Rate
+    return income / 4; 
+}
+```
+
+**Output:**
+
+```plain
+Name = Anna
+ID   = 743397452
+Tax  = 6250
+
+Name = Emma
+ID   = 921476357
+Tax  = 12500
+
+Name = Kate
+ID   = 812338721
+Tax  = 2500
+```
 

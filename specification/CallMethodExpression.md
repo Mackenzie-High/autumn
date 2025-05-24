@@ -6,17 +6,18 @@ A call-expression performs an invocation of an instance method.
 
 ## Syntax
 
-```plain
-<span class=\"keyword\">call</span> <i>[owner](TextPage.html?page=Expression)</i>.<i>[name](ConstructPage.html?construct=Name)</i> ( <i>[argument](TextPage.html?page=Expression)<sub>1</sub></i> , ... , <i>[argument](TextPage.html?page=Expression)<sub>n</sub></i> )
-<hr class=&#92%22syntax-hr&#92%22>
-<i>[owner](TextPage.html?page=Expression)</i>.<i>[name](ConstructPage.html?construct=Name)</i> ( <i>[argument](TextPage.html?page=Expression)<sub>1</sub></i> , ... , <i>[argument](TextPage.html?page=Expression)<sub>n</sub></i> )
-```
+<div id="syntax">
+<span class=\"keyword\">call</span> <i>[owner](TextPage.html?page=Expression)</i>.<i>[name](ConstructPage.html?construct=Name)</i> ( <i>[argument](TextPage.html?page=Expression)<sub>1</sub></i> , ... , <i>[argument](TextPage.html?page=Expression)<sub>n</sub></i> )<br>
+<hr class=&#92%22syntax-hr&#92%22><br>
+<i>[owner](TextPage.html?page=Expression)</i>.<i>[name](ConstructPage.html?construct=Name)</i> ( <i>[argument](TextPage.html?page=Expression)<sub>1</sub></i> , ... , <i>[argument](TextPage.html?page=Expression)<sub>n</sub></i> )<br>
+</div>
 
 ## AST Class
 
 autumn.lang.compiler.ast.nodes.CallMethodExpression
 
 ## Details
+
 + The method overload will be selected using the [Instance Method Resolution Algorithm](TextPage.html?page=Resolution).
 + The method overload is selected at compile-time.
 + Boxing of the arguments will be performed, when necessary.
@@ -25,4 +26,63 @@ autumn.lang.compiler.ast.nodes.CallMethodExpression
 + Runtime Check: If <i>owner</i> is null, then a [NullPointerException](https://docs.oracle.com/javase/7/docs/api/java/lang/NullPointerException.html) will be thrown.
 + Return Type: [return-type of the selected method overload]
 + Return the value returned by the invoked method.
+
+## Static Checks
+
+[EXPECTED_DECLARED_TYPE, The type of <i>owner</i> must be a declared-type., null]
+[NO_SUCH_METHOD, No acceptable method overload was found., null]
+
+## Example 1
+
+**Code:**
+
+```plain
+module Main in examples;
+
+@Start
+defun main (args : String[]) : void
+{
+    # Create an object.
+    val sentence = "Hello Alien World";
+
+    # Invoke an instance method. 
+    val word = sentence.substring(6, 11);
+
+    # Print the result.
+    F::println("Type of World: " .. word);
+}
+```
+
+**Output:**
+
+```plain
+Type of World: Alien
+```
+
+## Example 2
+
+**Code:**
+
+```plain
+module Main in examples;
+
+@Start
+defun main (args : String[]) : void
+{
+    # Create an object.
+    val sentence = "Hello Home World";
+
+    # Invoke an instance method. 
+    val word = call sentence.substring(6, 10);
+
+    # Print the result.
+    F::println("Type of World: " .. word);
+}
+```
+
+**Output:**
+
+```plain
+Type of World: Home
+```
 

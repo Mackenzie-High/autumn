@@ -6,18 +6,60 @@ Comments allow programmers to leave notes inside of code.
 
 ## Syntax
 
-```plain
-**//&nbsp;&nbsp;&nbsp;**<i>body of single-line comment</i>
-<hr class=&#92%22syntax-hr&#92%22>
-**#&nbsp;&nbsp;&nbsp;**<i>body of single-line comment</i>
-<hr class=&#92%22syntax-hr&#92%22>
-**/*&nbsp;&nbsp;&nbsp;**<i>body of multi-line comment</i>**&nbsp;&nbsp;&nbsp;*/**
-```
+<div id="syntax">
+**//&nbsp;&nbsp;&nbsp;**<i>body of single-line comment</i><br>
+<hr class=&#92%22syntax-hr&#92%22><br>
+**#&nbsp;&nbsp;&nbsp;**<i>body of single-line comment</i><br>
+<hr class=&#92%22syntax-hr&#92%22><br>
+**/*&nbsp;&nbsp;&nbsp;**<i>body of multi-line comment</i>**&nbsp;&nbsp;&nbsp;*/**<br>
+</div>
 
 ## AST Class
 
 null
 
 ## Details
+
 + Comments are simply ignored by the compiler.
+
+## Static Checks
+
+
+## Example
+
+**Code:**
+
+```plain
+module Main in execution;
+
+
+@Start
+defun main (args : String[]) : void
+{
+    # This is a single-line comment. 
+    nop;
+
+    // This is also a single-line comment. 
+    nop;
+
+    /* This is a multi-line comment. */
+    nop;
+
+    /*
+     This is also a multi-line comment, but is badly formatted. 
+     */
+    nop;
+
+    /*
+     * This is a nicely formatted multi-line comment. 
+     */
+    nop;
+}
+```
+
+**Output:**
+
+```plain
+
+```
 

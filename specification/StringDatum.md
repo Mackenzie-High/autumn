@@ -6,21 +6,22 @@ A string-datum is a literal text value.
 
 ## Syntax
 
-```plain
-%22<i>string of characters</i>%22
-<hr class=&#92%22syntax-hr&#92%22>
-@ %22<i>string of characters</i>%22
-<hr class=&#92%22syntax-hr&#92%22>
-'''<i>string of characters</i>'''
-<hr class=&#92%22syntax-hr&#92%22>
-@ '''<i>string of characters</i>'''
-```
+<div id="syntax">
+%22<i>string of characters</i>%22<br>
+<hr class=&#92%22syntax-hr&#92%22><br>
+@ %22<i>string of characters</i>%22<br>
+<hr class=&#92%22syntax-hr&#92%22><br>
+'''<i>string of characters</i>'''<br>
+<hr class=&#92%22syntax-hr&#92%22><br>
+@ '''<i>string of characters</i>'''<br>
+</div>
 
 ## AST Class
 
 autumn.lang.compiler.ast.nodes.StringDatum
 
 ## Details
+
 + Escape Sequences
   + Tab: &#92;t
   + Backspace: &#92;b
@@ -37,4 +38,39 @@ autumn.lang.compiler.ast.nodes.StringDatum
 + String-literals can span multiple lines.
 + Return Type: [String](https://docs.oracle.com/javase/7/docs/api/java/lang/String.html)
 + Return the value of the constant.
+
+## Static Checks
+
+[MALFORMED_STRING_LITERAL, A non-verbatim string cannot contain malformed escape-sequences., null]
+
+## Example
+
+**Code:**
+
+```plain
+module Main in examples;
+
+tuple Pet (type : String, name : String);
+
+@Start
+defun main (args : String[]) : void
+{
+    val string1 = "C:\\planets\\Mercury.obj";
+    val string2 = @"C:\planets\Venus.obj";
+
+    val string3 = '''C:\\planets\\Earth.obj''';
+    val string4 = @'''C:\planets\Mars.obj''';
+
+    F::printlns([string1, string2, string3, string4]);
+}
+```
+
+**Output:**
+
+```plain
+C:\planets\Mercury.obj
+C:\planets\Venus.obj
+C:\planets\Earth.obj
+C:\planets\Mars.obj
+```
 
