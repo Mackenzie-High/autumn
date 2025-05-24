@@ -8,7 +8,7 @@ len (anno : [Annotation](https://docs.oracle.com/javase/7/docs/api/java/lang/ann
 
 ## Formals
 
-+ Parameter anno contains the values to count, if any.
++ Parameter <i>anno</i> contains the values to count, if any.
 
 ## Returns
 

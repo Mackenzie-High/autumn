@@ -8,7 +8,7 @@ parseShort (value : [String](https://docs.oracle.com/javase/7/docs/api/java/lang
 
 ## Formals
 
-+ Parameter value is the string representation of the value.
++ Parameter <i>value</i> is the string representation of the value.
 
 ## Returns
 
