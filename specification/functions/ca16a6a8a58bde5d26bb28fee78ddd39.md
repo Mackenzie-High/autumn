@@ -23,12 +23,35 @@ Return an unmodifiable list containing the names of the entries in the <i>input<
 **Source Code:**
 
 ```plain
-module Main in execution;%0A%0Atuple Capital (city : String, country : String);%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    val capital = new Capital(%22Ottawa%22, %22Canada%22);%0A%0A    val result = F::iter(capital);%0A%0A    foreach (key : String in result)%0A    {%0A        val value = F::get(capital, key);%0A%0A        F::println(%22Key: %22 .. key);%0A        F::println(%22Value: %22 .. value);%0A        F::println();%0A    }%0A}
+module Main in execution;
+
+tuple Capital (city : String, country : String);
+
+@Start
+defun main (args : String[]) : void
+{
+    val capital = new Capital("Ottawa", "Canada");
+
+    val result = F::iter(capital);
+
+    foreach (key : String in result)
+    {
+        val value = F::get(capital, key);
+
+        F::println("Key: " .. key);
+        F::println("Value: " .. value);
+        F::println();
+    }
+}
 ```
 
 **Output:**
 
 ```plain
-Key: city%0AValue: Ottawa%0A%0AKey: country%0AValue: Canada
+Key: city
+Value: Ottawa
+
+Key: country
+Value: Canada
 ```
 

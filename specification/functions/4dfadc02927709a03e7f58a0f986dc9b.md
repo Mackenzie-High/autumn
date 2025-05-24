@@ -24,12 +24,44 @@ Return the <i>value</i> as a number.
 **Source Code:**
 
 ```plain
-module Main in execution;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    F::println(F::parseBoolean(%22true%22));%0A    F::println(F::parseBoolean(%22false%22));%0A%0A    F::println(F::parseByte(%2211%22));%0A%0A    F::println(F::parseShort(%2213%22));%0A%0A    F::println(F::parseInt(%2215%22));%0A%0A    F::println(F::parseLong(%2217%22));%0A%0A    F::println(F::parseFloat(%2219%22));%0A%0A    F::println(F::parseDouble(%2221%22));%0A%0A    F::println(F::parseBigInteger(%2223%22));%0A%0A    F::println(F::parseBigDecimal(%2227%22));%0A}
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    F::println(F::parseBoolean("true"));
+    F::println(F::parseBoolean("false"));
+
+    F::println(F::parseByte("11"));
+
+    F::println(F::parseShort("13"));
+
+    F::println(F::parseInt("15"));
+
+    F::println(F::parseLong("17"));
+
+    F::println(F::parseFloat("19"));
+
+    F::println(F::parseDouble("21"));
+
+    F::println(F::parseBigInteger("23"));
+
+    F::println(F::parseBigDecimal("27"));
+}
 ```
 
 **Output:**
 
 ```plain
-true%0Afalse%0A11%0A13%0A15%0A17%0A19.0%0A21.0%0A23%0A27.00000000000000000000000000000000
+true
+false
+11
+13
+15
+17
+19.0
+21.0
+23
+27.00000000000000000000000000000000
 ```
 

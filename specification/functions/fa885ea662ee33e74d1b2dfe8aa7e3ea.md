@@ -23,7 +23,20 @@ Return the number of values that are stored in <i>anno</i>.
 **Source Code:**
 
 ```plain
-@Authors(%22Herman%22, %22Lillian%22, %22Grandpa%22)%0Amodule Main in execution;%0A%0Aannotation Authors;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    val anno = F::findAnnotation(class Main, class Authors);%0A%0A    val size = F::len(anno);%0A%0A    F::println(%22Size = %22 .. size);%0A}
+@Authors("Herman", "Lillian", "Grandpa")
+module Main in execution;
+
+annotation Authors;
+
+@Start
+defun main (args : String[]) : void
+{
+    val anno = F::findAnnotation(class Main, class Authors);
+
+    val size = F::len(anno);
+
+    F::println("Size = " .. size);
+}
 ```
 
 **Output:**

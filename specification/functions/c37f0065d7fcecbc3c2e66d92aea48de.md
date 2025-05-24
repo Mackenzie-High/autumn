@@ -25,12 +25,26 @@ Return the value stored in the <i>record</i> entry that is identified by the giv
 **Source Code:**
 
 ```plain
-module Main in execution;%0A%0Atuple Volcano (name : String, range : String, elevation : int);%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    val volcano = new Volcano(%22Mount Baker%22, %22Cascade%22, 10_781);%0A%0A    F::println(%22Name: %22 .. F::get(volcano, 0));%0A    F::println(%22Range: %22 .. F::get(volcano, 1));%0A    F::println(%22Elevation: %22 .. F::get(volcano, 2));%0A}
+module Main in execution;
+
+tuple Volcano (name : String, range : String, elevation : int);
+
+@Start
+defun main (args : String[]) : void
+{
+    val volcano = new Volcano("Mount Baker", "Cascade", 10_781);
+
+    F::println("Name: " .. F::get(volcano, 0));
+    F::println("Range: " .. F::get(volcano, 1));
+    F::println("Elevation: " .. F::get(volcano, 2));
+}
 ```
 
 **Output:**
 
 ```plain
-Name: Mount Baker%0ARange: Cascade%0AElevation: 10781
+Name: Mount Baker
+Range: Cascade
+Elevation: 10781
 ```
 

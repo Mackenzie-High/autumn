@@ -37,12 +37,53 @@ Return the default value of the <i>type</i>.
 **Source Code:**
 
 ```plain
-module Main in execution;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    val value00 = F::defaultValueOf(class boolean);%0A    val value01 = F::defaultValueOf(class char);%0A    val value02 = F::defaultValueOf(class byte);%0A    val value03 = F::defaultValueOf(class short);%0A    val value04 = F::defaultValueOf(class int);%0A    val value05 = F::defaultValueOf(class long);%0A    val value06 = F::defaultValueOf(class float);%0A    val value07 = F::defaultValueOf(class double);%0A    val value08 = F::defaultValueOf(class BigInteger);%0A    val value09 = F::defaultValueOf(class BigDecimal);%0A    val value10 = F::defaultValueOf(class String);%0A    val value11 = F::defaultValueOf(class Object);%0A%0A    F::println(value00);%0A    F::println(value01 as Integer);%0A    F::println(value02);%0A    F::println(value03);%0A    F::println(value04);%0A    F::println(value05);%0A    F::println(value06);%0A    F::println(value07);%0A    F::println(value08);%0A    F::println(value09);%0A    F::println(value10);%0A    F::println(value11);%0A}
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    val value00 = F::defaultValueOf(class boolean);
+    val value01 = F::defaultValueOf(class char);
+    val value02 = F::defaultValueOf(class byte);
+    val value03 = F::defaultValueOf(class short);
+    val value04 = F::defaultValueOf(class int);
+    val value05 = F::defaultValueOf(class long);
+    val value06 = F::defaultValueOf(class float);
+    val value07 = F::defaultValueOf(class double);
+    val value08 = F::defaultValueOf(class BigInteger);
+    val value09 = F::defaultValueOf(class BigDecimal);
+    val value10 = F::defaultValueOf(class String);
+    val value11 = F::defaultValueOf(class Object);
+
+    F::println(value00);
+    F::println(value01 as Integer);
+    F::println(value02);
+    F::println(value03);
+    F::println(value04);
+    F::println(value05);
+    F::println(value06);
+    F::println(value07);
+    F::println(value08);
+    F::println(value09);
+    F::println(value10);
+    F::println(value11);
+}
 ```
 
 **Output:**
 
 ```plain
-false%0Anull%0A0%0A0%0A0%0A0%0A0.0%0A0.0%0Anull%0Anull%0Anull%0Anull
+false
+null
+0
+0
+0
+0
+0.0
+0.0
+null
+null
+null
+null
 ```
 

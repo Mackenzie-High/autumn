@@ -23,12 +23,30 @@ Return an unmodifiable view of the <i>original</i>.
 **Source Code:**
 
 ```plain
-module Main in execution;%0A%0A@Start%0Adefun main (args : String[]) : void%0A{%0A    val original = new HashMap();%0A%0A    original.put(100, 13);%0A    original.put(200, 17);%0A%0A    val derived = F::unmodifiable(original is Map);%0A%0A    original.put(300, 19);%0A    original.put(400, 21);%0A%0A    F::println(original);%0A    F::println(derived);%0A}
+module Main in execution;
+
+@Start
+defun main (args : String[]) : void
+{
+    val original = new HashMap();
+
+    original.put(100, 13);
+    original.put(200, 17);
+
+    val derived = F::unmodifiable(original is Map);
+
+    original.put(300, 19);
+    original.put(400, 21);
+
+    F::println(original);
+    F::println(derived);
+}
 ```
 
 **Output:**
 
 ```plain
-{100=13, 200=17, 400=21, 300=19}%0A{100=13, 200=17, 400=21, 300=19}
+{100=13, 200=17, 400=21, 300=19}
+{100=13, 200=17, 400=21, 300=19}
 ```
 
