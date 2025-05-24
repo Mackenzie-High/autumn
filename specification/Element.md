@@ -29,9 +29,3 @@ tuple Triple (element1 : Object,
               element3 : Object);
 ```
 
-**Output:**
-
-```plain
-
-```
-

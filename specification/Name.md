@@ -43,9 +43,3 @@ tuple Big_Bad_Wolf ();
 tuple ThreeLittlePigs ();
 ```
 
-**Output:**
-
-```plain
-
-```
-

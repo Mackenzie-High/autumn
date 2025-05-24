@@ -55,9 +55,3 @@ defun main (args : String[]) : void
 }
 ```
 
-**Output:**
-
-```plain
-
-```
-
