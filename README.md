@@ -1,6 +1,6 @@
 + **Standard Library**
     + [API Documentation](https://www.mackenziehigh.com/autumn/javadoc/index.html)
-    + [Special Functions](https://www.mackenziehigh.me/autumn/FunctionIndexPage.html)
+    + [Special Functions](specification/functions/README.md)
 + **Language Constructs**
     + [Module](specification/Module.md)
     + **Directives**
