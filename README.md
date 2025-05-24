@@ -134,4 +134,4 @@
     + [Accessibility](specification/Accessibility.md)
     + [Resolution](specification/Resolution.md)
     + [Variable Scoping](specification/Variable_Scoping.md)
-    + [Examples of Type Errors](TypeCheckingExamplesIndexPage.html)
+    + [Compiler Warning Examples](specification/CompilerWarningExamples.md)
