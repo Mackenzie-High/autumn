@@ -8,8 +8,8 @@ get (record : [Record](https://mackenzie-high.github.io/autumn/javadoc/autumn/la
 
 ## Formals
 
-+ Parameter recordcontains the entry.
-+ Parameter indexis the index of the entry.
++ Parameter record contains the entry.
++ Parameter index is the index of the entry.
 
 ## Returns
 

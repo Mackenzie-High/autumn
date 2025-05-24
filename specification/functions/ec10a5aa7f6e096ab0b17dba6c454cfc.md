@@ -8,7 +8,7 @@ defaultValueOf (type : [Class](https://docs.oracle.com/javase/7/docs/api/java/la
 
 ## Formals
 
-+ Parameter typeis the type whose default value will be returned.
++ Parameter type is the type whose default value will be returned.
 
 ## Returns
 

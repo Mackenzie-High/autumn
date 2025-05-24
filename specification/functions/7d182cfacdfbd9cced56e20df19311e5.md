@@ -8,8 +8,8 @@ get (array : float[], index : int) : float
 
 ## Formals
 
-+ Parameter arrayis the array that contains the element.
-+ Parameter indexis the location of the element in the array.
++ Parameter array is the array that contains the element.
++ Parameter index is the location of the element in the array.
 
 ## Returns
 

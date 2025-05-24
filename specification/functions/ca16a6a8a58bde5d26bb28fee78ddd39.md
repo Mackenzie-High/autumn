@@ -8,7 +8,7 @@ iter (input : [Record](https://mackenzie-high.github.io/autumn/javadoc/autumn/la
 
 ## Formals
 
-+ Parameter inputis the record itself.
++ Parameter input is the record itself.
 
 ## Returns
 
