@@ -64,21 +64,3 @@ defun main (args : String[]) : void
 
 ```
 
-<style>
-    .syntax
-    {
-        font-family: monospace, monospace;
-    }
-
-    .keyword
-    {
-        color: blue;
-        font-weight: bold;
-    }
-
-    .synvar
-    {
-        font-style: italic;
-    }
-</style>
-

@@ -7,9 +7,9 @@ A int-datum is a literal int value.
 ## Syntax
 
 <div class="syntax">
-digits</i><br>
-<hr class=&#92%22syntax-hr&#92%22><br>
-**-**digits</i><br>
+<i>digits</i><br>
+<hr><br>
+**-**<i>digits</i><br>
 </div>
 
 ## AST Class
@@ -49,22 +49,4 @@ defun main (args : String[]) : void
 ```plain
 19
 ```
-
-<style>
-    .syntax
-    {
-        font-family: monospace, monospace;
-    }
-
-    .keyword
-    {
-        color: blue;
-        font-weight: bold;
-    }
-
-    .synvar
-    {
-        font-style: italic;
-    }
-</style>
 

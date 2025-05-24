@@ -7,21 +7,21 @@ A try-statement provides a mechanism for catching exceptions.
 ## Syntax
 
 <div class="syntax">
-<span class="keyword">try</span><br>
+<b>try</b><br>
 {<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="Statement.md">body</a></i><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<i><a href="Statement.md">body</a></i><br>
 }<br>
-<span class="keyword">catch</span> ( <a class="synvar" href="Variable.md">variable</a><sub>1</sub></i> : <a class="synvar" href="TypeSpecifier.md">type</a><sub>1</sub></i> )<sub>1</sub><br>
+<b>catch</b> ( <i><a href="Variable.md">variable</a><sub>1</sub></i> : <i><a href="TypeSpecifier.md">type</a><sub>1</sub></i> )<sub>1</sub><br>
 {<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="Statement.md">handler</a><sub>1</sub></i><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<i><a href="Statement.md">handler</a><sub>1</sub></i><br>
 }<br>
-<span class="keyword">catch</span> ( <a class="synvar" href="Variable.md">variable</a><sub>2</sub></i> : <a class="synvar" href="TypeSpecifier.md">type</a><sub>2</sub></i> )<sub>2</sub><br>
+<b>catch</b> ( <i><a href="Variable.md">variable</a><sub>2</sub></i> : <i><a href="TypeSpecifier.md">type</a><sub>2</sub></i> )<sub>2</sub><br>
 {<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="Statement.md">handler</a><sub>2</sub></i><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<i><a href="Statement.md">handler</a><sub>2</sub></i><br>
 }<br>
-<span class="keyword">catch</span> ( <a class="synvar" href="Variable.md">variable</a><sub>n</sub></i> : <a class="synvar" href="TypeSpecifier.md">type</a><sub>n</sub></i> )<sub>n</sub><br>
+<b>catch</b> ( <i><a href="Variable.md">variable</a><sub>n</sub></i> : <i><a href="TypeSpecifier.md">type</a><sub>n</sub></i> )<sub>n</sub><br>
 {<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="Statement.md">handler</a><sub>n</sub></i><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<i><a href="Statement.md">handler</a><sub>n</sub></i><br>
 }<br>
 </div>
 
@@ -31,7 +31,7 @@ autumn.lang.compiler.ast.nodes.TryCatchStatement
 
 ## Details
 
-+ Exceptions can be thrown using a <a class="synvar" href="Throw_Statement.md">Throw Statement</a>, <a class="synvar" href="Assert_Statement.md">Assert Statement</a>, etc.
++ Exceptions can be thrown using a <a href="Throw_Statement.md">Throw Statement</a>, <a href="Assert_Statement.md">Assert Statement</a>, etc.
 + At least one handler is syntactically required.
 + An exception will only be caught when an applicable handler is available.
   + A handler is applicable when the exception's type is a subtype of the handler's <i>type</i>.
@@ -293,22 +293,4 @@ Pander for votes.
 Day 5
 Pander for votes.
 ```
-
-<style>
-    .syntax
-    {
-        font-family: monospace, monospace;
-    }
-
-    .keyword
-    {
-        color: blue;
-        font-weight: bold;
-    }
-
-    .synvar
-    {
-        font-style: italic;
-    }
-</style>
 

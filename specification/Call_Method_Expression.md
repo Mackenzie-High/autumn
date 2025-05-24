@@ -7,9 +7,9 @@ A call-expression performs an invocation of an instance method.
 ## Syntax
 
 <div class="syntax">
-<span class="keyword">call</span> <a href="Expression.md">owner</a></i>.<a class="synvar" href="Name.md">name</a></i> ( <a href="Expression.md">argument</a><sub>1</sub></i> , ... , <a href="Expression.md">argument</a><sub>n</sub></i> )<br>
-<hr class=&#92%22syntax-hr&#92%22><br>
-<a href="Expression.md">owner</a></i>.<a class="synvar" href="Name.md">name</a></i> ( <a href="Expression.md">argument</a><sub>1</sub></i> , ... , <a href="Expression.md">argument</a><sub>n</sub></i> )<br>
+<b>call</b> <i><a href="Expression.md">owner</a></i>.<i><a href="Name.md">name</a></i> ( <i><a href="Expression.md">argument</a><sub>1</sub></i> , ... , <i><a href="Expression.md">argument</a><sub>n</sub></i> )<br>
+<hr><br>
+<i><a href="Expression.md">owner</a></i>.<i><a href="Name.md">name</a></i> ( <i><a href="Expression.md">argument</a><sub>1</sub></i> , ... , <i><a href="Expression.md">argument</a><sub>n</sub></i> )<br>
 </div>
 
 ## AST Class
@@ -85,22 +85,4 @@ defun main (args : String[]) : void
 ```plain
 Type of World: Home
 ```
-
-<style>
-    .syntax
-    {
-        font-family: monospace, monospace;
-    }
-
-    .keyword
-    {
-        color: blue;
-        font-weight: bold;
-    }
-
-    .synvar
-    {
-        font-style: italic;
-    }
-</style>
 

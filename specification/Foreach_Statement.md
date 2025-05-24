@@ -7,9 +7,9 @@ A foreach-statement is a loop that iterates over the elements in an iterable ent
 ## Syntax
 
 <div class="syntax">
-<span class="keyword">foreach</span> ( <a class="synvar" href="Variable.md">assignee</a></i> : <a class="synvar" href="TypeSpecifier.md">type</a></i> <span class="keyword">in</span> <a href="Expression.md">iterable</a></i> )<br>
+<b>foreach</b> ( <i><a href="Variable.md">assignee</a></i> : <i><a href="TypeSpecifier.md">type</a></i> <b>in</b> <i><a href="Expression.md">iterable</a></i> )<br>
 {<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="Statement.md">body</a></i><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<i><a href="Statement.md">body</a></i><br>
 }<br>
 </div>
 
@@ -63,22 +63,4 @@ Pet Name = Fluffy
 Pet Name = Eyeball
 Pet Name = Molly
 ```
-
-<style>
-    .syntax
-    {
-        font-family: monospace, monospace;
-    }
-
-    .keyword
-    {
-        color: blue;
-        font-weight: bold;
-    }
-
-    .synvar
-    {
-        font-style: italic;
-    }
-</style>
 

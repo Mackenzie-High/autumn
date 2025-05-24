@@ -7,7 +7,7 @@ A var-statement declares a new mutable local variable.
 ## Syntax
 
 <div class="syntax">
-<span class="keyword">var</span> <a class="synvar" href="Variable.md">assignee</a></i> = <a href="Expression.md">value</a></i> ;<br>
+<b>var</b> <i><a href="Variable.md">assignee</a></i> = <i><a href="Expression.md">value</a></i> ;<br>
 </div>
 
 ## AST Class
@@ -98,22 +98,4 @@ Value = [Jupiter, Saturn, Uranus, Neptune]
 Value = 20
 Value = 37
 ```
-
-<style>
-    .syntax
-    {
-        font-family: monospace, monospace;
-    }
-
-    .keyword
-    {
-        color: blue;
-        font-weight: bold;
-    }
-
-    .synvar
-    {
-        font-style: italic;
-    }
-</style>
 

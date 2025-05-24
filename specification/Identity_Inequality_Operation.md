@@ -7,7 +7,7 @@ This operator performs an inequality comparison operation based on object identi
 ## Syntax
 
 <div class="syntax">
-<a href="Expression.md">left</a></i> !== <a href="Expression.md">right</a></i><br>
+<i><a href="Expression.md">left</a></i> !== <i><a href="Expression.md">right</a></i><br>
 </div>
 
 ## AST Class
@@ -56,22 +56,4 @@ defun main (args : String[]) : void
 false
 true
 ```
-
-<style>
-    .syntax
-    {
-        font-family: monospace, monospace;
-    }
-
-    .keyword
-    {
-        color: blue;
-        font-weight: bold;
-    }
-
-    .synvar
-    {
-        font-style: italic;
-    }
-</style>
 

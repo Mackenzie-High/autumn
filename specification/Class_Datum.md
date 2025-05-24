@@ -7,7 +7,7 @@ A class-datum is a literal [Class](https://docs.oracle.com/javase/7/docs/api/jav
 ## Syntax
 
 <div class="syntax">
-( <span class="keyword">class</span> type</i> )<br>
+( <b>class</b> <i>type</i> )<br>
 </div>
 
 ## AST Class
@@ -82,22 +82,4 @@ class [Ljava.lang.String;
 class [[Ljava.lang.String;
 class [[[Ljava.lang.String;
 ```
-
-<style>
-    .syntax
-    {
-        font-family: monospace, monospace;
-    }
-
-    .keyword
-    {
-        color: blue;
-        font-weight: bold;
-    }
-
-    .synvar
-    {
-        font-style: italic;
-    }
-</style>
 

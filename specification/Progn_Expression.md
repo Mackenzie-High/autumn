@@ -7,7 +7,7 @@ A progn-expression executes a series of expressions sequentially.
 ## Syntax
 
 <div class="syntax">
-<span class="keyword">progn</span> ( <a href="Expression.md">argument</a><sub>1</sub></i> , ... , <a href="Expression.md">argument</a><sub>n</sub></i> )<br>
+<b>progn</b> ( <i><a href="Expression.md">argument</a><sub>1</sub></i> , ... , <i><a href="Expression.md">argument</a><sub>n</sub></i> )<br>
 </div>
 
 ## AST Class
@@ -51,22 +51,4 @@ Y
 Z
 value = 1010
 ```
-
-<style>
-    .syntax
-    {
-        font-family: monospace, monospace;
-    }
-
-    .keyword
-    {
-        color: blue;
-        font-weight: bold;
-    }
-
-    .synvar
-    {
-        font-style: italic;
-    }
-</style>
 

@@ -7,9 +7,9 @@ A doc-comment is a comment that can be processed by documentation generators.
 ## Syntax
 
 <div class="syntax">
-<a class="synvar" href="Doc_Comment_Line.md">Doc Comment Line</a></i><br>
-<a class="synvar" href="Doc_Comment_Line.md">Doc Comment Line</a></i><br>
-<a class="synvar" href="Doc_Comment_Line.md">Doc Comment Line</a></i><br>
+<i><a href="Doc_Comment_Line.md">Doc Comment Line</a></i><br>
+<i><a href="Doc_Comment_Line.md">Doc Comment Line</a></i><br>
+<i><a href="Doc_Comment_Line.md">Doc Comment Line</a></i><br>
 </div>
 
 ## AST Class
@@ -49,22 +49,4 @@ defun main (args : String[]) : void
 ```plain
 
 ```
-
-<style>
-    .syntax
-    {
-        font-family: monospace, monospace;
-    }
-
-    .keyword
-    {
-        color: blue;
-        font-weight: bold;
-    }
-
-    .synvar
-    {
-        font-style: italic;
-    }
-</style>
 

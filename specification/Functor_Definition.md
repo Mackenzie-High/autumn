@@ -7,15 +7,15 @@ A functor-definition creates a new functor-type in the enclosing package.
 ## Syntax
 
 <div class="syntax">
-@annotation<sub>1</sub></i><br>
-@annotation<sub>2</sub></i><br>
-@annotation<sub>n</sub></i><br>
-<span class="keyword">functor</span> <a class="synvar" href="Name.md">name</a></i> ( <a class="synvar" href="Formal_Parameter.md">param</a><sub>1</sub></i> , ... , <a class="synvar" href="Formal_Parameter.md">param</a><sub>n</sub></i> ) : <a class="synvar" href="TypeSpecifier.md">return-type</a></i> ;<br>
-<hr class=&#92%22syntax-hr&#92%22><br>
-@annotation<sub>1</sub></i><br>
-@annotation<sub>2</sub></i><br>
-@annotation<sub>n</sub></i><br>
-<span class="keyword">functor</span> <a class="synvar" href="Name.md">name</a></i> ( <a class="synvar" href="Formal_Parameter.md">param</a><sub>1</sub></i> , ... , <a class="synvar" href="Formal_Parameter.md">param</a><sub>n</sub></i> ) : <a class="synvar" href="TypeSpecifier.md">return-type</a></i> <span class="keyword">extends</span> </i><a class="synvar" href="TypeSpecifier.md">super</a></i> ;<br>
+@<i>annotation<sub>1</sub></i><br>
+@<i>annotation<sub>2</sub></i><br>
+@<i>annotation<sub>n</sub></i><br>
+<b>functor</b> <i><a href="Name.md">name</a></i> ( <i><a href="Formal_Parameter.md">param</a><sub>1</sub></i> , ... , <i><a href="Formal_Parameter.md">param</a><sub>n</sub></i> ) : <i><a href="TypeSpecifier.md">return-type</a></i> ;<br>
+<hr><br>
+@<i>annotation<sub>1</sub></i><br>
+@<i>annotation<sub>2</sub></i><br>
+@<i>annotation<sub>n</sub></i><br>
+<b>functor</b> <i><a href="Name.md">name</a></i> ( <i><a href="Formal_Parameter.md">param</a><sub>1</sub></i> , ... , <i><a href="Formal_Parameter.md">param</a><sub>n</sub></i> ) : <i><a href="TypeSpecifier.md">return-type</a></i> <b>extends</b> </i><a href="TypeSpecifier.md">super</a></i> ;<br>
 </div>
 
 ## AST Class
@@ -148,22 +148,4 @@ defun cube (x : int) : int
 [8, 64, 512]
 [9, 81, 729]
 ```
-
-<style>
-    .syntax
-    {
-        font-family: monospace, monospace;
-    }
-
-    .keyword
-    {
-        color: blue;
-        font-weight: bold;
-    }
-
-    .synvar
-    {
-        font-style: italic;
-    }
-</style>
 

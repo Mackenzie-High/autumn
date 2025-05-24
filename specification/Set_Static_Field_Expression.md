@@ -7,7 +7,7 @@ A set-static-field-expression sets the value of a static field.
 ## Syntax
 
 <div class="syntax">
-<span class="keyword">field</span> <a class="synvar" href="TypeSpecifier.md">Owner</a></i>::<a class="synvar" href="Name.md">name</a></i> = <a href="Expression.md">value</a></i><br>
+<b>field</b> <i><a href="TypeSpecifier.md">Owner</a></i>::<i><a href="Name.md">name</a></i> = <i><a href="Expression.md">value</a></i><br>
 </div>
 
 ## AST Class
@@ -56,22 +56,4 @@ defun main (args : String[]) : void
 ```plain
 Output = Venus
 ```
-
-<style>
-    .syntax
-    {
-        font-family: monospace, monospace;
-    }
-
-    .keyword
-    {
-        color: blue;
-        font-weight: bold;
-    }
-
-    .synvar
-    {
-        font-style: italic;
-    }
-</style>
 

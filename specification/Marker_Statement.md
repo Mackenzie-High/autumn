@@ -7,7 +7,7 @@ A marker-statement declares a label in the enclosing function.
 ## Syntax
 
 <div class="syntax">
-<span class="keyword">marker</span> <a class="synvar" href="Label.md">label</a></i> ;<br>
+<b>marker</b> <i><a href="Label.md">label</a></i> ;<br>
 </div>
 
 ## AST Class
@@ -52,22 +52,4 @@ defun main (args : String[]) : void
 Virginia
 California
 ```
-
-<style>
-    .syntax
-    {
-        font-family: monospace, monospace;
-    }
-
-    .keyword
-    {
-        color: blue;
-        font-weight: bold;
-    }
-
-    .synvar
-    {
-        font-style: italic;
-    }
-</style>
 

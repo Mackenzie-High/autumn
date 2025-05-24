@@ -7,7 +7,7 @@ A new-expression creates a new instance of a specified class-type.
 ## Syntax
 
 <div class="syntax">
-<span class="keyword">new</span> <a class="synvar" href="TypeSpecifier.md">type</a></i> ( <a href="Expression.md">argument</a><sub>1</sub></i> , ... , <a href="Expression.md">argument</a><sub>n</sub></i> )<br>
+<b>new</b> <i><a href="TypeSpecifier.md">type</a></i> ( <i><a href="Expression.md">argument</a><sub>1</sub></i> , ... , <i><a href="Expression.md">argument</a><sub>n</sub></i> )<br>
 </div>
 
 ## AST Class
@@ -60,22 +60,4 @@ defun main (args : String[]) : void
 (German Shepherd, Jet)
 (Cat, Fluffy)
 ```
-
-<style>
-    .syntax
-    {
-        font-family: monospace, monospace;
-    }
-
-    .keyword
-    {
-        color: blue;
-        font-weight: bold;
-    }
-
-    .synvar
-    {
-        font-style: italic;
-    }
-</style>
 

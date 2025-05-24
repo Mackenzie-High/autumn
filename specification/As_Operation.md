@@ -7,7 +7,7 @@ An as-operation converts a value to another type.
 ## Syntax
 
 <div class="syntax">
-value</i> <span class="keyword">as</span> <a class="synvar" href="TypeSpecifier.md">type</a></i><br>
+<i>value</i> <b>as</b> <i><a href="TypeSpecifier.md">type</a></i><br>
 </div>
 
 ## AST Class
@@ -176,22 +176,4 @@ Case 1: A
 Case 2: Mars
 Case 3: null
 ```
-
-<style>
-    .syntax
-    {
-        font-family: monospace, monospace;
-    }
-
-    .keyword
-    {
-        color: blue;
-        font-weight: bold;
-    }
-
-    .synvar
-    {
-        font-style: italic;
-    }
-</style>
 

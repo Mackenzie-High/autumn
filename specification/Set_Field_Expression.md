@@ -7,7 +7,7 @@ A set-field-expression sets the value of an instance field.
 ## Syntax
 
 <div class="syntax">
-<span class="keyword">field</span> <a href="Expression.md">owner</a></i>.<a class="synvar" href="Name.md">name</a></i> = <a href="Expression.md">value</a></i><br>
+<b>field</b> <i><a href="Expression.md">owner</a></i>.<i><a href="Name.md">name</a></i> = <i><a href="Expression.md">value</a></i><br>
 </div>
 
 ## AST Class
@@ -66,22 +66,4 @@ defun main (args : String[]) : void
 17
 23
 ```
-
-<style>
-    .syntax
-    {
-        font-family: monospace, monospace;
-    }
-
-    .keyword
-    {
-        color: blue;
-        font-weight: bold;
-    }
-
-    .synvar
-    {
-        font-style: italic;
-    }
-</style>
 

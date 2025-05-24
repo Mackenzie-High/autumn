@@ -7,9 +7,9 @@ A for-statement is a loop that iterates based on a control variable and a condit
 ## Syntax
 
 <div class="syntax">
-<span class="keyword">for</span> ( <a class="synvar" href="Variable.md">assignee</a></i> = <a href="Expression.md">initializer</a></i> ; <a href="Expression.md">condition</a></i> ; <a href="Expression.md">modifier</a></i> )<br>
+<b>for</b> ( <i><a href="Variable.md">assignee</a></i> = <i><a href="Expression.md">initializer</a></i> ; <i><a href="Expression.md">condition</a></i> ; <i><a href="Expression.md">modifier</a></i> )<br>
 {<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="Statement.md">body</a></i><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<i><a href="Statement.md">body</a></i><br>
 }<br>
 </div>
 
@@ -64,22 +64,4 @@ X = 2
 X = 3
 X = 4
 ```
-
-<style>
-    .syntax
-    {
-        font-family: monospace, monospace;
-    }
-
-    .keyword
-    {
-        color: blue;
-        font-weight: bold;
-    }
-
-    .synvar
-    {
-        font-style: italic;
-    }
-</style>
 

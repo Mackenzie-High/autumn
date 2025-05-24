@@ -7,12 +7,12 @@ An function-definition creates a new function within the enclosing module.
 ## Syntax
 
 <div class="syntax">
-@annotation<sub>1</sub></i><br>
-@annotation<sub>2</sub></i><br>
-@annotation<sub>n</sub></i><br>
-<span class="keyword">defun</span> <a class="synvar" href="Name.md">name</a></i> ( <a class="synvar" href="Formal_Parameter.md">param</a><sub>1</sub></i> , ... , <a class="synvar" href="Formal_Parameter.md">param</a><sub>n</sub></i> ) : <a class="synvar" href="TypeSpecifier.md">return-type</a></i><br>
+@<i>annotation<sub>1</sub></i><br>
+@<i>annotation<sub>2</sub></i><br>
+@<i>annotation<sub>n</sub></i><br>
+<b>defun</b> <i><a href="Name.md">name</a></i> ( <i><a href="Formal_Parameter.md">param</a><sub>1</sub></i> , ... , <i><a href="Formal_Parameter.md">param</a><sub>n</sub></i> ) : <i><a href="TypeSpecifier.md">return-type</a></i><br>
 {<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="Statement.md">body</a></i><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<i><a href="Statement.md">body</a></i><br>
 }<br>
 </div>
 
@@ -73,22 +73,4 @@ defun main (args : String[]) : void
 ```plain
 Hello World!
 ```
-
-<style>
-    .syntax
-    {
-        font-family: monospace, monospace;
-    }
-
-    .keyword
-    {
-        color: blue;
-        font-weight: bold;
-    }
-
-    .synvar
-    {
-        font-style: italic;
-    }
-</style>
 

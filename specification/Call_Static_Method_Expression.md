@@ -7,9 +7,9 @@ A call-static-expression performs an invocation of a static method or function.
 ## Syntax
 
 <div class="syntax">
-<span class="keyword">call</span> <a class="synvar" href="TypeSpecifier.md">Owner</a></i>::<a class="synvar" href="Name.md">name</a></i> ( <a href="Expression.md">argument</a><sub>1</sub></i> , ... , <a href="Expression.md">argument</a><sub>n</sub></i> )<br>
-<hr class=&#92%22syntax-hr&#92%22><br>
-<a class="synvar" href="TypeSpecifier.md">Owner</a></i>::<a class="synvar" href="Name.md">name</a></i> ( <a href="Expression.md">argument</a><sub>1</sub></i> , ... , <a href="Expression.md">argument</a><sub>n</sub></i> )<br>
+<b>call</b> <i><a href="TypeSpecifier.md">Owner</a></i>::<i><a href="Name.md">name</a></i> ( <i><a href="Expression.md">argument</a><sub>1</sub></i> , ... , <i><a href="Expression.md">argument</a><sub>n</sub></i> )<br>
+<hr><br>
+<i><a href="TypeSpecifier.md">Owner</a></i>::<i><a href="Name.md">name</a></i> ( <i><a href="Expression.md">argument</a><sub>1</sub></i> , ... , <i><a href="Expression.md">argument</a><sub>n</sub></i> )<br>
 </div>
 
 ## AST Class
@@ -61,22 +61,4 @@ defun printNumber (x : int) : void
 x = 17
 x = 23
 ```
-
-<style>
-    .syntax
-    {
-        font-family: monospace, monospace;
-    }
-
-    .keyword
-    {
-        color: blue;
-        font-weight: bold;
-    }
-
-    .synvar
-    {
-        font-style: italic;
-    }
-</style>
 

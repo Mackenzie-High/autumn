@@ -7,15 +7,15 @@ A tuple-definition creates a new tuple-type in the enclosing package.
 ## Syntax
 
 <div class="syntax">
-@annotation<sub>1</sub></i><br>
-@annotation<sub>2</sub></i><br>
-@annotation<sub>n</sub></i><br>
-<span class="keyword">tuple</span> <a class="synvar" href="Name.md">name</a></i> ( <a class="synvar" href="Element.md">element</a><sub>1</sub></i> , ... , <a class="synvar" href="Element.md">element</a><sub>n</sub></i> ) ;<br>
-<hr class=&#92%22syntax-hr&#92%22><br>
-@annotation<sub>1</sub></i><br>
-@annotation<sub>2</sub></i><br>
-@annotation<sub>n</sub></i><br>
-<span class="keyword">tuple</span> <a class="synvar" href="Name.md">name</a></i> ( <a class="synvar" href="Element.md">element</a><sub>1</sub></i> , ... , <a class="synvar" href="Element.md">element</a><sub>n</sub></i> ) <span class="keyword">extends</span> <a class="synvar" href="TypeSpecifier.md">super</a><sub>1</sub></i> & ... & <a class="synvar" href="TypeSpecifier.md">super</a><sub>n</sub></i> ;<br>
+@<i>annotation<sub>1</sub></i><br>
+@<i>annotation<sub>2</sub></i><br>
+@<i>annotation<sub>n</sub></i><br>
+<b>tuple</b> <i><a href="Name.md">name</a></i> ( <i><a href="Element.md">element</a><sub>1</sub></i> , ... , <i><a href="Element.md">element</a><sub>n</sub></i> ) ;<br>
+<hr><br>
+@<i>annotation<sub>1</sub></i><br>
+@<i>annotation<sub>2</sub></i><br>
+@<i>annotation<sub>n</sub></i><br>
+<b>tuple</b> <i><a href="Name.md">name</a></i> ( <i><a href="Element.md">element</a><sub>1</sub></i> , ... , <i><a href="Element.md">element</a><sub>n</sub></i> ) <b>extends</b> <i><a href="TypeSpecifier.md">super</a><sub>1</sub></i> & ... & <i><a href="TypeSpecifier.md">super</a><sub>n</sub></i> ;<br>
 </div>
 
 ## AST Class
@@ -281,22 +281,4 @@ Name = Kate
 ID   = 812338721
 Tax  = 2500
 ```
-
-<style>
-    .syntax
-    {
-        font-family: monospace, monospace;
-    }
-
-    .keyword
-    {
-        color: blue;
-        font-weight: bold;
-    }
-
-    .synvar
-    {
-        font-style: italic;
-    }
-</style>
 

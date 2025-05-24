@@ -7,17 +7,17 @@ A float-datum is a literal float value.
 ## Syntax
 
 <div class="syntax">
-digits</i>**.**digits</i><b class='keyword'>F**<br>
-<hr class=&#92%22syntax-hr&#92%22><br>
-**-**digits</i>**.**digits</i><b class='keyword'>F**<br>
-<hr class=&#92%22syntax-hr&#92%22><br>
-digits</i>**.**digits</i><b class='keyword'>e**digits</i><b class='keyword'>F**<br>
-<hr class=&#92%22syntax-hr&#92%22><br>
-**-**digits</i>**.**digits</i><b class='keyword'>e**digits</i><b class='keyword'>F**<br>
-<hr class=&#92%22syntax-hr&#92%22><br>
-digits</i>**.**digits</i><b class='keyword'>E**digits</i><b class='keyword'>F**<br>
-<hr class=&#92%22syntax-hr&#92%22><br>
-**-**digits</i>**.**digits</i><b class='keyword'>E**digits</i><b class='keyword'>F**<br>
+<i>digits</i>**.**<i>digits</i><b class='keyword'>F**<br>
+<hr><br>
+**-**<i>digits</i>**.**<i>digits</i><b class='keyword'>F**<br>
+<hr><br>
+<i>digits</i>**.**<i>digits</i><b class='keyword'>e**<i>digits</i><b class='keyword'>F**<br>
+<hr><br>
+**-**<i>digits</i>**.**<i>digits</i><b class='keyword'>e**<i>digits</i><b class='keyword'>F**<br>
+<hr><br>
+<i>digits</i>**.**<i>digits</i><b class='keyword'>E**<i>digits</i><b class='keyword'>F**<br>
+<hr><br>
+**-**<i>digits</i>**.**<i>digits</i><b class='keyword'>E**<i>digits</i><b class='keyword'>F**<br>
 </div>
 
 ## AST Class
@@ -54,22 +54,4 @@ defun main (args : String[]) : void
 ```plain
 2118.0
 ```
-
-<style>
-    .syntax
-    {
-        font-family: monospace, monospace;
-    }
-
-    .keyword
-    {
-        color: blue;
-        font-weight: bold;
-    }
-
-    .synvar
-    {
-        font-style: italic;
-    }
-</style>
 

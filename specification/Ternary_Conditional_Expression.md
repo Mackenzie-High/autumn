@@ -7,7 +7,7 @@ A ternary-conditional-expression conditionally chooses one of two values.
 ## Syntax
 
 <div class="syntax">
-( <span class="keyword">if</span> <a href="Expression.md">condition</a></i> <span class="keyword">then</span> <a href="Expression.md">left</a></i> <span class="keyword">else</span> <a href="Expression.md">right</a></i>)<br>
+( <b>if</b> <i><a href="Expression.md">condition</a></i> <b>then</b> <i><a href="Expression.md">left</a></i> <b>else</b> <i><a href="Expression.md">right</a></i>)<br>
 </div>
 
 ## AST Class
@@ -79,22 +79,4 @@ Uranus is Jovian
 
 Neptune is Jovian
 ```
-
-<style>
-    .syntax
-    {
-        font-family: monospace, monospace;
-    }
-
-    .keyword
-    {
-        color: blue;
-        font-weight: bold;
-    }
-
-    .synvar
-    {
-        font-style: italic;
-    }
-</style>
 

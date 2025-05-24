@@ -7,7 +7,7 @@
 ## Syntax
 
 <div class="syntax">
-<span class="keyword">delegate</span> <a class="synvar" href="Variable.md">assignee</a></i> : <a class="synvar" href="TypeSpecifier.md">type</a></i> => <a class="synvar" href="TypeSpecifier.md">Owner</a></i>::<a class="synvar" href="Name.md">name</a></i> ;<br>
+<b>delegate</b> <i><a href="Variable.md">assignee</a></i> : <i><a href="TypeSpecifier.md">type</a></i> => <i><a href="TypeSpecifier.md">Owner</a></i>::<i><a href="Name.md">name</a></i> ;<br>
 </div>
 
 ## AST Class
@@ -110,22 +110,4 @@ Tax = 50000
 Income = 300000
 Tax = 75000
 ```
-
-<style>
-    .syntax
-    {
-        font-family: monospace, monospace;
-    }
-
-    .keyword
-    {
-        color: blue;
-        font-weight: bold;
-    }
-
-    .synvar
-    {
-        font-style: italic;
-    }
-</style>
 

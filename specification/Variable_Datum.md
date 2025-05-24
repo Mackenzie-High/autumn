@@ -7,7 +7,7 @@ A variable-datum retrieves the values stored in a variable.
 ## Syntax
 
 <div class="syntax">
-<a class="synvar" href="Variable.md">variable</a></i><br>
+<i><a href="Variable.md">variable</a></i><br>
 </div>
 
 ## AST Class
@@ -98,22 +98,4 @@ false
 0.0
 null
 ```
-
-<style>
-    .syntax
-    {
-        font-family: monospace, monospace;
-    }
-
-    .keyword
-    {
-        color: blue;
-        font-weight: bold;
-    }
-
-    .synvar
-    {
-        font-style: italic;
-    }
-</style>
 

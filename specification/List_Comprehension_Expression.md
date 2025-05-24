@@ -7,9 +7,9 @@ A list-comprehension creates a new mutable list based on another iterable data-s
 ## Syntax
 
 <div class="syntax">
-[ <a href="Expression.md">modifier</a></i> <span class="keyword">for</span> <a class="synvar" href="Variable.md">assignee</a> : <a class="synvar" href="TypeSpecifier.md">type</a> in <a href="Expression.md">iterable</a> ]<br>
-<hr class=&#92%22syntax-hr&#92%22><br>
-[ <a href="Expression.md">modifier</a></i> <span class="keyword">for</span> <a class="synvar" href="Variable.md">assignee</a> : <a class="synvar" href="TypeSpecifier.md">type</a> in <a href="Expression.md">iterable</a> <span class="keyword">if</span> <a href="Expression.md">condition</a> ]<br>
+[ <i><a href="Expression.md">modifier</a></i> <b>for</b> <a href="Variable.md">assignee</a> : <a href="TypeSpecifier.md">type</a> in <a href="Expression.md">iterable</a> ]<br>
+<hr><br>
+[ <i><a href="Expression.md">modifier</a></i> <b>for</b> <a href="Variable.md">assignee</a> : <a href="TypeSpecifier.md">type</a> in <a href="Expression.md">iterable</a> <b>if</b> <a href="Expression.md">condition</a> ]<br>
 </div>
 
 ## AST Class
@@ -168,22 +168,4 @@ defun main (args : String[]) : void
 (Picky Jr., CHICKEN)
 (Angel, CHICKEN)
 ```
-
-<style>
-    .syntax
-    {
-        font-family: monospace, monospace;
-    }
-
-    .keyword
-    {
-        color: blue;
-        font-weight: bold;
-    }
-
-    .synvar
-    {
-        font-style: italic;
-    }
-</style>
 

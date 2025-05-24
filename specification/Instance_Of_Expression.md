@@ -7,7 +7,7 @@ An instance-of-expression determines whether a value is an instance of a particu
 ## Syntax
 
 <div class="syntax">
-<span class="keyword">instanceof</span> <a href="Expression.md">value</a></i> : <a class="synvar" href="TypeSpecifier.md">type</a></i><br>
+<b>instanceof</b> <i><a href="Expression.md">value</a></i> : <i><a href="TypeSpecifier.md">type</a></i><br>
 </div>
 
 ## AST Class
@@ -80,22 +80,4 @@ Integer? = false
 String? = false
 List? = true
 ```
-
-<style>
-    .syntax
-    {
-        font-family: monospace, monospace;
-    }
-
-    .keyword
-    {
-        color: blue;
-        font-weight: bold;
-    }
-
-    .synvar
-    {
-        font-style: italic;
-    }
-</style>
 

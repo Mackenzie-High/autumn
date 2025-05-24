@@ -7,7 +7,7 @@ A nop-statement does not perform any operation.
 ## Syntax
 
 <div class="syntax">
-<span class="keyword">nop</span> ;<br>
+<b>nop</b> ;<br>
 </div>
 
 ## AST Class
@@ -46,22 +46,4 @@ defun main (args : String[]) : void
 Before NOP
 After NOP
 ```
-
-<style>
-    .syntax
-    {
-        font-family: monospace, monospace;
-    }
-
-    .keyword
-    {
-        color: blue;
-        font-weight: bold;
-    }
-
-    .synvar
-    {
-        font-style: italic;
-    }
-</style>
 

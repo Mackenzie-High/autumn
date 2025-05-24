@@ -7,7 +7,7 @@ A locals-expression creates an object that describes the local variables in the 
 ## Syntax
 
 <div class="syntax">
-( <span class="keyword">locals</span> )<br>
+( <b>locals</b> )<br>
 </div>
 
 ## AST Class
@@ -56,22 +56,4 @@ city : String = London
 primes : List = [2, 3, 5, 7, 11, 13, 17]
 year : int = 2014
 ```
-
-<style>
-    .syntax
-    {
-        font-family: monospace, monospace;
-    }
-
-    .keyword
-    {
-        color: blue;
-        font-weight: bold;
-    }
-
-    .synvar
-    {
-        font-style: italic;
-    }
-</style>
 

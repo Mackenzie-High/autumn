@@ -7,7 +7,7 @@ A dispatch-expression dispatches an invocation to a nearby function using multip
 ## Syntax
 
 <div class="syntax">
-<span class="keyword">dispatch</span> <a class="synvar" href="Name.md">name</a> ( <a href="Expression.md">argument</a><sub>1</sub></i> , ... , <a href="Expression.md">argument</a><sub>n</sub></i> )<br>
+<b>dispatch</b> <a href="Name.md">name</a> ( <i><a href="Expression.md">argument</a><sub>1</sub></i> , ... , <i><a href="Expression.md">argument</a><sub>n</sub></i> )<br>
 </div>
 
 ## AST Class
@@ -173,22 +173,4 @@ Home Size:  100
 Home Owner: Moo
 Home Size:  2500
 ```
-
-<style>
-    .syntax
-    {
-        font-family: monospace, monospace;
-    }
-
-    .keyword
-    {
-        color: blue;
-        font-weight: bold;
-    }
-
-    .synvar
-    {
-        font-style: italic;
-    }
-</style>
 

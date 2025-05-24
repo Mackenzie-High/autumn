@@ -7,7 +7,7 @@ A when-statement makes the execution of another statement conditional.
 ## Syntax
 
 <div class="syntax">
-<span class="keyword">when</span> ( <a href="Expression.md">condition</a></i> ) <span class="keyword">then</span> <a href="Statement.md">statement</a></i><br>
+<b>when</b> ( <i><a href="Expression.md">condition</a></i> ) <b>then</b> <i><a href="Statement.md">statement</a></i><br>
 </div>
 
 ## AST Class
@@ -112,22 +112,4 @@ Elle's Tax = 2300
 Evie's Tax = 25400
 Erin's Tax = 115000
 ```
-
-<style>
-    .syntax
-    {
-        font-family: monospace, monospace;
-    }
-
-    .keyword
-    {
-        color: blue;
-        font-weight: bold;
-    }
-
-    .synvar
-    {
-        font-style: italic;
-    }
-</style>
 

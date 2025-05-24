@@ -7,7 +7,7 @@ This operator performs an arithmetic addition operation.
 ## Syntax
 
 <div class="syntax">
-<a href="Expression.md">left</a></i> + <a href="Expression.md">right</a></i><br>
+<i><a href="Expression.md">left</a></i> + <i><a href="Expression.md">right</a></i><br>
 </div>
 
 ## AST Class
@@ -96,22 +96,4 @@ double = 12.0
 BigInteger = 12.00000000000000000000000000000000
 BigDecimal = 12.00000000000000000000000000000000
 ```
-
-<style>
-    .syntax
-    {
-        font-family: monospace, monospace;
-    }
-
-    .keyword
-    {
-        color: blue;
-        font-weight: bold;
-    }
-
-    .synvar
-    {
-        font-style: italic;
-    }
-</style>
 

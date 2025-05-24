@@ -8,9 +8,9 @@ A sequence-statement executes a series of statements one after another.
 
 <div class="syntax">
 {<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="Statement.md">statement</a><sub>1</sub></i><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="Statement.md">statement</a><sub>2</sub></i><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="Statement.md">statement</a><sub>n</sub></i><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<i><a href="Statement.md">statement</a><sub>1</sub></i><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<i><a href="Statement.md">statement</a><sub>2</sub></i><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<i><a href="Statement.md">statement</a><sub>n</sub></i><br>
 }<br>
 </div>
 
@@ -50,22 +50,4 @@ A
 B
 C
 ```
-
-<style>
-    .syntax
-    {
-        font-family: monospace, monospace;
-    }
-
-    .keyword
-    {
-        color: blue;
-        font-weight: bold;
-    }
-
-    .synvar
-    {
-        font-style: italic;
-    }
-</style>
 

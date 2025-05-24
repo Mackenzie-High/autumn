@@ -7,7 +7,7 @@ A recur-statement performs a tail-recursive invocation of the enclosing function
 ## Syntax
 
 <div class="syntax">
-<span class="keyword">recur</span> <a href="Expression.md">argument</a><sub>1</sub></i> , <a href="Expression.md">argument</a><sub>2</sub></i> , ... , <a href="Expression.md">argument</a><sub>n</sub></i> ;<br>
+<b>recur</b> <i><a href="Expression.md">argument</a><sub>1</sub></i> , <i><a href="Expression.md">argument</a><sub>2</sub></i> , ... , <i><a href="Expression.md">argument</a><sub>n</sub></i> ;<br>
 </div>
 
 ## AST Class
@@ -68,22 +68,4 @@ defun compute(index : int, sum : long) : long
 ```plain
 8333333333333
 ```
-
-<style>
-    .syntax
-    {
-        font-family: monospace, monospace;
-    }
-
-    .keyword
-    {
-        color: blue;
-        font-weight: bold;
-    }
-
-    .synvar
-    {
-        font-style: italic;
-    }
-</style>
 

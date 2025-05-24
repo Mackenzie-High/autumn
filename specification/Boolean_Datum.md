@@ -7,9 +7,9 @@ A boolean-datum is a literal boolean value.
 ## Syntax
 
 <div class="syntax">
-<span class="keyword">true</span><br>
-<hr class=&#92%22syntax-hr&#92%22><br>
-<span class="keyword">false</span><br>
+<b>true</b><br>
+<hr><br>
+<b>false</b><br>
 </div>
 
 ## AST Class
@@ -46,22 +46,4 @@ defun main (args : String[]) : void
 true
 false
 ```
-
-<style>
-    .syntax
-    {
-        font-family: monospace, monospace;
-    }
-
-    .keyword
-    {
-        color: blue;
-        font-weight: bold;
-    }
-
-    .synvar
-    {
-        font-style: italic;
-    }
-</style>
 

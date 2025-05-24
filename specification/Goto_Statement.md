@@ -7,7 +7,7 @@ A goto-statement causes execution to immediately jump to a labeled location.
 ## Syntax
 
 <div class="syntax">
-<span class="keyword">goto</span> <a class="synvar" href="Label.md">label</a></i> ;<br>
+<b>goto</b> <i><a href="Label.md">label</a></i> ;<br>
 </div>
 
 ## AST Class
@@ -165,22 +165,4 @@ defun main (args : String[]) : void
 ```plain
 This is spaghetti code do not do this!!!
 ```
-
-<style>
-    .syntax
-    {
-        font-family: monospace, monospace;
-    }
-
-    .keyword
-    {
-        color: blue;
-        font-weight: bold;
-    }
-
-    .synvar
-    {
-        font-style: italic;
-    }
-</style>
 

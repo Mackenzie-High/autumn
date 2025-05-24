@@ -7,7 +7,7 @@ A name construct is used to represent a name that does not denote a type.
 ## Syntax
 
 <div class="syntax">
-name</i><br>
+<i>name</i><br>
 </div>
 
 ## AST Class
@@ -51,22 +51,4 @@ tuple ThreeLittlePigs ();
 ```plain
 
 ```
-
-<style>
-    .syntax
-    {
-        font-family: monospace, monospace;
-    }
-
-    .keyword
-    {
-        color: blue;
-        font-weight: bold;
-    }
-
-    .synvar
-    {
-        font-style: italic;
-    }
-</style>
 

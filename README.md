@@ -22,7 +22,7 @@
     + **Statements**
         + **Flow Control**
             + [Sequence Statement](specification/Sequence_Statement.md)
-            + [If-Then Statement](specification/IfThen_Statement.md)
+            + [If-Then Statement](specification/If_Then_Statement.md)
             + [When Statement](specification/When_Statement.md)
             + [Goto Statement](specification/Goto_Statement.md)
             + [Marker Statement](specification/Marker_Statement.md)
@@ -30,8 +30,8 @@
             + **Looping**
                 + [While Statement](specification/While_Statement.md)
                 + [Until Statement](specification/Until_Statement.md)
-                + [Do-While Statement](specification/DoWhile_Statement.md)
-                + [Do-Until Statement](specification/DoUntil_Statement.md)
+                + [Do-While Statement](specification/Do_While_Statement.md)
+                + [Do-Until Statement](specification/Do_Until_Statement.md)
                 + [Forever Statement](specification/Forever_Statement.md)
                 + [For Statement](specification/For_Statement.md)
                 + [Foreach Statement](specification/Foreach_Statement.md)
@@ -44,7 +44,7 @@
             + [Let Statement](specification/Let_Statement.md)
         + **Exception Handling**
             + [Throw Statement](specification/Throw_Statement.md)
-            + [Try-Catch Statement](specification/TryCatch_Statement.md)
+            + [Try-Catch Statement](specification/Try_Catch_Statement.md)
             + **Assertions**
                 + [Assert Statement](specification/Assert_Statement.md)
                 + [Assume Statement](specification/Assume_Statement.md)
@@ -87,10 +87,10 @@
             + [Identity Inequality Operation](specification/Identity_Inequality_Operation.md)
             + [Equality Operation](specification/Equality_Operation.md)
             + [Inequality Operation](specification/Inequality_Operation.md)
-            + [Greater-Than-OR-Equals Operation](specification/GreaterThanOREquals_Operation.md)
-            + [Less-Than-OR-Equals Operation](specification/LessThanOREquals_Operation.md)
-            + [Greater-Than Operation](specification/GreaterThan_Operation.md)
-            + [Less-Than Operation](specification/LessThan_Operation.md)
+            + [Greater-Than-OR-Equals Operation](specification/Greater_Than_OR_Equals_Operation.md)
+            + [Less-Than-OR-Equals Operation](specification/Less_Than_OR_Equals_Operation.md)
+            + [Greater-Than Operation](specification/Greater_Than_Operation.md)
+            + [Less-Than Operation](specification/Less_Than_Operation.md)
             + [And Operation](specification/And_Operation.md)
             + [Or Operation](specification/Or_Operation.md)
             + [Xor Operation](specification/Xor_Operation.md)
@@ -106,7 +106,7 @@
             + [Get Static Field Expression](specification/Get_Static_Field_Expression.md)
             + [Set Field Expression](specification/Set_Field_Expression.md)
             + [Get Field Expression](specification/Get_Field_Expression.md)
-            + [Instance-Of Expression](specification/InstanceOf_Expression.md)
+            + [Instance-Of Expression](specification/Instance_Of_Expression.md)
             + [Dispatch Expression](specification/Dispatch_Expression.md)
         + [Ternary Conditional Expression](specification/Ternary_Conditional_Expression.md)
         + [Once Expression](specification/Once_Expression.md)

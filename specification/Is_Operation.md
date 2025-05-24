@@ -7,7 +7,7 @@ An is-operation converts a value to another type after performing a runtime chec
 ## Syntax
 
 <div class="syntax">
-value</i> <span class="keyword">is</span> <a class="synvar" href="TypeSpecifier.md">type</a></i><br>
+<i>value</i> <b>is</b> <i><a href="TypeSpecifier.md">type</a></i><br>
 </div>
 
 ## AST Class
@@ -205,22 +205,4 @@ defun main (args : String[]) : void
 ```plain
 Success: An exception was thrown.
 ```
-
-<style>
-    .syntax
-    {
-        font-family: monospace, monospace;
-    }
-
-    .keyword
-    {
-        color: blue;
-        font-weight: bold;
-    }
-
-    .synvar
-    {
-        font-style: italic;
-    }
-</style>
 

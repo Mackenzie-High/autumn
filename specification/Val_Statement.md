@@ -7,7 +7,7 @@ A val-statement declares a new readonly local variable.
 ## Syntax
 
 <div class="syntax">
-<span class="keyword">val</span> <a class="synvar" href="Variable.md">assignee</a></i> = <a href="Expression.md">value</a></i> ;<br>
+<b>val</b> <i><a href="Variable.md">assignee</a></i> = <i><a href="Expression.md">value</a></i> ;<br>
 </div>
 
 ## AST Class
@@ -132,22 +132,4 @@ defun main (args : String[]) : void
 9
 16
 ```
-
-<style>
-    .syntax
-    {
-        font-family: monospace, monospace;
-    }
-
-    .keyword
-    {
-        color: blue;
-        font-weight: bold;
-    }
-
-    .synvar
-    {
-        font-style: italic;
-    }
-</style>
 

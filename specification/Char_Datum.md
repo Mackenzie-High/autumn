@@ -7,9 +7,9 @@ A char-datum is a literal character.
 ## Syntax
 
 <div class="syntax">
-**'**character</i>**'**<br>
-<hr class=&#92%22syntax-hr&#92%22><br>
-digits</i><b class='keyword'>C**<br>
+**'**<i>character</i>**'**<br>
+<hr><br>
+<i>digits</i><b class='keyword'>C**<br>
 </div>
 
 ## AST Class
@@ -49,22 +49,4 @@ defun main (args : String[]) : void
 ```plain
 Autumn
 ```
-
-<style>
-    .syntax
-    {
-        font-family: monospace, monospace;
-    }
-
-    .keyword
-    {
-        color: blue;
-        font-weight: bold;
-    }
-
-    .synvar
-    {
-        font-style: italic;
-    }
-</style>
 

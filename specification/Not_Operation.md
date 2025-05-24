@@ -7,7 +7,7 @@ This operator performs a logical-NOT operation.
 ## Syntax
 
 <div class="syntax">
-! <a href="Expression.md">value</a></i><br>
+! <i><a href="Expression.md">value</a></i><br>
 </div>
 
 ## AST Class
@@ -51,22 +51,4 @@ defun main (args : String[]) : void
 true
 false
 ```
-
-<style>
-    .syntax
-    {
-        font-family: monospace, monospace;
-    }
-
-    .keyword
-    {
-        color: blue;
-        font-weight: bold;
-    }
-
-    .synvar
-    {
-        font-style: italic;
-    }
-</style>
 

@@ -7,9 +7,9 @@ A module creates a new module-type in the enclosing package.
 ## Syntax
 
 <div class="syntax">
-<a href="Module_Member.md">module-member</a><sub>1</sub></i><br>
-<a href="Module_Member.md">module-member</a><sub>2</sub></i><br>
-<a href="Module_Member.md">module-member</a><sub>n</sub></i><br>
+<i><a href="Module_Member.md">module-member</a><sub>1</sub></i><br>
+<i><a href="Module_Member.md">module-member</a><sub>2</sub></i><br>
+<i><a href="Module_Member.md">module-member</a><sub>n</sub></i><br>
 </div>
 
 ## AST Class
@@ -78,22 +78,4 @@ defun main (args : String[]) : void
 ```plain
 Hello World!
 ```
-
-<style>
-    .syntax
-    {
-        font-family: monospace, monospace;
-    }
-
-    .keyword
-    {
-        color: blue;
-        font-weight: bold;
-    }
-
-    .synvar
-    {
-        font-style: italic;
-    }
-</style>
 

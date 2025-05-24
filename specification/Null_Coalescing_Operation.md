@@ -7,7 +7,7 @@ A null-coalescing provides an alternate value when a primary value is null.
 ## Syntax
 
 <div class="syntax">
-<a href="Expression.md">left</a></i> ?? <a href="Expression.md">right</a></i><br>
+<i><a href="Expression.md">left</a></i> ?? <i><a href="Expression.md">right</a></i><br>
 </div>
 
 ## AST Class
@@ -118,22 +118,4 @@ Case 2: LR
 Case 3: L
 Case 4: L
 ```
-
-<style>
-    .syntax
-    {
-        font-family: monospace, monospace;
-    }
-
-    .keyword
-    {
-        color: blue;
-        font-weight: bold;
-    }
-
-    .synvar
-    {
-        font-style: italic;
-    }
-</style>
 

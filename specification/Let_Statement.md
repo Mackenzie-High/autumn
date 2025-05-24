@@ -7,9 +7,9 @@ A let-statement assigns a value to a local variable.
 ## Syntax
 
 <div class="syntax">
-<span class="keyword">let</span> <a class="synvar" href="Variable.md">assignee</a></i> = <a href="Expression.md">value</a></i> ;<br>
-<hr class=&#92%22syntax-hr&#92%22><br>
-<a class="synvar" href="Variable.md">assignee</a></i> = <a href="Expression.md">value</a></i> ;<br>
+<b>let</b> <i><a href="Variable.md">assignee</a></i> = <i><a href="Expression.md">value</a></i> ;<br>
+<hr><br>
+<i><a href="Variable.md">assignee</a></i> = <i><a href="Expression.md">value</a></i> ;<br>
 </div>
 
 ## AST Class
@@ -65,22 +65,4 @@ Venus
 Mars
 Pluto
 ```
-
-<style>
-    .syntax
-    {
-        font-family: monospace, monospace;
-    }
-
-    .keyword
-    {
-        color: blue;
-        font-weight: bold;
-    }
-
-    .synvar
-    {
-        font-style: italic;
-    }
-</style>
 

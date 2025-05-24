@@ -7,7 +7,7 @@ An import-directive simplifies access to a type within the enclosing module.
 ## Syntax
 
 <div class="syntax">
-<span class="keyword">import</span> <a class="synvar" href="TypeSpecifier.md">type</a></i> ;<br>
+<b>import</b> <i><a href="TypeSpecifier.md">type</a></i> ;<br>
 </div>
 
 ## AST Class
@@ -233,22 +233,4 @@ defun main (args : String[]) : void
 ```plain
 execution.List
 ```
-
-<style>
-    .syntax
-    {
-        font-family: monospace, monospace;
-    }
-
-    .keyword
-    {
-        color: blue;
-        font-weight: bold;
-    }
-
-    .synvar
-    {
-        font-style: italic;
-    }
-</style>
 

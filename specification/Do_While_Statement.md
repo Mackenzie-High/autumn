@@ -7,11 +7,11 @@ A do-while-statement is a loop that iterates while a postcondition holds true.
 ## Syntax
 
 <div class="syntax">
-<span class="keyword">do</span><br>
+<b>do</b><br>
 {<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="Statement.md">body</a></i><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<i><a href="Statement.md">body</a></i><br>
 }<br>
-<span class="keyword">while</span> ( <a href="Expression.md">condition</a></i> )<br>
+<b>while</b> ( <i><a href="Expression.md">condition</a></i> )<br>
 </div>
 
 ## AST Class
@@ -61,22 +61,4 @@ i = 2
 i = 3
 i = 4
 ```
-
-<style>
-    .syntax
-    {
-        font-family: monospace, monospace;
-    }
-
-    .keyword
-    {
-        color: blue;
-        font-weight: bold;
-    }
-
-    .synvar
-    {
-        font-style: italic;
-    }
-</style>
 

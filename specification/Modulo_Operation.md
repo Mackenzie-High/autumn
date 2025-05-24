@@ -7,7 +7,7 @@ This operator performs an arithmetic modulus operation.
 ## Syntax
 
 <div class="syntax">
-<a href="Expression.md">left</a></i> &$37; <a href="Expression.md">right</a></i><br>
+<i><a href="Expression.md">left</a></i> &$37; <i><a href="Expression.md">right</a></i><br>
 </div>
 
 ## AST Class
@@ -96,22 +96,4 @@ double = 2.0
 BigInteger = 2.00000000000000000000000000000000
 BigDecimal = 2.00000000000000000000000000000000
 ```
-
-<style>
-    .syntax
-    {
-        font-family: monospace, monospace;
-    }
-
-    .keyword
-    {
-        color: blue;
-        font-weight: bold;
-    }
-
-    .synvar
-    {
-        font-style: italic;
-    }
-</style>
 

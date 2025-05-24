@@ -7,13 +7,13 @@ A string-datum is a literal text value.
 ## Syntax
 
 <div class="syntax">
-%22string of characters</i>%22<br>
-<hr class=&#92%22syntax-hr&#92%22><br>
-@ %22string of characters</i>%22<br>
-<hr class=&#92%22syntax-hr&#92%22><br>
-'''string of characters</i>'''<br>
-<hr class=&#92%22syntax-hr&#92%22><br>
-@ '''string of characters</i>'''<br>
+%22<i>string of characters</i>%22<br>
+<hr><br>
+@ %22<i>string of characters</i>%22<br>
+<hr><br>
+'''<i>string of characters</i>'''<br>
+<hr><br>
+@ '''<i>string of characters</i>'''<br>
 </div>
 
 ## AST Class
@@ -73,22 +73,4 @@ C:\planets\Venus.obj
 C:\planets\Earth.obj
 C:\planets\Mars.obj
 ```
-
-<style>
-    .syntax
-    {
-        font-family: monospace, monospace;
-    }
-
-    .keyword
-    {
-        color: blue;
-        font-weight: bold;
-    }
-
-    .synvar
-    {
-        font-style: italic;
-    }
-</style>
 

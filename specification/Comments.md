@@ -7,11 +7,11 @@ Comments allow programmers to leave notes inside of code.
 ## Syntax
 
 <div class="syntax">
-**//&nbsp;&nbsp;&nbsp;**body of single-line comment</i><br>
-<hr class=&#92%22syntax-hr&#92%22><br>
-**#&nbsp;&nbsp;&nbsp;**body of single-line comment</i><br>
-<hr class=&#92%22syntax-hr&#92%22><br>
-**/*&nbsp;&nbsp;&nbsp;**body of multi-line comment</i>**&nbsp;&nbsp;&nbsp;*/**<br>
+**//&nbsp;&nbsp;&nbsp;**<i>body of single-line comment</i><br>
+<hr><br>
+**#&nbsp;&nbsp;&nbsp;**<i>body of single-line comment</i><br>
+<hr><br>
+**/*&nbsp;&nbsp;&nbsp;**<i>body of multi-line comment</i>**&nbsp;&nbsp;&nbsp;*/**<br>
 </div>
 
 ## AST Class
@@ -62,22 +62,4 @@ defun main (args : String[]) : void
 ```plain
 
 ```
-
-<style>
-    .syntax
-    {
-        font-family: monospace, monospace;
-    }
-
-    .keyword
-    {
-        color: blue;
-        font-weight: bold;
-    }
-
-    .synvar
-    {
-        font-style: italic;
-    }
-</style>
 

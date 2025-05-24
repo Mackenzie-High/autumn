@@ -7,7 +7,7 @@ A get-field-expression gets the value of an instance field.
 ## Syntax
 
 <div class="syntax">
-<span class="keyword">field</span> <a href="Expression.md">owner</a></i>.<a class="synvar" href="Name.md">name</a></i><br>
+<b>field</b> <i><a href="Expression.md">owner</a></i>.<i><a href="Name.md">name</a></i><br>
 </div>
 
 ## AST Class
@@ -50,22 +50,4 @@ defun main (args : String[]) : void
 ```plain
 Life and Everything = 42
 ```
-
-<style>
-    .syntax
-    {
-        font-family: monospace, monospace;
-    }
-
-    .keyword
-    {
-        color: blue;
-        font-weight: bold;
-    }
-
-    .synvar
-    {
-        font-style: italic;
-    }
-</style>
 

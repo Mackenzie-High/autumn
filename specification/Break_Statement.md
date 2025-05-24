@@ -7,7 +7,7 @@ A break-statement causes execution to immediately exit the nearest enclosing loo
 ## Syntax
 
 <div class="syntax">
-<span class="keyword">break</span> ;<br>
+<b>break</b> ;<br>
 </div>
 
 ## AST Class
@@ -18,13 +18,13 @@ autumn.lang.compiler.ast.nodes.BreakStatement
 
 + A break-statement cannot be used to exit an invocation.
 + Types of Loops:
-  + <a class="synvar" href="Forever_Statement.md">Forever Statement</a>s
-  + <a class="synvar" href="While_Statement.md">While Statement</a>s
-  + <a class="synvar" href="Until_Statement.md">Until Statement</a>s
-  + <a class="synvar" href="Do_While_Statement.md">Do-While Statement</a>s
-  + <a class="synvar" href="Do_Until_Statement.md">Do-Until Statement</a>s
-  + <a class="synvar" href="For_Statement.md">For Statement</a>s
-  + <a class="synvar" href="Foreach_Statement.md">Foreach Statement</a>s
+  + <a href="Forever_Statement.md">Forever Statement</a>s
+  + <a href="While_Statement.md">While Statement</a>s
+  + <a href="Until_Statement.md">Until Statement</a>s
+  + <a href="Do_While_Statement.md">Do-While Statement</a>s
+  + <a href="Do_Until_Statement.md">Do-Until Statement</a>s
+  + <a href="For_Statement.md">For Statement</a>s
+  + <a href="Foreach_Statement.md">Foreach Statement</a>s
 
 ## Static Checks
 
@@ -63,22 +63,4 @@ i = 3
 i = 4
 i = 5
 ```
-
-<style>
-    .syntax
-    {
-        font-family: monospace, monospace;
-    }
-
-    .keyword
-    {
-        color: blue;
-        font-weight: bold;
-    }
-
-    .synvar
-    {
-        font-style: italic;
-    }
-</style>
 
