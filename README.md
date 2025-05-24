@@ -1,49 +1,137 @@
-<img src="https://travis-ci.org/Mackenzie-High/autumn.svg">
-======
-Autumn Programming Language
-======
-
-Quick Links:
-------------
-+ [Website and Language Specification](http://mackenzie-high.github.io/autumn/)
-+ [Latest Builds](https://drive.google.com/folderview?id=0B2am-qoFTOsTfjhCd3lNMGc1cXdrZEw5WDFGZFVBaEpDbkxGM08xMGZVZkhFTVBNaHFpN2c&usp=sharing)
-
-About:
-------
-+ Autumn is a multi-paradigm statically-typed programming language for the JVM.
-+ Autumn can seamlessly use jar-file based libraries created using Java.
-+ Autumn can either compile-on-run or be precompiled into a jar file. 
-+ Autumn can be used as a [plugin](https://github.com/Mackenzie-High/autumn/blob/gh-pages/other/How-To-Use-Autumn-As-A-Plugin/src/example/Main.java) in order to facilitate scripting in other programs.
-+ Autumn has an integrated unit-testing framework. 
-+ Autumn is licensed under the terms of the [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0) license. 
-
-Status:
-------
-+ Most of the project is at a late Beta level of development.
-+ Some low-priority code is still undergoing Alpha level development. 
-+ Over nine hundred tests have been written and are passing. 
-+ The majority of the core language features are fully completed.
-+ All of the core language features currently work to some degree, but some are not fully completed. 
-
-How To Install Autumn on Linux:
-------------------------
-1. [Download](https://drive.google.com/folderview?id=0B2am-qoFTOsTfjhCd3lNMGc1cXdrZEw5WDFGZFVBaEpDbkxGM08xMGZVZkhFTVBNaHFpN2c&usp=sharing) the latest release. 
-2. Unzip the download into a convenient location.  
-3. Follow the instructions located in the README.pdf file therein. 
-
-How To Use Autumn as a Plugin in a Java Program: 
-----------------------------------------------
-As you can see [here](https://github.com/Mackenzie-High/autumn/blob/gh-pages/other/How-To-Use-Autumn-As-A-Plugin/src/example/Main.java) Autumn can easily be used as a plugin.  
-You can download the complete example project [here](https://drive.google.com/uc?export=download&id=0B2am-qoFTOsTbmRWZHl6N3R4akE).  
-
-Dependencies:
--------------
-+ [ObjectWeb ASM](http://asm.ow2.org/)
-+ [Google Guava](https://github.com/google/guava)
-+ [Snowflake Parser](http://www.mackenziehigh.me/snowflake/)
-
-Contact:
--------------
-Email: MackenzieHigh2995+Autumn@Gmail.com
-
-
++ [**GitHub Page**](https://github.com/Mackenzie-High/autumn)
++ [Downloads](specification/Downloads.md)
++ [Introduction](specification/Introduction.md)
++ [Special Thanks](specification/SpecialThanks.md)
++ **Standard Library**
+    + [API Documentation](javadoc/index.html)
+    + [Special Functions](https://www.mackenziehigh.me/autumn/FunctionIndexPage.html)
++ **Language Constructs**
+    + [Module](specification/Module.md)
+    + **Directives**
+        + [Module Directive](specification/ModuleDirective.md)
+        + [Import Directive](specification/ImportDirective.md)
+    + **Definitions**
+        + [Annotation Definition](specification/AnnotationDefinition.md)
+        + [Exception Definition](specification/ExceptionDefinition.md)
+        + [Enum Definition](specification/EnumDefinition.md)
+        + [Design Definition](specification/DesignDefinition.md)
+        + [Struct Definition](specification/StructDefinition.md)
+        + [Tuple Definition](specification/TupleDefinition.md)
+        + [Functor Definition](specification/FunctorDefinition.md)
+        + [Function Definition](specification/FunctionDefinition.md)
+    + **Statements**
+        + **Flow Control**
+            + [Sequence Statement](specification/SequenceStatement.md)
+            + [If-Then Statement](specification/If-ThenStatement.md)
+            + [When Statement](specification/WhenStatement.md)
+            + [Goto Statement](specification/GotoStatement.md)
+            + [Marker Statement](specification/MarkerStatement.md)
+            + [Branch Statement](specification/BranchStatement.md)
+            + **Looping**
+                + [While Statement](specification/WhileStatement.md)
+                + [Until Statement](specification/UntilStatement.md)
+                + [Do-While Statement](specification/Do-WhileStatement.md)
+                + [Do-Until Statement](specification/Do-UntilStatement.md)
+                + [Forever Statement](specification/ForeverStatement.md)
+                + [For Statement](specification/ForStatement.md)
+                + [Foreach Statement](specification/ForeachStatement.md)
+                + [Break Statement](specification/BreakStatement.md)
+                + [Continue Statement](specification/ContinueStatement.md)
+                + [Redo Statement](specification/RedoStatement.md)
+        + **Variable Related**
+            + [Var Statement](specification/VarStatement.md)
+            + [Val Statement](specification/ValStatement.md)
+            + [Let Statement](specification/LetStatement.md)
+        + **Exception Handling**
+            + [Throw Statement](specification/ThrowStatement.md)
+            + [Try-Catch Statement](specification/Try-CatchStatement.md)
+            + **Assertions**
+                + [Assert Statement](specification/AssertStatement.md)
+                + [Assume Statement](specification/AssumeStatement.md)
+        + **Anonymous Functions**
+            + [Delegate Statement](specification/DelegateStatement.md)
+            + [Lambda Statement](specification/LambdaStatement.md)
+        + **Special**
+            + [Nop Statement](specification/NopStatement.md)
+            + [Expression Statement](specification/ExpressionStatement.md)
+        + **Return**
+            + [Return Void Statement](specification/ReturnVoidStatement.md)
+            + [Return Value Statement](specification/ReturnValueStatement.md)
+            + [Recur Statement](specification/RecurStatement.md)
+    + **Expressions**
+        + **Datums**
+            + [Boolean Datum](specification/BooleanDatum.md)
+            + [Char Datum](specification/CharDatum.md)
+            + [Byte Datum](specification/ByteDatum.md)
+            + [Short Datum](specification/ShortDatum.md)
+            + [Int Datum](specification/IntDatum.md)
+            + [Long Datum](specification/LongDatum.md)
+            + [Float Datum](specification/FloatDatum.md)
+            + [Double Datum](specification/DoubleDatum.md)
+            + [Big Integer Datum](specification/BigIntegerDatum.md)
+            + [Big Decimal Datum](specification/BigDecimalDatum.md)
+            + [String Datum](specification/StringDatum.md)
+            + [Class Datum](specification/ClassDatum.md)
+            + [Null Datum](specification/NullDatum.md)
+            + [Variable Datum](specification/VariableDatum.md)
+        + **Operators**
+            + [Negate Operation](specification/NegateOperation.md)
+            + [Not Operation](specification/NotOperation.md)
+            + [Divide Operation](specification/DivideOperation.md)
+            + [Modulo Operation](specification/ModuloOperation.md)
+            + [Multiply Operation](specification/MultiplyOperation.md)
+            + [Add Operation](specification/AddOperation.md)
+            + [Subtract Operation](specification/SubtractOperation.md)
+            + [Concat Operation](specification/ConcatOperation.md)
+            + [Identity Equality Operation](specification/IdentityEqualityOperation.md)
+            + [Identity Inequality Operation](specification/IdentityInequalityOperation.md)
+            + [Equality Operation](specification/EqualityOperation.md)
+            + [Inequality Operation](specification/InequalityOperation.md)
+            + [Greater-Than-OR-Equals Operation](specification/Greater-Than-OR-EqualsOperation.md)
+            + [Less-Than-OR-Equals Operation](specification/Less-Than-OR-EqualsOperation.md)
+            + [Greater-Than Operation](specification/Greater-ThanOperation.md)
+            + [Less-Than Operation](specification/Less-ThanOperation.md)
+            + [And Operation](specification/AndOperation.md)
+            + [Or Operation](specification/OrOperation.md)
+            + [Xor Operation](specification/XorOperation.md)
+            + [Implies Operation](specification/ImpliesOperation.md)
+            + [Null Coalescing Operation](specification/NullCoalescingOperation.md)
+            + [As Operation](specification/AsOperation.md)
+            + [Is Operation](specification/IsOperation.md)
+        + **Object Orientation**
+            + [New Expression](specification/NewExpression.md)
+            + [Call Static Method Expression](specification/CallStaticMethodExpression.md)
+            + [Call Method Expression](specification/CallMethodExpression.md)
+            + [Set Static Field Expression](specification/SetStaticFieldExpression.md)
+            + [Get Static Field Expression](specification/GetStaticFieldExpression.md)
+            + [Set Field Expression](specification/SetFieldExpression.md)
+            + [Get Field Expression](specification/GetFieldExpression.md)
+            + [Instance-Of Expression](specification/Instance-OfExpression.md)
+            + [Dispatch Expression](specification/DispatchExpression.md)
+        + [Ternary Conditional Expression](specification/TernaryConditionalExpression.md)
+        + [Once Expression](specification/OnceExpression.md)
+        + [Locals Expression](specification/LocalsExpression.md)
+        + [Progn Expression](specification/PrognExpression.md)
+        + [List Expression](specification/ListExpression.md)
+        + [List Comprehension Expression](specification/ListComprehensionExpression.md)
++ **Components**
+    + [Annotation List](specification/AnnotationList.md)
+    + [Annotation](specification/Annotation.md)
+    + [Element List](specification/ElementList.md)
+    + [Element](specification/Element.md)
+    + [Formal Parameter List](specification/FormalParameterList.md)
+    + [Formal Parameter](specification/FormalParameter.md)
+    + [Name](specification/Name.md)
+    + [Namespace](specification/Namespace.md)
+    + [Variable](specification/Variable.md)
+    + [Type Specifier](specification/TypeSpecifier.md)
+    + [Doc Comment](specification/DocComment.md)
+    + [Doc Comment Line](specification/DocCommentLine.md)
+    + [Comments](specification/Comments.md)
++ **Type System**
+    + [Type Structure](specification/TypeStructure.md)
+    + [Type Conversions and Assignability](specification/TypeConversionsandAssignability.md)
+    + [Accessibility](specification/Accessibility.md)
+    + [Resolution](specification/Resolution.md)
+    + [Variable Scoping](specification/VariableScoping.md)
+    + [Examples of Type Errors](TypeCheckingExamplesIndexPage.html)
