@@ -29,7 +29,7 @@
     <scm>
         <connection>scm:git:git://github.com/Mackenzie-High/autumn</connection>
         <developerConnection>scm:git:ssh://github.com:Mackenzie-High/autumn</developerConnection>
-        <url>http://github.com/Mackenzie-High/autumn/tree/master</url>
+        <url>https://github.com/Mackenzie-High/autumn/tree/master</url>
     </scm>
     
     <properties>
@@ -37,6 +37,7 @@
         <maven.compiler.target>8</maven.compiler.target>
         <maven.compiler.release>8</maven.compiler.release>
     </properties>
+    
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
@@ -62,7 +63,6 @@
             <artifactId>asm-all</artifactId>
             <version>4.1</version>
         </dependency>
-        
     </dependencies>
     
     <build>

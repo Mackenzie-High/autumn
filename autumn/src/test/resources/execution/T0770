@@ -9,7 +9,7 @@ defun main (args : String[]) : void
     # This folder corresponds to the autumn.lang package.
     # Thus, there are multiple sub-folders therein.
     # For example, autumn.lang.compiler is one sub-folder inside of the autumn.lang folder.
-    val folder = new File(new File(new File(new File(new File(new File((class Local).getProtectionDomain().getCodeSource().getLocation().getPath()).getParent()).getParent()), "src"), "autumn"), "lang");
+    val folder = new File("src/main/java/autumn/lang");
 
     assert folder.exists() echo "No Such Folder: " .. folder;
 

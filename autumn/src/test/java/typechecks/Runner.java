@@ -15,6 +15,7 @@ import org.junit.Test;
 
 public final class Runner
 {
+
     private static final String STDOUT = "/media/disk/Code/EclipseProjects/AutumnSpecification/autumn/out/typechecks/";
 
     private static final boolean FAILED = false;
@@ -26,18 +27,21 @@ public final class Runner
     private static List<ErrorCode> codes;
 
     /**
-     * This method runs tests to determine whether the language's is type-checks work.
+     * This method runs tests to determine whether the language's is type-checks
+     * work.
      * The results of the tests will be printed to STDOUT.
      *
      * @param args are ignored.
      */
-    public static void main(final String[] args)
+    public static void main (final String[] args)
+    {
+        run();
+        System.out.println("Number of Failed Tests: " + failed_count);
+    }
+
+    public static int run ()
     {
         failed_count = 0;
-
-
-
-
 
         test("T0266", WRONG_SIGNATURE_FOR_TEST);
         test("T0265", WRONG_SIGNATURE_FOR_TEST);
@@ -290,17 +294,18 @@ public final class Runner
         test("T0002", EXPECTED_CONDITION);
         test("T0001", EXPECTED_CONDITION);
 
-        System.out.println("Number of Failed Tests: " + failed_count);
+        return failed_count;
     }
 
     /**
-     * This method runs a specified test multiple times and then reports the results.
+     * This method runs a specified test multiple times and then reports the
+     * results.
      *
      * @param test is the test to run.
      * @param errors are the expected error codes.
      */
-    private static void test(final String test,
-                             final ErrorCode... errors)
+    private static void test (final String test,
+                              final ErrorCode... errors)
     {
         for (int i = 0; i < 10; i++)
         {
@@ -316,14 +321,15 @@ public final class Runner
     }
 
     /**
-     * This method runs a specified test one time and then returns a value indicating the result.
+     * This method runs a specified test one time and then returns a value
+     * indicating the result.
      *
      * @param test is the test to run.
      * @param expected are the expected error codes.
      * @return true, iff the test was successful.
      */
-    private static boolean singleTest(final String test,
-                                      final ErrorCode[] errors)
+    private static boolean singleTest (final String test,
+                                       final ErrorCode[] errors)
     {
         try
         {
@@ -367,12 +373,12 @@ public final class Runner
      *
      * @return the aforesaid stream.
      */
-    private static PrintStream devnull()
+    private static PrintStream devnull ()
     {
         final OutputStream inner = new OutputStream()
         {
             @Override
-            public void write(int b)
+            public void write (int b)
             {
                 // Pass
             }
@@ -385,7 +391,7 @@ public final class Runner
      * This method allows NetBeans to automatically run the tests herein.
      */
     @Test
-    public void main()
+    public void main ()
     {
         /**
          * Perform the tests.
