@@ -3,7 +3,6 @@ package com.mackenziehigh.autumn.compiler.typesystem;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
-import com.google.common.io.Resources;
 import com.google.common.reflect.Reflection;
 import com.mackenziehigh.autumn.lang.compiler.typesystem.ReflectiveConstructor;
 import com.mackenziehigh.autumn.lang.compiler.typesystem.ReflectiveField;
@@ -17,12 +16,12 @@ import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IField;
 import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IFormalParameter;
 import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IMethod;
 import com.mackenziehigh.snowflake.Utils;
+import java.io.File;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.net.URL;
-import java.nio.charset.Charset;
+import java.nio.file.Files;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -32,6 +31,7 @@ import org.objectweb.asm.Type;
 
 public class ReflectiveDeclaredTypeTest
 {
+
     private int class_count = 0;
 
     private int field_count = 0;
@@ -52,15 +52,14 @@ public class ReflectiveDeclaredTypeTest
      * </p>
      */
     @Test
-    public void test20130722093607208742()
+    public void test20130722093607208742 ()
             throws Exception
     {
         System.out.println("Test: 20130722093607208742");
 
-        final URL resource = Resources.getResource(getClass(),
-                                                   "List of rt.jar Classes.dat");
+        final File resource = new File("src/test/resources/autumn/lang/compiler/List of rt.jar Classes.dat");
 
-        final List<String> lines = Resources.readLines(resource, Charset.defaultCharset());
+        final List<String> lines = Files.readAllLines(resource.toPath());
 
         for (String line : lines)
         {
@@ -97,7 +96,7 @@ public class ReflectiveDeclaredTypeTest
 
     }
 
-    private void checkDeclaredType(final Class clazz)
+    private void checkDeclaredType (final Class clazz)
     {
         Utils.checkNonNull(clazz);
 
@@ -121,8 +120,8 @@ public class ReflectiveDeclaredTypeTest
 
         // Check Superclass
         final Class superclass = clazz.getSuperclass() == null
-                ? Object.class
-                : clazz.getSuperclass();
+                                 ? Object.class
+                                 : clazz.getSuperclass();
 
         assertEquals(Type.getDescriptor(superclass),
                      type.getSuperclass().getDescriptor());
@@ -154,8 +153,8 @@ public class ReflectiveDeclaredTypeTest
         assertTrue(type.isAlreadyCompiled());
     }
 
-    private void checkAnnotations(final Annotation[] declared_annotations,
-                                  final IAnnotatable annotated)
+    private void checkAnnotations (final Annotation[] declared_annotations,
+                                   final IAnnotatable annotated)
     {
         final Collection<Annotation> annotations = Lists.newLinkedList();
 
@@ -169,7 +168,7 @@ public class ReflectiveDeclaredTypeTest
         assertEquals(ImmutableList.copyOf(declared_annotations), annotations);
     }
 
-    private void checkField(final ReflectiveField field)
+    private void checkField (final ReflectiveField field)
     {
         ++field_count;
 
@@ -196,7 +195,7 @@ public class ReflectiveDeclaredTypeTest
         assertEquals(reflective.isEnumConstant(), field.isEnumConstant());
     }
 
-    private void checkConstructor(final ReflectiveConstructor ctor)
+    private void checkConstructor (final ReflectiveConstructor ctor)
     {
         ++ctor_count;
 
@@ -239,7 +238,7 @@ public class ReflectiveDeclaredTypeTest
         assertEquals("<init>" + ctor.getDescriptor(), ctor.getNamePlusDescriptor());
     }
 
-    private void checkMethod(final ReflectiveMethod method)
+    private void checkMethod (final ReflectiveMethod method)
     {
         ++method_count;
 
@@ -288,9 +287,9 @@ public class ReflectiveDeclaredTypeTest
         assertEquals(name + descriptor, method.getNamePlusDescriptor());
     }
 
-    private void checkFormalParameter(final Annotation[] annotations,
-                                      final Class type,
-                                      final IFormalParameter parameter)
+    private void checkFormalParameter (final Annotation[] annotations,
+                                       final Class type,
+                                       final IFormalParameter parameter)
     {
         ++parameter_count;
 
