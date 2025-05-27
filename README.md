@@ -1,9 +1,28 @@
 # The Autumn Programming Language
 
-Quick Links:
+Autumn is a multi-paradigm general-purpose programming language for the JVM.
+
+**Quick Links:**
 + [Language Specification](https://www.mackenziehigh.com/autumn/)
 + [JavaDoc](https://mackenzie-high.github.io/autumn/javadoc/)
 + [Code Coverage](https://mackenzie-high.github.io/autumn/jacoco/)
+
+**Notable Features:**
++ Compile On-Run (default)
++ Compile Ahead-Of-Time (optional)
++ Embeddable in Java Programs
++ Static Type-System
++ Precompiled Java Libraries can be used by Autumn
++ Integrated Unit Testing Framework
++ Favors Immutability
++ Anonymous Functions
++ Optional Multiple Dispatch
++ Optional Direct Tail-Recursion
++ Weak Homioconicity
+
+## History
+
+The development of Autumn started as a personal project of Mackenzie High in the Spring of 2010.
 
 ## Download
 
