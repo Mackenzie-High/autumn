@@ -1,12 +1,9 @@
-<img src="https://travis-ci.org/Mackenzie-High/autumn.svg">
-======
-Autumn Programming Language
-======
+# Autumn Programming Language
 
 Quick Links:
-------------
-+ [Website and Language Specification](https://www.mackenziehigh.com/autumn/)
-+ [Latest Builds](https://drive.google.com/folderview?id=0B2am-qoFTOsTfjhCd3lNMGc1cXdrZEw5WDFGZFVBaEpDbkxGM08xMGZVZkhFTVBNaHFpN2c&usp=sharing)
++ [Language Specification](https://www.mackenziehigh.com/autumn/)
++ [JavaDoc](https://mackenzie-high.github.io/autumn/javadoc/)
++ [Code Coverage](https://mackenzie-high.github.io/autumn/jacoco/)
 
 About:
 ------
