@@ -1,4 +1,4 @@
-# Autumn Programming Language
+# *The Autumn Programming Language*
 
 Quick Links:
 + [Language Specification](https://www.mackenziehigh.com/autumn/)
