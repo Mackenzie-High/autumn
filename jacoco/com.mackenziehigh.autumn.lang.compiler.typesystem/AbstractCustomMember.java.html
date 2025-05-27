@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AbstractCustomMember.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.mackenziehigh:autumn</a> &gt; <a href="index.source.html" class="el_package">com.mackenziehigh.autumn.lang.compiler.typesystem</a> &gt; <span class="el_source">AbstractCustomMember.java</span></div><h1>AbstractCustomMember.java</h1><pre class="source lang-java linenums">package com.mackenziehigh.autumn.lang.compiler.typesystem;
+
+import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableList;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IAnnotation;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IDeclaredType;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.ITypeFactory;
+import com.mackenziehigh.autumn.resources.Finished;
+import java.util.Collection;
+import java.util.List;
+
+/**
+ * This class provides a partial implementation of the IMember interface.
+ *
+ * @author Mackenzie High
+ */
+@Finished(&quot;2014/07/12&quot;)
+public abstract class AbstractCustomMember
+        extends AbstractMember
+        implements ICustomAnnotatable
+{
+    private IDeclaredType owner;
+
+<span class="fc" id="L24">    private ImmutableList&lt;IAnnotation&gt; annotations = ImmutableList.of();</span>
+
+    private int modifiers;
+
+    private String name;
+
+    /**
+     * Sole Constructor.
+     *
+     * @param factory type-factory that is used to access types.
+     */
+    public AbstractCustomMember(final ITypeFactory factory)
+    {
+<span class="fc" id="L37">        super(factory);</span>
+
+<span class="fc" id="L39">        Preconditions.checkNotNull(factory);</span>
+<span class="fc" id="L40">    }</span>
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public IDeclaredType getOwner()
+    {
+<span class="fc" id="L48">        return owner;</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List&lt;IAnnotation&gt; getAnnotations()
+    {
+<span class="fc" id="L57">        return annotations;</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int getModifiers()
+    {
+<span class="fc" id="L66">        return modifiers;</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getName()
+    {
+<span class="fc" id="L75">        return name;</span>
+    }
+
+    /**
+     * Setter.
+     *
+     * @param owner is the owner of this member.
+     */
+    public void setOwner(final IDeclaredType owner)
+    {
+<span class="fc" id="L85">        Preconditions.checkNotNull(owner);</span>
+
+<span class="fc" id="L87">        this.owner = owner;</span>
+<span class="fc" id="L88">    }</span>
+
+    /**
+     * Setter.
+     *
+     * @param annotations are the annotations applied directly to this member.
+     */
+    public void setAnnotations(final Collection&lt;IAnnotation&gt; annotations)
+    {
+<span class="fc" id="L97">        this.annotations = ImmutableList.copyOf(annotations);</span>
+<span class="fc" id="L98">    }</span>
+
+    /**
+     * Setter.
+     *
+     * @param modifiers are the modifiers applied to this member.
+     */
+    public void setModifiers(final int modifiers)
+    {
+<span class="fc" id="L107">        this.modifiers = modifiers;</span>
+<span class="fc" id="L108">    }</span>
+
+    /**
+     * Setter.
+     *
+     * @param name is the name of this member.
+     */
+    public void setName(final String name)
+    {
+<span class="fc" id="L117">        Preconditions.checkNotNull(name);</span>
+
+<span class="fc" id="L119">        this.name = name;</span>
+<span class="fc" id="L120">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

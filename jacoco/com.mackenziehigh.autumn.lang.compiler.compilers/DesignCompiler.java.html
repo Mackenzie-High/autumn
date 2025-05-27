@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DesignCompiler.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.mackenziehigh:autumn</a> &gt; <a href="index.source.html" class="el_package">com.mackenziehigh.autumn.lang.compiler.compilers</a> &gt; <span class="el_source">DesignCompiler.java</span></div><h1>DesignCompiler.java</h1><pre class="source lang-java linenums">package com.mackenziehigh.autumn.lang.compiler.compilers;
+
+import autumn.lang.compiler.ClassFile;
+import autumn.lang.compiler.ast.commons.IRecord;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IConstructor;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IInterfaceType;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IMethod;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IVariableType;
+import com.mackenziehigh.autumn.lang.compiler.utils.BridgeMethod;
+import com.mackenziehigh.autumn.lang.compiler.utils.GetterMethod;
+import com.mackenziehigh.autumn.lang.compiler.utils.RecordElement;
+import com.mackenziehigh.autumn.lang.compiler.utils.SetterMethod;
+import com.mackenziehigh.autumn.lang.compiler.utils.TypeSystemUtils;
+import com.mackenziehigh.autumn.lang.compiler.utils.Utils;
+import java.util.List;
+import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.tree.ClassNode;
+import org.objectweb.asm.tree.MethodNode;
+
+/**
+ * An instance of this class controls the compilation of a design-definition.
+ *
+ * @author Mackenzie High
+ */
+<span class="fc" id="L28">class DesignCompiler</span>
+        extends AbstractRecordCompiler
+{
+    /**
+     * Sole Constructor.
+     *
+     * @param module is the module that contains the tuple being compiled.
+     * @param node is the AST node that represents the tuple being compiled.
+     */
+    public DesignCompiler(final ModuleCompiler module,
+                          final IRecord node)
+    {
+<span class="fc" id="L40">        super(module, node);</span>
+
+<span class="pc bpc" id="L42" title="1 of 2 branches missed.">        assert module != null;</span>
+<span class="pc bpc" id="L43" title="1 of 2 branches missed.">        assert node != null;</span>
+<span class="fc" id="L44">    }</span>
+
+    /**
+     * A design-type never has a constructor, because design-types compiles to an interface.
+     *
+     * @return null.
+     */
+    @Override
+    protected IConstructor typeofCtor()
+    {
+<span class="fc" id="L54">        return null;</span>
+    }
+
+    /**
+     * A design-type never has an instance() method, because design-types compiles to an interface.
+     *
+     * @return null.
+     */
+    @Override
+    protected IMethod typeofInstance()
+    {
+<span class="fc" id="L65">        return null;</span>
+    }
+
+    /**
+     * This method generates the compiled class-file.
+     *
+     * @return the compiled class-file.
+     */
+    public ClassFile build()
+    {
+<span class="fc" id="L75">        final String internal_name = Utils.internalName(type);</span>
+
+<span class="fc" id="L77">        final String source_name = Utils.sourceName(type);</span>
+
+        /**
+         * Create the bytecode representation of the tuple itself.
+         */
+<span class="fc" id="L82">        final ClassNode clazz = new ClassNode();</span>
+        {
+<span class="fc" id="L84">            clazz.version = Opcodes.V1_6;</span>
+<span class="fc" id="L85">            clazz.visibleAnnotations = module.anno_utils.compileAnnotationList(type.getAnnotations());</span>
+<span class="fc" id="L86">            clazz.access = type.getModifiers();</span>
+<span class="fc" id="L87">            clazz.name = internal_name;</span>
+<span class="fc" id="L88">            clazz.superName = Utils.internalName(type.getSuperclass());</span>
+<span class="fc" id="L89">            clazz.fields = ImmutableList.of();</span>
+<span class="fc" id="L90">            clazz.methods = Lists.newLinkedList();</span>
+<span class="fc" id="L91">            clazz.sourceFile = String.valueOf(node.getLocation().getFile());</span>
+
+            /**
+             * The record may implement zero or more designs, as specified by the user.
+             */
+<span class="fc bfc" id="L96" title="All 2 branches covered.">            for (IInterfaceType superinterface : type.getSuperinterfaces())</span>
+            {
+<span class="fc" id="L98">                clazz.interfaces.add(Utils.internalName(superinterface));</span>
+<span class="fc" id="L99">            }</span>
+
+            /**
+             * Generate the special methods.
+             */
+<span class="fc" id="L104">            clazz.methods.add(this.generateMethodSet());</span>
+
+            /**
+             * Generate all the bridge methods.
+             */
+<span class="fc" id="L109">            clazz.methods.addAll(this.generateBridgeMethods());</span>
+
+            /**
+             * Generate all the setters and getters.
+             */
+<span class="fc bfc" id="L114" title="All 2 branches covered.">            for (RecordElement element : analyzer.elements.values())</span>
+            {
+<span class="fc" id="L116">                clazz.methods.add(this.generateSetter(element.setter()));</span>
+<span class="fc" id="L117">                clazz.methods.add(this.generateGetter(element.getter()));</span>
+<span class="fc" id="L118">            }</span>
+        }
+
+        /**
+         * Assemble the bytecode into an array of bytes.
+         */
+<span class="fc" id="L124">        final ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_MAXS);</span>
+<span class="fc" id="L125">        clazz.accept(writer);</span>
+<span class="fc" id="L126">        final byte[] bytecode = writer.toByteArray();</span>
+
+        /**
+         * Create the class-file object that will store the emitted bytecode.
+         */
+<span class="fc" id="L131">        final ClassFile file = new ClassFile(source_name, bytecode);</span>
+
+<span class="fc" id="L133">        return file;</span>
+    }
+
+    /**
+     * This method generates the bytecode representations of the bridge methods.
+     *
+     * @return the generated methods.
+     */
+    private List&lt;MethodNode&gt; generateBridgeMethods()
+    {
+<span class="fc" id="L143">        final List&lt;MethodNode&gt; result = Lists.newLinkedList();</span>
+
+        /**
+         * Generate the bridge methods related to predefined methods.
+         */
+<span class="fc bfc" id="L148" title="All 2 branches covered.">        for (BridgeMethod bridge : special_bridges)</span>
+        {
+<span class="fc" id="L150">            result.add(bridge.compileAbstract(module));</span>
+<span class="fc" id="L151">        }</span>
+
+        /**
+         * Generate the bridge methods related to elements.
+         */
+<span class="fc bfc" id="L156" title="All 2 branches covered.">        for (RecordElement element : analyzer.elements().values())</span>
+        {
+            /**
+             * Generate the bridge getter methods.
+             */
+<span class="pc bpc" id="L161" title="1 of 2 branches missed.">            for (GetterMethod getter : element.bridgeGetters())</span>
+            {
+<span class="nc" id="L163">                final BridgeMethod bridge = new BridgeMethod(getter.findSelf(),</span>
+<span class="nc" id="L164">                                                             getter.findBridgeTarget());</span>
+
+<span class="nc" id="L166">                result.add(bridge.compileAbstract(module));</span>
+<span class="nc" id="L167">            }</span>
+
+            /**
+             * Generate the bridge setter methods.
+             */
+<span class="fc bfc" id="L172" title="All 2 branches covered.">            for (SetterMethod setter : element.bridgeSetters())</span>
+            {
+<span class="fc" id="L174">                final BridgeMethod bridge = new BridgeMethod(setter.findSelf(),</span>
+<span class="fc" id="L175">                                                             setter.findBridgeTarget());</span>
+
+<span class="fc" id="L177">                result.add(bridge.compileAbstract(module));</span>
+<span class="fc" id="L178">            }</span>
+<span class="fc" id="L179">        }</span>
+
+<span class="fc" id="L181">        return result;</span>
+    }
+
+    /**
+     * This method generates the bytecode representation of the set(int, Object) method.
+     *
+     * @return the generated method.
+     */
+    private MethodNode generateMethodSet()
+    {
+<span class="fc" id="L191">        final MethodNode method = Utils.bytecodeOf(module,</span>
+<span class="fc" id="L192">                                                   TypeSystemUtils.find(type.getAllVisibleMethods(),</span>
+                                                                        &quot;set&quot;,
+<span class="fc" id="L194">                                                                        &quot;(ILjava/lang/Object;)&quot; + program.typesystem.utils.RECORD.getDescriptor()));</span>
+
+        // Add the ABSTRACT modifier.
+<span class="fc" id="L197">        method.access = method.access | Opcodes.ACC_ABSTRACT;</span>
+
+<span class="fc" id="L199">        return method;</span>
+    }
+
+    /**
+     * This method generates the bytecode representation of a setter method.
+     *
+     * &lt;p&gt;
+     * A setter method must obtain a modifiable variant of the tuple.
+     * In other words, the setter must copy the tuple, if it is immutable.
+     * Then the setter must set the field in the tuple to the new value.
+     * Finally, the setter must return the modified tuple.
+     * Take note, the returned tuple may not be the original tuple.
+     * &lt;/p&gt;
+     *
+     * @param element is an object that describes the element.
+     * @return the generated method.
+     */
+    private MethodNode generateSetter(final SetterMethod element)
+    {
+        /**
+         * Get the static-type of the element.
+         */
+<span class="fc" id="L221">        final IVariableType element_type = typeOfElement(element.name);</span>
+
+<span class="fc" id="L223">        final MethodNode method = Utils.bytecodeOf(module,</span>
+<span class="fc" id="L224">                                                   TypeSystemUtils.find(type.getMethods(),</span>
+                                                                        element.name,
+<span class="fc" id="L226">                                                                        &quot;(&quot; + element_type.getDescriptor() + &quot;)&quot; + type.getDescriptor()));</span>
+
+        // Add the ABSTRACT modifier.
+<span class="fc" id="L229">        method.access = method.access | Opcodes.ACC_ABSTRACT;</span>
+
+<span class="fc" id="L231">        return method;</span>
+    }
+
+    /**
+     * This method generates the bytecode representation of a getter method.
+     *
+     * &lt;p&gt;
+     * A getter method simply read the field that stores the element and then returns the result.
+     * &lt;/p&gt;
+     *
+     * @param element is an object that describes the element.
+     * @return the generated method.
+     */
+    private MethodNode generateGetter(final GetterMethod element)
+    {
+        /**
+         * Get the static-type of the element.
+         */
+<span class="fc" id="L249">        final IVariableType element_type = typeOfElement(element.name);</span>
+
+<span class="fc" id="L251">        final MethodNode method = Utils.bytecodeOf(module,</span>
+<span class="fc" id="L252">                                                   TypeSystemUtils.find(type.getMethods(),</span>
+                                                                        element.name,
+<span class="fc" id="L254">                                                                        &quot;()&quot; + element_type.getDescriptor()));</span>
+
+        // Add the ABSTRACT modifier.
+<span class="fc" id="L257">        method.access = method.access | Opcodes.ACC_ABSTRACT;</span>
+
+<span class="fc" id="L259">        return method;</span>
+    }
+
+    /**
+     * This method retrieves the static-type of an element given the element's name.
+     *
+     * @param key is the name of the element.
+     * @return the most-specific static-type of the element.
+     */
+    private IVariableType typeOfElement(final String key)
+    {
+<span class="fc" id="L270">        final IVariableType result = analyzer.elements.get(key).type();</span>
+
+<span class="fc" id="L272">        return result;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

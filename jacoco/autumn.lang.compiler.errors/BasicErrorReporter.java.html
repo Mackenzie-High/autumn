@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BasicErrorReporter.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.mackenziehigh:autumn</a> &gt; <a href="index.source.html" class="el_package">autumn.lang.compiler.errors</a> &gt; <span class="el_source">BasicErrorReporter.java</span></div><h1>BasicErrorReporter.java</h1><pre class="source lang-java linenums">package autumn.lang.compiler.errors;
+
+import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
+import com.mackenziehigh.autumn.resources.Finished;
+import java.io.PrintStream;
+import java.net.URL;
+import java.util.List;
+import java.util.Map.Entry;
+
+/**
+ * An instance of this class is an error-reporter that reports errors to a PrintStream.
+ *
+ * @author Mackenzie High
+ */
+@Finished(&quot;2014/08/22&quot;)
+public final class BasicErrorReporter
+        implements IErrorReporter
+{
+    /**
+     * This is where error messages will be sent to.
+     */
+    private PrintStream out;
+
+    /**
+     * This is the number of errors that have been reported.
+     */
+<span class="fc" id="L29">    private int count = 0;</span>
+
+    /**
+     * These are the error-codes of the reported errors.
+     */
+<span class="fc" id="L34">    private final List&lt;ErrorCode&gt; codes = Lists.newLinkedList();</span>
+
+    /**
+     * These are the errors that have been reported.
+     */
+<span class="fc" id="L39">    private final List&lt;ErrorReport&gt; reports = Lists.newLinkedList();</span>
+
+    /**
+     * Constructor.
+     *
+     * &lt;p&gt;
+     * This constructor creates an error-reporter that reports errors using STDOUT.
+     * &lt;/p&gt;
+     */
+    public BasicErrorReporter()
+    {
+<span class="fc" id="L50">        this(System.out);</span>
+<span class="fc" id="L51">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param out is the stream to report errors to.
+     */
+    public BasicErrorReporter(final PrintStream out)
+<span class="fc" id="L59">    {</span>
+<span class="fc" id="L60">        this.out = out;</span>
+<span class="fc" id="L61">    }</span>
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void reportSyntaxError(final URL file,
+                                  final int line,
+                                  final int column)
+    {
+<span class="nc" id="L71">        Preconditions.checkNotNull(file);</span>
+
+<span class="nc" id="L73">        codes.add(ErrorCode.SYNTAX_ERROR);</span>
+
+<span class="nc" id="L75">        ++count;</span>
+<span class="nc" id="L76">        out.println(&quot;Parsing Failed!&quot;);</span>
+<span class="nc" id="L77">        out.println(&quot;  File: &quot; + file);</span>
+<span class="nc" id="L78">        out.println(&quot;  Line: #&quot; + line);</span>
+<span class="nc" id="L79">        out.println(&quot;  Column: #&quot; + column);</span>
+<span class="nc" id="L80">    }</span>
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void reportFailedCheck(final ErrorReport report)
+    {
+<span class="fc" id="L88">        Preconditions.checkNotNull(report);</span>
+
+<span class="fc" id="L90">        codes.add(report.code());</span>
+<span class="fc" id="L91">        reports.add(report);</span>
+
+<span class="fc" id="L93">        ++count;</span>
+<span class="fc" id="L94">        out.println(&quot;Warning: &quot; + report.code());</span>
+<span class="fc" id="L95">        out.println(&quot;  File: &quot; + report.node().getLocation().getFile());</span>
+<span class="fc" id="L96">        out.println(&quot;  Line: #&quot; + report.node().getLocation().getLine());</span>
+<span class="fc" id="L97">        out.println(&quot;  Column: #&quot; + report.node().getLocation().getColumn());</span>
+<span class="fc" id="L98">        out.println(&quot;  Message: &quot; + report.message());</span>
+
+<span class="fc bfc" id="L100" title="All 2 branches covered.">        for (Entry&lt;String, String&gt; entry : report.details().entrySet())</span>
+        {
+<span class="fc" id="L102">            out.println(&quot;  &quot; + entry.getKey() + &quot;: &quot; + entry.getValue());</span>
+<span class="fc" id="L103">        }</span>
+
+<span class="fc" id="L105">        out.println();</span>
+<span class="fc" id="L106">    }</span>
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int errorCount()
+    {
+<span class="fc" id="L114">        return count;</span>
+    }
+
+    /**
+     * This method returns a list containing the error-codes that have been reported already.
+     *
+     * @return an immutable list containing the reported error-codes.
+     */
+    public List&lt;ErrorCode&gt; codes()
+    {
+<span class="fc" id="L124">        return ImmutableList.copyOf(codes);</span>
+    }
+
+    /**
+     * This method returns a list containing the error-reports that have been reported already.
+     *
+     * @return an immutable list containing the reported errors.
+     */
+    public List&lt;ErrorReport&gt; reports()
+    {
+<span class="nc" id="L134">        return ImmutableList.copyOf(reports);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

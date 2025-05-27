@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ErrorReport.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.mackenziehigh:autumn</a> &gt; <a href="index.source.html" class="el_package">autumn.lang.compiler.errors</a> &gt; <span class="el_source">ErrorReport.java</span></div><h1>ErrorReport.java</h1><pre class="source lang-java linenums">package autumn.lang.compiler.errors;
+
+import autumn.lang.compiler.ast.commons.IConstruct;
+import com.google.common.base.Preconditions;
+import com.google.common.collect.Maps;
+import com.mackenziehigh.autumn.resources.Finished;
+import java.util.LinkedHashMap;
+
+/**
+ * An instance of this class is an error-report that describes the failure of a single static check.
+ *
+ * @author Mackenzie High
+ */
+@Finished(&quot;2014/08/22&quot;)
+public final class ErrorReport
+{
+    /**
+     * This is the AST node that failed a compile-time check.
+     */
+    private final IConstruct node;
+
+    /**
+     * This error-code indicates the type of static check that failed.
+     */
+    private final ErrorCode code;
+
+    /**
+     * This is an informative message that should help the user find the cause of the error.
+     */
+    private String message;
+
+    /**
+     * These are details that should help the user find the cause of the reported error.
+     */
+<span class="fc" id="L35">    private final LinkedHashMap&lt;String, String&gt; details = Maps.newLinkedHashMap();</span>
+
+    /**
+     * Constructor.
+     *
+     * @param node is the AST node that failed the compile-time check.
+     * @param code is the error-code that indicates the type of check that failed.
+     * @param message is a meaningful message that describes the error being reported.
+     */
+    public ErrorReport(final IConstruct node,
+                       final ErrorCode code,
+                       final String message)
+<span class="fc" id="L47">    {</span>
+<span class="fc" id="L48">        Preconditions.checkNotNull(node);</span>
+<span class="fc" id="L49">        Preconditions.checkNotNull(code);</span>
+<span class="fc" id="L50">        Preconditions.checkNotNull(message);</span>
+
+<span class="fc" id="L52">        this.node = node;</span>
+<span class="fc" id="L53">        this.code = code;</span>
+<span class="fc" id="L54">        this.message = message;</span>
+<span class="fc" id="L55">    }</span>
+
+    /**
+     * This method returns the AST node that failed the static check.
+     *
+     * @return the aforedescribed AST node.
+     */
+    public IConstruct node()
+    {
+<span class="fc" id="L64">        return node;</span>
+    }
+
+    /**
+     * This method returns the error-code that indicates the type of static check that failed.
+     *
+     * @return the aforedescribed error-code.
+     */
+    public ErrorCode code()
+    {
+<span class="fc" id="L74">        return code;</span>
+    }
+
+    /**
+     * This method returns the error-message associated with this error-report.
+     *
+     * @return a meaningful error-message.
+     */
+    public String message()
+    {
+<span class="fc" id="L84">        return message;</span>
+    }
+
+    /**
+     * This method adds an additional detail to this error report.
+     *
+     * @param key describes the type of detail being added.
+     * @param value is the detail itself.
+     */
+    public void addDetail(final String key,
+                          final String value)
+    {
+<span class="fc" id="L96">        Preconditions.checkNotNull(key);</span>
+<span class="fc" id="L97">        Preconditions.checkNotNull(value);</span>
+
+<span class="fc" id="L99">        details.put(key, value);</span>
+<span class="fc" id="L100">    }</span>
+
+    /**
+     * This method retrieves the details that have been added to this error-report.
+     *
+     * @return a map that contains the details in the order that they were added to this report.
+     */
+    public LinkedHashMap&lt;String, String&gt; details()
+    {
+<span class="fc" id="L109">        return Maps.newLinkedHashMap(details);</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString()
+    {
+<span class="nc" id="L118">        return code().name();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

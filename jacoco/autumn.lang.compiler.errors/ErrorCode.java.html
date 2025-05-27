@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ErrorCode.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.mackenziehigh:autumn</a> &gt; <a href="index.source.html" class="el_package">autumn.lang.compiler.errors</a> &gt; <span class="el_source">ErrorCode.java</span></div><h1>ErrorCode.java</h1><pre class="source lang-java linenums">package autumn.lang.compiler.errors;
+
+/**
+ * An instance of this enum identifies the type of a compile-time error.
+ *
+ * &lt;p&gt;
+ * Note: The names of these constants are intended to infer their meaning.
+ * &lt;/p&gt;
+ *
+ * &lt;p&gt;
+ * &lt;b&gt;Warning:&lt;/b&gt; Constants may herein be added, deleted, or renamed in the future.
+ * &lt;/p&gt;
+ *
+ * @author Mackenzie High
+ */
+<span class="fc" id="L16">public enum ErrorCode</span>
+{
+    /**
+     * Meaning: Something completely unexpected happened.
+     */
+<span class="fc" id="L21">    UNKNOWN_ERROR,</span>
+    /**
+     * Meaning: Parsing failed.
+     */
+<span class="fc" id="L25">    SYNTAX_ERROR,</span>
+    /**
+     * Meaning: No accessible overload of the unary operator will accept the operand type.
+     */
+<span class="fc" id="L29">    NO_SUCH_UNARY_OPERATOR,</span>
+    /**
+     * Meaning: No accessible overload of the binary operator will accept the operand types.
+     */
+<span class="fc" id="L33">    NO_SUCH_BINARY_OPERATOR,</span>
+    /**
+     * Meaning: No accessible overload of the constructor will accept the arguments' type(s).
+     */
+<span class="fc" id="L37">    NO_SUCH_CONSTRUCTOR,</span>
+    /**
+     * Meaning: No method can be found with the given name, whether accessible or inaccessible.
+     */
+<span class="fc" id="L41">    NO_SUCH_METHOD,</span>
+    /**
+     * Meaning: No field can be found with the given name, whether accessible or inaccessible.
+     */
+<span class="fc" id="L45">    NO_SUCH_FIELD,</span>
+    /**
+     * Meaning: The variable was not declared (i.e. Undeclared Variable).
+     */
+<span class="fc" id="L49">    NO_SUCH_VARIABLE,</span>
+    /**
+     * Meaning: The label was not declared (i.e. Undeclared Label).
+     */
+<span class="fc" id="L53">    NO_SUCH_LABEL,</span>
+    /**
+     * Meaning: The given type-name does not refer to any known type.
+     */
+<span class="fc" id="L57">    NO_SUCH_TYPE,</span>
+    /**
+     * Meaning: The given type-name does not refer to a type that is accessible.
+     */
+<span class="fc" id="L61">    NO_SUCH_ACCESSIBLE_TYPE,</span>
+    /**
+     * Meaning: An annotation-type was expected.
+     */
+<span class="fc" id="L65">    EXPECTED_ANNOTATION,</span>
+    /**
+     * Meaning: An exception type was expected (i.e. a subclass of java.lang.Throwable).
+     */
+<span class="fc" id="L69">    EXPECTED_THROWABLE,</span>
+    /**
+     * Meaning: An invokable object was expected (i.e. autumn.lang.ICallable).
+     */
+<span class="fc" id="L73">    EXPECTED_CALLABLE,</span>
+    /**
+     * Meaning: An interface-type was expected.
+     */
+<span class="fc" id="L77">    EXPECTED_INTERFACE_TYPE,</span>
+    /**
+     * Meaning: An enum-type was expected.
+     */
+<span class="fc" id="L81">    EXPECTED_ENUM_TYPE,</span>
+    /**
+     * Meaning: A primitive-type or a reference-type was expected.
+     */
+<span class="fc" id="L85">    VALUE_REQUIRED,</span>
+    /**
+     * Meaning: A reference-type was expected.
+     */
+<span class="fc" id="L89">    EXPECTED_REFERENCE_TYPE,</span>
+    /**
+     * Meaning: A class-type was expected.
+     */
+<span class="fc" id="L93">    EXPECTED_CLASS_TYPE,</span>
+    /**
+     * Meaning: A primitive-type was expected.
+     */
+<span class="fc" id="L97">    EXPECTED_PRIMITIVE_TYPE,</span>
+    /**
+     * Meaning: A variable-type was expected.
+     */
+<span class="fc" id="L101">    EXPECTED_VARIABLE_TYPE,</span>
+    /**
+     * Meaning: A return-type was expected.
+     */
+<span class="fc" id="L105">    EXPECTED_RETURN_TYPE,</span>
+    /**
+     * Meaning: A declared-type was expected.
+     */
+<span class="fc" id="L109">    EXPECTED_DECLARED_TYPE,</span>
+    /**
+     * Meaning: A design-type was expected.
+     */
+<span class="fc" id="L113">    EXPECTED_DESIGN_TYPE,</span>
+    /**
+     * Meaning: A primitive boolean or a java.lang.Boolean was expected.
+     */
+<span class="fc" id="L117">    EXPECTED_CONDITION,</span>
+    /**
+     * Meaning: An integral type was expected.
+     */
+<span class="fc" id="L121">    EXPECTED_INTEGER,</span>
+    /**
+     * Meaning: The void-type was expected.
+     */
+<span class="fc" id="L125">    EXPECTED_VOID,</span>
+    /**
+     * Meaning: A string (i.e. java.lang.String) was expected.
+     */
+<span class="fc" id="L129">    EXPECTED_STRING,</span>
+    /**
+     * Meaning: An iterable (i.e. java.lang.Iterable) was expected.
+     */
+<span class="fc" id="L133">    EXPECTED_ITERABLE,</span>
+    /**
+     * Meaning: A functor (i.e. autumn.lang.Functor) was expected.
+     */
+<span class="fc" id="L137">    EXPECTED_DEFINED_FUNCTOR_TYPE,</span>
+    /**
+     * Meaning: A tuple (i.e. autumn.lang.Tuple) was expected.
+     */
+<span class="fc" id="L141">    EXPECTED_TUPLE,</span>
+    /**
+     * Meaning: A design-type (i.e. autumn.lang.Design) was expected. // TODO: right?
+     */
+<span class="fc" id="L145">    EXPECTED_PROTOTYPE_TYPE,</span>
+    /**
+     * Meaning: A module-type (i.e. autumn.lang.Module) was expected. // TODO: right?
+     */
+<span class="fc" id="L149">    EXPECTED_MODULE_TYPE,</span>
+    /**
+     * Meaning: The static-type of an expression was void were it is not allowed.
+     */
+<span class="fc" id="L153">    EXPECTED_NON_VOID_EXPRESSION,</span>
+    /**
+     * Meaning: The null-type was found somewhere that it is forbidden to be.
+     */
+<span class="fc" id="L157">    EXPECTED_NON_NULL,</span>
+    /**
+     * Meaning: A variable must be mutable in a particular circumstance.
+     */
+<span class="fc" id="L161">    MUTABLE_VARIABLE_REQUIRED,</span>
+    /**
+     * Meaning: The variable was already previously declared elsewhere.
+     */
+<span class="fc" id="L165">    DUPLICATE_VARIABLE,</span>
+    /**
+     * Meaning: The label was already previously declared elsewhere.
+     */
+<span class="fc" id="L169">    DUPLICATE_LABEL,</span>
+    /**
+     * Meaning: The method was already declared elsewhere.
+     */
+<span class="fc" id="L173">    DUPLICATE_METHOD,</span>
+    /**
+     * Meaning: The property was already declared elsewhere.
+     */
+<span class="fc" id="L177">    DUPLICATE_PROPERTY,</span>
+    /**
+     * Meaning: The function was already declared elsewhere.
+     */
+<span class="fc" id="L181">    DUPLICATE_FUNCTION,</span>
+    /**
+     * Meaning: The type was already declared elsewhere.
+     */
+<span class="fc" id="L185">    DUPLICATE_TYPE,</span>
+    /**
+     * Meaning: The exception handler catches an the exact type as another exception handler.
+     */
+<span class="fc" id="L189">    DUPLICATE_EXCEPTION_HANDLER,</span>
+    /**
+     * Meaning: A superinterface was specified more than once.
+     */
+<span class="fc" id="L193">    DUPLICATE_SUPERTYPE,</span>
+    /**
+     * Meaning: A module contains more than one module-directive.
+     */
+<span class="fc" id="L197">    DUPLICATE_MODULE_DIRECTIVE,</span>
+    /**
+     * Meaning: An enum-definition contains multiple enum-constants with the same name.
+     */
+<span class="fc" id="L201">    DUPLICATE_CONSTANT,</span>
+    /**
+     * Meaning: An annotation can only appear once in a single annotation-list.
+     */
+<span class="fc" id="L205">    DUPLICATE_ANNOTATION,</span>
+    /**
+     * Meaning: A construct is used in a context that it is forbidden.
+     */
+<span class="fc" id="L209">    FORBIDDEN_CONSTRUCT,</span>
+    /**
+     * Meaning:
+     */
+<span class="fc" id="L213">    BAD_LITERAL,</span>
+    /**
+     * Meaning: The assignment is not possible based on the static-types.
+     */
+<span class="fc" id="L217">    IMPOSSIBLE_ASSIGNMENT,</span>
+    /**
+     * Meaning: A type directly or indirectly inherits from itself.
+     */
+<span class="fc" id="L221">    CIRCULAR_INHERITANCE,</span>
+    /**
+     * Meaning: An override method's return-type is not a subtype of the the return-type of
+     * the method that is overridden.
+     */
+<span class="fc" id="L226">    COVARIANCE_VIOLATION,</span>
+    /**
+     * Meaning: A method is attempting to override another method that is declared 'final'.
+     */
+<span class="fc" id="L230">    CANNOT_OVERRIDE_FINAL_METHOD,</span>
+    /**
+     * Meaning: A type is exposed in the API that should not be, due to its access-level.
+     */
+<span class="fc" id="L234">    OVERLY_EXPOSED_TYPE,</span>
+    /**
+     * Meaning: A type does not have adequate access privileges.
+     */
+<span class="fc" id="L238">    INACCESSIBLE_TYPE,</span>
+    /**
+     * Meaning: An expression produces a value of an unexpected static-type.
+     */
+<span class="fc" id="L242">    WRONG_TYPE,</span>
+    /**
+     * Meaning: An incorrect number of arguments was given to in an invocation.
+     */
+<span class="fc" id="L246">    BAD_ARGUMENT_COUNT,</span>
+    /**
+     * Meaning: A break-statement is located outside of a loop construct.
+     */
+<span class="fc" id="L250">    BREAK_OUTSIDE_OF_LOOP,</span>
+    /**
+     * Meaning: A break-statement is located outside of a loop construct.
+     */
+<span class="fc" id="L254">    CONTINUE_OUTSIDE_OF_LOOP,</span>
+    /**
+     * Meaning: A break-statement is located outside of a loop construct.
+     */
+<span class="fc" id="L258">    REDO_OUTSIDE_OF_LOOP,</span>
+    /**
+     * Meaning: The declaration of a method conflicts with the declaration of a property.
+     */
+<span class="fc" id="L262">    METHOD_CONFLICTS_WITH_PROPERTY,</span>
+    /**
+     * Meaning: A compilation-unit contains more than one function with the
+     * &lt;code&gt;@Start&lt;/code&gt; annotation applied to them.
+     */
+<span class="fc" id="L267">    TOO_MANY_STARTS,</span>
+    /**
+     * Meaning: Given two operands X and Y, either X must be a subtype of Y or vice versa.
+     */
+<span class="fc" id="L271">    INCOMPATIBLE_OPERANDS,</span>
+    /**
+     * Meaning: The compiler determined that an instanceof will never result in true.
+     */
+<span class="fc" id="L275">    NON_VIABLE_INSTANCEOF,</span>
+    /**
+     * Meaning: A set of selected method overloads do not share their return-types.
+     */
+<span class="fc" id="L279">    UNEQUAL_RETURN_TYPES,</span>
+    /**
+     * Meaning: A input value cannot be converted to an output type due to its type.
+     */
+<span class="fc" id="L283">    IMPOSSIBLE_CONVERSION,</span>
+    /**
+     * Meaning: A variable was used outside the scope that it was declared in.
+     */
+<span class="fc" id="L287">    VARIABLE_OUTSIDE_OF_SCOPE,</span>
+    /**
+     * Meaning: A string-literal contains a malformed escape-sequence.
+     */
+<span class="fc" id="L291">    MALFORMED_STRING_LITERAL,</span>
+    /**
+     * Meaning: A value cannot be assigned to a readonly variable or field.
+     */
+<span class="fc" id="L295">    ASSIGNMENT_TO_READONLY,</span>
+    /**
+     * Meaning: A record can only declare an element once per definition.
+     */
+<span class="fc" id="L299">    DUPLICATE_ELEMENT,</span>
+    /**
+     * Meaning: An annotation that cannot be used by Autumn was encountered.
+     */
+<span class="fc" id="L303">    UNUSABLE_ANNOTATION,</span>
+    /**
+     * Meaning: A module must contain a module-directive.
+     */
+<span class="fc" id="L307">    MISSING_MODULE_DIRECTIVE,</span>
+    /**
+     * Meaning: A start function must have a signature of: main(String[]) : void
+     */
+<span class="fc" id="L311">    WRONG_SIGNATURE_FOR_START,</span>
+    /**
+     * Meaning: A setup function must have a signature of: () : void
+     */
+<span class="fc" id="L315">    WRONG_SIGNATURE_FOR_SETUP,</span>
+    /**
+     * Meaning: A test function must have a signature of: (TestCase) : void
+     */
+<span class="fc" id="L319">    WRONG_SIGNATURE_FOR_TEST,</span>
+    /**
+     * Meaning: An inferred function must have a signature of: (T, ...) : T, where T is some reference-type.
+     */
+<span class="fc" id="L323">    WRONG_SIGNATURE_FOR_INFER,</span>
+    /**
+     * Meaning: An anonymous module cannot contain any functions.
+     */
+<span class="fc" id="L327">    FUNCTION_IN_ANONYMOUS_MODULE,</span>
+    /**
+     * Meaning: A literal value is outside the range of its datatype.
+     */
+<span class="fc" id="L331">    INACCURATE_NUMERIC_LITERAL,</span>
+    /**
+     * Meaning: A progn-expression cannot be empty.
+     */
+<span class="fc" id="L335">    EMPTY_PROGN,</span>
+    /**
+     * Meaning: A non-overloaded method is required.
+     */
+<span class="fc" id="L339">    OVERLOADED_METHOD,</span>
+    /**
+     * Meaning: The signature of a function must be compatible with a given functor-type.
+     */
+<span class="fc" id="L343">    INCOMPATIBLE_DELEGATE,</span>
+    /**
+     * Meaning: A functor-type is required.
+     */
+<span class="fc" id="L347">    EXPECTED_FUNCTOR_TYPE,</span>
+    /**
+     * Meaning: The type of an element cannot be different be redefined in a subtype.
+     */
+<span class="fc" id="L351">    RETYPED_ELEMENT,</span>
+    /**
+     * Meaning: A tuple must explicitly declare all of its elements, including inherited elements.
+     */
+<span class="fc" id="L355">    TOTAL_ORDERING_REQUIRED,</span>
+    /**
+     * Meaning: The name of one entity conflicts with the name of another entity.
+     */
+<span class="fc" id="L359">    NAME_CONFLICT,</span>
+    /**
+     * Meaning: Some overloads of a function cannot be used by a dispatch-expression.
+     */
+<span class="fc" id="L363">    INCOMPLETE_DISPATCH_TABLE,</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

@@ -1,0 +1,488 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FunctorCompiler.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.mackenziehigh:autumn</a> &gt; <a href="index.source.html" class="el_package">com.mackenziehigh.autumn.lang.compiler.compilers</a> &gt; <span class="el_source">FunctorCompiler.java</span></div><h1>FunctorCompiler.java</h1><pre class="source lang-java linenums">package com.mackenziehigh.autumn.lang.compiler.compilers;
+
+import autumn.lang.Functor;
+import autumn.lang.compiler.ClassFile;
+import autumn.lang.compiler.ast.nodes.FormalParameter;
+import autumn.lang.compiler.ast.nodes.FunctorDefinition;
+import autumn.lang.internals.ArgumentStack;
+import autumn.lang.internals.Helpers;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.CustomConstructor;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.CustomDeclaredType;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.CustomMethod;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IConstructor;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IFormalParameter;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IInterfaceType;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IMethod;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IVariableType;
+import com.mackenziehigh.autumn.lang.compiler.utils.BridgeMethod;
+import com.mackenziehigh.autumn.lang.compiler.utils.FunctorAnalyzer;
+import com.mackenziehigh.autumn.lang.compiler.utils.TypeSystemUtils;
+import com.mackenziehigh.autumn.lang.compiler.utils.Utils;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.tree.ClassNode;
+import org.objectweb.asm.tree.InsnList;
+import org.objectweb.asm.tree.InsnNode;
+import org.objectweb.asm.tree.MethodInsnNode;
+import org.objectweb.asm.tree.MethodNode;
+import org.objectweb.asm.tree.VarInsnNode;
+
+/**
+ * An instance of this class controls the compilation of a functor-definition.
+ *
+ * @author Mackenzie High
+ */
+final class FunctorCompiler
+        implements ICompiler
+{
+    private final ProgramCompiler program;
+
+    private final ModuleCompiler module;
+
+    private final FunctorDefinition node;
+
+    public CustomDeclaredType type;
+
+    /**
+     * This will be the type-system representation of the sole constructor.
+     */
+    private CustomConstructor ctor;
+
+    /**
+     * This will be the type-system representation of the invoke(*) method.
+     */
+    private CustomMethod invoke;
+
+<span class="fc" id="L61">    private final List&lt;IVariableType&gt; parameters = Lists.newLinkedList();</span>
+
+    private FunctorAnalyzer analyzer;
+
+    /**
+     * Sole Constructor.
+     *
+     * @param module is essentially the module that is being compiled.
+     * @param node is the AST node that represents the functor-definition.
+     */
+    public FunctorCompiler(final ModuleCompiler module,
+                           final FunctorDefinition node)
+<span class="fc" id="L73">    {</span>
+<span class="fc" id="L74">        this.module = module;</span>
+<span class="fc" id="L75">        this.node = node;</span>
+
+<span class="fc" id="L77">        this.program = module.program;</span>
+<span class="fc" id="L78">    }</span>
+
+    /**
+     * This method generates the compiled class-file.
+     *
+     * @return the compiled class-file.
+     */
+    public ClassFile build()
+    {
+<span class="fc" id="L87">        final String internal_name = Utils.internalName(type);</span>
+
+<span class="fc" id="L89">        final String source_name = Utils.sourceName(type);</span>
+
+        /**
+         * Create the bytecode representation of the enum itself.
+         */
+<span class="fc" id="L94">        final ClassNode clazz = new ClassNode();</span>
+        {
+<span class="fc" id="L96">            clazz.version = Opcodes.V1_6;</span>
+<span class="fc" id="L97">            clazz.visibleAnnotations = module.anno_utils.compileAnnotationList(type.getAnnotations());</span>
+<span class="fc" id="L98">            clazz.access = type.getModifiers();</span>
+<span class="fc" id="L99">            clazz.name = internal_name;</span>
+<span class="fc" id="L100">            clazz.superName = Utils.internalName(type.getSuperclass());</span>
+<span class="fc" id="L101">            clazz.interfaces = program.typesystem.utils.internalNamesOf(type.getSuperinterfaces());</span>
+<span class="fc" id="L102">            clazz.fields = ImmutableList.of();</span>
+<span class="fc" id="L103">            clazz.methods = Lists.newLinkedList();</span>
+<span class="fc" id="L104">            clazz.sourceFile = String.valueOf(node.getLocation().getFile());</span>
+
+<span class="fc" id="L106">            clazz.methods.add(this.generateConstructor());</span>
+<span class="fc" id="L107">            clazz.methods.add(this.generateMethodInvoke());</span>
+<span class="fc" id="L108">            clazz.methods.add(this.generateMethodParameterTypes());</span>
+<span class="fc" id="L109">            clazz.methods.add(this.generateMethodReturnType());</span>
+<span class="fc" id="L110">            clazz.methods.addAll(generateBridgeMethods());</span>
+        }
+
+        /**
+         * Assemble the bytecode into an array of bytes.
+         */
+<span class="fc" id="L116">        final ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_MAXS);</span>
+<span class="fc" id="L117">        clazz.accept(writer);</span>
+<span class="fc" id="L118">        final byte[] bytecode = writer.toByteArray();</span>
+
+        /**
+         * Create the class-file object that will store the emitted bytecode.
+         */
+<span class="fc" id="L123">        final ClassFile file = new ClassFile(source_name, bytecode);</span>
+
+<span class="fc" id="L125">        return file;</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void performTypeDeclaration()
+    {
+        /**
+         * Determine the descriptor of the functor.
+         */
+<span class="fc" id="L137">        final String namespace = module.type.getNamespace().replace('.', '/');</span>
+<span class="fc" id="L138">        final String name = node.getName().getName();</span>
+<span class="fc" id="L139">        final String descriptor = &quot;L&quot; + namespace + '/' + name + ';';</span>
+
+        /**
+         * Ensure that the type was not already declared elsewhere.
+         */
+<span class="fc" id="L144">        program.checker.requireNonDuplicateType(node.getName(), descriptor);</span>
+
+        /**
+         * Declare the functor.
+         */
+<span class="fc" id="L149">        this.type = program.typesystem.typefactory().newClassType(descriptor);</span>
+<span class="fc" id="L150">    }</span>
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void performTypeInitialization()
+    {
+        /**
+         * Create the type-system representations of the annotation-list.
+         */
+<span class="fc" id="L161">        type.setAnnotations(module.anno_utils.typesOf(node.getAnnotations()));</span>
+
+        /**
+         * Add a special annotation.
+         */
+<span class="fc" id="L166">        module.anno_utils.add(type, autumn.lang.internals.annotations.FunctorDefinition.class);</span>
+
+        /**
+         * Check the list of annotations.
+         */
+<span class="fc" id="L171">        program.checker.checkAnnotations(node.getAnnotations(), type.getAnnotations());</span>
+
+        /**
+         * Set the type's modifier flags.
+         */
+<span class="fc" id="L176">        type.setModifiers(Opcodes.ACC_PUBLIC);</span>
+
+        /**
+         * Set the superclass of the functor's type.
+         */
+<span class="fc bfc" id="L181" title="All 2 branches covered.">        if (node.getSuperclass() == null)</span>
+        {
+<span class="fc" id="L183">            type.setSuperclass(program.typesystem.utils.ABSTRACT_STATIC_FUNCTOR);</span>
+        }
+        else
+        {
+<span class="fc" id="L187">            type.setSuperclass(module.imports.resolveClassType(node.getSuperclass()));</span>
+        }
+
+        /**
+         * Add the constructor to the type.
+         */
+<span class="fc" id="L193">        type.setConstructors(Lists.newArrayList(typeOfConstructor()));</span>
+
+        /**
+         * Add the invoke(*) method to the type.
+         */
+<span class="fc" id="L198">        type.setMethods(Lists.newArrayList(typeOfMethodInvoke()));</span>
+<span class="fc" id="L199">    }</span>
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void performTypeStructureChecking()
+    {
+        /**
+         * Prevent circular inheritance.
+         */
+<span class="fc bfc" id="L210" title="All 2 branches covered.">        if (TypeSystemUtils.detectCircularInheritance(type))</span>
+        {
+<span class="nc" id="L212">            program.checker.reportCircularInheritance(node, type);</span>
+        }
+
+        /**
+         * The superclass must be a subtype of Functor.
+         */
+<span class="fc" id="L218">        program.checker.requireDefinedFunctorType(node.getSuperclass(), type.getSuperclass());</span>
+
+        /**
+         * Create an object that will be used to find problem with the functor-type.
+         */
+<span class="fc" id="L223">        this.analyzer = new FunctorAnalyzer(program.typesystem.utils, type);</span>
+<span class="fc" id="L224">    }</span>
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void performTypeUsageChecking()
+    {
+        // Pass, because no usages need checked.
+<span class="fc" id="L233">    }</span>
+
+    /**
+     * This method creates the type-system representation of constructor.
+     *
+     * @return the type of the constructor.
+     */
+    public IConstructor typeOfConstructor()
+    {
+<span class="fc" id="L242">        ctor = new CustomConstructor(type.getTypeFactory());</span>
+
+<span class="fc" id="L244">        final IInterfaceType TYPED_FUNCTOR = program.typesystem.utils.TYPED_FUNCTOR;</span>
+
+<span class="fc" id="L246">        final IFormalParameter formal = program.typesystem.utils.formal(TYPED_FUNCTOR);</span>
+
+<span class="fc" id="L248">        ctor.setOwner(type);</span>
+<span class="fc" id="L249">        ctor.setAnnotations(new LinkedList());</span>
+<span class="fc" id="L250">        ctor.setModifiers(Opcodes.ACC_PUBLIC);</span>
+<span class="fc" id="L251">        ctor.setName(&quot;&lt;init&gt;&quot;);</span>
+<span class="fc" id="L252">        ctor.setParameters(Lists.newArrayList(formal));</span>
+<span class="fc" id="L253">        ctor.setReturnType(program.typesystem.utils.VOID);</span>
+<span class="fc" id="L254">        ctor.setThrowsClause(new LinkedList());</span>
+
+<span class="fc" id="L256">        return ctor;</span>
+    }
+
+    /**
+     * This method creates the type-system representation of the invoke(*) method.
+     *
+     * @return the type of the aforesaid method.
+     */
+    public IMethod typeOfMethodInvoke()
+    {
+<span class="fc" id="L266">        invoke = new CustomMethod(type.getTypeFactory(), false);</span>
+
+        /**
+         * Create the list of formal parameters.
+         */
+<span class="fc" id="L271">        final List&lt;IFormalParameter&gt; formals = Lists.newLinkedList();</span>
+
+<span class="fc bfc" id="L273" title="All 2 branches covered.">        for (FormalParameter param : node.getParameters().getParameters())</span>
+        {
+<span class="fc" id="L275">            final IVariableType param_type = module.imports.resolveVariableType(param.getType());</span>
+
+<span class="fc" id="L277">            formals.add(program.typesystem.utils.formal(param_type));</span>
+
+<span class="fc" id="L279">            parameters.add(param_type);</span>
+<span class="fc" id="L280">        }</span>
+
+        /**
+         * Initialize the type-system representation of the method.
+         */
+<span class="fc" id="L285">        invoke.setOwner(type);</span>
+<span class="fc" id="L286">        invoke.setAnnotations(new LinkedList());</span>
+<span class="fc" id="L287">        invoke.setModifiers(Opcodes.ACC_PUBLIC);</span>
+<span class="fc" id="L288">        invoke.setName(&quot;invoke&quot;);</span>
+<span class="fc" id="L289">        invoke.setParameters(formals);</span>
+<span class="fc" id="L290">        invoke.setReturnType(module.imports.resolveReturnType(node.getReturnType()));</span>
+<span class="fc" id="L291">        invoke.setThrowsClause(Lists.newArrayList(program.typesystem.utils.THROWABLE));</span>
+
+<span class="fc" id="L293">        return invoke;</span>
+    }
+
+    /**
+     * This method generates the bytecode representation of the constructor.
+     *
+     * @return the constructor's bytecode.
+     */
+    private MethodNode generateConstructor()
+    {
+<span class="fc" id="L303">        final MethodNode method = Utils.bytecodeOf(module, ctor);</span>
+
+        /**
+         * Invoke the super constructor.
+         */
+<span class="fc" id="L308">        method.instructions.add(new VarInsnNode(Opcodes.ALOAD, 0)); // Load 'this'</span>
+<span class="fc" id="L309">        method.instructions.add(new VarInsnNode(Opcodes.ALOAD, 1)); // Load param[0]</span>
+<span class="fc" id="L310">        method.instructions.add(new MethodInsnNode(Opcodes.INVOKESPECIAL,</span>
+<span class="fc" id="L311">                                                   Utils.internalName(type.getSuperclass()),</span>
+                                                   &quot;&lt;init&gt;&quot;,
+                                                   &quot;(Lautumn/lang/TypedFunctor;)V&quot;));
+
+        /**
+         * Return from the constructor.
+         */
+<span class="fc" id="L318">        method.instructions.add(new InsnNode(Opcodes.RETURN));</span>
+
+<span class="fc" id="L320">        return method;</span>
+    }
+
+    /**
+     * This method generates the bytecode representation of the parameterTypes().
+     *
+     * @return the method's bytecode.
+     */
+    private MethodNode generateMethodParameterTypes()
+    {
+<span class="fc" id="L330">        final MethodNode method = new MethodNode();</span>
+
+<span class="fc" id="L332">        method.access = Opcodes.ACC_PUBLIC;</span>
+<span class="fc" id="L333">        method.name = &quot;parameterTypes&quot;;</span>
+<span class="fc" id="L334">        method.desc = &quot;()Ljava/util/List;&quot;;</span>
+<span class="fc" id="L335">        method.exceptions = ImmutableList.of();</span>
+
+<span class="fc" id="L337">        final CollectionCompiler&lt;IVariableType&gt; cmp = new CollectionCompiler&lt;IVariableType&gt;()</span>
+<span class="fc" id="L338">        {</span>
+            @Override
+            public void compile(final IVariableType element)
+            {
+<span class="fc" id="L342">                code().add(Utils.ldcClass(element));</span>
+<span class="fc" id="L343">            }</span>
+
+            @Override
+            public InsnList code()
+            {
+<span class="fc" id="L348">                return method.instructions;</span>
+            }
+        };
+
+        /**
+         * Generate the bytecode that creates the mutable list of class objects.
+         */
+<span class="fc" id="L355">        cmp.compile(parameters);</span>
+
+        /**
+         * Convert the mutableList to an immutable list.
+         */
+<span class="fc" id="L360">        Utils.invoke(method.instructions,</span>
+                     Opcodes.INVOKESTATIC,
+                     Helpers.class,
+                     List.class,
+                     &quot;newImmutableList&quot;,
+                     Iterable.class);
+
+        /**
+         * Return from the method.
+         */
+<span class="fc" id="L370">        method.instructions.add(new InsnNode(Opcodes.ARETURN));</span>
+
+<span class="fc" id="L372">        return method;</span>
+    }
+
+    /**
+     * This method generates the bytecode representation of the returnType().
+     *
+     * @return the method's bytecode.
+     */
+    private MethodNode generateMethodReturnType()
+    {
+<span class="fc" id="L382">        final MethodNode method = new MethodNode();</span>
+
+<span class="fc" id="L384">        method.access = Opcodes.ACC_PUBLIC;</span>
+<span class="fc" id="L385">        method.name = &quot;returnType&quot;;</span>
+<span class="fc" id="L386">        method.desc = &quot;()Ljava/lang/Class;&quot;;</span>
+<span class="fc" id="L387">        method.exceptions = ImmutableList.of();</span>
+
+        /**
+         * Generate the method's body
+         */
+<span class="fc" id="L392">        method.instructions.add(Utils.ldcClass(invoke.getReturnType()));</span>
+<span class="fc" id="L393">        method.instructions.add(new InsnNode(Opcodes.ARETURN));</span>
+
+<span class="fc" id="L395">        return method;</span>
+    }
+
+    /**
+     * This method generates the bytecode representation of the invoke(*) method.
+     *
+     * @return the method's bytecode.
+     */
+    private MethodNode generateMethodInvoke()
+    {
+<span class="fc" id="L405">        final MethodNode method = Utils.bytecodeOf(module, invoke);</span>
+
+        /**
+         * Get the argument-stack associated with the current thread.
+         */
+<span class="fc" id="L410">        Utils.loadArgumentStack(method.instructions);</span>
+
+        /**
+         * Load each of the formal-parameters onto the argument-stack.
+         */
+<span class="fc" id="L415">        int address = 1;</span>
+<span class="fc bfc" id="L416" title="All 2 branches covered.">        for (IVariableType parameter : parameters)</span>
+        {
+<span class="fc" id="L418">            method.instructions.add(new InsnNode(Opcodes.DUP));</span>
+
+<span class="fc" id="L420">            method.instructions.add(Utils.selectLoadVarInsn(parameter, address));</span>
+
+<span class="fc" id="L422">            Utils.pushArgument(program, method.instructions, parameter);</span>
+
+<span class="fc" id="L424">            address += Utils.sizeof(parameter);</span>
+<span class="fc" id="L425">        }</span>
+
+        /**
+         * At this point, there is an ArgumentStack reference on the operand-stack.
+         * We will need another later, so duplicate the object-reference.
+         */
+<span class="fc" id="L431">        method.instructions.add(new InsnNode(Opcodes.DUP));</span>
+
+        /**
+         * Invoke the apply(ArgumentStack) method.
+         */
+<span class="fc" id="L436">        method.instructions.add(new VarInsnNode(Opcodes.ALOAD, 0));</span>
+<span class="fc" id="L437">        method.instructions.add(new InsnNode(Opcodes.SWAP));</span>
+<span class="fc" id="L438">        Utils.invoke(method.instructions,</span>
+                     Opcodes.INVOKEINTERFACE,
+                     Functor.class,
+                     void.class,
+                     &quot;apply&quot;,
+                     ArgumentStack.class);
+
+        /**
+         * Generate the code that will exit the invoke(*) method.
+         * If the method returns void, a simply return is sufficient.
+         * If a value must be returned, we must pop it off the argument-stack and then return it.
+         */
+<span class="fc bfc" id="L450" title="All 2 branches covered.">        if (invoke.getReturnType().isVoidType())</span>
+        {
+<span class="fc" id="L452">            method.instructions.add(new InsnNode(Opcodes.RETURN));</span>
+        }
+        else
+        {
+            // Transfer the value to return from the argument-stack to the operand-stack.
+<span class="fc" id="L457">            Utils.peekArgument(program, method.instructions, invoke.getReturnType());</span>
+
+            // Clear the argument-stack.
+            // Simply retrieving the argument-stack causes it to be cleared.
+<span class="fc" id="L461">            Utils.loadArgumentStack(method.instructions);</span>
+<span class="fc" id="L462">            method.instructions.add(new InsnNode(Opcodes.POP));</span>
+
+            // Return from the invoke method.
+<span class="fc" id="L465">            method.instructions.add(Utils.selectReturnInsn(invoke.getReturnType()));</span>
+        }
+
+<span class="fc" id="L468">        return method;</span>
+    }
+
+    /**
+     * This method generates the bytecode representations of the bridge invoke(*) methods.
+     *
+     * @return the bytecode of the methods.
+     */
+    private List&lt;MethodNode&gt; generateBridgeMethods()
+    {
+<span class="fc" id="L478">        final List&lt;MethodNode&gt; methods = Lists.newLinkedList();</span>
+
+<span class="pc bpc" id="L480" title="1 of 2 branches missed.">        for (BridgeMethod bridge : analyzer.bridges())</span>
+        {
+<span class="nc" id="L482">            methods.add(bridge.compile(module));</span>
+<span class="nc" id="L483">        }</span>
+
+<span class="fc" id="L485">        return Collections.unmodifiableList(methods);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

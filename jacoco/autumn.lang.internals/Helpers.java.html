@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Helpers.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.mackenziehigh:autumn</a> &gt; <a href="index.source.html" class="el_package">autumn.lang.internals</a> &gt; <span class="el_source">Helpers.java</span></div><h1>Helpers.java</h1><pre class="source lang-java linenums">package autumn.lang.internals;
+
+import autumn.lang.Delegate;
+import autumn.lang.Module;
+import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.math.RoundingMode;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * This class contains utility methods that allow the compiler to generate simpler bytecode.
+ *
+ * &lt;p&gt;
+ * Note: This class is not intended for use directly by programmers.
+ * &lt;/p&gt;
+ *
+ * @author Mackenzie High
+ */
+<span class="nc" id="L26">public final class Helpers</span>
+{
+    /**
+     * This is the scale of big-decimal literals.
+     */
+    public static final int BIG_DECIMAL_SCALE = 32;
+
+    /**
+     * This method finds a named enum-constant in an array of enum-constants.
+     *
+     * &lt;p&gt;
+     * This method is used in the implementation of the valueOf(String) method in enums.
+     * &lt;/p&gt;
+     *
+     * @param constants is the array that may contain the named enum-constant.
+     * @param name is the name of the enum-constant to find.
+     * @return the named enum-constant.
+     * @throws NullPointerException if constants is null.
+     * @throws NullPointerException if name is null.
+     * @throws IllegalArgumentException if the named enum-constant is not present in the array.
+     */
+    public static Enum findEnumConstant(final Enum[] constants,
+                                        final String name)
+    {
+<span class="fc" id="L50">        Preconditions.checkNotNull(constants, &quot;An array of enum-constants was expected.&quot;);</span>
+<span class="fc" id="L51">        Preconditions.checkNotNull(name, &quot;The name of an enum-constant was expected.&quot;);</span>
+
+<span class="fc bfc" id="L53" title="All 2 branches covered.">        for (Enum constant : constants)</span>
+        {
+<span class="fc bfc" id="L55" title="All 2 branches covered.">            if (name.equals(constant.name().trim()))</span>
+            {
+<span class="fc" id="L57">                return constant;</span>
+            }
+        }
+
+<span class="fc" id="L61">        throw new IllegalArgumentException(&quot;No such enum-constant: &quot; + name);</span>
+    }
+
+    /**
+     * This method creates a new immutable-list from an iterable data-structure.
+     *
+     * @param iterable is the data-structure that contains the elements of the new list.
+     * @return the new immutable list.
+     * @throws NullPointerException if the iterable is null.
+     */
+    public static &lt;T&gt; List&lt;T&gt; newImmutableList(final Iterable&lt;T&gt; iterable)
+    {
+<span class="fc" id="L73">        Preconditions.checkNotNull(iterable, &quot;An iterable data-structure was expected.&quot;);</span>
+
+<span class="fc" id="L75">        final ArrayList&lt;T&gt; list = Lists.newArrayList(iterable);</span>
+
+<span class="fc" id="L77">        list.trimToSize();</span>
+
+<span class="fc" id="L79">        return Collections.unmodifiableList(list);</span>
+    }
+
+    /**
+     * This method creates a new immutable-map from an two iterables.
+     *
+     * &lt;p&gt;
+     * The new map will preserve iteration order.
+     * &lt;/p&gt;
+     *
+     * @param keys are the keys of the new map in iteration order.
+     * @param values are the values of the new map in iteration order.
+     * @return the new immutable list.
+     * @throws NullPointerException if the keys is null.
+     * @throws NullPointerException if the values is null.
+     * @throws IllegalArgumentException if keys.size() != values.size().
+     */
+    public static &lt;K, V&gt; Map&lt;K, V&gt; newImmutableMap(final List&lt;K&gt; keys,
+                                                   final List&lt;V&gt; values)
+    {
+<span class="nc" id="L99">        Preconditions.checkNotNull(keys);</span>
+<span class="nc" id="L100">        Preconditions.checkNotNull(values);</span>
+<span class="nc bnc" id="L101" title="All 2 branches missed.">        Preconditions.checkArgument(keys.size() == values.size());</span>
+
+<span class="nc" id="L103">        final Map&lt;K, V&gt; map = Maps.newLinkedHashMap();</span>
+
+<span class="nc bnc" id="L105" title="All 2 branches missed.">        for (int i = 0; i &lt; keys.size(); i++)</span>
+        {
+<span class="nc" id="L107">            map.put(keys.get(i), values.get(i));</span>
+        }
+
+<span class="nc" id="L110">        return Collections.unmodifiableMap(map);</span>
+    }
+
+    /**
+     * This method searches for a particular function's delegate in a module.
+     *
+     * @param module is the module that provides the delegate.
+     * @param method is the name of the delegated method.
+     * @return the delegate that refers to the named method.
+     * @throws IllegalStateException if the module does not contain a method with the given name.
+     */
+    public static Delegate delegate(final Module module,
+                                    final String method)
+    {
+<span class="fc" id="L124">        Preconditions.checkNotNull(module);</span>
+<span class="fc" id="L125">        Preconditions.checkNotNull(method);</span>
+
+        /**
+         * If the delegate refers to the special instance() method,
+         * create a special delegate just it.
+         */
+<span class="pc bpc" id="L131" title="1 of 2 branches missed.">        if (method.equals(&quot;instance&quot;))</span>
+        {
+<span class="nc" id="L133">            return new AbstractDelegate()</span>
+<span class="nc" id="L134">            {</span>
+                @Override
+                public void apply(ArgumentStack stack)
+                        throws Throwable
+                {
+<span class="nc" id="L139">                    stack.clear();</span>
+
+<span class="nc" id="L141">                    stack.push(module);</span>
+<span class="nc" id="L142">                }</span>
+
+                @Override
+                public List&lt;Class&gt; parameterTypes()
+                {
+<span class="nc" id="L147">                    return ImmutableList.of();</span>
+                }
+
+                @Override
+                public Class returnType()
+                {
+<span class="nc" id="L153">                    return module.getClass();</span>
+                }
+
+                @Override
+                public Module module()
+                {
+<span class="nc" id="L159">                    return module;</span>
+                }
+
+                @Override
+                public Class owner()
+                {
+<span class="nc" id="L165">                    return module.getClass();</span>
+                }
+
+                @Override
+                public String name()
+                {
+<span class="nc" id="L171">                    return method;</span>
+                }
+            };
+        }
+
+        /**
+         * Otherwise, the delegate must refer to a user-defined function.
+         */
+<span class="pc bpc" id="L179" title="1 of 2 branches missed.">        for (Delegate d : module.info().functions())</span>
+        {
+<span class="fc bfc" id="L181" title="All 2 branches covered.">            if (method.equals(d.name()))</span>
+            {
+<span class="fc" id="L183">                return d;</span>
+            }
+<span class="fc" id="L185">        }</span>
+
+<span class="nc" id="L187">        throw new IllegalStateException(); // TODO: is this right?</span>
+    }
+
+    /**
+     * This method throws an index-out-of-bounds-exception when an index is out of bounds.
+     *
+     * @param index is the index that may be out of bounds.
+     * @param size is the maximum allowed index plus one.
+     */
+    public static void throwIndexOutOfBoundsException(final int index,
+                                                      final int size)
+    {
+<span class="pc bpc" id="L199" title="2 of 4 branches missed.">        if (index &lt; 0 || index &gt;= size)</span>
+        {
+<span class="fc" id="L201">            throw new IndexOutOfBoundsException(&quot;Index: &quot; + index + &quot;, Size: &quot; + size);</span>
+        }
+<span class="nc" id="L203">    }</span>
+
+    /**
+     * This method ensures that its argument is not null.
+     *
+     * @param value is the value that may be null.
+     * @throws NullPointerException if value is null.
+     */
+    public static void requireNonNull(final Object value)
+    {
+<span class="nc bnc" id="L213" title="All 2 branches missed.">        if (value == null)</span>
+        {
+<span class="nc" id="L215">            throw new NullPointerException();</span>
+        }
+<span class="nc" id="L217">    }</span>
+
+    /**
+     * This method creates a new big-integer.
+     *
+     * &lt;p&gt;
+     * This method is used to implement big-integer literals.
+     * &lt;/p&gt;
+     *
+     * @param value is the string representation of the new big-integer.
+     * @return the value as a big-integer.
+     */
+    public static BigInteger createBigInteger(final String value)
+    {
+<span class="fc" id="L231">        return new BigInteger(value);</span>
+    }
+
+    /**
+     * This method creates a new big-decimal.
+     *
+     * &lt;p&gt;
+     * This method is used to implement big-decimal literals.
+     * &lt;/p&gt;
+     *
+     * @param value is the string representation of the new big-decimal.
+     * @return the value as a big-decimal.
+     */
+    public static BigDecimal createBigDecimal(final String value)
+    {
+<span class="fc" id="L246">        return createBigDecimal(new BigDecimal(value));</span>
+    }
+
+    /**
+     * This method creates a new properly scaled big-decimal from an existing big-decimal.
+     *
+     * &lt;p&gt;
+     * This method is used to implement big-decimal operators.
+     * &lt;/p&gt;
+     *
+     * @param value is big-decimal itself.
+     * @return the value as a properly scaled big-decimal.
+     */
+    public static BigDecimal createBigDecimal(final BigDecimal value)
+    {
+<span class="fc" id="L261">        return value.setScale(BIG_DECIMAL_SCALE, RoundingMode.HALF_EVEN);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

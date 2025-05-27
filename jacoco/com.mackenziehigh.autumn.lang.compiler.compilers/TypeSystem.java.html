@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TypeSystem.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.mackenziehigh:autumn</a> &gt; <a href="index.source.html" class="el_package">com.mackenziehigh.autumn.lang.compiler.compilers</a> &gt; <span class="el_source">TypeSystem.java</span></div><h1>TypeSystem.java</h1><pre class="source lang-java linenums">package com.mackenziehigh.autumn.lang.compiler.compilers;
+
+import com.google.common.base.Preconditions;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.TypeFactory;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IType;
+import com.mackenziehigh.autumn.lang.compiler.utils.TypeSystemUtils;
+
+/**
+ * An instance of this class is the type-system in use by a compiler.
+ *
+ * @author Mackenzie High
+ */
+public final class TypeSystem
+{
+    /**
+     * This is the type-factory that the compiled uses to create new type objects.
+     */
+    private final TypeFactory factory;
+
+    /**
+     * This object provides utility methods related to the type-system.
+     */
+    public final TypeSystemUtils utils;
+
+    /**
+     * Sole Constructor.
+     *
+     * @param loader is the class-loader used to find previously compiled code.
+     */
+    public TypeSystem(final ClassLoader loader)
+<span class="fc" id="L31">    {</span>
+<span class="fc" id="L32">        Preconditions.checkNotNull(loader);</span>
+
+<span class="fc" id="L34">        this.factory = new TypeFactory(loader);</span>
+<span class="fc" id="L35">        this.utils = new TypeSystemUtils(factory);</span>
+<span class="fc" id="L36">    }</span>
+
+    /**
+     * This method gets the type-factory that is used to create and access types.
+     *
+     * @return the type-factory in use by the compiler.
+     */
+    public TypeFactory typefactory()
+    {
+<span class="fc" id="L45">        return factory;</span>
+    }
+
+    /**
+     * This method determines whether a type is a subtype of a type represented b a class.
+     *
+     * @param instance is the possible subtype.
+     * @param supertype is the possible supertype.
+     * @return true, iff the instance is really a subtype of the supertype.
+     */
+    public boolean isSubtypeOf(final IType instance,
+                               final Class supertype)
+    {
+<span class="nc" id="L58">        Preconditions.checkNotNull(instance);</span>
+<span class="nc" id="L59">        Preconditions.checkNotNull(supertype);</span>
+
+<span class="nc" id="L61">        final IType target = typefactory().fromClass(supertype);</span>
+
+<span class="nc bnc" id="L63" title="All 4 branches missed.">        return target != null &amp;&amp; instance.isSubtypeOf(target);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

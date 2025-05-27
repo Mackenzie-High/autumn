@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Function7.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.mackenziehigh:autumn</a> &gt; <a href="index.source.html" class="el_package">autumn.util.functors</a> &gt; <span class="el_source">Function7.java</span></div><h1>Function7.java</h1><pre class="source lang-java linenums">package autumn.util.functors;
+
+import autumn.lang.TypedFunctor;
+import autumn.lang.internals.AbstractDefinedFunctor;
+import autumn.lang.internals.ArgumentStack;
+import autumn.lang.internals.annotations.FunctorDefinition;
+import com.google.common.collect.ImmutableList;
+import java.util.List;
+
+/**
+ * &lt;code&gt;
+ * functor Function7 (Object, Object, Object, Object, Object, Object, Object) : Object
+ * &lt;/code&gt;
+ *
+ * @author Mackenzie High
+ */
+@FunctorDefinition
+public class Function7
+        extends AbstractDefinedFunctor
+{
+    /**
+     * Sole Constructor.
+     *
+     * @param inner is the functor that provides the actual functionality.
+     */
+    public Function7(final TypedFunctor inner)
+    {
+<span class="fc" id="L28">        super(inner);</span>
+<span class="fc" id="L29">    }</span>
+
+    /**
+     * This method invokes the inner functor.
+     *
+     * @param arg1 is the 1st argument.
+     * @param arg2 is the 2nd argument.
+     * @param arg3 is the 3rd argument.
+     * @param arg4 is the 4th argument.
+     * @param arg4 is the 5th argument.
+     * @param arg4 is the 6th argument.
+     * @param arg4 is the 7th argument.
+     */
+    public Object invoke(final Object arg1,
+                         final Object arg2,
+                         final Object arg3,
+                         final Object arg4,
+                         final Object arg5,
+                         final Object arg6,
+                         final Object arg7)
+            throws Throwable
+    {
+        // Get the stack that is associated with this thread.
+<span class="fc" id="L52">        final ArgumentStack stack = ArgumentStack.getThreadStack();</span>
+
+        // Push the argument onto the argument-stack.
+<span class="fc" id="L55">        stack.push(arg1);</span>
+<span class="fc" id="L56">        stack.push(arg2);</span>
+<span class="fc" id="L57">        stack.push(arg3);</span>
+<span class="fc" id="L58">        stack.push(arg4);</span>
+<span class="fc" id="L59">        stack.push(arg5);</span>
+<span class="fc" id="L60">        stack.push(arg6);</span>
+<span class="fc" id="L61">        stack.push(arg7);</span>
+
+        // Invoke the inner functor.
+<span class="fc" id="L64">        inner().apply(stack);</span>
+
+        // Pop the result off of the argument-stack.
+        // Also, clear the stack in order to prevent unexpected bugs.
+<span class="fc" id="L68">        final Object result = stack.popResult();</span>
+
+        // Return the result of invoking the inner functor.
+<span class="fc" id="L71">        return result;</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List&lt;Class&gt; parameterTypes()
+    {
+<span class="fc" id="L80">        return ImmutableList.&lt;Class&gt;of(Object.class,</span>
+                                       Object.class,
+                                       Object.class,
+                                       Object.class,
+                                       Object.class,
+                                       Object.class,
+                                       Object.class);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Class returnType()
+    {
+<span class="fc" id="L95">        return Object.class;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

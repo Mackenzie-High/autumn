@@ -1,0 +1,775 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Parser.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.mackenziehigh:autumn</a> &gt; <a href="index.source.html" class="el_package">com.mackenziehigh.autumn.lang.compiler.parser</a> &gt; <span class="el_source">Parser.java</span></div><h1>Parser.java</h1><pre class="source lang-java linenums">package com.mackenziehigh.autumn.lang.compiler.parser;
+
+import com.mackenziehigh.snowflake.Grammar;
+import com.mackenziehigh.snowflake.GrammarBuilder;
+import com.mackenziehigh.snowflake.IParser;
+import com.mackenziehigh.snowflake.ParserOutput;
+
+
+/**
+ * This class was auto-generated using the Snowflake parser-generator.
+ *
+ * &lt;p&gt;Generated On: Fri Jan 16 12:55:49 EST 2015&lt;/p&gt;
+ */
+<span class="fc" id="L14">public final class Parser implements IParser</span>
+{
+
+<span class="fc" id="L17">    private static final Grammar grammar = grammar();</span>
+
+
+    /**
+     * This method constructs the grammar object.
+     */
+    private static Grammar grammar()
+    {
+<span class="fc" id="L25">        final GrammarBuilder g = new GrammarBuilder();</span>
+
+        // Character Classes
+<span class="fc" id="L28">        g.range(&quot;@class0&quot;, (char) 40, (char) 40);</span>
+<span class="fc" id="L29">        g.range(&quot;@class1&quot;, (char) 44, (char) 44);</span>
+<span class="fc" id="L30">        g.range(&quot;@class2&quot;, (char) 41, (char) 41);</span>
+<span class="fc" id="L31">        g.range(&quot;@class3&quot;, (char) 58, (char) 58);</span>
+<span class="fc" id="L32">        g.range(&quot;@class4&quot;, (char) 123, (char) 123);</span>
+<span class="fc" id="L33">        g.range(&quot;@class5&quot;, (char) 125, (char) 125);</span>
+<span class="fc" id="L34">        g.range(&quot;@class6&quot;, (char) 40, (char) 40);</span>
+<span class="fc" id="L35">        g.range(&quot;@class7&quot;, (char) 41, (char) 41);</span>
+<span class="fc" id="L36">        g.range(&quot;@class8&quot;, (char) 40, (char) 40);</span>
+<span class="fc" id="L37">        g.range(&quot;@class9&quot;, (char) 44, (char) 44);</span>
+<span class="fc" id="L38">        g.range(&quot;@class10&quot;, (char) 41, (char) 41);</span>
+<span class="fc" id="L39">        g.range(&quot;@class11&quot;, (char) 40, (char) 40);</span>
+<span class="fc" id="L40">        g.range(&quot;@class12&quot;, (char) 58, (char) 58);</span>
+<span class="fc" id="L41">        g.range(&quot;@class13&quot;, (char) 41, (char) 41);</span>
+<span class="fc" id="L42">        g.range(&quot;@class14&quot;, (char) 40, (char) 40);</span>
+<span class="fc" id="L43">        g.range(&quot;@class15&quot;, (char) 41, (char) 41);</span>
+<span class="fc" id="L44">        g.range(&quot;@class16&quot;, (char) 61, (char) 61);</span>
+<span class="fc" id="L45">        g.range(&quot;@class17&quot;, (char) 40, (char) 40);</span>
+<span class="fc" id="L46">        g.range(&quot;@class18&quot;, (char) 41, (char) 41);</span>
+<span class="fc" id="L47">        g.range(&quot;@class19&quot;, (char) 58, (char) 58);</span>
+<span class="fc" id="L48">        g.range(&quot;@class20&quot;, (char) 61, (char) 61);</span>
+<span class="fc" id="L49">        g.range(&quot;@class21&quot;, (char) 61, (char) 61);</span>
+<span class="fc" id="L50">        g.range(&quot;@class22&quot;, (char) 61, (char) 61);</span>
+<span class="fc" id="L51">        g.range(&quot;@class23&quot;, (char) 58, (char) 58);</span>
+<span class="fc" id="L52">        g.range(&quot;@class24&quot;, (char) 58, (char) 58);</span>
+<span class="fc" id="L53">        g.range(&quot;@class25&quot;, (char) 38, (char) 38);</span>
+<span class="fc" id="L54">        g.range(&quot;@class26&quot;, (char) 124, (char) 124);</span>
+<span class="fc" id="L55">        g.range(&quot;@class27&quot;, (char) 94, (char) 94);</span>
+<span class="fc" id="L56">        g.range(&quot;@class28&quot;, (char) 62, (char) 62);</span>
+<span class="fc" id="L57">        g.range(&quot;@class29&quot;, (char) 60, (char) 60);</span>
+<span class="fc" id="L58">        g.range(&quot;@class30&quot;, (char) 43, (char) 43);</span>
+<span class="fc" id="L59">        g.range(&quot;@class31&quot;, (char) 45, (char) 45);</span>
+<span class="fc" id="L60">        g.range(&quot;@class32&quot;, (char) 47, (char) 47);</span>
+<span class="fc" id="L61">        g.range(&quot;@class33&quot;, (char) 37, (char) 37);</span>
+<span class="fc" id="L62">        g.range(&quot;@class34&quot;, (char) 42, (char) 42);</span>
+<span class="fc" id="L63">        g.range(&quot;@class35&quot;, (char) 46, (char) 46);</span>
+<span class="fc" id="L64">        g.range(&quot;@class36&quot;, (char) 45, (char) 45);</span>
+<span class="fc" id="L65">        g.range(&quot;@class37&quot;, (char) 33, (char) 33);</span>
+<span class="fc" id="L66">        g.range(&quot;@class38&quot;, (char) 40, (char) 40);</span>
+<span class="fc" id="L67">        g.range(&quot;@class39&quot;, (char) 41, (char) 41);</span>
+<span class="fc" id="L68">        g.range(&quot;@class40&quot;, (char) 40, (char) 40);</span>
+<span class="fc" id="L69">        g.range(&quot;@class41&quot;, (char) 41, (char) 41);</span>
+<span class="fc" id="L70">        g.range(&quot;@class42&quot;, (char) 91, (char) 91);</span>
+<span class="fc" id="L71">        g.range(&quot;@class43&quot;, (char) 93, (char) 93);</span>
+<span class="fc" id="L72">        g.range(&quot;@class44&quot;, (char) 58, (char) 58);</span>
+<span class="fc" id="L73">        g.range(&quot;@class45&quot;, (char) 91, (char) 91);</span>
+<span class="fc" id="L74">        g.range(&quot;@class46&quot;, (char) 93, (char) 93);</span>
+<span class="fc" id="L75">        g.range(&quot;@class47&quot;, (char) 61, (char) 61);</span>
+<span class="fc" id="L76">        g.range(&quot;@class48&quot;, (char) 61, (char) 61);</span>
+<span class="fc" id="L77">        g.range(&quot;@class49&quot;, (char) 58, (char) 58);</span>
+<span class="fc" id="L78">        g.range(&quot;@class50&quot;, (char) 40, (char) 40);</span>
+<span class="fc" id="L79">        g.range(&quot;@class51&quot;, (char) 41, (char) 41);</span>
+<span class="fc" id="L80">        g.range(&quot;@class52&quot;, (char) 44, (char) 44);</span>
+<span class="fc" id="L81">        g.range(&quot;@class53&quot;, (char) 10, (char) 10);</span>
+<span class="fc" id="L82">        g.range(&quot;@class54&quot;, (char) 13, (char) 13);</span>
+<span class="fc" id="L83">        g.combine(&quot;@class55&quot;, &quot;@class53&quot;, &quot;@class54&quot;);</span>
+<span class="fc" id="L84">        g.negate(&quot;@class56&quot;, &quot;@class55&quot;);</span>
+<span class="fc" id="L85">        g.range(&quot;@class57&quot;, (char) 64, (char) 64);</span>
+<span class="fc" id="L86">        g.range(&quot;@class58&quot;, (char) 40, (char) 40);</span>
+<span class="fc" id="L87">        g.range(&quot;@class59&quot;, (char) 41, (char) 41);</span>
+<span class="fc" id="L88">        g.range(&quot;@class60&quot;, (char) 44, (char) 44);</span>
+<span class="fc" id="L89">        g.range(&quot;@class61&quot;, (char) 46, (char) 46);</span>
+<span class="fc" id="L90">        g.range(&quot;@class62&quot;, (char) 58, (char) 58);</span>
+<span class="fc" id="L91">        g.range(&quot;@class63&quot;, (char) 40, (char) 40);</span>
+<span class="fc" id="L92">        g.range(&quot;@class64&quot;, (char) 44, (char) 44);</span>
+<span class="fc" id="L93">        g.range(&quot;@class65&quot;, (char) 41, (char) 41);</span>
+<span class="fc" id="L94">        g.range(&quot;@class66&quot;, (char) 58, (char) 58);</span>
+<span class="fc" id="L95">        g.range(&quot;@class67&quot;, (char) 40, (char) 40);</span>
+<span class="fc" id="L96">        g.range(&quot;@class68&quot;, (char) 44, (char) 44);</span>
+<span class="fc" id="L97">        g.range(&quot;@class69&quot;, (char) 41, (char) 41);</span>
+<span class="fc" id="L98">        g.range(&quot;@class70&quot;, (char) 58, (char) 58);</span>
+<span class="fc" id="L99">        g.range(&quot;@class71&quot;, (char) 91, (char) 91);</span>
+<span class="fc" id="L100">        g.range(&quot;@class72&quot;, (char) 93, (char) 93);</span>
+<span class="fc" id="L101">        g.range(&quot;@class73&quot;, (char) 46, (char) 46);</span>
+<span class="fc" id="L102">        g.range(&quot;@class74&quot;, (char) 46, (char) 46);</span>
+<span class="fc" id="L103">        g.range(&quot;@class75&quot;, (char) 0, (char) 65535);</span>
+<span class="fc" id="L104">        g.range(&quot;@class76&quot;, (char) 67, (char) 67);</span>
+<span class="fc" id="L105">        g.range(&quot;@class77&quot;, (char) 99, (char) 99);</span>
+<span class="fc" id="L106">        g.range(&quot;@class78&quot;, (char) 45, (char) 45);</span>
+<span class="fc" id="L107">        g.range(&quot;@class79&quot;, (char) 66, (char) 66);</span>
+<span class="fc" id="L108">        g.range(&quot;@class80&quot;, (char) 98, (char) 98);</span>
+<span class="fc" id="L109">        g.range(&quot;@class81&quot;, (char) 45, (char) 45);</span>
+<span class="fc" id="L110">        g.range(&quot;@class82&quot;, (char) 83, (char) 83);</span>
+<span class="fc" id="L111">        g.range(&quot;@class83&quot;, (char) 115, (char) 115);</span>
+<span class="fc" id="L112">        g.range(&quot;@class84&quot;, (char) 45, (char) 45);</span>
+<span class="fc" id="L113">        g.range(&quot;@class85&quot;, (char) 45, (char) 45);</span>
+<span class="fc" id="L114">        g.range(&quot;@class86&quot;, (char) 76, (char) 76);</span>
+<span class="fc" id="L115">        g.range(&quot;@class87&quot;, (char) 108, (char) 108);</span>
+<span class="fc" id="L116">        g.range(&quot;@class88&quot;, (char) 45, (char) 45);</span>
+<span class="fc" id="L117">        g.range(&quot;@class89&quot;, (char) 45, (char) 45);</span>
+<span class="fc" id="L118">        g.range(&quot;@class90&quot;, (char) 46, (char) 46);</span>
+<span class="fc" id="L119">        g.range(&quot;@class91&quot;, (char) 70, (char) 70);</span>
+<span class="fc" id="L120">        g.range(&quot;@class92&quot;, (char) 102, (char) 102);</span>
+<span class="fc" id="L121">        g.range(&quot;@class93&quot;, (char) 45, (char) 45);</span>
+<span class="fc" id="L122">        g.range(&quot;@class94&quot;, (char) 46, (char) 46);</span>
+<span class="fc" id="L123">        g.range(&quot;@class95&quot;, (char) 45, (char) 45);</span>
+<span class="fc" id="L124">        g.range(&quot;@class96&quot;, (char) 46, (char) 46);</span>
+<span class="fc" id="L125">        g.range(&quot;@class97&quot;, (char) 64, (char) 64);</span>
+<span class="fc" id="L126">        g.range(&quot;@class98&quot;, (char) 59, (char) 59);</span>
+<span class="fc" id="L127">        g.range(&quot;@class99&quot;, (char) 65, (char) 90);</span>
+<span class="fc" id="L128">        g.range(&quot;@class100&quot;, (char) 97, (char) 122);</span>
+<span class="fc" id="L129">        g.range(&quot;@class101&quot;, (char) 95, (char) 95);</span>
+<span class="fc" id="L130">        g.range(&quot;@class102&quot;, (char) 36, (char) 36);</span>
+<span class="fc" id="L131">        g.combine(&quot;@class103&quot;, &quot;@class99&quot;, &quot;@class100&quot;, &quot;@class101&quot;, &quot;@class102&quot;);</span>
+<span class="fc" id="L132">        g.range(&quot;@class104&quot;, (char) 65, (char) 90);</span>
+<span class="fc" id="L133">        g.range(&quot;@class105&quot;, (char) 97, (char) 122);</span>
+<span class="fc" id="L134">        g.range(&quot;@class106&quot;, (char) 95, (char) 95);</span>
+<span class="fc" id="L135">        g.range(&quot;@class107&quot;, (char) 36, (char) 36);</span>
+<span class="fc" id="L136">        g.range(&quot;@class108&quot;, (char) 48, (char) 57);</span>
+<span class="fc" id="L137">        g.combine(&quot;@class109&quot;, &quot;@class104&quot;, &quot;@class105&quot;, &quot;@class106&quot;, &quot;@class107&quot;, &quot;@class108&quot;);</span>
+<span class="fc" id="L138">        g.range(&quot;@class110&quot;, (char) 95, (char) 95);</span>
+<span class="fc" id="L139">        g.range(&quot;@class111&quot;, (char) 48, (char) 57);</span>
+<span class="fc" id="L140">        g.range(&quot;@class112&quot;, (char) 101, (char) 101);</span>
+<span class="fc" id="L141">        g.range(&quot;@class113&quot;, (char) 69, (char) 69);</span>
+<span class="fc" id="L142">        g.combine(&quot;@class114&quot;, &quot;@class112&quot;, &quot;@class113&quot;);</span>
+<span class="fc" id="L143">        g.range(&quot;@class115&quot;, (char) 45, (char) 45);</span>
+<span class="fc" id="L144">        g.range(&quot;@class116&quot;, (char) 43, (char) 43);</span>
+<span class="fc" id="L145">        g.combine(&quot;@class117&quot;, &quot;@class115&quot;, &quot;@class116&quot;);</span>
+<span class="fc" id="L146">        g.range(&quot;@class118&quot;, (char) 34, (char) 34);</span>
+<span class="fc" id="L147">        g.range(&quot;@class119&quot;, (char) 34, (char) 34);</span>
+<span class="fc" id="L148">        g.combine(&quot;@class120&quot;, &quot;@class119&quot;);</span>
+<span class="fc" id="L149">        g.negate(&quot;@class121&quot;, &quot;@class120&quot;);</span>
+<span class="fc" id="L150">        g.range(&quot;@class122&quot;, (char) 39, (char) 39);</span>
+<span class="fc" id="L151">        g.combine(&quot;@class123&quot;, &quot;@class122&quot;);</span>
+<span class="fc" id="L152">        g.negate(&quot;@class124&quot;, &quot;@class123&quot;);</span>
+<span class="fc" id="L153">        g.range(&quot;@class125&quot;, (char) 92, (char) 92);</span>
+<span class="fc" id="L154">        g.range(&quot;@class126&quot;, (char) 116, (char) 116);</span>
+<span class="fc" id="L155">        g.range(&quot;@class127&quot;, (char) 98, (char) 98);</span>
+<span class="fc" id="L156">        g.range(&quot;@class128&quot;, (char) 110, (char) 110);</span>
+<span class="fc" id="L157">        g.range(&quot;@class129&quot;, (char) 114, (char) 114);</span>
+<span class="fc" id="L158">        g.range(&quot;@class130&quot;, (char) 102, (char) 102);</span>
+<span class="fc" id="L159">        g.range(&quot;@class131&quot;, (char) 34, (char) 34);</span>
+<span class="fc" id="L160">        g.range(&quot;@class132&quot;, (char) 92, (char) 92);</span>
+<span class="fc" id="L161">        g.range(&quot;@class133&quot;, (char) 35, (char) 35);</span>
+<span class="fc" id="L162">        g.range(&quot;@class134&quot;, (char) 10, (char) 10);</span>
+<span class="fc" id="L163">        g.range(&quot;@class135&quot;, (char) 13, (char) 13);</span>
+<span class="fc" id="L164">        g.combine(&quot;@class136&quot;, &quot;@class134&quot;, &quot;@class135&quot;);</span>
+<span class="fc" id="L165">        g.negate(&quot;@class137&quot;, &quot;@class136&quot;);</span>
+<span class="fc" id="L166">        g.range(&quot;@class138&quot;, (char) 10, (char) 10);</span>
+<span class="fc" id="L167">        g.range(&quot;@class139&quot;, (char) 13, (char) 13);</span>
+<span class="fc" id="L168">        g.combine(&quot;@class140&quot;, &quot;@class138&quot;, &quot;@class139&quot;);</span>
+<span class="fc" id="L169">        g.range(&quot;@class141&quot;, (char) 0, (char) 65535);</span>
+<span class="fc" id="L170">        g.combine(&quot;@class142&quot;, &quot;@class141&quot;);</span>
+<span class="fc" id="L171">        g.range(&quot;@class143&quot;, (char) 10, (char) 10);</span>
+<span class="fc" id="L172">        g.range(&quot;@class144&quot;, (char) 13, (char) 13);</span>
+<span class="fc" id="L173">        g.combine(&quot;@class145&quot;, &quot;@class143&quot;, &quot;@class144&quot;);</span>
+<span class="fc" id="L174">        g.range(&quot;@class146&quot;, (char) 10, (char) 10);</span>
+<span class="fc" id="L175">        g.range(&quot;@class147&quot;, (char) 13, (char) 13);</span>
+<span class="fc" id="L176">        g.combine(&quot;@class148&quot;, &quot;@class146&quot;, &quot;@class147&quot;);</span>
+<span class="fc" id="L177">        g.negate(&quot;@class149&quot;, &quot;@class148&quot;);</span>
+<span class="fc" id="L178">        g.range(&quot;@class150&quot;, (char) 32, (char) 32);</span>
+<span class="fc" id="L179">        g.range(&quot;@class151&quot;, (char) 9, (char) 9);</span>
+<span class="fc" id="L180">        g.range(&quot;@class152&quot;, (char) 10, (char) 10);</span>
+<span class="fc" id="L181">        g.range(&quot;@class153&quot;, (char) 11, (char) 11);</span>
+<span class="fc" id="L182">        g.range(&quot;@class154&quot;, (char) 12, (char) 12);</span>
+<span class="fc" id="L183">        g.range(&quot;@class155&quot;, (char) 13, (char) 13);</span>
+<span class="fc" id="L184">        g.combine(&quot;@class156&quot;, &quot;@class150&quot;, &quot;@class151&quot;, &quot;@class152&quot;, &quot;@class153&quot;, &quot;@class154&quot;, &quot;@class155&quot;);</span>
+
+        // Grammar Rules
+<span class="fc" id="L187">        g.choose(&quot;@203&quot;, &quot;@201&quot;, &quot;@202&quot;);</span>
+<span class="fc" id="L188">        g.choose(&quot;@208&quot;, &quot;@206&quot;, &quot;@207&quot;);</span>
+<span class="fc" id="L189">        g.choose(&quot;@213&quot;, &quot;@211&quot;, &quot;@212&quot;);</span>
+<span class="fc" id="L190">        g.choose(&quot;@220&quot;, &quot;@218&quot;, &quot;@219&quot;);</span>
+<span class="fc" id="L191">        g.choose(&quot;@227&quot;, &quot;@223&quot;, &quot;@224&quot;, &quot;@225&quot;, &quot;@226&quot;);</span>
+<span class="fc" id="L192">        g.choose(&quot;@233&quot;, &quot;@231&quot;, &quot;@232&quot;);</span>
+<span class="fc" id="L193">        g.choose(&quot;@244&quot;, &quot;@240&quot;, &quot;@241&quot;, &quot;@242&quot;, &quot;@243&quot;);</span>
+<span class="fc" id="L194">        g.choose(&quot;@256&quot;, &quot;DIGIT&quot;, &quot;@255&quot;);</span>
+<span class="fc" id="L195">        g.choose(&quot;@277&quot;, &quot;SP&quot;, &quot;COMMENT&quot;);</span>
+<span class="fc" id="L196">        g.choose(&quot;@280&quot;, &quot;@278&quot;, &quot;@279&quot;);</span>
+<span class="fc" id="L197">        g.choose(&quot;@69&quot;, &quot;do_until&quot;, &quot;do_while&quot;);</span>
+<span class="fc" id="L198">        g.choose(&quot;COMMENT&quot;, &quot;MULTI_LINE_COMMENT&quot;, &quot;SINGLE_LINE_COMMENT&quot;);</span>
+<span class="fc" id="L199">        g.choose(&quot;ESCAPE_CHAR&quot;, &quot;@268&quot;, &quot;@269&quot;, &quot;@270&quot;, &quot;@271&quot;, &quot;@272&quot;, &quot;@273&quot;, &quot;@274&quot;, &quot;@275&quot;, &quot;@276&quot;);</span>
+<span class="fc" id="L200">        g.choose(&quot;NON_QUOTE&quot;, &quot;ESCAPE_SEQUENCE&quot;, &quot;@261&quot;);</span>
+<span class="fc" id="L201">        g.choose(&quot;NON_TRIPLE_QUOTE&quot;, &quot;ESCAPE_SEQUENCE&quot;, &quot;@265&quot;, &quot;@266&quot;);</span>
+<span class="fc" id="L202">        g.choose(&quot;STRING_LITERAL&quot;, &quot;STRING_LITERAL_STYLE1&quot;, &quot;STRING_LITERAL_STYLE2&quot;);</span>
+<span class="fc" id="L203">        g.choose(&quot;assertion_echo_opt&quot;, &quot;assertion_echo&quot;, &quot;assertion_echo_empty&quot;);</span>
+<span class="fc" id="L204">        g.choose(&quot;assumption_echo_opt&quot;, &quot;assumption_echo&quot;, &quot;assumption_echo_empty&quot;);</span>
+<span class="fc" id="L205">        g.choose(&quot;boolean_value&quot;, &quot;true&quot;, &quot;false&quot;);</span>
+<span class="fc" id="L206">        g.choose(&quot;char_value&quot;, &quot;literal_char_value&quot;, &quot;numeric_char_value&quot;);</span>
+<span class="fc" id="L207">        g.choose(&quot;datum&quot;, &quot;string_datum&quot;, &quot;boolean_datum&quot;, &quot;char_datum&quot;, &quot;big_decimal_datum&quot;, &quot;float_datum&quot;, &quot;double_datum&quot;, &quot;big_integer_datum&quot;, &quot;long_datum&quot;, &quot;short_datum&quot;, &quot;byte_datum&quot;, &quot;int_datum&quot;, &quot;null_datum&quot;, &quot;class_datum&quot;, &quot;variable_datum&quot;);</span>
+<span class="fc" id="L208">        g.choose(&quot;definition&quot;, &quot;function_definition&quot;, &quot;exception_definition&quot;, &quot;design_definition&quot;, &quot;tuple_definition&quot;, &quot;struct_definition&quot;, &quot;functor_definition&quot;, &quot;enum_definition&quot;, &quot;annotation_definition&quot;);</span>
+<span class="fc" id="L209">        g.choose(&quot;expression&quot;, &quot;p1&quot;, &quot;keyword_expression&quot;, &quot;nested_expression&quot;);</span>
+<span class="fc" id="L210">        g.choose(&quot;keyword_expression&quot;, &quot;locals_expression&quot;, &quot;dispatch_expression&quot;, &quot;new_expression&quot;, &quot;call_static_method_expression&quot;, &quot;call_method_expression&quot;, &quot;set_static_expression&quot;, &quot;get_static_expression&quot;, &quot;set_field_expression&quot;, &quot;get_field_expression&quot;, &quot;instanceof_expression&quot;, &quot;ternary_conditional_expression&quot;, &quot;progn_expression&quot;, &quot;once_expression&quot;);</span>
+<span class="fc" id="L211">        g.choose(&quot;module_member&quot;, &quot;module_directive&quot;, &quot;import_directive&quot;, &quot;definition&quot;);</span>
+<span class="fc" id="L212">        g.choose(&quot;module_name&quot;, &quot;name_of_anonymous_module&quot;, &quot;name_of_named_module&quot;);</span>
+<span class="fc" id="L213">        g.choose(&quot;namespace&quot;, &quot;namespace_explicit&quot;, &quot;namespace_implicit&quot;);</span>
+<span class="fc" id="L214">        g.choose(&quot;p1_operation&quot;, &quot;as_operation&quot;, &quot;is_operation&quot;);</span>
+<span class="fc" id="L215">        g.choose(&quot;p3_operation&quot;, &quot;and_operation&quot;, &quot;or_operation&quot;, &quot;xor_operation&quot;, &quot;implies_operation&quot;);</span>
+<span class="fc" id="L216">        g.choose(&quot;p4_operation&quot;, &quot;identity_equals_operation&quot;, &quot;identity_not_equals_operation&quot;, &quot;equals_operation&quot;, &quot;not_equals_operation&quot;, &quot;greater_or_equals_operation&quot;, &quot;less_or_equals_operation&quot;, &quot;greater_operation&quot;, &quot;less_operation&quot;);</span>
+<span class="fc" id="L217">        g.choose(&quot;p6_operation&quot;, &quot;add_operation&quot;, &quot;subtract_operation&quot;);</span>
+<span class="fc" id="L218">        g.choose(&quot;p7_operation&quot;, &quot;divide_operation&quot;, &quot;modulo_operation&quot;, &quot;multiply_operation&quot;);</span>
+<span class="fc" id="L219">        g.choose(&quot;p9&quot;, &quot;list_expression&quot;, &quot;list_comprehension_expression&quot;, &quot;keyword_expression&quot;, &quot;nested_expression&quot;, &quot;datum&quot;, &quot;negate_operation&quot;, &quot;not_operation&quot;);</span>
+<span class="fc" id="L220">        g.choose(&quot;statement&quot;, &quot;sequence_statement&quot;, &quot;if_statement&quot;, &quot;when_statement&quot;, &quot;goto_statement&quot;, &quot;marker_statement&quot;, &quot;branch_statement&quot;, &quot;do_statement&quot;, &quot;break_statement&quot;, &quot;continue_statement&quot;, &quot;redo_statement&quot;, &quot;foreach_statement&quot;, &quot;for_statement&quot;, &quot;until_statement&quot;, &quot;while_statement&quot;, &quot;forever_statement&quot;, &quot;assert_statement&quot;, &quot;assume_statement&quot;, &quot;throw_statement&quot;, &quot;try_catch_statement&quot;, &quot;var_statement&quot;, &quot;val_statement&quot;, &quot;let_statement&quot;, &quot;lambda_statement&quot;, &quot;delegate_statement&quot;, &quot;nop_statement&quot;, &quot;return_value_statement&quot;, &quot;return_void_statement&quot;, &quot;recur_statement&quot;, &quot;expression_statement&quot;);</span>
+<span class="fc" id="L221">        g.choose(&quot;string_value&quot;, &quot;verbatim_string_value&quot;, &quot;regular_string_value&quot;);</span>
+<span class="fc" id="L222">        g.choose(&quot;supers_list&quot;, &quot;supers_list_cons&quot;, &quot;supers_list_end&quot;);</span>
+<span class="fc" id="L223">        g.choose(&quot;type_namespace&quot;, &quot;type_namespace_explicit&quot;, &quot;type_namespace_implicit&quot;);</span>
+<span class="fc" id="L224">        g.chr(&quot;@102&quot;, &quot;@class28&quot;);</span>
+<span class="fc" id="L225">        g.chr(&quot;@103&quot;, &quot;@class29&quot;);</span>
+<span class="fc" id="L226">        g.chr(&quot;@105&quot;, &quot;@class30&quot;);</span>
+<span class="fc" id="L227">        g.chr(&quot;@106&quot;, &quot;@class31&quot;);</span>
+<span class="fc" id="L228">        g.chr(&quot;@107&quot;, &quot;@class32&quot;);</span>
+<span class="fc" id="L229">        g.chr(&quot;@108&quot;, &quot;@class33&quot;);</span>
+<span class="fc" id="L230">        g.chr(&quot;@109&quot;, &quot;@class34&quot;);</span>
+<span class="fc" id="L231">        g.chr(&quot;@110&quot;, &quot;@class35&quot;);</span>
+<span class="fc" id="L232">        g.chr(&quot;@111&quot;, &quot;@class36&quot;);</span>
+<span class="fc" id="L233">        g.chr(&quot;@112&quot;, &quot;@class37&quot;);</span>
+<span class="fc" id="L234">        g.chr(&quot;@113&quot;, &quot;@class38&quot;);</span>
+<span class="fc" id="L235">        g.chr(&quot;@114&quot;, &quot;@class39&quot;);</span>
+<span class="fc" id="L236">        g.chr(&quot;@115&quot;, &quot;@class40&quot;);</span>
+<span class="fc" id="L237">        g.chr(&quot;@117&quot;, &quot;@class41&quot;);</span>
+<span class="fc" id="L238">        g.chr(&quot;@121&quot;, &quot;@class42&quot;);</span>
+<span class="fc" id="L239">        g.chr(&quot;@122&quot;, &quot;@class43&quot;);</span>
+<span class="fc" id="L240">        g.chr(&quot;@124&quot;, &quot;@class44&quot;);</span>
+<span class="fc" id="L241">        g.chr(&quot;@128&quot;, &quot;@class45&quot;);</span>
+<span class="fc" id="L242">        g.chr(&quot;@129&quot;, &quot;@class46&quot;);</span>
+<span class="fc" id="L243">        g.chr(&quot;@13&quot;, &quot;@class2&quot;);</span>
+<span class="fc" id="L244">        g.chr(&quot;@139&quot;, &quot;@class47&quot;);</span>
+<span class="fc" id="L245">        g.chr(&quot;@142&quot;, &quot;@class48&quot;);</span>
+<span class="fc" id="L246">        g.chr(&quot;@144&quot;, &quot;@class49&quot;);</span>
+<span class="fc" id="L247">        g.chr(&quot;@146&quot;, &quot;@class50&quot;);</span>
+<span class="fc" id="L248">        g.chr(&quot;@147&quot;, &quot;@class51&quot;);</span>
+<span class="fc" id="L249">        g.chr(&quot;@148&quot;, &quot;@class52&quot;);</span>
+<span class="fc" id="L250">        g.chr(&quot;@154&quot;, &quot;@class56&quot;);</span>
+<span class="fc" id="L251">        g.chr(&quot;@156&quot;, &quot;@class57&quot;);</span>
+<span class="fc" id="L252">        g.chr(&quot;@157&quot;, &quot;@class58&quot;);</span>
+<span class="fc" id="L253">        g.chr(&quot;@158&quot;, &quot;@class59&quot;);</span>
+<span class="fc" id="L254">        g.chr(&quot;@159&quot;, &quot;@class60&quot;);</span>
+<span class="fc" id="L255">        g.chr(&quot;@163&quot;, &quot;@class61&quot;);</span>
+<span class="fc" id="L256">        g.chr(&quot;@167&quot;, &quot;@class62&quot;);</span>
+<span class="fc" id="L257">        g.chr(&quot;@170&quot;, &quot;@class63&quot;);</span>
+<span class="fc" id="L258">        g.chr(&quot;@171&quot;, &quot;@class64&quot;);</span>
+<span class="fc" id="L259">        g.chr(&quot;@176&quot;, &quot;@class65&quot;);</span>
+<span class="fc" id="L260">        g.chr(&quot;@177&quot;, &quot;@class66&quot;);</span>
+<span class="fc" id="L261">        g.chr(&quot;@178&quot;, &quot;@class67&quot;);</span>
+<span class="fc" id="L262">        g.chr(&quot;@179&quot;, &quot;@class68&quot;);</span>
+<span class="fc" id="L263">        g.chr(&quot;@18&quot;, &quot;@class3&quot;);</span>
+<span class="fc" id="L264">        g.chr(&quot;@184&quot;, &quot;@class69&quot;);</span>
+<span class="fc" id="L265">        g.chr(&quot;@185&quot;, &quot;@class70&quot;);</span>
+<span class="fc" id="L266">        g.chr(&quot;@187&quot;, &quot;@class71&quot;);</span>
+<span class="fc" id="L267">        g.chr(&quot;@188&quot;, &quot;@class72&quot;);</span>
+<span class="fc" id="L268">        g.chr(&quot;@189&quot;, &quot;@class73&quot;);</span>
+<span class="fc" id="L269">        g.chr(&quot;@192&quot;, &quot;@class74&quot;);</span>
+<span class="fc" id="L270">        g.chr(&quot;@199&quot;, &quot;@class75&quot;);</span>
+<span class="fc" id="L271">        g.chr(&quot;@201&quot;, &quot;@class76&quot;);</span>
+<span class="fc" id="L272">        g.chr(&quot;@202&quot;, &quot;@class77&quot;);</span>
+<span class="fc" id="L273">        g.chr(&quot;@204&quot;, &quot;@class78&quot;);</span>
+<span class="fc" id="L274">        g.chr(&quot;@206&quot;, &quot;@class79&quot;);</span>
+<span class="fc" id="L275">        g.chr(&quot;@207&quot;, &quot;@class80&quot;);</span>
+<span class="fc" id="L276">        g.chr(&quot;@209&quot;, &quot;@class81&quot;);</span>
+<span class="fc" id="L277">        g.chr(&quot;@211&quot;, &quot;@class82&quot;);</span>
+<span class="fc" id="L278">        g.chr(&quot;@212&quot;, &quot;@class83&quot;);</span>
+<span class="fc" id="L279">        g.chr(&quot;@214&quot;, &quot;@class84&quot;);</span>
+<span class="fc" id="L280">        g.chr(&quot;@216&quot;, &quot;@class85&quot;);</span>
+<span class="fc" id="L281">        g.chr(&quot;@218&quot;, &quot;@class86&quot;);</span>
+<span class="fc" id="L282">        g.chr(&quot;@219&quot;, &quot;@class87&quot;);</span>
+<span class="fc" id="L283">        g.chr(&quot;@22&quot;, &quot;@class4&quot;);</span>
+<span class="fc" id="L284">        g.chr(&quot;@221&quot;, &quot;@class88&quot;);</span>
+<span class="fc" id="L285">        g.chr(&quot;@228&quot;, &quot;@class89&quot;);</span>
+<span class="fc" id="L286">        g.chr(&quot;@23&quot;, &quot;@class5&quot;);</span>
+<span class="fc" id="L287">        g.chr(&quot;@230&quot;, &quot;@class90&quot;);</span>
+<span class="fc" id="L288">        g.chr(&quot;@231&quot;, &quot;@class91&quot;);</span>
+<span class="fc" id="L289">        g.chr(&quot;@232&quot;, &quot;@class92&quot;);</span>
+<span class="fc" id="L290">        g.chr(&quot;@234&quot;, &quot;@class93&quot;);</span>
+<span class="fc" id="L291">        g.chr(&quot;@236&quot;, &quot;@class94&quot;);</span>
+<span class="fc" id="L292">        g.chr(&quot;@237&quot;, &quot;@class95&quot;);</span>
+<span class="fc" id="L293">        g.chr(&quot;@239&quot;, &quot;@class96&quot;);</span>
+<span class="fc" id="L294">        g.chr(&quot;@245&quot;, &quot;@class97&quot;);</span>
+<span class="fc" id="L295">        g.chr(&quot;@249&quot;, &quot;@class98&quot;);</span>
+<span class="fc" id="L296">        g.chr(&quot;@250&quot;, &quot;@class103&quot;);</span>
+<span class="fc" id="L297">        g.chr(&quot;@251&quot;, &quot;@class109&quot;);</span>
+<span class="fc" id="L298">        g.chr(&quot;@253&quot;, &quot;@class110&quot;);</span>
+<span class="fc" id="L299">        g.chr(&quot;@258&quot;, &quot;@class114&quot;);</span>
+<span class="fc" id="L300">        g.chr(&quot;@259&quot;, &quot;@class117&quot;);</span>
+<span class="fc" id="L301">        g.chr(&quot;@261&quot;, &quot;@class121&quot;);</span>
+<span class="fc" id="L302">        g.chr(&quot;@266&quot;, &quot;@class124&quot;);</span>
+<span class="fc" id="L303">        g.chr(&quot;@267&quot;, &quot;@class125&quot;);</span>
+<span class="fc" id="L304">        g.chr(&quot;@268&quot;, &quot;@class126&quot;);</span>
+<span class="fc" id="L305">        g.chr(&quot;@269&quot;, &quot;@class127&quot;);</span>
+<span class="fc" id="L306">        g.chr(&quot;@270&quot;, &quot;@class128&quot;);</span>
+<span class="fc" id="L307">        g.chr(&quot;@271&quot;, &quot;@class129&quot;);</span>
+<span class="fc" id="L308">        g.chr(&quot;@272&quot;, &quot;@class130&quot;);</span>
+<span class="fc" id="L309">        g.chr(&quot;@274&quot;, &quot;@class131&quot;);</span>
+<span class="fc" id="L310">        g.chr(&quot;@275&quot;, &quot;@class132&quot;);</span>
+<span class="fc" id="L311">        g.chr(&quot;@279&quot;, &quot;@class133&quot;);</span>
+<span class="fc" id="L312">        g.chr(&quot;@281&quot;, &quot;@class137&quot;);</span>
+<span class="fc" id="L313">        g.chr(&quot;@283&quot;, &quot;@class140&quot;);</span>
+<span class="fc" id="L314">        g.chr(&quot;@287&quot;, &quot;@class142&quot;);</span>
+<span class="fc" id="L315">        g.chr(&quot;@34&quot;, &quot;@class6&quot;);</span>
+<span class="fc" id="L316">        g.chr(&quot;@35&quot;, &quot;@class7&quot;);</span>
+<span class="fc" id="L317">        g.chr(&quot;@36&quot;, &quot;@class8&quot;);</span>
+<span class="fc" id="L318">        g.chr(&quot;@37&quot;, &quot;@class9&quot;);</span>
+<span class="fc" id="L319">        g.chr(&quot;@42&quot;, &quot;@class10&quot;);</span>
+<span class="fc" id="L320">        g.chr(&quot;@50&quot;, &quot;@class11&quot;);</span>
+<span class="fc" id="L321">        g.chr(&quot;@51&quot;, &quot;@class12&quot;);</span>
+<span class="fc" id="L322">        g.chr(&quot;@52&quot;, &quot;@class13&quot;);</span>
+<span class="fc" id="L323">        g.chr(&quot;@57&quot;, &quot;@class14&quot;);</span>
+<span class="fc" id="L324">        g.chr(&quot;@58&quot;, &quot;@class15&quot;);</span>
+<span class="fc" id="L325">        g.chr(&quot;@59&quot;, &quot;@class16&quot;);</span>
+<span class="fc" id="L326">        g.chr(&quot;@61&quot;, &quot;@class17&quot;);</span>
+<span class="fc" id="L327">        g.chr(&quot;@63&quot;, &quot;@class18&quot;);</span>
+<span class="fc" id="L328">        g.chr(&quot;@64&quot;, &quot;@class19&quot;);</span>
+<span class="fc" id="L329">        g.chr(&quot;@7&quot;, &quot;@class0&quot;);</span>
+<span class="fc" id="L330">        g.chr(&quot;@73&quot;, &quot;@class20&quot;);</span>
+<span class="fc" id="L331">        g.chr(&quot;@75&quot;, &quot;@class21&quot;);</span>
+<span class="fc" id="L332">        g.chr(&quot;@79&quot;, &quot;@class22&quot;);</span>
+<span class="fc" id="L333">        g.chr(&quot;@8&quot;, &quot;@class1&quot;);</span>
+<span class="fc" id="L334">        g.chr(&quot;@81&quot;, &quot;@class23&quot;);</span>
+<span class="fc" id="L335">        g.chr(&quot;@84&quot;, &quot;@class24&quot;);</span>
+<span class="fc" id="L336">        g.chr(&quot;@92&quot;, &quot;@class25&quot;);</span>
+<span class="fc" id="L337">        g.chr(&quot;@93&quot;, &quot;@class26&quot;);</span>
+<span class="fc" id="L338">        g.chr(&quot;@94&quot;, &quot;@class27&quot;);</span>
+<span class="fc" id="L339">        g.chr(&quot;DIGIT&quot;, &quot;@class111&quot;);</span>
+<span class="fc" id="L340">        g.chr(&quot;NEWLINE&quot;, &quot;@class145&quot;);</span>
+<span class="fc" id="L341">        g.chr(&quot;NON_NEWLINE&quot;, &quot;@class149&quot;);</span>
+<span class="fc" id="L342">        g.chr(&quot;QUOTE&quot;, &quot;@class118&quot;);</span>
+<span class="fc" id="L343">        g.chr(&quot;SP&quot;, &quot;@class156&quot;);</span>
+<span class="fc" id="L344">        g.not(&quot;@195&quot;, &quot;ID&quot;);</span>
+<span class="fc" id="L345">        g.not(&quot;@197&quot;, &quot;ID&quot;);</span>
+<span class="fc" id="L346">        g.not(&quot;@248&quot;, &quot;ID&quot;);</span>
+<span class="fc" id="L347">        g.not(&quot;@264&quot;, &quot;@263&quot;);</span>
+<span class="fc" id="L348">        g.not(&quot;@286&quot;, &quot;@285&quot;);</span>
+<span class="fc" id="L349">        g.repeat(&quot;@10&quot;, &quot;@9&quot;, 0, 2147483647);</span>
+<span class="fc" id="L350">        g.repeat(&quot;@12&quot;, &quot;@11&quot;, 0, 1);</span>
+<span class="fc" id="L351">        g.repeat(&quot;@136&quot;, &quot;@135&quot;, 0, 1);</span>
+<span class="fc" id="L352">        g.repeat(&quot;@150&quot;, &quot;@149&quot;, 0, 2147483647);</span>
+<span class="fc" id="L353">        g.repeat(&quot;@152&quot;, &quot;api_comment_line&quot;, 0, 2147483647);</span>
+<span class="fc" id="L354">        g.repeat(&quot;@155&quot;, &quot;annotation&quot;, 0, 2147483647);</span>
+<span class="fc" id="L355">        g.repeat(&quot;@161&quot;, &quot;@160&quot;, 0, 2147483647);</span>
+<span class="fc" id="L356">        g.repeat(&quot;@165&quot;, &quot;@164&quot;, 0, 2147483647);</span>
+<span class="fc" id="L357">        g.repeat(&quot;@173&quot;, &quot;@172&quot;, 0, 2147483647);</span>
+<span class="fc" id="L358">        g.repeat(&quot;@175&quot;, &quot;@174&quot;, 0, 1);</span>
+<span class="fc" id="L359">        g.repeat(&quot;@181&quot;, &quot;@180&quot;, 0, 2147483647);</span>
+<span class="fc" id="L360">        g.repeat(&quot;@183&quot;, &quot;@182&quot;, 0, 1);</span>
+<span class="fc" id="L361">        g.repeat(&quot;@191&quot;, &quot;@190&quot;, 1, 2147483647);</span>
+<span class="fc" id="L362">        g.repeat(&quot;@205&quot;, &quot;@204&quot;, 0, 1);</span>
+<span class="fc" id="L363">        g.repeat(&quot;@210&quot;, &quot;@209&quot;, 0, 1);</span>
+<span class="fc" id="L364">        g.repeat(&quot;@215&quot;, &quot;@214&quot;, 0, 1);</span>
+<span class="fc" id="L365">        g.repeat(&quot;@217&quot;, &quot;@216&quot;, 0, 1);</span>
+<span class="fc" id="L366">        g.repeat(&quot;@222&quot;, &quot;@221&quot;, 0, 1);</span>
+<span class="fc" id="L367">        g.repeat(&quot;@229&quot;, &quot;@228&quot;, 0, 1);</span>
+<span class="fc" id="L368">        g.repeat(&quot;@235&quot;, &quot;@234&quot;, 0, 1);</span>
+<span class="fc" id="L369">        g.repeat(&quot;@238&quot;, &quot;@237&quot;, 0, 1);</span>
+<span class="fc" id="L370">        g.repeat(&quot;@252&quot;, &quot;@251&quot;, 0, 2147483647);</span>
+<span class="fc" id="L371">        g.repeat(&quot;@254&quot;, &quot;@253&quot;, 1, 2147483647);</span>
+<span class="fc" id="L372">        g.repeat(&quot;@257&quot;, &quot;@256&quot;, 0, 2147483647);</span>
+<span class="fc" id="L373">        g.repeat(&quot;@260&quot;, &quot;@259&quot;, 0, 1);</span>
+<span class="fc" id="L374">        g.repeat(&quot;@282&quot;, &quot;@281&quot;, 0, 2147483647);</span>
+<span class="fc" id="L375">        g.repeat(&quot;@289&quot;, &quot;@288&quot;, 0, 2147483647);</span>
+<span class="fc" id="L376">        g.repeat(&quot;@39&quot;, &quot;@38&quot;, 0, 2147483647);</span>
+<span class="fc" id="L377">        g.repeat(&quot;@41&quot;, &quot;@40&quot;, 0, 1);</span>
+<span class="fc" id="L378">        g.repeat(&quot;@78&quot;, &quot;@77&quot;, 0, 1);</span>
+<span class="fc" id="L379">        g.repeat(&quot;EXPONENT_OPT&quot;, &quot;EXPONENT&quot;, 0, 1);</span>
+<span class="fc" id="L380">        g.repeat(&quot;NON_NEWLINES&quot;, &quot;NON_NEWLINE&quot;, 0, 2147483647);</span>
+<span class="fc" id="L381">        g.repeat(&quot;NON_QUOTES&quot;, &quot;NON_QUOTE&quot;, 0, 2147483647);</span>
+<span class="fc" id="L382">        g.repeat(&quot;NON_TRIPLE_QUOTES&quot;, &quot;NON_TRIPLE_QUOTE&quot;, 0, 2147483647);</span>
+<span class="fc" id="L383">        g.repeat(&quot;WS&quot;, &quot;@277&quot;, 0, 2147483647);</span>
+<span class="fc" id="L384">        g.repeat(&quot;annotation_assignment_opt&quot;, &quot;annotation_assignment&quot;, 0, 1);</span>
+<span class="fc" id="L385">        g.repeat(&quot;annotation_values&quot;, &quot;@162&quot;, 0, 1);</span>
+<span class="fc" id="L386">        g.repeat(&quot;api_comment_text&quot;, &quot;@154&quot;, 0, 2147483647);</span>
+<span class="fc" id="L387">        g.repeat(&quot;arguments&quot;, &quot;@151&quot;, 0, 1);</span>
+<span class="fc" id="L388">        g.repeat(&quot;dimensions&quot;, &quot;@186&quot;, 0, 2147483647);</span>
+<span class="fc" id="L389">        g.repeat(&quot;elif_cases_opt&quot;, &quot;elif_case&quot;, 0, 2147483647);</span>
+<span class="fc" id="L390">        g.repeat(&quot;else_case_opt&quot;, &quot;else_case&quot;, 0, 1);</span>
+<span class="fc" id="L391">        g.repeat(&quot;if_opt&quot;, &quot;@127&quot;, 0, 1);</span>
+<span class="fc" id="L392">        g.repeat(&quot;module_members&quot;, &quot;module_member&quot;, 0, 2147483647);</span>
+<span class="fc" id="L393">        g.repeat(&quot;p1_operations&quot;, &quot;p1_operation&quot;, 0, 2147483647);</span>
+<span class="fc" id="L394">        g.repeat(&quot;p2_operations&quot;, &quot;p2_operation&quot;, 0, 2147483647);</span>
+<span class="fc" id="L395">        g.repeat(&quot;p3_operations&quot;, &quot;p3_operation&quot;, 0, 2147483647);</span>
+<span class="fc" id="L396">        g.repeat(&quot;p4_operations&quot;, &quot;p4_operation&quot;, 0, 2147483647);</span>
+<span class="fc" id="L397">        g.repeat(&quot;p5_operations&quot;, &quot;p5_operation&quot;, 0, 2147483647);</span>
+<span class="fc" id="L398">        g.repeat(&quot;p6_operations&quot;, &quot;p6_operation&quot;, 0, 2147483647);</span>
+<span class="fc" id="L399">        g.repeat(&quot;p7_operations&quot;, &quot;p7_operation&quot;, 0, 2147483647);</span>
+<span class="fc" id="L400">        g.repeat(&quot;p8_operations&quot;, &quot;p8_operation&quot;, 0, 2147483647);</span>
+<span class="fc" id="L401">        g.repeat(&quot;statements&quot;, &quot;statement&quot;, 0, 2147483647);</span>
+<span class="fc" id="L402">        g.repeat(&quot;super_functor&quot;, &quot;@20&quot;, 0, 1);</span>
+<span class="fc" id="L403">        g.repeat(&quot;supers_opt&quot;, &quot;supers&quot;, 0, 1);</span>
+<span class="fc" id="L404">        g.repeat(&quot;trycatch_handlers&quot;, &quot;trycatch_handler&quot;, 0, 2147483647);</span>
+<span class="fc" id="L405">        g.sequence(&quot;@11&quot;, &quot;enum_constant&quot;, &quot;@10&quot;);</span>
+<span class="fc" id="L406">        g.sequence(&quot;@127&quot;, &quot;@126&quot;, &quot;SP&quot;, &quot;expression&quot;, &quot;WS&quot;);</span>
+<span class="fc" id="L407">        g.sequence(&quot;@135&quot;, &quot;@134&quot;, &quot;SP&quot;);</span>
+<span class="fc" id="L408">        g.sequence(&quot;@149&quot;, &quot;WS&quot;, &quot;@148&quot;, &quot;WS&quot;, &quot;WS&quot;, &quot;argument&quot;);</span>
+<span class="fc" id="L409">        g.sequence(&quot;@151&quot;, &quot;argument&quot;, &quot;@150&quot;, &quot;WS&quot;);</span>
+<span class="fc" id="L410">        g.sequence(&quot;@160&quot;, &quot;WS&quot;, &quot;@159&quot;, &quot;WS&quot;, &quot;annotation_value&quot;);</span>
+<span class="fc" id="L411">        g.sequence(&quot;@162&quot;, &quot;annotation_value&quot;, &quot;@161&quot;, &quot;WS&quot;);</span>
+<span class="fc" id="L412">        g.sequence(&quot;@164&quot;, &quot;@163&quot;, &quot;name_id&quot;);</span>
+<span class="fc" id="L413">        g.sequence(&quot;@166&quot;, &quot;name_id&quot;, &quot;@165&quot;);</span>
+<span class="fc" id="L414">        g.sequence(&quot;@172&quot;, &quot;WS&quot;, &quot;@171&quot;, &quot;WS&quot;, &quot;element&quot;);</span>
+<span class="fc" id="L415">        g.sequence(&quot;@174&quot;, &quot;element&quot;, &quot;@173&quot;);</span>
+<span class="fc" id="L416">        g.sequence(&quot;@180&quot;, &quot;WS&quot;, &quot;@179&quot;, &quot;WS&quot;, &quot;parameter&quot;);</span>
+<span class="fc" id="L417">        g.sequence(&quot;@182&quot;, &quot;parameter&quot;, &quot;@181&quot;);</span>
+<span class="fc" id="L418">        g.sequence(&quot;@186&quot;, &quot;dimension&quot;, &quot;WS&quot;);</span>
+<span class="fc" id="L419">        g.sequence(&quot;@190&quot;, &quot;name_id&quot;, &quot;@189&quot;);</span>
+<span class="fc" id="L420">        g.sequence(&quot;@20&quot;, &quot;@19&quot;, &quot;SP&quot;, &quot;WS&quot;, &quot;type&quot;, &quot;WS&quot;);</span>
+<span class="fc" id="L421">        g.sequence(&quot;@255&quot;, &quot;@254&quot;, &quot;DIGIT&quot;);</span>
+<span class="fc" id="L422">        g.sequence(&quot;@265&quot;, &quot;@262&quot;, &quot;@264&quot;);</span>
+<span class="fc" id="L423">        g.sequence(&quot;@276&quot;, &quot;DIGIT&quot;, &quot;DIGIT&quot;, &quot;DIGIT&quot;, &quot;DIGIT&quot;, &quot;DIGIT&quot;);</span>
+<span class="fc" id="L424">        g.sequence(&quot;@288&quot;, &quot;@286&quot;, &quot;@287&quot;);</span>
+<span class="fc" id="L425">        g.sequence(&quot;@38&quot;, &quot;WS&quot;, &quot;@37&quot;, &quot;WS&quot;, &quot;label&quot;);</span>
+<span class="fc" id="L426">        g.sequence(&quot;@40&quot;, &quot;label&quot;, &quot;@39&quot;);</span>
+<span class="fc" id="L427">        g.sequence(&quot;@77&quot;, &quot;@76&quot;, &quot;SP&quot;);</span>
+<span class="fc" id="L428">        g.sequence(&quot;@9&quot;, &quot;WS&quot;, &quot;@8&quot;, &quot;WS&quot;, &quot;enum_constant&quot;);</span>
+<span class="fc" id="L429">        g.sequence(&quot;DIGITS&quot;, &quot;DIGIT&quot;, &quot;@257&quot;);</span>
+<span class="fc" id="L430">        g.sequence(&quot;ESCAPE_SEQUENCE&quot;, &quot;@267&quot;, &quot;ESCAPE_CHAR&quot;);</span>
+<span class="fc" id="L431">        g.sequence(&quot;EXPONENT&quot;, &quot;@258&quot;, &quot;@260&quot;, &quot;DIGITS&quot;);</span>
+<span class="fc" id="L432">        g.sequence(&quot;ID&quot;, &quot;@250&quot;, &quot;@252&quot;);</span>
+<span class="fc" id="L433">        g.sequence(&quot;MULTI_LINE_COMMENT&quot;, &quot;@284&quot;, &quot;@289&quot;, &quot;@290&quot;, &quot;WS&quot;);</span>
+<span class="fc" id="L434">        g.sequence(&quot;SEMICOLON&quot;, &quot;@249&quot;, &quot;WS&quot;);</span>
+<span class="fc" id="L435">        g.sequence(&quot;SINGLE_LINE_COMMENT&quot;, &quot;@280&quot;, &quot;@282&quot;, &quot;@283&quot;);</span>
+<span class="fc" id="L436">        g.sequence(&quot;STRING_LITERAL_STYLE1&quot;, &quot;QUOTE&quot;, &quot;NON_QUOTES&quot;, &quot;QUOTE&quot;);</span>
+<span class="fc" id="L437">        g.sequence(&quot;STRING_LITERAL_STYLE2&quot;, &quot;TRIPLE_QUOTE&quot;, &quot;NON_TRIPLE_QUOTES&quot;, &quot;TRIPLE_QUOTE&quot;);</span>
+<span class="fc" id="L438">        g.sequence(&quot;add_operation&quot;, &quot;@105&quot;, &quot;WS&quot;, &quot;p6_operand&quot;);</span>
+<span class="fc" id="L439">        g.sequence(&quot;and_operation&quot;, &quot;@92&quot;, &quot;WS&quot;, &quot;p3_operand&quot;);</span>
+<span class="fc" id="L440">        g.sequence(&quot;annotation&quot;, &quot;PS&quot;, &quot;@156&quot;, &quot;WS&quot;, &quot;annotation_type&quot;, &quot;WS&quot;, &quot;annotation_assignment_opt&quot;, &quot;WS&quot;);</span>
+<span class="fc" id="L441">        g.sequence(&quot;annotation_assignment&quot;, &quot;@157&quot;, &quot;WS&quot;, &quot;annotation_values&quot;, &quot;WS&quot;, &quot;@158&quot;, &quot;WS&quot;);</span>
+<span class="fc" id="L442">        g.sequence(&quot;annotation_definition&quot;, &quot;PS&quot;, &quot;api_comment&quot;, &quot;annotation_list&quot;, &quot;WS&quot;, &quot;@3&quot;, &quot;SP&quot;, &quot;WS&quot;, &quot;name&quot;, &quot;WS&quot;, &quot;SEMICOLON&quot;, &quot;WS&quot;);</span>
+<span class="fc" id="L443">        g.sequence(&quot;annotation_list&quot;, &quot;PS&quot;, &quot;@155&quot;);</span>
+<span class="fc" id="L444">        g.sequence(&quot;annotation_type&quot;, &quot;type&quot;);</span>
+<span class="fc" id="L445">        g.sequence(&quot;annotation_value&quot;, &quot;string_value&quot;);</span>
+<span class="fc" id="L446">        g.sequence(&quot;api_comment&quot;, &quot;PS&quot;, &quot;@152&quot;);</span>
+<span class="fc" id="L447">        g.sequence(&quot;api_comment_line&quot;, &quot;PS&quot;, &quot;WS&quot;, &quot;@153&quot;, &quot;api_comment_text&quot;, &quot;WS&quot;);</span>
+<span class="fc" id="L448">        g.sequence(&quot;argument&quot;, &quot;expression&quot;);</span>
+<span class="fc" id="L449">        g.sequence(&quot;argument_list&quot;, &quot;@146&quot;, &quot;WS&quot;, &quot;arguments&quot;, &quot;WS&quot;, &quot;@147&quot;, &quot;WS&quot;);</span>
+<span class="fc" id="L450">        g.sequence(&quot;as_operation&quot;, &quot;@89&quot;, &quot;SP&quot;, &quot;WS&quot;, &quot;type&quot;, &quot;WS&quot;);</span>
+<span class="fc" id="L451">        g.sequence(&quot;assert_statement&quot;, &quot;PS&quot;, &quot;@43&quot;, &quot;SP&quot;, &quot;WS&quot;, &quot;condition&quot;, &quot;WS&quot;, &quot;assertion_echo_opt&quot;, &quot;WS&quot;, &quot;SEMICOLON&quot;);</span>
+<span class="fc" id="L452">        g.sequence(&quot;assertion_echo&quot;, &quot;@44&quot;, &quot;SP&quot;, &quot;WS&quot;, &quot;expression&quot;, &quot;WS&quot;);</span>
+<span class="fc" id="L453">        g.sequence(&quot;assume_statement&quot;, &quot;PS&quot;, &quot;@45&quot;, &quot;SP&quot;, &quot;WS&quot;, &quot;condition&quot;, &quot;WS&quot;, &quot;assumption_echo_opt&quot;, &quot;WS&quot;, &quot;SEMICOLON&quot;);</span>
+<span class="fc" id="L454">        g.sequence(&quot;assumption_echo&quot;, &quot;@46&quot;, &quot;SP&quot;, &quot;WS&quot;, &quot;expression&quot;, &quot;WS&quot;);</span>
+<span class="fc" id="L455">        g.sequence(&quot;big_decimal_datum&quot;, &quot;big_decimal_value&quot;);</span>
+<span class="fc" id="L456">        g.sequence(&quot;big_decimal_value&quot;, &quot;@238&quot;, &quot;DIGITS&quot;, &quot;@239&quot;, &quot;DIGITS&quot;, &quot;EXPONENT_OPT&quot;, &quot;WS&quot;, &quot;@244&quot;, &quot;WS&quot;);</span>
+<span class="fc" id="L457">        g.sequence(&quot;big_integer_datum&quot;, &quot;big_integer_value&quot;);</span>
+<span class="fc" id="L458">        g.sequence(&quot;big_integer_value&quot;, &quot;@222&quot;, &quot;DIGITS&quot;, &quot;@227&quot;, &quot;WS&quot;);</span>
+<span class="fc" id="L459">        g.sequence(&quot;boolean_datum&quot;, &quot;boolean_value&quot;);</span>
+<span class="fc" id="L460">        g.sequence(&quot;branch_statement&quot;, &quot;PS&quot;, &quot;@32&quot;, &quot;SP&quot;, &quot;index&quot;, &quot;WS&quot;, &quot;labels&quot;, &quot;WS&quot;, &quot;@33&quot;, &quot;SP&quot;, &quot;label&quot;, &quot;WS&quot;, &quot;SEMICOLON&quot;);</span>
+<span class="fc" id="L461">        g.sequence(&quot;break_statement&quot;, &quot;PS&quot;, &quot;@53&quot;, &quot;WS&quot;, &quot;SEMICOLON&quot;);</span>
+<span class="fc" id="L462">        g.sequence(&quot;byte_datum&quot;, &quot;byte_value&quot;);</span>
+<span class="fc" id="L463">        g.sequence(&quot;byte_value&quot;, &quot;@205&quot;, &quot;DIGITS&quot;, &quot;@208&quot;, &quot;WS&quot;);</span>
+<span class="fc" id="L464">        g.sequence(&quot;call_method_expression&quot;, &quot;PS&quot;, &quot;@133&quot;, &quot;SP&quot;, &quot;WS&quot;, &quot;p8_operand&quot;, &quot;WS&quot;, &quot;p8_operation&quot;, &quot;WS&quot;);</span>
+<span class="fc" id="L465">        g.sequence(&quot;call_static_method_expression&quot;, &quot;PS&quot;, &quot;@136&quot;, &quot;WS&quot;, &quot;static_member_access&quot;, &quot;WS&quot;, &quot;argument_list&quot;, &quot;WS&quot;);</span>
+<span class="fc" id="L466">        g.sequence(&quot;char_datum&quot;, &quot;char_value&quot;);</span>
+<span class="fc" id="L467">        g.sequence(&quot;class_datum&quot;, &quot;class_value&quot;, &quot;WS&quot;);</span>
+<span class="fc" id="L468">        g.sequence(&quot;class_value&quot;, &quot;@246&quot;, &quot;SP&quot;, &quot;WS&quot;, &quot;type&quot;, &quot;WS&quot;);</span>
+<span class="fc" id="L469">        g.sequence(&quot;concat_operation&quot;, &quot;@104&quot;, &quot;WS&quot;, &quot;p5_operand&quot;);</span>
+<span class="fc" id="L470">        g.sequence(&quot;condition&quot;, &quot;expression&quot;);</span>
+<span class="fc" id="L471">        g.sequence(&quot;conditional_case&quot;, &quot;PS&quot;, &quot;paren_condition&quot;, &quot;WS&quot;, &quot;sequence_statement&quot;, &quot;WS&quot;);</span>
+<span class="fc" id="L472">        g.sequence(&quot;continue_statement&quot;, &quot;PS&quot;, &quot;@54&quot;, &quot;WS&quot;, &quot;SEMICOLON&quot;);</span>
+<span class="fc" id="L473">        g.sequence(&quot;delegate_statement&quot;, &quot;PS&quot;, &quot;@83&quot;, &quot;SP&quot;, &quot;WS&quot;, &quot;variable&quot;, &quot;WS&quot;, &quot;@84&quot;, &quot;WS&quot;, &quot;type&quot;, &quot;WS&quot;, &quot;@85&quot;, &quot;WS&quot;, &quot;static_member_access&quot;, &quot;WS&quot;, &quot;SEMICOLON&quot;);</span>
+<span class="fc" id="L474">        g.sequence(&quot;design_definition&quot;, &quot;PS&quot;, &quot;api_comment&quot;, &quot;annotation_list&quot;, &quot;WS&quot;, &quot;@14&quot;, &quot;SP&quot;, &quot;WS&quot;, &quot;name&quot;, &quot;WS&quot;, &quot;elements&quot;, &quot;WS&quot;, &quot;supers_opt&quot;, &quot;WS&quot;, &quot;SEMICOLON&quot;, &quot;WS&quot;);</span>
+<span class="fc" id="L475">        g.sequence(&quot;dimension&quot;, &quot;@187&quot;, &quot;WS&quot;, &quot;@188&quot;);</span>
+<span class="fc" id="L476">        g.sequence(&quot;dispatch_expression&quot;, &quot;PS&quot;, &quot;@131&quot;, &quot;SP&quot;, &quot;WS&quot;, &quot;name&quot;, &quot;WS&quot;, &quot;argument_list&quot;, &quot;WS&quot;);</span>
+<span class="fc" id="L477">        g.sequence(&quot;divide_operation&quot;, &quot;@107&quot;, &quot;WS&quot;, &quot;p7_operand&quot;);</span>
+<span class="fc" id="L478">        g.sequence(&quot;do_statement&quot;, &quot;PS&quot;, &quot;@68&quot;, &quot;WS&quot;, &quot;sequence_statement&quot;, &quot;WS&quot;, &quot;@69&quot;, &quot;WS&quot;);</span>
+<span class="fc" id="L479">        g.sequence(&quot;do_until&quot;, &quot;@70&quot;, &quot;WS&quot;, &quot;paren_condition&quot;, &quot;WS&quot;, &quot;do_until_trigger&quot;);</span>
+<span class="fc" id="L480">        g.sequence(&quot;do_while&quot;, &quot;@71&quot;, &quot;WS&quot;, &quot;paren_condition&quot;, &quot;WS&quot;, &quot;do_while_trigger&quot;);</span>
+<span class="fc" id="L481">        g.sequence(&quot;double_datum&quot;, &quot;double_value&quot;);</span>
+<span class="fc" id="L482">        g.sequence(&quot;double_value&quot;, &quot;@235&quot;, &quot;DIGITS&quot;, &quot;@236&quot;, &quot;DIGITS&quot;, &quot;EXPONENT_OPT&quot;, &quot;WS&quot;);</span>
+<span class="fc" id="L483">        g.sequence(&quot;element&quot;, &quot;PS&quot;, &quot;name&quot;, &quot;WS&quot;, &quot;@177&quot;, &quot;WS&quot;, &quot;type&quot;, &quot;WS&quot;);</span>
+<span class="fc" id="L484">        g.sequence(&quot;elements&quot;, &quot;PS&quot;, &quot;@170&quot;, &quot;WS&quot;, &quot;@175&quot;, &quot;WS&quot;, &quot;@176&quot;, &quot;WS&quot;);</span>
+<span class="fc" id="L485">        g.sequence(&quot;elif_case&quot;, &quot;@26&quot;, &quot;WS&quot;, &quot;conditional_case&quot;, &quot;WS&quot;);</span>
+<span class="fc" id="L486">        g.sequence(&quot;else_case&quot;, &quot;@27&quot;, &quot;WS&quot;, &quot;sequence_statement&quot;, &quot;WS&quot;);</span>
+<span class="fc" id="L487">        g.sequence(&quot;enum_constant&quot;, &quot;name&quot;);</span>
+<span class="fc" id="L488">        g.sequence(&quot;enum_constant_list&quot;, &quot;@7&quot;, &quot;WS&quot;, &quot;@12&quot;, &quot;WS&quot;, &quot;@13&quot;);</span>
+<span class="fc" id="L489">        g.sequence(&quot;enum_definition&quot;, &quot;PS&quot;, &quot;api_comment&quot;, &quot;annotation_list&quot;, &quot;WS&quot;, &quot;@6&quot;, &quot;SP&quot;, &quot;WS&quot;, &quot;name&quot;, &quot;WS&quot;, &quot;enum_constant_list&quot;, &quot;WS&quot;, &quot;SEMICOLON&quot;, &quot;WS&quot;);</span>
+<span class="fc" id="L490">        g.sequence(&quot;equals_operation&quot;, &quot;@98&quot;, &quot;WS&quot;, &quot;p4_operand&quot;);</span>
+<span class="fc" id="L491">        g.sequence(&quot;exception_definition&quot;, &quot;PS&quot;, &quot;api_comment&quot;, &quot;annotation_list&quot;, &quot;WS&quot;, &quot;@4&quot;, &quot;SP&quot;, &quot;WS&quot;, &quot;name&quot;, &quot;WS&quot;, &quot;@5&quot;, &quot;SP&quot;, &quot;WS&quot;, &quot;type&quot;, &quot;WS&quot;, &quot;SEMICOLON&quot;, &quot;WS&quot;);</span>
+<span class="fc" id="L492">        g.sequence(&quot;expression_statement&quot;, &quot;PS&quot;, &quot;expression&quot;, &quot;SEMICOLON&quot;);</span>
+<span class="fc" id="L493">        g.sequence(&quot;false&quot;, &quot;@196&quot;, &quot;@197&quot;, &quot;WS&quot;);</span>
+<span class="fc" id="L494">        g.sequence(&quot;filepath&quot;, &quot;string_value&quot;);</span>
+<span class="fc" id="L495">        g.sequence(&quot;float_datum&quot;, &quot;float_value&quot;);</span>
+<span class="fc" id="L496">        g.sequence(&quot;float_value&quot;, &quot;@229&quot;, &quot;DIGITS&quot;, &quot;@230&quot;, &quot;DIGITS&quot;, &quot;EXPONENT_OPT&quot;, &quot;@233&quot;, &quot;WS&quot;);</span>
+<span class="fc" id="L497">        g.sequence(&quot;for_body&quot;, &quot;sequence_statement&quot;);</span>
+<span class="fc" id="L498">        g.sequence(&quot;for_condition&quot;, &quot;expression&quot;, &quot;WS&quot;);</span>
+<span class="fc" id="L499">        g.sequence(&quot;for_controller&quot;, &quot;@57&quot;, &quot;WS&quot;, &quot;for_init&quot;, &quot;WS&quot;, &quot;SEMICOLON&quot;, &quot;WS&quot;, &quot;for_condition&quot;, &quot;WS&quot;, &quot;SEMICOLON&quot;, &quot;WS&quot;, &quot;for_modifier&quot;, &quot;WS&quot;, &quot;@58&quot;, &quot;WS&quot;);</span>
+<span class="fc" id="L500">        g.sequence(&quot;for_init&quot;, &quot;variable&quot;, &quot;WS&quot;, &quot;@59&quot;, &quot;WS&quot;, &quot;expression&quot;, &quot;WS&quot;);</span>
+<span class="fc" id="L501">        g.sequence(&quot;for_modifier&quot;, &quot;expression&quot;);</span>
+<span class="fc" id="L502">        g.sequence(&quot;for_statement&quot;, &quot;PS&quot;, &quot;@56&quot;, &quot;WS&quot;, &quot;for_controller&quot;, &quot;WS&quot;, &quot;for_body&quot;, &quot;WS&quot;);</span>
+<span class="fc" id="L503">        g.sequence(&quot;foreach_body&quot;, &quot;sequence_statement&quot;);</span>
+<span class="fc" id="L504">        g.sequence(&quot;foreach_controller&quot;, &quot;@61&quot;, &quot;WS&quot;, &quot;foreach_vardec&quot;, &quot;@62&quot;, &quot;WS&quot;, &quot;foreach_iterator&quot;, &quot;@63&quot;);</span>
+<span class="fc" id="L505">        g.sequence(&quot;foreach_iterator&quot;, &quot;expression&quot;, &quot;WS&quot;);</span>
+<span class="fc" id="L506">        g.sequence(&quot;foreach_statement&quot;, &quot;PS&quot;, &quot;@60&quot;, &quot;WS&quot;, &quot;foreach_controller&quot;, &quot;WS&quot;, &quot;foreach_body&quot;, &quot;WS&quot;);</span>
+<span class="fc" id="L507">        g.sequence(&quot;foreach_vardec&quot;, &quot;variable&quot;, &quot;WS&quot;, &quot;@64&quot;, &quot;WS&quot;, &quot;type&quot;, &quot;WS&quot;);</span>
+<span class="fc" id="L508">        g.sequence(&quot;forever_statement&quot;, &quot;PS&quot;, &quot;@65&quot;, &quot;WS&quot;, &quot;sequence_statement&quot;, &quot;WS&quot;);</span>
+<span class="fc" id="L509">        g.sequence(&quot;formals&quot;, &quot;PS&quot;, &quot;@178&quot;, &quot;WS&quot;, &quot;@183&quot;, &quot;WS&quot;, &quot;@184&quot;, &quot;WS&quot;);</span>
+<span class="fc" id="L510">        g.sequence(&quot;function_definition&quot;, &quot;PS&quot;, &quot;api_comment&quot;, &quot;annotation_list&quot;, &quot;WS&quot;, &quot;@21&quot;, &quot;SP&quot;, &quot;WS&quot;, &quot;signature&quot;, &quot;WS&quot;, &quot;sequence_statement&quot;, &quot;WS&quot;);</span>
+<span class="fc" id="L511">        g.sequence(&quot;functor_definition&quot;, &quot;PS&quot;, &quot;api_comment&quot;, &quot;annotation_list&quot;, &quot;WS&quot;, &quot;@17&quot;, &quot;SP&quot;, &quot;WS&quot;, &quot;name&quot;, &quot;WS&quot;, &quot;formals&quot;, &quot;WS&quot;, &quot;@18&quot;, &quot;WS&quot;, &quot;type&quot;, &quot;WS&quot;, &quot;super_functor&quot;, &quot;WS&quot;, &quot;SEMICOLON&quot;, &quot;WS&quot;);</span>
+<span class="fc" id="L512">        g.sequence(&quot;get_field_expression&quot;, &quot;PS&quot;, &quot;@137&quot;, &quot;SP&quot;, &quot;WS&quot;, &quot;instance_member_access&quot;, &quot;WS&quot;);</span>
+<span class="fc" id="L513">        g.sequence(&quot;get_static_expression&quot;, &quot;PS&quot;, &quot;@140&quot;, &quot;SP&quot;, &quot;WS&quot;, &quot;static_member_access&quot;, &quot;WS&quot;);</span>
+<span class="fc" id="L514">        g.sequence(&quot;goto_statement&quot;, &quot;PS&quot;, &quot;@30&quot;, &quot;SP&quot;, &quot;WS&quot;, &quot;label&quot;, &quot;WS&quot;, &quot;SEMICOLON&quot;);</span>
+<span class="fc" id="L515">        g.sequence(&quot;greater_operation&quot;, &quot;@102&quot;, &quot;WS&quot;, &quot;p4_operand&quot;);</span>
+<span class="fc" id="L516">        g.sequence(&quot;greater_or_equals_operation&quot;, &quot;@100&quot;, &quot;WS&quot;, &quot;p4_operand&quot;);</span>
+<span class="fc" id="L517">        g.sequence(&quot;identity_equals_operation&quot;, &quot;@96&quot;, &quot;WS&quot;, &quot;p4_operand&quot;);</span>
+<span class="fc" id="L518">        g.sequence(&quot;identity_not_equals_operation&quot;, &quot;@97&quot;, &quot;WS&quot;, &quot;p4_operand&quot;);</span>
+<span class="fc" id="L519">        g.sequence(&quot;if_case&quot;, &quot;@25&quot;, &quot;WS&quot;, &quot;conditional_case&quot;, &quot;WS&quot;);</span>
+<span class="fc" id="L520">        g.sequence(&quot;if_statement&quot;, &quot;PS&quot;, &quot;if_case&quot;, &quot;elif_cases_opt&quot;, &quot;WS&quot;, &quot;else_case_opt&quot;, &quot;WS&quot;);</span>
+<span class="fc" id="L521">        g.sequence(&quot;implies_operation&quot;, &quot;@95&quot;, &quot;WS&quot;, &quot;p3_operand&quot;);</span>
+<span class="fc" id="L522">        g.sequence(&quot;import_directive&quot;, &quot;PS&quot;, &quot;@2&quot;, &quot;SP&quot;, &quot;WS&quot;, &quot;type&quot;, &quot;WS&quot;, &quot;SEMICOLON&quot;);</span>
+<span class="fc" id="L523">        g.sequence(&quot;index&quot;, &quot;@34&quot;, &quot;WS&quot;, &quot;expression&quot;, &quot;WS&quot;, &quot;@35&quot;);</span>
+<span class="fc" id="L524">        g.sequence(&quot;instance_member_access&quot;, &quot;expression&quot;, &quot;WS&quot;, &quot;@192&quot;, &quot;WS&quot;, &quot;name&quot;, &quot;WS&quot;);</span>
+<span class="fc" id="L525">        g.sequence(&quot;instanceof_expression&quot;, &quot;PS&quot;, &quot;@143&quot;, &quot;SP&quot;, &quot;WS&quot;, &quot;expression&quot;, &quot;WS&quot;, &quot;@144&quot;, &quot;WS&quot;, &quot;type&quot;, &quot;WS&quot;);</span>
+<span class="fc" id="L526">        g.sequence(&quot;int_datum&quot;, &quot;int_value&quot;);</span>
+<span class="fc" id="L527">        g.sequence(&quot;int_value&quot;, &quot;@215&quot;, &quot;DIGITS&quot;, &quot;WS&quot;);</span>
+<span class="fc" id="L528">        g.sequence(&quot;is_operation&quot;, &quot;@90&quot;, &quot;SP&quot;, &quot;WS&quot;, &quot;type&quot;, &quot;WS&quot;);</span>
+<span class="fc" id="L529">        g.sequence(&quot;label&quot;, &quot;ID&quot;, &quot;WS&quot;);</span>
+<span class="fc" id="L530">        g.sequence(&quot;labels&quot;, &quot;@36&quot;, &quot;WS&quot;, &quot;@41&quot;, &quot;WS&quot;, &quot;@42&quot;, &quot;WS&quot;);</span>
+<span class="fc" id="L531">        g.sequence(&quot;lambda_statement&quot;, &quot;PS&quot;, &quot;@80&quot;, &quot;SP&quot;, &quot;WS&quot;, &quot;variable&quot;, &quot;WS&quot;, &quot;@81&quot;, &quot;WS&quot;, &quot;type&quot;, &quot;WS&quot;, &quot;@82&quot;, &quot;WS&quot;, &quot;expression&quot;, &quot;WS&quot;, &quot;SEMICOLON&quot;, &quot;WS&quot;);</span>
+<span class="fc" id="L532">        g.sequence(&quot;less_operation&quot;, &quot;@103&quot;, &quot;WS&quot;, &quot;p4_operand&quot;);</span>
+<span class="fc" id="L533">        g.sequence(&quot;less_or_equals_operation&quot;, &quot;@101&quot;, &quot;WS&quot;, &quot;p4_operand&quot;);</span>
+<span class="fc" id="L534">        g.sequence(&quot;let_statement&quot;, &quot;PS&quot;, &quot;@78&quot;, &quot;WS&quot;, &quot;variable&quot;, &quot;WS&quot;, &quot;@79&quot;, &quot;WS&quot;, &quot;expression&quot;, &quot;WS&quot;, &quot;SEMICOLON&quot;);</span>
+<span class="fc" id="L535">        g.sequence(&quot;list_comprehension_body&quot;, &quot;expression&quot;, &quot;WS&quot;, &quot;@123&quot;, &quot;SP&quot;, &quot;variable&quot;, &quot;WS&quot;, &quot;@124&quot;, &quot;WS&quot;, &quot;type&quot;, &quot;WS&quot;, &quot;@125&quot;, &quot;SP&quot;, &quot;expression&quot;, &quot;WS&quot;, &quot;if_opt&quot;, &quot;WS&quot;);</span>
+<span class="fc" id="L536">        g.sequence(&quot;list_comprehension_expression&quot;, &quot;PS&quot;, &quot;@121&quot;, &quot;WS&quot;, &quot;list_comprehension_body&quot;, &quot;WS&quot;, &quot;@122&quot;, &quot;WS&quot;);</span>
+<span class="fc" id="L537">        g.sequence(&quot;list_expression&quot;, &quot;PS&quot;, &quot;@128&quot;, &quot;WS&quot;, &quot;arguments&quot;, &quot;WS&quot;, &quot;@129&quot;, &quot;WS&quot;);</span>
+<span class="fc" id="L538">        g.sequence(&quot;literal_char_value&quot;, &quot;@198&quot;, &quot;@199&quot;, &quot;@200&quot;, &quot;WS&quot;);</span>
+<span class="fc" id="L539">        g.sequence(&quot;locals_expression&quot;, &quot;PS&quot;, &quot;@115&quot;, &quot;WS&quot;, &quot;@116&quot;, &quot;WS&quot;, &quot;@117&quot;, &quot;WS&quot;);</span>
+<span class="fc" id="L540">        g.sequence(&quot;long_datum&quot;, &quot;long_value&quot;);</span>
+<span class="fc" id="L541">        g.sequence(&quot;long_value&quot;, &quot;@217&quot;, &quot;DIGITS&quot;, &quot;@220&quot;, &quot;WS&quot;);</span>
+<span class="fc" id="L542">        g.sequence(&quot;marker_statement&quot;, &quot;PS&quot;, &quot;@31&quot;, &quot;SP&quot;, &quot;WS&quot;, &quot;label&quot;, &quot;WS&quot;, &quot;SEMICOLON&quot;);</span>
+<span class="fc" id="L543">        g.sequence(&quot;module&quot;, &quot;WS&quot;, &quot;module_members&quot;, &quot;END&quot;);</span>
+<span class="fc" id="L544">        g.sequence(&quot;module_directive&quot;, &quot;PS&quot;, &quot;api_comment&quot;, &quot;annotation_list&quot;, &quot;WS&quot;, &quot;@0&quot;, &quot;SP&quot;, &quot;WS&quot;, &quot;module_name&quot;, &quot;WS&quot;, &quot;@1&quot;, &quot;WS&quot;, &quot;namespace&quot;, &quot;WS&quot;, &quot;SEMICOLON&quot;);</span>
+<span class="fc" id="L545">        g.sequence(&quot;modulo_operation&quot;, &quot;@108&quot;, &quot;WS&quot;, &quot;p7_operand&quot;);</span>
+<span class="fc" id="L546">        g.sequence(&quot;multiply_operation&quot;, &quot;@109&quot;, &quot;WS&quot;, &quot;p7_operand&quot;);</span>
+<span class="fc" id="L547">        g.sequence(&quot;name&quot;, &quot;name_id&quot;, &quot;WS&quot;);</span>
+<span class="fc" id="L548">        g.sequence(&quot;name_id&quot;, &quot;ID&quot;);</span>
+<span class="fc" id="L549">        g.sequence(&quot;name_of_named_module&quot;, &quot;name&quot;);</span>
+<span class="fc" id="L550">        g.sequence(&quot;namespace_explicit&quot;, &quot;PS&quot;, &quot;@166&quot;);</span>
+<span class="fc" id="L551">        g.sequence(&quot;negate_operation&quot;, &quot;@111&quot;, &quot;WS&quot;, &quot;p8&quot;, &quot;WS&quot;);</span>
+<span class="fc" id="L552">        g.sequence(&quot;nested_expression&quot;, &quot;@113&quot;, &quot;WS&quot;, &quot;expression&quot;, &quot;WS&quot;, &quot;@114&quot;, &quot;WS&quot;);</span>
+<span class="fc" id="L553">        g.sequence(&quot;new_expression&quot;, &quot;PS&quot;, &quot;@132&quot;, &quot;SP&quot;, &quot;WS&quot;, &quot;type&quot;, &quot;WS&quot;, &quot;argument_list&quot;, &quot;WS&quot;);</span>
+<span class="fc" id="L554">        g.sequence(&quot;nop_statement&quot;, &quot;PS&quot;, &quot;@24&quot;, &quot;SEMICOLON&quot;);</span>
+<span class="fc" id="L555">        g.sequence(&quot;not_equals_operation&quot;, &quot;@99&quot;, &quot;WS&quot;, &quot;p4_operand&quot;);</span>
+<span class="fc" id="L556">        g.sequence(&quot;not_operation&quot;, &quot;@112&quot;, &quot;WS&quot;, &quot;p8&quot;, &quot;WS&quot;);</span>
+<span class="fc" id="L557">        g.sequence(&quot;null_coalescing_operation&quot;, &quot;@91&quot;, &quot;WS&quot;, &quot;p2_operand&quot;);</span>
+<span class="fc" id="L558">        g.sequence(&quot;null_datum&quot;, &quot;null_value&quot;, &quot;WS&quot;);</span>
+<span class="fc" id="L559">        g.sequence(&quot;null_value&quot;, &quot;@247&quot;, &quot;@248&quot;, &quot;WS&quot;);</span>
+<span class="fc" id="L560">        g.sequence(&quot;numeric_char_value&quot;, &quot;DIGITS&quot;, &quot;@203&quot;, &quot;WS&quot;);</span>
+<span class="fc" id="L561">        g.sequence(&quot;once_expression&quot;, &quot;PS&quot;, &quot;@145&quot;, &quot;SP&quot;, &quot;WS&quot;, &quot;expression&quot;, &quot;WS&quot;);</span>
+<span class="fc" id="L562">        g.sequence(&quot;or_operation&quot;, &quot;@93&quot;, &quot;WS&quot;, &quot;p3_operand&quot;);</span>
+<span class="fc" id="L563">        g.sequence(&quot;p1&quot;, &quot;p1_operand&quot;, &quot;p1_operations&quot;);</span>
+<span class="fc" id="L564">        g.sequence(&quot;p1_operand&quot;, &quot;p2&quot;);</span>
+<span class="fc" id="L565">        g.sequence(&quot;p2&quot;, &quot;p2_operand&quot;, &quot;p2_operations&quot;);</span>
+<span class="fc" id="L566">        g.sequence(&quot;p2_operand&quot;, &quot;p3&quot;);</span>
+<span class="fc" id="L567">        g.sequence(&quot;p2_operation&quot;, &quot;null_coalescing_operation&quot;);</span>
+<span class="fc" id="L568">        g.sequence(&quot;p3&quot;, &quot;p3_operand&quot;, &quot;p3_operations&quot;);</span>
+<span class="fc" id="L569">        g.sequence(&quot;p3_operand&quot;, &quot;p4&quot;);</span>
+<span class="fc" id="L570">        g.sequence(&quot;p4&quot;, &quot;p4_operand&quot;, &quot;p4_operations&quot;);</span>
+<span class="fc" id="L571">        g.sequence(&quot;p4_operand&quot;, &quot;p5&quot;);</span>
+<span class="fc" id="L572">        g.sequence(&quot;p5&quot;, &quot;p5_operand&quot;, &quot;p5_operations&quot;);</span>
+<span class="fc" id="L573">        g.sequence(&quot;p5_operand&quot;, &quot;p6&quot;);</span>
+<span class="fc" id="L574">        g.sequence(&quot;p5_operation&quot;, &quot;concat_operation&quot;);</span>
+<span class="fc" id="L575">        g.sequence(&quot;p6&quot;, &quot;p6_operand&quot;, &quot;p6_operations&quot;);</span>
+<span class="fc" id="L576">        g.sequence(&quot;p6_operand&quot;, &quot;p7&quot;);</span>
+<span class="fc" id="L577">        g.sequence(&quot;p7&quot;, &quot;p7_operand&quot;, &quot;p7_operations&quot;);</span>
+<span class="fc" id="L578">        g.sequence(&quot;p7_operand&quot;, &quot;p8&quot;);</span>
+<span class="fc" id="L579">        g.sequence(&quot;p8&quot;, &quot;PS&quot;, &quot;p8_operand&quot;, &quot;p8_operations&quot;);</span>
+<span class="fc" id="L580">        g.sequence(&quot;p8_operand&quot;, &quot;p9&quot;);</span>
+<span class="fc" id="L581">        g.sequence(&quot;p8_operation&quot;, &quot;WS&quot;, &quot;@110&quot;, &quot;WS&quot;, &quot;name&quot;, &quot;WS&quot;, &quot;argument_list&quot;, &quot;WS&quot;);</span>
+<span class="fc" id="L582">        g.sequence(&quot;parameter&quot;, &quot;PS&quot;, &quot;variable&quot;, &quot;WS&quot;, &quot;@185&quot;, &quot;WS&quot;, &quot;type&quot;, &quot;WS&quot;);</span>
+<span class="fc" id="L583">        g.sequence(&quot;paren_condition&quot;, &quot;nested_expression&quot;);</span>
+<span class="fc" id="L584">        g.sequence(&quot;paren_expression&quot;, &quot;nested_expression&quot;);</span>
+<span class="fc" id="L585">        g.sequence(&quot;progn_expression&quot;, &quot;PS&quot;, &quot;@130&quot;, &quot;WS&quot;, &quot;argument_list&quot;, &quot;WS&quot;);</span>
+<span class="fc" id="L586">        g.sequence(&quot;recur_statement&quot;, &quot;PS&quot;, &quot;@86&quot;, &quot;WS&quot;, &quot;arguments&quot;, &quot;WS&quot;, &quot;SEMICOLON&quot;);</span>
+<span class="fc" id="L587">        g.sequence(&quot;redo_statement&quot;, &quot;PS&quot;, &quot;@55&quot;, &quot;WS&quot;, &quot;SEMICOLON&quot;);</span>
+<span class="fc" id="L588">        g.sequence(&quot;regular_string_value&quot;, &quot;STRING_LITERAL&quot;, &quot;WS&quot;);</span>
+<span class="fc" id="L589">        g.sequence(&quot;return_type&quot;, &quot;type&quot;);</span>
+<span class="fc" id="L590">        g.sequence(&quot;return_value_statement&quot;, &quot;PS&quot;, &quot;@88&quot;, &quot;SP&quot;, &quot;WS&quot;, &quot;expression&quot;, &quot;WS&quot;, &quot;SEMICOLON&quot;);</span>
+<span class="fc" id="L591">        g.sequence(&quot;return_void_statement&quot;, &quot;PS&quot;, &quot;@87&quot;, &quot;WS&quot;, &quot;SEMICOLON&quot;);</span>
+<span class="fc" id="L592">        g.sequence(&quot;sequence_statement&quot;, &quot;PS&quot;, &quot;@22&quot;, &quot;WS&quot;, &quot;statements&quot;, &quot;WS&quot;, &quot;@23&quot;, &quot;WS&quot;);</span>
+<span class="fc" id="L593">        g.sequence(&quot;set_field_expression&quot;, &quot;PS&quot;, &quot;@138&quot;, &quot;SP&quot;, &quot;WS&quot;, &quot;instance_member_access&quot;, &quot;@139&quot;, &quot;WS&quot;, &quot;expression&quot;, &quot;WS&quot;);</span>
+<span class="fc" id="L594">        g.sequence(&quot;set_static_expression&quot;, &quot;PS&quot;, &quot;@141&quot;, &quot;SP&quot;, &quot;WS&quot;, &quot;static_member_access&quot;, &quot;WS&quot;, &quot;@142&quot;, &quot;WS&quot;, &quot;expression&quot;, &quot;WS&quot;);</span>
+<span class="fc" id="L595">        g.sequence(&quot;short_datum&quot;, &quot;short_value&quot;);</span>
+<span class="fc" id="L596">        g.sequence(&quot;short_value&quot;, &quot;@210&quot;, &quot;DIGITS&quot;, &quot;@213&quot;, &quot;WS&quot;);</span>
+<span class="fc" id="L597">        g.sequence(&quot;signature&quot;, &quot;name&quot;, &quot;WS&quot;, &quot;formals&quot;, &quot;WS&quot;, &quot;@167&quot;, &quot;WS&quot;, &quot;return_type&quot;, &quot;WS&quot;);</span>
+<span class="fc" id="L598">        g.sequence(&quot;simple_name&quot;, &quot;name_id&quot;);</span>
+<span class="fc" id="L599">        g.sequence(&quot;static_member_access&quot;, &quot;static_owner&quot;, &quot;WS&quot;, &quot;name&quot;, &quot;WS&quot;);</span>
+<span class="fc" id="L600">        g.sequence(&quot;static_owner&quot;, &quot;static_owner_explicit&quot;);</span>
+<span class="fc" id="L601">        g.sequence(&quot;static_owner_explicit&quot;, &quot;type&quot;, &quot;WS&quot;, &quot;@193&quot;);</span>
+<span class="fc" id="L602">        g.sequence(&quot;string_datum&quot;, &quot;string_value&quot;);</span>
+<span class="fc" id="L603">        g.sequence(&quot;struct_definition&quot;, &quot;PS&quot;, &quot;api_comment&quot;, &quot;annotation_list&quot;, &quot;WS&quot;, &quot;@16&quot;, &quot;SP&quot;, &quot;WS&quot;, &quot;name&quot;, &quot;WS&quot;, &quot;elements&quot;, &quot;WS&quot;, &quot;supers_opt&quot;, &quot;WS&quot;, &quot;SEMICOLON&quot;, &quot;WS&quot;);</span>
+<span class="fc" id="L604">        g.sequence(&quot;subtract_operation&quot;, &quot;@106&quot;, &quot;WS&quot;, &quot;p6_operand&quot;);</span>
+<span class="fc" id="L605">        g.sequence(&quot;supers&quot;, &quot;@168&quot;, &quot;WS&quot;, &quot;supers_list&quot;, &quot;WS&quot;);</span>
+<span class="fc" id="L606">        g.sequence(&quot;supers_list_cons&quot;, &quot;type&quot;, &quot;WS&quot;, &quot;@169&quot;, &quot;WS&quot;, &quot;supers_list&quot;);</span>
+<span class="fc" id="L607">        g.sequence(&quot;supers_list_end&quot;, &quot;type&quot;);</span>
+<span class="fc" id="L608">        g.sequence(&quot;ternary_conditional_expression&quot;, &quot;PS&quot;, &quot;WS&quot;, &quot;@118&quot;, &quot;SP&quot;, &quot;WS&quot;, &quot;condition&quot;, &quot;WS&quot;, &quot;@119&quot;, &quot;SP&quot;, &quot;WS&quot;, &quot;expression&quot;, &quot;@120&quot;, &quot;SP&quot;, &quot;WS&quot;, &quot;expression&quot;, &quot;WS&quot;);</span>
+<span class="fc" id="L609">        g.sequence(&quot;throw_statement&quot;, &quot;PS&quot;, &quot;@47&quot;, &quot;SP&quot;, &quot;WS&quot;, &quot;expression&quot;, &quot;WS&quot;, &quot;SEMICOLON&quot;);</span>
+<span class="fc" id="L610">        g.sequence(&quot;true&quot;, &quot;@194&quot;, &quot;@195&quot;, &quot;WS&quot;);</span>
+<span class="fc" id="L611">        g.sequence(&quot;try_catch_statement&quot;, &quot;PS&quot;, &quot;@48&quot;, &quot;WS&quot;, &quot;trycatch_body&quot;, &quot;WS&quot;, &quot;trycatch_handlers&quot;, &quot;WS&quot;);</span>
+<span class="fc" id="L612">        g.sequence(&quot;trycatch_body&quot;, &quot;sequence_statement&quot;);</span>
+<span class="fc" id="L613">        g.sequence(&quot;trycatch_handler&quot;, &quot;PS&quot;, &quot;@49&quot;, &quot;WS&quot;, &quot;trycatch_vardec&quot;, &quot;WS&quot;, &quot;sequence_statement&quot;, &quot;WS&quot;);</span>
+<span class="fc" id="L614">        g.sequence(&quot;trycatch_vardec&quot;, &quot;@50&quot;, &quot;WS&quot;, &quot;variable&quot;, &quot;WS&quot;, &quot;@51&quot;, &quot;WS&quot;, &quot;type&quot;, &quot;WS&quot;, &quot;@52&quot;);</span>
+<span class="fc" id="L615">        g.sequence(&quot;tuple_definition&quot;, &quot;PS&quot;, &quot;api_comment&quot;, &quot;annotation_list&quot;, &quot;WS&quot;, &quot;@15&quot;, &quot;SP&quot;, &quot;WS&quot;, &quot;name&quot;, &quot;WS&quot;, &quot;elements&quot;, &quot;WS&quot;, &quot;supers_opt&quot;, &quot;WS&quot;, &quot;SEMICOLON&quot;, &quot;WS&quot;);</span>
+<span class="fc" id="L616">        g.sequence(&quot;type&quot;, &quot;type_name&quot;, &quot;WS&quot;, &quot;dimensions&quot;, &quot;WS&quot;);</span>
+<span class="fc" id="L617">        g.sequence(&quot;type_name&quot;, &quot;type_namespace&quot;, &quot;simple_name&quot;, &quot;WS&quot;);</span>
+<span class="fc" id="L618">        g.sequence(&quot;type_namespace_explicit&quot;, &quot;PS&quot;, &quot;@191&quot;);</span>
+<span class="fc" id="L619">        g.sequence(&quot;until_statement&quot;, &quot;PS&quot;, &quot;@66&quot;, &quot;WS&quot;, &quot;paren_condition&quot;, &quot;WS&quot;, &quot;sequence_statement&quot;, &quot;WS&quot;);</span>
+<span class="fc" id="L620">        g.sequence(&quot;val_statement&quot;, &quot;PS&quot;, &quot;@74&quot;, &quot;SP&quot;, &quot;WS&quot;, &quot;variable&quot;, &quot;WS&quot;, &quot;@75&quot;, &quot;WS&quot;, &quot;expression&quot;, &quot;WS&quot;, &quot;SEMICOLON&quot;);</span>
+<span class="fc" id="L621">        g.sequence(&quot;var_statement&quot;, &quot;PS&quot;, &quot;@72&quot;, &quot;SP&quot;, &quot;WS&quot;, &quot;variable&quot;, &quot;WS&quot;, &quot;@73&quot;, &quot;WS&quot;, &quot;expression&quot;, &quot;WS&quot;, &quot;SEMICOLON&quot;);</span>
+<span class="fc" id="L622">        g.sequence(&quot;variable&quot;, &quot;ID&quot;, &quot;WS&quot;);</span>
+<span class="fc" id="L623">        g.sequence(&quot;variable_datum&quot;, &quot;variable&quot;);</span>
+<span class="fc" id="L624">        g.sequence(&quot;verbatim_string_value&quot;, &quot;@245&quot;, &quot;WS&quot;, &quot;STRING_LITERAL&quot;, &quot;WS&quot;);</span>
+<span class="fc" id="L625">        g.sequence(&quot;when_statement&quot;, &quot;PS&quot;, &quot;@28&quot;, &quot;SP&quot;, &quot;WS&quot;, &quot;paren_condition&quot;, &quot;WS&quot;, &quot;@29&quot;, &quot;WS&quot;, &quot;statement&quot;, &quot;WS&quot;);</span>
+<span class="fc" id="L626">        g.sequence(&quot;while_statement&quot;, &quot;PS&quot;, &quot;@67&quot;, &quot;WS&quot;, &quot;paren_condition&quot;, &quot;WS&quot;, &quot;sequence_statement&quot;, &quot;WS&quot;);</span>
+<span class="fc" id="L627">        g.sequence(&quot;xor_operation&quot;, &quot;@94&quot;, &quot;WS&quot;, &quot;p3_operand&quot;);</span>
+<span class="fc" id="L628">        g.str(&quot;@0&quot;, &quot;module&quot;);</span>
+<span class="fc" id="L629">        g.str(&quot;@1&quot;, &quot;in&quot;);</span>
+<span class="fc" id="L630">        g.str(&quot;@100&quot;, &quot;&gt;=&quot;);</span>
+<span class="fc" id="L631">        g.str(&quot;@101&quot;, &quot;&lt;=&quot;);</span>
+<span class="fc" id="L632">        g.str(&quot;@104&quot;, &quot;..&quot;);</span>
+<span class="fc" id="L633">        g.str(&quot;@116&quot;, &quot;locals&quot;);</span>
+<span class="fc" id="L634">        g.str(&quot;@118&quot;, &quot;if&quot;);</span>
+<span class="fc" id="L635">        g.str(&quot;@119&quot;, &quot;then&quot;);</span>
+<span class="fc" id="L636">        g.str(&quot;@120&quot;, &quot;else&quot;);</span>
+<span class="fc" id="L637">        g.str(&quot;@123&quot;, &quot;for&quot;);</span>
+<span class="fc" id="L638">        g.str(&quot;@125&quot;, &quot;in&quot;);</span>
+<span class="fc" id="L639">        g.str(&quot;@126&quot;, &quot;if&quot;);</span>
+<span class="fc" id="L640">        g.str(&quot;@130&quot;, &quot;progn&quot;);</span>
+<span class="fc" id="L641">        g.str(&quot;@131&quot;, &quot;dispatch&quot;);</span>
+<span class="fc" id="L642">        g.str(&quot;@132&quot;, &quot;new&quot;);</span>
+<span class="fc" id="L643">        g.str(&quot;@133&quot;, &quot;call&quot;);</span>
+<span class="fc" id="L644">        g.str(&quot;@134&quot;, &quot;call&quot;);</span>
+<span class="fc" id="L645">        g.str(&quot;@137&quot;, &quot;field&quot;);</span>
+<span class="fc" id="L646">        g.str(&quot;@138&quot;, &quot;field&quot;);</span>
+<span class="fc" id="L647">        g.str(&quot;@14&quot;, &quot;design&quot;);</span>
+<span class="fc" id="L648">        g.str(&quot;@140&quot;, &quot;field&quot;);</span>
+<span class="fc" id="L649">        g.str(&quot;@141&quot;, &quot;field&quot;);</span>
+<span class="fc" id="L650">        g.str(&quot;@143&quot;, &quot;instanceof&quot;);</span>
+<span class="fc" id="L651">        g.str(&quot;@145&quot;, &quot;once&quot;);</span>
+<span class="fc" id="L652">        g.str(&quot;@15&quot;, &quot;tuple&quot;);</span>
+<span class="fc" id="L653">        g.str(&quot;@153&quot;, &quot;''&quot;);</span>
+<span class="fc" id="L654">        g.str(&quot;@16&quot;, &quot;struct&quot;);</span>
+<span class="fc" id="L655">        g.str(&quot;@168&quot;, &quot;extends&quot;);</span>
+<span class="fc" id="L656">        g.str(&quot;@169&quot;, &quot;&amp;&quot;);</span>
+<span class="fc" id="L657">        g.str(&quot;@17&quot;, &quot;functor&quot;);</span>
+<span class="fc" id="L658">        g.str(&quot;@19&quot;, &quot;extends&quot;);</span>
+<span class="fc" id="L659">        g.str(&quot;@193&quot;, &quot;::&quot;);</span>
+<span class="fc" id="L660">        g.str(&quot;@194&quot;, &quot;true&quot;);</span>
+<span class="fc" id="L661">        g.str(&quot;@196&quot;, &quot;false&quot;);</span>
+<span class="fc" id="L662">        g.str(&quot;@198&quot;, &quot;'&quot;);</span>
+<span class="fc" id="L663">        g.str(&quot;@2&quot;, &quot;import&quot;);</span>
+<span class="fc" id="L664">        g.str(&quot;@200&quot;, &quot;'&quot;);</span>
+<span class="fc" id="L665">        g.str(&quot;@21&quot;, &quot;defun&quot;);</span>
+<span class="fc" id="L666">        g.str(&quot;@223&quot;, &quot;BI&quot;);</span>
+<span class="fc" id="L667">        g.str(&quot;@224&quot;, &quot;Bi&quot;);</span>
+<span class="fc" id="L668">        g.str(&quot;@225&quot;, &quot;bI&quot;);</span>
+<span class="fc" id="L669">        g.str(&quot;@226&quot;, &quot;bi&quot;);</span>
+<span class="fc" id="L670">        g.str(&quot;@24&quot;, &quot;nop&quot;);</span>
+<span class="fc" id="L671">        g.str(&quot;@240&quot;, &quot;BD&quot;);</span>
+<span class="fc" id="L672">        g.str(&quot;@241&quot;, &quot;Bd&quot;);</span>
+<span class="fc" id="L673">        g.str(&quot;@242&quot;, &quot;bD&quot;);</span>
+<span class="fc" id="L674">        g.str(&quot;@243&quot;, &quot;bd&quot;);</span>
+<span class="fc" id="L675">        g.str(&quot;@246&quot;, &quot;class&quot;);</span>
+<span class="fc" id="L676">        g.str(&quot;@247&quot;, &quot;null&quot;);</span>
+<span class="fc" id="L677">        g.str(&quot;@25&quot;, &quot;if&quot;);</span>
+<span class="fc" id="L678">        g.str(&quot;@26&quot;, &quot;elif&quot;);</span>
+<span class="fc" id="L679">        g.str(&quot;@262&quot;, &quot;'&quot;);</span>
+<span class="fc" id="L680">        g.str(&quot;@263&quot;, &quot;''&quot;);</span>
+<span class="fc" id="L681">        g.str(&quot;@27&quot;, &quot;else&quot;);</span>
+<span class="fc" id="L682">        g.str(&quot;@273&quot;, &quot;'&quot;);</span>
+<span class="fc" id="L683">        g.str(&quot;@278&quot;, &quot;//&quot;);</span>
+<span class="fc" id="L684">        g.str(&quot;@28&quot;, &quot;when&quot;);</span>
+<span class="fc" id="L685">        g.str(&quot;@284&quot;, &quot;/*&quot;);</span>
+<span class="fc" id="L686">        g.str(&quot;@285&quot;, &quot;*/&quot;);</span>
+<span class="fc" id="L687">        g.str(&quot;@29&quot;, &quot;then&quot;);</span>
+<span class="fc" id="L688">        g.str(&quot;@290&quot;, &quot;*/&quot;);</span>
+<span class="fc" id="L689">        g.str(&quot;@3&quot;, &quot;annotation&quot;);</span>
+<span class="fc" id="L690">        g.str(&quot;@30&quot;, &quot;goto&quot;);</span>
+<span class="fc" id="L691">        g.str(&quot;@31&quot;, &quot;marker&quot;);</span>
+<span class="fc" id="L692">        g.str(&quot;@32&quot;, &quot;branch&quot;);</span>
+<span class="fc" id="L693">        g.str(&quot;@33&quot;, &quot;default&quot;);</span>
+<span class="fc" id="L694">        g.str(&quot;@4&quot;, &quot;exception&quot;);</span>
+<span class="fc" id="L695">        g.str(&quot;@43&quot;, &quot;assert&quot;);</span>
+<span class="fc" id="L696">        g.str(&quot;@44&quot;, &quot;echo&quot;);</span>
+<span class="fc" id="L697">        g.str(&quot;@45&quot;, &quot;assume&quot;);</span>
+<span class="fc" id="L698">        g.str(&quot;@46&quot;, &quot;echo&quot;);</span>
+<span class="fc" id="L699">        g.str(&quot;@47&quot;, &quot;throw&quot;);</span>
+<span class="fc" id="L700">        g.str(&quot;@48&quot;, &quot;try&quot;);</span>
+<span class="fc" id="L701">        g.str(&quot;@49&quot;, &quot;catch&quot;);</span>
+<span class="fc" id="L702">        g.str(&quot;@5&quot;, &quot;extends&quot;);</span>
+<span class="fc" id="L703">        g.str(&quot;@53&quot;, &quot;break&quot;);</span>
+<span class="fc" id="L704">        g.str(&quot;@54&quot;, &quot;continue&quot;);</span>
+<span class="fc" id="L705">        g.str(&quot;@55&quot;, &quot;redo&quot;);</span>
+<span class="fc" id="L706">        g.str(&quot;@56&quot;, &quot;for&quot;);</span>
+<span class="fc" id="L707">        g.str(&quot;@6&quot;, &quot;enum&quot;);</span>
+<span class="fc" id="L708">        g.str(&quot;@60&quot;, &quot;foreach&quot;);</span>
+<span class="fc" id="L709">        g.str(&quot;@62&quot;, &quot;in&quot;);</span>
+<span class="fc" id="L710">        g.str(&quot;@65&quot;, &quot;forever&quot;);</span>
+<span class="fc" id="L711">        g.str(&quot;@66&quot;, &quot;until&quot;);</span>
+<span class="fc" id="L712">        g.str(&quot;@67&quot;, &quot;while&quot;);</span>
+<span class="fc" id="L713">        g.str(&quot;@68&quot;, &quot;do&quot;);</span>
+<span class="fc" id="L714">        g.str(&quot;@70&quot;, &quot;until&quot;);</span>
+<span class="fc" id="L715">        g.str(&quot;@71&quot;, &quot;while&quot;);</span>
+<span class="fc" id="L716">        g.str(&quot;@72&quot;, &quot;var&quot;);</span>
+<span class="fc" id="L717">        g.str(&quot;@74&quot;, &quot;val&quot;);</span>
+<span class="fc" id="L718">        g.str(&quot;@76&quot;, &quot;let&quot;);</span>
+<span class="fc" id="L719">        g.str(&quot;@80&quot;, &quot;lambda&quot;);</span>
+<span class="fc" id="L720">        g.str(&quot;@82&quot;, &quot;=&gt;&quot;);</span>
+<span class="fc" id="L721">        g.str(&quot;@83&quot;, &quot;delegate&quot;);</span>
+<span class="fc" id="L722">        g.str(&quot;@85&quot;, &quot;=&gt;&quot;);</span>
+<span class="fc" id="L723">        g.str(&quot;@86&quot;, &quot;recur&quot;);</span>
+<span class="fc" id="L724">        g.str(&quot;@87&quot;, &quot;return&quot;);</span>
+<span class="fc" id="L725">        g.str(&quot;@88&quot;, &quot;return&quot;);</span>
+<span class="fc" id="L726">        g.str(&quot;@89&quot;, &quot;as&quot;);</span>
+<span class="fc" id="L727">        g.str(&quot;@90&quot;, &quot;is&quot;);</span>
+<span class="fc" id="L728">        g.str(&quot;@91&quot;, &quot;??&quot;);</span>
+<span class="fc" id="L729">        g.str(&quot;@95&quot;, &quot;-&gt;&quot;);</span>
+<span class="fc" id="L730">        g.str(&quot;@96&quot;, &quot;===&quot;);</span>
+<span class="fc" id="L731">        g.str(&quot;@97&quot;, &quot;!==&quot;);</span>
+<span class="fc" id="L732">        g.str(&quot;@98&quot;, &quot;==&quot;);</span>
+<span class="fc" id="L733">        g.str(&quot;@99&quot;, &quot;!=&quot;);</span>
+<span class="fc" id="L734">        g.str(&quot;PS&quot;, &quot;&quot;);</span>
+<span class="fc" id="L735">        g.str(&quot;TRIPLE_QUOTE&quot;, &quot;'''&quot;);</span>
+<span class="fc" id="L736">        g.str(&quot;assertion_echo_empty&quot;, &quot;&quot;);</span>
+<span class="fc" id="L737">        g.str(&quot;assumption_echo_empty&quot;, &quot;&quot;);</span>
+<span class="fc" id="L738">        g.str(&quot;do_until_trigger&quot;, &quot;&quot;);</span>
+<span class="fc" id="L739">        g.str(&quot;do_while_trigger&quot;, &quot;&quot;);</span>
+<span class="fc" id="L740">        g.str(&quot;name_of_anonymous_module&quot;, &quot;*&quot;);</span>
+<span class="fc" id="L741">        g.str(&quot;namespace_implicit&quot;, &quot;&quot;);</span>
+<span class="fc" id="L742">        g.str(&quot;static_owner_implicit&quot;, &quot;&quot;);</span>
+<span class="fc" id="L743">        g.str(&quot;type_namespace_implicit&quot;, &quot;&quot;);</span>
+
+        // Specify which rule is the root of the grammar.
+<span class="fc" id="L746">        g.setRoot(&quot;module&quot;);</span>
+
+        // Specify the number of tracing records to store concurrently.
+<span class="fc" id="L749">        g.setTraceCount(1024);</span>
+
+        // Perform the actual construction of the grammar object.
+<span class="fc" id="L752">        return g.build();</span>
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ParserOutput parse(final char[] input)
+    {
+<span class="fc" id="L762">        return grammar.newParser().parse(input);</span>
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ParserOutput parse(final String input)
+    {
+<span class="fc" id="L772">        return parse(input.toCharArray());</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

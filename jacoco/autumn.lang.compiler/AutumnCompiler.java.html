@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AutumnCompiler.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.mackenziehigh:autumn</a> &gt; <a href="index.source.html" class="el_package">autumn.lang.compiler</a> &gt; <span class="el_source">AutumnCompiler.java</span></div><h1>AutumnCompiler.java</h1><pre class="source lang-java linenums">package autumn.lang.compiler;
+
+import autumn.lang.compiler.ast.nodes.Module;
+import autumn.lang.compiler.errors.IErrorReporter;
+import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
+import com.mackenziehigh.autumn.lang.compiler.compilers.ProgramCompiler;
+import com.mackenziehigh.autumn.resources.Finished;
+import java.util.List;
+
+/**
+ * An instance of this class is a compiler that can compile Autumn modules.
+ *
+ * &lt;p&gt;
+ * You should not use this class directly.
+ * Instead, use it indirectly via the Autumn class.
+ * &lt;/p&gt;
+ *
+ * @author Mackenzie High
+ */
+@Finished(&quot;2014/07/12&quot;)
+public final class AutumnCompiler
+{
+    /**
+     * This error-reporter is used to report compilation-errors.
+     */
+    private final IErrorReporter reporter;
+
+    /**
+     * This class-loader provides the types that were already loaded.
+     */
+    private final ClassLoader loader;
+
+    /**
+     * These are additional classes to automatically import inside each module.
+     * This is a list, because order is important in Autumn imports.
+     */
+<span class="fc" id="L39">    private final List&lt;Class&gt; imported = Lists.newLinkedList();</span>
+
+    /**
+     * Constructor.
+     *
+     * @param reporter is the error-reporter used to report compilation-errors.
+     * @param loader is the class-loader used to find types that were already loaded.
+     * @throws NullPointerException if reporter is null.
+     * @throws NullPointerException if loader is null.
+     */
+    public AutumnCompiler(final IErrorReporter reporter,
+                          final ClassLoader loader)
+<span class="fc" id="L51">    {</span>
+<span class="fc" id="L52">        Preconditions.checkNotNull(reporter);</span>
+<span class="fc" id="L53">        Preconditions.checkNotNull(loader);</span>
+
+<span class="fc" id="L55">        this.reporter = reporter;</span>
+<span class="fc" id="L56">        this.loader = loader;</span>
+<span class="fc" id="L57">    }</span>
+
+    /**
+     * This method specifies that a particular class should be imported in every module.
+     *
+     * @param klass is the type to import in every module automatically.
+     * @throws NullPointerException if klass is null.
+     */
+    public void addImport(final Class klass)
+    {
+<span class="nc" id="L67">        Preconditions.checkNotNull(klass);</span>
+
+<span class="nc" id="L69">        imported.add(klass);</span>
+<span class="nc" id="L70">    }</span>
+
+    /**
+     * This method compiles the abstract-syntax-tree representations of a group of modules.
+     *
+     * @param modules are the modules that will be compiled.
+     * @return the compiled program that results from compiling the modules,
+     * or null, if the program could not be compiled.
+     * @throws NullPointerException if modules is null.
+     */
+    public CompiledProgram compile(final Iterable&lt;Module&gt; modules)
+    {
+<span class="fc" id="L82">        Preconditions.checkNotNull(modules);</span>
+
+<span class="fc" id="L84">        final List&lt;Module&gt; list = ImmutableList.copyOf(modules);</span>
+
+<span class="fc" id="L86">        final CompiledProgram program = ProgramCompiler.compile(list, reporter, loader, imported);</span>
+
+<span class="fc" id="L88">        return program;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

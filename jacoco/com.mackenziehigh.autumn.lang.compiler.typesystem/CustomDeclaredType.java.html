@@ -1,0 +1,369 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CustomDeclaredType.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.mackenziehigh:autumn</a> &gt; <a href="index.source.html" class="el_package">com.mackenziehigh.autumn.lang.compiler.typesystem</a> &gt; <span class="el_source">CustomDeclaredType.java</span></div><h1>CustomDeclaredType.java</h1><pre class="source lang-java linenums">package com.mackenziehigh.autumn.lang.compiler.typesystem;
+
+import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableList;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IAnnotation;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IAnnotationType;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IClassType;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IConstructor;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IEnumType;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IField;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IInterfaceType;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IMethod;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.ITypeFactory;
+import com.mackenziehigh.autumn.resources.Finished;
+import java.util.Collection;
+import java.util.List;
+
+/**
+ * An instance of this class represents a declared type.
+ *
+ * @author Mackenzie High
+ */
+@Finished(&quot;2014/07/12&quot;)
+public final class CustomDeclaredType
+        extends AbstractDeclaredType
+        implements IAnnotationType,
+                   IClassType,
+                   IEnumType,
+                   IInterfaceType,
+                   ICustomAnnotatable
+{
+<span class="fc" id="L32">    private static enum SpecificType</span>
+    {
+<span class="fc" id="L34">        ANNOTATION_TYPE,</span>
+<span class="fc" id="L35">        CLASS_TYPE,</span>
+<span class="fc" id="L36">        ENUM_TYPE,</span>
+<span class="fc" id="L37">        INTERFACE_TYPE</span>
+    }
+
+    private final SpecificType specific_type;
+
+<span class="fc" id="L42">    private ImmutableList&lt;IAnnotation&gt; annotations = ImmutableList.of();</span>
+
+<span class="fc" id="L44">    private int modifiers = 0;</span>
+
+    private IClassType superclass;
+
+<span class="fc" id="L48">    private ImmutableList&lt;IInterfaceType&gt; superinterfaces = ImmutableList.of();</span>
+
+<span class="fc" id="L50">    private ImmutableList&lt;IField&gt; fields = ImmutableList.of();</span>
+
+<span class="fc" id="L52">    private ImmutableList&lt;IConstructor&gt; constructors = ImmutableList.of();</span>
+
+<span class="fc" id="L54">    private ImmutableList&lt;IMethod&gt; methods = ImmutableList.of();</span>
+
+    /**
+     * This method creates a new annotation-type.
+     *
+     * @param factory type-factory that is used to access types.
+     * @param descriptor is the type-descriptor of the new type.
+     * @return a new annotation-type.
+     */
+    static CustomDeclaredType newAnnotationType(final ITypeFactory factory,
+                                                final String descriptor)
+    {
+<span class="fc" id="L66">        return new CustomDeclaredType(factory, SpecificType.ANNOTATION_TYPE, descriptor);</span>
+    }
+
+    /**
+     * This method creates a new class-type.
+     *
+     * @param factory type-factory that is used to access types.
+     * @param descriptor is the type-descriptor of the new type.
+     * @return a new class-type.
+     */
+    static CustomDeclaredType newClassType(final ITypeFactory factory,
+                                           final String descriptor)
+    {
+<span class="fc" id="L79">        return new CustomDeclaredType(factory, SpecificType.CLASS_TYPE, descriptor);</span>
+    }
+
+    /**
+     * This method creates a new enum-type.
+     *
+     * @param factory type-factory that is used to access types.
+     * @param descriptor is the type-descriptor of the new type.
+     * @return a new enum-type.
+     */
+    static CustomDeclaredType newEnumType(final ITypeFactory factory,
+                                          final String descriptor)
+    {
+<span class="fc" id="L92">        return new CustomDeclaredType(factory, SpecificType.ENUM_TYPE, descriptor);</span>
+    }
+
+    /**
+     * This method creates a new interface-type.
+     *
+     * @param factory type-factory that is used to access types.
+     * @param descriptor is the type-descriptor of the new type.
+     * @return a new interface-type.
+     */
+    static CustomDeclaredType newInterfaceType(final ITypeFactory factory,
+                                               final String descriptor)
+    {
+<span class="fc" id="L105">        return new CustomDeclaredType(factory, SpecificType.INTERFACE_TYPE, descriptor);</span>
+    }
+
+    /**
+     * Sole Constructor.
+     *
+     * @param factory is the type-factory that is used to access types.
+     * @param specific_type is the type of type being created.
+     * @param descriptor of the new type.
+     */
+    private CustomDeclaredType(final ITypeFactory factory,
+                               final SpecificType specific_type,
+                               final String descriptor)
+    {
+<span class="fc" id="L119">        super(factory, descriptor);</span>
+
+<span class="fc" id="L121">        this.specific_type = specific_type;</span>
+<span class="fc" id="L122">    }</span>
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isAlreadyCompiled()
+    {
+<span class="fc" id="L130">        return false;</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List&lt;IAnnotation&gt; getAnnotations()
+    {
+<span class="fc" id="L139">        return ImmutableList.copyOf(annotations);</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int getModifiers()
+    {
+<span class="fc" id="L148">        return modifiers;</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public IClassType getSuperclass()
+    {
+<span class="fc" id="L157">        return superclass;</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Collection&lt;IInterfaceType&gt; getSuperinterfaces()
+    {
+<span class="fc" id="L166">        return ImmutableList.copyOf(superinterfaces);</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Collection&lt;IField&gt; getFields()
+    {
+<span class="fc" id="L175">        return ImmutableList.copyOf(fields);</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Collection&lt;IConstructor&gt; getConstructors()
+    {
+<span class="fc" id="L184">        return ImmutableList.copyOf(constructors);</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Collection&lt;IMethod&gt; getMethods()
+    {
+<span class="fc" id="L193">        return ImmutableList.copyOf(methods);</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isAnnotationType()
+    {
+<span class="pc bpc" id="L202" title="1 of 2 branches missed.">        return specific_type == SpecificType.ANNOTATION_TYPE;</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isClassType()
+    {
+<span class="pc bpc" id="L211" title="1 of 2 branches missed.">        return specific_type == SpecificType.CLASS_TYPE;</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isEnumType()
+    {
+<span class="pc bpc" id="L220" title="1 of 2 branches missed.">        return specific_type == SpecificType.ENUM_TYPE;</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isInterfaceType()
+    {
+<span class="fc bfc" id="L229" title="All 2 branches covered.">        return specific_type == SpecificType.INTERFACE_TYPE;</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return null always.
+     */
+    @Override
+    public Class toClass()
+    {
+<span class="nc" id="L240">        return null;</span>
+    }
+
+    /**
+     * Setter.
+     *
+     * @param annotations are the annotations to directly apply to this type.
+     */
+    public void setAnnotations(final Collection&lt;IAnnotation&gt; annotations)
+    {
+<span class="fc" id="L250">        this.annotations = ImmutableList.copyOf(annotations);</span>
+<span class="fc" id="L251">    }</span>
+
+    /**
+     * Setter.
+     *
+     * @param constructors are the constructors declared directly within this type.
+     */
+    public void setConstructors(final Collection&lt;IConstructor&gt; constructors)
+    {
+<span class="fc" id="L260">        this.constructors = ImmutableList.copyOf(constructors);</span>
+<span class="fc" id="L261">    }</span>
+
+    /**
+     * Setter.
+     *
+     * @param fields are the fields declared directly within this type.
+     */
+    public void setFields(final Collection&lt;IField&gt; fields)
+    {
+<span class="fc" id="L270">        this.fields = ImmutableList.copyOf(fields);</span>
+<span class="fc" id="L271">    }</span>
+
+    /**
+     * Setter.
+     *
+     * @param methods are the methods declared directly within this type.
+     */
+    public void setMethods(final Collection&lt;IMethod&gt; methods)
+    {
+<span class="fc" id="L280">        this.methods = ImmutableList.copyOf(methods);</span>
+<span class="fc" id="L281">    }</span>
+
+    /**
+     * Setter.
+     *
+     * @param modifiers are the modifiers applied to this type.
+     */
+    public void setModifiers(final int modifiers)
+    {
+<span class="fc" id="L290">        this.modifiers = modifiers;</span>
+<span class="fc" id="L291">    }</span>
+
+    /**
+     * Setter.
+     *
+     * @param superclass is the superclass of this type.
+     */
+    public void setSuperclass(final IClassType superclass)
+    {
+<span class="fc" id="L300">        Preconditions.checkNotNull(superclass);</span>
+
+<span class="fc" id="L302">        this.superclass = superclass;</span>
+<span class="fc" id="L303">    }</span>
+
+    /**
+     * Setter.
+     *
+     * @param superinterfaces are the direct superinterfaces of this type.
+     */
+    public void setSuperinterfaces(final Collection&lt;IInterfaceType&gt; superinterfaces)
+    {
+<span class="fc" id="L312">        this.superinterfaces = ImmutableList.copyOf(superinterfaces);</span>
+<span class="fc" id="L313">    }</span>
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isPrimitiveType()
+    {
+<span class="fc" id="L321">        return false;</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isReferenceType()
+    {
+<span class="fc" id="L330">        return true;</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isNullType()
+    {
+<span class="fc" id="L339">        return false;</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isVoidType()
+    {
+<span class="fc" id="L348">        return false;</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isArrayType()
+    {
+<span class="fc" id="L357">        return false;</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isDeclaredType()
+    {
+<span class="fc" id="L366">        return true;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

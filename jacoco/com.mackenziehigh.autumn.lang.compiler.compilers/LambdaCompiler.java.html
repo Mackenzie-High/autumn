@@ -1,0 +1,745 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LambdaCompiler.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.mackenziehigh:autumn</a> &gt; <a href="index.source.html" class="el_package">com.mackenziehigh.autumn.lang.compiler.compilers</a> &gt; <span class="el_source">LambdaCompiler.java</span></div><h1>LambdaCompiler.java</h1><pre class="source lang-java linenums">package com.mackenziehigh.autumn.lang.compiler.compilers;
+
+import autumn.lang.compiler.ClassFile;
+import autumn.lang.compiler.ast.nodes.LambdaStatement;
+import autumn.lang.internals.Helpers;
+import autumn.util.F;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.CustomDeclaredType;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IClassType;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IExpressionType;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IFormalParameter;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IMethod;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IReferenceType;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IVariableType;
+import com.mackenziehigh.autumn.lang.compiler.utils.TypeSystemUtils;
+import com.mackenziehigh.autumn.lang.compiler.utils.Utils;
+import java.util.List;
+import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.tree.ClassNode;
+import org.objectweb.asm.tree.InsnList;
+import org.objectweb.asm.tree.InsnNode;
+import org.objectweb.asm.tree.LdcInsnNode;
+import org.objectweb.asm.tree.MethodInsnNode;
+import org.objectweb.asm.tree.MethodNode;
+import org.objectweb.asm.tree.TypeInsnNode;
+import org.objectweb.asm.tree.VarInsnNode;
+
+/**
+ * An instance of this this class controls the compilation of a lambda function.
+ *
+ * @author Mackenzie High
+ */
+<span class="fc" id="L35">final class LambdaCompiler</span>
+        extends AbstractFunctionCompiler
+        implements ICompiler
+{
+    private static final class SpecialParameter
+    {
+        public int index;
+    }
+
+    /**
+     * Essentially, this is the enclosing function that is being compiled.
+     */
+    private final FunctionCompiler function;
+
+    /**
+     * This is the Abstract-Syntax-Tree representation of the lambda function.
+     */
+    private final LambdaStatement node;
+
+    /**
+     * This is the type-system representation of the lambda function.
+     */
+    private CustomDeclaredType lambda_type;
+
+    private IClassType functor_type;
+
+    private IMethod invoke;
+
+<span class="fc" id="L63">    private final List&lt;String&gt; captured = Lists.newLinkedList();</span>
+
+    /**
+     * Sole Constructor.
+     *
+     * @param function is essentially the regular function that encloses the lambda-statement.
+     */
+    public LambdaCompiler(final FunctionCompiler function,
+                          final LambdaStatement node)
+    {
+        /**
+         * The variable allocator cannot use the first two slots (i.e. #0 and #1),
+         * because apply(ArgumentStack) uses #0 for 'this' and #1 for the ArgumentStack.
+         */
+<span class="fc" id="L77">        super(function.module, new VariableAllocator(2));</span>
+
+<span class="fc" id="L79">        this.function = function;</span>
+<span class="fc" id="L80">        this.node = node;</span>
+
+<span class="fc" id="L82">        this.performTypeDeclaration();</span>
+<span class="fc" id="L83">        this.performTypeInitialization();</span>
+<span class="fc" id="L84">    }</span>
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void performTypeDeclaration()
+    {
+        /**
+         * Determine the descriptor of the tuple.
+         */
+<span class="fc" id="L95">        final String namespace = function.module.type.getNamespace().replace('.', '/');</span>
+<span class="fc" id="L96">        final String name = &quot;autumn$lambda$&quot; + F.unique();</span>
+<span class="fc" id="L97">        final String descriptor = &quot;L&quot; + namespace + '/' + name + ';';</span>
+
+        /**
+         * Declare the type.
+         */
+<span class="fc" id="L102">        this.lambda_type = program.typesystem.typefactory().newClassType(descriptor);</span>
+<span class="fc" id="L103">    }</span>
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void performTypeInitialization()
+    {
+<span class="fc" id="L111">        functor_type = module.imports.resolveDefinedFunctorType(node.getType());</span>
+
+<span class="fc" id="L113">        lambda_type.setSuperclass(program.typesystem.utils.ABSTRACT_LAMBDA);</span>
+<span class="fc" id="L114">    }</span>
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void performTypeStructureChecking()
+    {
+        // Pass
+<span class="nc" id="L123">    }</span>
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void performTypeUsageChecking()
+    {
+        try
+        {
+            /**
+             * Resolve the invoke(*) method.
+             */
+<span class="fc" id="L136">            invoke = TypeSystemUtils.find(functor_type.getMethods(), &quot;invoke&quot;);</span>
+
+            /**
+             * A lambda-statement defines a nested scope that covers its parameters and body.
+             */
+<span class="fc" id="L141">            allocator.enterScope();</span>
+
+            /**
+             * A lambda declares a special variable to store itself.
+             */
+<span class="fc" id="L146">            allocator.declareVal(&quot;$0&quot;, program.typesystem.utils.LAMBDA);</span>
+
+            /**
+             * A lambda declares special variables to store its parameters.
+             */
+<span class="fc bfc" id="L151" title="All 2 branches covered.">            for (int i = 0; i &lt; invoke.getParameters().size(); i++)</span>
+            {
+<span class="fc" id="L153">                final String variable_name = &quot;$&quot; + (i + 1);</span>
+
+<span class="fc" id="L155">                final IVariableType variable_type = invoke.getParameters().get(i).getType();</span>
+
+                /**
+                 * The variable cannot be allowed to hide a variable in the enclosing function.
+                 */
+                // TODO: and remember to do this for $0 too
+                //
+                //
+                /**
+                 * Declare the variable.
+                 */
+<span class="fc" id="L166">                allocator.declareVal(variable_name, variable_type);</span>
+            }
+
+            /**
+             * A lambda captures all the declared local variables in the enclosing regular function,
+             * except the variable that stores the lambda itself.
+             */
+<span class="fc bfc" id="L173" title="All 2 branches covered.">            for (String variable : function.allocator.getVariables())</span>
+            {
+                /**
+                 * Skip the variable that stores the lambda.
+                 */
+<span class="fc bfc" id="L178" title="All 2 branches covered.">                if (variable.equals(node.getVariable().getName()))</span>
+                {
+<span class="fc" id="L180">                    continue;</span>
+                }
+
+                /**
+                 * Declare the variable in the lambda's scope.
+                 */
+<span class="fc" id="L186">                allocator.declareVal(variable, function.allocator.typeOf(variable));</span>
+
+                /**
+                 * Remember the variable for later use.
+                 */
+<span class="fc" id="L191">                captured.add(variable);</span>
+<span class="fc" id="L192">            }</span>
+
+            /**
+             * Visit and type-check the lambda's body.
+             */
+<span class="fc" id="L197">            final ExpressionTypeChecker checker = new ExpressionTypeChecker(this, this.allocator);</span>
+
+<span class="fc" id="L199">            node.getBody().accept(checker);</span>
+
+            /**
+             * The return-type of the expression must match the return-type of the lambda.
+             * However, the type of the body is not important, if the return-type is void.
+             */
+<span class="fc bfc" id="L205" title="All 2 branches covered.">            if (invoke.getReturnType().isVoidType() == false)</span>
+            {
+<span class="fc" id="L207">                program.checker.checkReturn(node, invoke.getReturnType(), node.getBody());</span>
+            }
+
+        }
+<span class="fc" id="L211">        catch (TypeCheckFailed ex)</span>
+        {
+<span class="fc" id="L213">            throw ex;</span>
+        }
+        finally
+        {
+            /**
+             * This must always be done; otherwise, the scope management could get messed up.
+             */
+<span class="fc" id="L220">            allocator.exitScope();</span>
+        }
+<span class="fc" id="L222">    }</span>
+
+    /**
+     * {@inheritDoc}
+     */
+    public ClassFile build()
+    {
+<span class="fc" id="L229">        final List&lt;MethodNode&gt; methods = Lists.newLinkedList();</span>
+
+<span class="fc" id="L231">        methods.add(this.generateConstructor());</span>
+<span class="fc" id="L232">        methods.add(this.generateMethodApply());</span>
+<span class="fc" id="L233">        methods.add(this.generateMethodFile());</span>
+<span class="fc" id="L234">        methods.add(this.generateMethodLine());</span>
+<span class="fc" id="L235">        methods.add(this.generateMethodColumn());</span>
+<span class="fc" id="L236">        methods.add(this.generateMethodParameterTypes());</span>
+<span class="fc" id="L237">        methods.add(this.generateMethodReturnType());</span>
+
+<span class="fc" id="L239">        final String lambda_internal_name = Utils.internalName(lambda_type);</span>
+
+<span class="fc" id="L241">        final String lambda_source_name = Utils.sourceName(lambda_type);</span>
+
+<span class="fc" id="L243">        final ClassNode clazz = new ClassNode();</span>
+        {
+<span class="fc" id="L245">            clazz.version = Opcodes.V1_6;</span>
+<span class="fc" id="L246">            clazz.visibleAnnotations = ImmutableList.of();</span>
+<span class="fc" id="L247">            clazz.access = Opcodes.ACC_PUBLIC + Opcodes.ACC_FINAL;</span>
+<span class="fc" id="L248">            clazz.name = lambda_internal_name;</span>
+<span class="fc" id="L249">            clazz.superName = Utils.internalName(lambda_type.getSuperclass());</span>
+<span class="fc" id="L250">            clazz.interfaces = Lists.newLinkedList();</span>
+<span class="fc" id="L251">            clazz.fields = Lists.newLinkedList();</span>
+<span class="fc" id="L252">            clazz.methods = ImmutableList.copyOf(methods);</span>
+<span class="fc" id="L253">            clazz.sourceFile = String.valueOf(node.getLocation().getFile());</span>
+
+<span class="pc bpc" id="L255" title="1 of 2 branches missed.">            assert clazz.superName.equals(&quot;autumn/lang/internals/AbstractLambda&quot;);</span>
+<span class="pc bpc" id="L256" title="1 of 2 branches missed.">            assert clazz.access == Opcodes.ACC_PUBLIC + Opcodes.ACC_FINAL;</span>
+        }
+
+<span class="fc" id="L259">        final ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_MAXS);</span>
+
+<span class="fc" id="L261">        clazz.accept(writer);</span>
+
+<span class="fc" id="L263">        final byte[] bytecode = writer.toByteArray();</span>
+
+<span class="fc" id="L265">        final ClassFile file = new ClassFile(lambda_source_name, bytecode);</span>
+
+<span class="fc" id="L267">        return file;</span>
+    }
+
+    /**
+     * This method generates the bytecode representation of the lambda's only constructor.
+     *
+     * @return the generated bytecode.
+     */
+    private MethodNode generateConstructor()
+    {
+<span class="fc" id="L277">        final MethodNode ctor = new MethodNode();</span>
+<span class="fc" id="L278">        ctor.access = Opcodes.ACC_PUBLIC;</span>
+<span class="fc" id="L279">        ctor.name = &quot;&lt;init&gt;&quot;;</span>
+<span class="fc" id="L280">        ctor.desc = &quot;()V&quot;;</span>
+<span class="fc" id="L281">        ctor.exceptions = ImmutableList.of();</span>
+
+
+<span class="fc" id="L284">        ctor.instructions.add(new VarInsnNode(Opcodes.ALOAD, 0)); // Load 'this'</span>
+<span class="fc" id="L285">        ctor.instructions.add(new MethodInsnNode(Opcodes.INVOKESPECIAL,</span>
+<span class="fc" id="L286">                                                 Utils.internalName(program.typesystem.utils.ABSTRACT_LAMBDA),</span>
+                                                 &quot;&lt;init&gt;&quot;,
+                                                 &quot;()V&quot;));
+
+<span class="fc" id="L290">        ctor.instructions.add(new InsnNode(Opcodes.RETURN));</span>
+
+<span class="fc" id="L292">        return ctor;</span>
+    }
+
+    /**
+     * This method generates the bytecode representation of the file() method.
+     *
+     * @return the generated bytecode.
+     */
+    private MethodNode generateMethodFile()
+    {
+<span class="fc" id="L302">        final MethodNode method = Utils.bytecodeOf(function.module,</span>
+<span class="fc" id="L303">                                                   TypeSystemUtils.find(program.typesystem.utils.ABSTRACT_LAMBDA.getAllVisibleMethods(),</span>
+                                                                        &quot;file&quot;));
+
+        // Remove the abstract modifier.
+<span class="fc" id="L307">        method.access = method.access &amp; (~Opcodes.ACC_ABSTRACT);</span>
+
+<span class="fc" id="L309">        method.instructions.add(new LdcInsnNode(node.getLocation().getFile().toString()));</span>
+<span class="fc" id="L310">        method.instructions.add(new InsnNode(Opcodes.ARETURN));</span>
+
+<span class="fc" id="L312">        return method;</span>
+    }
+
+    /**
+     * This method generates the bytecode representation of the line() method.
+     *
+     * @return the generated bytecode.
+     */
+    private MethodNode generateMethodLine()
+    {
+<span class="fc" id="L322">        final MethodNode method = Utils.bytecodeOf(function.module,</span>
+<span class="fc" id="L323">                                                   TypeSystemUtils.find(program.typesystem.utils.ABSTRACT_LAMBDA.getAllVisibleMethods(),</span>
+                                                                        &quot;line&quot;));
+
+        // Remove the abstract modifier.
+<span class="fc" id="L327">        method.access = method.access &amp; (~Opcodes.ACC_ABSTRACT);</span>
+
+<span class="fc" id="L329">        method.instructions.add(new LdcInsnNode(node.getLocation().getLine()));</span>
+<span class="fc" id="L330">        method.instructions.add(new InsnNode(Opcodes.IRETURN));</span>
+
+<span class="fc" id="L332">        return method;</span>
+    }
+
+    /**
+     * This method generates the bytecode representation of the column() method.
+     *
+     * @return the generated bytecode.
+     */
+    private MethodNode generateMethodColumn()
+    {
+<span class="fc" id="L342">        final MethodNode method = Utils.bytecodeOf(function.module,</span>
+<span class="fc" id="L343">                                                   TypeSystemUtils.find(program.typesystem.utils.ABSTRACT_LAMBDA.getAllVisibleMethods(),</span>
+                                                                        &quot;column&quot;));
+
+        // Remove the abstract modifier.
+<span class="fc" id="L347">        method.access = method.access &amp; (~Opcodes.ACC_ABSTRACT);</span>
+
+<span class="fc" id="L349">        method.instructions.add(new LdcInsnNode(node.getLocation().getColumn()));</span>
+<span class="fc" id="L350">        method.instructions.add(new InsnNode(Opcodes.IRETURN));</span>
+
+<span class="fc" id="L352">        return method;</span>
+    }
+
+    /**
+     * This method generates the bytecode representation of the parameterTypes() method.
+     *
+     * @return the generated bytecode.
+     */
+    private MethodNode generateMethodParameterTypes()
+    {
+<span class="fc" id="L362">        final MethodNode method = Utils.bytecodeOf(function.module,</span>
+<span class="fc" id="L363">                                                   TypeSystemUtils.find(program.typesystem.utils.ABSTRACT_LAMBDA.getAllVisibleMethods(),</span>
+                                                                        &quot;parameterTypes&quot;));
+
+        // Remove the abstract modifier.
+<span class="fc" id="L367">        method.access = method.access &amp; (~Opcodes.ACC_ABSTRACT);</span>
+
+<span class="fc" id="L369">        final CollectionCompiler&lt;IFormalParameter&gt; cmp = new CollectionCompiler&lt;IFormalParameter&gt;()</span>
+<span class="fc" id="L370">        {</span>
+            @Override
+            public void compile(final IFormalParameter element)
+            {
+<span class="fc" id="L374">                code().add(Utils.ldcClass(element.getType()));</span>
+<span class="fc" id="L375">            }</span>
+
+            @Override
+            public InsnList code()
+            {
+<span class="fc" id="L380">                return method.instructions;</span>
+            }
+        };
+
+        /**
+         * Generate the bytecode that creates the mutable list of class objects.
+         */
+<span class="fc" id="L387">        cmp.compile(invoke.getParameters());</span>
+
+        /**
+         * Convert the mutableList to an immutable list.
+         */
+<span class="fc" id="L392">        Utils.invoke(method.instructions,</span>
+                     Opcodes.INVOKESTATIC,
+                     Helpers.class,
+                     List.class,
+                     &quot;newImmutableList&quot;,
+                     Iterable.class);
+
+        /**
+         * Return from the method.
+         */
+<span class="fc" id="L402">        method.instructions.add(new InsnNode(Opcodes.ARETURN));</span>
+
+<span class="fc" id="L404">        return method;</span>
+    }
+
+    /**
+     * This method generates the bytecode representation of the returnType() method.
+     *
+     * @return the generated bytecode.
+     */
+    private MethodNode generateMethodReturnType()
+    {
+<span class="fc" id="L414">        final MethodNode method = Utils.bytecodeOf(function.module,</span>
+<span class="fc" id="L415">                                                   TypeSystemUtils.find(program.typesystem.utils.ABSTRACT_LAMBDA.getAllVisibleMethods(),</span>
+                                                                        &quot;returnType&quot;));
+
+        // Remove the abstract modifier.
+<span class="fc" id="L419">        method.access = method.access &amp; (~Opcodes.ACC_ABSTRACT);</span>
+
+<span class="fc" id="L421">        method.instructions.add(Utils.ldcClass(invoke.getReturnType()));</span>
+<span class="fc" id="L422">        method.instructions.add(new InsnNode(Opcodes.ARETURN));</span>
+
+<span class="fc" id="L424">        return method;</span>
+    }
+
+    /**
+     * This method generates the bytecode representation of the apply(ArgumentStack) method.
+     *
+     * @return the generated bytecode.
+     */
+    private MethodNode generateMethodApply()
+    {
+<span class="fc" id="L434">        final MethodNode method = Utils.bytecodeOf(function.module,</span>
+<span class="fc" id="L435">                                                   TypeSystemUtils.find(program.typesystem.utils.ABSTRACT_LAMBDA.getAllVisibleMethods(),</span>
+                                                                        &quot;apply&quot;));
+
+        // Remove the abstract modifier.
+<span class="fc" id="L439">        method.access = method.access &amp; (~Opcodes.ACC_ABSTRACT);</span>
+
+<span class="fc" id="L441">        method.instructions = instructions;</span>
+
+<span class="fc" id="L443">        final IExpressionType body_type = program.symbols.expressions.get(node.getBody());</span>
+
+<span class="fc" id="L445">        final ExpressionCodeGenerator codegen = new ExpressionCodeGenerator(module, vars, instructions);</span>
+
+        /**
+         * Push the argument-stack onto the operand-stack,
+         * because it will be needed for the return-value.
+         */
+<span class="fc" id="L451">        instructions.add(new VarInsnNode(Opcodes.ALOAD, 1));</span>
+
+        /**
+         * Set argument $0 to 'this'.
+         */
+<span class="fc" id="L456">        instructions.add(new VarInsnNode(Opcodes.ALOAD, 0));</span>
+<span class="fc" id="L457">        vars.store(&quot;$0&quot;);</span>
+
+        /**
+         * Transfer the arguments from the argument-stack to the call-stack.
+         */
+<span class="fc" id="L462">        setArgumentVariables();</span>
+
+        /**
+         * Transfer the captured variables from inside the lambda object to the call-stack.
+         */
+<span class="fc" id="L467">        setClosureVariables();</span>
+
+        /**
+         * Generate the bytecode of the body.
+         */
+<span class="fc" id="L472">        node.getBody().accept(codegen);</span>
+
+        /**
+         * Clear the argument-stack.
+         * Simply retrieving the argument-stack causes it to be cleared.
+         */
+<span class="fc" id="L478">        Utils.loadArgumentStack(method.instructions);</span>
+<span class="fc" id="L479">        method.instructions.add(new InsnNode(Opcodes.POP));</span>
+
+        /**
+         * Convert the return-value to the return-type.
+         */
+<span class="fc bfc" id="L484" title="All 2 branches covered.">        if (invoke.getReturnType().isVoidType() == false)</span>
+        {
+<span class="fc" id="L486">            program.typesystem.utils.assign(body_type, invoke.getReturnType());</span>
+        }
+
+        /**
+         * Transfer the return-value from the operand-stack to the argument-stack.
+         */
+<span class="fc bfc" id="L492" title="All 2 branches covered.">        if (invoke.getReturnType().isVoidType() == false)</span>
+        {
+<span class="fc" id="L494">            Utils.pushArgument(program, instructions, body_type);</span>
+        }
+
+<span class="fc" id="L497">        instructions.add(new InsnNode(Opcodes.RETURN));</span>
+
+<span class="fc" id="L499">        return method;</span>
+    }
+
+    private void setArgumentVariables()
+    {
+        /**
+         * Pop the arguments off of the argument-stack
+         * and store them in variables on the call-stack.
+         */
+<span class="fc bfc" id="L508" title="All 2 branches covered.">        for (int i = invoke.getParameters().size() - 1; i &gt;= 0; i--)</span>
+        {
+<span class="fc" id="L510">            final String variable_name = &quot;$&quot; + (i + 1);</span>
+
+<span class="fc" id="L512">            final IVariableType variable_type = invoke.getParameters().get(i).getType();</span>
+
+<span class="fc" id="L514">            setArgumentVariable(variable_name, variable_type);</span>
+        }
+<span class="fc" id="L516">    }</span>
+
+    private void setArgumentVariable(final String name,
+                                     final IVariableType type)
+    {
+        // Generated Bytecode:
+        //
+
+<span class="fc" id="L524">        instructions.add(new VarInsnNode(Opcodes.ALOAD, 1));</span>
+<span class="fc" id="L525">        Utils.peekArgument(program, instructions, type);</span>
+
+<span class="fc" id="L527">        instructions.add(new VarInsnNode(Opcodes.ALOAD, 1));</span>
+<span class="fc" id="L528">        Utils.popArgument(program, instructions);</span>
+
+<span class="fc" id="L530">        vars.store(name);</span>
+<span class="fc" id="L531">    }</span>
+
+    private void setClosureVariables()
+    {
+<span class="fc bfc" id="L535" title="All 2 branches covered.">        for (String variable : captured)</span>
+        {
+<span class="fc" id="L537">            final IVariableType variable_type = function.allocator.typeOf(variable);</span>
+
+<span class="fc" id="L539">            setClosureVariable(variable, variable_type);</span>
+<span class="fc" id="L540">        }</span>
+<span class="fc" id="L541">    }</span>
+
+    private void setClosureVariable(final String variable,
+                                    final IVariableType type)
+    {
+        // Generated Bytecode:
+        //
+
+<span class="fc" id="L549">        instructions.add(new InsnNode(Opcodes.NOP));</span>
+
+        /**
+         * Load the lambda itself onto the operand-stack.
+         */
+<span class="fc" id="L554">        instructions.add(new VarInsnNode(Opcodes.ALOAD, 0));</span>
+
+        /**
+         * Load the name of the variable onto the operand-stack.
+         */
+<span class="fc" id="L559">        instructions.add(new LdcInsnNode(variable));</span>
+
+        /**
+         * Transfer the value of the variable from inside the lambda object to the operand-stack.
+         */
+<span class="fc" id="L564">        final String owner = &quot;autumn/lang/Lambda&quot;;</span>
+        String name;
+        String desc;
+
+<span class="fc bfc" id="L568" title="All 2 branches covered.">        if (type.equals(program.typesystem.utils.PRIMITIVE_BOOLEAN))</span>
+        {
+<span class="fc" id="L570">            name = &quot;valueAsBoolean&quot;;</span>
+<span class="fc" id="L571">            desc = &quot;(Ljava/lang/String;)Z&quot;;</span>
+<span class="fc" id="L572">            instructions.add(new MethodInsnNode(Opcodes.INVOKEINTERFACE, owner, name, desc));</span>
+        }
+<span class="fc bfc" id="L574" title="All 2 branches covered.">        else if (type.equals(program.typesystem.utils.PRIMITIVE_CHAR))</span>
+        {
+<span class="fc" id="L576">            name = &quot;valueAsChar&quot;;</span>
+<span class="fc" id="L577">            desc = &quot;(Ljava/lang/String;)C&quot;;</span>
+<span class="fc" id="L578">            instructions.add(new MethodInsnNode(Opcodes.INVOKEINTERFACE, owner, name, desc));</span>
+        }
+<span class="fc bfc" id="L580" title="All 2 branches covered.">        else if (type.equals(program.typesystem.utils.PRIMITIVE_BYTE))</span>
+        {
+<span class="fc" id="L582">            name = &quot;valueAsByte&quot;;</span>
+<span class="fc" id="L583">            desc = &quot;(Ljava/lang/String;)B&quot;;</span>
+<span class="fc" id="L584">            instructions.add(new MethodInsnNode(Opcodes.INVOKEINTERFACE, owner, name, desc));</span>
+        }
+<span class="fc bfc" id="L586" title="All 2 branches covered.">        else if (type.equals(program.typesystem.utils.PRIMITIVE_SHORT))</span>
+        {
+<span class="fc" id="L588">            name = &quot;valueAsShort&quot;;</span>
+<span class="fc" id="L589">            desc = &quot;(Ljava/lang/String;)S&quot;;</span>
+<span class="fc" id="L590">            instructions.add(new MethodInsnNode(Opcodes.INVOKEINTERFACE, owner, name, desc));</span>
+        }
+<span class="fc bfc" id="L592" title="All 2 branches covered.">        else if (type.equals(program.typesystem.utils.PRIMITIVE_INT))</span>
+        {
+<span class="fc" id="L594">            name = &quot;valueAsInt&quot;;</span>
+<span class="fc" id="L595">            desc = &quot;(Ljava/lang/String;)I&quot;;</span>
+<span class="fc" id="L596">            instructions.add(new MethodInsnNode(Opcodes.INVOKEINTERFACE, owner, name, desc));</span>
+        }
+<span class="fc bfc" id="L598" title="All 2 branches covered.">        else if (type.equals(program.typesystem.utils.PRIMITIVE_LONG))</span>
+        {
+<span class="fc" id="L600">            name = &quot;valueAsLong&quot;;</span>
+<span class="fc" id="L601">            desc = &quot;(Ljava/lang/String;)J&quot;;</span>
+<span class="fc" id="L602">            instructions.add(new MethodInsnNode(Opcodes.INVOKEINTERFACE, owner, name, desc));</span>
+        }
+<span class="fc bfc" id="L604" title="All 2 branches covered.">        else if (type.equals(program.typesystem.utils.PRIMITIVE_FLOAT))</span>
+        {
+<span class="fc" id="L606">            name = &quot;valueAsFloat&quot;;</span>
+<span class="fc" id="L607">            desc = &quot;(Ljava/lang/String;)F&quot;;</span>
+<span class="fc" id="L608">            instructions.add(new MethodInsnNode(Opcodes.INVOKEINTERFACE, owner, name, desc));</span>
+        }
+<span class="fc bfc" id="L610" title="All 2 branches covered.">        else if (type.equals(program.typesystem.utils.PRIMITIVE_DOUBLE))</span>
+        {
+<span class="fc" id="L612">            name = &quot;valueAsDouble&quot;;</span>
+<span class="fc" id="L613">            desc = &quot;(Ljava/lang/String;)D&quot;;</span>
+<span class="fc" id="L614">            instructions.add(new MethodInsnNode(Opcodes.INVOKEINTERFACE, owner, name, desc));</span>
+        }
+        else
+        {
+<span class="pc bpc" id="L618" title="1 of 2 branches missed.">            assert type.isReferenceType();</span>
+
+<span class="fc" id="L620">            final String internal = Utils.internalName((IReferenceType) type);</span>
+
+<span class="fc" id="L622">            name = &quot;valueAsObject&quot;;</span>
+<span class="fc" id="L623">            desc = &quot;(Ljava/lang/String;)Ljava/lang/Object;&quot;;</span>
+<span class="fc" id="L624">            instructions.add(new MethodInsnNode(Opcodes.INVOKEINTERFACE, owner, name, desc));</span>
+<span class="fc" id="L625">            instructions.add(new TypeInsnNode(Opcodes.CHECKCAST, internal));</span>
+        }
+
+        /**
+         * Place the value of the variable into the variable slot that will store it.
+         */
+<span class="fc" id="L631">        vars.store(variable);</span>
+
+<span class="fc" id="L633">        instructions.add(new InsnNode(Opcodes.NOP));</span>
+<span class="fc" id="L634">    }</span>
+
+    /**
+     * This method generates the bytecode needed to instantiate the lambda
+     * and load it onto the operand-stack.
+     *
+     * @param code is the bytecode being generated.
+     */
+    public void load(final InsnList code)
+    {
+        // Generated Bytecode:
+        //
+        // NEW functor-type                     - Create a new uninitialized instance of the functor.
+        // DUP                                  - Duplicate the reference thereto.
+        //                                      - Note: The functor object is still uninitialized.
+        //
+        //                                      - Now, thestack looks like [functor, functor].
+        //
+        // NEW lambda-type                      - Create a new uninitialized instance of the lambda.
+        // DUP                                  - Duplicate the reference thereto.
+        // INVOKESPECIAL &lt;init&gt;()V              - Initialize the lambda-type using its no-arg constructor.
+        //
+        //                                      - Now, the stack looks like [functor, functor, lambda].
+        //
+        // &lt;capture locals&gt;                     - Generate bytecode to capture the local variables and place them into the closure.
+        //
+        // INVOKESPECIAL &lt;init&gt;(TypedFunctor)   - Initialize the functor object.
+        //                                      - Notice the functor will subsequently contain the lambda as its inner functor.
+        //
+        //                                      - Now the stack looks like [functor].
+        //
+        ///////////////////////////////////////////////////////////////////////////////////////////
+
+<span class="fc" id="L667">        code.add(new TypeInsnNode(Opcodes.NEW, Utils.internalName(functor_type)));</span>
+<span class="fc" id="L668">        code.add(new InsnNode(Opcodes.DUP));</span>
+
+<span class="fc" id="L670">        code.add(new TypeInsnNode(Opcodes.NEW, Utils.internalName(lambda_type)));</span>
+<span class="fc" id="L671">        code.add(new InsnNode(Opcodes.DUP));</span>
+<span class="fc" id="L672">        code.add(new MethodInsnNode(Opcodes.INVOKESPECIAL,</span>
+<span class="fc" id="L673">                                    Utils.internalName(lambda_type),</span>
+                                    &quot;&lt;init&gt;&quot;,
+                                    &quot;()V&quot;));
+
+<span class="fc" id="L677">        capture(code);</span>
+
+<span class="fc" id="L679">        code.add(new MethodInsnNode(Opcodes.INVOKESPECIAL,</span>
+<span class="fc" id="L680">                                    Utils.internalName(functor_type),</span>
+                                    &quot;&lt;init&gt;&quot;,
+                                    &quot;(Lautumn/lang/TypedFunctor;)V&quot;));
+
+<span class="fc" id="L684">    }</span>
+
+    /**
+     * This method generates bytecode that captures the local variables to form a closure.
+     *
+     * @param code is the bytecode being generated.
+     */
+    private void capture(final InsnList code)
+    {
+        /**
+         * For each variable in the scope of the enclosing regular function.
+         */
+<span class="fc bfc" id="L696" title="All 2 branches covered.">        for (String variable : function.vars.allocator().getVariables())</span>
+        {
+            /**
+             * Do not capture the variable that will store the lambda.
+             * The variable is uninitialized before the lambda is created.
+             * So, you would always be capturing null.
+             */
+<span class="fc bfc" id="L703" title="All 2 branches covered.">            if (variable.equals(node.getVariable().getName()))</span>
+            {
+<span class="fc" id="L705">                continue;</span>
+            }
+
+            /**
+             * Get the type of the variable that will be captured.
+             */
+<span class="fc" id="L711">            final IVariableType variable_type = function.allocator.typeOf(variable);</span>
+
+            /**
+             * Duplicate the reference to the lambda.
+             */
+<span class="fc" id="L716">            code.add(new InsnNode(Opcodes.DUP));</span>
+
+            /**
+             * Load the name of the variable onto the operand-stack.
+             */
+<span class="fc" id="L721">            code.add(new LdcInsnNode(variable));</span>
+
+            /**
+             * Load the value of the variable onto the operand-stack.
+             */
+<span class="fc" id="L726">            function.vars.load(variable);</span>
+
+            /**
+             * Box the value of the variable, if it is not a reference-type already.
+             */
+<span class="fc" id="L731">            program.typesystem.utils.autoboxToObject(code, variable_type);</span>
+
+            /**
+             * Capture the variable.
+             *
+             * In other words, place the variable's name and the variable's value into the closure.
+             */
+<span class="fc" id="L738">            code.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL,</span>
+<span class="fc" id="L739">                                        Utils.internalName(program.typesystem.utils.ABSTRACT_LAMBDA),</span>
+                                        &quot;capture&quot;,
+                                        &quot;(Ljava/lang/String;Ljava/lang/Object;)V&quot;));
+<span class="fc" id="L742">        }</span>
+<span class="fc" id="L743">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

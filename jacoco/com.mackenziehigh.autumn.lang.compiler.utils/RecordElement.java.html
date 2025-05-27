@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RecordElement.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.mackenziehigh:autumn</a> &gt; <a href="index.source.html" class="el_package">com.mackenziehigh.autumn.lang.compiler.utils</a> &gt; <span class="el_source">RecordElement.java</span></div><h1>RecordElement.java</h1><pre class="source lang-java linenums">package com.mackenziehigh.autumn.lang.compiler.utils;
+
+import com.google.common.collect.Sets;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IVariableType;
+import java.util.Collections;
+import java.util.Set;
+
+/**
+ * An instance of this class represents an element in a record-type.
+ *
+ * @author Mackenzie High
+ */
+<span class="fc" id="L13">public final class RecordElement</span>
+{
+    /**
+     * This is a description of the record that contains the element.
+     */
+    public final RecordAnalyzer record;
+
+    /**
+     * This is the name of the element.
+     */
+    public final String name;
+
+    /**
+     * This is a cache for type() in order to improve performance.
+     */
+    private IVariableType memoized_type;
+
+    /**
+     * This is a cache for setter() in order to improve performance.
+     */
+    private SetterMethod memoized_setter;
+
+    /**
+     * This is a cache for getter() in order to improve performance.
+     */
+    private GetterMethod memoized_getter;
+
+    /**
+     * Sole Constructor.
+     *
+     * @param record is a description of the record-type.
+     * @param name is the name of the element.
+     */
+    public RecordElement(final RecordAnalyzer record,
+                         final String name)
+<span class="fc" id="L48">    {</span>
+<span class="fc" id="L49">        this.record = record;</span>
+<span class="fc" id="L50">        this.name = name;</span>
+<span class="fc" id="L51">    }</span>
+
+    /**
+     * This method determines the most specific type of the element.
+     *
+     * &lt;p&gt;
+     * This will become the type of the field that actually stores the element's value.
+     * &lt;/p&gt;
+     *
+     * @return the type of the field.
+     */
+    public IVariableType type()
+    {
+        /**
+         * If this method was already invoked, then return the memoized result.
+         */
+<span class="fc bfc" id="L67" title="All 2 branches covered.">        if (memoized_type != null)</span>
+        {
+<span class="fc" id="L69">            return memoized_type;</span>
+        }
+
+        /**
+         * Search for the return-type of the most specific getter.
+         */
+<span class="fc bfc" id="L75" title="All 2 branches covered.">        for (GetterMethod getter : record.getters)</span>
+        {
+            /**
+             * If the getter is for a different element, skip it.
+             */
+<span class="fc bfc" id="L80" title="All 2 branches covered.">            if (getter.name.equals(name) == false)</span>
+            {
+<span class="fc" id="L82">                continue;</span>
+            }
+
+            /**
+             * If we have no idea what the type is supposed to be, use the first possible type.
+             */
+<span class="fc bfc" id="L88" title="All 2 branches covered.">            memoized_type = memoized_type == null ? getter.returns : memoized_type;</span>
+
+            /**
+             * If this getter returns a more specific type, then use its return-type.
+             */
+<span class="fc bfc" id="L93" title="All 2 branches covered.">            memoized_type = getter.returns.isSubtypeOf(memoized_type) ? getter.returns : memoized_type;</span>
+<span class="fc" id="L94">        }</span>
+
+        /**
+         * Return the return-type of the most specific getter method.
+         */
+<span class="fc" id="L99">        return memoized_type;</span>
+    }
+
+    /**
+     * This method determines which setter method is the most specific.
+     *
+     * &lt;p&gt;
+     * This setter method is the one that bridge methods will invoke.
+     * &lt;/p&gt;
+     *
+     * @return a description of the primary setter method.
+     */
+    public SetterMethod setter()
+    {
+        /**
+         * If this method was already invoked, then return the memoized result.
+         */
+<span class="pc bpc" id="L116" title="1 of 2 branches missed.">        if (memoized_setter != null)</span>
+        {
+<span class="nc" id="L118">            return memoized_setter;</span>
+        }
+
+        /**
+         * Search for the primary setter.
+         */
+<span class="pc bpc" id="L124" title="1 of 2 branches missed.">        for (SetterMethod setter : record.setters)</span>
+        {
+            /**
+             * The primary setter must share its name with this element.
+             */
+<span class="fc bfc" id="L129" title="All 2 branches covered.">            if (setter.name.equals(name) == false)</span>
+            {
+<span class="fc" id="L131">                continue;</span>
+            }
+
+            /**
+             * The primary setter must be a direct member of the record.
+             */
+<span class="fc bfc" id="L137" title="All 2 branches covered.">            if (setter.owner.equals(record.type) == false)</span>
+            {
+<span class="fc" id="L139">                continue;</span>
+            }
+
+            /**
+             * The return-type of the primary setter must be the type of the record.
+             */
+<span class="fc bfc" id="L145" title="All 2 branches covered.">            if (setter.returns.equals(record.type) == false)</span>
+            {
+<span class="fc" id="L147">                continue;</span>
+            }
+
+            /**
+             * The primary setter must take the most specific type of this element as its argument.
+             */
+<span class="fc bfc" id="L153" title="All 2 branches covered.">            if (type().equals(setter.parameter) == false)</span>
+            {
+<span class="fc" id="L155">                continue;</span>
+            }
+
+            /**
+             * The primary setter has been found.
+             */
+<span class="fc" id="L161">            memoized_setter = setter;</span>
+<span class="fc" id="L162">            break;</span>
+        }
+
+<span class="pc bpc" id="L165" title="1 of 2 branches missed.">        assert memoized_setter != null;</span>
+
+<span class="fc" id="L167">        return memoized_setter;</span>
+    }
+
+    /**
+     * This method determines which getter method is the most specific.
+     *
+     * &lt;p&gt;
+     * This setter method is the one that bridge methods will invoke.
+     * &lt;/p&gt;
+     *
+     * @return a description of the primary getter method.
+     */
+    public GetterMethod getter()
+    {
+        /**
+         * If this method was already invoked, then return the memoized result.
+         */
+<span class="fc bfc" id="L184" title="All 2 branches covered.">        if (memoized_getter != null)</span>
+        {
+<span class="fc" id="L186">            return memoized_getter;</span>
+        }
+
+        /**
+         * Search for the primary setter.
+         */
+<span class="pc bpc" id="L192" title="1 of 2 branches missed.">        for (GetterMethod getter : record.getters)</span>
+        {
+            /**
+             * The primary getter must share its name with this element.
+             */
+<span class="fc bfc" id="L197" title="All 2 branches covered.">            if (getter.name.equals(name) == false)</span>
+            {
+<span class="fc" id="L199">                continue;</span>
+            }
+
+            /**
+             * The primary getter must be a direct member of the record.
+             */
+<span class="fc bfc" id="L205" title="All 2 branches covered.">            if (getter.owner.equals(record.type) == false)</span>
+            {
+<span class="fc" id="L207">                continue;</span>
+            }
+
+            /**
+             * The return-type of the primary getter must be most specific type of the element.
+             */
+<span class="fc bfc" id="L213" title="All 2 branches covered.">            if (type().equals(getter.returns) == false)</span>
+            {
+<span class="fc" id="L215">                continue;</span>
+            }
+
+            /**
+             * The primary getter has been found.
+             */
+<span class="fc" id="L221">            memoized_getter = getter;</span>
+<span class="fc" id="L222">            break;</span>
+        }
+
+<span class="pc bpc" id="L225" title="1 of 2 branches missed.">        assert memoized_getter != null;</span>
+
+<span class="fc" id="L227">        return memoized_getter;</span>
+    }
+
+    /**
+     * This method finds the setter methods that simply invoke the primary setter method.
+     *
+     * @return an immutable set containing the bridge setters.
+     */
+    public Set&lt;SetterMethod&gt; bridgeSetters()
+    {
+<span class="fc" id="L237">        final Set&lt;SetterMethod&gt; bridges = Sets.newHashSet();</span>
+
+<span class="fc bfc" id="L239" title="All 2 branches covered.">        for (SetterMethod setter : record.setters)</span>
+        {
+<span class="fc bfc" id="L241" title="All 6 branches covered.">            if (setter.owner.equals(record.type) &amp;&amp; setter.name.equals(name) &amp;&amp; !setter.returns.equals(record.type))</span>
+            {
+<span class="fc" id="L243">                bridges.add(setter);</span>
+            }
+<span class="fc" id="L245">        }</span>
+
+<span class="fc" id="L247">        return Collections.unmodifiableSet(bridges);</span>
+    }
+
+    /**
+     * This method finds the getter methods that simply invoke the primary getter method.
+     *
+     * @return an immutable set containing the bridge getters.
+     */
+    public Set&lt;GetterMethod&gt; bridgeGetters()
+    {
+<span class="fc" id="L257">        final Set&lt;GetterMethod&gt; bridges = Sets.newHashSet();</span>
+
+<span class="fc bfc" id="L259" title="All 2 branches covered.">        for (GetterMethod getter : record.getters)</span>
+        {
+<span class="fc bfc" id="L261" title="All 6 branches covered.">            if (getter.owner.equals(record.type) &amp;&amp; getter.name.equals(name) &amp;&amp; !getter.returns.equals(getter().returns))</span>
+            {
+<span class="fc" id="L263">                bridges.add(getter);</span>
+            }
+<span class="fc" id="L265">        }</span>
+
+<span class="fc" id="L267">        return Collections.unmodifiableSet(bridges);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

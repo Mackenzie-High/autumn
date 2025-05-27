@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ReflectiveConstructor.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.mackenziehigh:autumn</a> &gt; <a href="index.source.html" class="el_package">com.mackenziehigh.autumn.lang.compiler.typesystem</a> &gt; <span class="el_source">ReflectiveConstructor.java</span></div><h1>ReflectiveConstructor.java</h1><pre class="source lang-java linenums">package com.mackenziehigh.autumn.lang.compiler.typesystem;
+
+import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Lists;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IAnnotation;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IClassType;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IConstructor;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IDeclaredType;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IFormalParameter;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IReturnType;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.ITypeFactory;
+import com.mackenziehigh.autumn.resources.Finished;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Constructor;
+import java.util.Collection;
+import java.util.List;
+
+/**
+ * An instance of this class represents a previously compiled constructor.
+ *
+ * @author Mackenzie High
+ */
+@Finished(&quot;2014/07/12&quot;)
+public class ReflectiveConstructor
+        extends AbstractInvokableMember
+        implements IConstructor
+{
+    private final Constructor constructor;
+
+    /**
+     * Sole Constructor.
+     *
+     * @param factory is the type-factory that is used to access the types.
+     * @param constructor is the constructor that this object will represent.
+     */
+    public ReflectiveConstructor(final ITypeFactory factory,
+                                 final Constructor constructor)
+    {
+<span class="fc" id="L41">        super(factory);</span>
+
+<span class="fc" id="L43">        Preconditions.checkNotNull(constructor);</span>
+
+<span class="fc" id="L45">        this.constructor = constructor;</span>
+<span class="fc" id="L46">    }</span>
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Constructor getConstructor()
+    {
+<span class="fc" id="L54">        return constructor;</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public IDeclaredType getOwner()
+    {
+<span class="fc" id="L63">        return (IDeclaredType) getTypeFactory().fromClass(constructor.getDeclaringClass());</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List&lt;IAnnotation&gt; getAnnotations()
+    {
+<span class="fc" id="L72">        final List result = Lists.newLinkedList();</span>
+
+<span class="fc bfc" id="L74" title="All 2 branches covered.">        for (Annotation element : constructor.getDeclaredAnnotations())</span>
+        {
+<span class="fc" id="L76">            final IAnnotation annotation = CustomAnnotation.fromAnnotation(getTypeFactory(), element);</span>
+
+<span class="fc" id="L78">            result.add(annotation);</span>
+        }
+
+<span class="fc" id="L81">        return ImmutableList.copyOf(result);</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int getModifiers()
+    {
+<span class="fc" id="L90">        return constructor.getModifiers();</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public IReturnType getReturnType()
+    {
+<span class="fc" id="L99">        return this.getTypeFactory().getVoid();</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getName()
+    {
+<span class="fc" id="L108">        return &quot;&lt;init&gt;&quot;;</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List&lt;IFormalParameter&gt; getParameters()
+    {
+<span class="fc" id="L117">        final List&lt;IFormalParameter&gt; result = Lists.newLinkedList();</span>
+
+<span class="fc bfc" id="L119" title="All 2 branches covered.">        for (int i = 0; i &lt; constructor.getParameterTypes().length; i++)</span>
+        {
+<span class="fc" id="L121">            final Annotation[] annotations = constructor.getParameterAnnotations()[i];</span>
+
+<span class="fc" id="L123">            final Class type = constructor.getParameterTypes()[i];</span>
+
+<span class="fc" id="L125">            final IFormalParameter parameter = new ReflectiveFormalParameter(</span>
+<span class="fc" id="L126">                    getTypeFactory(),</span>
+                    annotations,
+                    type);
+
+<span class="fc" id="L130">            result.add(parameter);</span>
+        }
+
+<span class="fc" id="L133">        return ImmutableList.copyOf(result);</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Collection&lt;IClassType&gt; getThrowsClause()
+    {
+<span class="fc" id="L142">        final List&lt;IClassType&gt; result = Lists.newLinkedList();</span>
+
+<span class="fc bfc" id="L144" title="All 2 branches covered.">        for (Class exception : constructor.getExceptionTypes())</span>
+        {
+<span class="fc" id="L146">            result.add((IClassType) getTypeFactory().fromClass(exception));</span>
+        }
+
+<span class="fc" id="L149">        return ImmutableSet.copyOf(result);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

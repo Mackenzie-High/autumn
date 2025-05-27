@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AutumnParser.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.mackenziehigh:autumn</a> &gt; <a href="index.source.html" class="el_package">autumn.lang.compiler</a> &gt; <span class="el_source">AutumnParser.java</span></div><h1>AutumnParser.java</h1><pre class="source lang-java linenums">package autumn.lang.compiler;
+
+import autumn.lang.compiler.ast.nodes.Module;
+import autumn.lang.compiler.errors.IErrorReporter;
+import com.google.common.base.Preconditions;
+import com.mackenziehigh.autumn.lang.compiler.parser.AstBuilder;
+import com.mackenziehigh.autumn.lang.compiler.parser.Parser;
+import com.mackenziehigh.autumn.lang.compiler.parser.Utils;
+import com.mackenziehigh.autumn.resources.Finished;
+import com.mackenziehigh.snowflake.LinesAndColumns;
+import com.mackenziehigh.snowflake.NewlineStyles;
+import com.mackenziehigh.snowflake.ParserOutput;
+import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
+
+/**
+ * An instance of this class is a parser that can parse an Autumn module.
+ *
+ * @author Mackenzie High
+ */
+@Finished(&quot;2014/08/19&quot;)
+public final class AutumnParser
+{
+    /**
+     * This object is used to report syntax-errors.
+     */
+    private final IErrorReporter reporter;
+
+    /**
+     * Constructor.
+     *
+     * @param reporter is the error-reporter to use in order to report any syntax errors.
+     * @throws NullPointerException if reporter is null.
+     */
+    public AutumnParser(final IErrorReporter reporter)
+<span class="fc" id="L37">    {</span>
+<span class="fc" id="L38">        Preconditions.checkNotNull(reporter);</span>
+
+<span class="fc" id="L40">        this.reporter = reporter;</span>
+<span class="fc" id="L41">    }</span>
+
+    /**
+     * This method parses a string of Autumn source code that represents a single module.
+     *
+     * &lt;p&gt;
+     * If a syntax-error is found, then the error-reporter will be used to report the error.
+     * &lt;/p&gt;
+     *
+     * @param code is the source-code itself.
+     * @param file denotes the location of the module, if error reporting occurs.
+     * @throws NullPointerException if code is null.
+     * @throws NullPointerException if file is null.
+     * @return a module created via parsing, or null, if parsing fails.
+     */
+    public Module parse(final String code,
+                        final URL file)
+    {
+<span class="fc" id="L59">        Preconditions.checkNotNull(code);</span>
+<span class="fc" id="L60">        Preconditions.checkNotNull(file);</span>
+
+        // Callers should not be using multiple threads to invoke this parser.
+        // However, this will provide some extra safety, just in case.
+        // Some of the code that is used to create an AST is not thread-safe.
+<span class="fc" id="L65">        synchronized (AutumnParser.class)</span>
+        {
+            // The source file will be attached to each AST node.
+<span class="fc" id="L68">            Utils.source_file = file;</span>
+
+            // Create the real parser.
+<span class="fc" id="L71">            final Parser parser = new Parser();</span>
+
+            // Parse the source-code.
+<span class="fc" id="L74">            final ParserOutput output = parser.parse(code);</span>
+
+            // If a syntax-error was detected, then report it.
+<span class="pc bpc" id="L77" title="1 of 2 branches missed.">            if (!output.success())</span>
+            {
+                // Detect the style of newline used within the code.
+                // This varies based on the platform (Windows, Linux, etc) on which the code was created.
+                // Code may have been created on different platforms.
+                // So, we will guess the newline style based on the souce-code.
+                // This method is more reliable than simply using the default newline style.
+<span class="nc" id="L84">                final NewlineStyles newline = NewlineStyles.fromGuess(code, NewlineStyles.fromSystem());</span>
+
+                // Compute the line-numbers and column-numbers for each character in the input.
+<span class="nc" id="L87">                final LinesAndColumns finder = new LinesAndColumns(code.toCharArray(), newline);</span>
+
+                // Get the line-number of where the syntax-error is located.
+<span class="nc" id="L90">                final int line = finder.lineNumbers()[output.lengthOfConsumption()];</span>
+
+                // Get the column-number of where the syntax-error is located.
+<span class="nc" id="L93">                final int column = finder.columnNumbers()[output.lengthOfConsumption()];</span>
+
+                // Issue the syntax-error.
+<span class="nc" id="L96">                reporter.reportSyntaxError(file, line, column);</span>
+
+                // No Abstract-Syntax-Tree can be returned, because none could be created.
+<span class="nc" id="L99">                return null;</span>
+            }
+
+            // Convert the parse-tree to an abstract-syntax-tree.
+<span class="fc" id="L103">            final Module module = AstBuilder.build(output.parseTree());</span>
+
+<span class="fc" id="L105">            return module;</span>
+        }
+    }
+
+    /**
+     * This method parses a string of Autumn source code that represents a single module.
+     *
+     * &lt;p&gt;
+     * If a syntax-error is found, then the error-reporter will be used to report the error.
+     * &lt;/p&gt;
+     *
+     * @param code is the source-code itself.
+     * @param file denotes the location of the module, if error reporting occurs.
+     * @return a module created via parsing, or null, if parsing fails.
+     * @throws NullPointerException if code is null.
+     * @throws NullPointerException if file is null.
+     * @throws IllegalArgumentException if the file cannot be converted to a URL.
+     */
+    public Module parse(final String code,
+                        final File file)
+    {
+<span class="fc" id="L126">        Preconditions.checkNotNull(code);</span>
+<span class="fc" id="L127">        Preconditions.checkNotNull(file);</span>
+
+        try
+        {
+<span class="fc" id="L131">            final URL url = file.toURI().toURL();</span>
+
+<span class="fc" id="L133">            final Module module = parse(code, url);</span>
+
+<span class="fc" id="L135">            return module;</span>
+        }
+<span class="nc" id="L137">        catch (MalformedURLException ex)</span>
+        {
+<span class="nc" id="L139">            throw new IllegalArgumentException(&quot;Bad URL&quot;, ex);</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

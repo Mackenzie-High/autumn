@@ -1,0 +1,4343 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TreeBuilder.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.mackenziehigh:autumn</a> &gt; <a href="index.source.html" class="el_package">autumn.lang.compiler</a> &gt; <span class="el_source">TreeBuilder.java</span></div><h1>TreeBuilder.java</h1><pre class="source lang-java linenums">package autumn.lang.compiler;
+
+import autumn.lang.compiler.ast.commons.*;
+import autumn.lang.compiler.ast.literals.BigDecimalLiteral;
+import autumn.lang.compiler.ast.literals.BigIntegerLiteral;
+import autumn.lang.compiler.ast.literals.ByteLiteral;
+import autumn.lang.compiler.ast.literals.CharLiteral;
+import autumn.lang.compiler.ast.literals.DoubleLiteral;
+import autumn.lang.compiler.ast.literals.FloatLiteral;
+import autumn.lang.compiler.ast.literals.IntLiteral;
+import autumn.lang.compiler.ast.literals.LongLiteral;
+import autumn.lang.compiler.ast.literals.ShortLiteral;
+import autumn.lang.compiler.ast.nodes.*;
+import com.google.common.base.Preconditions;
+import com.google.common.collect.Lists;
+import com.mackenziehigh.autumn.resources.Finished;
+import java.net.URL;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Stack;
+
+/**
+ * Use an instance of this class when building the abstract-syntax-tree of a module.
+ *
+ * &lt;p&gt;
+ * An instance of this class can be thought of as a stack-machine.
+ * Calling methods, such as createDatum(String), causes leaf AST nodes to be pushed onto the stack.
+ * Calling methods, such as createSequenceStatement(), causes an inner AST node to be created.
+ * Using these different types of methods in combination facilitates the construction of an AST.
+ * &lt;/p&gt;
+ *
+ * &lt;p&gt;
+ * This stack-machine employs a primary-stack and a stack-of-stacks.
+ * The primary stack is the stack that is manipulated when building an AST node.
+ * Sometimes it is necessary to limit the scope of a node construction operation.
+ * As a result, it is possible to push the current primary-stack onto the stack-of-stacks.
+ * When the primary-stack is pushed onto the stack-of-stacks, a new stack will replace it.
+ * Later, the old primary-stack can be restored by popping it off of the stack-of-stacks.
+ * &lt;/p&gt;
+ *
+ * &lt;p&gt;
+ * Some methods herein denote the bottom element on the primary-stack as &quot;.....&quot;.
+ * This means that the method only manipulates the topmost element(s) on the stack.
+ * The elements below the manipulated elements will not be popped, relocated, etc.
+ * On the other hand, some methods do not denote the bottom element as &quot;.....&quot;.
+ * These methods may manipulate the entire primary-stack.
+ * &lt;/p&gt;
+ *
+ * @author Mackenzie High
+ */
+<span class="fc" id="L52">@Finished(&quot;2014/07/12&quot;)</span>
+public final class TreeBuilder
+{
+<span class="fc" id="L55">    private Stack&lt;IConstruct&gt; stack = new Stack&lt;IConstruct&gt;();</span>
+
+<span class="fc" id="L57">    private final Stack&lt;Stack&lt;IConstruct&gt;&gt; stack_of_stacks = new Stack&lt;Stack&lt;IConstruct&gt;&gt;();</span>
+
+    /**
+     * Sole Constructor.
+     */
+    public TreeBuilder()
+<span class="fc" id="L63">    {</span>
+        // Do Nothing.
+<span class="fc" id="L65">    }</span>
+
+    /**
+     * This method sets the source-location information for the topmost node on the stack.
+     *
+     * &lt;p&gt;
+     * This method has no effect, if the stack is empty or the topmost node is null.
+     * &lt;/p&gt;
+     *
+     * @param file is the path to the source-code file.
+     * This is null, if no file is specified.
+     * @param line is the one-based line-number where the node starts.
+     * This is null, if no line-number is specified.
+     * @param column is the one-based column-number where the node starts.
+     * This is null, if the column-number is specified.
+     * @param additional_info is additional information that helps locate the node.
+     * This is null, if no additional-info is specified.
+     */
+    public void setSourceLocation(final URL file,
+                                  final Integer line,
+                                  final Integer column,
+                                  final Object additional_info)
+    {
+<span class="pc bpc" id="L88" title="2 of 4 branches missed.">        Preconditions.checkArgument(line == null || line &gt;= 1);</span>
+<span class="pc bpc" id="L89" title="2 of 4 branches missed.">        Preconditions.checkArgument(column == null || column &gt;= 1);</span>
+
+<span class="pc bpc" id="L91" title="1 of 4 branches missed.">        if (stack.isEmpty() || stack.peek() == null)</span>
+        {
+<span class="fc" id="L93">            return;</span>
+        }
+
+        // Create the location token.
+<span class="fc" id="L97">        SourceLocation location = new SourceLocation();</span>
+<span class="fc" id="L98">        location = location.setFile(file);</span>
+<span class="fc" id="L99">        location = location.setLine(line);</span>
+<span class="fc" id="L100">        location = location.setColumn(column);</span>
+<span class="fc" id="L101">        location = location.setAdditionalInfo(additional_info);</span>
+
+        // Apply the location to the AST node.
+<span class="fc" id="L104">        IConstruct node = stack.pop();</span>
+<span class="fc" id="L105">        node = node.setLocation(location);</span>
+
+<span class="fc" id="L107">        stack.push(node);</span>
+<span class="fc" id="L108">    }</span>
+
+    /**
+     * This method pushes the primary-stack onto the stack-of-stacks.
+     */
+    public void pushStack()
+    {
+<span class="fc" id="L115">        stack_of_stacks.push(stack);</span>
+
+<span class="fc" id="L117">        stack = new Stack&lt;IConstruct&gt;();</span>
+<span class="fc" id="L118">    }</span>
+
+    /**
+     * This method restores the previous stack, by popping it off of the
+     * stack-of-stacks.
+     *
+     * &lt;p&gt;
+     * Note: If the current stack is not empty, then its elements will be pushed onto
+     * the restored stack.
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Warning:&lt;/b&gt; Do not confuse this method with pop().
+     * &lt;/p&gt;
+     */
+    public void popStack()
+    {
+<span class="fc" id="L135">        final Stack&lt;IConstruct&gt; current = stack;</span>
+
+<span class="fc" id="L137">        stack = stack_of_stacks.pop();</span>
+
+<span class="fc" id="L139">        stack.addAll(current);</span>
+<span class="fc" id="L140">    }</span>
+
+    /**
+     * This method pushes null onto the primary-stack.
+     */
+    public void pushNull()
+    {
+<span class="fc" id="L147">        stack.push(null);</span>
+<span class="fc" id="L148">    }</span>
+
+    /**
+     * This method pushes a construct onto the primary-stack.
+     *
+     * @param value is the value to push onto the stack.
+     */
+    public void push(final IConstruct value)
+    {
+<span class="fc" id="L157">        stack.push(value);</span>
+<span class="fc" id="L158">    }</span>
+
+    /**
+     * This method retrieves, but does not remove, the topmost value on the primary-stack.
+     *
+     * @return the topmost value on the stack.
+     */
+    public IConstruct peek()
+    {
+<span class="nc" id="L167">        return stack.peek();</span>
+    }
+
+    /**
+     * This method retrieves and removes the topmost value on the primary-stack.
+     *
+     * @return the topmost value on the stack.
+     */
+    public IConstruct pop()
+    {
+<span class="fc" id="L177">        return stack.pop();</span>
+    }
+
+    /**
+     * This method creates and returns a copy of the primary-stack.
+     *
+     * @return a copy of the stack.
+     */
+    public Stack&lt;IConstruct&gt; copyStack()
+    {
+<span class="fc" id="L187">        final Stack&lt;IConstruct&gt; result = new Stack&lt;IConstruct&gt;();</span>
+
+<span class="fc" id="L189">        result.addAll(stack);</span>
+
+<span class="fc" id="L191">        return result;</span>
+    }
+
+    /**
+     * This method determines whether the primary-stack is empty.
+     *
+     * @return true, iff the stack is empty.
+     */
+    public boolean isEmpty()
+    {
+<span class="nc" id="L201">        return stack.isEmpty();</span>
+    }
+
+    /**
+     * This method retrieves the current size of the primary-stack.
+     *
+     * @return the number of values on the stack.
+     */
+    public int size()
+    {
+<span class="fc" id="L211">        return stack.size();</span>
+    }
+
+    /**
+     * This method removes all the elements off of the primary-stack.
+     */
+    public void clear()
+    {
+<span class="fc" id="L219">        stack.clear();</span>
+<span class="fc" id="L220">    }</span>
+
+    /**
+     * This method creates a module.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Precondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; module-member[n] &lt;/li&gt;
+     * &lt;li&gt; module-member[2] &lt;/li&gt;
+     * &lt;li&gt; module-member[1] &lt;/li&gt;
+     * &lt;li&gt; module-member[0] &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * A module-member is one of:
+     * &lt;ul&gt;
+     * &lt;li&gt; ModuleDirective &lt;/li&gt;
+     * &lt;li&gt; ImportDirective &lt;/li&gt;
+     * &lt;li&gt; AnnotationDefinition &lt;/li&gt;
+     * &lt;li&gt; ExceptionDefinition &lt;/li&gt;
+     * &lt;li&gt; FunctorDefinition &lt;/li&gt;
+     * &lt;li&gt; EnumDefinition &lt;/li&gt;
+     * &lt;li&gt; DesignDefinition &lt;/li&gt;
+     * &lt;li&gt; StructDefinition &lt;/li&gt;
+     * &lt;li&gt; TupleDefinition &lt;/li&gt;
+     * &lt;li&gt; FunctionDefinition &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : Module &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     */
+    public void createModule()
+    {
+<span class="fc" id="L260">        final LinkedList&lt;ModuleDirective&gt; module_directives = Lists.newLinkedList();</span>
+
+<span class="fc" id="L262">        final LinkedList&lt;ImportDirective&gt; import_directives = Lists.newLinkedList();</span>
+
+<span class="fc" id="L264">        final LinkedList&lt;AnnotationDefinition&gt; annotation_definitions = Lists.newLinkedList();</span>
+
+<span class="fc" id="L266">        final LinkedList&lt;ExceptionDefinition&gt; exception_definitions = Lists.newLinkedList();</span>
+
+<span class="fc" id="L268">        final LinkedList&lt;DesignDefinition&gt; design_definitions = Lists.newLinkedList();</span>
+
+<span class="fc" id="L270">        final LinkedList&lt;StructDefinition&gt; struct_definitions = Lists.newLinkedList();</span>
+
+<span class="fc" id="L272">        final LinkedList&lt;TupleDefinition&gt; tuple_definitions = Lists.newLinkedList();</span>
+
+<span class="fc" id="L274">        final LinkedList&lt;FunctorDefinition&gt; functor_definitions = Lists.newLinkedList();</span>
+
+<span class="fc" id="L276">        final LinkedList&lt;EnumDefinition&gt; enum_definitions = Lists.newLinkedList();</span>
+
+<span class="fc" id="L278">        final LinkedList&lt;FunctionDefinition&gt; function_definitions = Lists.newLinkedList();</span>
+
+        // Pop the pieces off of the stack.
+<span class="fc bfc" id="L281" title="All 2 branches covered.">        while (stack.isEmpty() == false)</span>
+        {
+<span class="fc" id="L283">            final IConstruct member = stack.pop();</span>
+
+<span class="fc bfc" id="L285" title="All 2 branches covered.">            if (member instanceof ModuleDirective)</span>
+            {
+<span class="fc" id="L287">                final ModuleDirective directive = (ModuleDirective) member;</span>
+
+<span class="fc" id="L289">                module_directives.addFirst(directive);</span>
+<span class="fc" id="L290">            }</span>
+<span class="fc bfc" id="L291" title="All 2 branches covered.">            else if (member instanceof ImportDirective)</span>
+            {
+<span class="fc" id="L293">                final ImportDirective directive = (ImportDirective) member;</span>
+
+<span class="fc" id="L295">                import_directives.addFirst(directive);</span>
+<span class="fc" id="L296">            }</span>
+<span class="fc bfc" id="L297" title="All 2 branches covered.">            else if (member instanceof AnnotationDefinition)</span>
+            {
+<span class="fc" id="L299">                final AnnotationDefinition definition = (AnnotationDefinition) member;</span>
+
+<span class="fc" id="L301">                annotation_definitions.addFirst(definition);</span>
+<span class="fc" id="L302">            }</span>
+<span class="fc bfc" id="L303" title="All 2 branches covered.">            else if (member instanceof ExceptionDefinition)</span>
+            {
+<span class="fc" id="L305">                final ExceptionDefinition definition = (ExceptionDefinition) member;</span>
+
+<span class="fc" id="L307">                exception_definitions.addFirst(definition);</span>
+<span class="fc" id="L308">            }</span>
+<span class="fc bfc" id="L309" title="All 2 branches covered.">            else if (member instanceof DesignDefinition)</span>
+            {
+<span class="fc" id="L311">                final DesignDefinition definition = (DesignDefinition) member;</span>
+
+<span class="fc" id="L313">                design_definitions.addFirst(definition);</span>
+<span class="fc" id="L314">            }</span>
+<span class="fc bfc" id="L315" title="All 2 branches covered.">            else if (member instanceof StructDefinition)</span>
+            {
+<span class="fc" id="L317">                final StructDefinition definition = (StructDefinition) member;</span>
+
+<span class="fc" id="L319">                struct_definitions.addFirst(definition);</span>
+<span class="fc" id="L320">            }</span>
+<span class="fc bfc" id="L321" title="All 2 branches covered.">            else if (member instanceof TupleDefinition)</span>
+            {
+<span class="fc" id="L323">                final TupleDefinition definition = (TupleDefinition) member;</span>
+
+<span class="fc" id="L325">                tuple_definitions.addFirst(definition);</span>
+<span class="fc" id="L326">            }</span>
+<span class="fc bfc" id="L327" title="All 2 branches covered.">            else if (member instanceof FunctorDefinition)</span>
+            {
+<span class="fc" id="L329">                final FunctorDefinition definition = (FunctorDefinition) member;</span>
+
+<span class="fc" id="L331">                functor_definitions.addFirst(definition);</span>
+<span class="fc" id="L332">            }</span>
+<span class="fc bfc" id="L333" title="All 2 branches covered.">            else if (member instanceof EnumDefinition)</span>
+            {
+<span class="fc" id="L335">                final EnumDefinition definition = (EnumDefinition) member;</span>
+
+<span class="fc" id="L337">                enum_definitions.addFirst(definition);</span>
+<span class="fc" id="L338">            }</span>
+<span class="pc bpc" id="L339" title="1 of 2 branches missed.">            else if (member instanceof FunctionDefinition)</span>
+            {
+<span class="fc" id="L341">                final FunctionDefinition definition = (FunctionDefinition) member;</span>
+
+<span class="fc" id="L343">                function_definitions.addFirst(definition);</span>
+            }
+<span class="fc" id="L345">        }</span>
+
+        // Create the AST node.
+<span class="fc" id="L348">        autumn.lang.compiler.ast.nodes.Module module = new autumn.lang.compiler.ast.nodes.Module();</span>
+
+        // Initialize the AST node.
+<span class="fc" id="L351">        module = module.setModuleDirectives((new ConstructList()).addAll(module_directives));</span>
+<span class="fc" id="L352">        module = module.setImportDirectives((new ConstructList()).addAll(import_directives));</span>
+
+<span class="fc" id="L354">        module = module.setAnnotations((new ConstructList()).addAll(annotation_definitions));</span>
+<span class="fc" id="L355">        module = module.setExceptions((new ConstructList()).addAll(exception_definitions));</span>
+<span class="fc" id="L356">        module = module.setDesigns((new ConstructList()).addAll(design_definitions));</span>
+<span class="fc" id="L357">        module = module.setStructs((new ConstructList()).addAll(struct_definitions));</span>
+<span class="fc" id="L358">        module = module.setTuples((new ConstructList()).addAll(tuple_definitions));</span>
+<span class="fc" id="L359">        module = module.setFunctors((new ConstructList()).addAll(functor_definitions));</span>
+<span class="fc" id="L360">        module = module.setEnums((new ConstructList()).addAll(enum_definitions));</span>
+<span class="fc" id="L361">        module = module.setFunctions((new ConstructList()).addAll(function_definitions));</span>
+
+        // Push the AST node onto the stack.
+<span class="fc" id="L364">        stack.push(module);</span>
+
+<span class="pc bpc" id="L366" title="1 of 2 branches missed.">        assert stack.size() == 1;</span>
+<span class="fc" id="L367">    }</span>
+
+    /**
+     * This method creates a module-directive.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Precondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; namespace : Namespace &lt;/li&gt;
+     * &lt;li&gt; name : Name &lt;/li&gt;
+     * &lt;li&gt; annotations : AnnotationList &lt;/li&gt;
+     * &lt;li&gt; comment : DocComment &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * The name must be null, if the module is anonymous.
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : ModuleDirective &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     */
+    public void createDirectiveModule()
+    {
+<span class="pc bpc" id="L395" title="1 of 2 branches missed.">        Preconditions.checkState(stack.size() == 4);</span>
+
+        // Get the pieces off of the stack.
+<span class="fc" id="L398">        final Namespace namespace = (Namespace) stack.pop();</span>
+<span class="fc" id="L399">        final Name name = (Name) stack.pop();</span>
+<span class="fc" id="L400">        final AnnotationList annotations = (AnnotationList) stack.pop();</span>
+<span class="fc" id="L401">        final DocComment comment = (DocComment) stack.pop();</span>
+
+        // Create the AST node.
+<span class="fc" id="L404">        ModuleDirective node = new ModuleDirective();</span>
+
+        // Initialize the AST node.
+<span class="fc" id="L407">        node = node.setComment(comment);</span>
+<span class="fc" id="L408">        node = node.setAnnotations(annotations);</span>
+<span class="fc" id="L409">        node = node.setName(name);</span>
+<span class="fc" id="L410">        node = node.setNamespace(namespace);</span>
+
+        // Push the AST node onto the stack.
+<span class="fc" id="L413">        stack.push(node);</span>
+
+<span class="pc bpc" id="L415" title="1 of 2 branches missed.">        assert stack.size() == 1;</span>
+<span class="fc" id="L416">    }</span>
+
+    /**
+     * This method creates an import-directive.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Precondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; type : TypeSpecifier &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : ImportDirective &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     */
+    public void createDirectiveImport()
+    {
+<span class="pc bpc" id="L437" title="1 of 2 branches missed.">        Preconditions.checkState(stack.size() == 1);</span>
+
+        // Get the pieces off of the stack.
+<span class="fc" id="L440">        final TypeSpecifier type = (TypeSpecifier) stack.pop();</span>
+
+        // Create the AST node.
+<span class="fc" id="L443">        ImportDirective node = new ImportDirective();</span>
+
+        // Initialize the AST node.
+<span class="fc" id="L446">        node = node.setType(type);</span>
+
+        // Push the AST node onto the stack.
+<span class="fc" id="L449">        stack.push(node);</span>
+
+<span class="pc bpc" id="L451" title="1 of 2 branches missed.">        assert stack.size() == 1;</span>
+<span class="fc" id="L452">    }</span>
+
+    /**
+     * This method creates an annotation-definition.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Precondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; name : Name &lt;/li&gt;
+     * &lt;li&gt; annotations : AnnotationList &lt;/li&gt;
+     * &lt;li&gt; comment : DocComment &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : AnnotationDefinition &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     */
+    public void createDefinitionAnnotation()
+    {
+<span class="pc bpc" id="L475" title="1 of 2 branches missed.">        Preconditions.checkState(stack.size() == 3);</span>
+
+        // Get the pieces off of the stack.
+<span class="fc" id="L478">        final Name name = (Name) stack.pop();</span>
+<span class="fc" id="L479">        final AnnotationList annotations = (AnnotationList) stack.pop();</span>
+<span class="fc" id="L480">        final DocComment comment = (DocComment) stack.pop();</span>
+
+        // Create the AST node.
+<span class="fc" id="L483">        AnnotationDefinition node = new AnnotationDefinition();</span>
+
+        // Initialize the AST node.
+<span class="fc" id="L486">        node = node.setComment(comment);</span>
+<span class="fc" id="L487">        node = node.setAnnotations(annotations);</span>
+<span class="fc" id="L488">        node = node.setName(name);</span>
+
+        // Push the AST node onto the stack.
+<span class="fc" id="L491">        stack.push(node);</span>
+
+<span class="pc bpc" id="L493" title="1 of 2 branches missed.">        assert stack.size() == 1;</span>
+<span class="fc" id="L494">    }</span>
+
+    /**
+     * This method creates an exception-definition.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Precondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; superclass : TypeSpecifier &lt;/li&gt;
+     * &lt;li&gt; name : Name &lt;/li&gt;
+     * &lt;li&gt; annotations : AnnotationList &lt;/li&gt;
+     * &lt;li&gt; comment : DocComment &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : ExceptionDefinition &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     */
+    public void createDefinitionException()
+    {
+<span class="pc bpc" id="L518" title="1 of 2 branches missed.">        Preconditions.checkState(stack.size() == 4);</span>
+
+        // Get the pieces off of the stack.
+<span class="fc" id="L521">        final TypeSpecifier superclass = (TypeSpecifier) stack.pop();</span>
+<span class="fc" id="L522">        final Name name = (Name) stack.pop();</span>
+<span class="fc" id="L523">        final AnnotationList annotations = (AnnotationList) stack.pop();</span>
+<span class="fc" id="L524">        final DocComment comment = (DocComment) stack.pop();</span>
+
+        // Create the AST node.
+<span class="fc" id="L527">        ExceptionDefinition node = new ExceptionDefinition();</span>
+
+        // Initialize the AST node.
+<span class="fc" id="L530">        node = node.setComment(comment);</span>
+<span class="fc" id="L531">        node = node.setAnnotations(annotations);</span>
+<span class="fc" id="L532">        node = node.setName(name);</span>
+<span class="fc" id="L533">        node = node.setSuperclass(superclass);</span>
+
+        // Push the AST node onto the stack.
+<span class="fc" id="L536">        stack.push(node);</span>
+
+<span class="pc bpc" id="L538" title="1 of 2 branches missed.">        assert stack.size() == 1;</span>
+<span class="fc" id="L539">    }</span>
+
+    /**
+     * This method creates an design-definition.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Precondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; supertype[n] : TypeSpecifier &lt;/li&gt;
+     * &lt;li&gt; supertype[.] : TypeSpecifier &lt;/li&gt;
+     * &lt;li&gt; supertype[2] : TypeSpecifier &lt;/li&gt;
+     * &lt;li&gt; supertype[1] : TypeSpecifier &lt;/li&gt;
+     * &lt;li&gt; supertype[0] : TypeSpecifier &lt;/li&gt;
+     * &lt;li&gt; elements : ElementList &lt;/li&gt;
+     * &lt;li&gt; name : Name &lt;/li&gt;
+     * &lt;li&gt; annotations : AnnotationList &lt;/li&gt;
+     * &lt;li&gt; comment : DocComment &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : DesignDefinition &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     */
+    public void createDefinitionDesign()
+    {
+<span class="pc bpc" id="L568" title="1 of 2 branches missed.">        Preconditions.checkState(stack.size() &gt;= 4);</span>
+
+        // Get the pieces off of the stack.
+
+<span class="fc" id="L572">        final LinkedList&lt;TypeSpecifier&gt; supers = Lists.newLinkedList();</span>
+
+<span class="fc bfc" id="L574" title="All 2 branches covered.">        while (stack.size() &gt; 4)</span>
+        {
+<span class="fc" id="L576">            final IConstruct x = stack.pop();</span>
+
+<span class="fc" id="L578">            supers.add(0, (TypeSpecifier) x);</span>
+<span class="fc" id="L579">        }</span>
+
+<span class="fc" id="L581">        final ElementList elements = (ElementList) stack.pop();</span>
+
+<span class="fc" id="L583">        final Name name = (Name) stack.pop();</span>
+
+<span class="fc" id="L585">        final AnnotationList annotations = (AnnotationList) stack.pop();</span>
+
+<span class="fc" id="L587">        final DocComment comment = (DocComment) stack.pop();</span>
+
+        // Create the AST node.
+<span class="fc" id="L590">        DesignDefinition node = new DesignDefinition();</span>
+
+        // Initialize the AST node.
+<span class="fc" id="L593">        node = node.setComment(comment);</span>
+<span class="fc" id="L594">        node = node.setAnnotations(annotations);</span>
+<span class="fc" id="L595">        node = node.setName(name);</span>
+<span class="fc" id="L596">        node = node.setSupers((new ConstructList&lt;TypeSpecifier&gt;()).addAll(supers));</span>
+<span class="fc" id="L597">        node = node.setElements(elements);</span>
+
+        // Push the AST node onto the stack.
+<span class="fc" id="L600">        stack.push(node);</span>
+
+<span class="pc bpc" id="L602" title="1 of 2 branches missed.">        assert stack.size() == 1;</span>
+<span class="fc" id="L603">    }</span>
+
+    /**
+     * This method creates an tuple-definition.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Precondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; supertype[n] : TypeSpecifier &lt;/li&gt;
+     * &lt;li&gt; supertype[.] : TypeSpecifier &lt;/li&gt;
+     * &lt;li&gt; supertype[2] : TypeSpecifier &lt;/li&gt;
+     * &lt;li&gt; supertype[1] : TypeSpecifier &lt;/li&gt;
+     * &lt;li&gt; supertype[0] : TypeSpecifier &lt;/li&gt;
+     * &lt;li&gt; elements : ElementList &lt;/li&gt;
+     * &lt;li&gt; name : Name &lt;/li&gt;
+     * &lt;li&gt; annotations : AnnotationList &lt;/li&gt;
+     * &lt;li&gt; comment : DocComment &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : TupleDefinition &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     */
+    public void createDefinitionTuple()
+    {
+<span class="pc bpc" id="L632" title="1 of 2 branches missed.">        Preconditions.checkState(stack.size() &gt;= 4);</span>
+
+        // Get the pieces off of the stack.
+
+<span class="fc" id="L636">        final LinkedList&lt;TypeSpecifier&gt; supers = Lists.newLinkedList();</span>
+
+<span class="fc bfc" id="L638" title="All 2 branches covered.">        while (stack.size() &gt; 4)</span>
+        {
+<span class="fc" id="L640">            final IConstruct x = stack.pop();</span>
+
+<span class="fc" id="L642">            supers.add(0, (TypeSpecifier) x);</span>
+<span class="fc" id="L643">        }</span>
+
+<span class="fc" id="L645">        final ElementList elements = (ElementList) stack.pop();</span>
+
+<span class="fc" id="L647">        final Name name = (Name) stack.pop();</span>
+
+<span class="fc" id="L649">        final AnnotationList annotations = (AnnotationList) stack.pop();</span>
+
+<span class="fc" id="L651">        final DocComment comment = (DocComment) stack.pop();</span>
+
+        // Create the AST node.
+<span class="fc" id="L654">        TupleDefinition node = new TupleDefinition();</span>
+
+        // Initialize the AST node.
+<span class="fc" id="L657">        node = node.setComment(comment);</span>
+<span class="fc" id="L658">        node = node.setAnnotations(annotations);</span>
+<span class="fc" id="L659">        node = node.setName(name);</span>
+<span class="fc" id="L660">        node = node.setSupers((new ConstructList&lt;TypeSpecifier&gt;()).addAll(supers));</span>
+<span class="fc" id="L661">        node = node.setElements(elements);</span>
+
+        // Push the AST node onto the stack.
+<span class="fc" id="L664">        stack.push(node);</span>
+
+<span class="pc bpc" id="L666" title="1 of 2 branches missed.">        assert stack.size() == 1;</span>
+<span class="fc" id="L667">    }</span>
+
+    /**
+     * This method creates a struct-definition.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Precondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; supertype[m] : TypeSpecifier &lt;/li&gt;
+     * &lt;li&gt; supertype[.] : TypeSpecifier &lt;/li&gt;
+     * &lt;li&gt; supertype[2] : TypeSpecifier &lt;/li&gt;
+     * &lt;li&gt; supertype[1] : TypeSpecifier &lt;/li&gt;
+     * &lt;li&gt; supertype[0] : TypeSpecifier &lt;/li&gt;
+     * &lt;li&gt; elements : ElementList &lt;/li&gt;
+     * &lt;li&gt; name : Name &lt;/li&gt;
+     * &lt;li&gt; annotations : AnnotationList &lt;/li&gt;
+     * &lt;li&gt; comment : DocComment &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : StructDefinition &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     */
+    public void createDefinitionStruct()
+    {
+<span class="pc bpc" id="L696" title="1 of 2 branches missed.">        Preconditions.checkState(stack.size() &gt;= 4);</span>
+
+        // Get the pieces off of the stack.
+
+<span class="fc" id="L700">        final LinkedList&lt;TypeSpecifier&gt; supers = Lists.newLinkedList();</span>
+
+<span class="fc bfc" id="L702" title="All 2 branches covered.">        while (stack.size() &gt; 4)</span>
+        {
+<span class="fc" id="L704">            final IConstruct x = stack.pop();</span>
+
+<span class="fc" id="L706">            supers.add(0, (TypeSpecifier) x);</span>
+<span class="fc" id="L707">        }</span>
+
+<span class="fc" id="L709">        final ElementList elements = (ElementList) stack.pop();</span>
+
+<span class="fc" id="L711">        final Name name = (Name) stack.pop();</span>
+
+<span class="fc" id="L713">        final AnnotationList annotations = (AnnotationList) stack.pop();</span>
+
+<span class="fc" id="L715">        final DocComment comment = (DocComment) stack.pop();</span>
+
+        // Create the AST node.
+<span class="fc" id="L718">        StructDefinition node = new StructDefinition();</span>
+
+        // Initialize the AST node.
+<span class="fc" id="L721">        node = node.setComment(comment);</span>
+<span class="fc" id="L722">        node = node.setAnnotations(annotations);</span>
+<span class="fc" id="L723">        node = node.setName(name);</span>
+<span class="fc" id="L724">        node = node.setSupers((new ConstructList&lt;TypeSpecifier&gt;()).addAll(supers));</span>
+<span class="fc" id="L725">        node = node.setElements(elements);</span>
+
+        // Push the AST node onto the stack.
+<span class="fc" id="L728">        stack.push(node);</span>
+
+<span class="pc bpc" id="L730" title="1 of 2 branches missed.">        assert stack.size() == 1;</span>
+<span class="fc" id="L731">    }</span>
+
+    /**
+     * This method creates an functor-definition.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Precondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; superclass : TypeSpecifier &lt;/li&gt;
+     * &lt;li&gt; return-type : TypeSpecifier &lt;/li&gt;
+     * &lt;li&gt; parameters : FormalParameterList &lt;/li&gt;
+     * &lt;li&gt; name : Name &lt;/li&gt;
+     * &lt;li&gt; annotations : AnnotationList &lt;/li&gt;
+     * &lt;li&gt; comment : DocComment &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : FunctorDefinition &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     */
+    public void createDefinitionFunctor()
+    {
+<span class="pc bpc" id="L757" title="1 of 4 branches missed.">        Preconditions.checkState(stack.size() == 5 || stack.size() == 6);</span>
+
+        // Get the pieces off of the stack.
+<span class="fc bfc" id="L760" title="All 2 branches covered.">        final TypeSpecifier superclass = (TypeSpecifier) (stack.size() == 6 ? stack.pop() : null);</span>
+<span class="fc" id="L761">        final TypeSpecifier returns = (TypeSpecifier) stack.pop();</span>
+<span class="fc" id="L762">        final FormalParameterList parameters = (FormalParameterList) stack.pop();</span>
+<span class="fc" id="L763">        final Name name = (Name) stack.pop();</span>
+<span class="fc" id="L764">        final AnnotationList annotations = (AnnotationList) stack.pop();</span>
+<span class="fc" id="L765">        final DocComment comment = (DocComment) stack.pop();</span>
+
+        // Create the AST node.
+<span class="fc" id="L768">        FunctorDefinition node = new FunctorDefinition();</span>
+
+        // Initialize the AST node.
+<span class="fc" id="L771">        node = node.setComment(comment);</span>
+<span class="fc" id="L772">        node = node.setAnnotations(annotations);</span>
+<span class="fc" id="L773">        node = node.setName(name);</span>
+<span class="fc" id="L774">        node = node.setParameters(parameters);</span>
+<span class="fc" id="L775">        node = node.setReturnType(returns);</span>
+<span class="fc" id="L776">        node = node.setSuperclass(superclass);</span>
+
+        // Push the AST node onto the stack.
+<span class="fc" id="L779">        stack.push(node);</span>
+
+<span class="pc bpc" id="L781" title="1 of 2 branches missed.">        assert stack.size() == 1;</span>
+<span class="fc" id="L782">    }</span>
+
+    /**
+     * This method creates an enum-definition.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Precondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; constant[n] : Name &lt;/li&gt;
+     * &lt;li&gt; constant[2] : Name &lt;/li&gt;
+     * &lt;li&gt; constant[1] : Name &lt;/li&gt;
+     * &lt;li&gt; constant[0] : Name &lt;/li&gt;
+     * &lt;li&gt; name : Name &lt;/li&gt;
+     * &lt;li&gt; annotations : AnnotationList &lt;/li&gt;
+     * &lt;li&gt; comment : DocComment &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : EnumDefinition &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     */
+    public void createDefinitionEnum()
+    {
+<span class="pc bpc" id="L809" title="1 of 2 branches missed.">        Preconditions.checkState(stack.size() &gt;= 3);</span>
+
+        // Get the pieces off of the stack.
+
+<span class="fc" id="L813">        final LinkedList&lt;Name&gt; constants = Lists.newLinkedList();</span>
+
+<span class="fc bfc" id="L815" title="All 2 branches covered.">        while (stack.size() &gt; 3)</span>
+        {
+<span class="fc" id="L817">            constants.add(0, (Name) stack.pop());</span>
+        }
+
+<span class="fc" id="L820">        final Name name = (Name) stack.pop();</span>
+
+<span class="fc" id="L822">        final AnnotationList annotations = (AnnotationList) stack.pop();</span>
+
+<span class="fc" id="L824">        final DocComment comment = (DocComment) stack.pop();</span>
+
+        // Create the AST node.
+<span class="fc" id="L827">        EnumDefinition node = new EnumDefinition();</span>
+
+        // Initialize the AST node.
+<span class="fc" id="L830">        node = node.setComment(comment);</span>
+<span class="fc" id="L831">        node = node.setAnnotations(annotations);</span>
+<span class="fc" id="L832">        node = node.setName(name);</span>
+<span class="fc" id="L833">        node = node.setConstants((new ConstructList&lt;Name&gt;()).addAll(constants));</span>
+
+        // Push the AST node onto the stack.
+<span class="fc" id="L836">        stack.push(node);</span>
+
+<span class="pc bpc" id="L838" title="1 of 2 branches missed.">        assert stack.size() == 1;</span>
+<span class="fc" id="L839">    }</span>
+
+    /**
+     * This method creates a function-definition.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Precondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; body : SequenceStatement &lt;/li&gt;
+     * &lt;li&gt; return-type : TypeSpecifier &lt;/li&gt;
+     * &lt;li&gt; parameters : FormalParameterList &lt;/li&gt;
+     * &lt;li&gt; name : Name &lt;/li&gt;
+     * &lt;li&gt; annotations : AnnotationList &lt;/li&gt;
+     * &lt;li&gt; comment : DocComment &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : FunctionDefinition &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     */
+    public void createDefinitionFunction()
+    {
+<span class="pc bpc" id="L865" title="1 of 2 branches missed.">        Preconditions.checkState(stack.size() == 6);</span>
+
+        // Pop the pieces off of the stack.
+<span class="fc" id="L868">        final SequenceStatement body = (SequenceStatement) stack.pop();</span>
+<span class="fc" id="L869">        final TypeSpecifier return_type = (TypeSpecifier) stack.pop();</span>
+<span class="fc" id="L870">        final FormalParameterList parameters = (FormalParameterList) stack.pop();</span>
+<span class="fc" id="L871">        final Name name = (Name) stack.pop();</span>
+<span class="fc" id="L872">        final AnnotationList annotations = (AnnotationList) stack.pop();</span>
+<span class="fc" id="L873">        final DocComment comment = (DocComment) stack.pop();</span>
+
+        // Create the AST node.
+<span class="fc" id="L876">        FunctionDefinition function = new FunctionDefinition();</span>
+<span class="fc" id="L877">        function = function.setComment(comment);</span>
+<span class="fc" id="L878">        function = function.setAnnotations(annotations);</span>
+<span class="fc" id="L879">        function = function.setName(name);</span>
+<span class="fc" id="L880">        function = function.setParameters(parameters);</span>
+<span class="fc" id="L881">        function = function.setReturnType(return_type);</span>
+<span class="fc" id="L882">        function = function.setBody(body);</span>
+
+        // Push the AST node onto the stack.
+<span class="fc" id="L885">        stack.push(function);</span>
+
+<span class="pc bpc" id="L887" title="1 of 2 branches missed.">        assert stack.size() == 1;</span>
+<span class="fc" id="L888">    }</span>
+
+    /**
+     * This method creates an if-statement.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Precondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; else-case : SequenceStatement &lt;/li&gt;
+     * &lt;li&gt; elif-case[n] : ConditionCase &lt;/li&gt;
+     * &lt;li&gt; elif-case[2] : ConditionCase &lt;/li&gt;
+     * &lt;li&gt; elif-case[1] : ConditionCase &lt;/li&gt;
+     * &lt;li&gt; elif-case[0] : ConditionCase &lt;/li&gt;
+     * &lt;li&gt; main-case : ConditionCase &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * Note: The elif-cases and the else-case are optional.
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : IfStatement &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     */
+    public void createStatementIf()
+    {
+<span class="pc bpc" id="L918" title="1 of 2 branches missed.">        Preconditions.checkState(stack.size() &gt;= 1);</span>
+
+        // Get the pieces off of the stack.
+
+<span class="fc" id="L922">        final boolean has_else = stack.peek() instanceof SequenceStatement;</span>
+
+<span class="fc bfc" id="L924" title="All 2 branches covered.">        final SequenceStatement else_case = (SequenceStatement) (has_else ? stack.pop() : null);</span>
+
+<span class="fc" id="L926">        final LinkedList&lt;ConditionalCase&gt; elif_cases = Lists.newLinkedList();</span>
+
+<span class="fc bfc" id="L928" title="All 2 branches covered.">        while (stack.size() &gt; 1)</span>
+        {
+<span class="fc" id="L930">            elif_cases.add(0, (ConditionalCase) stack.pop());</span>
+        }
+
+<span class="fc" id="L933">        final ConditionalCase main_case = (ConditionalCase) stack.pop();</span>
+
+        // Create the AST node.
+<span class="fc" id="L936">        IfStatement node = new IfStatement();</span>
+<span class="fc" id="L937">        node = node.setMainCase(main_case);</span>
+<span class="fc" id="L938">        node = node.setElifCases((new ConstructList()).addAll(elif_cases));</span>
+<span class="fc" id="L939">        node = node.setElseCase(else_case);</span>
+
+        // Push the AST node onto the stack.
+<span class="fc" id="L942">        stack.push(node);</span>
+
+<span class="pc bpc" id="L944" title="1 of 2 branches missed.">        assert stack.size() == 1;</span>
+<span class="fc" id="L945">    }</span>
+
+    /**
+     * This method creates a goto-statement.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Precondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; label : Label &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : GotoStatement &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     */
+    public void createStatementGoto()
+    {
+<span class="pc bpc" id="L966" title="1 of 2 branches missed.">        Preconditions.checkState(stack.size() == 1);</span>
+
+        // Create the AST node.
+<span class="fc" id="L969">        GotoStatement node = new GotoStatement();</span>
+
+        // Initialize the AST node.
+<span class="fc" id="L972">        node = node.setLabel((Label) stack.pop());</span>
+
+        // Push the AST node onto the stack.
+<span class="fc" id="L975">        stack.push(node);</span>
+
+<span class="pc bpc" id="L977" title="1 of 2 branches missed.">        assert stack.size() == 1;</span>
+<span class="fc" id="L978">    }</span>
+
+    /**
+     * This method creates a marker-statement.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Precondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; label : Label &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : MarkerStatement &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     */
+    public void createStatementMarker()
+    {
+<span class="pc bpc" id="L999" title="1 of 2 branches missed.">        Preconditions.checkState(stack.size() == 1);</span>
+
+        // Create the AST node.
+<span class="fc" id="L1002">        MarkerStatement node = new MarkerStatement();</span>
+
+        // Initialize the AST node.
+<span class="fc" id="L1005">        node = node.setLabel((Label) stack.pop());</span>
+
+        // Push the AST node onto the stack.
+<span class="fc" id="L1008">        stack.push(node);</span>
+
+<span class="pc bpc" id="L1010" title="1 of 2 branches missed.">        assert stack.size() == 1;</span>
+<span class="fc" id="L1011">    }</span>
+
+    /**
+     * This method creates a branch-statement.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Precondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; default-label : Label &lt;/li&gt;
+     * &lt;li&gt; label[n] : Label &lt;/li&gt;
+     * &lt;li&gt; label[.] : Label &lt;/li&gt;
+     * &lt;li&gt; label[3] : Label &lt;/li&gt;
+     * &lt;li&gt; label[2] : Label &lt;/li&gt;
+     * &lt;li&gt; label[1] : Label &lt;/li&gt;
+     * &lt;li&gt; label[0] : Label &lt;/li&gt;
+     * &lt;li&gt; index : IExpression &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : BranchStatement &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     */
+    public void createStatementBranch()
+    {
+<span class="pc bpc" id="L1039" title="1 of 2 branches missed.">        Preconditions.checkState(stack.size() &gt;= 2);</span>
+
+        // Get the pieces off fo the stack.
+<span class="fc" id="L1042">        final Label default_label = (Label) stack.pop();</span>
+
+<span class="fc" id="L1044">        final LinkedList&lt;Label&gt; labels = Lists.newLinkedList();</span>
+
+<span class="fc bfc" id="L1046" title="All 2 branches covered.">        while (stack.size() &gt; 1)</span>
+        {
+<span class="fc" id="L1048">            labels.addFirst((Label) stack.pop());</span>
+        }
+
+<span class="fc" id="L1051">        final IExpression index = (IExpression) stack.pop();</span>
+
+        // Create the AST node.
+<span class="fc" id="L1054">        BranchStatement node = new BranchStatement();</span>
+
+        // Initialize the AST node.
+<span class="fc" id="L1057">        node = node.setIndex(index);</span>
+<span class="fc" id="L1058">        node = node.setLabels(new ConstructList(labels));</span>
+<span class="fc" id="L1059">        node = node.setDefaultLabel(default_label);</span>
+
+        // Push the AST node onto the stack.
+<span class="fc" id="L1062">        stack.push(node);</span>
+
+<span class="pc bpc" id="L1064" title="1 of 2 branches missed.">        assert stack.size() == 1;</span>
+<span class="fc" id="L1065">    }</span>
+
+    /**
+     * This method creates a when-statement.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Precondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; body : SequenceStatement &lt;/li&gt;
+     * &lt;li&gt; condition : IExpression &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : WhenStatement &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     */
+    public void createStatementWhen()
+    {
+<span class="pc bpc" id="L1087" title="1 of 2 branches missed.">        Preconditions.checkState(stack.size() == 2);</span>
+
+        // Create the AST node.
+<span class="fc" id="L1090">        WhenStatement node = new WhenStatement();</span>
+
+        // Initialize the AST node.
+<span class="fc" id="L1093">        node = node.setBody((IStatement) stack.pop());</span>
+<span class="fc" id="L1094">        node = node.setCondition((IExpression) stack.pop());</span>
+
+        // Push the AST node onto the stack.
+<span class="fc" id="L1097">        stack.push(node);</span>
+
+<span class="pc bpc" id="L1099" title="1 of 2 branches missed.">        assert stack.size() == 1;</span>
+<span class="fc" id="L1100">    }</span>
+
+    /**
+     * This method creates a forever-loop statement.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Precondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; body : SequenceStatement &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : ForeverStatement &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     */
+    public void createStatementForever()
+    {
+<span class="pc bpc" id="L1121" title="1 of 2 branches missed.">        Preconditions.checkState(stack.size() == 1);</span>
+
+        // Create the AST node.
+<span class="fc" id="L1124">        ForeverStatement node = new ForeverStatement();</span>
+
+        // Initialize the AST node.
+<span class="fc" id="L1127">        node = node.setBody((SequenceStatement) stack.pop());</span>
+
+        // Push the AST node onto the stack.
+<span class="fc" id="L1130">        stack.push(node);</span>
+
+<span class="pc bpc" id="L1132" title="1 of 2 branches missed.">        assert stack.size() == 1;</span>
+<span class="fc" id="L1133">    }</span>
+
+    /**
+     * This method creates a do-while-loop statement.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Precondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; condition : IExpression &lt;/li&gt;
+     * &lt;li&gt; body : SequenceStatement &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : DoWhileStatement &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     */
+    public void createStatementDoWhile()
+    {
+<span class="pc bpc" id="L1155" title="1 of 2 branches missed.">        Preconditions.checkState(stack.size() == 2);</span>
+
+        // Create the AST node.
+<span class="fc" id="L1158">        DoWhileStatement node = new DoWhileStatement();</span>
+
+        // Initialize the AST node.
+<span class="fc" id="L1161">        node = node.setCondition((IExpression) stack.pop());</span>
+<span class="fc" id="L1162">        node = node.setBody((SequenceStatement) stack.pop());</span>
+
+        // Push the AST node onto the stack.
+<span class="fc" id="L1165">        stack.push(node);</span>
+
+<span class="pc bpc" id="L1167" title="1 of 2 branches missed.">        assert stack.size() == 1;</span>
+<span class="fc" id="L1168">    }</span>
+
+    /**
+     * This method creates a do-until-loop statement.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Precondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; condition : IExpression &lt;/li&gt;
+     * &lt;li&gt; body : SequenceStatement &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : DoUntilStatement &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     */
+    public void createStatementDoUntil()
+    {
+<span class="pc bpc" id="L1190" title="1 of 2 branches missed.">        Preconditions.checkState(stack.size() == 2);</span>
+
+        // Create the AST node.
+<span class="fc" id="L1193">        DoUntilStatement node = new DoUntilStatement();</span>
+
+        // Initialize the AST node.
+<span class="fc" id="L1196">        node = node.setCondition((IExpression) stack.pop());</span>
+<span class="fc" id="L1197">        node = node.setBody((SequenceStatement) stack.pop());</span>
+
+        // Push the AST node onto the stack.
+<span class="fc" id="L1200">        stack.push(node);</span>
+
+<span class="pc bpc" id="L1202" title="1 of 2 branches missed.">        assert stack.size() == 1;</span>
+<span class="fc" id="L1203">    }</span>
+
+    /**
+     * This method creates a break-statement.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : BreakStatement &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     */
+    public void createStatementBreak()
+    {
+<span class="fc" id="L1217">        Preconditions.checkState(stack.isEmpty());</span>
+
+        // Create the AST node.
+<span class="fc" id="L1220">        BreakStatement node = new BreakStatement();</span>
+
+        // Push the AST node onto the stack.
+<span class="fc" id="L1223">        stack.push(node);</span>
+
+<span class="pc bpc" id="L1225" title="1 of 2 branches missed.">        assert stack.size() == 1;</span>
+<span class="fc" id="L1226">    }</span>
+
+    /**
+     * This method creates a continue-statement.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : ContinueStatement &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     */
+    public void createStatementContinue()
+    {
+<span class="fc" id="L1240">        Preconditions.checkState(stack.isEmpty());</span>
+
+        // Create the AST node.
+<span class="fc" id="L1243">        ContinueStatement node = new ContinueStatement();</span>
+
+        // Push the AST node onto the stack.
+<span class="fc" id="L1246">        stack.push(node);</span>
+
+<span class="pc bpc" id="L1248" title="1 of 2 branches missed.">        assert stack.size() == 1;</span>
+<span class="fc" id="L1249">    }</span>
+
+    /**
+     * This method creates a redo-statement.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : RedoStatement &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     */
+    public void createStatementRedo()
+    {
+<span class="fc" id="L1263">        Preconditions.checkState(stack.isEmpty());</span>
+
+        // Create the AST node.
+<span class="fc" id="L1266">        RedoStatement node = new RedoStatement();</span>
+
+        // Push the AST node onto the stack.
+<span class="fc" id="L1269">        stack.push(node);</span>
+
+<span class="pc bpc" id="L1271" title="1 of 2 branches missed.">        assert stack.size() == 1;</span>
+<span class="fc" id="L1272">    }</span>
+
+    /**
+     * This method creates a foreach-statement.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Precondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; body : SequenceStatement &lt;/li&gt;
+     * &lt;li&gt; iterable : IExpression &lt;/li&gt;
+     * &lt;li&gt; type : TypeSpecifier &lt;/li&gt;
+     * &lt;li&gt; variable : Variable &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : ForeachStatement &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     */
+    public void createStatementForeach()
+    {
+<span class="pc bpc" id="L1296" title="1 of 2 branches missed.">        Preconditions.checkState(stack.size() == 4);</span>
+
+        // Create the AST node.
+<span class="fc" id="L1299">        ForeachStatement node = new ForeachStatement();</span>
+
+        // Initialize the AST node.
+<span class="fc" id="L1302">        node = node.setBody((SequenceStatement) stack.pop());</span>
+<span class="fc" id="L1303">        node = node.setIterable((IExpression) stack.pop());</span>
+<span class="fc" id="L1304">        node = node.setType((TypeSpecifier) stack.pop());</span>
+<span class="fc" id="L1305">        node = node.setVariable((Variable) stack.pop());</span>
+
+        // Push the AST node onto the stack.
+<span class="fc" id="L1308">        stack.push(node);</span>
+
+<span class="pc bpc" id="L1310" title="1 of 2 branches missed.">        assert stack.size() == 1;</span>
+<span class="fc" id="L1311">    }</span>
+
+    /**
+     * This method creates a for-statement.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Precondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; body : SequenceStatement &lt;/li&gt;
+     * &lt;li&gt; next : IExpression &lt;/li&gt;
+     * &lt;li&gt; condition : IExpression &lt;/li&gt;
+     * &lt;li&gt; initializer : IExpression &lt;/li&gt;
+     * &lt;li&gt; variable : Variable &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * Note: The step is null, iff the step is implicit.
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : ForStatement &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     */
+    public void createStatementFor()
+    {
+<span class="pc bpc" id="L1340" title="1 of 2 branches missed.">        Preconditions.checkState(stack.size() == 5);</span>
+
+        // Create the AST node.
+<span class="fc" id="L1343">        ForStatement node = new ForStatement();</span>
+
+        // Initialize the AST node.
+<span class="fc" id="L1346">        node = node.setBody((SequenceStatement) stack.pop());</span>
+<span class="fc" id="L1347">        node = node.setNext((IExpression) stack.pop());</span>
+<span class="fc" id="L1348">        node = node.setCondition((IExpression) stack.pop());</span>
+<span class="fc" id="L1349">        node = node.setInitializer((IExpression) stack.pop());</span>
+<span class="fc" id="L1350">        node = node.setVariable((Variable) stack.pop());</span>
+
+        // Push the AST node onto the stack.
+<span class="fc" id="L1353">        stack.push(node);</span>
+
+<span class="pc bpc" id="L1355" title="1 of 2 branches missed.">        assert stack.size() == 1;</span>
+<span class="fc" id="L1356">    }</span>
+
+    /**
+     * This method creates a while-statement.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Precondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; body : SequenceStatement &lt;/li&gt;
+     * &lt;li&gt; condition : IExpression &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : WhileStatement &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     */
+    public void createStatementWhile()
+    {
+<span class="pc bpc" id="L1378" title="1 of 2 branches missed.">        Preconditions.checkState(stack.size() == 2);</span>
+
+        // Create the AST node.
+<span class="fc" id="L1381">        WhileStatement node = new WhileStatement();</span>
+
+        // Initialize the AST node.
+<span class="fc" id="L1384">        node = node.setBody((SequenceStatement) stack.pop());</span>
+<span class="fc" id="L1385">        node = node.setCondition((IExpression) stack.pop());</span>
+
+        // Push the AST node onto the stack.
+<span class="fc" id="L1388">        stack.push(node);</span>
+
+<span class="pc bpc" id="L1390" title="1 of 2 branches missed.">        assert stack.size() == 1;</span>
+<span class="fc" id="L1391">    }</span>
+
+    /**
+     * This method creates a until-statement.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Precondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; body : SequenceStatement &lt;/li&gt;
+     * &lt;li&gt; condition : IExpression &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : UntilStatement &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     */
+    public void createStatementUntil()
+    {
+<span class="pc bpc" id="L1413" title="1 of 2 branches missed.">        Preconditions.checkState(stack.size() == 2);</span>
+
+        // Create the AST node.
+<span class="fc" id="L1416">        UntilStatement node = new UntilStatement();</span>
+
+        // Initialize the AST node.
+<span class="fc" id="L1419">        node = node.setBody((SequenceStatement) stack.pop());</span>
+<span class="fc" id="L1420">        node = node.setCondition((IExpression) stack.pop());</span>
+
+        // Push the AST node onto the stack.
+<span class="fc" id="L1423">        stack.push(node);</span>
+
+<span class="pc bpc" id="L1425" title="1 of 2 branches missed.">        assert stack.size() == 1;</span>
+<span class="fc" id="L1426">    }</span>
+
+    /**
+     * This method creates an assert-statement.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Precondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; message : IExpression &lt;/li&gt;
+     * &lt;li&gt; condition : IExpression &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * Note: The message must be null, if the message is unspecified.
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : AssertStatement &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     */
+    public void createStatementAssert()
+    {
+<span class="pc bpc" id="L1452" title="1 of 2 branches missed.">        Preconditions.checkState(stack.size() == 2);</span>
+
+        // Create the AST node.
+<span class="fc" id="L1455">        AssertStatement node = new AssertStatement();</span>
+
+        // Initialize the AST node.
+<span class="fc" id="L1458">        node = node.setMessage((IExpression) stack.pop());</span>
+<span class="fc" id="L1459">        node = node.setCondition((IExpression) stack.pop());</span>
+
+        // Push the AST node onto the stack.
+<span class="fc" id="L1462">        stack.push(node);</span>
+
+<span class="pc bpc" id="L1464" title="1 of 2 branches missed.">        assert stack.size() == 1;</span>
+<span class="fc" id="L1465">    }</span>
+
+    /**
+     * This method creates an assume-statement.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Precondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; message : IExpression &lt;/li&gt;
+     * &lt;li&gt; condition : IExpression &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * Note: The message must be null, if the message is unspecified.
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : AssumeStatement &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     */
+    public void createStatementAssume()
+    {
+<span class="pc bpc" id="L1491" title="1 of 2 branches missed.">        Preconditions.checkState(stack.size() == 2);</span>
+
+        // Create the AST node.
+<span class="fc" id="L1494">        AssumeStatement node = new AssumeStatement();</span>
+
+        // Initialize the AST node.
+<span class="fc" id="L1497">        node = node.setMessage((IExpression) stack.pop());</span>
+<span class="fc" id="L1498">        node = node.setCondition((IExpression) stack.pop());</span>
+
+        // Push the AST node onto the stack.
+<span class="fc" id="L1501">        stack.push(node);</span>
+
+<span class="pc bpc" id="L1503" title="1 of 2 branches missed.">        assert stack.size() == 1;</span>
+<span class="fc" id="L1504">    }</span>
+
+    /**
+     * This method creates a throw-statement.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Precondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; exception : IExpression &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : ThrowStatement &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     */
+    public void createStatementThrow()
+    {
+<span class="pc bpc" id="L1525" title="1 of 2 branches missed.">        Preconditions.checkState(stack.size() == 1);</span>
+
+        // Create the AST node.
+<span class="fc" id="L1528">        ThrowStatement node = new ThrowStatement();</span>
+
+        // Initialize the AST node.
+<span class="fc" id="L1531">        node = node.setValue((IExpression) stack.pop());</span>
+
+        // Push the AST node onto the stack.
+<span class="fc" id="L1534">        stack.push(node);</span>
+
+<span class="pc bpc" id="L1536" title="1 of 2 branches missed.">        assert stack.size() == 1;</span>
+<span class="fc" id="L1537">    }</span>
+
+    /**
+     * This method creates a try-catch statement.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Precondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; handler[n] : ExceptionHandler &lt;/li&gt;
+     * &lt;li&gt; handler[2] : ExceptionHandler &lt;/li&gt;
+     * &lt;li&gt; handler[1] : ExceptionHandler &lt;/li&gt;
+     * &lt;li&gt; handler[0] : ExceptionHandler &lt;/li&gt;
+     * &lt;li&gt; body : SequenceStatement &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * Note: At least one exception-handler must be provided.
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : TryCatchStatement &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     */
+    public void createStatementTryCatch()
+    {
+<span class="pc bpc" id="L1566" title="1 of 2 branches missed.">        Preconditions.checkState(stack.size() &gt;= 1);</span>
+
+        // Get the pieces off of the stack.
+<span class="fc" id="L1569">        final LinkedList&lt;ExceptionHandler&gt; list = Lists.newLinkedList();</span>
+
+<span class="fc bfc" id="L1571" title="All 2 branches covered.">        while (stack.size() &gt; 1)</span>
+        {
+<span class="fc" id="L1573">            list.add(0, (ExceptionHandler) stack.pop());</span>
+        }
+
+<span class="fc" id="L1576">        final SequenceStatement body = (SequenceStatement) stack.pop();</span>
+
+        // Create the AST node.
+<span class="fc" id="L1579">        TryCatchStatement node = new TryCatchStatement();</span>
+<span class="fc" id="L1580">        node = node.setBody(body);</span>
+<span class="fc" id="L1581">        node = node.setHandlers((new ConstructList&lt;ExceptionHandler&gt;()).addAll(list));</span>
+
+        // Push the AST node onto the stack.
+<span class="fc" id="L1584">        stack.push(node);</span>
+
+<span class="pc bpc" id="L1586" title="1 of 2 branches missed.">        assert stack.size() == 1;</span>
+<span class="fc" id="L1587">    }</span>
+
+    /**
+     * This method creates an exception-handler for a try-catch statement.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Precondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; body : SequenceStatement &lt;/li&gt;
+     * &lt;li&gt; type : TypeSpecifier &lt;/li&gt;
+     * &lt;li&gt; variable : Variable &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : ExceptionHandler &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     */
+    public void createComponentExceptionHandler()
+    {
+<span class="pc bpc" id="L1610" title="1 of 2 branches missed.">        Preconditions.checkState(stack.size() == 3);</span>
+
+        // Create the AST node.
+<span class="fc" id="L1613">        ExceptionHandler node = new ExceptionHandler();</span>
+
+        // Initialize the AST node.
+<span class="fc" id="L1616">        node = node.setBody((SequenceStatement) stack.pop());</span>
+<span class="fc" id="L1617">        node = node.setType((TypeSpecifier) stack.pop());</span>
+<span class="fc" id="L1618">        node = node.setVariable((Variable) stack.pop());</span>
+
+        // Push the AST node onto the stack.
+<span class="fc" id="L1621">        stack.push(node);</span>
+
+<span class="pc bpc" id="L1623" title="1 of 2 branches missed.">        assert stack.size() == 1;</span>
+<span class="fc" id="L1624">    }</span>
+
+    /**
+     * This method creates a var-statement.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Precondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; value : IExpression &lt;/li&gt;
+     * &lt;li&gt; variable : Variable &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : VarStatement &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     */
+    public void createStatementVar()
+    {
+<span class="pc bpc" id="L1646" title="1 of 2 branches missed.">        Preconditions.checkState(stack.size() == 2);</span>
+
+        // Create the AST node.
+<span class="fc" id="L1649">        VarStatement node = new VarStatement();</span>
+
+        // Initialize the AST node.
+<span class="fc" id="L1652">        node = node.setValue((IExpression) stack.pop());</span>
+<span class="fc" id="L1653">        node = node.setVariable((Variable) stack.pop());</span>
+
+        // Push the AST node onto the stack.
+<span class="fc" id="L1656">        stack.push(node);</span>
+
+<span class="pc bpc" id="L1658" title="1 of 2 branches missed.">        assert stack.size() == 1;</span>
+<span class="fc" id="L1659">    }</span>
+
+    /**
+     * This method creates a val-statement.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Precondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; value : IExpression &lt;/li&gt;
+     * &lt;li&gt; variable : Variable &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : ValStatement &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     */
+    public void createStatementVal()
+    {
+<span class="pc bpc" id="L1681" title="1 of 2 branches missed.">        Preconditions.checkState(stack.size() == 2);</span>
+
+        // Create the AST node.
+<span class="fc" id="L1684">        ValStatement node = new ValStatement();</span>
+
+        // Initialize the AST node.
+<span class="fc" id="L1687">        node = node.setValue((IExpression) stack.pop());</span>
+<span class="fc" id="L1688">        node = node.setVariable((Variable) stack.pop());</span>
+
+        // Push the AST node onto the stack.
+<span class="fc" id="L1691">        stack.push(node);</span>
+
+<span class="pc bpc" id="L1693" title="1 of 2 branches missed.">        assert stack.size() == 1;</span>
+<span class="fc" id="L1694">    }</span>
+
+    /**
+     * This method creates a let-statement.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Precondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; value : IExpression &lt;/li&gt;
+     * &lt;li&gt; variable : Variable &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : LetStatement &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     */
+    public void createStatementLet()
+    {
+<span class="pc bpc" id="L1716" title="1 of 2 branches missed.">        Preconditions.checkState(stack.size() == 2);</span>
+
+        // Create the AST node.
+<span class="fc" id="L1719">        LetStatement node = new LetStatement();</span>
+
+        // Initialize the AST node.
+<span class="fc" id="L1722">        node = node.setValue((IExpression) stack.pop());</span>
+<span class="fc" id="L1723">        node = node.setVariable((Variable) stack.pop());</span>
+
+        // Push the AST node onto the stack.
+<span class="fc" id="L1726">        stack.push(node);</span>
+
+<span class="pc bpc" id="L1728" title="1 of 2 branches missed.">        assert stack.size() == 1;</span>
+<span class="fc" id="L1729">    }</span>
+
+    /**
+     * This method creates a nop-statement.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : NopStatement &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     */
+    public void createStatementNop()
+    {
+<span class="fc" id="L1743">        Preconditions.checkState(stack.isEmpty());</span>
+
+        // Create the AST node.
+<span class="fc" id="L1746">        final NopStatement node = new NopStatement();</span>
+
+        // Push the AST node onto the stack.
+<span class="fc" id="L1749">        stack.push(node);</span>
+
+<span class="pc bpc" id="L1751" title="1 of 2 branches missed.">        assert stack.size() == 1;</span>
+<span class="fc" id="L1752">    }</span>
+
+    /**
+     * This method creates a return-value statement.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Precondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; value : IExpression &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : ReturnValueStatement &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     */
+    public void createStatementReturnValue()
+    {
+<span class="pc bpc" id="L1773" title="1 of 2 branches missed.">        Preconditions.checkState(stack.size() == 1);</span>
+
+        // Create the AST node.
+<span class="fc" id="L1776">        ReturnValueStatement node = new ReturnValueStatement();</span>
+
+        // Initialize the AST node.
+<span class="fc" id="L1779">        node = node.setValue((IExpression) stack.pop());</span>
+
+        // Push the AST node onto the stack.
+<span class="fc" id="L1782">        stack.push(node);</span>
+
+<span class="pc bpc" id="L1784" title="1 of 2 branches missed.">        assert stack.size() == 1;</span>
+<span class="fc" id="L1785">    }</span>
+
+    /**
+     * This method creates a return-void statement.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : ReturnVoidStatement &lt;/li&gt;
+     * &lt;li&gt; ..... &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     */
+    public void createStatementReturnVoid()
+    {
+<span class="fc" id="L1800">        Preconditions.checkState(stack.isEmpty());</span>
+
+        // Create the AST node.
+<span class="fc" id="L1803">        ReturnVoidStatement node = new ReturnVoidStatement();</span>
+
+        // Push the AST node onto the stack.
+<span class="fc" id="L1806">        stack.push(node);</span>
+
+<span class="pc bpc" id="L1808" title="1 of 2 branches missed.">        assert stack.size() == 1;</span>
+<span class="fc" id="L1809">    }</span>
+
+    /**
+     * This method creates a recur-statement.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Precondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; argument[n] : IExpression &lt;/li&gt;
+     * &lt;li&gt; argument[2] : IExpression &lt;/li&gt;
+     * &lt;li&gt; argument[1] : IExpression &lt;/li&gt;
+     * &lt;li&gt; argument[0] : IExpression &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : RecurStatement &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     */
+    public void createStatementRecur()
+    {
+        // Create the AST node.
+<span class="fc" id="L1834">        RecurStatement node = new RecurStatement();</span>
+<span class="fc" id="L1835">        node = node.setArguments(popExpressions(stack.size()));</span>
+
+        // Push the AST node onto the stack.
+<span class="fc" id="L1838">        stack.push(node);</span>
+
+<span class="pc bpc" id="L1840" title="1 of 2 branches missed.">        assert stack.size() == 1;</span>
+<span class="fc" id="L1841">    }</span>
+
+    /**
+     * This method creates an expression-statement.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Precondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; expression : IExpression &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : ExpressionStatement &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     */
+    public void createStatementExpression()
+    {
+<span class="pc bpc" id="L1862" title="1 of 2 branches missed.">        Preconditions.checkState(stack.size() == 1);</span>
+
+        // Create the AST node.
+<span class="fc" id="L1865">        ExpressionStatement node = new ExpressionStatement();</span>
+
+        // Initialize the AST node.
+<span class="fc" id="L1868">        node = node.setExpression((IExpression) stack.pop());</span>
+
+        // Push the AST node onto the stack.
+<span class="fc" id="L1871">        stack.push(node);</span>
+
+<span class="pc bpc" id="L1873" title="1 of 2 branches missed.">        assert stack.size() == 1;</span>
+<span class="fc" id="L1874">    }</span>
+
+    /**
+     * This method creates a sequence-statement.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Precondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; element[n] : IStatement &lt;/li&gt;
+     * &lt;li&gt; element[.] : IStatement &lt;/li&gt;
+     * &lt;li&gt; element[2] : IStatement &lt;/li&gt;
+     * &lt;li&gt; element[1] : IStatement &lt;/li&gt;
+     * &lt;li&gt; element[0] : IStatement &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : SequenceStatement &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     */
+    public void createStatementSequence()
+    {
+        // Create the AST node.
+<span class="fc" id="L1900">        SequenceStatement node = new SequenceStatement();</span>
+
+        // Initialize the AST node.
+<span class="fc" id="L1903">        final LinkedList&lt;IStatement&gt; list = Lists.newLinkedList();</span>
+
+<span class="fc bfc" id="L1905" title="All 2 branches covered.">        while (stack.isEmpty() == false)</span>
+        {
+<span class="fc" id="L1907">            list.add(0, (IStatement) stack.pop());</span>
+        }
+
+<span class="fc" id="L1910">        node = node.setElements((new ConstructList&lt;IStatement&gt;()).addAll(list));</span>
+
+        // Push the AST node onto the stack.
+<span class="fc" id="L1913">        stack.push(node);</span>
+
+<span class="pc bpc" id="L1915" title="1 of 2 branches missed.">        assert stack.size() == 1;</span>
+<span class="fc" id="L1916">    }</span>
+
+    /**
+     * This method creates an as-operation.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Precondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; type : TypeSpecifier &lt;/li&gt;
+     * &lt;li&gt; value : IExpression &lt;/li&gt;
+     * &lt;li&gt; ..... &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : AsOperation &lt;/li&gt;
+     * &lt;li&gt; ..... &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     */
+    public void createOperationAs()
+    {
+<span class="pc bpc" id="L1940" title="1 of 2 branches missed.">        Preconditions.checkState(stack.size() &gt;= 2);</span>
+
+<span class="fc" id="L1942">        final int original_size = stack.size();</span>
+        {
+            // Create the AST node.
+<span class="fc" id="L1945">            AsOperation node = new AsOperation();</span>
+
+            // Initialize the AST node.
+<span class="fc" id="L1948">            node = node.setType((TypeSpecifier) stack.pop());</span>
+<span class="fc" id="L1949">            node = node.setValue((IExpression) stack.pop());</span>
+
+            // Push the AST node onto the stack.
+<span class="fc" id="L1952">            stack.push(node);</span>
+        }
+<span class="pc bpc" id="L1954" title="1 of 2 branches missed.">        assert stack.size() == (original_size - 2 + 1);</span>
+<span class="fc" id="L1955">    }</span>
+
+    /**
+     * This method creates an is-operation.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Precondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; type : TypeSpecifier &lt;/li&gt;
+     * &lt;li&gt; value : IExpression &lt;/li&gt;
+     * &lt;li&gt; ..... &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : AsOperation &lt;/li&gt;
+     * &lt;li&gt; ..... &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     */
+    public void createOperationIs()
+    {
+<span class="pc bpc" id="L1979" title="1 of 2 branches missed.">        Preconditions.checkState(stack.size() &gt;= 1);</span>
+
+<span class="fc" id="L1981">        final int original_size = stack.size();</span>
+        {
+            // Create the AST node.
+<span class="fc" id="L1984">            IsOperation node = new IsOperation();</span>
+
+            // Initialize the AST node.
+<span class="fc" id="L1987">            node = node.setType((TypeSpecifier) stack.pop());</span>
+<span class="fc" id="L1988">            node = node.setValue((IExpression) stack.pop());</span>
+
+            // Push the AST node onto the stack.
+<span class="fc" id="L1991">            stack.push(node);</span>
+        }
+<span class="pc bpc" id="L1993" title="1 of 2 branches missed.">        assert stack.size() == (original_size - 2 + 1);</span>
+<span class="fc" id="L1994">    }</span>
+
+    /**
+     * This method creates a null-coalescing operation.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Precondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; right-operand : IExpression &lt;/li&gt;
+     * &lt;li&gt; left-operand : IExpression &lt;/li&gt;
+     * &lt;li&gt; ..... &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : NullCoalescingOperation &lt;/li&gt;
+     * &lt;li&gt; ..... &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     */
+    public void createOperationNullCoalescing()
+    {
+<span class="fc" id="L2018">        createBinaryOperation(new NullCoalescingOperation());</span>
+<span class="fc" id="L2019">    }</span>
+
+    /**
+     * This method creates an AND-operation.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Precondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; right-operand : IExpression &lt;/li&gt;
+     * &lt;li&gt; left-operand : IExpression &lt;/li&gt;
+     * &lt;li&gt; ..... &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : AndOperation &lt;/li&gt;
+     * &lt;li&gt; ..... &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     */
+    public void createOperationAnd()
+    {
+<span class="fc" id="L2043">        createBinaryOperation(new AndOperation());</span>
+<span class="fc" id="L2044">    }</span>
+
+    /**
+     * This method creates an OR-operation.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Precondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; right-operand : IExpression &lt;/li&gt;
+     * &lt;li&gt; left-operand : IExpression &lt;/li&gt;
+     * &lt;li&gt; ..... &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : OrOperation &lt;/li&gt;
+     * &lt;li&gt; ..... &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     */
+    public void createOperationOr()
+    {
+<span class="fc" id="L2068">        createBinaryOperation(new OrOperation());</span>
+<span class="fc" id="L2069">    }</span>
+
+    /**
+     * This method creates an XOR-operation.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Precondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; right-operand : IExpression &lt;/li&gt;
+     * &lt;li&gt; left-operand : IExpression &lt;/li&gt;
+     * &lt;li&gt; ..... &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : XorOperation &lt;/li&gt;
+     * &lt;li&gt; ..... &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     */
+    public void createOperationXor()
+    {
+<span class="fc" id="L2093">        createBinaryOperation(new XorOperation());</span>
+<span class="fc" id="L2094">    }</span>
+
+    /**
+     * This method creates an IMPLIES-operation.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Precondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; right-operand : IExpression &lt;/li&gt;
+     * &lt;li&gt; left-operand : IExpression &lt;/li&gt;
+     * &lt;li&gt; ..... &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : ImpliesOperation &lt;/li&gt;
+     * &lt;li&gt; ..... &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     */
+    public void createOperationImplies()
+    {
+<span class="fc" id="L2118">        createBinaryOperation(new ImpliesOperation());</span>
+<span class="fc" id="L2119">    }</span>
+
+    /**
+     * This method creates an identity-equals operation.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Precondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; right-operand : IExpression &lt;/li&gt;
+     * &lt;li&gt; left-operand : IExpression &lt;/li&gt;
+     * &lt;li&gt; ..... &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : IdentityEqualsOperation &lt;/li&gt;
+     * &lt;li&gt; ..... &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     */
+    public void createOperationIdentityEquals()
+    {
+<span class="fc" id="L2143">        createBinaryOperation(new IdentityEqualsOperation());</span>
+<span class="fc" id="L2144">    }</span>
+
+    /**
+     * This method creates an identity-not-equals operation.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Precondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; right-operand : IExpression &lt;/li&gt;
+     * &lt;li&gt; left-operand : IExpression &lt;/li&gt;
+     * &lt;li&gt; ..... &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : IdentityNotEqualsOperation &lt;/li&gt;
+     * &lt;li&gt; ..... &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     */
+    public void createOperationIdentityNotEquals()
+    {
+<span class="fc" id="L2168">        createBinaryOperation(new IdentityNotEqualsOperation());</span>
+<span class="fc" id="L2169">    }</span>
+
+    /**
+     * This method creates an equals-operation.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Precondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; right-operand : IExpression &lt;/li&gt;
+     * &lt;li&gt; left-operand : IExpression &lt;/li&gt;
+     * &lt;li&gt; ..... &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : EqualsOperation &lt;/li&gt;
+     * &lt;li&gt; ..... &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     */
+    public void createOperationEquals()
+    {
+<span class="fc" id="L2193">        createBinaryOperation(new EqualsOperation());</span>
+<span class="fc" id="L2194">    }</span>
+
+    /**
+     * This method creates an not-equals-operation.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Precondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; right-operand : IExpression &lt;/li&gt;
+     * &lt;li&gt; left-operand : IExpression &lt;/li&gt;
+     * &lt;li&gt; ..... &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : NotEqualsOperation &lt;/li&gt;
+     * &lt;li&gt; ..... &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     */
+    public void createOperationNotEquals()
+    {
+<span class="fc" id="L2218">        createBinaryOperation(new NotEqualsOperation());</span>
+<span class="fc" id="L2219">    }</span>
+
+    /**
+     * This method creates a less-than operation.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Precondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; right-operand : IExpression &lt;/li&gt;
+     * &lt;li&gt; left-operand : IExpression &lt;/li&gt;
+     * &lt;li&gt; ..... &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : LessThanOperation &lt;/li&gt;
+     * &lt;li&gt; ..... &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     */
+    public void createOperationLessThan()
+    {
+<span class="fc" id="L2243">        createBinaryOperation(new LessThanOperation());</span>
+<span class="fc" id="L2244">    }</span>
+
+    /**
+     * This method creates a less-than-or-equals operation.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Precondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; right-operand : IExpression &lt;/li&gt;
+     * &lt;li&gt; left-operand : IExpression &lt;/li&gt;
+     * &lt;li&gt; ..... &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : LessThanOrEqualsOperation &lt;/li&gt;
+     * &lt;li&gt; ..... &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     */
+    public void createOperationLessThanOrEquals()
+    {
+<span class="fc" id="L2268">        createBinaryOperation(new LessThanOrEqualsOperation());</span>
+<span class="fc" id="L2269">    }</span>
+
+    /**
+     * This method creates a greater-than operation.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Precondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; right-operand : IExpression &lt;/li&gt;
+     * &lt;li&gt; left-operand : IExpression &lt;/li&gt;
+     * &lt;li&gt; ..... &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : GreaterThanOperation &lt;/li&gt;
+     * &lt;li&gt; ..... &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     */
+    public void createOperationGreaterThan()
+    {
+<span class="fc" id="L2293">        createBinaryOperation(new GreaterThanOperation());</span>
+<span class="fc" id="L2294">    }</span>
+
+    /**
+     * This method creates a greater-than-or-equals operation.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Precondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; right-operand : IExpression &lt;/li&gt;
+     * &lt;li&gt; left-operand : IExpression &lt;/li&gt;
+     * &lt;li&gt; ..... &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : GreaterThanOrEqualsOperation &lt;/li&gt;
+     * &lt;li&gt; ..... &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     */
+    public void createOperationGreaterThanOrEquals()
+    {
+<span class="fc" id="L2318">        createBinaryOperation(new GreaterThanOrEqualsOperation());</span>
+<span class="fc" id="L2319">    }</span>
+
+    /**
+     * This method creates a add-operation.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Precondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; right-operand : IExpression &lt;/li&gt;
+     * &lt;li&gt; left-operand : IExpression &lt;/li&gt;
+     * &lt;li&gt; ..... &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : AddOperation &lt;/li&gt;
+     * &lt;li&gt; ..... &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     */
+    public void createOperationAdd()
+    {
+<span class="fc" id="L2343">        createBinaryOperation(new AddOperation());</span>
+<span class="fc" id="L2344">    }</span>
+
+    /**
+     * This method creates a subtract-operation.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Precondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; right-operand : IExpression &lt;/li&gt;
+     * &lt;li&gt; left-operand : IExpression &lt;/li&gt;
+     * &lt;li&gt; ..... &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : SubtractOperation &lt;/li&gt;
+     * &lt;li&gt; ..... &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     */
+    public void createOperationSubtract()
+    {
+<span class="fc" id="L2368">        createBinaryOperation(new SubtractOperation());</span>
+<span class="fc" id="L2369">    }</span>
+
+    /**
+     * This method creates a concat-operation.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Precondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; right-operand : IExpression &lt;/li&gt;
+     * &lt;li&gt; left-operand : IExpression &lt;/li&gt;
+     * &lt;li&gt; ..... &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : AndOperation &lt;/li&gt;
+     * &lt;li&gt; ..... &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     */
+    public void createOperationConcat()
+    {
+<span class="fc" id="L2393">        createBinaryOperation(new ConcatOperation());</span>
+<span class="fc" id="L2394">    }</span>
+
+    /**
+     * This method creates a multiply-operation.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Precondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; right-operand : IExpression &lt;/li&gt;
+     * &lt;li&gt; left-operand : IExpression &lt;/li&gt;
+     * &lt;li&gt; ..... &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : MultiplyOperation &lt;/li&gt;
+     * &lt;li&gt; ..... &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     */
+    public void createOperationMultiply()
+    {
+<span class="fc" id="L2418">        createBinaryOperation(new MultiplyOperation());</span>
+<span class="fc" id="L2419">    }</span>
+
+    /**
+     * This method creates a modulo-operation.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Precondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; right-operand : IExpression &lt;/li&gt;
+     * &lt;li&gt; left-operand : IExpression &lt;/li&gt;
+     * &lt;li&gt; ..... &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : ModuloOperation &lt;/li&gt;
+     * &lt;li&gt; ..... &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     */
+    public void createOperationModulo()
+    {
+<span class="fc" id="L2443">        createBinaryOperation(new ModuloOperation());</span>
+<span class="fc" id="L2444">    }</span>
+
+    /**
+     * This method creates a divide-operation.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Precondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; right-operand : IExpression &lt;/li&gt;
+     * &lt;li&gt; left-operand : IExpression &lt;/li&gt;
+     * &lt;li&gt; ..... &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : DivideOperation &lt;/li&gt;
+     * &lt;li&gt; ..... &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     */
+    public void createOperationDivide()
+    {
+<span class="fc" id="L2468">        createBinaryOperation(new DivideOperation());</span>
+<span class="fc" id="L2469">    }</span>
+
+    /**
+     * This method creates a negate-operation.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Precondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; operand : IExpression &lt;/li&gt;
+     * &lt;li&gt; ..... &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : NegateOperation &lt;/li&gt;
+     * &lt;li&gt; ..... &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     */
+    public void createOperationNegate()
+    {
+<span class="fc" id="L2492">        createUnaryOperation(new NegateOperation());</span>
+<span class="fc" id="L2493">    }</span>
+
+    /**
+     * This method creates a not-operation.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Precondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; operand : IExpression &lt;/li&gt;
+     * &lt;li&gt; ..... &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : NotOperation &lt;/li&gt;
+     * &lt;li&gt; ..... &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     */
+    public void createOperationNot()
+    {
+<span class="fc" id="L2516">        createUnaryOperation(new NotOperation());</span>
+<span class="fc" id="L2517">    }</span>
+
+    /**
+     * This method creates a dispatch-expression.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Precondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; argument[n] : IExpression &lt;/li&gt;
+     * &lt;li&gt; argument[2] : IExpression &lt;/li&gt;
+     * &lt;li&gt; argument[1] : IExpression &lt;/li&gt;
+     * &lt;li&gt; argument[0] : IExpression &lt;/li&gt;
+     * &lt;li&gt; name : Name &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : DispatchExpression &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     */
+    public void createExpressionDispatch()
+    {
+<span class="pc bpc" id="L2542" title="1 of 2 branches missed.">        Preconditions.checkState(stack.size() &gt;= 1);</span>
+
+        // Create the AST node.
+<span class="fc" id="L2545">        DispatchExpression node = new DispatchExpression();</span>
+
+        // Initialize the AST node.
+<span class="fc" id="L2548">        node = node.setArguments(this.popExpressions(stack.size() - 1));</span>
+<span class="fc" id="L2549">        node = node.setName((Name) stack.pop());</span>
+
+        // Push the AST node onto the stack.
+<span class="fc" id="L2552">        stack.push(node);</span>
+
+<span class="pc bpc" id="L2554" title="1 of 2 branches missed.">        assert stack.size() == 1;</span>
+<span class="fc" id="L2555">    }</span>
+
+    /**
+     * This method creates a new-expression.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Precondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; argument[n] : IExpression &lt;/li&gt;
+     * &lt;li&gt; argument[2] : IExpression &lt;/li&gt;
+     * &lt;li&gt; argument[1] : IExpression &lt;/li&gt;
+     * &lt;li&gt; argument[0] : IExpression &lt;/li&gt;
+     * &lt;li&gt; type : TypeSpecifier &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : NewExpression &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     */
+    public void createExpressionNew()
+    {
+<span class="pc bpc" id="L2580" title="1 of 2 branches missed.">        Preconditions.checkState(stack.size() &gt;= 1);</span>
+
+        // Create the AST node.
+<span class="fc" id="L2583">        NewExpression node = new NewExpression();</span>
+
+        // Initialize the AST node.
+<span class="fc" id="L2586">        node = node.setArguments(popExpressions(stack.size() - 1));</span>
+<span class="fc" id="L2587">        node = node.setType((TypeSpecifier) stack.pop());</span>
+
+        // Push the AST node onto the stack.
+<span class="fc" id="L2590">        stack.push(node);</span>
+
+<span class="pc bpc" id="L2592" title="1 of 2 branches missed.">        assert stack.size() == 1;</span>
+<span class="fc" id="L2593">    }</span>
+
+    /**
+     * This method creates a call-method expression.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Precondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; argument[n] : IExpression &lt;/li&gt;
+     * &lt;li&gt; argument[2] : IExpression &lt;/li&gt;
+     * &lt;li&gt; argument[1] : IExpression &lt;/li&gt;
+     * &lt;li&gt; argument[0] : IExpression &lt;/li&gt;
+     * &lt;li&gt; name : Name &lt;/li&gt;
+     * &lt;li&gt; owner : IExpression &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : CallMethodExpression &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     */
+    public void createExpressionCallMethod()
+    {
+<span class="pc bpc" id="L2619" title="1 of 2 branches missed.">        Preconditions.checkState(stack.size() &gt;= 1);</span>
+
+        // Create the AST node.
+<span class="fc" id="L2622">        CallMethodExpression node = new CallMethodExpression();</span>
+
+        // Initialize the AST node.
+<span class="fc" id="L2625">        node = node.setArguments(popExpressions(stack.size() - 2));</span>
+<span class="fc" id="L2626">        node = node.setName((Name) stack.pop());</span>
+<span class="fc" id="L2627">        node = node.setOwner((IExpression) stack.pop());</span>
+
+        // Push the AST node onto the stack.
+<span class="fc" id="L2630">        stack.push(node);</span>
+
+<span class="pc bpc" id="L2632" title="1 of 2 branches missed.">        assert stack.size() == 1;</span>
+<span class="fc" id="L2633">    }</span>
+
+    /**
+     * This method creates a call-static-method expression.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Precondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; argument[n] : IExpression &lt;/li&gt;
+     * &lt;li&gt; argument[2] : IExpression &lt;/li&gt;
+     * &lt;li&gt; argument[1] : IExpression &lt;/li&gt;
+     * &lt;li&gt; argument[0] : IExpression &lt;/li&gt;
+     * &lt;li&gt; name : Name &lt;/li&gt;
+     * &lt;li&gt; owner : TypeSpecifier (null, if inferred) &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : CallStaticMethodExpression &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     */
+    public void createExpressionCallStaticMethod()
+    {
+<span class="pc bpc" id="L2659" title="1 of 2 branches missed.">        Preconditions.checkState(stack.size() &gt;= 2);</span>
+
+        // Create the AST node.
+<span class="fc" id="L2662">        CallStaticMethodExpression node = new CallStaticMethodExpression();</span>
+
+        // Initialize the AST node.
+<span class="fc" id="L2665">        node = node.setArguments(this.popExpressions(stack.size() - 2));</span>
+<span class="fc" id="L2666">        node = node.setName((Name) stack.pop());</span>
+<span class="fc" id="L2667">        node = node.setOwner((TypeSpecifier) stack.pop());</span>
+
+        // Push the AST node onto the stack.
+<span class="fc" id="L2670">        stack.push(node);</span>
+
+<span class="pc bpc" id="L2672" title="1 of 2 branches missed.">        assert stack.size() == 1;</span>
+<span class="fc" id="L2673">    }</span>
+
+    /**
+     * This method creates a set-field expression.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Precondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; value : IExpression &lt;/li&gt;
+     * &lt;li&gt; name : Name &lt;/li&gt;
+     * &lt;li&gt; owner : IExpression &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : SetFieldExpression &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     */
+    public void createExpressionSetField()
+    {
+<span class="pc bpc" id="L2696" title="1 of 2 branches missed.">        Preconditions.checkState(stack.size() == 3);</span>
+
+        // Create the AST node.
+<span class="fc" id="L2699">        SetFieldExpression node = new SetFieldExpression();</span>
+
+        // Initialize the AST node.
+<span class="fc" id="L2702">        node = node.setValue((IExpression) stack.pop());</span>
+<span class="fc" id="L2703">        node = node.setName((Name) stack.pop());</span>
+<span class="fc" id="L2704">        node = node.setOwner((IExpression) stack.pop());</span>
+
+        // Push the AST node onto the stack.
+<span class="fc" id="L2707">        stack.push(node);</span>
+
+<span class="pc bpc" id="L2709" title="1 of 2 branches missed.">        assert stack.size() == 1;</span>
+<span class="fc" id="L2710">    }</span>
+
+    /**
+     * This method creates a get-field expression.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Precondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; name : Name &lt;/li&gt;
+     * &lt;li&gt; owner : IExpression &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : GetFieldExpression &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     */
+    public void createExpressionGetField()
+    {
+<span class="pc bpc" id="L2732" title="1 of 2 branches missed.">        Preconditions.checkState(stack.size() == 2);</span>
+
+        // Create the AST node.
+<span class="fc" id="L2735">        GetFieldExpression node = new GetFieldExpression();</span>
+
+        // Initialize the AST node.
+<span class="fc" id="L2738">        node = node.setName((Name) stack.pop());</span>
+<span class="fc" id="L2739">        node = node.setOwner((IExpression) stack.pop());</span>
+
+        // Push the AST node onto the stack.
+<span class="fc" id="L2742">        stack.push(node);</span>
+
+<span class="pc bpc" id="L2744" title="1 of 2 branches missed.">        assert stack.size() == 1;</span>
+<span class="fc" id="L2745">    }</span>
+
+    /**
+     * This method creates a set-static-field expression.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Precondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; value : IExpression &lt;/li&gt;
+     * &lt;li&gt; name : Name &lt;/li&gt;
+     * &lt;li&gt; owner : TypeSpecifier (null, if inferred) &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : SetStaticFieldExpression &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     */
+    public void createExpressionSetStaticField()
+    {
+<span class="pc bpc" id="L2768" title="1 of 2 branches missed.">        Preconditions.checkState(stack.size() == 3);</span>
+
+        // Create the AST node.
+<span class="fc" id="L2771">        SetStaticFieldExpression node = new SetStaticFieldExpression();</span>
+
+        // Initialize the AST node.
+<span class="fc" id="L2774">        node = node.setValue((IExpression) stack.pop());</span>
+<span class="fc" id="L2775">        node = node.setName((Name) stack.pop());</span>
+<span class="fc" id="L2776">        node = node.setOwner((TypeSpecifier) stack.pop());</span>
+
+        // Push the AST node onto the stack.
+<span class="fc" id="L2779">        stack.push(node);</span>
+
+<span class="pc bpc" id="L2781" title="1 of 2 branches missed.">        assert stack.size() == 1;</span>
+<span class="fc" id="L2782">    }</span>
+
+    /**
+     * This method creates a get-static-field expression.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Precondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; name : Name &lt;/li&gt;
+     * &lt;li&gt; owner : TypeSpecifier (null, if inferred) &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : GetStaticFieldExpression &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     */
+    public void createExpressionGetStaticField()
+    {
+<span class="pc bpc" id="L2804" title="1 of 2 branches missed.">        Preconditions.checkState(stack.size() == 2);</span>
+
+        // Create the AST node.
+<span class="fc" id="L2807">        GetStaticFieldExpression node = new GetStaticFieldExpression();</span>
+
+        // Initialize the AST node.
+<span class="fc" id="L2810">        node = node.setName((Name) stack.pop());</span>
+<span class="fc" id="L2811">        node = node.setOwner((TypeSpecifier) stack.pop());</span>
+
+        // Push the AST node onto the stack.
+<span class="fc" id="L2814">        stack.push(node);</span>
+
+<span class="pc bpc" id="L2816" title="1 of 2 branches missed.">        assert stack.size() == 1;</span>
+<span class="fc" id="L2817">    }</span>
+
+    /**
+     * This method creates an instanceof-expression.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Precondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; owner : TypeSpecifier &lt;/li&gt;
+     * &lt;li&gt; value : IExpression &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : InstanceOfExpression &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     */
+    public void createExpressionInstanceOf()
+    {
+<span class="pc bpc" id="L2839" title="1 of 2 branches missed.">        Preconditions.checkState(stack.size() == 2);</span>
+
+        // Create the AST node.
+<span class="fc" id="L2842">        InstanceOfExpression node = new InstanceOfExpression();</span>
+
+        // Initialize the AST node.
+<span class="fc" id="L2845">        node = node.setType((TypeSpecifier) stack.pop());</span>
+<span class="fc" id="L2846">        node = node.setValue((IExpression) stack.pop());</span>
+
+        // Push the AST node onto the stack.
+<span class="fc" id="L2849">        stack.push(node);</span>
+
+<span class="pc bpc" id="L2851" title="1 of 2 branches missed.">        assert stack.size() == 1;</span>
+<span class="fc" id="L2852">    }</span>
+
+    /**
+     * This method creates an ternary-conditional expression.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Precondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; option-false : IExpression &lt;/li&gt;
+     * &lt;li&gt; option-true : IExpression &lt;/li&gt;
+     * &lt;li&gt; condition : IExpression &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : TernaryConditionalExpression &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     */
+    public void createExpressionTernaryConditional()
+    {
+<span class="pc bpc" id="L2875" title="1 of 2 branches missed.">        Preconditions.checkState(stack.size() == 3);</span>
+
+        // Create the AST node.
+<span class="fc" id="L2878">        TernaryConditionalExpression node = new TernaryConditionalExpression();</span>
+
+        // Initialize the AST node.
+<span class="fc" id="L2881">        node = node.setCaseFalse((IExpression) stack.pop());</span>
+<span class="fc" id="L2882">        node = node.setCaseTrue((IExpression) stack.pop());</span>
+<span class="fc" id="L2883">        node = node.setCondition((IExpression) stack.pop());</span>
+
+        // Push the AST node onto the stack.
+<span class="fc" id="L2886">        stack.push(node);</span>
+
+<span class="pc bpc" id="L2888" title="1 of 2 branches missed.">        assert stack.size() == 1;</span>
+<span class="fc" id="L2889">    }</span>
+
+    /**
+     * This method creates a progn-expression.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Precondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; expression[n] : IExpression &lt;/li&gt;
+     * &lt;li&gt; expression[2] : IExpression &lt;/li&gt;
+     * &lt;li&gt; expression[1] : IExpression &lt;/li&gt;
+     * &lt;li&gt; expression[0] : IExpression &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : PrognExpression &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     */
+    public void createExpressionProgn()
+    {
+<span class="pc bpc" id="L2913" title="1 of 2 branches missed.">        Preconditions.checkState(stack.size() &gt;= 0);</span>
+
+        // Create the AST node.
+<span class="fc" id="L2916">        PrognExpression node = new PrognExpression();</span>
+
+        // Initialize the AST node.
+<span class="fc" id="L2919">        node = node.setElements(popExpressions(stack.size()));</span>
+
+        // Push the AST node onto the stack.
+<span class="fc" id="L2922">        stack.push(node);</span>
+
+<span class="pc bpc" id="L2924" title="1 of 2 branches missed.">        assert stack.size() == 1;</span>
+<span class="fc" id="L2925">    }</span>
+
+    /**
+     * This method creates a list-expression.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Precondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; element[n] : IExpression &lt;/li&gt;
+     * &lt;li&gt; element[.] : IExpression &lt;/li&gt;
+     * &lt;li&gt; element[2] : IExpression &lt;/li&gt;
+     * &lt;li&gt; element[1] : IExpression &lt;/li&gt;
+     * &lt;li&gt; element[0] : IExpression &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : ListExpression &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     */
+    public void createExpressionList()
+    {
+        // Get the pieces off of the stack.
+<span class="fc" id="L2951">        final LinkedList&lt;IExpression&gt; list = Lists.newLinkedList();</span>
+
+<span class="fc bfc" id="L2953" title="All 2 branches covered.">        while (stack.isEmpty() == false)</span>
+        {
+<span class="fc" id="L2955">            list.add(0, (IExpression) stack.pop());</span>
+        }
+
+        // Create the AST node.
+<span class="fc" id="L2959">        ListExpression node = new ListExpression();</span>
+<span class="fc" id="L2960">        node = node.setElements((new ConstructList()).addAll(list));</span>
+
+        // Push the AST node onto the stack.
+<span class="fc" id="L2963">        stack.push(node);</span>
+
+<span class="pc bpc" id="L2965" title="1 of 2 branches missed.">        assert stack.size() == 1;</span>
+<span class="fc" id="L2966">    }</span>
+
+    /**
+     * This method creates a list-comprehension-expression.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Precondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; condition : IExpression &lt;/li&gt;
+     * &lt;li&gt; iterable : IExpression &lt;/li&gt;
+     * &lt;li&gt; type : TypeSpecifier &lt;/li&gt;
+     * &lt;li&gt; variable : Variable &lt;/li&gt;
+     * &lt;li&gt; modifier : IExpression &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * The &lt;i&gt;condition&lt;/i&gt; is optional.
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : ListComprehensionExpression &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     */
+    public void createExpressionListComprehension()
+    {
+<span class="pc bpc" id="L2995" title="1 of 4 branches missed.">        Preconditions.checkState(stack.size() == 4 || stack.size() == 5);</span>
+
+        // Get the pieces off of the stack.
+<span class="fc bfc" id="L2998" title="All 2 branches covered.">        final IExpression condition = (IExpression) (stack.size() == 5 ? stack.pop() : null);</span>
+<span class="fc" id="L2999">        final IExpression iterable = (IExpression) stack.pop();</span>
+<span class="fc" id="L3000">        final TypeSpecifier type = (TypeSpecifier) stack.pop();</span>
+<span class="fc" id="L3001">        final Variable variable = (Variable) stack.pop();</span>
+<span class="fc" id="L3002">        final IExpression modifier = (IExpression) stack.pop();</span>
+
+        // Create the AST node.
+<span class="fc" id="L3005">        ListComprehensionExpression node = new ListComprehensionExpression();</span>
+<span class="fc" id="L3006">        node = node.setCondition(condition);</span>
+<span class="fc" id="L3007">        node = node.setIterable(iterable);</span>
+<span class="fc" id="L3008">        node = node.setType(type);</span>
+<span class="fc" id="L3009">        node = node.setVariable(variable);</span>
+<span class="fc" id="L3010">        node = node.setModifier(modifier);</span>
+
+        // Push the AST node onto the stack.
+<span class="fc" id="L3013">        stack.push(node);</span>
+
+<span class="pc bpc" id="L3015" title="1 of 2 branches missed.">        assert stack.size() == 1;</span>
+<span class="fc" id="L3016">    }</span>
+
+    /**
+     * This method creates a lambda-statement.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Precondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; body : IExpression &lt;/li&gt;
+     * &lt;li&gt; formal[n] : Variable &lt;/li&gt;
+     * &lt;li&gt; formal[3] : Variable &lt;/li&gt;
+     * &lt;li&gt; formal[2] : Variable &lt;/li&gt;
+     * &lt;li&gt; formal[1] : Variable &lt;/li&gt;
+     * &lt;li&gt; formal[0] : Variable &lt;/li&gt;
+     * &lt;li&gt; type : TypeSpecifier &lt;/li&gt;
+     * &lt;li&gt; variable : Variable &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : LambdaStatement &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     */
+    public void createStatementLambda()
+    {
+<span class="pc bpc" id="L3044" title="1 of 2 branches missed.">        Preconditions.checkState(stack.size() &gt;= 3);</span>
+
+        // Get the pieces off of the stack.
+<span class="fc" id="L3047">        final IExpression body = (IExpression) stack.pop();</span>
+
+<span class="fc" id="L3049">        final TypeSpecifier type = (TypeSpecifier) stack.pop();</span>
+
+<span class="fc" id="L3051">        final Variable variable = (Variable) stack.pop();</span>
+
+        // Create the AST node.
+<span class="fc" id="L3054">        LambdaStatement node = new LambdaStatement();</span>
+
+        // Initialize the AST node.
+<span class="fc" id="L3057">        node = node.setVariable(variable);</span>
+<span class="fc" id="L3058">        node = node.setType(type);</span>
+<span class="fc" id="L3059">        node = node.setBody(body);</span>
+
+        // Push the AST node onto the stack.
+<span class="fc" id="L3062">        stack.push(node);</span>
+
+<span class="pc bpc" id="L3064" title="1 of 2 branches missed.">        assert stack.size() == 1;</span>
+<span class="fc" id="L3065">    }</span>
+
+    /**
+     * This method creates a delegate-statement.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Precondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; name : Name &lt;/li&gt;
+     * &lt;li&gt; owner : TypeSpecifier &lt;/li&gt;
+     * &lt;li&gt; type : TypeSpecifier &lt;/li&gt;
+     * &lt;li&gt; variable : Variable &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : DelegateStatement &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     */
+    public void createStatementDelegate()
+    {
+<span class="pc bpc" id="L3089" title="1 of 2 branches missed.">        Preconditions.checkState(stack.size() == 4);</span>
+
+        // Create the AST node.
+<span class="fc" id="L3092">        DelegateStatement node = new DelegateStatement();</span>
+
+        // Initialize the AST node.
+<span class="fc" id="L3095">        node = node.setMethod((Name) stack.pop());</span>
+<span class="fc" id="L3096">        node = node.setOwner((TypeSpecifier) stack.pop());</span>
+<span class="fc" id="L3097">        node = node.setType((TypeSpecifier) stack.pop());</span>
+<span class="fc" id="L3098">        node = node.setVariable((Variable) stack.pop());</span>
+
+        // Push the AST node onto the stack.
+<span class="fc" id="L3101">        stack.push(node);</span>
+
+<span class="pc bpc" id="L3103" title="1 of 2 branches missed.">        assert stack.size() == 1;</span>
+<span class="fc" id="L3104">    }</span>
+
+    /**
+     * This method creates a locals-expression.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Precondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; ..... &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : LocalsExpression &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     */
+    public void createExpressionLocals()
+    {
+<span class="pc bpc" id="L3125" title="1 of 2 branches missed.">        Preconditions.checkState(stack.size() == 0);</span>
+
+        // Create the AST node.
+<span class="fc" id="L3128">        LocalsExpression node = new LocalsExpression();</span>
+
+        // Push the AST node onto the stack.
+<span class="fc" id="L3131">        stack.push(node);</span>
+
+<span class="pc bpc" id="L3133" title="1 of 2 branches missed.">        assert stack.size() == 1;</span>
+<span class="fc" id="L3134">    }</span>
+
+    /**
+     * This method creates a once-expression.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Precondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; value : IExpression &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : OnceExpression &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     */
+    public void createExpressionOnce()
+    {
+<span class="pc bpc" id="L3155" title="1 of 2 branches missed.">        Preconditions.checkState(stack.size() == 1);</span>
+
+        // Create the AST node.
+<span class="fc" id="L3158">        OnceExpression node = new OnceExpression();</span>
+
+        // Initialize the AST node.
+<span class="fc" id="L3161">        node = node.setValue((IExpression) stack.pop());</span>
+
+        // Push the AST node onto the stack.
+<span class="fc" id="L3164">        stack.push(node);</span>
+
+<span class="pc bpc" id="L3166" title="1 of 2 branches missed.">        assert stack.size() == 1;</span>
+<span class="fc" id="L3167">    }</span>
+
+    /**
+     * This method creates a boolean-datum.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Precondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; ..... &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : BooleanDatum &lt;/li&gt;
+     * &lt;li&gt; ..... &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * @param value is the value that the new datum represents.
+     */
+    public void createDatum(final boolean value)
+    {
+<span class="fc" id="L3191">        final int original_size = stack.size();</span>
+        {
+            // Create the AST node.
+<span class="fc" id="L3194">            BooleanDatum datum = new BooleanDatum();</span>
+
+            // Initialize the AST node.
+<span class="fc" id="L3197">            datum = datum.setValue(value);</span>
+
+            // Push the AST node onto the stack.
+<span class="fc" id="L3200">            stack.push(datum);</span>
+        }
+<span class="pc bpc" id="L3202" title="1 of 2 branches missed.">        assert stack.size() == (original_size + 1);</span>
+<span class="fc" id="L3203">    }</span>
+
+    /**
+     * This method creates a char-datum.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Precondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; ..... &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : CharDatum &lt;/li&gt;
+     * &lt;li&gt; ..... &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * @param value is the value that the new datum represents.
+     */
+    public void createDatum(final CharLiteral value)
+    {
+<span class="fc" id="L3227">        final int original_size = stack.size();</span>
+        {
+            // Create the AST node.
+<span class="fc" id="L3230">            CharDatum datum = new CharDatum();</span>
+
+            // Initialize the AST node.
+<span class="fc" id="L3233">            datum = datum.setValue(value);</span>
+
+            // Push the AST node onto the stack.
+<span class="fc" id="L3236">            stack.push(datum);</span>
+        }
+<span class="pc bpc" id="L3238" title="1 of 2 branches missed.">        assert stack.size() == (original_size + 1);</span>
+<span class="fc" id="L3239">    }</span>
+
+    /**
+     * This method creates a byte-datum.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Precondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; ..... &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : ByteDatum &lt;/li&gt;
+     * &lt;li&gt; ..... &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * @param value is the value that the new datum represents.
+     */
+    public void createDatum(final ByteLiteral value)
+    {
+<span class="fc" id="L3263">        final int original_size = stack.size();</span>
+        {
+            // Create the AST node.
+<span class="fc" id="L3266">            ByteDatum datum = new ByteDatum();</span>
+
+            // Initialize the AST node.
+<span class="fc" id="L3269">            datum = datum.setValue(value);</span>
+
+            // Push the AST node onto the stack.
+<span class="fc" id="L3272">            stack.push(datum);</span>
+        }
+<span class="pc bpc" id="L3274" title="1 of 2 branches missed.">        assert stack.size() == (original_size + 1);</span>
+<span class="fc" id="L3275">    }</span>
+
+    /**
+     * This method creates a short-datum.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Precondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; ..... &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : ShortDatum &lt;/li&gt;
+     * &lt;li&gt; ..... &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * @param value is the value that the new datum represents.
+     */
+    public void createDatum(final ShortLiteral value)
+    {
+<span class="fc" id="L3299">        final int original_size = stack.size();</span>
+        {
+            // Create the AST node.
+<span class="fc" id="L3302">            ShortDatum datum = new ShortDatum();</span>
+
+            // Initialize the AST node.
+<span class="fc" id="L3305">            datum = datum.setValue(value);</span>
+
+            // Push the AST node onto the stack.
+<span class="fc" id="L3308">            stack.push(datum);</span>
+        }
+<span class="pc bpc" id="L3310" title="1 of 2 branches missed.">        assert stack.size() == (original_size + 1);</span>
+<span class="fc" id="L3311">    }</span>
+
+    /**
+     * This method creates a int-datum.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Precondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; ..... &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : IntDatum &lt;/li&gt;
+     * &lt;li&gt; ..... &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * @param value is the value that the new datum represents.
+     */
+    public void createDatum(final IntLiteral value)
+    {
+<span class="fc" id="L3335">        final int original_size = stack.size();</span>
+        {
+            // Create the AST node.
+<span class="fc" id="L3338">            IntDatum datum = new IntDatum();</span>
+
+            // Initialize the AST node.
+<span class="fc" id="L3341">            datum = datum.setValue(value);</span>
+
+            // Push the AST node onto the stack.
+<span class="fc" id="L3344">            stack.push(datum);</span>
+        }
+<span class="pc bpc" id="L3346" title="1 of 2 branches missed.">        assert stack.size() == (original_size + 1);</span>
+<span class="fc" id="L3347">    }</span>
+
+    /**
+     * This method creates a long-datum.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Precondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; ..... &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : LongDatum &lt;/li&gt;
+     * &lt;li&gt; ..... &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * @param value is the value that the new datum represents.
+     */
+    public void createDatum(final LongLiteral value)
+    {
+<span class="fc" id="L3371">        final int original_size = stack.size();</span>
+        {
+            // Create the AST node.
+<span class="fc" id="L3374">            LongDatum datum = new LongDatum();</span>
+
+            // Initialize the AST node.
+<span class="fc" id="L3377">            datum = datum.setValue(value);</span>
+
+            // Push the AST node onto the stack.
+<span class="fc" id="L3380">            stack.push(datum);</span>
+        }
+<span class="pc bpc" id="L3382" title="1 of 2 branches missed.">        assert stack.size() == (original_size + 1);</span>
+<span class="fc" id="L3383">    }</span>
+
+    /**
+     * This method creates a float-datum.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Precondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; ..... &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : FloatDatum &lt;/li&gt;
+     * &lt;li&gt; ..... &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * @param value is the value that the new datum represents.
+     */
+    public void createDatum(final FloatLiteral value)
+    {
+<span class="fc" id="L3407">        final int original_size = stack.size();</span>
+        {
+            // Create the AST node.
+<span class="fc" id="L3410">            FloatDatum datum = new FloatDatum();</span>
+
+            // Initialize the AST node.
+<span class="fc" id="L3413">            datum = datum.setValue(value);</span>
+
+            // Push the AST node onto the stack.
+<span class="fc" id="L3416">            stack.push(datum);</span>
+        }
+<span class="pc bpc" id="L3418" title="1 of 2 branches missed.">        assert stack.size() == (original_size + 1);</span>
+<span class="fc" id="L3419">    }</span>
+
+    /**
+     * This method creates a double-datum.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Precondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; ..... &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : DoubleDatum &lt;/li&gt;
+     * &lt;li&gt; ..... &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * @param value is the value that the new datum represents.
+     */
+    public void createDatum(final DoubleLiteral value)
+    {
+<span class="fc" id="L3443">        final int original_size = stack.size();</span>
+        {
+            // Create the AST node.
+<span class="fc" id="L3446">            DoubleDatum datum = new DoubleDatum();</span>
+
+            // Initialize the AST node.
+<span class="fc" id="L3449">            datum = datum.setValue(value);</span>
+
+            // Push the AST node onto the stack.
+<span class="fc" id="L3452">            stack.push(datum);</span>
+        }
+<span class="pc bpc" id="L3454" title="1 of 2 branches missed.">        assert stack.size() == (original_size + 1);</span>
+<span class="fc" id="L3455">    }</span>
+
+    /**
+     * This method creates a big-integer-datum.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Precondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; ..... &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : BigIntegerDatum &lt;/li&gt;
+     * &lt;li&gt; ..... &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * @param value is the value that the new datum represents.
+     */
+    public void createDatum(final BigIntegerLiteral value)
+    {
+<span class="fc" id="L3479">        final int original_size = stack.size();</span>
+        {
+            // Create the AST node.
+<span class="fc" id="L3482">            BigIntegerDatum datum = new BigIntegerDatum();</span>
+
+            // Initialize the AST node.
+<span class="fc" id="L3485">            datum = datum.setValue(value);</span>
+
+            // Push the AST node onto the stack.
+<span class="fc" id="L3488">            stack.push(datum);</span>
+        }
+<span class="pc bpc" id="L3490" title="1 of 2 branches missed.">        assert stack.size() == (original_size + 1);</span>
+<span class="fc" id="L3491">    }</span>
+
+    /**
+     * This method creates a big-decimal-datum.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Precondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; ..... &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : BigDecimalDatum &lt;/li&gt;
+     * &lt;li&gt; ..... &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * @param value is the value that the new datum represents.
+     */
+    public void createDatum(final BigDecimalLiteral value)
+    {
+<span class="fc" id="L3515">        final int original_size = stack.size();</span>
+        {
+            // Create the AST node.
+<span class="fc" id="L3518">            BigDecimalDatum datum = new BigDecimalDatum();</span>
+
+            // Initialize the AST node.
+<span class="fc" id="L3521">            datum = datum.setValue(value);</span>
+
+            // Push the AST node onto the stack.
+<span class="fc" id="L3524">            stack.push(datum);</span>
+        }
+<span class="pc bpc" id="L3526" title="1 of 2 branches missed.">        assert stack.size() == (original_size + 1);</span>
+<span class="fc" id="L3527">    }</span>
+
+    /**
+     * This method creates a String-datum.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Precondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; ..... &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : StringDatum &lt;/li&gt;
+     * &lt;li&gt; ..... &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * @param verbatim is false, if the string may contain escape sequences.
+     * @param value is the value that the new datum represents.
+     */
+    public void createDatum(final boolean verbatim,
+                            final String value)
+    {
+<span class="fc" id="L3553">        final int original_size = stack.size();</span>
+        {
+            // Create the AST node.
+<span class="fc" id="L3556">            StringDatum datum = new StringDatum();</span>
+
+            // Initialize the AST node.
+<span class="fc" id="L3559">            datum = datum.setVerbatim(verbatim);</span>
+<span class="fc" id="L3560">            datum = datum.setValue(value);</span>
+
+            // Push the AST node onto the stack.
+<span class="fc" id="L3563">            stack.push(datum);</span>
+        }
+<span class="pc bpc" id="L3565" title="1 of 2 branches missed.">        assert stack.size() == (original_size + 1);</span>
+<span class="fc" id="L3566">    }</span>
+
+    /**
+     * This method creates a class-datum.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Precondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; type : TypeSpecifier &lt;/li&gt;
+     * &lt;li&gt; ..... &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : ClassDatum &lt;/li&gt;
+     * &lt;li&gt; ..... &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     */
+    public void createDatumClass()
+    {
+<span class="pc bpc" id="L3589" title="1 of 2 branches missed.">        Preconditions.checkState(stack.size() &gt;= 1);</span>
+
+<span class="fc" id="L3591">        final int original_size = stack.size();</span>
+        {
+            // Get the pieces off of the stack.
+<span class="fc" id="L3594">            final TypeSpecifier owner = (TypeSpecifier) stack.pop();</span>
+
+            // Create the AST node.
+<span class="fc" id="L3597">            ClassDatum datum = new ClassDatum();</span>
+
+            // Initialize the AST node.
+<span class="fc" id="L3600">            datum = datum.setType(owner);</span>
+
+            // Push the AST node onto the stack.
+<span class="fc" id="L3603">            stack.push(datum);</span>
+        }
+<span class="pc bpc" id="L3605" title="1 of 2 branches missed.">        assert stack.size() == (original_size - 1 + 1);</span>
+<span class="fc" id="L3606">    }</span>
+
+    /**
+     * This method creates a null-datum.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Precondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; ..... &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : NullDatum &lt;/li&gt;
+     * &lt;li&gt; ..... &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     */
+    public void createDatumNull()
+    {
+<span class="fc" id="L3628">        final int original_size = stack.size();</span>
+        {
+            // Create the AST node.
+<span class="fc" id="L3631">            final NullDatum datum = new NullDatum();</span>
+
+            // Push the AST node onto the stack.
+<span class="fc" id="L3634">            stack.push(datum);</span>
+        }
+<span class="pc bpc" id="L3636" title="1 of 2 branches missed.">        assert stack.size() == (original_size + 1);</span>
+<span class="fc" id="L3637">    }</span>
+
+    /**
+     * This method creates a variable-datum.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Precondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; variable : Variable &lt;/li&gt;
+     * &lt;li&gt; ..... &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : VariableDatum &lt;/li&gt;
+     * &lt;li&gt; ..... &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     */
+    public void createDatumVariable()
+    {
+<span class="pc bpc" id="L3660" title="1 of 2 branches missed.">        Preconditions.checkState(stack.size() &gt;= 1);</span>
+
+<span class="fc" id="L3662">        final int original_size = stack.size();</span>
+        {
+            // Create the AST node.
+<span class="fc" id="L3665">            VariableDatum datum = new VariableDatum();</span>
+
+            // Initialize the AST node.
+<span class="fc" id="L3668">            final Variable variable = (Variable) stack.pop();</span>
+<span class="fc" id="L3669">            datum = datum.setVariable(variable);</span>
+
+            // Push the AST node onto the stack.
+<span class="fc" id="L3672">            stack.push(datum);</span>
+        }
+<span class="pc bpc" id="L3674" title="1 of 2 branches missed.">        assert stack.size() == (original_size - 1 + 1);</span>
+<span class="fc" id="L3675">    }</span>
+
+    /**
+     * This method creates a doc-comment.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Precondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; line[n] : DocCommentLine &lt;/li&gt;
+     * &lt;li&gt; line[2] : DocCommentLine &lt;/li&gt;
+     * &lt;li&gt; line[1] : DocCommentLine &lt;/li&gt;
+     * &lt;li&gt; line[0] : DocCommentLine &lt;/li&gt;
+     * &lt;li&gt; ..... &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * There may be zero or more lines.
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : DocComment &lt;/li&gt;
+     * &lt;li&gt; ..... &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     */
+    public void createComponentDocComment()
+    {
+        // Get the pieces off of the stack.
+<span class="fc" id="L3706">        final LinkedList&lt;DocCommentLine&gt; lines = Lists.newLinkedList();</span>
+
+<span class="pc bpc" id="L3708" title="1 of 4 branches missed.">        while (!stack.isEmpty() &amp;&amp; stack.peek() instanceof DocCommentLine)</span>
+        {
+<span class="fc" id="L3710">            lines.addFirst((DocCommentLine) stack.pop());</span>
+        }
+
+        // Create the AST node.
+<span class="fc" id="L3714">        DocComment node = new DocComment();</span>
+
+        // Initialize the AST node.
+<span class="fc" id="L3717">        node = node.setLines(new ConstructList(lines));</span>
+
+        // Push the AST node onto the stack.
+<span class="fc" id="L3720">        stack.push(node);</span>
+
+<span class="pc bpc" id="L3722" title="1 of 2 branches missed.">        assert stack.size() == 1;</span>
+<span class="fc" id="L3723">    }</span>
+
+    /**
+     * This method creates a doc-comment-line.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Precondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; ..... &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * There may be zero or more lines.
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : DocCommentLine &lt;/li&gt;
+     * &lt;li&gt; ..... &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * @param text is the comment line itself.
+     */
+    public void createComponentDocCommentLine(final String text)
+    {
+<span class="fc" id="L3751">        final int original_size = stack.size();</span>
+        {
+            // Create the AST node.
+<span class="fc" id="L3754">            DocCommentLine node = new DocCommentLine();</span>
+
+            // Initialize the AST node.
+<span class="fc" id="L3757">            node = node.setText(text);</span>
+
+            // Push the AST node onto the stack.
+<span class="fc" id="L3760">            stack.push(node);</span>
+        }
+<span class="pc bpc" id="L3762" title="1 of 2 branches missed.">        assert stack.size() == (original_size + 1);</span>
+<span class="fc" id="L3763">    }</span>
+
+    /**
+     * This method creates an annotation-usage.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Precondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; annotation-type : TypeSpecifier &lt;/li&gt;&lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : Annotation &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * @param values are the values to store in the annotation.
+     */
+    public void createComponentAnnotation(final List&lt;String&gt; values)
+    {
+<span class="pc bpc" id="L3786" title="1 of 2 branches missed.">        Preconditions.checkState(stack.size() == 1);</span>
+
+        /**
+         * Create the immutable list of values.
+         */
+<span class="fc" id="L3791">        final List&lt;String&gt; list = new LinkedList&lt;String&gt;();</span>
+
+<span class="fc bfc" id="L3793" title="All 2 branches covered.">        if (values != null)</span>
+        {
+<span class="fc" id="L3795">            list.addAll(values);</span>
+        }
+
+        /**
+         * Pop the pieces off of the stack.
+         */
+<span class="fc" id="L3801">        final TypeSpecifier type = (TypeSpecifier) stack.pop();</span>
+
+        /**
+         * Create the AST node.
+         */
+<span class="fc" id="L3806">        Annotation node = new Annotation();</span>
+<span class="fc" id="L3807">        node = node.setType(type);</span>
+<span class="fc bfc" id="L3808" title="All 2 branches covered.">        node = node.setValues(values == null ? null : Collections.unmodifiableList(list));</span>
+
+        /**
+         * Push the AST node onto the stack.
+         */
+<span class="fc" id="L3813">        stack.push(node);</span>
+
+<span class="pc bpc" id="L3815" title="1 of 2 branches missed.">        assert stack.size() == 1;</span>
+<span class="fc" id="L3816">    }</span>
+
+    /**
+     * This method creates an annotation-list.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Precondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; annotation[n] : Annotation &lt;/li&gt;&lt;/li&gt;
+     * &lt;li&gt; annotation[2] : Annotation &lt;/li&gt;&lt;/li&gt;
+     * &lt;li&gt; annotation[1] : Annotation &lt;/li&gt;&lt;/li&gt;
+     * &lt;li&gt; annotation[0] : Annotation &lt;/li&gt;&lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : AnnotationList &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     */
+    public void createComponentAnnotationList()
+    {
+        // Create the list itself.
+<span class="fc" id="L3841">        final LinkedList&lt;Annotation&gt; list = new LinkedList&lt;Annotation&gt;();</span>
+
+<span class="fc bfc" id="L3843" title="All 2 branches covered.">        while (stack.isEmpty() == false)</span>
+        {
+<span class="fc" id="L3845">            list.add(0, (Annotation) stack.pop());</span>
+        }
+
+        // Create the AST node.
+<span class="fc" id="L3849">        AnnotationList node = new AnnotationList();</span>
+<span class="fc" id="L3850">        node = node.setAnnotations((new ConstructList&lt;Annotation&gt;()).addAll(list));</span>
+
+        // Push the AST node onto the stack.
+<span class="fc" id="L3853">        stack.push(node);</span>
+
+<span class="pc bpc" id="L3855" title="1 of 2 branches missed.">        assert stack.size() == 1;</span>
+<span class="fc" id="L3856">    }</span>
+
+    /**
+     * This method creates a type-specifier for an array-type.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Precondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; simple-name : Name &lt;/li&gt;
+     * &lt;li&gt; namespace : Namespace &lt;/li&gt;
+     * &lt;li&gt; ..... &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * Note: The namespace must be null, if the namespace is implicit.
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : TypeSpecifier &lt;/li&gt;
+     * &lt;li&gt; ..... &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * @param dimensions are the the number of dimensions in the array type.
+     */
+    public void createComponentTypeSpecifier(final Integer dimensions)
+    {
+<span class="pc bpc" id="L3886" title="1 of 2 branches missed.">        Preconditions.checkState(stack.size() &gt;= 2);</span>
+<span class="pc bpc" id="L3887" title="1 of 4 branches missed.">        Preconditions.checkState(dimensions == null || dimensions &gt;= 1);</span>
+
+<span class="fc" id="L3889">        final int original_size = stack.size();</span>
+        {
+            // Get the pieces off of the stack.
+<span class="fc" id="L3892">            final Name simple = (Name) stack.pop();</span>
+<span class="fc" id="L3893">            final Namespace namespace = (Namespace) stack.pop();</span>
+
+            // Create the AST node.
+<span class="fc" id="L3896">            TypeSpecifier type = new TypeSpecifier();</span>
+
+            // Initialize the AST node.
+<span class="fc" id="L3899">            type = type.setNamespace(namespace);</span>
+<span class="fc" id="L3900">            type = type.setName(simple);</span>
+<span class="fc" id="L3901">            type = type.setDimensions(dimensions);</span>
+
+            // Push the AST node onto the stack.
+<span class="fc" id="L3904">            stack.push(type);</span>
+        }
+<span class="pc bpc" id="L3906" title="1 of 2 branches missed.">        assert stack.size() == (original_size - 2 + 1);</span>
+<span class="fc" id="L3907">    }</span>
+
+    /**
+     * This method creates a type-specifier for an array-type.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Precondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; simple-name : Name &lt;/li&gt;
+     * &lt;li&gt; namespace : Namespace &lt;/li&gt;
+     * &lt;li&gt; ..... &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * Note: The namespace must be null, if the namespace is implicit.
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : TypeSpecifier &lt;/li&gt;
+     * &lt;li&gt; ..... &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     */
+    public void createComponentTypeSpecifier()
+    {
+<span class="nc" id="L3935">        createComponentTypeSpecifier(null);</span>
+<span class="nc" id="L3936">    }</span>
+
+    /**
+     * This method creates a variable.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Precondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; ..... &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : Variable &lt;/li&gt;
+     * &lt;li&gt; ..... &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     */
+    public void createComponentVariable(final String name)
+    {
+<span class="fc" id="L3958">        final int original_size = stack.size();</span>
+        {
+            // Create the AST node.
+<span class="fc" id="L3961">            Variable variable = new Variable();</span>
+
+            // Initialize the AST node.
+<span class="fc" id="L3964">            variable = variable.setName(name);</span>
+
+            // Push the AST node onto the stack.
+<span class="fc" id="L3967">            stack.push(variable);</span>
+        }
+<span class="pc bpc" id="L3969" title="1 of 2 branches missed.">        assert stack.size() == (original_size + 1);</span>
+<span class="fc" id="L3970">    }</span>
+
+    /**
+     * This method creates a label.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Precondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; ..... &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : Label &lt;/li&gt;
+     * &lt;li&gt; ..... &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     */
+    public void createComponentLabel(final String name)
+    {
+<span class="fc" id="L3992">        final int original_size = stack.size();</span>
+        {
+            // Create the AST node.
+<span class="fc" id="L3995">            Label label = new Label();</span>
+
+            // Initialize the AST node.
+<span class="fc" id="L3998">            label = label.setName(name);</span>
+
+            // Push the AST node onto the stack.
+<span class="fc" id="L4001">            stack.push(label);</span>
+        }
+<span class="pc bpc" id="L4003" title="1 of 2 branches missed.">        assert stack.size() == (original_size + 1);</span>
+<span class="fc" id="L4004">    }</span>
+
+    /**
+     * This method creates a name.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Precondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; ..... &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : Name &lt;/li&gt;
+     * &lt;li&gt; ..... &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     */
+    public void createComponentName(final String name)
+    {
+<span class="nc" id="L4026">        final int original_size = stack.size();</span>
+        {
+            // Create the AST node.
+<span class="nc" id="L4029">            Name node = new Name();</span>
+
+            // Initialize the AST node.
+<span class="nc" id="L4032">            node = node.setName(name);</span>
+
+            // Push the AST node onto the stack.
+<span class="nc" id="L4035">            stack.push(node);</span>
+        }
+<span class="nc bnc" id="L4037" title="All 2 branches missed.">        assert stack.size() == (original_size + 1);</span>
+<span class="nc" id="L4038">    }</span>
+
+    /**
+     * This method creates an element.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Precondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; type : TypeSpecifier &lt;/li&gt;
+     * &lt;li&gt; name : Name &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : Element &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     */
+    public void createComponentElement()
+    {
+<span class="pc bpc" id="L4060" title="1 of 2 branches missed.">        Preconditions.checkState(stack.size() == 2);</span>
+
+        // Pop the pieces off of the stack.
+<span class="fc" id="L4063">        final TypeSpecifier type = (TypeSpecifier) stack.pop();</span>
+<span class="fc" id="L4064">        final Name name = (Name) stack.pop();</span>
+
+        // Create the AST node.
+<span class="fc" id="L4067">        Element node = new Element();</span>
+<span class="fc" id="L4068">        node = node.setName(name);</span>
+<span class="fc" id="L4069">        node = node.setType(type);</span>
+
+        // Push the AST node onto the stack.
+<span class="fc" id="L4072">        stack.push(node);</span>
+
+<span class="pc bpc" id="L4074" title="1 of 2 branches missed.">        assert stack.size() == 1;</span>
+<span class="fc" id="L4075">    }</span>
+
+    /**
+     * This method creates an element-list.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Precondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; element[n] : Element &lt;/li&gt;
+     * &lt;li&gt; element[2] : Element &lt;/li&gt;
+     * &lt;li&gt; element[1] : Element &lt;/li&gt;
+     * &lt;li&gt; element[0] : Element &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : ElementList &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     */
+    public void createComponentElementList()
+    {
+        // Create the list itself.
+<span class="fc" id="L4100">        final LinkedList&lt;Element&gt; list = new LinkedList&lt;Element&gt;();</span>
+
+<span class="fc bfc" id="L4102" title="All 2 branches covered.">        while (stack.isEmpty() == false)</span>
+        {
+<span class="fc" id="L4104">            list.add(0, (Element) stack.pop());</span>
+        }
+
+<span class="fc" id="L4107">        ConstructList&lt;Element&gt; elements = new ConstructList&lt;Element&gt;();</span>
+<span class="fc" id="L4108">        elements = elements.addAll(list);</span>
+
+        // Create the AST node.
+<span class="fc" id="L4111">        ElementList node = new ElementList();</span>
+<span class="fc" id="L4112">        node = node.setElements(elements);</span>
+
+        // Push the AST node onto the stack.
+<span class="fc" id="L4115">        stack.push(node);</span>
+
+<span class="pc bpc" id="L4117" title="1 of 2 branches missed.">        assert stack.size() == 1;</span>
+<span class="fc" id="L4118">    }</span>
+
+    /**
+     * This method creates a formal-parameter.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Precondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; type : TypeSpecifier &lt;/li&gt;
+     * &lt;li&gt; variable : Variable &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : FormalParameter &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     */
+    public void createComponentFormalParameter()
+    {
+<span class="pc bpc" id="L4140" title="1 of 2 branches missed.">        Preconditions.checkState(stack.size() == 2);</span>
+
+        // Pop the pieces off of the stack.
+<span class="fc" id="L4143">        final TypeSpecifier type = (TypeSpecifier) stack.pop();</span>
+<span class="fc" id="L4144">        final Variable variable = (Variable) stack.pop();</span>
+
+        // Create the AST node.
+<span class="fc" id="L4147">        FormalParameter node = new FormalParameter();</span>
+<span class="fc" id="L4148">        node = node.setVariable(variable);</span>
+<span class="fc" id="L4149">        node = node.setType(type);</span>
+
+        // Push the AST node onto the stack.
+<span class="fc" id="L4152">        stack.push(node);</span>
+
+<span class="pc bpc" id="L4154" title="1 of 2 branches missed.">        assert stack.size() == 1;</span>
+<span class="fc" id="L4155">    }</span>
+
+    /**
+     * This method creates a formal-parameter.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Precondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; parameter[n] : FormalParameter &lt;/li&gt;
+     * &lt;li&gt; parameter[2] : FormalParameter &lt;/li&gt;
+     * &lt;li&gt; parameter[1] : FormalParameter &lt;/li&gt;
+     * &lt;li&gt; parameter[0] : FormalParameter &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : FormalParameter &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     */
+    public void createComponentFormalParameterList()
+    {
+        // Create the list itself.
+<span class="fc" id="L4180">        final LinkedList&lt;FormalParameter&gt; list = new LinkedList&lt;FormalParameter&gt;();</span>
+
+<span class="fc bfc" id="L4182" title="All 2 branches covered.">        while (stack.isEmpty() == false)</span>
+        {
+<span class="fc" id="L4184">            list.add(0, (FormalParameter) stack.pop());</span>
+        }
+
+<span class="fc" id="L4187">        ConstructList&lt;FormalParameter&gt; parameters = new ConstructList&lt;FormalParameter&gt;();</span>
+<span class="fc" id="L4188">        parameters = parameters.addAll(list);</span>
+
+        // Create the AST node.
+<span class="fc" id="L4191">        FormalParameterList node = new FormalParameterList();</span>
+<span class="fc" id="L4192">        node = node.setParameters(parameters);</span>
+
+        // Push the AST node onto the stack.
+<span class="fc" id="L4195">        stack.push(node);</span>
+
+<span class="pc bpc" id="L4197" title="1 of 2 branches missed.">        assert stack.size() == 1;</span>
+<span class="fc" id="L4198">    }</span>
+
+    /**
+     * This method creates a namespace component.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Precondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; name[n] : Name &lt;/li&gt;
+     * &lt;li&gt; name[2] : Name &lt;/li&gt;
+     * &lt;li&gt; name[1] : Name &lt;/li&gt;
+     * &lt;li&gt; name[0] : Name &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * Example: If the namespace is &quot;java.util&quot;, then name[0] = &quot;java&quot; and name[1] = &quot;util&quot;.
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : Namespace &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     */
+    public void createComponentNamespace()
+    {
+<span class="pc bpc" id="L4226" title="1 of 2 branches missed.">        Preconditions.checkState(stack.size() &gt;= 1);</span>
+
+        // Create the list itself.
+<span class="fc" id="L4229">        final LinkedList&lt;Name&gt; list = Lists.newLinkedList();</span>
+
+<span class="fc bfc" id="L4231" title="All 2 branches covered.">        while (stack.isEmpty() == false)</span>
+        {
+<span class="fc" id="L4233">            list.add(0, (Name) stack.pop());</span>
+        }
+
+<span class="fc" id="L4236">        ConstructList&lt;Name&gt; names = new ConstructList&lt;Name&gt;();</span>
+<span class="fc" id="L4237">        names = names.addAll(list);</span>
+
+        // Create the AST node.
+<span class="fc" id="L4240">        Namespace node = new Namespace();</span>
+<span class="fc" id="L4241">        node = node.setNames(names);</span>
+
+        // Push the AST node onto the stack.
+<span class="fc" id="L4244">        stack.push(node);</span>
+
+<span class="pc bpc" id="L4246" title="1 of 2 branches missed.">        assert stack.size() == 1;</span>
+<span class="fc" id="L4247">    }</span>
+
+    /**
+     * This method creates a conditional-case.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Precondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; body : SequenceStatement &lt;/li&gt;
+     * &lt;li&gt; condition : IExpression &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;Postcondition of the Stack&lt;/b&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt; result : ConditionalCase &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     */
+    public void createComponentConditionalCase()
+    {
+<span class="pc bpc" id="L4269" title="1 of 2 branches missed.">        Preconditions.checkState(stack.size() == 2);</span>
+
+        // Create the AST node.
+<span class="fc" id="L4272">        ConditionalCase node = new ConditionalCase();</span>
+<span class="fc" id="L4273">        node = node.setBody((SequenceStatement) stack.pop());</span>
+<span class="fc" id="L4274">        node = node.setCondition((IExpression) stack.pop());</span>
+
+        // Push the AST node onto the stack.
+<span class="fc" id="L4277">        stack.push(node);</span>
+
+<span class="pc bpc" id="L4279" title="1 of 2 branches missed.">        assert stack.size() == 1;</span>
+<span class="fc" id="L4280">    }</span>
+
+    /**
+     * This method provides a shared implementation of the methods that create unary-operations.
+     *
+     * @param operation is the operation being created.
+     */
+    private void createUnaryOperation(IUnaryOperation operation)
+    {
+<span class="fc" id="L4289">        final int original_size = stack.size();</span>
+        {
+            // Initialize the AST node.
+<span class="fc" id="L4292">            final IExpression operand = (IExpression) stack.pop();</span>
+<span class="fc" id="L4293">            operation = operation.setOperand(operand);</span>
+
+            // Push the AST node onto the stack.
+<span class="fc" id="L4296">            stack.push(operation);</span>
+        }
+<span class="pc bpc" id="L4298" title="1 of 2 branches missed.">        assert stack.size() == ((original_size - 1) + 1);</span>
+<span class="fc" id="L4299">    }</span>
+
+    /**
+     * This method provides a shared implementation of the methods that create binary-operations.
+     *
+     * @param operation is the operation being created.
+     */
+    private void createBinaryOperation(IBinaryOperation operation)
+    {
+<span class="fc" id="L4308">        final int original_size = stack.size();</span>
+        {
+            // Initialize the AST node.
+<span class="fc" id="L4311">            final IExpression right_operand = (IExpression) stack.pop();</span>
+<span class="fc" id="L4312">            final IExpression left_operand = (IExpression) stack.pop();</span>
+<span class="fc" id="L4313">            operation = operation.setLeftOperand(left_operand);</span>
+<span class="fc" id="L4314">            operation = operation.setRightOperand(right_operand);</span>
+
+            // Push the AST node onto the stack.
+<span class="fc" id="L4317">            stack.push(operation);</span>
+        }
+<span class="pc bpc" id="L4319" title="1 of 2 branches missed.">        assert stack.size() == ((original_size - 2) + 1);</span>
+<span class="fc" id="L4320">    }</span>
+
+    /**
+     * This method pops a specified number of expressions off of the stack and then returns them.
+     *
+     * @param count is the number of expressions to pop off of the stack.
+     * @return the expressions.
+     */
+    private ConstructList&lt;IExpression&gt; popExpressions(final int count)
+    {
+<span class="fc" id="L4330">        final LinkedList&lt;IExpression&gt; list = Lists.newLinkedList();</span>
+
+<span class="fc bfc" id="L4332" title="All 2 branches covered.">        for (int i = 0; i &lt; count; i++)</span>
+        {
+<span class="fc" id="L4334">            list.add(0, (IExpression) stack.pop());</span>
+        }
+
+<span class="fc" id="L4337">        ConstructList&lt;IExpression&gt; result = new ConstructList&lt;IExpression&gt;();</span>
+<span class="fc" id="L4338">        result = result.addAll(list);</span>
+
+<span class="fc" id="L4340">        return result;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

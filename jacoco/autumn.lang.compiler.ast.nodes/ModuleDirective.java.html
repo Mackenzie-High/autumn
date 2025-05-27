@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ModuleDirective.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.mackenziehigh:autumn</a> &gt; <a href="index.source.html" class="el_package">autumn.lang.compiler.ast.nodes</a> &gt; <span class="el_source">ModuleDirective.java</span></div><h1>ModuleDirective.java</h1><pre class="source lang-java linenums">/*
+ * Copyright 2013 Michael Mackenzie High
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+
+package autumn.lang.compiler.ast.nodes;
+
+import autumn.lang.compiler.ast.commons.ConstructList;
+import autumn.lang.compiler.ast.commons.IAnnotated;
+import autumn.lang.compiler.ast.commons.IBinaryOperation;
+import autumn.lang.compiler.ast.commons.IConstruct;
+import autumn.lang.compiler.ast.commons.IConversionOperation;
+import autumn.lang.compiler.ast.commons.IDatum;
+import autumn.lang.compiler.ast.commons.IDirective;
+import autumn.lang.compiler.ast.commons.IDocumented;
+import autumn.lang.compiler.ast.commons.IExpression;
+import autumn.lang.compiler.ast.commons.IRecord;
+import autumn.lang.compiler.ast.commons.IStatement;
+import autumn.lang.compiler.ast.commons.IUnaryOperation;
+import autumn.lang.compiler.ast.literals.BigDecimalLiteral;
+import autumn.lang.compiler.ast.literals.BigIntegerLiteral;
+import autumn.lang.compiler.ast.literals.ByteLiteral;
+import autumn.lang.compiler.ast.literals.CharLiteral;
+import autumn.lang.compiler.ast.literals.DoubleLiteral;
+import autumn.lang.compiler.ast.literals.FloatLiteral;
+import autumn.lang.compiler.ast.literals.IntLiteral;
+import autumn.lang.compiler.ast.literals.LongLiteral;
+import autumn.lang.compiler.ast.literals.ShortLiteral;
+import java.io.File;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
+import java.util.TreeSet;
+
+/**
+ * An instance of this class is an AST node that represents a directive that names a module and specifies its enclosing namespace.
+ * 
+ * &lt;p&gt; 
+ * &lt;table border=&quot;1&quot;&gt;
+ *     &lt;tr&gt; &lt;td&gt; &lt;b&gt;Property Name&lt;/b&gt; &lt;/td&gt; &lt;td&gt; &lt;b&gt;Property Description&lt;/b&gt; &lt;/td&gt; &lt;/tr&gt;
+ *     &lt;tr&gt; &lt;td&gt; &lt;code&gt;comment&lt;/code&gt; &lt;/td&gt; &lt;td&gt;This is the doc-comment applied directly to the module.&lt;/td&gt; &lt;/tr&gt;
+ *     &lt;tr&gt; &lt;td&gt; &lt;code&gt;annotations&lt;/code&gt; &lt;/td&gt; &lt;td&gt;These are the annotations applied directly to the module.&lt;/td&gt; &lt;/tr&gt;
+ *     &lt;tr&gt; &lt;td&gt; &lt;code&gt;name&lt;/code&gt; &lt;/td&gt; &lt;td&gt;This is the name of the module itself, or null, if the module is anonymous.&lt;/td&gt; &lt;/tr&gt;
+ *     &lt;tr&gt; &lt;td&gt; &lt;code&gt;namespace&lt;/code&gt; &lt;/td&gt; &lt;td&gt;This is the enclosing namespace.&lt;/td&gt; &lt;/tr&gt;
+ *     &lt;tr&gt; &lt;td&gt; &lt;code&gt;location&lt;/code&gt; &lt;/td&gt; &lt;td&gt;This is the source-location information regarding this construct.&lt;/td&gt; &lt;/tr&gt;
+ * &lt;/table&gt;
+ * &lt;/p&gt;
+ * 
+ * &lt;p&gt; This file was auto-generated on (Sun May 31 11:54:11 EDT 2015).&lt;/p&gt;
+ */
+@SuppressWarnings(&quot;unchecked&quot;)
+<span class="fc" id="L70">public final class ModuleDirective extends Object implements IDirective, IDocumented</span>
+{
+<span class="fc" id="L72">    private DocComment comment = new DocComment();</span>
+
+<span class="fc" id="L74">    private AnnotationList annotations = new AnnotationList();</span>
+
+    private Name name;
+
+    private Namespace namespace;
+
+<span class="fc" id="L80">    private SourceLocation location = new SourceLocation();</span>
+
+    /**
+     * Setter.
+     * 
+     * @param value is the new value of property &lt;code&gt;comment&lt;/code&gt;.
+     * @return a copy of this object with property &lt;code&gt;comment&lt;/code&gt; set to value.
+     */
+    public ModuleDirective setComment(final DocComment value)
+    {
+<span class="fc" id="L90">        final ModuleDirective result = this.copy();</span>
+<span class="fc" id="L91">        result.comment = value;</span>
+<span class="fc" id="L92">        return result;</span>
+    }
+
+    /**
+     * Getter.
+     * 
+     * @return the value of property &lt;code&gt;comment&lt;/code&gt;.
+     */
+    public DocComment getComment()
+    {
+<span class="fc" id="L102">        final DocComment value = this.comment;</span>
+<span class="fc" id="L103">        return value;</span>
+    }
+
+    /**
+     * Setter.
+     * 
+     * @param value is the new value of property &lt;code&gt;annotations&lt;/code&gt;.
+     * @return a copy of this object with property &lt;code&gt;annotations&lt;/code&gt; set to value.
+     */
+    public ModuleDirective setAnnotations(final AnnotationList value)
+    {
+<span class="fc" id="L114">        final ModuleDirective result = this.copy();</span>
+<span class="fc" id="L115">        result.annotations = value;</span>
+<span class="fc" id="L116">        return result;</span>
+    }
+
+    /**
+     * Getter.
+     * 
+     * @return the value of property &lt;code&gt;annotations&lt;/code&gt;.
+     */
+    public AnnotationList getAnnotations()
+    {
+<span class="fc" id="L126">        final AnnotationList value = this.annotations;</span>
+<span class="fc" id="L127">        return value;</span>
+    }
+
+    /**
+     * Setter.
+     * 
+     * @param value is the new value of property &lt;code&gt;name&lt;/code&gt;.
+     * @return a copy of this object with property &lt;code&gt;name&lt;/code&gt; set to value.
+     */
+    public ModuleDirective setName(final Name value)
+    {
+<span class="fc" id="L138">        final ModuleDirective result = this.copy();</span>
+<span class="fc" id="L139">        result.name = value;</span>
+<span class="fc" id="L140">        return result;</span>
+    }
+
+    /**
+     * Getter.
+     * 
+     * @return the value of property &lt;code&gt;name&lt;/code&gt;.
+     */
+    public Name getName()
+    {
+<span class="fc" id="L150">        final Name value = this.name;</span>
+<span class="fc" id="L151">        return value;</span>
+    }
+
+    /**
+     * Setter.
+     * 
+     * @param value is the new value of property &lt;code&gt;namespace&lt;/code&gt;.
+     * @return a copy of this object with property &lt;code&gt;namespace&lt;/code&gt; set to value.
+     */
+    public ModuleDirective setNamespace(final Namespace value)
+    {
+<span class="fc" id="L162">        final ModuleDirective result = this.copy();</span>
+<span class="fc" id="L163">        result.namespace = value;</span>
+<span class="fc" id="L164">        return result;</span>
+    }
+
+    /**
+     * Getter.
+     * 
+     * @return the value of property &lt;code&gt;namespace&lt;/code&gt;.
+     */
+    public Namespace getNamespace()
+    {
+<span class="fc" id="L174">        final Namespace value = this.namespace;</span>
+<span class="fc" id="L175">        return value;</span>
+    }
+
+    /**
+     * Setter.
+     * 
+     * @param value is the new value of property &lt;code&gt;location&lt;/code&gt;.
+     * @return a copy of this object with property &lt;code&gt;location&lt;/code&gt; set to value.
+     */
+    public ModuleDirective setLocation(final SourceLocation value)
+    {
+<span class="fc" id="L186">        final ModuleDirective result = this.copy();</span>
+<span class="fc" id="L187">        result.location = value;</span>
+<span class="fc" id="L188">        return result;</span>
+    }
+
+    /**
+     * Getter.
+     * 
+     * @return the value of property &lt;code&gt;location&lt;/code&gt;.
+     */
+    public SourceLocation getLocation()
+    {
+<span class="fc" id="L198">        final SourceLocation value = this.location;</span>
+<span class="fc" id="L199">        return value;</span>
+    }
+
+    /**
+     * This method creates a new instance of this class.
+     * 
+     * @param comment is the value for property &lt;code&gt;comment&lt;/code&gt;.
+     * @param annotations is the value for property &lt;code&gt;annotations&lt;/code&gt;.
+     * @param name is the value for property &lt;code&gt;name&lt;/code&gt;.
+     * @param namespace is the value for property &lt;code&gt;namespace&lt;/code&gt;.
+     * @param location is the value for property &lt;code&gt;location&lt;/code&gt;.
+     * @return a new instance of this class.
+     */
+    public static ModuleDirective create(DocComment comment, AnnotationList annotations, Name name, Namespace namespace, SourceLocation location)
+    {
+<span class="nc" id="L214">        ModuleDirective object = new ModuleDirective();</span>
+<span class="nc" id="L215">        object = object.setComment(comment);</span>
+<span class="nc" id="L216">        object = object.setAnnotations(annotations);</span>
+<span class="nc" id="L217">        object = object.setName(name);</span>
+<span class="nc" id="L218">        object = object.setNamespace(namespace);</span>
+<span class="nc" id="L219">        object = object.setLocation(location);</span>
+<span class="nc" id="L220">        return object;</span>
+    }
+
+    /**
+     * This method welcomes a visitor that wants to visit this object.
+     * 
+     * @param visitor is the visitor that is visiting this object.
+     */
+    public void accept(final IAstVisitor visitor)
+    {
+<span class="fc" id="L230">        visitor.visit(this);</span>
+<span class="fc" id="L231">    }</span>
+
+    /**
+     * This method creates a shallow copy of this object.
+     * 
+     * @return a shallow copy of this object.
+     */
+    public ModuleDirective copy()
+    {
+<span class="fc" id="L240">        final ModuleDirective result = new ModuleDirective();</span>
+<span class="fc" id="L241">        result.comment = this.comment;</span>
+<span class="fc" id="L242">        result.annotations = this.annotations;</span>
+<span class="fc" id="L243">        result.name = this.name;</span>
+<span class="fc" id="L244">        result.namespace = this.namespace;</span>
+<span class="fc" id="L245">        result.location = this.location;</span>
+<span class="fc" id="L246">        return result;</span>
+    }
+
+    /**
+     * This method creates a map representation of this struct.
+     * 
+     * &lt;p&gt;
+     * Each key is the name of a field.
+     * Each value is the result of calling the key field's getter.
+     * &lt;/p&gt;
+     * 
+     * @return a map containing the entries in this struct.
+     */
+    public Map&lt;String, Object&gt; toMap()
+    {
+<span class="fc" id="L261">        final Map&lt;String, Object&gt; map = new TreeMap&lt;String, Object&gt;();</span>
+<span class="fc" id="L262">        map.put(&quot;comment&quot;, this.getComment());</span>
+<span class="fc" id="L263">        map.put(&quot;annotations&quot;, this.getAnnotations());</span>
+<span class="fc" id="L264">        map.put(&quot;name&quot;, this.getName());</span>
+<span class="fc" id="L265">        map.put(&quot;namespace&quot;, this.getNamespace());</span>
+<span class="fc" id="L266">        map.put(&quot;location&quot;, this.getLocation());</span>
+
+<span class="fc" id="L268">        return map;</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString()
+    {
+<span class="fc" id="L277">        return this.toMap().toString();</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

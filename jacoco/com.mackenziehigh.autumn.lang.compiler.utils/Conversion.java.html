@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Conversion.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.mackenziehigh:autumn</a> &gt; <a href="index.source.html" class="el_package">com.mackenziehigh.autumn.lang.compiler.utils</a> &gt; <span class="el_source">Conversion.java</span></div><h1>Conversion.java</h1><pre class="source lang-java linenums">package com.mackenziehigh.autumn.lang.compiler.utils;
+
+import com.mackenziehigh.autumn.lang.compiler.compilers.TypeSystem;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IDeclaredType;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IExpressionType;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IPrimitiveType;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IReturnType;
+import com.mackenziehigh.autumn.resources.Finished;
+
+/**
+ * An instance of this class describes either an as-conversion or an is-conversion.
+ *
+ * @author Mackenzie High
+ */
+<span class="fc" id="L15">@Finished(&quot;2014/07/12&quot;)</span>
+public final class Conversion
+{
+    /**
+     * This is the name of the conversion method, if the conversion is predefined.
+     */
+    public final String name;
+
+    /**
+     * This is the type of value that the conversion method takes as input.
+     * If this conversion is really a cast, then this is the type of the object being cast.
+     */
+    public final IExpressionType value;
+
+    /**
+     * This is the type of values that the conversion method returns.
+     * If this conversion is really a cast, then this is the type that the object is being cast to.
+     */
+    public final IReturnType type;
+
+    /**
+     * This flag is true, if this conversion is really a cast.
+     */
+    public final boolean cast;
+
+    /**
+     * Sole Constructor.
+     *
+     * @param name is the name of the conversion method.
+     * @param value is the input type of the conversion.
+     * @param type is the output type of the conversion.
+     * @param cast is true, iff this conversion is really a cast.
+     */
+    public Conversion(final String name,
+                      final IExpressionType value,
+                      final IReturnType type,
+                      final boolean cast)
+<span class="fc" id="L52">    {</span>
+<span class="fc" id="L53">        this.name = name;</span>
+<span class="fc" id="L54">        this.value = value;</span>
+<span class="fc" id="L55">        this.type = type;</span>
+<span class="fc" id="L56">        this.cast = cast;</span>
+
+<span class="pc bpc" id="L58" title="3 of 8 branches missed.">        assert (cast == true &amp;&amp; name == null) || (cast == false &amp;&amp; name != null);</span>
+<span class="fc" id="L59">    }</span>
+
+    /**
+     * This method creates a description of a conversion between two types.
+     *
+     * @param typesystem is the type-system containing the types.
+     * @param value is the type of the conversion's input.
+     * @param type is the type of the conversion's output.
+     * @return an object that describes the conversion; or null, if the conversion is impossible.
+     */
+    public static Conversion findConversion(final TypeSystem typesystem,
+                                            final IExpressionType value,
+                                            final IReturnType type)
+    {
+<span class="fc" id="L73">        final IExpressionType expression = value;</span>
+
+        // Primitive Types
+<span class="fc" id="L76">        final IPrimitiveType P_boolean = typesystem.utils.PRIMITIVE_BOOLEAN;</span>
+<span class="fc" id="L77">        final IPrimitiveType P_char = typesystem.utils.PRIMITIVE_CHAR;</span>
+<span class="fc" id="L78">        final IPrimitiveType P_byte = typesystem.utils.PRIMITIVE_BYTE;</span>
+<span class="fc" id="L79">        final IPrimitiveType P_short = typesystem.utils.PRIMITIVE_SHORT;</span>
+<span class="fc" id="L80">        final IPrimitiveType P_int = typesystem.utils.PRIMITIVE_INT;</span>
+<span class="fc" id="L81">        final IPrimitiveType P_long = typesystem.utils.PRIMITIVE_LONG;</span>
+<span class="fc" id="L82">        final IPrimitiveType P_float = typesystem.utils.PRIMITIVE_FLOAT;</span>
+<span class="fc" id="L83">        final IPrimitiveType P_double = typesystem.utils.PRIMITIVE_DOUBLE;</span>
+
+        // Boxed Types
+<span class="fc" id="L86">        final IDeclaredType B_boolean = typesystem.utils.BOXED_BOOLEAN;</span>
+<span class="fc" id="L87">        final IDeclaredType B_char = typesystem.utils.BOXED_CHAR;</span>
+<span class="fc" id="L88">        final IDeclaredType B_byte = typesystem.utils.BOXED_BYTE;</span>
+<span class="fc" id="L89">        final IDeclaredType B_short = typesystem.utils.BOXED_SHORT;</span>
+<span class="fc" id="L90">        final IDeclaredType B_int = typesystem.utils.BOXED_INT;</span>
+<span class="fc" id="L91">        final IDeclaredType B_long = typesystem.utils.BOXED_LONG;</span>
+<span class="fc" id="L92">        final IDeclaredType B_float = typesystem.utils.BOXED_FLOAT;</span>
+<span class="fc" id="L93">        final IDeclaredType B_double = typesystem.utils.BOXED_DOUBLE;</span>
+
+        // Other Types
+<span class="fc" id="L96">        final IDeclaredType STRING = typesystem.utils.STRING;</span>
+<span class="fc" id="L97">        final IDeclaredType OBJECT = typesystem.utils.OBJECT;</span>
+
+<span class="fc" id="L99">        Conversion best = null;</span>
+
+        // The order of the following method calls is important.
+        // I did this using a helper method, rather than an if-elif-else statement, for readability.
+
+<span class="fc" id="L104">        best = isPredefined(best, &quot;box&quot;, B_boolean, P_boolean, expression, type);</span>
+<span class="fc" id="L105">        best = isPredefined(best, &quot;box&quot;, B_char, P_char, expression, type);</span>
+<span class="fc" id="L106">        best = isPredefined(best, &quot;box&quot;, B_byte, P_byte, expression, type);</span>
+<span class="fc" id="L107">        best = isPredefined(best, &quot;box&quot;, B_short, P_short, expression, type);</span>
+<span class="fc" id="L108">        best = isPredefined(best, &quot;box&quot;, B_int, P_int, expression, type);</span>
+<span class="fc" id="L109">        best = isPredefined(best, &quot;box&quot;, B_long, P_long, expression, type);</span>
+<span class="fc" id="L110">        best = isPredefined(best, &quot;box&quot;, B_float, P_float, expression, type);</span>
+<span class="fc" id="L111">        best = isPredefined(best, &quot;box&quot;, B_double, P_double, expression, type);</span>
+
+<span class="fc" id="L113">        best = isPredefined(best, &quot;boxToObject&quot;, OBJECT, P_boolean, expression, type);</span>
+<span class="fc" id="L114">        best = isPredefined(best, &quot;boxToObject&quot;, OBJECT, P_char, expression, type);</span>
+<span class="fc" id="L115">        best = isPredefined(best, &quot;boxToObject&quot;, OBJECT, P_byte, expression, type);</span>
+<span class="fc" id="L116">        best = isPredefined(best, &quot;boxToObject&quot;, OBJECT, P_short, expression, type);</span>
+<span class="fc" id="L117">        best = isPredefined(best, &quot;boxToObject&quot;, OBJECT, P_int, expression, type);</span>
+<span class="fc" id="L118">        best = isPredefined(best, &quot;boxToObject&quot;, OBJECT, P_long, expression, type);</span>
+<span class="fc" id="L119">        best = isPredefined(best, &quot;boxToObject&quot;, OBJECT, P_float, expression, type);</span>
+<span class="fc" id="L120">        best = isPredefined(best, &quot;boxToObject&quot;, OBJECT, P_double, expression, type);</span>
+
+<span class="fc" id="L122">        best = isPredefined(best, &quot;unbox&quot;, P_boolean, B_boolean, expression, type);</span>
+<span class="fc" id="L123">        best = isPredefined(best, &quot;unbox&quot;, P_char, B_char, expression, type);</span>
+<span class="fc" id="L124">        best = isPredefined(best, &quot;unbox&quot;, P_byte, B_byte, expression, type);</span>
+<span class="fc" id="L125">        best = isPredefined(best, &quot;unbox&quot;, P_short, B_short, expression, type);</span>
+<span class="fc" id="L126">        best = isPredefined(best, &quot;unbox&quot;, P_int, B_int, expression, type);</span>
+<span class="fc" id="L127">        best = isPredefined(best, &quot;unbox&quot;, P_long, B_long, expression, type);</span>
+<span class="fc" id="L128">        best = isPredefined(best, &quot;unbox&quot;, P_float, B_float, expression, type);</span>
+<span class="fc" id="L129">        best = isPredefined(best, &quot;unbox&quot;, P_double, B_double, expression, type);</span>
+
+<span class="fc" id="L131">        best = isPredefined(best, &quot;convertToBoolean&quot;, P_boolean, P_boolean, expression, type);</span>
+<span class="fc" id="L132">        best = isPredefined(best, &quot;convertToBoolean&quot;, P_boolean, P_char, expression, type);</span>
+<span class="fc" id="L133">        best = isPredefined(best, &quot;convertToBoolean&quot;, P_boolean, P_byte, expression, type);</span>
+<span class="fc" id="L134">        best = isPredefined(best, &quot;convertToBoolean&quot;, P_boolean, P_short, expression, type);</span>
+<span class="fc" id="L135">        best = isPredefined(best, &quot;convertToBoolean&quot;, P_boolean, P_int, expression, type);</span>
+<span class="fc" id="L136">        best = isPredefined(best, &quot;convertToBoolean&quot;, P_boolean, P_long, expression, type);</span>
+<span class="fc" id="L137">        best = isPredefined(best, &quot;convertToBoolean&quot;, P_boolean, P_float, expression, type);</span>
+<span class="fc" id="L138">        best = isPredefined(best, &quot;convertToBoolean&quot;, P_boolean, P_double, expression, type);</span>
+
+<span class="fc" id="L140">        best = isPredefined(best, &quot;convertToChar&quot;, P_char, P_boolean, expression, type);</span>
+<span class="fc" id="L141">        best = isPredefined(best, &quot;convertToChar&quot;, P_char, P_char, expression, type);</span>
+<span class="fc" id="L142">        best = isPredefined(best, &quot;convertToChar&quot;, P_char, P_byte, expression, type);</span>
+<span class="fc" id="L143">        best = isPredefined(best, &quot;convertToChar&quot;, P_char, P_short, expression, type);</span>
+<span class="fc" id="L144">        best = isPredefined(best, &quot;convertToChar&quot;, P_char, P_int, expression, type);</span>
+<span class="fc" id="L145">        best = isPredefined(best, &quot;convertToChar&quot;, P_char, P_long, expression, type);</span>
+<span class="fc" id="L146">        best = isPredefined(best, &quot;convertToChar&quot;, P_char, P_float, expression, type);</span>
+<span class="fc" id="L147">        best = isPredefined(best, &quot;convertToChar&quot;, P_char, P_double, expression, type);</span>
+
+<span class="fc" id="L149">        best = isPredefined(best, &quot;convertToByte&quot;, P_byte, P_boolean, expression, type);</span>
+<span class="fc" id="L150">        best = isPredefined(best, &quot;convertToByte&quot;, P_byte, P_char, expression, type);</span>
+<span class="fc" id="L151">        best = isPredefined(best, &quot;convertToByte&quot;, P_byte, P_byte, expression, type);</span>
+<span class="fc" id="L152">        best = isPredefined(best, &quot;convertToByte&quot;, P_byte, P_short, expression, type);</span>
+<span class="fc" id="L153">        best = isPredefined(best, &quot;convertToByte&quot;, P_byte, P_int, expression, type);</span>
+<span class="fc" id="L154">        best = isPredefined(best, &quot;convertToByte&quot;, P_byte, P_long, expression, type);</span>
+<span class="fc" id="L155">        best = isPredefined(best, &quot;convertToByte&quot;, P_byte, P_float, expression, type);</span>
+<span class="fc" id="L156">        best = isPredefined(best, &quot;convertToByte&quot;, P_byte, P_double, expression, type);</span>
+
+<span class="fc" id="L158">        best = isPredefined(best, &quot;convertToShort&quot;, P_short, P_boolean, expression, type);</span>
+<span class="fc" id="L159">        best = isPredefined(best, &quot;convertToShort&quot;, P_short, P_char, expression, type);</span>
+<span class="fc" id="L160">        best = isPredefined(best, &quot;convertToShort&quot;, P_short, P_byte, expression, type);</span>
+<span class="fc" id="L161">        best = isPredefined(best, &quot;convertToShort&quot;, P_short, P_short, expression, type);</span>
+<span class="fc" id="L162">        best = isPredefined(best, &quot;convertToShort&quot;, P_short, P_int, expression, type);</span>
+<span class="fc" id="L163">        best = isPredefined(best, &quot;convertToShort&quot;, P_short, P_long, expression, type);</span>
+<span class="fc" id="L164">        best = isPredefined(best, &quot;convertToShort&quot;, P_short, P_float, expression, type);</span>
+<span class="fc" id="L165">        best = isPredefined(best, &quot;convertToShort&quot;, P_short, P_double, expression, type);</span>
+
+<span class="fc" id="L167">        best = isPredefined(best, &quot;convertToInt&quot;, P_int, P_boolean, expression, type);</span>
+<span class="fc" id="L168">        best = isPredefined(best, &quot;convertToInt&quot;, P_int, P_char, expression, type);</span>
+<span class="fc" id="L169">        best = isPredefined(best, &quot;convertToInt&quot;, P_int, P_byte, expression, type);</span>
+<span class="fc" id="L170">        best = isPredefined(best, &quot;convertToInt&quot;, P_int, P_short, expression, type);</span>
+<span class="fc" id="L171">        best = isPredefined(best, &quot;convertToInt&quot;, P_int, P_int, expression, type);</span>
+<span class="fc" id="L172">        best = isPredefined(best, &quot;convertToInt&quot;, P_int, P_long, expression, type);</span>
+<span class="fc" id="L173">        best = isPredefined(best, &quot;convertToInt&quot;, P_int, P_float, expression, type);</span>
+<span class="fc" id="L174">        best = isPredefined(best, &quot;convertToInt&quot;, P_int, P_double, expression, type);</span>
+
+<span class="fc" id="L176">        best = isPredefined(best, &quot;convertToLong&quot;, P_long, P_boolean, expression, type);</span>
+<span class="fc" id="L177">        best = isPredefined(best, &quot;convertToLong&quot;, P_long, P_char, expression, type);</span>
+<span class="fc" id="L178">        best = isPredefined(best, &quot;convertToLong&quot;, P_long, P_byte, expression, type);</span>
+<span class="fc" id="L179">        best = isPredefined(best, &quot;convertToLong&quot;, P_long, P_short, expression, type);</span>
+<span class="fc" id="L180">        best = isPredefined(best, &quot;convertToLong&quot;, P_long, P_int, expression, type);</span>
+<span class="fc" id="L181">        best = isPredefined(best, &quot;convertToLong&quot;, P_long, P_long, expression, type);</span>
+<span class="fc" id="L182">        best = isPredefined(best, &quot;convertToLong&quot;, P_long, P_float, expression, type);</span>
+<span class="fc" id="L183">        best = isPredefined(best, &quot;convertToLong&quot;, P_long, P_double, expression, type);</span>
+
+<span class="fc" id="L185">        best = isPredefined(best, &quot;convertToFloat&quot;, P_float, P_boolean, expression, type);</span>
+<span class="fc" id="L186">        best = isPredefined(best, &quot;convertToFloat&quot;, P_float, P_char, expression, type);</span>
+<span class="fc" id="L187">        best = isPredefined(best, &quot;convertToFloat&quot;, P_float, P_byte, expression, type);</span>
+<span class="fc" id="L188">        best = isPredefined(best, &quot;convertToFloat&quot;, P_float, P_short, expression, type);</span>
+<span class="fc" id="L189">        best = isPredefined(best, &quot;convertToFloat&quot;, P_float, P_int, expression, type);</span>
+<span class="fc" id="L190">        best = isPredefined(best, &quot;convertToFloat&quot;, P_float, P_long, expression, type);</span>
+<span class="fc" id="L191">        best = isPredefined(best, &quot;convertToFloat&quot;, P_float, P_float, expression, type);</span>
+<span class="fc" id="L192">        best = isPredefined(best, &quot;convertToFloat&quot;, P_float, P_double, expression, type);</span>
+
+<span class="fc" id="L194">        best = isPredefined(best, &quot;convertToDouble&quot;, P_double, P_boolean, expression, type);</span>
+<span class="fc" id="L195">        best = isPredefined(best, &quot;convertToDouble&quot;, P_double, P_char, expression, type);</span>
+<span class="fc" id="L196">        best = isPredefined(best, &quot;convertToDouble&quot;, P_double, P_byte, expression, type);</span>
+<span class="fc" id="L197">        best = isPredefined(best, &quot;convertToDouble&quot;, P_double, P_short, expression, type);</span>
+<span class="fc" id="L198">        best = isPredefined(best, &quot;convertToDouble&quot;, P_double, P_int, expression, type);</span>
+<span class="fc" id="L199">        best = isPredefined(best, &quot;convertToDouble&quot;, P_double, P_long, expression, type);</span>
+<span class="fc" id="L200">        best = isPredefined(best, &quot;convertToDouble&quot;, P_double, P_float, expression, type);</span>
+<span class="fc" id="L201">        best = isPredefined(best, &quot;convertToDouble&quot;, P_double, P_double, expression, type);</span>
+
+<span class="fc" id="L203">        best = isPredefined(best, &quot;convertToString&quot;, STRING, P_boolean, expression, type);</span>
+<span class="fc" id="L204">        best = isPredefined(best, &quot;convertToString&quot;, STRING, P_char, expression, type);</span>
+<span class="fc" id="L205">        best = isPredefined(best, &quot;convertToString&quot;, STRING, P_byte, expression, type);</span>
+<span class="fc" id="L206">        best = isPredefined(best, &quot;convertToString&quot;, STRING, P_short, expression, type);</span>
+<span class="fc" id="L207">        best = isPredefined(best, &quot;convertToString&quot;, STRING, P_int, expression, type);</span>
+<span class="fc" id="L208">        best = isPredefined(best, &quot;convertToString&quot;, STRING, P_long, expression, type);</span>
+<span class="fc" id="L209">        best = isPredefined(best, &quot;convertToString&quot;, STRING, P_float, expression, type);</span>
+<span class="fc" id="L210">        best = isPredefined(best, &quot;convertToString&quot;, STRING, P_double, expression, type);</span>
+<span class="fc" id="L211">        best = isPredefined(best, &quot;convertToString&quot;, STRING, OBJECT, expression, type);</span>
+
+<span class="fc bfc" id="L213" title="All 2 branches covered.">        if (best != null)</span>
+        {
+<span class="fc" id="L215">            return best;</span>
+        }
+
+        // The conversion must be a cast.
+
+        /**
+         * A type can be upcast to a supertype and a supertype can be downcast to a subtype.
+         * However, there is no such thing as a cross-cast.
+         */
+<span class="fc bfc" id="L224" title="All 4 branches covered.">        final boolean case1 = value.isSubtypeOf(type) || type.isSubtypeOf(value);</span>
+
+        /**
+         * The input-type must be a reference-type,
+         * because a primitive-type cannot be *cast* to another type.
+         */
+<span class="fc" id="L230">        final boolean case2 = value.isReferenceType();</span>
+
+        /**
+         * The output-type must be an reference-type,
+         * because a value cannot be *cast* to a primitive-type.
+         */
+<span class="fc" id="L236">        final boolean case3 = value.isReferenceType();</span>
+
+<span class="pc bpc" id="L238" title="2 of 6 branches missed.">        if (case1 &amp;&amp; case2 &amp;&amp; case3)</span>
+        {
+            // The conversion is an apparently valid cast.
+<span class="fc" id="L241">            return new Conversion(null, value, type, true);</span>
+        }
+        else
+        {
+<span class="fc" id="L245">            return null;</span>
+        }
+    }
+
+    /**
+     * This method helps simplify the selection of a conversion method
+     *
+     * @param best is selected conversion, or null, if no conversion has been selected.
+     * @param name is the name of the conversion method.
+     * @param method_output is the return-type of the possible conversion method.
+     * @param method_input is the type of value that the possible conversion method accepts.
+     * @param value is the expression that produces the value to convert.
+     * @param type is the type that the value will be converted to, as requested by the user.
+     * @return a new conversion object, if the specified method is applicable; otherwise, null.
+     */
+    private static Conversion isPredefined(final Conversion best,
+                                           final String name,
+                                           final IReturnType method_output,
+                                           final IExpressionType method_input,
+                                           final IExpressionType value,
+                                           final IReturnType type)
+    {
+<span class="fc bfc" id="L267" title="All 2 branches covered.">        if (best != null)</span>
+        {
+<span class="fc" id="L269">            return best;</span>
+        }
+<span class="fc bfc" id="L271" title="All 4 branches covered.">        else if (method_output.equals(type) &amp;&amp; value.isSubtypeOf(method_input))</span>
+        {
+<span class="fc" id="L273">            return new Conversion(name, method_input, method_output, false);</span>
+        }
+        else
+        {
+<span class="fc" id="L277">            return null;</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

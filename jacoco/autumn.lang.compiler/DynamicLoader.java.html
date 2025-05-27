@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DynamicLoader.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.mackenziehigh:autumn</a> &gt; <a href="index.source.html" class="el_package">autumn.lang.compiler</a> &gt; <span class="el_source">DynamicLoader.java</span></div><h1>DynamicLoader.java</h1><pre class="source lang-java linenums">package autumn.lang.compiler;
+
+import com.google.common.base.Preconditions;
+import com.google.common.collect.Maps;
+import com.mackenziehigh.autumn.resources.Finished;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.util.Map;
+
+/**
+ * An instance of this class is a custom class-loader that can load a compiled Autumn program.
+ *
+ * @author Mackenzie High
+ */
+@Finished(&quot;2014/08/18&quot;)
+public final class DynamicLoader
+        extends URLClassLoader
+{
+    /**
+     * This map maps a name to its related class-object.
+     */
+<span class="fc" id="L24">    private final Map&lt;String, Class&gt; defined = Maps.newHashMap();</span>
+
+    /**
+     * This is the program that this loader loads.
+     */
+    private final CompiledProgram program;
+
+    /**
+     * Sole Constructor.
+     *
+     * @param parent is the parent of the new class-loader.
+     * @param program is the program that is being dynamically loaded.
+     */
+    public DynamicLoader(final ClassLoader parent,
+                         final CompiledProgram program)
+    {
+<span class="fc" id="L40">        super(program.libraries().toArray(new URL[0]), parent);</span>
+
+<span class="fc" id="L42">        this.program = program;</span>
+<span class="fc" id="L43">    }</span>
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Class findClass(final String name)
+            throws ClassNotFoundException
+    {
+<span class="fc" id="L52">        Preconditions.checkNotNull(name);</span>
+
+<span class="pc bpc" id="L54" title="1 of 2 branches missed.">        if (defined.containsKey(name))</span>
+        {
+<span class="nc" id="L56">            return defined.get(name);</span>
+        }
+
+<span class="pc bpc" id="L59" title="1 of 2 branches missed.">        for (ClassFile clazz : program.classes())</span>
+        {
+<span class="fc bfc" id="L61" title="All 2 branches covered.">            if (clazz.name().equals(name))</span>
+            {
+<span class="fc" id="L63">                final byte[] bytecode = clazz.bytecode();</span>
+
+<span class="fc" id="L65">                final Class klass = defineClass(clazz.name(), bytecode, 0, bytecode.length);</span>
+
+<span class="fc" id="L67">                return klass;</span>
+            }
+<span class="fc" id="L69">        }</span>
+
+<span class="nc" id="L71">        return super.findClass(name);</span>
+    }
+
+    /**
+     * This method invokes the program's entry-point thereby causing the program to execute.
+     *
+     * &lt;p&gt;
+     * This method does fails quietly, if the program's entry-point was not specified.
+     * &lt;/p&gt;
+     *
+     * @param args are the arguments to pass to the main method.
+     * @throws ClassNotFoundException if the main class does not exist.
+     * @throws NoSuchMethodException if the main method does not exist.
+     * @throws InvocationTargetException if main method throws an exception.
+     * @throws IllegalAccessException if the main method cannot be accessed reflectively.
+     */
+    public void invokeMain(final String[] args)
+            throws ClassNotFoundException,
+                   NoSuchMethodException,
+                   InvocationTargetException,
+                   IllegalAccessException
+    {
+<span class="fc" id="L93">        Preconditions.checkNotNull(args);</span>
+
+        /**
+         * Get the name of the module that is the entry-point of the program.
+         */
+<span class="fc" id="L98">        final String name = program.mainClass();</span>
+
+        /**
+         * Fail quietly, if no entry point was specified.
+         */
+<span class="fc bfc" id="L103" title="All 2 branches covered.">        if (name == null)</span>
+        {
+<span class="fc" id="L105">            return;</span>
+        }
+
+        /**
+         * Reflectively find the main class.
+         */
+<span class="fc" id="L111">        final Class main_class = Class.forName(name, false, this);</span>
+
+        /**
+         * Reflectively find the main function.
+         */
+<span class="fc" id="L116">        final Method main = main_class.getMethod(&quot;main&quot;, String[].class);</span>
+
+        /**
+         * Invoke the main function.
+         */
+<span class="fc" id="L121">        main.invoke(null, (Object) args);</span>
+<span class="fc" id="L122">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

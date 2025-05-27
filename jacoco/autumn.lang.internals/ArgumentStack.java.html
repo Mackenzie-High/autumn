@@ -1,0 +1,989 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ArgumentStack.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.mackenziehigh:autumn</a> &gt; <a href="index.source.html" class="el_package">autumn.lang.internals</a> &gt; <span class="el_source">ArgumentStack.java</span></div><h1>ArgumentStack.java</h1><pre class="source lang-java linenums">package autumn.lang.internals;
+
+import com.mackenziehigh.autumn.resources.Finished;
+import java.util.Arrays;
+
+/**
+ * Instances of this class are used to send arguments into functors and send result back therefrom.
+ *
+ * &lt;p&gt;
+ * &lt;b&gt;Warning:&lt;/b&gt; The API of this class shall not be changed, because the methods
+ * herein are invoked directly from bytecode. As a result, any revision could break
+ * backwards compatibility. That being said, the internal implementation of this class
+ * may be enhanced in the future in order to further optimize it.
+ * &lt;/p&gt;
+ *
+ * &lt;p&gt;
+ * The code in this class is among the most frequently accessed code in a running Autumn program.
+ * &lt;/p&gt;
+ *
+ * &lt;p&gt;
+ * There will be one instance of this class for every thread in an Autumn program.
+ * The instance is usually referred to simply as the &quot;argument-stack&quot;.
+ * The argument-stack should not be confused with the bytecode level operand-stack.
+ * The two stacks perform similar purposes; however, they are distinct entities.
+ * &lt;/p&gt;
+ *
+ * @author Mackenzie High
+ */
+@Finished(&quot;2014/07/12&quot;)
+public final class ArgumentStack
+{
+    /**
+     * Instances of this class are used to store arguments on the argument-stack.
+     */
+    private static final class Argument
+    {
+        /**
+         * This is the type of value that is currently stored herein.
+         */
+        public Class type;
+
+        public boolean value_Z;
+
+        public char value_C;
+
+        public byte value_B;
+
+        public short value_S;
+
+        public int value_I;
+
+        public long value_J;
+
+        public float value_F;
+
+        public double value_D;
+
+        public Object value_O;
+    }
+
+    /**
+     * This thread-local variable stores the argument-stack associated with this thread.
+     */
+<span class="fc" id="L64">    private static final ThreadLocal&lt;ArgumentStack&gt; thread_stack = new ThreadLocal&lt;ArgumentStack&gt;();</span>
+
+    /**
+     * This array stores the arguments that are currently on the argument-stack.
+     * Note: The size of this array is not the same thing as the size of the argument-stack itself.
+     */
+    private Argument[] stack;
+
+    /**
+     * This is the size of the argument-stack itself.
+     * In other words, this is the number of arguments that are currently on the argument-stack.
+     */
+<span class="fc" id="L76">    private int size = 0;</span>
+
+    /**
+     * Sole Constructor.
+     */
+    ArgumentStack()
+<span class="fc" id="L82">    {</span>
+        /**
+         * Initially, the stack will have room for sixty-four elements.
+         * In reality, no thread should need a larger stack than this.
+         */
+<span class="fc" id="L87">        final int INITIAL_SIZE = 64;</span>
+
+        // Allocate the stack itself.
+<span class="fc" id="L90">        stack = new Argument[INITIAL_SIZE];</span>
+
+        // Allocate the objects that store the arguemnts.
+<span class="fc bfc" id="L93" title="All 2 branches covered.">        for (int i = 0; i &lt; INITIAL_SIZE; i++)</span>
+        {
+<span class="fc" id="L95">            stack[i] = new Argument();</span>
+        }
+<span class="fc" id="L97">    }</span>
+
+    /**
+     * This method allocate space for at least one more argument.
+     */
+    private void increaseSize()
+    {
+<span class="nc bnc" id="L104" title="All 2 branches missed.">        if (stack.length == size)</span>
+        {
+<span class="nc" id="L106">            stack = Arrays.copyOf(stack, size + 64);</span>
+        }
+
+<span class="nc" id="L109">        stack[size] = new Argument();</span>
+<span class="nc" id="L110">    }</span>
+
+    /**
+     * This method retrieves the argument-stack that is associated with the current thread.
+     *
+     * &lt;p&gt;
+     * The returned argument-stack will be empty.
+     * &lt;/p&gt;
+     *
+     * @return the argument-stack of the current thread.
+     */
+    public static ArgumentStack getThreadStack()
+    {
+<span class="fc" id="L123">        final ArgumentStack stk = thread_stack.get();</span>
+
+<span class="fc bfc" id="L125" title="All 2 branches covered.">        if (stk != null)</span>
+        {
+<span class="fc" id="L127">            stk.clear();</span>
+
+<span class="fc" id="L129">            return stk;</span>
+        }
+        else
+        {
+<span class="fc" id="L133">            final ArgumentStack result = new ArgumentStack();</span>
+
+<span class="fc" id="L135">            thread_stack.set(result);</span>
+
+<span class="fc" id="L137">            return result;</span>
+        }
+    }
+
+    /**
+     * This method removes all arguments from the argument-stack.
+     */
+    public final void clear()
+    {
+        // Remove references to objects.
+        // Otherwise, a memory leak could result.
+<span class="fc bfc" id="L148" title="All 2 branches covered.">        for (int i = 0; i &lt; size; i++)</span>
+        {
+<span class="fc" id="L150">            stack[i].value_O = null;</span>
+        }
+
+<span class="fc" id="L153">        size = 0;</span>
+<span class="fc" id="L154">    }</span>
+
+    /**
+     * This method retrieves the size of the argument-stack.
+     *
+     * @return the number of arguments currently on the argument-stack.
+     */
+    public final int size()
+    {
+<span class="fc" id="L163">        return size;</span>
+    }
+
+    /**
+     * This method determines whether the argument-stack is empty.
+     *
+     * @return true, iff the size of this stack is zero.
+     */
+    public final boolean isEmpty()
+    {
+<span class="pc bpc" id="L173" title="1 of 2 branches missed.">        return size == 0;</span>
+    }
+
+    /**
+     * This method pushes an argument onto the argument-stack.
+     *
+     * @param value is the argument to push onto the stack.
+     */
+    public final void push(final boolean value)
+    {
+        /**
+         * Ensure that there is enough space on the argument-stack for one more element.
+         */
+<span class="pc bpc" id="L186" title="1 of 2 branches missed.">        if (size == stack.length)</span>
+        {
+<span class="nc" id="L188">            increaseSize();</span>
+        }
+
+        /**
+         * Push the value onto the argument-stack.
+         */
+<span class="fc" id="L194">        final Argument x = stack[size++];</span>
+<span class="fc" id="L195">        x.type = boolean.class;</span>
+<span class="fc" id="L196">        x.value_Z = value;</span>
+<span class="fc" id="L197">    }</span>
+
+    /**
+     * This method pushes an argument onto the argument-stack.
+     *
+     * @param value is the argument to push onto the stack.
+     */
+    public final void push(final char value)
+    {
+        /**
+         * Ensure that there is enough space on the argument-stack for one more element.
+         */
+<span class="pc bpc" id="L209" title="1 of 2 branches missed.">        if (size == stack.length)</span>
+        {
+<span class="nc" id="L211">            increaseSize();</span>
+        }
+
+        /**
+         * Push the value onto the argument-stack.
+         */
+<span class="fc" id="L217">        final Argument x = stack[size++];</span>
+<span class="fc" id="L218">        x.type = char.class;</span>
+<span class="fc" id="L219">        x.value_C = value;</span>
+<span class="fc" id="L220">    }</span>
+
+    /**
+     * This method pushes an argument onto the argument-stack.
+     *
+     * @param value is the argument to push onto the stack.
+     */
+    public final void push(final byte value)
+    {
+        /**
+         * Ensure that there is enough space on the argument-stack for one more element.
+         */
+<span class="pc bpc" id="L232" title="1 of 2 branches missed.">        if (size == stack.length)</span>
+        {
+<span class="nc" id="L234">            increaseSize();</span>
+        }
+
+        /**
+         * Push the value onto the argument-stack.
+         */
+<span class="fc" id="L240">        final Argument x = stack[size++];</span>
+<span class="fc" id="L241">        x.type = byte.class;</span>
+<span class="fc" id="L242">        x.value_B = value;</span>
+<span class="fc" id="L243">    }</span>
+
+    /**
+     * This method pushes an argument onto the argument-stack.
+     *
+     * @param value is the argument to push onto the stack.
+     */
+    public final void push(final short value)
+    {
+        /**
+         * Ensure that there is enough space on the argument-stack for one more element.
+         */
+<span class="pc bpc" id="L255" title="1 of 2 branches missed.">        if (size == stack.length)</span>
+        {
+<span class="nc" id="L257">            increaseSize();</span>
+        }
+
+        /**
+         * Push the value onto the argument-stack.
+         */
+<span class="fc" id="L263">        final Argument x = stack[size++];</span>
+<span class="fc" id="L264">        x.type = short.class;</span>
+<span class="fc" id="L265">        x.value_S = value;</span>
+<span class="fc" id="L266">    }</span>
+
+    /**
+     * This method pushes an argument onto the argument-stack.
+     *
+     * @param value is the argument to push onto the stack.
+     */
+    public final void push(final int value)
+    {
+        /**
+         * Ensure that there is enough space on the argument-stack for one more element.
+         */
+<span class="pc bpc" id="L278" title="1 of 2 branches missed.">        if (size == stack.length)</span>
+        {
+<span class="nc" id="L280">            increaseSize();</span>
+        }
+
+        /**
+         * Push the value onto the argument-stack.
+         */
+<span class="fc" id="L286">        final Argument x = stack[size++];</span>
+<span class="fc" id="L287">        x.type = int.class;</span>
+<span class="fc" id="L288">        x.value_I = value;</span>
+<span class="fc" id="L289">    }</span>
+
+    /**
+     * This method pushes an argument onto the argument-stack.
+     *
+     * @param value is the argument to push onto the stack.
+     */
+    public final void push(final long value)
+    {
+        /**
+         * Ensure that there is enough space on the argument-stack for one more element.
+         */
+<span class="pc bpc" id="L301" title="1 of 2 branches missed.">        if (size == stack.length)</span>
+        {
+<span class="nc" id="L303">            increaseSize();</span>
+        }
+
+        /**
+         * Push the value onto the argument-stack.
+         */
+<span class="fc" id="L309">        final Argument x = stack[size++];</span>
+<span class="fc" id="L310">        x.type = long.class;</span>
+<span class="fc" id="L311">        x.value_J = value;</span>
+<span class="fc" id="L312">    }</span>
+
+    /**
+     * This method pushes an argument onto the argument-stack.
+     *
+     * @param value is the argument to push onto the stack.
+     */
+    public final void push(final float value)
+    {
+        /**
+         * Ensure that there is enough space on the argument-stack for one more element.
+         */
+<span class="pc bpc" id="L324" title="1 of 2 branches missed.">        if (size == stack.length)</span>
+        {
+<span class="nc" id="L326">            increaseSize();</span>
+        }
+
+        /**
+         * Push the value onto the argument-stack.
+         */
+<span class="fc" id="L332">        final Argument x = stack[size++];</span>
+<span class="fc" id="L333">        x.type = float.class;</span>
+<span class="fc" id="L334">        x.value_F = value;</span>
+<span class="fc" id="L335">    }</span>
+
+    /**
+     * This method pushes an argument onto the argument-stack.
+     *
+     * @param value is the argument to push onto the stack.
+     */
+    public final void push(final double value)
+    {
+        /**
+         * Ensure that there is enough space on the argument-stack for one more element.
+         */
+<span class="pc bpc" id="L347" title="1 of 2 branches missed.">        if (size == stack.length)</span>
+        {
+<span class="nc" id="L349">            increaseSize();</span>
+        }
+
+        /**
+         * Push the value onto the argument-stack.
+         */
+<span class="fc" id="L355">        final Argument x = stack[size++];</span>
+<span class="fc" id="L356">        x.type = double.class;</span>
+<span class="fc" id="L357">        x.value_D = value;</span>
+<span class="fc" id="L358">    }</span>
+
+    /**
+     * This method pushes an argument onto the argument-stack.
+     *
+     * @param value is the argument to push onto the stack.
+     */
+    public final void push(final Object value)
+    {
+        /**
+         * Determine the actual type of the object.
+         */
+<span class="fc bfc" id="L370" title="All 2 branches covered.">        final Class klass = value == null ? null : value.getClass();</span>
+
+        /**
+         * If the object is a boxed type, then treat it as a primitive-type.
+         */
+<span class="fc bfc" id="L375" title="All 2 branches covered.">        if (klass == Boolean.class)</span>
+        {
+<span class="fc" id="L377">            push((boolean) (Boolean) value);</span>
+        }
+<span class="fc bfc" id="L379" title="All 2 branches covered.">        else if (klass == Character.class)</span>
+        {
+<span class="fc" id="L381">            push((char) (Character) value);</span>
+        }
+<span class="fc bfc" id="L383" title="All 2 branches covered.">        else if (klass == Byte.class)</span>
+        {
+<span class="fc" id="L385">            push((byte) (Byte) value);</span>
+        }
+<span class="fc bfc" id="L387" title="All 2 branches covered.">        else if (klass == Short.class)</span>
+        {
+<span class="fc" id="L389">            push((short) (Short) value);</span>
+        }
+<span class="fc bfc" id="L391" title="All 2 branches covered.">        else if (klass == Integer.class)</span>
+        {
+<span class="fc" id="L393">            push((int) (Integer) value);</span>
+        }
+<span class="fc bfc" id="L395" title="All 2 branches covered.">        else if (klass == Long.class)</span>
+        {
+<span class="fc" id="L397">            push((long) (Long) value);</span>
+        }
+<span class="fc bfc" id="L399" title="All 2 branches covered.">        else if (klass == Float.class)</span>
+        {
+<span class="fc" id="L401">            push((float) (Float) value);</span>
+        }
+<span class="fc bfc" id="L403" title="All 2 branches covered.">        else if (klass == Double.class)</span>
+        {
+<span class="fc" id="L405">            push((double) (Double) value);</span>
+        }
+        else
+        {
+            /**
+             * Ensure that there is enough space on the argument-stack for one more element.
+             */
+<span class="pc bpc" id="L412" title="1 of 2 branches missed.">            if (size == stack.length)</span>
+            {
+<span class="nc" id="L414">                increaseSize();</span>
+            }
+
+            /**
+             * Push the value onto the argument-stack.
+             */
+<span class="fc" id="L420">            final Argument x = stack[size++];</span>
+<span class="fc" id="L421">            x.type = Object.class;</span>
+<span class="fc" id="L422">            x.value_O = value;</span>
+        }
+<span class="fc" id="L424">    }</span>
+
+    /**
+     * This method removes the topmost element from the argument-stack.
+     *
+     * @throws IllegalStateException if the argument-stack is already empty.
+     */
+    public final void pop()
+    {
+<span class="pc bpc" id="L433" title="1 of 2 branches missed.">        if (size == 0)</span>
+        {
+<span class="nc" id="L435">            throw new IllegalStateException(&quot;The argument-stack is empty.&quot;);</span>
+        }
+
+<span class="fc" id="L438">        --size;</span>
+<span class="fc" id="L439">    }</span>
+
+    /**
+     * This method creates a special exception object.
+     *
+     * @return the new exception.
+     */
+    private RuntimeException wrongType()
+    {
+<span class="fc" id="L448">        return new ClassCastException(&quot;The argument cannot be returned due to its type.&quot;);</span>
+    }
+
+    /**
+     * This method retrieves an argument that is at a specific location on the argument-stack.
+     *
+     * &lt;p&gt;
+     * The argument will be unboxed, if necessary.
+     * &lt;/p&gt;
+     *
+     * @param index is the zero-based index of the argument as measured from the stack's base.
+     * @return the argument.
+     * @throws IndexOutOfBoundsException if the index is invalid.
+     * @throws ClassCastException if unboxing fails.
+     * @throws ClassCastException if the value cannot be returned due to its type.
+     */
+    public final boolean getZ(final int index)
+    {
+<span class="fc" id="L466">        final Argument x = stack[index];</span>
+
+<span class="fc bfc" id="L468" title="All 2 branches covered.">        if (x.type == boolean.class)</span>
+        {
+<span class="fc" id="L470">            return x.value_Z;</span>
+        }
+<span class="fc bfc" id="L472" title="All 2 branches covered.">        else if (x.type == Object.class)</span>
+        {
+<span class="nc" id="L474">            return (boolean) (Boolean) x.value_O;</span>
+        }
+        else
+        {
+<span class="fc" id="L478">            throw wrongType();</span>
+        }
+    }
+
+    /**
+     * This method retrieves an argument that is at a specific location on the argument-stack.
+     *
+     * &lt;p&gt;
+     * The argument will be unboxed, if necessary.
+     * &lt;/p&gt;
+     *
+     * @param index is the zero-based index of the argument as measured from the stack's base.
+     * @return the argument.
+     * @throws IndexOutOfBoundsException if the index is invalid.
+     * @throws ClassCastException if unboxing fails.
+     * @throws ClassCastException if the value cannot be returned due to its type.
+     */
+    public final char getC(final int index)
+    {
+<span class="fc" id="L497">        final Argument x = stack[index];</span>
+
+<span class="fc bfc" id="L499" title="All 2 branches covered.">        if (x.type == char.class)</span>
+        {
+<span class="fc" id="L501">            return x.value_C;</span>
+        }
+<span class="fc bfc" id="L503" title="All 2 branches covered.">        else if (x.type == Object.class)</span>
+        {
+<span class="nc" id="L505">            return (char) (Character) x.value_O;</span>
+        }
+        else
+        {
+<span class="fc" id="L509">            throw wrongType();</span>
+        }
+    }
+
+    /**
+     * This method retrieves an argument that is at a specific location on the argument-stack.
+     *
+     * &lt;p&gt;
+     * The argument will be unboxed, if necessary.
+     * &lt;/p&gt;
+     *
+     * @param index is the zero-based index of the argument as measured from the stack's base.
+     * @return the argument.
+     * @throws IndexOutOfBoundsException if the index is invalid.
+     * @throws ClassCastException if unboxing fails.
+     * @throws ClassCastException if the value cannot be returned due to its type.
+     */
+    public final byte getB(final int index)
+    {
+<span class="fc" id="L528">        final Argument x = stack[index];</span>
+
+<span class="fc bfc" id="L530" title="All 2 branches covered.">        if (x.type == byte.class)</span>
+        {
+<span class="fc" id="L532">            return x.value_B;</span>
+        }
+<span class="fc bfc" id="L534" title="All 2 branches covered.">        else if (x.type == Object.class)</span>
+        {
+<span class="nc" id="L536">            return (byte) (Byte) x.value_O;</span>
+        }
+        else
+        {
+<span class="fc" id="L540">            throw wrongType();</span>
+        }
+    }
+
+    /**
+     * This method retrieves an argument that is at a specific location on the argument-stack.
+     *
+     * &lt;p&gt;
+     * The argument will be unboxed or coerced, if necessary.
+     * &lt;/p&gt;
+     *
+     * @param index is the zero-based index of the argument as measured from the stack's base.
+     * @return the argument.
+     * @throws IndexOutOfBoundsException if the index is invalid.
+     * @throws ClassCastException if unboxing fails.
+     * @throws ClassCastException if the value cannot be returned due to its type.
+     */
+    public final short getS(final int index)
+    {
+<span class="fc" id="L559">        final Argument x = stack[index];</span>
+
+<span class="fc bfc" id="L561" title="All 2 branches covered.">        if (x.type == short.class)</span>
+        {
+<span class="fc" id="L563">            return x.value_S;</span>
+        }
+<span class="fc bfc" id="L565" title="All 2 branches covered.">        else if (x.type == byte.class)</span>
+        {
+<span class="fc" id="L567">            return x.value_B;</span>
+        }
+<span class="fc bfc" id="L569" title="All 2 branches covered.">        else if (x.type == Object.class)</span>
+        {
+<span class="nc" id="L571">            return (short) (Short) x.value_O;</span>
+        }
+        else
+        {
+<span class="fc" id="L575">            throw wrongType();</span>
+        }
+    }
+
+    /**
+     * This method retrieves an argument that is at a specific location on the argument-stack.
+     *
+     * &lt;p&gt;
+     * The argument will be unboxed or coerced, if necessary.
+     * &lt;/p&gt;
+     *
+     * @param index is the zero-based index of the argument as measured from the stack's base.
+     * @return the argument.
+     * @throws IndexOutOfBoundsException if the index is invalid.
+     * @throws ClassCastException if unboxing fails.
+     * @throws ClassCastException if the value cannot be returned due to its type.
+     */
+    public final int getI(final int index)
+    {
+<span class="fc" id="L594">        final Argument x = stack[index];</span>
+
+<span class="fc bfc" id="L596" title="All 2 branches covered.">        if (x.type == int.class)</span>
+        {
+<span class="fc" id="L598">            return x.value_I;</span>
+        }
+<span class="fc bfc" id="L600" title="All 2 branches covered.">        else if (x.type == char.class)</span>
+        {
+<span class="fc" id="L602">            return x.value_C;</span>
+        }
+<span class="fc bfc" id="L604" title="All 2 branches covered.">        else if (x.type == byte.class)</span>
+        {
+<span class="fc" id="L606">            return x.value_B;</span>
+        }
+<span class="fc bfc" id="L608" title="All 2 branches covered.">        else if (x.type == short.class)</span>
+        {
+<span class="fc" id="L610">            return x.value_S;</span>
+        }
+<span class="fc bfc" id="L612" title="All 2 branches covered.">        else if (x.type == Object.class)</span>
+        {
+<span class="nc" id="L614">            return (int) (Integer) x.value_O;</span>
+        }
+        else
+        {
+<span class="fc" id="L618">            throw wrongType();</span>
+        }
+    }
+
+    /**
+     * This method retrieves an argument that is at a specific location on the argument-stack.
+     *
+     * &lt;p&gt;
+     * The argument will be unboxed or coerced, if necessary.
+     * &lt;/p&gt;
+     *
+     * @param index is the zero-based index of the argument as measured from the stack's base.
+     * @return the argument.
+     * @throws IndexOutOfBoundsException if the index is invalid.
+     * @throws ClassCastException if unboxing fails.
+     * @throws ClassCastException if the value cannot be returned due to its type.
+     */
+    public final long getJ(final int index)
+    {
+<span class="fc" id="L637">        final Argument x = stack[index];</span>
+
+<span class="fc bfc" id="L639" title="All 2 branches covered.">        if (x.type == long.class)</span>
+        {
+<span class="fc" id="L641">            return x.value_J;</span>
+        }
+<span class="fc bfc" id="L643" title="All 2 branches covered.">        else if (x.type == char.class)</span>
+        {
+<span class="fc" id="L645">            return x.value_C;</span>
+        }
+<span class="fc bfc" id="L647" title="All 2 branches covered.">        else if (x.type == byte.class)</span>
+        {
+<span class="fc" id="L649">            return x.value_B;</span>
+        }
+<span class="fc bfc" id="L651" title="All 2 branches covered.">        else if (x.type == short.class)</span>
+        {
+<span class="fc" id="L653">            return x.value_S;</span>
+        }
+<span class="fc bfc" id="L655" title="All 2 branches covered.">        else if (x.type == int.class)</span>
+        {
+<span class="fc" id="L657">            return x.value_I;</span>
+        }
+<span class="fc bfc" id="L659" title="All 2 branches covered.">        else if (x.type == Object.class)</span>
+        {
+<span class="nc" id="L661">            return (long) (Long) x.value_O;</span>
+        }
+        else
+        {
+<span class="fc" id="L665">            throw wrongType();</span>
+        }
+    }
+
+    /**
+     * This method retrieves an argument that is at a specific location on the argument-stack.
+     *
+     * &lt;p&gt;
+     * The argument will be unboxed, if necessary.
+     * &lt;/p&gt;
+     *
+     * @param index is the zero-based index of the argument as measured from the stack's base.
+     * @return the argument.
+     * @throws IndexOutOfBoundsException if the index is invalid.
+     * @throws ClassCastException if unboxing fails.
+     * @throws ClassCastException if the value cannot be returned due to its type.
+     */
+    public final float getF(final int index)
+    {
+<span class="fc" id="L684">        final Argument x = stack[index];</span>
+
+<span class="fc bfc" id="L686" title="All 2 branches covered.">        if (x.type == float.class)</span>
+        {
+<span class="fc" id="L688">            return x.value_F;</span>
+        }
+<span class="fc bfc" id="L690" title="All 2 branches covered.">        else if (x.type == Object.class)</span>
+        {
+<span class="nc" id="L692">            return (float) (Float) x.value_O;</span>
+        }
+        else
+        {
+<span class="fc" id="L696">            throw wrongType();</span>
+        }
+    }
+
+    /**
+     * This method retrieves an argument that is at a specific location on the argument-stack.
+     *
+     * &lt;p&gt;
+     * The argument will be unboxed or coerced, if necessary.
+     * &lt;/p&gt;
+     *
+     * @param index is the zero-based index of the argument as measured from the stack's base.
+     * @return the argument.
+     * @throws IndexOutOfBoundsException if the index is invalid.
+     * @throws ClassCastException if unboxing fails.
+     * @throws ClassCastException if the value cannot be returned due to its type.
+     */
+    public final double getD(final int index)
+    {
+<span class="fc" id="L715">        final Argument x = stack[index];</span>
+
+<span class="fc bfc" id="L717" title="All 2 branches covered.">        if (x.type == double.class)</span>
+        {
+<span class="fc" id="L719">            return x.value_D;</span>
+        }
+<span class="fc bfc" id="L721" title="All 2 branches covered.">        else if (x.type == float.class)</span>
+        {
+<span class="fc" id="L723">            return x.value_F;</span>
+        }
+<span class="fc bfc" id="L725" title="All 2 branches covered.">        else if (x.type == Object.class)</span>
+        {
+<span class="nc" id="L727">            return (double) (Double) x.value_O;</span>
+        }
+        else
+        {
+<span class="fc" id="L731">            throw wrongType();</span>
+        }
+    }
+
+    /**
+     * This method retrieves an argument that is at a specific location on the argument-stack.
+     *
+     * &lt;p&gt;
+     * The argument will be boxed, if necessary.
+     * &lt;/p&gt;
+     *
+     * @param index is the zero-based index of the argument as measured from the stack's base.
+     * @return the argument.
+     * @throws IndexOutOfBoundsException if the index is invalid.
+     * @throws ClassCastException if the value cannot be returned due to its type.
+     */
+    public final Object getO(final int index)
+    {
+<span class="fc" id="L749">        final Argument x = stack[index];</span>
+
+<span class="fc bfc" id="L751" title="All 2 branches covered.">        if (x.type == boolean.class)</span>
+        {
+<span class="fc" id="L753">            return x.value_Z;</span>
+        }
+<span class="fc bfc" id="L755" title="All 2 branches covered.">        else if (x.type == char.class)</span>
+        {
+<span class="fc" id="L757">            return x.value_C;</span>
+        }
+<span class="fc bfc" id="L759" title="All 2 branches covered.">        else if (x.type == byte.class)</span>
+        {
+<span class="fc" id="L761">            return x.value_B;</span>
+        }
+<span class="fc bfc" id="L763" title="All 2 branches covered.">        else if (x.type == short.class)</span>
+        {
+<span class="fc" id="L765">            return x.value_S;</span>
+        }
+<span class="fc bfc" id="L767" title="All 2 branches covered.">        else if (x.type == int.class)</span>
+        {
+<span class="fc" id="L769">            return x.value_I;</span>
+        }
+<span class="fc bfc" id="L771" title="All 2 branches covered.">        else if (x.type == long.class)</span>
+        {
+<span class="fc" id="L773">            return x.value_J;</span>
+        }
+<span class="fc bfc" id="L775" title="All 2 branches covered.">        else if (x.type == float.class)</span>
+        {
+<span class="fc" id="L777">            return x.value_F;</span>
+        }
+<span class="fc bfc" id="L779" title="All 2 branches covered.">        else if (x.type == double.class)</span>
+        {
+<span class="fc" id="L781">            return x.value_D;</span>
+        }
+<span class="pc bpc" id="L783" title="1 of 2 branches missed.">        else if (x.type == Object.class)</span>
+        {
+<span class="fc" id="L785">            return x.value_O;</span>
+        }
+        else
+        {
+<span class="nc" id="L789">            throw wrongType();</span>
+        }
+    }
+
+    /**
+     * This method retrieves the argument that is on the top of the argument-stack.
+     *
+     * &lt;p&gt;
+     * The argument will be unboxed, if necessary.
+     * &lt;/p&gt;
+     *
+     * @return the argument.
+     * @throws IndexOutOfBoundsException if the stack is empty.
+     * @throws ClassCastException if unboxing fails.
+     * @throws ClassCastException if the value cannot be returned due to its type.
+     */
+    public final boolean peekZ()
+    {
+<span class="fc" id="L807">        return getZ(size - 1);</span>
+    }
+
+    /**
+     * This method retrieves the argument that is on the top of the argument-stack.
+     *
+     * &lt;p&gt;
+     * The argument will be unboxed, if necessary.
+     * &lt;/p&gt;
+     *
+     * @return the argument.
+     * @throws IndexOutOfBoundsException if the stack is empty.
+     * @throws ClassCastException if unboxing fails.
+     * @throws ClassCastException if the value cannot be returned due to its type.
+     */
+    public final char peekC()
+    {
+<span class="fc" id="L824">        return getC(size - 1);</span>
+    }
+
+    /**
+     * This method retrieves the argument that is on the top of the argument-stack.
+     *
+     * &lt;p&gt;
+     * The argument will be unboxed, if necessary.
+     * &lt;/p&gt;
+     *
+     * @return the argument.
+     * @throws IndexOutOfBoundsException if the stack is empty.
+     * @throws ClassCastException if unboxing fails.
+     * @throws ClassCastException if the value cannot be returned due to its type.
+     */
+    public final byte peekB()
+    {
+<span class="fc" id="L841">        return getB(size - 1);</span>
+    }
+
+    /**
+     * This method retrieves the argument that is on the top of the argument-stack.
+     *
+     * &lt;p&gt;
+     * The argument will be unboxed, if necessary.
+     * &lt;/p&gt;
+     *
+     * @return the argument.
+     * @throws IndexOutOfBoundsException if the stack is empty.
+     * @throws ClassCastException if unboxing fails.
+     * @throws ClassCastException if the value cannot be returned due to its type.
+     */
+    public final short peekS()
+    {
+<span class="fc" id="L858">        return getS(size - 1);</span>
+    }
+
+    /**
+     * This method retrieves the argument that is on the top of the argument-stack.
+     *
+     * &lt;p&gt;
+     * The argument will be unboxed, if necessary.
+     * &lt;/p&gt;
+     *
+     * @return the argument.
+     * @throws IndexOutOfBoundsException if the stack is empty.
+     * @throws ClassCastException if unboxing fails.
+     * @throws ClassCastException if the value cannot be returned due to its type.
+     */
+    public final int peekI()
+    {
+<span class="fc" id="L875">        return getI(size - 1);</span>
+    }
+
+    /**
+     * This method retrieves the argument that is on the top of the argument-stack.
+     *
+     * &lt;p&gt;
+     * The argument will be unboxed, if necessary.
+     * &lt;/p&gt;
+     *
+     * @return the argument.
+     * @throws IndexOutOfBoundsException if the stack is empty.
+     * @throws ClassCastException if unboxing fails.
+     * @throws ClassCastException if the value cannot be returned due to its type.
+     */
+    public final long peekJ()
+    {
+<span class="fc" id="L892">        return getJ(size - 1);</span>
+    }
+
+    /**
+     * This method retrieves the argument that is on the top of the argument-stack.
+     *
+     * &lt;p&gt;
+     * The argument will be unboxed, if necessary.
+     * &lt;/p&gt;
+     *
+     * @return the argument.
+     * @throws IndexOutOfBoundsException if the stack is empty.
+     * @throws ClassCastException if unboxing fails.
+     * @throws ClassCastException if the value cannot be returned due to its type.
+     */
+    public final float peekF()
+    {
+<span class="fc" id="L909">        return getF(size - 1);</span>
+    }
+
+    /**
+     * This method retrieves the argument that is on the top of the argument-stack.
+     *
+     * &lt;p&gt;
+     * The argument will be unboxed, if necessary.
+     * &lt;/p&gt;
+     *
+     * @return the argument.
+     * @throws IndexOutOfBoundsException if the stack is empty.
+     * @throws ClassCastException if unboxing fails.
+     * @throws ClassCastException if the value cannot be returned due to its type.
+     */
+    public final double peekD()
+    {
+<span class="fc" id="L926">        return getD(size - 1);</span>
+    }
+
+    /**
+     * This method retrieves the argument that is on the top of the argument-stack.
+     *
+     * &lt;p&gt;
+     * The argument will be boxed, if necessary.
+     * &lt;/p&gt;
+     *
+     * @return the argument.
+     * @throws IndexOutOfBoundsException if the stack is empty.
+     */
+    public final Object peekO()
+    {
+<span class="fc" id="L941">        return getO(size - 1);</span>
+    }
+
+    /**
+     * This method retrieves and removes the argument that is on the top of the argument-stack.
+     *
+     * &lt;p&gt;
+     * The argument will be boxed, if necessary.
+     * &lt;/p&gt;
+     *
+     * @return the argument.
+     * @throws IndexOutOfBoundsException if the stack is empty.
+     */
+    public final Object popO()
+    {
+<span class="fc" id="L956">        final Object value = peekO();</span>
+
+<span class="fc" id="L958">        pop();</span>
+
+<span class="fc" id="L960">        return value;</span>
+    }
+
+    /**
+     * This method retrieves and removes the value that is on top of the argument-stack, if any.
+     *
+     * &lt;p&gt;
+     * Caution: This method will also clear the stack.
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * This method will return null, if the stack is empty.
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * This method was added in order to simply the retrieval of functor return-values.
+     * &lt;/p&gt;
+     *
+     * @return the topmost argument, if one exists; otherwise, return null.
+     */
+    public final Object popResult()
+    {
+<span class="pc bpc" id="L982" title="1 of 2 branches missed.">        final Object result = isEmpty() ? null : popO();</span>
+
+<span class="fc" id="L984">        clear();</span>
+
+<span class="fc" id="L986">        return result;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

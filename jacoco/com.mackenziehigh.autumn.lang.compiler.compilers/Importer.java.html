@@ -1,0 +1,651 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Importer.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.mackenziehigh:autumn</a> &gt; <a href="index.source.html" class="el_package">com.mackenziehigh.autumn.lang.compiler.compilers</a> &gt; <span class="el_source">Importer.java</span></div><h1>Importer.java</h1><pre class="source lang-java linenums">package com.mackenziehigh.autumn.lang.compiler.compilers;
+
+import autumn.lang.compiler.ast.nodes.TypeSpecifier;
+import autumn.util.F;
+import autumn.util.functors.Action;
+import autumn.util.functors.Function0;
+import autumn.util.functors.Function1;
+import autumn.util.functors.Function2;
+import autumn.util.functors.Function3;
+import autumn.util.functors.Function4;
+import autumn.util.functors.Function5;
+import autumn.util.functors.Function6;
+import autumn.util.functors.Function7;
+import autumn.util.functors.Function8;
+import autumn.util.functors.Function9;
+import autumn.util.functors.Ordering;
+import autumn.util.functors.Predicate;
+import autumn.util.functors.ProxyHandler;
+import com.google.common.base.Preconditions;
+import com.google.common.collect.Maps;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IClassType;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IDeclaredType;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IExpressionType;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IInterfaceType;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IReferenceType;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IReturnType;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IType;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IVariableType;
+import com.mackenziehigh.autumn.lang.compiler.utils.Utils;
+import com.mackenziehigh.autumn.resources.Finished;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
+
+/**
+ * Essentially, an instance of this class implements import-directives.
+ *
+ * @author Mackenzie High
+ */
+@Finished(&quot;2015/01/17&quot;)
+public final class Importer
+{
+    /**
+     * Essentially, this is the module that contains the import-directives implemented herein.
+     */
+    private final ModuleCompiler module;
+
+    /**
+     * This map maps type aliases to the fully-qualified names of types.
+     *
+     * &lt;p&gt;
+     * Example: String =&gt; java.lang.String
+     * &lt;/p&gt;
+     */
+<span class="fc" id="L55">    private final Map&lt;String, String&gt; imports = Maps.newTreeMap();</span>
+
+    /**
+     * Sole Constructor.
+     *
+     * @param module is essentially the module that is being compiled.
+     * @throws NullPointerException if module is null.
+     */
+    public Importer(final ModuleCompiler module)
+<span class="fc" id="L64">    {</span>
+<span class="fc" id="L65">        this.module = module;</span>
+
+        // autumn.lang
+<span class="fc" id="L68">        importClass(autumn.lang.Delegate.class);</span>
+<span class="fc" id="L69">        importClass(autumn.lang.Functor.class);</span>
+<span class="fc" id="L70">        importClass(autumn.lang.Lambda.class);</span>
+<span class="fc" id="L71">        importClass(autumn.lang.Local.class);</span>
+<span class="fc" id="L72">        importClass(autumn.lang.LocalsMap.class);</span>
+<span class="fc" id="L73">        importClass(autumn.lang.Module.class);</span>
+<span class="fc" id="L74">        importClass(autumn.lang.ModuleInfo.class);</span>
+<span class="fc" id="L75">        importClass(autumn.lang.Record.class);</span>
+<span class="fc" id="L76">        importClass(autumn.lang.DefinedFunctor.class);</span>
+<span class="fc" id="L77">        importClass(autumn.lang.TypedFunctor.class);</span>
+
+        // autumn.lang.annotations
+<span class="fc" id="L80">        importClass(autumn.lang.annotations.Author.class);</span>
+<span class="fc" id="L81">        importClass(autumn.lang.annotations.Hide.class);</span>
+<span class="fc" id="L82">        importClass(autumn.lang.annotations.Infer.class);</span>
+<span class="fc" id="L83">        importClass(autumn.lang.annotations.Setup.class);</span>
+<span class="fc" id="L84">        importClass(autumn.lang.annotations.Start.class);</span>
+<span class="fc" id="L85">        importClass(autumn.lang.annotations.Sync.class);</span>
+
+        // autumn.lang.compiler
+<span class="fc" id="L88">        importClass(autumn.lang.compiler.Autumn.class);</span>
+
+        // autumn.lang.exceptions
+<span class="fc" id="L91">        importClass(autumn.lang.exceptions.AssertionFailedException.class);</span>
+<span class="fc" id="L92">        importClass(autumn.lang.exceptions.AssumptionFailedException.class);</span>
+<span class="fc" id="L93">        importClass(autumn.lang.exceptions.CheckedException.class);</span>
+<span class="fc" id="L94">        importClass(autumn.lang.exceptions.DispatchException.class);</span>
+<span class="fc" id="L95">        importClass(autumn.lang.exceptions.UnexpectedTerminationException.class);</span>
+
+        // autumn.util
+<span class="fc" id="L98">        importClass(autumn.util.Bitwise.class);</span>
+<span class="fc" id="L99">        importClass(autumn.util.F.class);</span>
+<span class="fc" id="L100">        importClass(autumn.util.FileIO.class);</span>
+
+        // autumn.util.test
+<span class="fc" id="L103">        importClass(autumn.util.test.MalformedTestException.class);</span>
+<span class="fc" id="L104">        importClass(autumn.util.test.Test.class);</span>
+<span class="fc" id="L105">        importClass(autumn.util.test.TestCase.class);</span>
+<span class="fc" id="L106">        importClass(autumn.util.test.TestResult.class);</span>
+<span class="fc" id="L107">        importClass(autumn.util.test.TestResults.class);</span>
+<span class="fc" id="L108">        importClass(autumn.util.test.Tester.class);</span>
+<span class="fc" id="L109">        importClass(autumn.util.test.UnitTester.class);</span>
+
+        // autumn.util.functors
+<span class="fc" id="L112">        importClass(Action.class);</span>
+<span class="fc" id="L113">        importClass(Function0.class);</span>
+<span class="fc" id="L114">        importClass(Function1.class);</span>
+<span class="fc" id="L115">        importClass(Function2.class);</span>
+<span class="fc" id="L116">        importClass(Function3.class);</span>
+<span class="fc" id="L117">        importClass(Function4.class);</span>
+<span class="fc" id="L118">        importClass(Function5.class);</span>
+<span class="fc" id="L119">        importClass(Function6.class);</span>
+<span class="fc" id="L120">        importClass(Function7.class);</span>
+<span class="fc" id="L121">        importClass(Function8.class);</span>
+<span class="fc" id="L122">        importClass(Function9.class);</span>
+<span class="fc" id="L123">        importClass(Ordering.class);</span>
+<span class="fc" id="L124">        importClass(Predicate.class);</span>
+<span class="fc" id="L125">        importClass(ProxyHandler.class);</span>
+
+        // java.lang.annotation
+<span class="fc" id="L128">        importClass(java.lang.annotation.Annotation.class);</span>
+
+        // java.lang
+<span class="fc" id="L131">        importClass(java.lang.ArithmeticException.class);</span>
+<span class="fc" id="L132">        importClass(java.lang.Boolean.class);</span>
+<span class="fc" id="L133">        importClass(java.lang.Byte.class);</span>
+<span class="fc" id="L134">        importClass(java.lang.Character.class);</span>
+<span class="fc" id="L135">        importClass(java.lang.CharSequence.class);</span>
+<span class="fc" id="L136">        importClass(java.lang.Class.class);</span>
+<span class="fc" id="L137">        importClass(java.lang.ClassCastException.class);</span>
+<span class="fc" id="L138">        importClass(java.lang.Comparable.class);</span>
+<span class="fc" id="L139">        importClass(java.lang.Double.class);</span>
+<span class="fc" id="L140">        importClass(java.lang.Enum.class);</span>
+<span class="fc" id="L141">        importClass(java.lang.Exception.class);</span>
+<span class="fc" id="L142">        importClass(java.lang.Float.class);</span>
+<span class="fc" id="L143">        importClass(java.lang.IllegalArgumentException.class);</span>
+<span class="fc" id="L144">        importClass(java.lang.IllegalStateException.class);</span>
+<span class="fc" id="L145">        importClass(java.lang.IndexOutOfBoundsException.class);</span>
+<span class="fc" id="L146">        importClass(java.lang.Integer.class);</span>
+<span class="fc" id="L147">        importClass(java.lang.Iterable.class);</span>
+<span class="fc" id="L148">        importClass(java.lang.Long.class);</span>
+<span class="fc" id="L149">        importClass(java.lang.Math.class);</span>
+<span class="fc" id="L150">        importClass(java.lang.NegativeArraySizeException.class);</span>
+<span class="fc" id="L151">        importClass(java.lang.NullPointerException.class);</span>
+<span class="fc" id="L152">        importClass(java.lang.Number.class);</span>
+<span class="fc" id="L153">        importClass(java.lang.NumberFormatException.class);</span>
+<span class="fc" id="L154">        importClass(java.lang.Object.class);</span>
+<span class="fc" id="L155">        importClass(java.lang.RuntimeException.class);</span>
+<span class="fc" id="L156">        importClass(java.lang.Short.class);</span>
+<span class="fc" id="L157">        importClass(java.lang.String.class);</span>
+<span class="fc" id="L158">        importClass(java.lang.StringBuilder.class);</span>
+<span class="fc" id="L159">        importClass(java.lang.System.class);</span>
+<span class="fc" id="L160">        importClass(java.lang.Throwable.class);</span>
+<span class="fc" id="L161">        importClass(java.lang.UnsupportedOperationException.class);</span>
+
+        // java.math
+<span class="fc" id="L164">        importClass(java.math.BigDecimal.class);</span>
+<span class="fc" id="L165">        importClass(java.math.BigInteger.class);</span>
+
+        // java.util
+<span class="fc" id="L168">        importClass(java.util.ArrayList.class);</span>
+<span class="fc" id="L169">        importClass(java.util.Collection.class);</span>
+<span class="fc" id="L170">        importClass(java.util.Collections.class);</span>
+<span class="fc" id="L171">        importClass(java.util.HashMap.class);</span>
+<span class="fc" id="L172">        importClass(java.util.HashSet.class);</span>
+<span class="fc" id="L173">        importClass(java.util.Iterator.class);</span>
+<span class="fc" id="L174">        importClass(java.util.LinkedList.class);</span>
+<span class="fc" id="L175">        importClass(java.util.List.class);</span>
+<span class="fc" id="L176">        importClass(java.util.Map.class);</span>
+<span class="fc" id="L177">        importClass(java.util.NoSuchElementException.class);</span>
+<span class="fc" id="L178">        importClass(java.util.Set.class);</span>
+<span class="fc" id="L179">        importClass(java.util.TreeMap.class);</span>
+<span class="fc" id="L180">        importClass(java.util.TreeSet.class);</span>
+<span class="fc" id="L181">        importClass(java.util.Random.class);</span>
+
+        /**
+         * When Autumn is used as a plugin, the user may specify classes to import into every module.
+         */
+<span class="pc bpc" id="L186" title="1 of 2 branches missed.">        if (module != null)</span>
+        {
+<span class="pc bpc" id="L188" title="1 of 2 branches missed.">            for (Class type : module.program.imported)</span>
+            {
+<span class="nc" id="L190">                importClass(type);</span>
+<span class="nc" id="L191">            }</span>
+        }
+<span class="fc" id="L193">    }</span>
+
+    /**
+     * This method ensures that a type is actually accessible from where it is used.
+     *
+     * @param specifier is the Abstract-Syntax-Tree node that represents the usage of the type.
+     * @param type is the type-system representation of the specified type.
+     * @throws TypeCheckFailed if the specified type is not accessible.
+     * @throws NullPointerException if specifier is null.
+     * @throws NullPointerException if type is null.
+     */
+    private void checkAccess(final TypeSpecifier specifier,
+                             final IType type)
+    {
+<span class="fc" id="L207">        Preconditions.checkNotNull(specifier);</span>
+<span class="fc" id="L208">        Preconditions.checkNotNull(type);</span>
+
+        /**
+         * Only declared-types can have restricted access due to access modifiers.
+         */
+<span class="fc bfc" id="L213" title="All 2 branches covered.">        if (type instanceof IDeclaredType == false)</span>
+        {
+<span class="fc" id="L215">            return;</span>
+        }
+
+        /**
+         * This is the type that may be restricted.
+         */
+<span class="fc" id="L221">        final IDeclaredType used = (IDeclaredType) type;</span>
+
+        /**
+         * This is the type of the module that contains the code
+         * that is attempting to use the potentially restricted type.
+         */
+<span class="fc" id="L227">        final IDeclaredType user = module.type;</span>
+
+        /**
+         * This is true, if access to the type is *not* restricted.
+         */
+<span class="fc" id="L232">        final boolean accessible = module.program.typesystem.utils.isAccessible(user, used);</span>
+
+        /**
+         * If access to the type is restricted, then issue a compile-time warning.
+         */
+<span class="fc bfc" id="L237" title="All 2 branches covered.">        if (!accessible)</span>
+        {
+            /**
+             * This invocation always throws an exception.
+             */
+<span class="nc" id="L242">            module.program.checker.reportInaccessibleType(specifier, used);</span>
+        }
+<span class="fc" id="L244">    }</span>
+
+    /**
+     * This method creates a set containing the fully-qualified names of the imported types.
+     *
+     * @return the aforedescribed immutable set.
+     */
+    public Set&lt;String&gt; imported()
+    {
+<span class="nc" id="L253">        return F.unmodifiable(new TreeSet(imports.values()));</span>
+    }
+
+    /**
+     * This method converts a type-alias to a fully-qualified type-name.
+     *
+     * &lt;p&gt;
+     * The alias may refer to a type that was imported.
+     * Otherwise, the alias must refer to a type declared in the enclosing module.
+     * So, create a string that hopefully is the fully-qualified name of the type.
+     * However, if the type does not really exist, then the result is really meaningless.
+     * &lt;/p&gt;
+     *
+     * @param alias is the type-alias.
+     * @return the fully-qualified name of the aliased type.
+     */
+    private String dealisTypeName(final String alias)
+    {
+<span class="fc bfc" id="L271" title="All 2 branches covered.">        final String full_name = imports.containsKey(alias) ? imports.get(alias) : alias;</span>
+
+<span class="fc bfc" id="L273" title="All 2 branches covered.">        final String dealiased = full_name.contains(&quot;.&quot;)</span>
+<span class="fc" id="L274">                ? full_name</span>
+<span class="fc" id="L275">                : module.type.getNamespace() + '.' + alias;</span>
+
+<span class="fc" id="L277">        return dealiased;</span>
+    }
+
+    /**
+     * This method retrieves the type that is specified by a type-specifier.
+     *
+     * &lt;p&gt;
+     * This method causes a compiler-warning to be issued,
+     * if the specified type is either non existent or inaccessible.
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * This method causes a compiler-warning to be issued,
+     * if the specified type is not a return-type.
+     * &lt;/p&gt;
+     *
+     * @param specifier specifies the type to retrieve.
+     * @return the specified type, if it exists and is accessible.
+     * @throws NullPointerException if the specifier is null.
+     * @throws TypeCheckFailed if the specified type is either non existent or inaccessible.
+     * @throws TypeCheckFailed if the specified type is not a return-type.
+     */
+    public IReturnType resolveReturnType(final TypeSpecifier specifier)
+    {
+        /**
+         * Get the name of the type, as it appear in the specifier.
+         */
+<span class="fc" id="L304">        final String alias = module.program.typesystem.utils.extractTypeName(specifier);</span>
+
+        /**
+         * This is the number of array dimensions in the specifier.
+         * If the specifier does not specify an array, then this variable will be null.
+         */
+<span class="fc" id="L310">        final Integer dimensions = specifier.getDimensions();</span>
+
+        final IExpressionType result;
+
+<span class="fc bfc" id="L314" title="All 2 branches covered.">        if (Utils.isKeyword(alias))</span>
+        {
+            /**
+             * Special Case: The specifier specifies a primitive-type or the void-type.
+             */
+<span class="fc" id="L319">            return module.program.typesystem.utils.findType(alias, dimensions);</span>
+        }
+        else
+        {
+<span class="fc" id="L323">            final String typename = dealisTypeName(alias);</span>
+
+<span class="fc" id="L325">            result = module.program.typesystem.utils.findType(typename, dimensions);</span>
+        }
+
+        /**
+         * Issue a compiler-warning, if the type does not actually exist.
+         */
+<span class="fc" id="L331">        module.program.checker.requireType(specifier, result);</span>
+
+        /**
+         * Issue a compiler warning, if the type is cannot be a return-type.
+         */
+<span class="fc" id="L336">        module.program.checker.requireReturnType(specifier, result);</span>
+
+        /**
+         * Issue a compiler warning, if the type is not accessible.
+         */
+<span class="fc" id="L341">        checkAccess(specifier, result);</span>
+
+        /**
+         * This checked-cast will always succeed.
+         */
+<span class="fc" id="L346">        return (IReturnType) result;</span>
+    }
+
+    /**
+     * This method retrieves the type that is specified by a type-specifier.
+     *
+     * &lt;p&gt;
+     * This method causes a compiler-warning to be issued,
+     * if the specified type is either non existent or inaccessible.
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * This method causes a compiler-warning to be issued,
+     * if the specified type is not a variable-type.
+     * &lt;/p&gt;
+     *
+     * @param specifier specifies the type to retrieve.
+     * @return the specified type, if it exists and is accessible.
+     * @throws NullPointerException if the specifier is null.
+     * @throws TypeCheckFailed if the specified type is either non existent or inaccessible.
+     * @throws TypeCheckFailed if the specified type is not a variable-type.
+     */
+    public IVariableType resolveVariableType(final TypeSpecifier specifier)
+    {
+<span class="fc" id="L370">        final IReturnType type = resolveReturnType(specifier);</span>
+
+        /**
+         * Issue a compiler warning, if the type cannot be the type of a variable.
+         */
+<span class="fc" id="L375">        module.program.checker.requireVariableType(specifier, type);</span>
+
+        /**
+         * This checked-cast will always succeed.
+         */
+<span class="fc" id="L380">        return (IVariableType) type;</span>
+    }
+
+    /**
+     * This method retrieves the type that is specified by a type-specifier.
+     *
+     * &lt;p&gt;
+     * This method causes a compiler-warning to be issued,
+     * if the specified type is either non existent or inaccessible.
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * This method causes a compiler-warning to be issued,
+     * if the specified type is not a module-type.
+     * &lt;/p&gt;
+     *
+     * @param specifier specifies the type to retrieve.
+     * @return the specified type, if it exists and is accessible.
+     * @throws NullPointerException if the specifier is null.
+     * @throws TypeCheckFailed if the specified type is either non existent or inaccessible.
+     * @throws TypeCheckFailed if the specified type is not a module-type.
+     */
+    public IClassType resolveModuleType(final TypeSpecifier specifier)
+    {
+<span class="fc" id="L404">        final IReturnType type = resolveReturnType(specifier);</span>
+
+        /**
+         * Issue a compiler warning, if the type cannot be the type of a module.
+         */
+<span class="fc" id="L409">        module.program.checker.requireModule(specifier, type);</span>
+
+        /**
+         * This checked-cast will always succeed.
+         */
+<span class="fc" id="L414">        return (IClassType) type;</span>
+    }
+
+    /**
+     * This method retrieves the type that is specified by a type-specifier.
+     *
+     * &lt;p&gt;
+     * This method causes a compiler-warning to be issued,
+     * if the specified type is either non existent or inaccessible.
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * This method causes a compiler-warning to be issued,
+     * if the specified type is not a functor-type.
+     * &lt;/p&gt;
+     *
+     * @param specifier specifies the type to retrieve.
+     * @return the specified type, if it exists and is accessible.
+     * @throws NullPointerException if the specifier is null.
+     * @throws TypeCheckFailed if the specified type is either non existent or inaccessible.
+     * @throws TypeCheckFailed if the specified type is not a functor-type.
+     */
+    public IClassType resolveDefinedFunctorType(final TypeSpecifier specifier)
+    {
+<span class="fc" id="L438">        final IReturnType type = resolveReturnType(specifier);</span>
+
+        /**
+         * Issue a compiler warning, if the type cannot be the type of a defined-functor.
+         */
+<span class="fc" id="L443">        module.program.checker.requireDefinedFunctorType(specifier, type);</span>
+
+        /**
+         * Issue a compiler warning, if the type cannot be a class-type.
+         */
+<span class="fc" id="L448">        module.program.checker.requireClassType(specifier, type);</span>
+
+        /**
+         * This checked-cast will always succeed.
+         */
+<span class="fc" id="L453">        return (IClassType) type;</span>
+    }
+
+    /**
+     * This method retrieves the type that is specified by a type-specifier.
+     *
+     * &lt;p&gt;
+     * This method causes a compiler-warning to be issued,
+     * if the specified type is either non existent or inaccessible.
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * This method causes a compiler-warning to be issued,
+     * if the specified type is not an interface-type.
+     * &lt;/p&gt;
+     *
+     * @param specifier specifies the type to retrieve.
+     * @return the specified type, if it exists and is accessible.
+     * @throws NullPointerException if the specifier is null.
+     * @throws TypeCheckFailed if the specified type is either non existent or inaccessible.
+     * @throws TypeCheckFailed if the specified type is not an interface-type.
+     */
+    public IInterfaceType resolveInterfaceType(final TypeSpecifier specifier)
+    {
+<span class="fc" id="L477">        final IReturnType type = resolveReturnType(specifier);</span>
+
+        /**
+         * Issue a compiler warning, if the type cannot be a interface-type.
+         */
+<span class="fc" id="L482">        module.program.checker.requireInterfaceType(specifier, type);</span>
+
+        /**
+         * This checked-cast will always succeed.
+         */
+<span class="fc" id="L487">        return (IInterfaceType) type;</span>
+    }
+
+    /**
+     * This method retrieves the type that is specified by a type-specifier.
+     *
+     * &lt;p&gt;
+     * This method causes a compiler-warning to be issued,
+     * if the specified type is either non existent or inaccessible.
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * This method causes a compiler-warning to be issued,
+     * if the specified type is not a design-type.
+     * &lt;/p&gt;
+     *
+     * @param specifier specifies the type to retrieve.
+     * @return the specified type, if it exists and is accessible.
+     * @throws NullPointerException if the specifier is null.
+     * @throws TypeCheckFailed if the specified type is either non existent or inaccessible.
+     * @throws TypeCheckFailed if the specified type is not a design-type.
+     */
+    public IInterfaceType resolveDesignType(final TypeSpecifier specifier)
+    {
+<span class="nc" id="L511">        final IReturnType type = resolveReturnType(specifier);</span>
+
+        /**
+         * Issue a compiler warning, if the type cannot be the type of a design.
+         */
+<span class="nc" id="L516">        module.program.checker.requireDesignType(specifier, type);</span>
+
+        /**
+         * This checked-cast will always succeed.
+         */
+<span class="nc" id="L521">        return (IInterfaceType) type;</span>
+    }
+
+    /**
+     * This method retrieves the type that is specified by a type-specifier.
+     *
+     * &lt;p&gt;
+     * This method causes a compiler-warning to be issued,
+     * if the specified type is either non existent or inaccessible.
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * This method causes a compiler-warning to be issued,
+     * if the specified type is not a reference-type.
+     * &lt;/p&gt;
+     *
+     * @param specifier specifies the type to retrieve.
+     * @return the specified type, if it exists and is accessible.
+     * @throws NullPointerException if the specifier is null.
+     * @throws TypeCheckFailed if the specified type is either non existent or inaccessible.
+     * @throws TypeCheckFailed if the specified type is not a reference-type.
+     */
+    public IReferenceType resolveReferenceType(final TypeSpecifier specifier)
+    {
+<span class="fc" id="L545">        final IReturnType type = resolveReturnType(specifier);</span>
+
+        /**
+         * Issue a compiler warning, if the type cannot be a reference-type.
+         */
+<span class="fc" id="L550">        module.program.checker.requireReferenceType(specifier, type);</span>
+
+        /**
+         * This checked-cast will always succeed.
+         */
+<span class="fc" id="L555">        return (IReferenceType) type;</span>
+    }
+
+    /**
+     * This method retrieves the type that is specified by a type-specifier.
+     *
+     * &lt;p&gt;
+     * This method causes a compiler-warning to be issued,
+     * if the specified type is either non existent or inaccessible.
+     * &lt;/p&gt;
+     *
+     * @param specifier specifies the type to retrieve.
+     * @return the specified type, if it exists and is accessible.
+     * @throws NullPointerException if the specifier is null.
+     * @throws TypeCheckFailed if the specified type is either non existent or inaccessible.
+     * @throws TypeCheckFailed if the specified type is not a class-type.
+     */
+    public IClassType resolveClassType(final TypeSpecifier specifier)
+    {
+<span class="fc" id="L574">        final IReturnType type = resolveReturnType(specifier);</span>
+
+        /**
+         * Issue a compiler warning, if the type cannot be a class-type.
+         */
+<span class="fc" id="L579">        module.program.checker.requireClassType(specifier, type);</span>
+
+        /**
+         * This checked-cast will always succeed.
+         */
+<span class="fc" id="L584">        return (IClassType) type;</span>
+    }
+
+    /**
+     * This method retrieves the type that is specified by a type-specifier.
+     *
+     * &lt;p&gt;
+     * This method causes a compiler-warning to be issued,
+     * if the specified type is either non existent or inaccessible.
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * This method causes a compiler-warning to be issued,
+     * if the specified type is not a declared-type.
+     * &lt;/p&gt;
+     *
+     * @param specifier specifies the type to retrieve.
+     * @return the specified type, if it exists and is accessible.
+     * @throws NullPointerException if the specifier is null.
+     * @throws TypeCheckFailed if the specified type is either non existent or inaccessible.
+     * @throws TypeCheckFailed if the specified type is not a declared-type.
+     */
+    public IDeclaredType resolveDeclaredType(final TypeSpecifier specifier)
+    {
+<span class="fc" id="L608">        final IReturnType type = resolveReturnType(specifier);</span>
+
+        /**
+         * Issue a compiler warning, if the type cannot be a class-type.
+         */
+<span class="fc" id="L613">        module.program.checker.requireDeclaredType(specifier, type);</span>
+
+        /**
+         * This checked-cast will always succeed.
+         */
+<span class="fc" id="L618">        return (IDeclaredType) type;</span>
+    }
+
+    /**
+     * This method creates a type-alias.
+     *
+     * @param alias is the alias to use for the type.
+     * @param type is the fully-qualified name of the type.
+     * @throws NullPointerException if alias is null.
+     * @throws NullPointerException if type is null.
+     */
+    public void importType(final String alias,
+                           final String type)
+    {
+<span class="fc" id="L632">        Preconditions.checkNotNull(alias);</span>
+<span class="fc" id="L633">        Preconditions.checkNotNull(type);</span>
+
+<span class="fc" id="L635">        imports.put(alias, type);</span>
+<span class="fc" id="L636">    }</span>
+
+    /**
+     * This method creates a type-alias.
+     *
+     * @param type is the type to import.
+     * @throws NullPointerException if type is null.
+     */
+    public void importClass(final Class type)
+    {
+<span class="fc" id="L646">        Preconditions.checkNotNull(type);</span>
+
+<span class="fc" id="L648">        imports.put(type.getSimpleName(), type.getName());</span>
+<span class="fc" id="L649">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

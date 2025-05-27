@@ -1,0 +1,2713 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AstBuilder.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.mackenziehigh:autumn</a> &gt; <a href="index.source.html" class="el_package">com.mackenziehigh.autumn.lang.compiler.parser</a> &gt; <span class="el_source">AstBuilder.java</span></div><h1>AstBuilder.java</h1><pre class="source lang-java linenums">/*
+ * Copyright 2013 Michael Mackenzie High
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package com.mackenziehigh.autumn.lang.compiler.parser;
+
+import autumn.lang.compiler.*;
+import autumn.lang.compiler.ast.commons.*;
+import autumn.lang.compiler.ast.literals.*;
+import autumn.lang.compiler.ast.nodes.*;
+import com.mackenziehigh.autumn.lang.compiler.parser.Utils;
+import com.mackenziehigh.snowflake.ITreeNode;
+import java.io.File;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Stack;
+
+/**
+ * This class is used to convert a parse-tree to an abstract-syntax-tree.
+ */
+<span class="fc" id="L33">public final class AstBuilder extends AbstractVisitor</span>
+{
+    /**
+     * This stack is used to store intermediate results.
+     */
+<span class="fc" id="L38">    private final Stack&lt;Object&gt; $stack = new Stack&lt;Object&gt;();</span>
+
+    /**
+     * This method converts a parse-tree to an abstract-syntax-tree.
+     */
+    public static autumn.lang.compiler.ast.nodes.Module build(final ITreeNode root)
+    {
+<span class="fc" id="L45">        final AstBuilder visitor = new AstBuilder();</span>
+<span class="fc" id="L46">        visitor.visit(root);</span>
+<span class="fc" id="L47">        return (autumn.lang.compiler.ast.nodes.Module) visitor.$stack.peek();</span>
+    }
+
+    /**
+     * Sole Constructor.
+     */
+    private AstBuilder()
+<span class="fc" id="L54">    {</span>
+        /* Do Nothing */
+<span class="fc" id="L56">    }</span>
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void visitUnknown(final ITreeNode node)
+    {
+<span class="fc bfc" id="L64" title="All 2 branches covered.">        for(ITreeNode child : node.children())</span>
+        {
+<span class="fc" id="L66">            visit(child);</span>
+        }
+<span class="fc" id="L68">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_module(final ITreeNode $node)
+    {
+<span class="fc" id="L76">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L78">        visitUnknown($node);</span>
+
+<span class="fc" id="L80">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L82" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L84">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L86">        builder.createModule();</span>
+
+<span class="fc" id="L88">        Utils.setSourceLocation($node);</span>
+
+<span class="fc" id="L90">        final IConstruct module = builder.pop();</span>
+
+<span class="fc" id="L92">        $stack.push(module);</span>
+<span class="fc" id="L93">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_module_directive(final ITreeNode $node)
+    {
+<span class="fc" id="L101">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L103">        visitUnknown($node);</span>
+
+<span class="fc" id="L105">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L107" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L109">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L111">        builder.createDirectiveModule();</span>
+
+<span class="fc" id="L113">        Utils.setSourceLocation($node);</span>
+
+<span class="fc" id="L115">        builder.popStack();</span>
+<span class="fc" id="L116">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_name_of_anonymous_module(final ITreeNode $node)
+    {
+<span class="fc" id="L124">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L126">        visitUnknown($node);</span>
+
+<span class="fc" id="L128">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L130" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L132">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L134">        builder.pushNull();</span>
+<span class="fc" id="L135">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_import_directive(final ITreeNode $node)
+    {
+<span class="fc" id="L143">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L145">        visitUnknown($node);</span>
+
+<span class="fc" id="L147">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L149" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L151">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L153">        builder.createDirectiveImport();</span>
+
+<span class="fc" id="L155">        Utils.setSourceLocation($node);</span>
+
+<span class="fc" id="L157">        builder.popStack();</span>
+<span class="fc" id="L158">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_annotation_definition(final ITreeNode $node)
+    {
+<span class="fc" id="L166">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L168">        visitUnknown($node);</span>
+
+<span class="fc" id="L170">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L172" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L174">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L176">        builder.createDefinitionAnnotation();</span>
+
+<span class="fc" id="L178">        Utils.setSourceLocation($node);</span>
+
+<span class="fc" id="L180">        builder.popStack();</span>
+<span class="fc" id="L181">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_exception_definition(final ITreeNode $node)
+    {
+<span class="fc" id="L189">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L191">        visitUnknown($node);</span>
+
+<span class="fc" id="L193">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L195" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L197">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L199">        builder.createDefinitionException();</span>
+
+<span class="fc" id="L201">        Utils.setSourceLocation($node);</span>
+
+<span class="fc" id="L203">        builder.popStack();</span>
+<span class="fc" id="L204">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_enum_definition(final ITreeNode $node)
+    {
+<span class="fc" id="L212">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L214">        visitUnknown($node);</span>
+
+<span class="fc" id="L216">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L218" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L220">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L222">        builder.createDefinitionEnum();</span>
+
+<span class="fc" id="L224">        Utils.setSourceLocation($node);</span>
+
+<span class="fc" id="L226">        builder.popStack();</span>
+<span class="fc" id="L227">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_design_definition(final ITreeNode $node)
+    {
+<span class="fc" id="L235">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L237">        visitUnknown($node);</span>
+
+<span class="fc" id="L239">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L241" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L243">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L245">        builder.createDefinitionDesign();</span>
+
+<span class="fc" id="L247">        Utils.setSourceLocation($node);</span>
+
+<span class="fc" id="L249">        builder.popStack();</span>
+<span class="fc" id="L250">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_tuple_definition(final ITreeNode $node)
+    {
+<span class="fc" id="L258">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L260">        visitUnknown($node);</span>
+
+<span class="fc" id="L262">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L264" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L266">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L268">        builder.createDefinitionTuple();</span>
+
+<span class="fc" id="L270">        Utils.setSourceLocation($node);</span>
+
+<span class="fc" id="L272">        builder.popStack();</span>
+<span class="fc" id="L273">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_struct_definition(final ITreeNode $node)
+    {
+<span class="fc" id="L281">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L283">        visitUnknown($node);</span>
+
+<span class="fc" id="L285">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L287" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L289">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L291">        builder.createDefinitionStruct();</span>
+
+<span class="fc" id="L293">        Utils.setSourceLocation($node);</span>
+
+<span class="fc" id="L295">        builder.popStack();</span>
+<span class="fc" id="L296">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_functor_definition(final ITreeNode $node)
+    {
+<span class="fc" id="L304">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L306">        visitUnknown($node);</span>
+
+<span class="fc" id="L308">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L310" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L312">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L314">        builder.createDefinitionFunctor();</span>
+
+<span class="fc" id="L316">        Utils.setSourceLocation($node);</span>
+
+<span class="fc" id="L318">        builder.popStack();</span>
+<span class="fc" id="L319">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_function_definition(final ITreeNode $node)
+    {
+<span class="fc" id="L327">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L329">        visitUnknown($node);</span>
+
+<span class="fc" id="L331">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L333" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L335">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L337">        builder.createDefinitionFunction();</span>
+
+<span class="fc" id="L339">        Utils.setSourceLocation($node);</span>
+
+<span class="fc" id="L341">        builder.popStack();</span>
+<span class="fc" id="L342">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_sequence_statement(final ITreeNode $node)
+    {
+<span class="fc" id="L350">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L352">        visitUnknown($node);</span>
+
+<span class="fc" id="L354">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L356" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L358">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L360">        builder.createStatementSequence();</span>
+
+<span class="fc" id="L362">        Utils.setSourceLocation($node);</span>
+
+<span class="fc" id="L364">        builder.popStack();</span>
+<span class="fc" id="L365">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_expression_statement(final ITreeNode $node)
+    {
+<span class="fc" id="L373">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L375">        visitUnknown($node);</span>
+
+<span class="fc" id="L377">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L379" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L381">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L383">        builder.createStatementExpression();</span>
+
+<span class="fc" id="L385">        Utils.setSourceLocation($node);</span>
+
+<span class="fc" id="L387">        builder.popStack();</span>
+<span class="fc" id="L388">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_nop_statement(final ITreeNode $node)
+    {
+<span class="fc" id="L396">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L398">        visitUnknown($node);</span>
+
+<span class="fc" id="L400">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L402" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L404">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L406">        builder.createStatementNop();</span>
+
+<span class="fc" id="L408">        Utils.setSourceLocation($node);</span>
+
+<span class="fc" id="L410">        builder.popStack();</span>
+<span class="fc" id="L411">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_if_statement(final ITreeNode $node)
+    {
+<span class="fc" id="L419">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L421">        visitUnknown($node);</span>
+
+<span class="fc" id="L423">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L425" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L427">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L429">        builder.createStatementIf();</span>
+
+<span class="fc" id="L431">        Utils.setSourceLocation($node);</span>
+
+<span class="fc" id="L433">        builder.popStack();</span>
+<span class="fc" id="L434">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_when_statement(final ITreeNode $node)
+    {
+<span class="fc" id="L442">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L444">        visitUnknown($node);</span>
+
+<span class="fc" id="L446">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L448" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L450">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L452">        builder.createStatementWhen();</span>
+
+<span class="fc" id="L454">        Utils.setSourceLocation($node);</span>
+
+<span class="fc" id="L456">        builder.popStack();</span>
+<span class="fc" id="L457">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_goto_statement(final ITreeNode $node)
+    {
+<span class="fc" id="L465">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L467">        visitUnknown($node);</span>
+
+<span class="fc" id="L469">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L471" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L473">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L475">        builder.createStatementGoto();</span>
+
+<span class="fc" id="L477">        Utils.setSourceLocation($node);</span>
+
+<span class="fc" id="L479">        builder.popStack();</span>
+<span class="fc" id="L480">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_marker_statement(final ITreeNode $node)
+    {
+<span class="fc" id="L488">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L490">        visitUnknown($node);</span>
+
+<span class="fc" id="L492">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L494" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L496">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L498">        builder.createStatementMarker();</span>
+
+<span class="fc" id="L500">        Utils.setSourceLocation($node);</span>
+
+<span class="fc" id="L502">        builder.popStack();</span>
+<span class="fc" id="L503">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_branch_statement(final ITreeNode $node)
+    {
+<span class="fc" id="L511">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L513">        visitUnknown($node);</span>
+
+<span class="fc" id="L515">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L517" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L519">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L521">        builder.createStatementBranch();</span>
+
+<span class="fc" id="L523">        Utils.setSourceLocation($node);</span>
+
+<span class="fc" id="L525">        builder.popStack();</span>
+<span class="fc" id="L526">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_assert_statement(final ITreeNode $node)
+    {
+<span class="fc" id="L534">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L536">        visitUnknown($node);</span>
+
+<span class="fc" id="L538">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L540" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L542">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L544">        builder.createStatementAssert();</span>
+
+<span class="fc" id="L546">        Utils.setSourceLocation($node);</span>
+
+<span class="fc" id="L548">        builder.popStack();</span>
+<span class="fc" id="L549">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_assertion_echo_empty(final ITreeNode $node)
+    {
+<span class="fc" id="L557">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L559">        visitUnknown($node);</span>
+
+<span class="fc" id="L561">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L563" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L565">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L567">        builder.pushNull();</span>
+<span class="fc" id="L568">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_assume_statement(final ITreeNode $node)
+    {
+<span class="fc" id="L576">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L578">        visitUnknown($node);</span>
+
+<span class="fc" id="L580">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L582" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L584">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L586">        builder.createStatementAssume();</span>
+
+<span class="fc" id="L588">        Utils.setSourceLocation($node);</span>
+
+<span class="fc" id="L590">        builder.popStack();</span>
+<span class="fc" id="L591">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_assumption_echo_empty(final ITreeNode $node)
+    {
+<span class="fc" id="L599">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L601">        visitUnknown($node);</span>
+
+<span class="fc" id="L603">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L605" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L607">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L609">        builder.pushNull();</span>
+<span class="fc" id="L610">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_throw_statement(final ITreeNode $node)
+    {
+<span class="fc" id="L618">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L620">        visitUnknown($node);</span>
+
+<span class="fc" id="L622">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L624" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L626">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L628">        builder.createStatementThrow();</span>
+
+<span class="fc" id="L630">        Utils.setSourceLocation($node);</span>
+
+<span class="fc" id="L632">        builder.popStack();</span>
+<span class="fc" id="L633">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_try_catch_statement(final ITreeNode $node)
+    {
+<span class="fc" id="L641">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L643">        visitUnknown($node);</span>
+
+<span class="fc" id="L645">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L647" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L649">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L651">        builder.createStatementTryCatch();</span>
+
+<span class="fc" id="L653">        Utils.setSourceLocation($node);</span>
+
+<span class="fc" id="L655">        builder.popStack();</span>
+<span class="fc" id="L656">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_trycatch_handler(final ITreeNode $node)
+    {
+<span class="fc" id="L664">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L666">        visitUnknown($node);</span>
+
+<span class="fc" id="L668">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L670" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L672">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L674">        builder.createComponentExceptionHandler();</span>
+
+<span class="fc" id="L676">        Utils.setSourceLocation($node);</span>
+
+<span class="fc" id="L678">        builder.popStack();</span>
+<span class="fc" id="L679">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_break_statement(final ITreeNode $node)
+    {
+<span class="fc" id="L687">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L689">        visitUnknown($node);</span>
+
+<span class="fc" id="L691">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L693" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L695">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L697">        builder.createStatementBreak();</span>
+
+<span class="fc" id="L699">        Utils.setSourceLocation($node);</span>
+
+<span class="fc" id="L701">        builder.popStack();</span>
+<span class="fc" id="L702">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_continue_statement(final ITreeNode $node)
+    {
+<span class="fc" id="L710">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L712">        visitUnknown($node);</span>
+
+<span class="fc" id="L714">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L716" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L718">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L720">        builder.createStatementContinue();</span>
+
+<span class="fc" id="L722">        Utils.setSourceLocation($node);</span>
+
+<span class="fc" id="L724">        builder.popStack();</span>
+<span class="fc" id="L725">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_redo_statement(final ITreeNode $node)
+    {
+<span class="fc" id="L733">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L735">        visitUnknown($node);</span>
+
+<span class="fc" id="L737">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L739" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L741">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L743">        builder.createStatementRedo();</span>
+
+<span class="fc" id="L745">        Utils.setSourceLocation($node);</span>
+
+<span class="fc" id="L747">        builder.popStack();</span>
+<span class="fc" id="L748">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_while_statement(final ITreeNode $node)
+    {
+<span class="fc" id="L756">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L758">        visitUnknown($node);</span>
+
+<span class="fc" id="L760">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L762" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L764">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L766">        builder.createStatementWhile();</span>
+
+<span class="fc" id="L768">        Utils.setSourceLocation($node);</span>
+
+<span class="fc" id="L770">        builder.popStack();</span>
+<span class="fc" id="L771">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_forever_statement(final ITreeNode $node)
+    {
+<span class="fc" id="L779">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L781">        visitUnknown($node);</span>
+
+<span class="fc" id="L783">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L785" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L787">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L789">        builder.createStatementForever();</span>
+
+<span class="fc" id="L791">        Utils.setSourceLocation($node);</span>
+
+<span class="fc" id="L793">        builder.popStack();</span>
+<span class="fc" id="L794">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_until_statement(final ITreeNode $node)
+    {
+<span class="fc" id="L802">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L804">        visitUnknown($node);</span>
+
+<span class="fc" id="L806">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L808" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L810">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L812">        builder.createStatementUntil();</span>
+
+<span class="fc" id="L814">        Utils.setSourceLocation($node);</span>
+
+<span class="fc" id="L816">        builder.popStack();</span>
+<span class="fc" id="L817">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_do_until_trigger(final ITreeNode $node)
+    {
+<span class="fc" id="L825">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L827">        visitUnknown($node);</span>
+
+<span class="fc" id="L829">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L831" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L833">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L835">        builder.createStatementDoUntil();</span>
+
+<span class="fc" id="L837">        Utils.setSourceLocation($node);</span>
+
+<span class="fc" id="L839">        builder.popStack();</span>
+<span class="fc" id="L840">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_do_while_trigger(final ITreeNode $node)
+    {
+<span class="fc" id="L848">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L850">        visitUnknown($node);</span>
+
+<span class="fc" id="L852">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L854" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L856">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L858">        builder.createStatementDoWhile();</span>
+
+<span class="fc" id="L860">        Utils.setSourceLocation($node);</span>
+
+<span class="fc" id="L862">        builder.popStack();</span>
+<span class="fc" id="L863">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_for_statement(final ITreeNode $node)
+    {
+<span class="fc" id="L871">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L873">        visitUnknown($node);</span>
+
+<span class="fc" id="L875">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L877" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L879">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L881">        builder.createStatementFor();</span>
+
+<span class="fc" id="L883">        Utils.setSourceLocation($node);</span>
+
+<span class="fc" id="L885">        builder.popStack();</span>
+<span class="fc" id="L886">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_foreach_statement(final ITreeNode $node)
+    {
+<span class="fc" id="L894">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L896">        visitUnknown($node);</span>
+
+<span class="fc" id="L898">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L900" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L902">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L904">        builder.createStatementForeach();</span>
+
+<span class="fc" id="L906">        Utils.setSourceLocation($node);</span>
+
+<span class="fc" id="L908">        builder.popStack();</span>
+<span class="fc" id="L909">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_var_statement(final ITreeNode $node)
+    {
+<span class="fc" id="L917">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L919">        visitUnknown($node);</span>
+
+<span class="fc" id="L921">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L923" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L925">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L927">        builder.createStatementVar();</span>
+
+<span class="fc" id="L929">        Utils.setSourceLocation($node);</span>
+
+<span class="fc" id="L931">        builder.popStack();</span>
+<span class="fc" id="L932">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_val_statement(final ITreeNode $node)
+    {
+<span class="fc" id="L940">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L942">        visitUnknown($node);</span>
+
+<span class="fc" id="L944">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L946" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L948">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L950">        builder.createStatementVal();</span>
+
+<span class="fc" id="L952">        Utils.setSourceLocation($node);</span>
+
+<span class="fc" id="L954">        builder.popStack();</span>
+<span class="fc" id="L955">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_let_statement(final ITreeNode $node)
+    {
+<span class="fc" id="L963">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L965">        visitUnknown($node);</span>
+
+<span class="fc" id="L967">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L969" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L971">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L973">        builder.createStatementLet();</span>
+
+<span class="fc" id="L975">        Utils.setSourceLocation($node);</span>
+
+<span class="fc" id="L977">        builder.popStack();</span>
+<span class="fc" id="L978">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_lambda_statement(final ITreeNode $node)
+    {
+<span class="fc" id="L986">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L988">        visitUnknown($node);</span>
+
+<span class="fc" id="L990">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L992" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L994">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L996">        builder.createStatementLambda();</span>
+
+<span class="fc" id="L998">        Utils.setSourceLocation($node);</span>
+
+<span class="fc" id="L1000">        builder.popStack();</span>
+<span class="fc" id="L1001">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_delegate_statement(final ITreeNode $node)
+    {
+<span class="fc" id="L1009">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L1011">        visitUnknown($node);</span>
+
+<span class="fc" id="L1013">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L1015" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L1017">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L1019">        builder.createStatementDelegate();</span>
+
+<span class="fc" id="L1021">        Utils.setSourceLocation($node);</span>
+
+<span class="fc" id="L1023">        builder.popStack();</span>
+<span class="fc" id="L1024">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_return_void_statement(final ITreeNode $node)
+    {
+<span class="fc" id="L1032">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L1034">        visitUnknown($node);</span>
+
+<span class="fc" id="L1036">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L1038" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L1040">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L1042">        builder.createStatementReturnVoid();</span>
+
+<span class="fc" id="L1044">        Utils.setSourceLocation($node);</span>
+
+<span class="fc" id="L1046">        builder.popStack();</span>
+<span class="fc" id="L1047">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_return_value_statement(final ITreeNode $node)
+    {
+<span class="fc" id="L1055">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L1057">        visitUnknown($node);</span>
+
+<span class="fc" id="L1059">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L1061" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L1063">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L1065">        builder.createStatementReturnValue();</span>
+
+<span class="fc" id="L1067">        Utils.setSourceLocation($node);</span>
+
+<span class="fc" id="L1069">        builder.popStack();</span>
+<span class="fc" id="L1070">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_recur_statement(final ITreeNode $node)
+    {
+<span class="fc" id="L1078">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L1080">        visitUnknown($node);</span>
+
+<span class="fc" id="L1082">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L1084" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L1086">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L1088">        builder.createStatementRecur();</span>
+
+<span class="fc" id="L1090">        Utils.setSourceLocation($node);</span>
+
+<span class="fc" id="L1092">        builder.popStack();</span>
+<span class="fc" id="L1093">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_boolean_datum(final ITreeNode $node)
+    {
+<span class="fc" id="L1101">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L1103">        visitUnknown($node);</span>
+
+<span class="fc" id="L1105">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L1107" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L1109">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L1111">        final boolean value = Utils.extractBooleanValue($node);</span>
+
+<span class="fc" id="L1113">        builder.createDatum(value);</span>
+
+<span class="fc" id="L1115">        Utils.setSourceLocation($node);</span>
+<span class="fc" id="L1116">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_char_datum(final ITreeNode $node)
+    {
+<span class="fc" id="L1124">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L1126">        visitUnknown($node);</span>
+
+<span class="fc" id="L1128">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L1130" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L1132">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L1134">        final CharLiteral value = Utils.extractCharValue($node);</span>
+
+<span class="fc" id="L1136">        builder.createDatum(value);</span>
+
+<span class="fc" id="L1138">        Utils.setSourceLocation($node);</span>
+<span class="fc" id="L1139">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_byte_datum(final ITreeNode $node)
+    {
+<span class="fc" id="L1147">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L1149">        visitUnknown($node);</span>
+
+<span class="fc" id="L1151">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L1153" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L1155">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L1157">        final ByteLiteral value = Utils.extractByteValue($node);</span>
+
+<span class="fc" id="L1159">        builder.createDatum(value);</span>
+
+<span class="fc" id="L1161">        Utils.setSourceLocation($node);</span>
+<span class="fc" id="L1162">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_short_datum(final ITreeNode $node)
+    {
+<span class="fc" id="L1170">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L1172">        visitUnknown($node);</span>
+
+<span class="fc" id="L1174">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L1176" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L1178">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L1180">        final ShortLiteral value = Utils.extractShortValue($node);</span>
+
+<span class="fc" id="L1182">        builder.createDatum(value);</span>
+
+<span class="fc" id="L1184">        Utils.setSourceLocation($node);</span>
+<span class="fc" id="L1185">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_int_datum(final ITreeNode $node)
+    {
+<span class="fc" id="L1193">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L1195">        visitUnknown($node);</span>
+
+<span class="fc" id="L1197">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L1199" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L1201">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L1203">        final IntLiteral value = Utils.extractIntValue($node);</span>
+
+<span class="fc" id="L1205">        builder.createDatum(value);</span>
+
+<span class="fc" id="L1207">        Utils.setSourceLocation($node);</span>
+<span class="fc" id="L1208">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_long_datum(final ITreeNode $node)
+    {
+<span class="fc" id="L1216">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L1218">        visitUnknown($node);</span>
+
+<span class="fc" id="L1220">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L1222" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L1224">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L1226">        final LongLiteral value = Utils.extractLongValue($node);</span>
+
+<span class="fc" id="L1228">        builder.createDatum(value);</span>
+
+<span class="fc" id="L1230">        Utils.setSourceLocation($node);</span>
+<span class="fc" id="L1231">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_float_datum(final ITreeNode $node)
+    {
+<span class="fc" id="L1239">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L1241">        visitUnknown($node);</span>
+
+<span class="fc" id="L1243">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L1245" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L1247">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L1249">        final FloatLiteral value = Utils.extractFloatValue($node);</span>
+
+<span class="fc" id="L1251">        builder.createDatum(value);</span>
+
+<span class="fc" id="L1253">        Utils.setSourceLocation($node);</span>
+<span class="fc" id="L1254">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_double_datum(final ITreeNode $node)
+    {
+<span class="fc" id="L1262">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L1264">        visitUnknown($node);</span>
+
+<span class="fc" id="L1266">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L1268" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L1270">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L1272">        final DoubleLiteral value = Utils.extractDoubleValue($node);</span>
+
+<span class="fc" id="L1274">        builder.createDatum(value);</span>
+
+<span class="fc" id="L1276">        Utils.setSourceLocation($node);</span>
+<span class="fc" id="L1277">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_big_integer_datum(final ITreeNode $node)
+    {
+<span class="fc" id="L1285">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L1287">        visitUnknown($node);</span>
+
+<span class="fc" id="L1289">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L1291" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L1293">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L1295">        final BigIntegerLiteral value = Utils.extractBigIntegerValue($node);</span>
+
+<span class="fc" id="L1297">        builder.createDatum(value);</span>
+
+<span class="fc" id="L1299">        Utils.setSourceLocation($node);</span>
+<span class="fc" id="L1300">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_big_decimal_datum(final ITreeNode $node)
+    {
+<span class="fc" id="L1308">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L1310">        visitUnknown($node);</span>
+
+<span class="fc" id="L1312">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L1314" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L1316">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L1318">        final BigDecimalLiteral value = Utils.extractBigDecimalValue($node);</span>
+
+<span class="fc" id="L1320">        builder.createDatum(value);</span>
+
+<span class="fc" id="L1322">        Utils.setSourceLocation($node);</span>
+<span class="fc" id="L1323">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_string_datum(final ITreeNode $node)
+    {
+<span class="fc" id="L1331">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L1333">        visitUnknown($node);</span>
+
+<span class="fc" id="L1335">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L1337" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L1339">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L1341">        final boolean verbatim = Utils.getVerbatim();</span>
+
+<span class="fc" id="L1343">        final String value = Utils.getString();</span>
+
+<span class="fc" id="L1345">        builder.createDatum(verbatim, value);</span>
+
+<span class="fc" id="L1347">        Utils.setSourceLocation($node);</span>
+<span class="fc" id="L1348">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_variable_datum(final ITreeNode $node)
+    {
+<span class="fc" id="L1356">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L1358">        visitUnknown($node);</span>
+
+<span class="fc" id="L1360">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L1362" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L1364">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L1366">        builder.createDatumVariable();</span>
+
+<span class="fc" id="L1368">        Utils.setSourceLocation($node);</span>
+<span class="fc" id="L1369">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_null_datum(final ITreeNode $node)
+    {
+<span class="fc" id="L1377">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L1379">        visitUnknown($node);</span>
+
+<span class="fc" id="L1381">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L1383" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L1385">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L1387">        builder.createDatumNull();</span>
+
+<span class="fc" id="L1389">        Utils.setSourceLocation($node);</span>
+<span class="fc" id="L1390">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_class_datum(final ITreeNode $node)
+    {
+<span class="fc" id="L1398">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L1400">        visitUnknown($node);</span>
+
+<span class="fc" id="L1402">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L1404" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L1406">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L1408">        builder.createDatumClass();</span>
+
+<span class="fc" id="L1410">        Utils.setSourceLocation($node);</span>
+<span class="fc" id="L1411">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_negate_operation(final ITreeNode $node)
+    {
+<span class="fc" id="L1419">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L1421">        visitUnknown($node);</span>
+
+<span class="fc" id="L1423">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L1425" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L1427">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L1429">        builder.createOperationNegate();</span>
+
+<span class="fc" id="L1431">        Utils.setSourceLocation($node);</span>
+<span class="fc" id="L1432">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_not_operation(final ITreeNode $node)
+    {
+<span class="fc" id="L1440">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L1442">        visitUnknown($node);</span>
+
+<span class="fc" id="L1444">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L1446" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L1448">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L1450">        builder.createOperationNot();</span>
+
+<span class="fc" id="L1452">        Utils.setSourceLocation($node);</span>
+<span class="fc" id="L1453">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_divide_operation(final ITreeNode $node)
+    {
+<span class="fc" id="L1461">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L1463">        visitUnknown($node);</span>
+
+<span class="fc" id="L1465">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L1467" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L1469">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L1471">        builder.createOperationDivide();</span>
+
+<span class="fc" id="L1473">        Utils.setSourceLocation($node);</span>
+<span class="fc" id="L1474">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_modulo_operation(final ITreeNode $node)
+    {
+<span class="fc" id="L1482">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L1484">        visitUnknown($node);</span>
+
+<span class="fc" id="L1486">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L1488" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L1490">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L1492">        builder.createOperationModulo();</span>
+
+<span class="fc" id="L1494">        Utils.setSourceLocation($node);</span>
+<span class="fc" id="L1495">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_multiply_operation(final ITreeNode $node)
+    {
+<span class="fc" id="L1503">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L1505">        visitUnknown($node);</span>
+
+<span class="fc" id="L1507">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L1509" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L1511">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L1513">        builder.createOperationMultiply();</span>
+
+<span class="fc" id="L1515">        Utils.setSourceLocation($node);</span>
+<span class="fc" id="L1516">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_add_operation(final ITreeNode $node)
+    {
+<span class="fc" id="L1524">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L1526">        visitUnknown($node);</span>
+
+<span class="fc" id="L1528">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L1530" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L1532">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L1534">        builder.createOperationAdd();</span>
+
+<span class="fc" id="L1536">        Utils.setSourceLocation($node);</span>
+<span class="fc" id="L1537">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_concat_operation(final ITreeNode $node)
+    {
+<span class="fc" id="L1545">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L1547">        visitUnknown($node);</span>
+
+<span class="fc" id="L1549">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L1551" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L1553">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L1555">        builder.createOperationConcat();</span>
+
+<span class="fc" id="L1557">        Utils.setSourceLocation($node);</span>
+<span class="fc" id="L1558">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_subtract_operation(final ITreeNode $node)
+    {
+<span class="fc" id="L1566">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L1568">        visitUnknown($node);</span>
+
+<span class="fc" id="L1570">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L1572" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L1574">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L1576">        builder.createOperationSubtract();</span>
+
+<span class="fc" id="L1578">        Utils.setSourceLocation($node);</span>
+<span class="fc" id="L1579">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_identity_equals_operation(final ITreeNode $node)
+    {
+<span class="fc" id="L1587">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L1589">        visitUnknown($node);</span>
+
+<span class="fc" id="L1591">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L1593" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L1595">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L1597">        builder.createOperationIdentityEquals();</span>
+
+<span class="fc" id="L1599">        Utils.setSourceLocation($node);</span>
+<span class="fc" id="L1600">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_identity_not_equals_operation(final ITreeNode $node)
+    {
+<span class="fc" id="L1608">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L1610">        visitUnknown($node);</span>
+
+<span class="fc" id="L1612">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L1614" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L1616">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L1618">        builder.createOperationIdentityNotEquals();</span>
+
+<span class="fc" id="L1620">        Utils.setSourceLocation($node);</span>
+<span class="fc" id="L1621">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_equals_operation(final ITreeNode $node)
+    {
+<span class="fc" id="L1629">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L1631">        visitUnknown($node);</span>
+
+<span class="fc" id="L1633">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L1635" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L1637">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L1639">        builder.createOperationEquals();</span>
+
+<span class="fc" id="L1641">        Utils.setSourceLocation($node);</span>
+<span class="fc" id="L1642">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_not_equals_operation(final ITreeNode $node)
+    {
+<span class="fc" id="L1650">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L1652">        visitUnknown($node);</span>
+
+<span class="fc" id="L1654">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L1656" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L1658">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L1660">        builder.createOperationNotEquals();</span>
+
+<span class="fc" id="L1662">        Utils.setSourceLocation($node);</span>
+<span class="fc" id="L1663">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_less_or_equals_operation(final ITreeNode $node)
+    {
+<span class="fc" id="L1671">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L1673">        visitUnknown($node);</span>
+
+<span class="fc" id="L1675">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L1677" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L1679">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L1681">        builder.createOperationLessThanOrEquals();</span>
+
+<span class="fc" id="L1683">        Utils.setSourceLocation($node);</span>
+<span class="fc" id="L1684">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_greater_or_equals_operation(final ITreeNode $node)
+    {
+<span class="fc" id="L1692">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L1694">        visitUnknown($node);</span>
+
+<span class="fc" id="L1696">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L1698" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L1700">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L1702">        builder.createOperationGreaterThanOrEquals();</span>
+
+<span class="fc" id="L1704">        Utils.setSourceLocation($node);</span>
+<span class="fc" id="L1705">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_less_operation(final ITreeNode $node)
+    {
+<span class="fc" id="L1713">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L1715">        visitUnknown($node);</span>
+
+<span class="fc" id="L1717">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L1719" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L1721">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L1723">        builder.createOperationLessThan();</span>
+
+<span class="fc" id="L1725">        Utils.setSourceLocation($node);</span>
+<span class="fc" id="L1726">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_greater_operation(final ITreeNode $node)
+    {
+<span class="fc" id="L1734">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L1736">        visitUnknown($node);</span>
+
+<span class="fc" id="L1738">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L1740" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L1742">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L1744">        builder.createOperationGreaterThan();</span>
+
+<span class="fc" id="L1746">        Utils.setSourceLocation($node);</span>
+<span class="fc" id="L1747">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_and_operation(final ITreeNode $node)
+    {
+<span class="fc" id="L1755">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L1757">        visitUnknown($node);</span>
+
+<span class="fc" id="L1759">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L1761" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L1763">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L1765">        builder.createOperationAnd();</span>
+
+<span class="fc" id="L1767">        Utils.setSourceLocation($node);</span>
+<span class="fc" id="L1768">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_or_operation(final ITreeNode $node)
+    {
+<span class="fc" id="L1776">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L1778">        visitUnknown($node);</span>
+
+<span class="fc" id="L1780">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L1782" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L1784">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L1786">        builder.createOperationOr();</span>
+
+<span class="fc" id="L1788">        Utils.setSourceLocation($node);</span>
+<span class="fc" id="L1789">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_xor_operation(final ITreeNode $node)
+    {
+<span class="fc" id="L1797">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L1799">        visitUnknown($node);</span>
+
+<span class="fc" id="L1801">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L1803" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L1805">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L1807">        builder.createOperationXor();</span>
+
+<span class="fc" id="L1809">        Utils.setSourceLocation($node);</span>
+<span class="fc" id="L1810">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_implies_operation(final ITreeNode $node)
+    {
+<span class="fc" id="L1818">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L1820">        visitUnknown($node);</span>
+
+<span class="fc" id="L1822">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L1824" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L1826">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L1828">        builder.createOperationImplies();</span>
+
+<span class="fc" id="L1830">        Utils.setSourceLocation($node);</span>
+<span class="fc" id="L1831">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_null_coalescing_operation(final ITreeNode $node)
+    {
+<span class="fc" id="L1839">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L1841">        visitUnknown($node);</span>
+
+<span class="fc" id="L1843">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L1845" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L1847">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L1849">        builder.createOperationNullCoalescing();</span>
+
+<span class="fc" id="L1851">        Utils.setSourceLocation($node);</span>
+<span class="fc" id="L1852">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_as_operation(final ITreeNode $node)
+    {
+<span class="fc" id="L1860">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L1862">        visitUnknown($node);</span>
+
+<span class="fc" id="L1864">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L1866" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L1868">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L1870">        builder.createOperationAs();</span>
+
+<span class="fc" id="L1872">        Utils.setSourceLocation($node);</span>
+<span class="fc" id="L1873">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_is_operation(final ITreeNode $node)
+    {
+<span class="fc" id="L1881">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L1883">        visitUnknown($node);</span>
+
+<span class="fc" id="L1885">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L1887" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L1889">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L1891">        builder.createOperationIs();</span>
+
+<span class="fc" id="L1893">        Utils.setSourceLocation($node);</span>
+<span class="fc" id="L1894">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_dispatch_expression(final ITreeNode $node)
+    {
+<span class="fc" id="L1902">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L1904">        visitUnknown($node);</span>
+
+<span class="fc" id="L1906">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L1908" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L1910">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L1912">        builder.createExpressionDispatch();</span>
+
+<span class="fc" id="L1914">        Utils.setSourceLocation($node);</span>
+
+<span class="fc" id="L1916">        builder.popStack();</span>
+<span class="fc" id="L1917">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_new_expression(final ITreeNode $node)
+    {
+<span class="fc" id="L1925">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L1927">        visitUnknown($node);</span>
+
+<span class="fc" id="L1929">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L1931" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L1933">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L1935">        builder.createExpressionNew();</span>
+
+<span class="fc" id="L1937">        Utils.setSourceLocation($node);</span>
+
+<span class="fc" id="L1939">        builder.popStack();</span>
+<span class="fc" id="L1940">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_call_method_expression(final ITreeNode $node)
+    {
+<span class="fc" id="L1948">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L1950">        visitUnknown($node);</span>
+
+<span class="fc" id="L1952">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L1954" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L1956">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L1958">        builder.createExpressionCallMethod();</span>
+
+<span class="fc" id="L1960">        Utils.setSourceLocation($node);</span>
+
+<span class="fc" id="L1962">        builder.popStack();</span>
+<span class="fc" id="L1963">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_p8(final ITreeNode $node)
+    {
+<span class="fc" id="L1971">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L1973">        visitUnknown($node);</span>
+
+<span class="fc" id="L1975">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L1977" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L1979">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L1981">        Utils.createChainedMethodCall();</span>
+
+<span class="fc" id="L1983">        Utils.setSourceLocation($node);</span>
+
+<span class="fc" id="L1985">        builder.popStack();</span>
+<span class="fc" id="L1986">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_call_static_method_expression(final ITreeNode $node)
+    {
+<span class="fc" id="L1994">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L1996">        visitUnknown($node);</span>
+
+<span class="fc" id="L1998">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L2000" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L2002">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L2004">        builder.createExpressionCallStaticMethod();</span>
+
+<span class="fc" id="L2006">        Utils.setSourceLocation($node);</span>
+
+<span class="fc" id="L2008">        builder.popStack();</span>
+<span class="fc" id="L2009">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_set_field_expression(final ITreeNode $node)
+    {
+<span class="fc" id="L2017">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L2019">        visitUnknown($node);</span>
+
+<span class="fc" id="L2021">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L2023" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L2025">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L2027">        builder.createExpressionSetField();</span>
+
+<span class="fc" id="L2029">        Utils.setSourceLocation($node);</span>
+
+<span class="fc" id="L2031">        builder.popStack();</span>
+<span class="fc" id="L2032">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_set_static_expression(final ITreeNode $node)
+    {
+<span class="fc" id="L2040">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L2042">        visitUnknown($node);</span>
+
+<span class="fc" id="L2044">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L2046" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L2048">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L2050">        builder.createExpressionSetStaticField();</span>
+
+<span class="fc" id="L2052">        Utils.setSourceLocation($node);</span>
+
+<span class="fc" id="L2054">        builder.popStack();</span>
+<span class="fc" id="L2055">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_get_field_expression(final ITreeNode $node)
+    {
+<span class="fc" id="L2063">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L2065">        visitUnknown($node);</span>
+
+<span class="fc" id="L2067">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L2069" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L2071">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L2073">        builder.createExpressionGetField();</span>
+
+<span class="fc" id="L2075">        Utils.setSourceLocation($node);</span>
+
+<span class="fc" id="L2077">        builder.popStack();</span>
+<span class="fc" id="L2078">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_get_static_expression(final ITreeNode $node)
+    {
+<span class="fc" id="L2086">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L2088">        visitUnknown($node);</span>
+
+<span class="fc" id="L2090">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L2092" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L2094">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L2096">        builder.createExpressionGetStaticField();</span>
+
+<span class="fc" id="L2098">        Utils.setSourceLocation($node);</span>
+
+<span class="fc" id="L2100">        builder.popStack();</span>
+<span class="fc" id="L2101">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_instanceof_expression(final ITreeNode $node)
+    {
+<span class="fc" id="L2109">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L2111">        visitUnknown($node);</span>
+
+<span class="fc" id="L2113">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L2115" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L2117">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L2119">        builder.createExpressionInstanceOf();</span>
+
+<span class="fc" id="L2121">        Utils.setSourceLocation($node);</span>
+
+<span class="fc" id="L2123">        builder.popStack();</span>
+<span class="fc" id="L2124">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_list_comprehension_expression(final ITreeNode $node)
+    {
+<span class="fc" id="L2132">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L2134">        visitUnknown($node);</span>
+
+<span class="fc" id="L2136">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L2138" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L2140">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L2142">        builder.createExpressionListComprehension();</span>
+
+<span class="fc" id="L2144">        Utils.setSourceLocation($node);</span>
+
+<span class="fc" id="L2146">        builder.popStack();</span>
+<span class="fc" id="L2147">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_list_expression(final ITreeNode $node)
+    {
+<span class="fc" id="L2155">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L2157">        visitUnknown($node);</span>
+
+<span class="fc" id="L2159">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L2161" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L2163">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L2165">        builder.createExpressionList();</span>
+
+<span class="fc" id="L2167">        Utils.setSourceLocation($node);</span>
+
+<span class="fc" id="L2169">        builder.popStack();</span>
+<span class="fc" id="L2170">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_locals_expression(final ITreeNode $node)
+    {
+<span class="fc" id="L2178">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L2180">        visitUnknown($node);</span>
+
+<span class="fc" id="L2182">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L2184" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L2186">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L2188">        builder.createExpressionLocals();</span>
+
+<span class="fc" id="L2190">        Utils.setSourceLocation($node);</span>
+
+<span class="fc" id="L2192">        builder.popStack();</span>
+<span class="fc" id="L2193">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_once_expression(final ITreeNode $node)
+    {
+<span class="fc" id="L2201">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L2203">        visitUnknown($node);</span>
+
+<span class="fc" id="L2205">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L2207" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L2209">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L2211">        builder.createExpressionOnce();</span>
+
+<span class="fc" id="L2213">        Utils.setSourceLocation($node);</span>
+
+<span class="fc" id="L2215">        builder.popStack();</span>
+<span class="fc" id="L2216">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_progn_expression(final ITreeNode $node)
+    {
+<span class="fc" id="L2224">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L2226">        visitUnknown($node);</span>
+
+<span class="fc" id="L2228">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L2230" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L2232">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L2234">        builder.createExpressionProgn();</span>
+
+<span class="fc" id="L2236">        Utils.setSourceLocation($node);</span>
+
+<span class="fc" id="L2238">        builder.popStack();</span>
+<span class="fc" id="L2239">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_ternary_conditional_expression(final ITreeNode $node)
+    {
+<span class="fc" id="L2247">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L2249">        visitUnknown($node);</span>
+
+<span class="fc" id="L2251">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L2253" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L2255">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L2257">        builder.createExpressionTernaryConditional();</span>
+
+<span class="fc" id="L2259">        Utils.setSourceLocation($node);</span>
+
+<span class="fc" id="L2261">        builder.popStack();</span>
+<span class="fc" id="L2262">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_api_comment(final ITreeNode $node)
+    {
+<span class="fc" id="L2270">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L2272">        visitUnknown($node);</span>
+
+<span class="fc" id="L2274">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L2276" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L2278">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L2280">        builder.createComponentDocComment();</span>
+
+<span class="fc" id="L2282">        Utils.setSourceLocation($node);</span>
+
+<span class="fc" id="L2284">        builder.popStack();</span>
+<span class="fc" id="L2285">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_api_comment_line(final ITreeNode $node)
+    {
+<span class="fc" id="L2293">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L2295">        visitUnknown($node);</span>
+
+<span class="fc" id="L2297">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L2299" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L2301">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L2303">        final String text = Utils.extractCommentLine($node);</span>
+
+<span class="fc" id="L2305">        builder.createComponentDocCommentLine(text);</span>
+
+<span class="fc" id="L2307">        Utils.setSourceLocation($node);</span>
+
+<span class="fc" id="L2309">        builder.popStack();</span>
+<span class="fc" id="L2310">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_annotation_list(final ITreeNode $node)
+    {
+<span class="fc" id="L2318">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L2320">        visitUnknown($node);</span>
+
+<span class="fc" id="L2322">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L2324" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L2326">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L2328">        builder.createComponentAnnotationList();</span>
+
+<span class="fc" id="L2330">        Utils.setSourceLocation($node);</span>
+
+<span class="fc" id="L2332">        builder.popStack();</span>
+<span class="fc" id="L2333">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_annotation(final ITreeNode $node)
+    {
+<span class="fc" id="L2341">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L2343">        visitUnknown($node);</span>
+
+<span class="fc" id="L2345">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L2347" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L2349">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L2351">        final List values = Utils.extractAnnotationValues($node);</span>
+
+<span class="fc" id="L2353">        builder.createComponentAnnotation(values);</span>
+
+<span class="fc" id="L2355">        Utils.setSourceLocation($node);</span>
+
+<span class="fc" id="L2357">        builder.popStack();</span>
+<span class="fc" id="L2358">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_conditional_case(final ITreeNode $node)
+    {
+<span class="fc" id="L2366">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L2368">        visitUnknown($node);</span>
+
+<span class="fc" id="L2370">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L2372" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L2374">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L2376">        builder.createComponentConditionalCase();</span>
+
+<span class="fc" id="L2378">        Utils.setSourceLocation($node);</span>
+
+<span class="fc" id="L2380">        builder.popStack();</span>
+<span class="fc" id="L2381">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_name_id(final ITreeNode $node)
+    {
+<span class="fc" id="L2389">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L2391">        visitUnknown($node);</span>
+
+<span class="fc" id="L2393">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L2395" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L2397">        Utils.createComponentName($node);</span>
+
+<span class="fc" id="L2399">        Utils.setSourceLocation($node);</span>
+<span class="fc" id="L2400">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_type(final ITreeNode $node)
+    {
+<span class="fc" id="L2408">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L2410">        visitUnknown($node);</span>
+
+<span class="fc" id="L2412">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L2414" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L2416">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L2418">        Utils.createComponentTypeSpecifier($node);</span>
+
+<span class="fc" id="L2420">        Utils.setSourceLocation($node);</span>
+<span class="fc" id="L2421">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_type_namespace_explicit(final ITreeNode $node)
+    {
+<span class="fc" id="L2429">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L2431">        visitUnknown($node);</span>
+
+<span class="fc" id="L2433">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L2435" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L2437">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L2439">        builder.createComponentNamespace();</span>
+
+<span class="fc" id="L2441">        Utils.setSourceLocation($node);</span>
+
+<span class="fc" id="L2443">        builder.popStack();</span>
+<span class="fc" id="L2444">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_type_namespace_implicit(final ITreeNode $node)
+    {
+<span class="fc" id="L2452">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L2454">        visitUnknown($node);</span>
+
+<span class="fc" id="L2456">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L2458" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L2460">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L2462">        builder.pushNull();</span>
+
+<span class="fc" id="L2464">        Utils.setSourceLocation($node);</span>
+<span class="fc" id="L2465">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_namespace_explicit(final ITreeNode $node)
+    {
+<span class="fc" id="L2473">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L2475">        visitUnknown($node);</span>
+
+<span class="fc" id="L2477">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L2479" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L2481">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L2483">        builder.createComponentNamespace();</span>
+
+<span class="fc" id="L2485">        Utils.setSourceLocation($node);</span>
+
+<span class="fc" id="L2487">        builder.popStack();</span>
+<span class="fc" id="L2488">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_namespace_implicit(final ITreeNode $node)
+    {
+<span class="nc" id="L2496">        final int $stack_size = $stack.size();</span>
+
+<span class="nc" id="L2498">        visitUnknown($node);</span>
+
+<span class="nc" id="L2500">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="nc bnc" id="L2502" title="All 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="nc" id="L2504">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="nc" id="L2506">        builder.pushNull();</span>
+
+<span class="nc" id="L2508">        Utils.setSourceLocation($node);</span>
+<span class="nc" id="L2509">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_variable(final ITreeNode $node)
+    {
+<span class="fc" id="L2517">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L2519">        visitUnknown($node);</span>
+
+<span class="fc" id="L2521">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L2523" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L2525">        Utils.createComponentVariable($node);</span>
+
+<span class="fc" id="L2527">        Utils.setSourceLocation($node);</span>
+<span class="fc" id="L2528">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_label(final ITreeNode $node)
+    {
+<span class="fc" id="L2536">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L2538">        visitUnknown($node);</span>
+
+<span class="fc" id="L2540">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L2542" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L2544">        Utils.createComponentLabel($node);</span>
+
+<span class="fc" id="L2546">        Utils.setSourceLocation($node);</span>
+<span class="fc" id="L2547">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_elements(final ITreeNode $node)
+    {
+<span class="fc" id="L2555">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L2557">        visitUnknown($node);</span>
+
+<span class="fc" id="L2559">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L2561" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L2563">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L2565">        builder.createComponentElementList();</span>
+
+<span class="fc" id="L2567">        Utils.setSourceLocation($node);</span>
+
+<span class="fc" id="L2569">        builder.popStack();</span>
+<span class="fc" id="L2570">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_element(final ITreeNode $node)
+    {
+<span class="fc" id="L2578">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L2580">        visitUnknown($node);</span>
+
+<span class="fc" id="L2582">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L2584" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L2586">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L2588">        builder.createComponentElement();</span>
+
+<span class="fc" id="L2590">        Utils.setSourceLocation($node);</span>
+
+<span class="fc" id="L2592">        builder.popStack();</span>
+<span class="fc" id="L2593">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_formals(final ITreeNode $node)
+    {
+<span class="fc" id="L2601">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L2603">        visitUnknown($node);</span>
+
+<span class="fc" id="L2605">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L2607" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L2609">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L2611">        builder.createComponentFormalParameterList();</span>
+
+<span class="fc" id="L2613">        Utils.setSourceLocation($node);</span>
+
+<span class="fc" id="L2615">        builder.popStack();</span>
+<span class="fc" id="L2616">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_parameter(final ITreeNode $node)
+    {
+<span class="fc" id="L2624">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L2626">        visitUnknown($node);</span>
+
+<span class="fc" id="L2628">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L2630" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L2632">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L2634">        builder.createComponentFormalParameter();</span>
+
+<span class="fc" id="L2636">        Utils.setSourceLocation($node);</span>
+
+<span class="fc" id="L2638">        builder.popStack();</span>
+<span class="fc" id="L2639">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_static_owner_implicit(final ITreeNode $node)
+    {
+<span class="nc" id="L2647">        final int $stack_size = $stack.size();</span>
+
+<span class="nc" id="L2649">        visitUnknown($node);</span>
+
+<span class="nc" id="L2651">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="nc bnc" id="L2653" title="All 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="nc" id="L2655">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="nc" id="L2657">        builder.pushNull();</span>
+<span class="nc" id="L2658">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_PS(final ITreeNode $node)
+    {
+<span class="fc" id="L2666">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L2668">        visitUnknown($node);</span>
+
+<span class="fc" id="L2670">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L2672" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L2674">        final TreeBuilder builder = Utils.builder();</span>
+
+<span class="fc" id="L2676">        builder.pushStack();</span>
+<span class="fc" id="L2677">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_verbatim_string_value(final ITreeNode $node)
+    {
+<span class="fc" id="L2685">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L2687">        visitUnknown($node);</span>
+
+<span class="fc" id="L2689">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L2691" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L2693">        Utils.storeStringValue($node, true);</span>
+<span class="fc" id="L2694">    }</span>
+
+    /**
+     * {inheritDoc} 
+     */
+    @Override
+    public void visit_regular_string_value(final ITreeNode $node)
+    {
+<span class="fc" id="L2702">        final int $stack_size = $stack.size();</span>
+
+<span class="fc" id="L2704">        visitUnknown($node);</span>
+
+<span class="fc" id="L2706">        final int $change = $stack.size() - $stack_size;</span>
+
+<span class="pc bpc" id="L2708" title="1 of 2 branches missed.">        assert $change &gt;= 0;</span>
+
+<span class="fc" id="L2710">        Utils.storeStringValue($node, false);</span>
+<span class="fc" id="L2711">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

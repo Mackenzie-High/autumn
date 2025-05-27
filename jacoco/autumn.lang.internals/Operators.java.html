@@ -1,0 +1,1646 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Operators.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.mackenziehigh:autumn</a> &gt; <a href="index.source.html" class="el_package">autumn.lang.internals</a> &gt; <span class="el_source">Operators.java</span></div><h1>Operators.java</h1><pre class="source lang-java linenums">package autumn.lang.internals;
+
+import com.google.common.base.Objects;
+import com.mackenziehigh.autumn.resources.Finished;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+
+/**
+ * This class provides static method in order to implement Autumn's operators.
+ *
+ * &lt;p&gt;
+ * &lt;b&gt;Note:&lt;/b&gt; Invocations of these methods should be optimized out by Autumn compilers.
+ * &lt;/p&gt;
+ *
+ * @author Mackenzie High
+ */
+@Finished(&quot;2014/07/26&quot;)
+<span class="nc" id="L18">public final class Operators</span>
+{
+    /**
+     * This is the number zero.
+     */
+<span class="fc" id="L23">    private static final BigInteger BIGINT_ZERO = Helpers.createBigInteger(&quot;0&quot;);</span>
+
+    /**
+     * This is the number zero.
+     *
+     * This constant is scaled correctly.
+     */
+<span class="fc" id="L30">    private static final BigDecimal BIGDEC_ZERO = Helpers.createBigDecimal(&quot;0&quot;);</span>
+
+    /**
+     * This method prevents null pointer exceptions.
+     *
+     * @param value is the value that may be null.
+     * @return the value itself, or zero, if the value is null.
+     */
+    private static BigInteger operand(final BigInteger value)
+    {
+<span class="fc bfc" id="L40" title="All 2 branches covered.">        return value == null ? BIGINT_ZERO : value;</span>
+    }
+
+    /**
+     * This method prevents null pointer exceptions.
+     *
+     * @param value is the value that may be null.
+     * @return the value itself, or zero, if the value is null.
+     */
+    private static BigDecimal operand(final BigDecimal value)
+    {
+<span class="fc bfc" id="L51" title="All 2 branches covered.">        return value == null ? BIGDEC_ZERO : value;</span>
+    }
+
+    /**
+     * Concatenation Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return the left-operand and the right-operand concatenated together.
+     */
+    public static String concat(final Object left,
+                                final Object right)
+    {
+<span class="fc" id="L64">        final StringBuilder result = new StringBuilder();</span>
+<span class="fc" id="L65">        result.append(left);</span>
+<span class="fc" id="L66">        result.append(right);</span>
+<span class="fc" id="L67">        return result.toString();</span>
+    }
+
+    /**
+     * Negation Operation
+     *
+     * @param operand is the operand.
+     * @return &lt;code&gt;- operand&lt;/code&gt;
+     */
+    public static byte negate(final byte operand)
+    {
+<span class="fc" id="L78">        return (byte) -operand;</span>
+    }
+
+    /**
+     * Negation Operation
+     *
+     * @param operand is the operand.
+     * @return &lt;code&gt;- operand&lt;/code&gt;
+     */
+    public static short negate(final short operand)
+    {
+<span class="fc" id="L89">        return (short) -operand;</span>
+    }
+
+    /**
+     * Negation Operation
+     *
+     * @param operand is the operand.
+     * @return &lt;code&gt;- operand&lt;/code&gt;
+     */
+    public static int negate(final int operand)
+    {
+<span class="fc" id="L100">        return (int) -operand;</span>
+    }
+
+    /**
+     * Negation Operation
+     *
+     * @param operand is the operand.
+     * @return &lt;code&gt;- operand&lt;/code&gt;
+     */
+    public static long negate(final long operand)
+    {
+<span class="fc" id="L111">        return (long) -operand;</span>
+    }
+
+    /**
+     * Negation Operation
+     *
+     * @param operand is the operand.
+     * @return &lt;code&gt;- operand&lt;/code&gt;
+     */
+    public static float negate(final float operand)
+    {
+<span class="fc" id="L122">        return (float) -operand;</span>
+    }
+
+    /**
+     * Negation Operation
+     *
+     * @param operand is the operand.
+     * @return &lt;code&gt;- operand&lt;/code&gt;
+     */
+    public static double negate(final double operand)
+    {
+<span class="fc" id="L133">        return (double) -operand;</span>
+    }
+
+    /**
+     * Negation Operation
+     *
+     * @param operand is the operand.
+     * @return &lt;code&gt;- operand&lt;/code&gt;
+     */
+    public static BigInteger negate(final BigInteger operand)
+    {
+<span class="fc" id="L144">        return operand(operand).negate();</span>
+    }
+
+    /**
+     * Negation Operation
+     *
+     * @param operand is the operand.
+     * @return &lt;code&gt;- operand&lt;/code&gt;
+     */
+    public static BigDecimal negate(final BigDecimal operand)
+    {
+<span class="fc" id="L155">        return Helpers.createBigDecimal(operand(operand).negate());</span>
+    }
+
+    /**
+     * Division Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left / right&lt;/code&gt;
+     */
+    public static char divide(final char left,
+                              final char right)
+    {
+<span class="nc" id="L168">        return (char) (left / right);</span>
+    }
+
+    /**
+     * Division Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left / right&lt;/code&gt;
+     */
+    public static byte divide(final byte left,
+                              final byte right)
+    {
+<span class="fc" id="L181">        return (byte) (left / right);</span>
+    }
+
+    /**
+     * Division Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left / right&lt;/code&gt;
+     */
+    public static short divide(final short left,
+                               final short right)
+    {
+<span class="fc" id="L194">        return (short) (left / right);</span>
+    }
+
+    /**
+     * Division Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left / right&lt;/code&gt;
+     */
+    public static int divide(final int left,
+                             final int right)
+    {
+<span class="fc" id="L207">        return left / right;</span>
+    }
+
+    /**
+     * Division Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left / right&lt;/code&gt;
+     */
+    public static long divide(final long left,
+                              final long right)
+    {
+<span class="fc" id="L220">        return left / right;</span>
+    }
+
+    /**
+     * Division Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left / right&lt;/code&gt;
+     */
+    public static float divide(final float left,
+                               final float right)
+    {
+<span class="fc" id="L233">        return left / right;</span>
+    }
+
+    /**
+     * Division Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left / right&lt;/code&gt;
+     */
+    public static double divide(final double left,
+                                final double right)
+    {
+<span class="fc" id="L246">        return left / right;</span>
+    }
+
+    /**
+     * Division Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left / right&lt;/code&gt;
+     */
+    public static BigInteger divide(final BigInteger left,
+                                    final BigInteger right)
+    {
+<span class="fc" id="L259">        return operand(left).divide(operand(right));</span>
+    }
+
+    /**
+     * Division Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left / right&lt;/code&gt;
+     */
+    public static BigDecimal divide(final BigDecimal left,
+                                    final BigDecimal right)
+    {
+<span class="fc" id="L272">        return Helpers.createBigDecimal(operand(left).divide(operand(right)));</span>
+    }
+
+    /**
+     * Modulo Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left % right&lt;/code&gt;
+     */
+    public static char modulo(final char left,
+                              final char right)
+    {
+<span class="nc" id="L285">        return (char) (left % right);</span>
+    }
+
+    /**
+     * Modulo Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left % right&lt;/code&gt;
+     */
+    public static byte modulo(final byte left,
+                              final byte right)
+    {
+<span class="fc" id="L298">        return (byte) (left % right);</span>
+    }
+
+    /**
+     * Modulo Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left % right&lt;/code&gt;
+     */
+    public static short modulo(final short left,
+                               final short right)
+    {
+<span class="fc" id="L311">        return (short) (left % right);</span>
+    }
+
+    /**
+     * Modulo Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left % right&lt;/code&gt;
+     */
+    public static int modulo(final int left,
+                             final int right)
+    {
+<span class="fc" id="L324">        return left % right;</span>
+    }
+
+    /**
+     * Modulo Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left % right&lt;/code&gt;
+     */
+    public static long modulo(final long left,
+                              final long right)
+    {
+<span class="fc" id="L337">        return left % right;</span>
+    }
+
+    /**
+     * Modulo Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left % right&lt;/code&gt;
+     */
+    public static float modulo(final float left,
+                               final float right)
+    {
+<span class="fc" id="L350">        return left % right;</span>
+    }
+
+    /**
+     * Modulo Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left % right&lt;/code&gt;
+     */
+    public static BigInteger modulo(final BigInteger left,
+                                    final BigInteger right)
+    {
+<span class="fc" id="L363">        return operand(left).remainder(operand(right));</span>
+    }
+
+    /**
+     * Modulo Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left % right&lt;/code&gt;
+     */
+    public static BigDecimal modulo(final BigDecimal left,
+                                    final BigDecimal right)
+    {
+<span class="fc" id="L376">        return Helpers.createBigDecimal(operand(left).remainder(operand(right)));</span>
+    }
+
+    /**
+     * Modulo Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left % right&lt;/code&gt;
+     */
+    public static double modulo(final double left,
+                                final double right)
+    {
+<span class="fc" id="L389">        return left % right;</span>
+    }
+
+    /**
+     * Multiply Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left * right&lt;/code&gt;
+     */
+    public static char multiply(final char left,
+                                final char right)
+    {
+<span class="nc" id="L402">        return (char) (left * right);</span>
+    }
+
+    /**
+     * Multiply Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left * right&lt;/code&gt;
+     */
+    public static byte multiply(final byte left,
+                                final byte right)
+    {
+<span class="fc" id="L415">        return (byte) (left * right);</span>
+    }
+
+    /**
+     * Multiply Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left * right&lt;/code&gt;
+     */
+    public static short multiply(final short left,
+                                 final short right)
+    {
+<span class="fc" id="L428">        return (short) (left * right);</span>
+    }
+
+    /**
+     * Multiply Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left * right&lt;/code&gt;
+     */
+    public static int multiply(final int left,
+                               final int right)
+    {
+<span class="fc" id="L441">        return left * right;</span>
+    }
+
+    /**
+     * Multiply Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left * right&lt;/code&gt;
+     */
+    public static long multiply(final long left,
+                                final long right)
+    {
+<span class="fc" id="L454">        return left * right;</span>
+    }
+
+    /**
+     * Multiply Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left * right&lt;/code&gt;
+     */
+    public static float multiply(final float left,
+                                 final float right)
+    {
+<span class="fc" id="L467">        return left * right;</span>
+    }
+
+    /**
+     * Multiply Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left * right&lt;/code&gt;
+     */
+    public static double multiply(final double left,
+                                  final double right)
+    {
+<span class="fc" id="L480">        return left * right;</span>
+    }
+
+    /**
+     * Multiply Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left * right&lt;/code&gt;
+     */
+    public static BigInteger multiply(final BigInteger left,
+                                      final BigInteger right)
+    {
+<span class="fc" id="L493">        return operand(left).multiply(operand(right));</span>
+    }
+
+    /**
+     * Multiply Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left * right&lt;/code&gt;
+     */
+    public static BigDecimal multiply(final BigDecimal left,
+                                      final BigDecimal right)
+    {
+<span class="fc" id="L506">        return Helpers.createBigDecimal(operand(left).multiply(operand(right)));</span>
+    }
+
+    /**
+     * Add Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left + right&lt;/code&gt;
+     */
+    public static char add(final char left,
+                           final char right)
+    {
+<span class="fc" id="L519">        return (char) (left + right);</span>
+    }
+
+    /**
+     * Add Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left + right&lt;/code&gt;
+     */
+    public static byte add(final byte left,
+                           final byte right)
+    {
+<span class="fc" id="L532">        return (byte) (left + right);</span>
+    }
+
+    /**
+     * Add Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left + right&lt;/code&gt;
+     */
+    public static short add(final short left,
+                            final short right)
+    {
+<span class="fc" id="L545">        return (short) (left + right);</span>
+    }
+
+    /**
+     * Add Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left + right&lt;/code&gt;
+     */
+    public static int add(final int left,
+                          final int right)
+    {
+<span class="fc" id="L558">        return left + right;</span>
+    }
+
+    /**
+     * Add Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left + right&lt;/code&gt;
+     */
+    public static long add(final long left,
+                           final long right)
+    {
+<span class="fc" id="L571">        return left + right;</span>
+    }
+
+    /**
+     * Add Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left + right&lt;/code&gt;
+     */
+    public static float add(final float left,
+                            final float right)
+    {
+<span class="fc" id="L584">        return left + right;</span>
+    }
+
+    /**
+     * Add Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left + right&lt;/code&gt;
+     */
+    public static double add(final double left,
+                             final double right)
+    {
+<span class="fc" id="L597">        return left + right;</span>
+    }
+
+    /**
+     * Add Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left + right&lt;/code&gt;
+     */
+    public static BigInteger add(final BigInteger left,
+                                 final BigInteger right)
+    {
+<span class="fc" id="L610">        return operand(left).add(operand(right));</span>
+    }
+
+    /**
+     * Add Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left + right&lt;/code&gt;
+     */
+    public static BigDecimal add(final BigDecimal left,
+                                 final BigDecimal right)
+    {
+<span class="fc" id="L623">        return Helpers.createBigDecimal(operand(left).add(operand(right)));</span>
+    }
+
+    /**
+     * Subtract Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left - right&lt;/code&gt;
+     */
+    public static char subtract(final char left,
+                                final char right)
+    {
+<span class="nc" id="L636">        return (char) (left - right);</span>
+    }
+
+    /**
+     * Subtract Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left - right&lt;/code&gt;
+     */
+    public static byte subtract(final byte left,
+                                final byte right)
+    {
+<span class="fc" id="L649">        return (byte) (left - right);</span>
+    }
+
+    /**
+     * Subtract Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left - right&lt;/code&gt;
+     */
+    public static short subtract(final short left,
+                                 final short right)
+    {
+<span class="fc" id="L662">        return (short) (left - right);</span>
+    }
+
+    /**
+     * Subtract Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left - right&lt;/code&gt;
+     */
+    public static int subtract(final int left,
+                               final int right)
+    {
+<span class="fc" id="L675">        return left - right;</span>
+    }
+
+    /**
+     * Subtract Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left - right&lt;/code&gt;
+     */
+    public static long subtract(final long left,
+                                final long right)
+    {
+<span class="fc" id="L688">        return left - right;</span>
+    }
+
+    /**
+     * Subtract Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left - right&lt;/code&gt;
+     */
+    public static float subtract(final float left,
+                                 final float right)
+    {
+<span class="fc" id="L701">        return left - right;</span>
+    }
+
+    /**
+     * Subtract Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left - right&lt;/code&gt;
+     */
+    public static double subtract(final double left,
+                                  final double right)
+    {
+<span class="fc" id="L714">        return left - right;</span>
+    }
+
+    /**
+     * Subtract Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left - right&lt;/code&gt;
+     */
+    public static BigInteger subtract(final BigInteger left,
+                                      final BigInteger right)
+    {
+<span class="fc" id="L727">        return operand(left).subtract(operand(right));</span>
+    }
+
+    /**
+     * Subtract Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left - right&lt;/code&gt;
+     */
+    public static BigDecimal subtract(final BigDecimal left,
+                                      final BigDecimal right)
+    {
+<span class="fc" id="L740">        return Helpers.createBigDecimal(operand(left).subtract(operand(right)));</span>
+    }
+
+    /**
+     * Equality Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left == right&lt;/code&gt;
+     */
+    public static boolean equals(final boolean left,
+                                 final boolean right)
+    {
+<span class="fc bfc" id="L753" title="All 2 branches covered.">        return left == right;</span>
+    }
+
+    /**
+     * Equality Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left == right&lt;/code&gt;
+     */
+    public static boolean equals(final char left,
+                                 final char right)
+    {
+<span class="fc bfc" id="L766" title="All 2 branches covered.">        return left == right;</span>
+    }
+
+    /**
+     * Equality Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left == right&lt;/code&gt;
+     */
+    public static boolean equals(final byte left,
+                                 final byte right)
+    {
+<span class="fc bfc" id="L779" title="All 2 branches covered.">        return left == right;</span>
+    }
+
+    /**
+     * Equality Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left == right&lt;/code&gt;
+     */
+    public static boolean equals(final short left,
+                                 final short right)
+    {
+<span class="fc bfc" id="L792" title="All 2 branches covered.">        return left == right;</span>
+    }
+
+    /**
+     * Equality Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left == right&lt;/code&gt;
+     */
+    public static boolean equals(final int left,
+                                 final int right)
+    {
+<span class="fc bfc" id="L805" title="All 2 branches covered.">        return left == right;</span>
+    }
+
+    /**
+     * Equality Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left == right&lt;/code&gt;
+     */
+    public static boolean equals(final long left,
+                                 final long right)
+    {
+<span class="fc bfc" id="L818" title="All 2 branches covered.">        return left == right;</span>
+    }
+
+    /**
+     * Equality Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left == right&lt;/code&gt;
+     */
+    public static boolean equals(final float left,
+                                 final float right)
+    {
+<span class="fc bfc" id="L831" title="All 2 branches covered.">        return left == right;</span>
+    }
+
+    /**
+     * Equality Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left == right&lt;/code&gt;
+     */
+    public static boolean equals(final double left,
+                                 final double right)
+    {
+<span class="fc bfc" id="L844" title="All 2 branches covered.">        return left == right;</span>
+    }
+
+    /**
+     * Equality Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left equals right&lt;/code&gt;
+     */
+    public static boolean equals(final BigInteger left,
+                                 final BigInteger right)
+    {
+<span class="fc" id="L857">        return Objects.equal(left, right);</span>
+    }
+
+    /**
+     * Equality Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left equals right&lt;/code&gt;
+     */
+    public static boolean equals(final BigDecimal left,
+                                 final BigDecimal right)
+    {
+<span class="fc" id="L870">        return Objects.equal(left, right);</span>
+    }
+
+    /**
+     * Equality Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left equals right&lt;/code&gt;
+     */
+    public static boolean equals(final Object left,
+                                 final Object right)
+    {
+<span class="fc" id="L883">        return Objects.equal(left, right);</span>
+    }
+
+    /**
+     * Inequality Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left != right&lt;/code&gt;
+     */
+    public static boolean notEquals(final boolean left,
+                                    final boolean right)
+    {
+<span class="fc bfc" id="L896" title="All 2 branches covered.">        return left != right;</span>
+    }
+
+    /**
+     * Inequality Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left != right&lt;/code&gt;
+     */
+    public static boolean notEquals(final char left,
+                                    final char right)
+    {
+<span class="fc bfc" id="L909" title="All 2 branches covered.">        return left != right;</span>
+    }
+
+    /**
+     * Inequality Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left != right&lt;/code&gt;
+     */
+    public static boolean notEquals(final byte left,
+                                    final byte right)
+    {
+<span class="fc bfc" id="L922" title="All 2 branches covered.">        return left != right;</span>
+    }
+
+    /**
+     * Inequality Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left != right&lt;/code&gt;
+     */
+    public static boolean notEquals(final short left,
+                                    final short right)
+    {
+<span class="fc bfc" id="L935" title="All 2 branches covered.">        return left != right;</span>
+    }
+
+    /**
+     * Inequality Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left != right&lt;/code&gt;
+     */
+    public static boolean notEquals(final int left,
+                                    final int right)
+    {
+<span class="fc bfc" id="L948" title="All 2 branches covered.">        return left != right;</span>
+    }
+
+    /**
+     * Inequality Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left != right&lt;/code&gt;
+     */
+    public static boolean notEquals(final long left,
+                                    final long right)
+    {
+<span class="fc bfc" id="L961" title="All 2 branches covered.">        return left != right;</span>
+    }
+
+    /**
+     * Inequality Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left != right&lt;/code&gt;
+     */
+    public static boolean notEquals(final float left,
+                                    final float right)
+    {
+<span class="fc bfc" id="L974" title="All 2 branches covered.">        return left != right;</span>
+    }
+
+    /**
+     * Inequality Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left != right&lt;/code&gt;
+     */
+    public static boolean notEquals(final double left,
+                                    final double right)
+    {
+<span class="fc bfc" id="L987" title="All 2 branches covered.">        return left != right;</span>
+    }
+
+    /**
+     * Inequality Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left equals right&lt;/code&gt;
+     */
+    public static boolean notEquals(final BigInteger left,
+                                    final BigInteger right)
+    {
+<span class="fc bfc" id="L1000" title="All 2 branches covered.">        return Objects.equal(left, right) == false;</span>
+    }
+
+    /**
+     * Inequality Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left equals right&lt;/code&gt;
+     */
+    public static boolean notEquals(final BigDecimal left,
+                                    final BigDecimal right)
+    {
+<span class="fc bfc" id="L1013" title="All 2 branches covered.">        return Objects.equal(left, right) == false;</span>
+    }
+
+    /**
+     * Inequality Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left != right&lt;/code&gt;
+     */
+    public static boolean notEquals(final Object left,
+                                    final Object right)
+    {
+<span class="fc bfc" id="L1026" title="All 2 branches covered.">        return Objects.equal(left, right) == false;</span>
+    }
+
+    /**
+     * Less-Than Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left &amp;lt; right&lt;/code&gt;
+     */
+    public static boolean lessThan(final boolean left,
+                                   final boolean right)
+    {
+<span class="fc bfc" id="L1039" title="All 4 branches covered.">        return !left &amp;&amp; right;</span>
+    }
+
+    /**
+     * Less-Than Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left &amp;lt; right&lt;/code&gt;
+     */
+    public static boolean lessThan(final char left,
+                                   final char right)
+    {
+<span class="fc bfc" id="L1052" title="All 2 branches covered.">        return left &lt; right;</span>
+    }
+
+    /**
+     * Less-Than Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left &amp;lt; right&lt;/code&gt;
+     */
+    public static boolean lessThan(final byte left,
+                                   final byte right)
+    {
+<span class="fc bfc" id="L1065" title="All 2 branches covered.">        return left &lt; right;</span>
+    }
+
+    /**
+     * Less-Than Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left &amp;lt; right&lt;/code&gt;
+     */
+    public static boolean lessThan(final short left,
+                                   final short right)
+    {
+<span class="fc bfc" id="L1078" title="All 2 branches covered.">        return left &lt; right;</span>
+    }
+
+    /**
+     * Less-Than Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left &amp;lt; right&lt;/code&gt;
+     */
+    public static boolean lessThan(final int left,
+                                   final int right)
+    {
+<span class="fc bfc" id="L1091" title="All 2 branches covered.">        return left &lt; right;</span>
+    }
+
+    /**
+     * Less-Than Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left &amp;lt; right&lt;/code&gt;
+     */
+    public static boolean lessThan(final long left,
+                                   final long right)
+    {
+<span class="fc bfc" id="L1104" title="All 2 branches covered.">        return left &lt; right;</span>
+    }
+
+    /**
+     * Less-Than Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left &amp;lt; right&lt;/code&gt;
+     */
+    public static boolean lessThan(final float left,
+                                   final float right)
+    {
+<span class="fc bfc" id="L1117" title="All 2 branches covered.">        return left &lt; right;</span>
+    }
+
+    /**
+     * Less-ThanOperation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left &amp;lt; right&lt;/code&gt;
+     */
+    public static boolean lessThan(final double left,
+                                   final double right)
+    {
+<span class="fc bfc" id="L1130" title="All 2 branches covered.">        return left &lt; right;</span>
+    }
+
+    /**
+     * Less-Than Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left &amp;lt; right&lt;/code&gt;
+     */
+    public static boolean lessThan(final Comparable left,
+                                   final Comparable right)
+    {
+<span class="fc bfc" id="L1143" title="All 4 branches covered.">        if (left != null &amp;&amp; right != null)</span>
+        {
+<span class="fc bfc" id="L1145" title="All 2 branches covered.">            return left.compareTo(right) &lt; 0;</span>
+        }
+<span class="pc bpc" id="L1147" title="1 of 4 branches missed.">        else if (left != null &amp;&amp; right == null)</span>
+        {
+<span class="fc" id="L1149">            return false;</span>
+        }
+<span class="pc bpc" id="L1151" title="1 of 4 branches missed.">        else if (left == null &amp;&amp; right != null)</span>
+        {
+<span class="fc" id="L1153">            return true;</span>
+        }
+        else // both null
+        {
+<span class="fc" id="L1157">            return false;</span>
+        }
+    }
+
+    /**
+     * Less-Than-OR-Equals Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left &amp;lt;= right&lt;/code&gt;
+     */
+    public static boolean lessThanOrEquals(final boolean left,
+                                           final boolean right)
+    {
+<span class="fc bfc" id="L1171" title="All 4 branches covered.">        return lessThan(left, right) || equals(left, right);</span>
+    }
+
+    /**
+     * Less-Than-OR-Equals Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left &amp;lt;= right&lt;/code&gt;
+     */
+    public static boolean lessThanOrEquals(final char left,
+                                           final char right)
+    {
+<span class="fc bfc" id="L1184" title="All 2 branches covered.">        return left &lt;= right;</span>
+    }
+
+    /**
+     * Less-Than-OR-Equals Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left &amp;lt;= right&lt;/code&gt;
+     */
+    public static boolean lessThanOrEquals(final byte left,
+                                           final byte right)
+    {
+<span class="fc bfc" id="L1197" title="All 2 branches covered.">        return left &lt;= right;</span>
+    }
+
+    /**
+     * Less-Than-OR-Equals Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left &amp;lt;= right&lt;/code&gt;
+     */
+    public static boolean lessThanOrEquals(final short left,
+                                           final short right)
+    {
+<span class="fc bfc" id="L1210" title="All 2 branches covered.">        return left &lt;= right;</span>
+    }
+
+    /**
+     * Less-Than-OR-Equals Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left &amp;lt;= right&lt;/code&gt;
+     */
+    public static boolean lessThanOrEquals(final int left,
+                                           final int right)
+    {
+<span class="fc bfc" id="L1223" title="All 2 branches covered.">        return left &lt;= right;</span>
+    }
+
+    /**
+     * Less-Than-OR-Equals Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left &amp;lt;= right&lt;/code&gt;
+     */
+    public static boolean lessThanOrEquals(final long left,
+                                           final long right)
+    {
+<span class="fc bfc" id="L1236" title="All 2 branches covered.">        return left &lt;= right;</span>
+    }
+
+    /**
+     * Less-Than-OR-Equals Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left &amp;lt;= right&lt;/code&gt;
+     */
+    public static boolean lessThanOrEquals(final float left,
+                                           final float right)
+    {
+<span class="fc bfc" id="L1249" title="All 2 branches covered.">        return left &lt;= right;</span>
+    }
+
+    /**
+     * Less-Than-OR-Equals Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left &amp;lt;= right&lt;/code&gt;
+     */
+    public static boolean lessThanOrEquals(final double left,
+                                           final double right)
+    {
+<span class="fc bfc" id="L1262" title="All 2 branches covered.">        return left &lt;= right;</span>
+    }
+
+    /**
+     * Less-Than-OR-Equals Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left &amp;lt;= right&lt;/code&gt;
+     */
+    public static boolean lessThanOrEquals(final Comparable left,
+                                           final Comparable right)
+    {
+<span class="fc bfc" id="L1275" title="All 4 branches covered.">        if (left != null &amp;&amp; right != null)</span>
+        {
+<span class="fc bfc" id="L1277" title="All 2 branches covered.">            return left.compareTo(right) &lt;= 0;</span>
+        }
+<span class="pc bpc" id="L1279" title="1 of 4 branches missed.">        else if (left != null &amp;&amp; right == null)</span>
+        {
+<span class="fc" id="L1281">            return false;</span>
+        }
+<span class="pc bpc" id="L1283" title="1 of 4 branches missed.">        else if (left == null &amp;&amp; right != null)</span>
+        {
+<span class="fc" id="L1285">            return true;</span>
+        }
+        else
+        {
+<span class="fc" id="L1289">            return true;</span>
+        }
+    }
+
+    /**
+     * Greater-Than Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left &amp;gt; right&lt;/code&gt;
+     */
+    public static boolean greaterThan(final boolean left,
+                                      final boolean right)
+    {
+<span class="fc bfc" id="L1303" title="All 4 branches covered.">        return left &amp;&amp; !right;</span>
+    }
+
+    /**
+     * Greater-Than Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left &amp;gt; right&lt;/code&gt;
+     */
+    public static boolean greaterThan(final char left,
+                                      final char right)
+    {
+<span class="fc bfc" id="L1316" title="All 2 branches covered.">        return left &gt; right;</span>
+    }
+
+    /**
+     * Greater-Than Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left &amp;gt; right&lt;/code&gt;
+     */
+    public static boolean greaterThan(final byte left,
+                                      final byte right)
+    {
+<span class="fc bfc" id="L1329" title="All 2 branches covered.">        return left &gt; right;</span>
+    }
+
+    /**
+     * Greater-Than Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left &amp;gt; right&lt;/code&gt;
+     */
+    public static boolean greaterThan(final short left,
+                                      final short right)
+    {
+<span class="fc bfc" id="L1342" title="All 2 branches covered.">        return left &gt; right;</span>
+    }
+
+    /**
+     * Greater-Than Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left &amp;gt; right&lt;/code&gt;
+     */
+    public static boolean greaterThan(final int left,
+                                      final int right)
+    {
+<span class="fc bfc" id="L1355" title="All 2 branches covered.">        return left &gt; right;</span>
+    }
+
+    /**
+     * Greater-Than Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left &amp;gt; right&lt;/code&gt;
+     */
+    public static boolean greaterThan(final long left,
+                                      final long right)
+    {
+<span class="fc bfc" id="L1368" title="All 2 branches covered.">        return left &gt; right;</span>
+    }
+
+    /**
+     * Greater-Than Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left &amp;gt; right&lt;/code&gt;
+     */
+    public static boolean greaterThan(final float left,
+                                      final float right)
+    {
+<span class="fc bfc" id="L1381" title="All 2 branches covered.">        return left &gt; right;</span>
+    }
+
+    /**
+     * Greater-Than Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left &amp;gt; right&lt;/code&gt;
+     */
+    public static boolean greaterThan(final double left,
+                                      final double right)
+    {
+<span class="fc bfc" id="L1394" title="All 2 branches covered.">        return left &gt; right;</span>
+    }
+
+    /**
+     * Greater-Than Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left &amp;gt; right&lt;/code&gt;
+     */
+    public static boolean greaterThan(final Comparable left,
+                                      final Comparable right)
+    {
+<span class="fc bfc" id="L1407" title="All 4 branches covered.">        if (left != null &amp;&amp; right != null)</span>
+        {
+<span class="fc bfc" id="L1409" title="All 2 branches covered.">            return left.compareTo(right) &gt; 0;</span>
+        }
+<span class="pc bpc" id="L1411" title="1 of 4 branches missed.">        else if (left != null &amp;&amp; right == null)</span>
+        {
+<span class="fc" id="L1413">            return true;</span>
+        }
+<span class="pc bpc" id="L1415" title="1 of 4 branches missed.">        else if (left == null &amp;&amp; right != null)</span>
+        {
+<span class="fc" id="L1417">            return false;</span>
+        }
+        else // both null
+        {
+<span class="fc" id="L1421">            return false;</span>
+        }
+    }
+
+    /**
+     * Greater-Than-OR-Equals Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left &amp;gt;= right&lt;/code&gt;
+     */
+    public static boolean greaterThanOrEquals(final boolean left,
+                                              final boolean right)
+    {
+<span class="fc bfc" id="L1435" title="All 4 branches covered.">        return greaterThan(left, right) || equals(left, right);</span>
+    }
+
+    /**
+     * Greater-Than-OR-Equals Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left &amp;gt;= right&lt;/code&gt;
+     */
+    public static boolean greaterThanOrEquals(final char left,
+                                              final char right)
+    {
+<span class="fc bfc" id="L1448" title="All 2 branches covered.">        return left &gt;= right;</span>
+    }
+
+    /**
+     * Greater-Than-OR-Equals Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left &amp;gt;= right&lt;/code&gt;
+     */
+    public static boolean greaterThanOrEquals(final byte left,
+                                              final byte right)
+    {
+<span class="fc bfc" id="L1461" title="All 2 branches covered.">        return left &gt;= right;</span>
+    }
+
+    /**
+     * Greater-Than-OR-Equals Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left &amp;gt;= right&lt;/code&gt;
+     */
+    public static boolean greaterThanOrEquals(final short left,
+                                              final short right)
+    {
+<span class="fc bfc" id="L1474" title="All 2 branches covered.">        return left &gt;= right;</span>
+    }
+
+    /**
+     * Greater-Than-OR-Equals Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left &amp;gt;= right&lt;/code&gt;
+     */
+    public static boolean greaterThanOrEquals(final int left,
+                                              final int right)
+    {
+<span class="fc bfc" id="L1487" title="All 2 branches covered.">        return left &gt;= right;</span>
+    }
+
+    /**
+     * Greater-Than-OR-Equals Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left &amp;gt;= right&lt;/code&gt;
+     */
+    public static boolean greaterThanOrEquals(final long left,
+                                              final long right)
+    {
+<span class="fc bfc" id="L1500" title="All 2 branches covered.">        return left &gt;= right;</span>
+    }
+
+    /**
+     * Greater-Than-OR-Equals Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left &amp;gt;= right&lt;/code&gt;
+     */
+    public static boolean greaterThanOrEquals(final float left,
+                                              final float right)
+    {
+<span class="fc bfc" id="L1513" title="All 2 branches covered.">        return left &gt;= right;</span>
+    }
+
+    /**
+     * Greater-Than-OR-Equals Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left &amp;gt;= right&lt;/code&gt;
+     */
+    public static boolean greaterThanOrEquals(final double left,
+                                              final double right)
+    {
+<span class="fc bfc" id="L1526" title="All 2 branches covered.">        return left &gt;= right;</span>
+    }
+
+    /**
+     * Greater-Than-OR-Equals Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left &amp;gt;= right&lt;/code&gt;
+     */
+    public static boolean greaterThanOrEquals(final Comparable left,
+                                              final Comparable right)
+    {
+<span class="fc bfc" id="L1539" title="All 4 branches covered.">        if (left != null &amp;&amp; right != null)</span>
+        {
+<span class="fc bfc" id="L1541" title="All 2 branches covered.">            return left.compareTo(right) &gt;= 0;</span>
+        }
+<span class="pc bpc" id="L1543" title="1 of 4 branches missed.">        else if (left != null &amp;&amp; right == null)</span>
+        {
+<span class="fc" id="L1545">            return true;</span>
+        }
+<span class="pc bpc" id="L1547" title="1 of 4 branches missed.">        else if (left == null &amp;&amp; right != null)</span>
+        {
+<span class="fc" id="L1549">            return false;</span>
+        }
+        else // both null
+        {
+<span class="fc" id="L1553">            return true;</span>
+        }
+    }
+
+    /**
+     * Identity Equality Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left == right&lt;/code&gt;
+     */
+    public static boolean identityEquals(final Object left_operand,
+                                         final Object right_operand)
+    {
+<span class="pc bpc" id="L1567" title="1 of 2 branches missed.">        return left_operand == right_operand;</span>
+    }
+
+    /**
+     * Identity Inequality Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left == right&lt;/code&gt;
+     */
+    public static boolean identityNotEquals(final Object left_operand,
+                                            final Object right_operand)
+    {
+<span class="pc bpc" id="L1580" title="1 of 2 branches missed.">        return left_operand != right_operand;</span>
+    }
+
+    /**
+     * Negation Operation
+     *
+     * @param operand is the operand.
+     * @return &lt;code&gt;! operand&lt;/code&gt;
+     */
+    public static boolean not(final boolean operand)
+    {
+<span class="fc bfc" id="L1591" title="All 2 branches covered.">        return !operand;</span>
+    }
+
+    /**
+     * Logical-AND Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left &amp;&amp; right&lt;/code&gt;
+     */
+    public static boolean and(final boolean left,
+                              final boolean right)
+    {
+<span class="nc bnc" id="L1604" title="All 4 branches missed.">        return left &amp;&amp; right;</span>
+    }
+
+    /**
+     * Logical-OR Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left || right&lt;/code&gt;
+     */
+    public static boolean or(final boolean left,
+                             final boolean right)
+    {
+<span class="nc bnc" id="L1617" title="All 4 branches missed.">        return left || right;</span>
+    }
+
+    /**
+     * Logical-XOR Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left ^ right&lt;/code&gt;
+     */
+    public static boolean xor(final boolean left,
+                              final boolean right)
+    {
+<span class="nc" id="L1630">        return left ^ right;</span>
+    }
+
+    /**
+     * Logical-IMPLIES Operation
+     *
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     * @return &lt;code&gt;left -&amp;gt; right&lt;/code&gt;
+     */
+    public static boolean implies(final boolean left,
+                                  final boolean right)
+    {
+<span class="nc bnc" id="L1643" title="All 4 branches missed.">        return !left || right;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

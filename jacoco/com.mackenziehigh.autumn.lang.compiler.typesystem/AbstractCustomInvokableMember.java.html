@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AbstractCustomInvokableMember.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.mackenziehigh:autumn</a> &gt; <a href="index.source.html" class="el_package">com.mackenziehigh.autumn.lang.compiler.typesystem</a> &gt; <span class="el_source">AbstractCustomInvokableMember.java</span></div><h1>AbstractCustomInvokableMember.java</h1><pre class="source lang-java linenums">package com.mackenziehigh.autumn.lang.compiler.typesystem;
+
+import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableList;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IClassType;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IFormalParameter;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IInvokableMember;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IReturnType;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.ITypeFactory;
+import com.mackenziehigh.autumn.resources.Finished;
+import java.util.Collection;
+import java.util.List;
+
+/**
+ * This class provides a partial implementation of the IInvokableMember interface.
+ *
+ * @author Mackenzie High
+ */
+@Finished(&quot;2014/07/12&quot;)
+public abstract class AbstractCustomInvokableMember
+        extends AbstractCustomMember
+        implements IInvokableMember
+{
+<span class="fc" id="L24">    private ImmutableList&lt;IFormalParameter&gt; parameters = ImmutableList.of();</span>
+
+    private IReturnType return_type;
+
+<span class="fc" id="L28">    private Collection&lt;IClassType&gt; throws_clause = ImmutableList.of();</span>
+
+    /**
+     * Sole Constructor.
+     *
+     * @param factory type-factory that is used to access types.
+     */
+    public AbstractCustomInvokableMember(final ITypeFactory factory)
+    {
+<span class="fc" id="L37">        super(factory);</span>
+
+<span class="fc" id="L39">        Preconditions.checkNotNull(factory);</span>
+<span class="fc" id="L40">    }</span>
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List&lt;IFormalParameter&gt; getParameters()
+    {
+<span class="fc" id="L48">        return ImmutableList.copyOf(parameters);</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public IReturnType getReturnType()
+    {
+<span class="fc" id="L57">        return return_type;</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Collection&lt;IClassType&gt; getThrowsClause()
+    {
+<span class="fc" id="L66">        return ImmutableList.copyOf(throws_clause);</span>
+    }
+
+    /**
+     * Setter.
+     *
+     * @param parameters are the formal-parameters of this invokable-member.
+     */
+    public void setParameters(final List&lt;IFormalParameter&gt; parameters)
+    {
+<span class="fc" id="L76">        this.parameters = ImmutableList.copyOf(parameters);</span>
+<span class="fc" id="L77">    }</span>
+
+    /**
+     * Setter.
+     *
+     * @param return_type is the return-type of this invokable-member.
+     */
+    public void setReturnType(final IReturnType return_type)
+    {
+<span class="fc" id="L86">        this.return_type = return_type;</span>
+<span class="fc" id="L87">    }</span>
+
+    /**
+     * Setter.
+     *
+     * @param throws_clause is the throws-clause of this invokable-member.
+     */
+    public void setThrowsClause(final Collection&lt;IClassType&gt; throws_clause)
+    {
+<span class="fc" id="L96">        this.throws_clause = ImmutableList.copyOf(throws_clause);</span>
+<span class="fc" id="L97">    }</span>
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getDescriptor()
+    {
+<span class="fc" id="L105">        return getParameterListDescriptor() + getReturnType().getDescriptor();</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getParameterListDescriptor()
+    {
+<span class="fc" id="L114">        final StringBuilder result = new StringBuilder();</span>
+
+<span class="fc" id="L116">        result.append('(');</span>
+
+<span class="fc bfc" id="L118" title="All 2 branches covered.">        for (IFormalParameter param : this.getParameters())</span>
+        {
+<span class="fc" id="L120">            result.append(param.getType().getDescriptor());</span>
+<span class="fc" id="L121">        }</span>
+
+<span class="fc" id="L123">        result.append(')');</span>
+
+<span class="fc" id="L125">        return result.toString();</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getNamePlusDescriptor()
+    {
+<span class="fc" id="L134">        return getName() + getDescriptor();</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getNamePlusParameterListDescriptor()
+    {
+<span class="fc" id="L143">        return getName() + getParameterListDescriptor();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AutumnPrettyPrinter.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.mackenziehigh:autumn</a> &gt; <a href="index.source.html" class="el_package">autumn.lang.compiler</a> &gt; <span class="el_source">AutumnPrettyPrinter.java</span></div><h1>AutumnPrettyPrinter.java</h1><pre class="source lang-java linenums">package autumn.lang.compiler;
+
+import autumn.lang.compiler.ast.commons.IConstruct;
+import autumn.lang.compiler.exceptions.IncompleteNodeException;
+import autumn.lang.compiler.exceptions.RepeatedNodeException;
+import autumn.lang.compiler.exceptions.UnprintableNodeException;
+import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableList;
+import com.mackenziehigh.autumn.lang.compiler.pretty.PrintingVisitor;
+import com.mackenziehigh.autumn.resources.Finished;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintStream;
+import java.util.List;
+
+/**
+ * An instance of this class can pretty-print an abstract-syntax-tree.
+ *
+ * &lt;p&gt;
+ * Note: The output of this pretty-printer is version-specific.
+ * &lt;/p&gt;
+ *
+ * @author Mackenzie High
+ */
+@Finished(&quot;2014/07/12&quot;)
+public final class AutumnPrettyPrinter
+{
+    private final PrintStream out;
+
+    /**
+     * Constructor.
+     *
+     * &lt;p&gt;
+     * Equivalent:
+     * &lt;code&gt;AutumnPrettyPrinter(System.out)&lt;/code&gt;
+     * &lt;/p&gt;
+     */
+    public AutumnPrettyPrinter()
+    {
+<span class="nc" id="L40">        this(System.out);</span>
+<span class="nc" id="L41">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param out is the stream to print to.
+     */
+    public AutumnPrettyPrinter(final PrintStream out)
+<span class="fc" id="L49">    {</span>
+<span class="fc" id="L50">        Preconditions.checkNotNull(out);</span>
+
+<span class="fc" id="L52">        this.out = out;</span>
+<span class="fc" id="L53">    }</span>
+
+    /**
+     * This method retrieves the stream that is being printed to.
+     *
+     * @return the aforedescribed stream.
+     */
+    public PrintStream stream()
+    {
+<span class="fc" id="L62">        return out;</span>
+    }
+
+    /**
+     * This method prints an abstract-syntax-tree node to the underlying stream.
+     *
+     * @param node is the AST node to print, which may be the root of an entire tree.
+     * @throws UnprintableNodeException if the AST contains a node that is unprintable.
+     * @throws IncompleteNodeException if the AST is incomplete.
+     * @throws RepeatedNodeException if the AST contains the same node more than once.
+     */
+    public void print(final IConstruct node)
+            throws UnprintableNodeException,
+                   IncompleteNodeException,
+                   RepeatedNodeException
+    {
+<span class="fc" id="L78">        Preconditions.checkNotNull(node);</span>
+
+<span class="fc" id="L80">        final PrintingVisitor printer = new PrintingVisitor();</span>
+
+<span class="fc" id="L82">        node.accept(printer);</span>
+
+<span class="fc" id="L84">        final String pretty = printer.buildString();</span>
+
+<span class="fc" id="L86">        out.print(pretty);</span>
+<span class="fc" id="L87">    }</span>
+
+    /**
+     * This method creates a PrintStream that prints to a StringBuilder using ASCII.
+     *
+     * &lt;p&gt;
+     * Note: The returned stream throws an IOException, when non-ASCII encoded text is encountered.
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * Note: The returned stream cannot be used to print null characters (i.e. ASCII(0)).
+     * &lt;/p&gt;
+     *
+     * @param builder is the builder to print ASCII encoded characters to.
+     * @return the aforedescribed stream.
+     */
+    public static PrintStream createStreamASCII(final StringBuilder builder)
+    {
+<span class="fc" id="L105">        final OutputStream stream = new OutputStream()</span>
+<span class="fc" id="L106">        {</span>
+            @Override
+            public void write(final int character)
+                    throws IOException
+            {
+<span class="pc bpc" id="L111" title="2 of 4 branches missed.">                if (character &gt; 0 &amp;&amp; character &lt;= 127)</span>
+                {
+<span class="fc" id="L113">                    builder.append((char) character);</span>
+                }
+<span class="nc bnc" id="L115" title="All 2 branches missed.">                else if (character == 0)</span>
+                {
+<span class="nc" id="L117">                    throw new IOException(&quot;The character cannot be the null-terminator.&quot;);</span>
+                }
+                else
+                {
+<span class="nc" id="L121">                    throw new IOException(&quot;The character must be encodable using ASCII.&quot;);</span>
+                }
+<span class="fc" id="L123">            }</span>
+        };
+
+<span class="fc" id="L126">        return new PrintStream(stream);</span>
+    }
+
+    /**
+     * This method linearizes the nodes in a given abstract-syntax-tree.
+     *
+     * @param node is the root of the AST.
+     * @return the aforedescribed immutable list.
+     */
+    public static List&lt;IConstruct&gt; nodesOf(final IConstruct node)
+    {
+<span class="fc" id="L137">        Preconditions.checkNotNull(node);</span>
+
+<span class="fc" id="L139">        final PrintingVisitor printer = new PrintingVisitor();</span>
+
+<span class="fc" id="L141">        node.accept(printer);</span>
+
+<span class="fc" id="L143">        final List&lt;IConstruct&gt; list = ImmutableList.copyOf(printer.visited());</span>
+
+<span class="fc" id="L145">        return list;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

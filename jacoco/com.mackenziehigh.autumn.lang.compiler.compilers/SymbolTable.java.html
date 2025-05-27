@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SymbolTable.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.mackenziehigh:autumn</a> &gt; <a href="index.source.html" class="el_package">com.mackenziehigh.autumn.lang.compiler.compilers</a> &gt; <span class="el_source">SymbolTable.java</span></div><h1>SymbolTable.java</h1><pre class="source lang-java linenums">package com.mackenziehigh.autumn.lang.compiler.compilers;
+
+import autumn.lang.compiler.ast.commons.IConstruct;
+import autumn.lang.compiler.ast.commons.IExpression;
+import autumn.lang.compiler.ast.commons.IStatement;
+import autumn.lang.compiler.ast.nodes.DelegateStatement;
+import autumn.lang.compiler.ast.nodes.DispatchExpression;
+import autumn.lang.compiler.ast.nodes.ExceptionHandler;
+import autumn.lang.compiler.ast.nodes.LambdaStatement;
+import autumn.lang.compiler.ast.nodes.LocalsExpression;
+import autumn.lang.compiler.ast.nodes.TryCatchStatement;
+import autumn.lang.compiler.ast.nodes.TypeSpecifier;
+import com.google.common.collect.Maps;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IClassType;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IExpressionType;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IField;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IInvokableMember;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IMethod;
+import com.mackenziehigh.autumn.lang.compiler.utils.Conversion;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import org.objectweb.asm.tree.LabelNode;
+
+/**
+ * An instance of this class provides a place to store information needed during compilation.
+ *
+ * @author Mackenzie High
+ */
+<span class="fc" id="L30">final class SymbolTable</span>
+{
+    /**
+     * This map maps an AST node that represents an expression to the expression's output type.
+     */
+<span class="fc" id="L35">    public final Map&lt;IConstruct, IExpressionType&gt; expressions = Maps.newIdentityHashMap();</span>
+
+    /**
+     * This map maps type-specifier to the fully qualified name of the type.
+     */
+<span class="fc" id="L40">    public final Map&lt;TypeSpecifier, String&gt; specifiers = Maps.newIdentityHashMap();</span>
+
+    /**
+     * This map maps an expression that manipulates a field to the manipulated field.
+     */
+<span class="fc" id="L45">    public final Map&lt;IExpression, IField&gt; fields = Maps.newIdentityHashMap();</span>
+
+    /**
+     * This map maps an expression that invokes an invokable to the invoked invokable.
+     */
+<span class="fc" id="L50">    public final Map&lt;IExpression, IInvokableMember&gt; calls = Maps.newIdentityHashMap();</span>
+
+    /**
+     * This map maps an expression that performs a conversion to a description of the conversion.
+     */
+<span class="fc" id="L55">    public final Map&lt;IExpression, Conversion&gt; conversions = Maps.newIdentityHashMap();</span>
+
+<span class="fc" id="L57">    public final Map&lt;TryCatchStatement, List&lt;ExceptionHandler&gt;&gt; handlers = Maps.newIdentityHashMap();</span>
+
+<span class="fc" id="L59">    public final Map&lt;DispatchExpression, DispatchCompiler&gt; dispatches = Maps.newIdentityHashMap();</span>
+
+    /**
+     * This map maps a statement that uses a label to the bytecode representation of the label.
+     */
+<span class="fc" id="L64">    public final Map&lt;IStatement, LabelNode&gt; yields = Maps.newIdentityHashMap();</span>
+
+    /**
+     * This map maps an exception-type to the compiler that compiles the exception's class.
+     */
+<span class="fc" id="L69">    public final Map&lt;IClassType, ExceptionCompiler&gt; exceptions = Maps.newIdentityHashMap();</span>
+
+    /**
+     * This map maps a delegate-statement to the function that is invoked by the delegate.
+     */
+<span class="fc" id="L74">    public final Map&lt;DelegateStatement, IMethod&gt; delegates = Maps.newIdentityHashMap();</span>
+
+    /**
+     * This map maps a locals-expression to the variables that are in-scope
+     * at the site of the locals-expression.
+     */
+<span class="fc" id="L80">    public final Map&lt;LocalsExpression, Set&lt;String&gt;&gt; locals = Maps.newIdentityHashMap();</span>
+
+<span class="fc" id="L82">    public final Map&lt;LambdaStatement, LambdaCompiler&gt; lambdas = Maps.newHashMap();</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

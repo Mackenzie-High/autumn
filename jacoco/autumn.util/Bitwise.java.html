@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Bitwise.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.mackenziehigh:autumn</a> &gt; <a href="index.source.html" class="el_package">autumn.util</a> &gt; <span class="el_source">Bitwise.java</span></div><h1>Bitwise.java</h1><pre class="source lang-java linenums">package autumn.util;
+
+/**
+ * This class provides bitwise manipulations, since the language does not have bitwise operators.
+ *
+ * &lt;p&gt;
+ * &lt;b&gt;Warning: This class is still under development.&lt;/b&gt;
+ * &lt;/p&gt;
+ *
+ * @author Mackenzie High
+ */
+public final class Bitwise
+{
+    /**
+     * Sole Constructor.
+     */
+    private Bitwise()
+    {
+        // Pass, because this is merely a static utility class.
+    }
+
+    /**
+     * This method performs a bitwise left-shift operation.
+     *
+     * @param bits contains the bits to shift.
+     * @param count is the distance of the shift.
+     * @return the bits shifted by the specified distance.
+     */
+    public static long shiftLeft(final long bits,
+                                 final int count)
+    {
+<span class="fc" id="L32">        return bits &lt;&lt; count;</span>
+    }
+
+    /**
+     * This method performs a bitwise right-shift operation.
+     *
+     * @param bits contains the bits to shift.
+     * @param count is the distance of the shift.
+     * @return the bits shifted by the specified distance.
+     */
+    public static long shiftRight(final long bits,
+                                  final int count)
+    {
+<span class="fc" id="L45">        return bits &gt;&gt; count;</span>
+    }
+
+    /**
+     * This method performs a bitwise unsigned-right-shift operation.
+     *
+     * @param bits contains the bits to shift.
+     * @param count is the distance of the shift.
+     * @return the bits shifted by the specified distance.
+     */
+    public static long shiftRightUnsigned(final long bits,
+                                          final int count)
+    {
+<span class="fc" id="L58">        return bits &gt;&gt;&gt; count;</span>
+    }
+
+    /**
+     * This method sets a single bit.
+     *
+     * @param bits contains the bit to set.
+     * @param index is the index of the bit to set.
+     * @param value the new value of the bit.
+     * @return the modified version of bits.
+     */
+    public static long set(final long bits,
+                           final int index,
+                           final boolean value)
+    {
+<span class="fc" id="L73">        return (1 &lt;&lt; index) | bits;</span>
+    }
+
+    /**
+     * This method gets a single bit.
+     *
+     * @param bits contains the bit to get.
+     * @param index is the index of the bit to get.
+     * @return the selected bit.
+     */
+    public static boolean get(final long bits,
+                              final int index)
+    {
+<span class="fc bfc" id="L86" title="All 2 branches covered.">        return ((bits &gt;&gt; index) &amp; 1) == 1;</span>
+    }
+
+    /**
+     * This method performs a bitwise negation.
+     *
+     * @param bits are the bits to negate.
+     * @return the negated bits.
+     */
+    public static long not(final long bits)
+    {
+<span class="fc" id="L97">        return ~bits;</span>
+    }
+
+    /**
+     * This method performs a bitwise logical-AND.
+     *
+     * @param left is the left operand.
+     * @param left is the right operand.
+     * @return the result.
+     */
+    public static long and(final long left,
+                           final long right)
+    {
+<span class="fc" id="L110">        return left &amp; right;</span>
+    }
+
+    /**
+     * This method performs a bitwise logical-OR.
+     *
+     * @param left is the left operand.
+     * @param left is the right operand.
+     * @return the result.
+     */
+    public static long or(final long left,
+                          final long right)
+    {
+<span class="fc" id="L123">        return left | right;</span>
+    }
+
+    /**
+     * This method performs a bitwise logical-XOR.
+     *
+     * @param left is the left operand.
+     * @param left is the right operand.
+     * @return the result.
+     */
+    public static long xor(final long left,
+                           final long right)
+    {
+<span class="fc" id="L136">        return left ^ right;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

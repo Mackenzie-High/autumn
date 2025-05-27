@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Parser.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.mackenziehigh:autumn</a> &gt; <a href="index.source.html" class="el_package">com.mackenziehigh.autumn.lang.compiler.args</a> &gt; <span class="el_source">Parser.java</span></div><h1>Parser.java</h1><pre class="source lang-java linenums">package com.mackenziehigh.autumn.lang.compiler.args;
+
+import com.mackenziehigh.snowflake.Grammar;
+import com.mackenziehigh.snowflake.GrammarBuilder;
+import com.mackenziehigh.snowflake.IParser;
+import com.mackenziehigh.snowflake.ParserOutput;
+
+
+/**
+ * This class was auto-generated using the Snowflake parser-generator.
+ *
+ * &lt;p&gt;Generated On: Mon Mar 30 16:55:04 EDT 2015&lt;/p&gt;
+ */
+<span class="nc" id="L14">public final class Parser implements IParser</span>
+{
+
+<span class="nc" id="L17">    private static final Grammar grammar = grammar();</span>
+
+
+    /**
+     * This method constructs the grammar object.
+     */
+    private static Grammar grammar()
+    {
+<span class="nc" id="L25">        final GrammarBuilder g = new GrammarBuilder();</span>
+
+        // Character Classes
+<span class="nc" id="L28">        g.range(&quot;@class0&quot;, (char) 34, (char) 34);</span>
+<span class="nc" id="L29">        g.range(&quot;@class1&quot;, (char) 34, (char) 34);</span>
+<span class="nc" id="L30">        g.combine(&quot;@class2&quot;, &quot;@class1&quot;);</span>
+<span class="nc" id="L31">        g.negate(&quot;@class3&quot;, &quot;@class2&quot;);</span>
+<span class="nc" id="L32">        g.range(&quot;@class4&quot;, (char) 34, (char) 34);</span>
+<span class="nc" id="L33">        g.range(&quot;@class5&quot;, (char) 32, (char) 32);</span>
+<span class="nc" id="L34">        g.range(&quot;@class6&quot;, (char) 34, (char) 34);</span>
+<span class="nc" id="L35">        g.range(&quot;@class7&quot;, (char) 10, (char) 10);</span>
+<span class="nc" id="L36">        g.range(&quot;@class8&quot;, (char) 13, (char) 13);</span>
+<span class="nc" id="L37">        g.combine(&quot;@class9&quot;, &quot;@class5&quot;, &quot;@class6&quot;, &quot;@class7&quot;, &quot;@class8&quot;);</span>
+<span class="nc" id="L38">        g.negate(&quot;@class10&quot;, &quot;@class9&quot;);</span>
+<span class="nc" id="L39">        g.range(&quot;@class11&quot;, (char) 0, (char) 65535);</span>
+<span class="nc" id="L40">        g.range(&quot;@class12&quot;, (char) 34, (char) 34);</span>
+<span class="nc" id="L41">        g.range(&quot;@class13&quot;, (char) 10, (char) 10);</span>
+<span class="nc" id="L42">        g.range(&quot;@class14&quot;, (char) 13, (char) 13);</span>
+<span class="nc" id="L43">        g.range(&quot;@class15&quot;, (char) 32, (char) 32);</span>
+<span class="nc" id="L44">        g.combine(&quot;@class16&quot;, &quot;@class13&quot;, &quot;@class14&quot;, &quot;@class15&quot;);</span>
+
+        // Grammar Rules
+<span class="nc" id="L47">        g.choose(&quot;@0&quot;, &quot;accept&quot;, &quot;error&quot;);</span>
+<span class="nc" id="L48">        g.choose(&quot;@19&quot;, &quot;@15&quot;, &quot;@16&quot;, &quot;@17&quot;, &quot;@18&quot;);</span>
+<span class="nc" id="L49">        g.choose(&quot;cases&quot;, &quot;case_execute&quot;, &quot;case_compile&quot;, &quot;case_create&quot;, &quot;case_run&quot;, &quot;case_test&quot;, &quot;case_doc&quot;, &quot;case_version&quot;, &quot;case_help&quot;, &quot;case_license&quot;);</span>
+<span class="nc" id="L50">        g.chr(&quot;@3&quot;, &quot;@class0&quot;);</span>
+<span class="nc" id="L51">        g.chr(&quot;@4&quot;, &quot;@class3&quot;);</span>
+<span class="nc" id="L52">        g.chr(&quot;@6&quot;, &quot;@class4&quot;);</span>
+<span class="nc" id="L53">        g.chr(&quot;@7&quot;, &quot;@class10&quot;);</span>
+<span class="nc" id="L54">        g.chr(&quot;@9&quot;, &quot;@class11&quot;);</span>
+<span class="nc" id="L55">        g.chr(&quot;Q&quot;, &quot;@class12&quot;);</span>
+<span class="nc" id="L56">        g.chr(&quot;WS_CHR&quot;, &quot;@class16&quot;);</span>
+<span class="nc" id="L57">        g.not(&quot;@2&quot;, &quot;@1&quot;);</span>
+<span class="nc" id="L58">        g.repeat(&quot;@5&quot;, &quot;@4&quot;, 0, 2147483647);</span>
+<span class="nc" id="L59">        g.repeat(&quot;@8&quot;, &quot;@7&quot;, 1, 2147483647);</span>
+<span class="nc" id="L60">        g.repeat(&quot;WS&quot;, &quot;WS_CHR&quot;, 0, 2147483647);</span>
+<span class="nc" id="L61">        g.repeat(&quot;args&quot;, &quot;arg&quot;, 0, 2147483647);</span>
+<span class="nc" id="L62">        g.repeat(&quot;error&quot;, &quot;@9&quot;, 0, 2147483647);</span>
+<span class="nc" id="L63">        g.repeat(&quot;paths&quot;, &quot;path&quot;, 0, 2147483647);</span>
+<span class="nc" id="L64">        g.sequence(&quot;@1&quot;, &quot;WS&quot;, &quot;EXECUTE&quot;);</span>
+<span class="nc" id="L65">        g.sequence(&quot;AUTUMN&quot;, &quot;Q&quot;, &quot;@10&quot;, &quot;Q&quot;);</span>
+<span class="nc" id="L66">        g.sequence(&quot;COMPILE&quot;, &quot;Q&quot;, &quot;@11&quot;, &quot;Q&quot;);</span>
+<span class="nc" id="L67">        g.sequence(&quot;CREATE&quot;, &quot;Q&quot;, &quot;@12&quot;, &quot;Q&quot;);</span>
+<span class="nc" id="L68">        g.sequence(&quot;DOCUMENT&quot;, &quot;Q&quot;, &quot;@13&quot;, &quot;Q&quot;);</span>
+<span class="nc" id="L69">        g.sequence(&quot;EXECUTE&quot;, &quot;Q&quot;, &quot;@14&quot;, &quot;Q&quot;);</span>
+<span class="nc" id="L70">        g.sequence(&quot;HELP&quot;, &quot;Q&quot;, &quot;@19&quot;, &quot;Q&quot;);</span>
+<span class="nc" id="L71">        g.sequence(&quot;LICENSE&quot;, &quot;Q&quot;, &quot;@20&quot;, &quot;Q&quot;);</span>
+<span class="nc" id="L72">        g.sequence(&quot;RUN&quot;, &quot;Q&quot;, &quot;@21&quot;, &quot;Q&quot;);</span>
+<span class="nc" id="L73">        g.sequence(&quot;TEST&quot;, &quot;Q&quot;, &quot;@22&quot;, &quot;Q&quot;);</span>
+<span class="nc" id="L74">        g.sequence(&quot;VERSION&quot;, &quot;Q&quot;, &quot;@23&quot;, &quot;Q&quot;);</span>
+<span class="nc" id="L75">        g.sequence(&quot;accept&quot;, &quot;WS&quot;, &quot;cases&quot;, &quot;WS&quot;);</span>
+<span class="nc" id="L76">        g.sequence(&quot;arg&quot;, &quot;qstring&quot;, &quot;WS&quot;);</span>
+<span class="nc" id="L77">        g.sequence(&quot;case_compile&quot;, &quot;COMPILE&quot;, &quot;WS&quot;);</span>
+<span class="nc" id="L78">        g.sequence(&quot;case_create&quot;, &quot;CREATE&quot;, &quot;WS&quot;, &quot;name&quot;, &quot;WS&quot;);</span>
+<span class="nc" id="L79">        g.sequence(&quot;case_doc&quot;, &quot;DOCUMENT&quot;, &quot;WS&quot;);</span>
+<span class="nc" id="L80">        g.sequence(&quot;case_execute&quot;, &quot;paths&quot;, &quot;WS&quot;, &quot;EXECUTE&quot;, &quot;WS&quot;, &quot;args&quot;, &quot;WS&quot;);</span>
+<span class="nc" id="L81">        g.sequence(&quot;case_help&quot;, &quot;HELP&quot;, &quot;WS&quot;);</span>
+<span class="nc" id="L82">        g.sequence(&quot;case_license&quot;, &quot;LICENSE&quot;, &quot;WS&quot;);</span>
+<span class="nc" id="L83">        g.sequence(&quot;case_run&quot;, &quot;RUN&quot;, &quot;WS&quot;, &quot;args&quot;, &quot;WS&quot;);</span>
+<span class="nc" id="L84">        g.sequence(&quot;case_test&quot;, &quot;TEST&quot;, &quot;WS&quot;);</span>
+<span class="nc" id="L85">        g.sequence(&quot;case_version&quot;, &quot;VERSION&quot;, &quot;WS&quot;);</span>
+<span class="nc" id="L86">        g.sequence(&quot;line&quot;, &quot;@0&quot;, &quot;END&quot;);</span>
+<span class="nc" id="L87">        g.sequence(&quot;name&quot;, &quot;arg&quot;);</span>
+<span class="nc" id="L88">        g.sequence(&quot;path&quot;, &quot;@2&quot;, &quot;arg&quot;);</span>
+<span class="nc" id="L89">        g.sequence(&quot;pstring&quot;, &quot;WS&quot;, &quot;@8&quot;, &quot;WS&quot;);</span>
+<span class="nc" id="L90">        g.sequence(&quot;qstring&quot;, &quot;WS&quot;, &quot;@3&quot;, &quot;@5&quot;, &quot;@6&quot;, &quot;WS&quot;);</span>
+<span class="nc" id="L91">        g.str(&quot;@10&quot;, &quot;autumn&quot;);</span>
+<span class="nc" id="L92">        g.str(&quot;@11&quot;, &quot;compile&quot;);</span>
+<span class="nc" id="L93">        g.str(&quot;@12&quot;, &quot;create&quot;);</span>
+<span class="nc" id="L94">        g.str(&quot;@13&quot;, &quot;document&quot;);</span>
+<span class="nc" id="L95">        g.str(&quot;@14&quot;, &quot;execute&quot;);</span>
+<span class="nc" id="L96">        g.str(&quot;@15&quot;, &quot;help&quot;);</span>
+<span class="nc" id="L97">        g.str(&quot;@16&quot;, &quot;-help&quot;);</span>
+<span class="nc" id="L98">        g.str(&quot;@17&quot;, &quot;-h&quot;);</span>
+<span class="nc" id="L99">        g.str(&quot;@18&quot;, &quot;--h&quot;);</span>
+<span class="nc" id="L100">        g.str(&quot;@20&quot;, &quot;license&quot;);</span>
+<span class="nc" id="L101">        g.str(&quot;@21&quot;, &quot;run&quot;);</span>
+<span class="nc" id="L102">        g.str(&quot;@22&quot;, &quot;test&quot;);</span>
+<span class="nc" id="L103">        g.str(&quot;@23&quot;, &quot;version&quot;);</span>
+
+        // Specify which rule is the root of the grammar.
+<span class="nc" id="L106">        g.setRoot(&quot;line&quot;);</span>
+
+        // Specify the number of tracing records to store concurrently.
+<span class="nc" id="L109">        g.setTraceCount(1024);</span>
+
+        // Perform the actual construction of the grammar object.
+<span class="nc" id="L112">        return g.build();</span>
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ParserOutput parse(final char[] input)
+    {
+<span class="nc" id="L122">        return grammar.newParser().parse(input);</span>
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ParserOutput parse(final String input)
+    {
+<span class="nc" id="L132">        return parse(input.toCharArray());</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

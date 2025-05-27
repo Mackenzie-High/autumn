@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CharLiteral.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.mackenziehigh:autumn</a> &gt; <a href="index.source.html" class="el_package">autumn.lang.compiler.ast.literals</a> &gt; <span class="el_source">CharLiteral.java</span></div><h1>CharLiteral.java</h1><pre class="source lang-java linenums">package autumn.lang.compiler.ast.literals;
+
+import com.mackenziehigh.autumn.resources.Finished;
+
+/**
+ * An instance of this class represents a
+ * &lt;code&gt;char&lt;/code&gt; literal.
+ *
+ * @author Mackenzie High
+ */
+@Finished(&quot;2014/07/12&quot;)
+public final class CharLiteral
+        extends AbstractNumericLiteral&lt;Character&gt;
+{
+    private static final int MAXIMUM = Character.MAX_VALUE;
+
+<span class="fc" id="L17">    private Character value = null;</span>
+
+    /**
+     * Constructor.
+     *
+     * @param source is the source-code representation of this literal.
+     */
+    public CharLiteral(final String source)
+    {
+<span class="fc" id="L26">        super(source);</span>
+<span class="fc" id="L27">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param value is the value represented by this literal.
+     */
+    public CharLiteral(final char value)
+    {
+<span class="fc" id="L36">        super(Long.toString(value) + &quot;C&quot;);</span>
+
+<span class="fc" id="L38">        this.value = value;</span>
+<span class="fc" id="L39">    }</span>
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Character value()
+    {
+<span class="fc" id="L47">        final String source = source();</span>
+
+<span class="pc bpc" id="L49" title="1 of 6 branches missed.">        if (source.length() == 3 &amp;&amp; source.startsWith(&quot;'&quot;) &amp;&amp; source.endsWith(&quot;'&quot;))</span>
+        {
+<span class="fc" id="L51">            return source.charAt(1);</span>
+        }
+<span class="fc bfc" id="L53" title="All 2 branches covered.">        else if (source.matches(&quot;[0-9]+[Cc]&quot;))</span>
+        {
+<span class="fc" id="L55">            final int digits = Integer.valueOf(sourceWithoutUnderscores().trim().replace(&quot;C&quot;, &quot;&quot;).replaceFirst(&quot;c&quot;, &quot;&quot;));</span>
+
+<span class="fc bfc" id="L57" title="All 2 branches covered.">            final boolean conversion_is_safe = digits &lt;= MAXIMUM;</span>
+
+<span class="fc bfc" id="L59" title="All 2 branches covered.">            if (conversion_is_safe)</span>
+            {
+<span class="fc" id="L61">                return (char) digits;</span>
+            }
+        }
+
+        // The literal is malformed.
+<span class="fc" id="L66">        return null;</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isParsable()
+    {
+<span class="fc bfc" id="L75" title="All 4 branches covered.">        return sourceWithoutUnderscores().matches(&quot;[0-9]+[Cc]&quot;) || source().matches(&quot;'(.|\n)'&quot;);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

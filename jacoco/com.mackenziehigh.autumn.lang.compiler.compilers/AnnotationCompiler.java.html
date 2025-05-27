@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AnnotationCompiler.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.mackenziehigh:autumn</a> &gt; <a href="index.source.html" class="el_package">com.mackenziehigh.autumn.lang.compiler.compilers</a> &gt; <span class="el_source">AnnotationCompiler.java</span></div><h1>AnnotationCompiler.java</h1><pre class="source lang-java linenums">package com.mackenziehigh.autumn.lang.compiler.compilers;
+
+import autumn.lang.compiler.ClassFile;
+import autumn.lang.compiler.ast.nodes.AnnotationDefinition;
+import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.CustomDeclaredType;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.CustomMethod;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IAnnotation;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IArrayType;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IClassType;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IFormalParameter;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IMethod;
+import com.mackenziehigh.autumn.lang.compiler.utils.TypeSystemUtils;
+import com.mackenziehigh.autumn.lang.compiler.utils.Utils;
+import com.mackenziehigh.autumn.resources.Finished;
+import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.tree.AnnotationNode;
+import org.objectweb.asm.tree.ClassNode;
+import org.objectweb.asm.tree.MethodNode;
+
+/**
+ * An instance of this class is a compiler that compiles an annotation-definition.
+ *
+ * @author Mackenzie High
+ */
+@Finished(&quot;2014/08/11&quot;)
+final class AnnotationCompiler
+        implements ICompiler
+{
+    /**
+     * Essentially, this is the program that is being compiled.
+     */
+    public final ProgramCompiler program;
+
+    /**
+     * Essentially, this is the module that contains the annotation-definition.
+     */
+    public final ModuleCompiler module;
+
+    /**
+     * This is the Abstract-Syntax-Tree representation of the annotation-definition.
+     */
+    public final AnnotationDefinition node;
+
+    /**
+     * This will be the type-system representation of the annotation-definition.
+     *
+     * This field is set during the type-declaration compiler pass.
+     */
+    public CustomDeclaredType type;
+
+    /**
+     * Sole Constructor.
+     *
+     * @param module is the module that contains the enum being compiled.
+     * @param node is the AST node that represents the enum being compiled.
+     */
+    public AnnotationCompiler(final ModuleCompiler module,
+                              final AnnotationDefinition node)
+<span class="fc" id="L63">    {</span>
+<span class="fc" id="L64">        Preconditions.checkNotNull(module);</span>
+<span class="fc" id="L65">        Preconditions.checkNotNull(node);</span>
+
+<span class="fc" id="L67">        this.program = module.program;</span>
+<span class="fc" id="L68">        this.module = module;</span>
+<span class="fc" id="L69">        this.node = node;</span>
+<span class="fc" id="L70">    }</span>
+
+    /**
+     * This method generates the compiled class-file.
+     *
+     * @return the compiled class-file.
+     */
+    public ClassFile build()
+    {
+<span class="fc" id="L79">        final String internal_name = Utils.internalName(type);</span>
+
+<span class="fc" id="L81">        final String source_name = Utils.sourceName(type);</span>
+
+        /**
+         * Create the bytecode representation of the annotation itself.
+         */
+<span class="fc" id="L86">        final ClassNode clazz = new ClassNode();</span>
+        {
+<span class="fc" id="L88">            clazz.version = Opcodes.V1_6;</span>
+<span class="fc" id="L89">            clazz.visibleAnnotations = Lists.newLinkedList();</span>
+<span class="fc" id="L90">            clazz.visibleAnnotations.addAll(module.anno_utils.compileAnnotationList(type.getAnnotations()));</span>
+<span class="fc" id="L91">            clazz.visibleAnnotations.add(createRuntimeAnnotation());</span>
+<span class="fc" id="L92">            clazz.access = type.getModifiers();</span>
+<span class="fc" id="L93">            clazz.name = internal_name;</span>
+<span class="fc" id="L94">            clazz.superName = Utils.internalName(type.getSuperclass());</span>
+<span class="fc" id="L95">            clazz.interfaces = program.typesystem.utils.internalNamesOf(type.getSuperinterfaces());</span>
+<span class="fc" id="L96">            clazz.fields = ImmutableList.of();</span>
+<span class="fc" id="L97">            clazz.methods = ImmutableList.of(generateMethodValue());</span>
+<span class="fc" id="L98">            clazz.sourceFile = String.valueOf(node.getLocation().getFile());</span>
+        }
+
+        /**
+         * Assemble the bytecode into an array of bytes.
+         */
+<span class="fc" id="L104">        final ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_MAXS);</span>
+<span class="fc" id="L105">        clazz.accept(writer);</span>
+<span class="fc" id="L106">        final byte[] bytecode = writer.toByteArray();</span>
+
+        /**
+         * Create the class-file object that will store the emitted bytecode.
+         */
+<span class="fc" id="L111">        final ClassFile file = new ClassFile(source_name, bytecode);</span>
+
+<span class="fc" id="L113">        return file;</span>
+    }
+
+    /**
+     * This method creates the annotation that causes the annotation
+     * being compiled to have runtime retention.
+     *
+     * @return the bytecode representation of the aforesaid annotation.
+     */
+    private AnnotationNode createRuntimeAnnotation()
+    {
+<span class="fc" id="L124">        final AnnotationNode anno = new AnnotationNode(&quot;Ljava/lang/annotation/Retention;&quot;);</span>
+
+<span class="fc" id="L126">        final String[] constant = new String[2];</span>
+<span class="fc" id="L127">        constant[0] = &quot;Ljava/lang/annotation/RetentionPolicy;&quot;;</span>
+<span class="fc" id="L128">        constant[1] = &quot;RUNTIME&quot;;</span>
+
+<span class="fc" id="L130">        anno.values = Lists.newLinkedList();</span>
+<span class="fc" id="L131">        anno.values.add(&quot;value&quot;);</span>
+<span class="fc" id="L132">        anno.values.add(constant);</span>
+
+<span class="fc" id="L134">        return anno;</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void performTypeDeclaration()
+    {
+        /**
+         * Determine the descriptor of the annotation.
+         */
+<span class="fc" id="L146">        final String namespace = module.type.getNamespace().replace('.', '/');</span>
+<span class="fc" id="L147">        final String name = node.getName().getName();</span>
+<span class="fc" id="L148">        final String descriptor = &quot;L&quot; + namespace + '/' + name + ';';</span>
+
+        /**
+         * Ensure that the type was not already declared elsewhere.
+         */
+<span class="fc" id="L153">        program.checker.requireNonDuplicateType(node.getName(), descriptor);</span>
+
+        /**
+         * Declare the annotation.
+         */
+<span class="fc" id="L158">        this.type = program.typesystem.typefactory().newAnnotationType(descriptor);</span>
+<span class="fc" id="L159">    }</span>
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void performTypeInitialization()
+    {
+        /**
+         * Create the type-system representations of the annotation-list.
+         */
+<span class="fc" id="L170">        type.setAnnotations(module.anno_utils.typesOf(node.getAnnotations()));</span>
+
+        /**
+         * Add a special annotation.
+         */
+<span class="fc" id="L175">        module.anno_utils.add(type, autumn.lang.internals.annotations.AnnotationDefinition.class);</span>
+
+        /**
+         * Check the list of annotations.
+         */
+<span class="fc" id="L180">        program.checker.checkAnnotations(node.getAnnotations(), type.getAnnotations());</span>
+
+        /**
+         * Set the type's modifier flags.
+         */
+<span class="fc" id="L185">        type.setModifiers(Opcodes.ACC_PUBLIC</span>
+                          + Opcodes.ACC_ABSTRACT
+                          + Opcodes.ACC_INTERFACE
+                          + Opcodes.ACC_ANNOTATION);
+
+        /**
+         * Set the superclass of the annotation-type.
+         */
+<span class="fc" id="L193">        type.setSuperclass(program.typesystem.utils.OBJECT);</span>
+
+        /**
+         * An annotation has a single superinterface, namely java.lang.annotation.Annotation.
+         */
+<span class="fc" id="L198">        type.setSuperinterfaces(Lists.newArrayList(program.typesystem.utils.ANNOTATION));</span>
+
+        /**
+         * Add the value() method to the type.
+         */
+<span class="fc" id="L203">        type.setMethods(Lists.newArrayList(typeOfMethodValue()));</span>
+<span class="fc" id="L204">    }</span>
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void performTypeStructureChecking()
+    {
+        // Pass, because the type does not have any structure to check.
+<span class="fc" id="L213">    }</span>
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void performTypeUsageChecking()
+    {
+        // Pass, because the type does not have any usages to check.
+<span class="fc" id="L222">    }</span>
+
+    /**
+     * This method creates the type-system representation of the value() method.
+     *
+     * @return the new method-type.
+     */
+    private IMethod typeOfMethodValue()
+    {
+<span class="fc" id="L231">        final IArrayType STRING_ARRAY = program.typesystem.typefactory().getArrayType(program.typesystem.utils.STRING, 1);</span>
+
+<span class="fc" id="L233">        final CustomMethod method = new CustomMethod(type.getTypeFactory(), true);</span>
+
+<span class="fc" id="L235">        method.setOwner(type);</span>
+<span class="fc" id="L236">        method.setAnnotations(Lists.&lt;IAnnotation&gt;newArrayList());</span>
+<span class="fc" id="L237">        method.setModifiers(Opcodes.ACC_PUBLIC + Opcodes.ACC_ABSTRACT);</span>
+<span class="fc" id="L238">        method.setName(&quot;value&quot;);</span>
+<span class="fc" id="L239">        method.setParameters(Lists.&lt;IFormalParameter&gt;newArrayList());</span>
+<span class="fc" id="L240">        method.setReturnType(STRING_ARRAY);</span>
+<span class="fc" id="L241">        method.setThrowsClause(Lists.&lt;IClassType&gt;newArrayList());</span>
+
+<span class="fc" id="L243">        return method;</span>
+    }
+
+    /**
+     * This method generates the bytecode representation of the value() method.
+     *
+     * @return the generated bytecode.
+     */
+    private MethodNode generateMethodValue()
+    {
+<span class="fc" id="L253">        final MethodNode method = Utils.bytecodeOf(module, TypeSystemUtils.find(type.getMethods(), &quot;value&quot;));</span>
+
+<span class="fc" id="L255">        method.annotationDefault = null;</span>
+
+<span class="fc" id="L257">        return method;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

@@ -1,0 +1,1329 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ModuleCompiler.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.mackenziehigh:autumn</a> &gt; <a href="index.source.html" class="el_package">com.mackenziehigh.autumn.lang.compiler.compilers</a> &gt; <span class="el_source">ModuleCompiler.java</span></div><h1>ModuleCompiler.java</h1><pre class="source lang-java linenums">package com.mackenziehigh.autumn.lang.compiler.compilers;
+
+import autumn.lang.compiler.ClassFile;
+import autumn.lang.compiler.ast.nodes.AnnotationDefinition;
+import autumn.lang.compiler.ast.nodes.DesignDefinition;
+import autumn.lang.compiler.ast.nodes.EnumDefinition;
+import autumn.lang.compiler.ast.nodes.ExceptionDefinition;
+import autumn.lang.compiler.ast.nodes.FormalParameter;
+import autumn.lang.compiler.ast.nodes.FunctionDefinition;
+import autumn.lang.compiler.ast.nodes.FunctorDefinition;
+import autumn.lang.compiler.ast.nodes.ImportDirective;
+import autumn.lang.compiler.ast.nodes.Module;
+import autumn.lang.compiler.ast.nodes.ModuleDirective;
+import autumn.lang.compiler.ast.nodes.Name;
+import autumn.lang.compiler.ast.nodes.StructDefinition;
+import autumn.lang.compiler.ast.nodes.TupleDefinition;
+import autumn.lang.compiler.ast.nodes.TypeSpecifier;
+import autumn.lang.internals.annotations.ModuleDefinition;
+import autumn.util.F;
+import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.CustomDeclaredType;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.CustomFormalParameter;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.CustomMethod;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IDeclaredType;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IExpressionType;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IFormalParameter;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IInterfaceType;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IMethod;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IVariableType;
+import com.mackenziehigh.autumn.lang.compiler.utils.AnnotationUtils;
+import com.mackenziehigh.autumn.lang.compiler.utils.Utils;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.tree.ClassNode;
+import org.objectweb.asm.tree.FieldInsnNode;
+import org.objectweb.asm.tree.FieldNode;
+import org.objectweb.asm.tree.InsnList;
+import org.objectweb.asm.tree.InsnNode;
+import org.objectweb.asm.tree.LabelNode;
+import org.objectweb.asm.tree.LdcInsnNode;
+import org.objectweb.asm.tree.MethodInsnNode;
+import org.objectweb.asm.tree.MethodNode;
+import org.objectweb.asm.tree.TableSwitchInsnNode;
+import org.objectweb.asm.tree.TypeInsnNode;
+import org.objectweb.asm.tree.VarInsnNode;
+
+/**
+ * An instance of this class controls the compilation of an entire module.
+ *
+ * @author Mackenzie High
+ */
+<span class="fc" id="L60">public final class ModuleCompiler</span>
+        implements ICompiler
+{
+    /**
+     * An instance of this class represents a hidden field within the module class.
+     *
+     * &lt;p&gt;
+     * Hidden fields are used to implement once-expressions, etc.
+     * &lt;/p&gt;
+     */
+    static final class HiddenField
+    {
+        /**
+         * At the bytecode level, all fields must have a name.
+         */
+<span class="fc" id="L75">        public final String name = &quot;autumn$hidden$field$&quot; + F.unique();</span>
+
+        /**
+         * This is the static-type of the field.
+         */
+        public final IVariableType type;
+
+        /**
+         * This is true, iff the field is final.
+         */
+        public final boolean readonly;
+
+        /**
+         * These are instructions to add to the static constructor.
+         */
+<span class="fc" id="L90">        public InsnList initializer = new InsnList();</span>
+
+        /**
+         * Sole Constructor.
+         *
+         * @param type is the static-type of the new hidden field.
+         * @param readonly is true, iff the field is final.
+         * @throws NullPointerException if type is null.
+         */
+        public HiddenField(final IVariableType type,
+                           final boolean readonly)
+<span class="fc" id="L101">        {</span>
+<span class="fc" id="L102">            Preconditions.checkNotNull(type);</span>
+
+<span class="fc" id="L104">            this.type = type;</span>
+<span class="fc" id="L105">            this.readonly = readonly;</span>
+<span class="fc" id="L106">        }</span>
+
+        /**
+         * This method generates the bytecode representation of the field.
+         */
+        public FieldNode build()
+        {
+<span class="pc bpc" id="L113" title="1 of 2 branches missed.">            final int access = Opcodes.ACC_PRIVATE | Opcodes.ACC_STATIC | (readonly ? Opcodes.ACC_FINAL : 0);</span>
+
+<span class="fc" id="L115">            final FieldNode field = new FieldNode(access, name, type.getDescriptor(), null, null);</span>
+
+<span class="fc" id="L117">            return field;</span>
+        }
+    }
+
+    /**
+     * This is the full name of the module being compiled.
+     * This field is initialized during the type-declaration pass.
+     */
+    private String module_name;
+
+    /**
+     * Essentially, this is the program that is being compiled.
+     */
+    public final ProgramCompiler program;
+
+    /**
+     * This is the Abstract-Syntax-Tree representation of the module.
+     */
+    public final Module node;
+
+    /**
+     * This will be assigned the Abstract-Syntax-Tree of the module-directive
+     * that is contained within the module.
+     */
+    private ModuleDirective module_directive;
+
+    /**
+     * This will be assigned the type-system representation of the module.
+     */
+    public CustomDeclaredType type;
+
+    /**
+     * This object makes compiling annotations easier.
+     *
+     * &lt;p&gt;
+     * This object will be needed during the compilation of code inside the module.
+     * &lt;/p&gt;
+     */
+    public AnnotationUtils anno_utils;
+
+    /**
+     * This field is true, iff the module being compiled is anonymous.
+     * This field is initialized during the type-declaration pass.
+     */
+    private boolean anonymous;
+
+    /**
+     * Essentially, this object implements the import-directives contained in the module.
+     */
+    public final Importer imports;
+
+    /**
+     * Essentially, these are the annotations that are defined in the module.
+     */
+<span class="fc" id="L171">    final List&lt;AnnotationCompiler&gt; annotations = Lists.newLinkedList();</span>
+
+    /**
+     * Essentially, these are the exceptions that are defined in the module.
+     */
+<span class="fc" id="L176">    final List&lt;ExceptionCompiler&gt; exceptions = Lists.newLinkedList();</span>
+
+    /**
+     * Essentially, these are the designs that are defined in the module.
+     */
+<span class="fc" id="L181">    final List&lt;DesignCompiler&gt; designs = Lists.newLinkedList();</span>
+
+    /**
+     * Essentially, these are the structs that are defined in the module.
+     */
+<span class="fc" id="L186">    final List&lt;StructCompiler&gt; structs = Lists.newLinkedList();</span>
+
+    /**
+     * Essentially, these are the tuples that are defined in the module.
+     */
+<span class="fc" id="L191">    final List&lt;TupleCompiler&gt; tuples = Lists.newLinkedList();</span>
+
+    /**
+     * Essentially, these are the enums that are defined in the module.
+     */
+<span class="fc" id="L196">    final List&lt;EnumCompiler&gt; enums = Lists.newLinkedList();</span>
+
+    /**
+     * Essentially, these are the functors that are defined in the module.
+     */
+<span class="fc" id="L201">    final List&lt;FunctorCompiler&gt; functors = Lists.newLinkedList();</span>
+
+    /**
+     * Essentially, these are the functions that are defined in the module.
+     */
+<span class="fc" id="L206">    final List&lt;FunctionCompiler&gt; functions = Lists.newLinkedList();</span>
+
+    /**
+     * These objects represent the hidden fields to add to the module.
+     *
+     * &lt;p&gt;
+     * Hidden fields are needed to implement some constructs, such as once-expressions.
+     * &lt;/p&gt;
+     */
+<span class="fc" id="L215">    final List&lt;HiddenField&gt; hidden = Lists.newLinkedList();</span>
+
+    /**
+     * This bytecode field caches the ModuleInfo object that describes the module.
+     */
+<span class="fc" id="L220">    private final FieldNode info = new FieldNode(Opcodes.ACC_PRIVATE + Opcodes.ACC_FINAL,</span>
+                                                 &quot;module_info&quot;,
+                                                 &quot;Lautumn/lang/ModuleInfo;&quot;,
+                                                 null,
+                                                 null);
+
+    /**
+     * This bytecode field stores a list of delegates.
+     * Each element is a delegate that refers to a function in this module.
+     */
+<span class="fc" id="L230">    private final FieldNode delegates = new FieldNode(Opcodes.ACC_PRIVATE + Opcodes.ACC_FINAL,</span>
+                                                      &quot;delegates&quot;,
+                                                      &quot;Ljava/util/List;&quot;,
+                                                      null,
+                                                      null);
+
+    /**
+     * This bytecode field stores the only instance of the module's class.
+     */
+    private FieldNode instance_field;
+
+    /**
+     * Sole Constructor.
+     *
+     * @param program is the program being compiled.
+     * @param node is the Abstract-Syntax-Tree representation of the module to compile.
+     */
+    public ModuleCompiler(final ProgramCompiler program,
+                          final Module node)
+<span class="fc" id="L249">    {</span>
+<span class="fc" id="L250">        this.program = program;</span>
+<span class="fc" id="L251">        this.node = node;</span>
+
+<span class="fc" id="L253">        this.imports = new Importer(this);</span>
+
+<span class="fc bfc" id="L255" title="All 2 branches covered.">        for (AnnotationDefinition x : node.getAnnotations())</span>
+        {
+<span class="fc" id="L257">            annotations.add(new AnnotationCompiler(this, x));</span>
+<span class="fc" id="L258">        }</span>
+
+<span class="fc bfc" id="L260" title="All 2 branches covered.">        for (ExceptionDefinition x : node.getExceptions())</span>
+        {
+<span class="fc" id="L262">            exceptions.add(new ExceptionCompiler(this, x));</span>
+<span class="fc" id="L263">        }</span>
+
+<span class="fc bfc" id="L265" title="All 2 branches covered.">        for (EnumDefinition x : node.getEnums())</span>
+        {
+<span class="fc" id="L267">            enums.add(new EnumCompiler(this, x));</span>
+<span class="fc" id="L268">        }</span>
+
+<span class="fc bfc" id="L270" title="All 2 branches covered.">        for (DesignDefinition x : node.getDesigns())</span>
+        {
+<span class="fc" id="L272">            designs.add(new DesignCompiler(this, x));</span>
+<span class="fc" id="L273">        }</span>
+
+<span class="fc bfc" id="L275" title="All 2 branches covered.">        for (StructDefinition x : node.getStructs())</span>
+        {
+<span class="fc" id="L277">            structs.add(new StructCompiler(this, x));</span>
+<span class="fc" id="L278">        }</span>
+
+<span class="fc bfc" id="L280" title="All 2 branches covered.">        for (TupleDefinition x : node.getTuples())</span>
+        {
+<span class="fc" id="L282">            tuples.add(new TupleCompiler(this, x));</span>
+<span class="fc" id="L283">        }</span>
+
+<span class="fc bfc" id="L285" title="All 2 branches covered.">        for (FunctorDefinition x : node.getFunctors())</span>
+        {
+<span class="fc" id="L287">            functors.add(new FunctorCompiler(this, x));</span>
+<span class="fc" id="L288">        }</span>
+
+<span class="fc bfc" id="L290" title="All 2 branches covered.">        for (FunctionDefinition x : node.getFunctions())</span>
+        {
+<span class="fc" id="L292">            functions.add(new FunctionCompiler(this, x));</span>
+<span class="fc" id="L293">        }</span>
+
+<span class="fc" id="L295">        this.anno_utils = new AnnotationUtils(this);</span>
+<span class="fc" id="L296">    }</span>
+
+    /**
+     * This method performs the bytecode-generation of the module and the code therein.
+     *
+     * @return the objects that contain the generated bytecode.
+     */
+    public Set&lt;ClassFile&gt; build()
+    {
+<span class="fc" id="L305">        final Set&lt;ClassFile&gt; classes = Sets.newHashSet();</span>
+
+<span class="fc bfc" id="L307" title="All 2 branches covered.">        for (AnnotationCompiler x : annotations)</span>
+        {
+<span class="fc" id="L309">            classes.add(x.build());</span>
+<span class="fc" id="L310">        }</span>
+
+<span class="fc bfc" id="L312" title="All 2 branches covered.">        for (ExceptionCompiler x : exceptions)</span>
+        {
+<span class="fc" id="L314">            classes.add(x.build());</span>
+<span class="fc" id="L315">        }</span>
+
+<span class="fc bfc" id="L317" title="All 2 branches covered.">        for (EnumCompiler x : enums)</span>
+        {
+<span class="fc" id="L319">            classes.add(x.build());</span>
+<span class="fc" id="L320">        }</span>
+
+<span class="fc bfc" id="L322" title="All 2 branches covered.">        for (DesignCompiler x : designs)</span>
+        {
+<span class="fc" id="L324">            classes.add(x.build());</span>
+<span class="fc" id="L325">        }</span>
+
+<span class="fc bfc" id="L327" title="All 2 branches covered.">        for (StructCompiler x : structs)</span>
+        {
+<span class="fc" id="L329">            classes.add(x.build());</span>
+<span class="fc" id="L330">        }</span>
+
+<span class="fc bfc" id="L332" title="All 2 branches covered.">        for (TupleCompiler x : tuples)</span>
+        {
+<span class="fc" id="L334">            classes.add(x.build());</span>
+<span class="fc" id="L335">        }</span>
+
+<span class="fc bfc" id="L337" title="All 2 branches covered.">        for (FunctorCompiler x : functors)</span>
+        {
+<span class="fc" id="L339">            classes.add(x.build());</span>
+<span class="fc" id="L340">        }</span>
+
+        /**
+         * Generate the bytecode of the module itself.
+         */
+<span class="fc" id="L345">        classes.add(buildModule());</span>
+
+<span class="fc" id="L347">        return classes;</span>
+    }
+
+    /**
+     * This method performs the bytecode-generation of a module itself.
+     *
+     * &lt;p&gt;
+     * Basically, a module compiles to a JVM class.
+     * &lt;/p&gt;
+     *
+     * @return an object that contains the generated bytecode.
+     */
+    private ClassFile buildModule()
+    {
+<span class="fc" id="L361">        final List&lt;FieldNode&gt; fields = Lists.newLinkedList();</span>
+
+<span class="fc" id="L363">        final List&lt;MethodNode&gt; methods = Lists.newLinkedList();</span>
+
+        /**
+         * Generate the bytecode that implements the special methods of the module.
+         */
+<span class="fc" id="L368">        methods.add(buildClinit());</span>
+<span class="fc" id="L369">        methods.add(buildInit());</span>
+<span class="fc" id="L370">        methods.add(buildModuleInfo());</span>
+<span class="fc" id="L371">        methods.add(buildInstance());</span>
+<span class="fc" id="L372">        methods.add(buildModuleInvokeFunction());</span>
+
+        /**
+         * Generate the bytecode that implements the user-defined functions.
+         */
+<span class="fc bfc" id="L377" title="All 2 branches covered.">        for (FunctionCompiler x : functions)</span>
+        {
+<span class="fc" id="L379">            methods.add(x.build());</span>
+<span class="fc" id="L380">        }</span>
+
+        /**
+         * Generate the bytecode that implements the hidden fields.
+         */
+<span class="fc bfc" id="L385" title="All 2 branches covered.">        for (HiddenField field : hidden)</span>
+        {
+<span class="fc" id="L387">            fields.add(field.build());</span>
+<span class="fc" id="L388">        }</span>
+
+<span class="fc" id="L390">        final String module_internal_name = Utils.internalName(type);</span>
+
+<span class="fc" id="L392">        final String module_source_name = Utils.sourceName(type);</span>
+
+        /**
+         * Generate the bytecode of the class that is the module.
+         */
+<span class="fc" id="L397">        final ClassNode clazz = new ClassNode();</span>
+        {
+<span class="fc" id="L399">            clazz.version = Opcodes.V1_6;</span>
+<span class="fc" id="L400">            clazz.visibleAnnotations = anno_utils.compileAnnotationList(type.getAnnotations());</span>
+<span class="fc" id="L401">            clazz.access = type.getModifiers();</span>
+<span class="fc" id="L402">            clazz.name = module_internal_name;</span>
+<span class="fc" id="L403">            clazz.superName = Utils.internalName(type.getSuperclass());</span>
+<span class="fc" id="L404">            clazz.interfaces = Lists.newLinkedList();</span>
+<span class="fc" id="L405">            clazz.fields = Lists.newLinkedList();</span>
+<span class="fc" id="L406">            clazz.fields.add(info);</span>
+<span class="fc" id="L407">            clazz.fields.add(delegates);</span>
+<span class="fc" id="L408">            clazz.fields.add(instance_field);</span>
+<span class="fc" id="L409">            clazz.fields.addAll(fields);</span>
+<span class="fc" id="L410">            clazz.methods = ImmutableList.copyOf(methods);</span>
+<span class="fc" id="L411">            clazz.sourceFile = String.valueOf(node.getLocation().getFile());</span>
+
+<span class="pc bpc" id="L413" title="1 of 2 branches missed.">            assert clazz.superName.equals(&quot;autumn/lang/internals/AbstractModule&quot;);</span>
+<span class="pc bpc" id="L414" title="1 of 2 branches missed.">            assert clazz.access == Opcodes.ACC_PUBLIC + Opcodes.ACC_FINAL;</span>
+        }
+
+        /**
+         * Convert ObjectWeb ASM representation of the bytecode to an array of bytes.
+         */
+<span class="fc" id="L420">        final ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_MAXS);</span>
+<span class="fc" id="L421">        clazz.accept(writer);</span>
+<span class="fc" id="L422">        final byte[] bytecode = writer.toByteArray();</span>
+
+        /**
+         * Wrap the bytecode in an object.
+         */
+<span class="fc" id="L427">        final ClassFile file = new ClassFile(module_source_name, bytecode);</span>
+
+<span class="fc" id="L429">        return file;</span>
+    }
+
+    /**
+     * This method generates the static constructor for the module's class.
+     *
+     * @return an object representation of the module's static constructor.
+     */
+    private MethodNode buildClinit()
+    {
+<span class="fc" id="L439">        final MethodNode m = new MethodNode();</span>
+
+<span class="fc" id="L441">        m.access = Opcodes.ACC_PUBLIC + Opcodes.ACC_STATIC + Opcodes.ACC_FINAL;</span>
+<span class="fc" id="L442">        m.name = &quot;&lt;clinit&gt;&quot;;</span>
+<span class="fc" id="L443">        m.desc = &quot;()V&quot;;</span>
+<span class="fc" id="L444">        m.exceptions = ImmutableList.of();</span>
+
+        String owner;
+        String name;
+        String desc;
+
+        // Create the only instance of the module's class.
+<span class="fc" id="L451">        owner = Utils.internalName(type);</span>
+<span class="fc" id="L452">        m.instructions.add(new TypeInsnNode(Opcodes.NEW, owner));</span>
+<span class="fc" id="L453">        m.instructions.add(new InsnNode(Opcodes.DUP));</span>
+<span class="fc" id="L454">        name = &quot;&lt;init&gt;&quot;;</span>
+<span class="fc" id="L455">        desc = &quot;()V&quot;;</span>
+<span class="fc" id="L456">        m.instructions.add(new MethodInsnNode(Opcodes.INVOKESPECIAL, owner, name, desc));</span>
+
+        // Put the instance in to the field named &quot;instance&quot;.
+<span class="fc" id="L459">        owner = Utils.internalName(type);</span>
+<span class="fc" id="L460">        name = &quot;instance&quot;;</span>
+<span class="fc" id="L461">        desc = type.getDescriptor();</span>
+<span class="fc" id="L462">        m.instructions.add(new FieldInsnNode(Opcodes.PUTSTATIC, owner, name, desc));</span>
+
+        /**
+         * Initialize the hidden fields.
+         */
+<span class="pc bpc" id="L467" title="1 of 2 branches missed.">        for (HiddenField field : hidden)</span>
+        {
+<span class="nc" id="L469">            m.instructions.add(field.initializer);</span>
+<span class="nc" id="L470">        }</span>
+
+        /**
+         * Invoke the setup functions.
+         */
+<span class="fc bfc" id="L475" title="All 2 branches covered.">        for (FunctionCompiler function : functions)</span>
+        {
+<span class="fc bfc" id="L477" title="All 2 branches covered.">            if (function.isAnnotationPresent(program.typesystem.utils.SETUP))</span>
+            {
+<span class="fc" id="L479">                owner = Utils.internalName(type);</span>
+<span class="fc" id="L480">                name = function.type.getName();</span>
+<span class="fc" id="L481">                desc = &quot;()V&quot;;</span>
+<span class="fc" id="L482">                m.instructions.add(new MethodInsnNode(Opcodes.INVOKESTATIC, owner, name, desc));</span>
+            }
+<span class="fc" id="L484">        }</span>
+
+        // Exit the static constructor.
+<span class="fc" id="L487">        m.instructions.add(new InsnNode(Opcodes.RETURN));</span>
+
+<span class="fc" id="L489">        return m;</span>
+    }
+
+    /**
+     * This method generates the instance constructor for the module's class.
+     *
+     * @return an object representation of the module's instance constructor.
+     */
+    private MethodNode buildInit()
+    {
+<span class="fc" id="L499">        final MethodNode m = new MethodNode();</span>
+
+<span class="fc" id="L501">        m.access = Opcodes.ACC_PRIVATE;</span>
+<span class="fc" id="L502">        m.name = &quot;&lt;init&gt;&quot;;</span>
+<span class="fc" id="L503">        m.desc = &quot;()V&quot;;</span>
+<span class="fc" id="L504">        m.exceptions = ImmutableList.of();</span>
+
+        String owner;
+        String name;
+        String desc;
+
+        /**
+         * Invoke super().
+         */
+<span class="fc" id="L513">        owner = Utils.internalName(program.typesystem.utils.ABSTRACT_MODULE);</span>
+<span class="fc" id="L514">        name = &quot;&lt;init&gt;&quot;;</span>
+<span class="fc" id="L515">        desc = &quot;()V&quot;;</span>
+<span class="fc" id="L516">        m.instructions.add(new VarInsnNode(Opcodes.ALOAD, 0)); // Load 'this'.</span>
+<span class="fc" id="L517">        m.instructions.add(new MethodInsnNode(Opcodes.INVOKESPECIAL, owner, name, desc));</span>
+
+        /**
+         * Create the ModuleInfoBuilder object.
+         */
+<span class="fc" id="L522">        owner = Utils.internalName(program.typesystem.utils.MODULE_INFO_BUILDER);</span>
+<span class="fc" id="L523">        name = &quot;&lt;init&gt;&quot;;</span>
+<span class="fc" id="L524">        desc = &quot;(Lautumn/lang/Module;)V&quot;;</span>
+<span class="fc" id="L525">        m.instructions.add(new TypeInsnNode(Opcodes.NEW, Utils.internalName(program.typesystem.utils.MODULE_INFO_BUILDER)));</span>
+<span class="fc" id="L526">        m.instructions.add(new InsnNode(Opcodes.DUP));</span>
+<span class="fc" id="L527">        m.instructions.add(new VarInsnNode(Opcodes.ALOAD, 0)); // Load 'this'.</span>
+<span class="fc" id="L528">        m.instructions.add(new MethodInsnNode(Opcodes.INVOKESPECIAL, owner, name, desc));</span>
+
+        /**
+         * Add the delegates to the user-defined functions to the ModuleInfoBuilder object.
+         */
+<span class="fc bfc" id="L533" title="All 2 branches covered.">        for (FunctionCompiler function : functions)</span>
+        {
+            /**
+             * Duplicate the reference to the ModuleInfoBuilder object.
+             */
+<span class="fc" id="L538">            m.instructions.add(new InsnNode(Opcodes.DUP));</span>
+
+            /**
+             * Create a new delegate object.
+             */
+<span class="fc" id="L543">            loadDelegate(m, function);</span>
+
+            /**
+             * Add the delegate object in the ModuleInfoBuilder.
+             */
+<span class="fc" id="L548">            owner = Utils.internalName(program.typesystem.utils.MODULE_INFO_BUILDER);</span>
+<span class="fc" id="L549">            name = &quot;add&quot;;</span>
+<span class="fc" id="L550">            desc = &quot;(Lautumn/lang/Delegate;)V&quot;;</span>
+<span class="fc" id="L551">            m.instructions.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL, owner, name, desc));</span>
+<span class="fc" id="L552">        }</span>
+
+        // Note: After the loop exited a reference to the ModuleInfoBuilder is on the operand-stack.
+
+        /**
+         * Add the annotation-types declared in the module to the ModuleInfoBuilder object.
+         */
+<span class="fc bfc" id="L559" title="All 2 branches covered.">        for (AnnotationCompiler x : annotations)</span>
+        {
+<span class="fc" id="L561">            owner = Utils.internalName(program.typesystem.utils.MODULE_INFO_BUILDER);</span>
+<span class="fc" id="L562">            name = &quot;addAnnotation&quot;;</span>
+<span class="fc" id="L563">            desc = &quot;(Ljava/lang/Class;)V&quot;;</span>
+<span class="fc" id="L564">            m.instructions.add(new InsnNode(Opcodes.DUP));</span>
+<span class="fc" id="L565">            m.instructions.add(Utils.ldcClass(x.type));</span>
+<span class="fc" id="L566">            m.instructions.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL, owner, name, desc));</span>
+<span class="fc" id="L567">        }</span>
+
+        /**
+         * Add the enum-types declared in the module to the ModuleInfoBuilder object.
+         */
+<span class="fc bfc" id="L572" title="All 2 branches covered.">        for (EnumCompiler x : enums)</span>
+        {
+<span class="fc" id="L574">            owner = Utils.internalName(program.typesystem.utils.MODULE_INFO_BUILDER);</span>
+<span class="fc" id="L575">            name = &quot;addEnum&quot;;</span>
+<span class="fc" id="L576">            desc = &quot;(Ljava/lang/Class;)V&quot;;</span>
+<span class="fc" id="L577">            m.instructions.add(new InsnNode(Opcodes.DUP));</span>
+<span class="fc" id="L578">            m.instructions.add(Utils.ldcClass(x.type));</span>
+<span class="fc" id="L579">            m.instructions.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL, owner, name, desc));</span>
+<span class="fc" id="L580">        }</span>
+
+        /**
+         * Add the exception-types declared in the module to the ModuleInfoBuilder object.
+         */
+<span class="fc bfc" id="L585" title="All 2 branches covered.">        for (ExceptionCompiler x : exceptions)</span>
+        {
+<span class="fc" id="L587">            owner = Utils.internalName(program.typesystem.utils.MODULE_INFO_BUILDER);</span>
+<span class="fc" id="L588">            name = &quot;addException&quot;;</span>
+<span class="fc" id="L589">            desc = &quot;(Ljava/lang/Class;)V&quot;;</span>
+<span class="fc" id="L590">            m.instructions.add(new InsnNode(Opcodes.DUP));</span>
+<span class="fc" id="L591">            m.instructions.add(Utils.ldcClass(x.type));</span>
+<span class="fc" id="L592">            m.instructions.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL, owner, name, desc));</span>
+<span class="fc" id="L593">        }</span>
+
+        /**
+         * Add the design-types declared in the module to the ModuleInfoBuilder object.
+         */
+<span class="fc bfc" id="L598" title="All 2 branches covered.">        for (DesignCompiler x : designs)</span>
+        {
+<span class="fc" id="L600">            owner = Utils.internalName(program.typesystem.utils.MODULE_INFO_BUILDER);</span>
+<span class="fc" id="L601">            name = &quot;addDesign&quot;;</span>
+<span class="fc" id="L602">            desc = &quot;(Ljava/lang/Class;)V&quot;;</span>
+<span class="fc" id="L603">            m.instructions.add(new InsnNode(Opcodes.DUP));</span>
+<span class="fc" id="L604">            m.instructions.add(Utils.ldcClass(x.type));</span>
+<span class="fc" id="L605">            m.instructions.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL, owner, name, desc));</span>
+<span class="fc" id="L606">        }</span>
+
+        /**
+         * Add the struct-types declared in the module to the ModuleInfoBuilder object.
+         */
+<span class="fc bfc" id="L611" title="All 2 branches covered.">        for (StructCompiler x : structs)</span>
+        {
+<span class="fc" id="L613">            owner = Utils.internalName(program.typesystem.utils.MODULE_INFO_BUILDER);</span>
+<span class="fc" id="L614">            name = &quot;addStruct&quot;;</span>
+<span class="fc" id="L615">            desc = &quot;(Ljava/lang/Class;)V&quot;;</span>
+<span class="fc" id="L616">            m.instructions.add(new InsnNode(Opcodes.DUP));</span>
+<span class="fc" id="L617">            m.instructions.add(Utils.ldcClass(x.type));</span>
+<span class="fc" id="L618">            m.instructions.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL, owner, name, desc));</span>
+<span class="fc" id="L619">        }</span>
+
+        /**
+         * Add the tuple-types declared in the module to the ModuleInfoBuilder object.
+         */
+<span class="fc bfc" id="L624" title="All 2 branches covered.">        for (TupleCompiler x : tuples)</span>
+        {
+<span class="fc" id="L626">            owner = Utils.internalName(program.typesystem.utils.MODULE_INFO_BUILDER);</span>
+<span class="fc" id="L627">            name = &quot;addTuple&quot;;</span>
+<span class="fc" id="L628">            desc = &quot;(Ljava/lang/Class;)V&quot;;</span>
+<span class="fc" id="L629">            m.instructions.add(new InsnNode(Opcodes.DUP));</span>
+<span class="fc" id="L630">            m.instructions.add(Utils.ldcClass(x.type));</span>
+<span class="fc" id="L631">            m.instructions.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL, owner, name, desc));</span>
+<span class="fc" id="L632">        }</span>
+
+        /**
+         * Add the functor-types declared in the module to the ModuleInfoBuilder object.
+         */
+<span class="fc bfc" id="L637" title="All 2 branches covered.">        for (FunctorCompiler x : functors)</span>
+        {
+<span class="fc" id="L639">            owner = Utils.internalName(program.typesystem.utils.MODULE_INFO_BUILDER);</span>
+<span class="fc" id="L640">            name = &quot;addFunctor&quot;;</span>
+<span class="fc" id="L641">            desc = &quot;(Ljava/lang/Class;)V&quot;;</span>
+<span class="fc" id="L642">            m.instructions.add(new InsnNode(Opcodes.DUP));</span>
+<span class="fc" id="L643">            m.instructions.add(Utils.ldcClass(x.type));</span>
+<span class="fc" id="L644">            m.instructions.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL, owner, name, desc));</span>
+<span class="fc" id="L645">        }</span>
+
+        // Note: After the loop exited a reference to the ModuleInfoBuilder is on the operand-stack.
+
+        /**
+         * Convert the ModuleInfoBuilder object into a ModuleInfo object.
+         */
+<span class="fc" id="L652">        owner = Utils.internalName(program.typesystem.utils.MODULE_INFO_BUILDER);</span>
+<span class="fc" id="L653">        name = &quot;build&quot;;</span>
+<span class="fc" id="L654">        desc = &quot;()&quot; + program.typesystem.utils.MODULE_INFO.getDescriptor();</span>
+<span class="fc" id="L655">        m.instructions.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL, owner, name, desc));</span>
+
+        /**
+         * Store the ModuleInfo object in the appropriate field.
+         */
+<span class="fc" id="L660">        owner = Utils.internalName(type);</span>
+<span class="fc" id="L661">        name = info.name;</span>
+<span class="fc" id="L662">        desc = info.desc;</span>
+<span class="fc" id="L663">        m.instructions.add(new VarInsnNode(Opcodes.ALOAD, 0)); // Load 'this'.</span>
+<span class="fc" id="L664">        m.instructions.add(new InsnNode(Opcodes.SWAP));</span>
+<span class="fc" id="L665">        m.instructions.add(new FieldInsnNode(Opcodes.PUTFIELD, owner, name, desc));</span>
+
+        /**
+         * Exit the static constructor.
+         */
+<span class="fc" id="L670">        m.instructions.add(new InsnNode(Opcodes.RETURN));</span>
+
+<span class="fc" id="L672">        return m;</span>
+    }
+
+    /**
+     * This method generates the info() special method.
+     *
+     * @return an object representation of the special method.
+     */
+    private MethodNode buildModuleInfo()
+    {
+<span class="fc" id="L682">        final MethodNode m = new MethodNode();</span>
+
+<span class="fc" id="L684">        m.access = Opcodes.ACC_PUBLIC + Opcodes.ACC_FINAL;</span>
+<span class="fc" id="L685">        m.name = &quot;info&quot;;</span>
+<span class="fc" id="L686">        m.desc = &quot;()Lautumn/lang/ModuleInfo;&quot;;</span>
+<span class="fc" id="L687">        m.exceptions = ImmutableList.of();</span>
+
+        // Load the ModuleInfo object onto the operand-stack.
+<span class="fc" id="L690">        m.instructions.add(new VarInsnNode(Opcodes.ALOAD, 0)); // Load 'this'.</span>
+<span class="fc" id="L691">        m.instructions.add(new FieldInsnNode(Opcodes.GETFIELD,</span>
+<span class="fc" id="L692">                                             Utils.internalName(type),</span>
+                                             info.name,
+                                             info.desc));
+
+        // Return the ModuleInfo object.
+<span class="fc" id="L697">        m.instructions.add(new InsnNode(Opcodes.ARETURN));</span>
+
+<span class="fc" id="L699">        return m;</span>
+    }
+
+    /**
+     * This method generates bytecode that creates a new delegate object.
+     *
+     * &lt;p&gt;
+     * The delegate must refer to a function in the module being compiled by this object.
+     * &lt;/p&gt;
+     *
+     * @param m is the method that will have bytecode added to it.
+     * @param function is the function that the delegate refers to.
+     */
+    private void loadDelegate(final MethodNode m,
+                              final FunctionCompiler function)
+    {
+<span class="pc bpc" id="L715" title="1 of 2 branches missed.">        assert functions.contains(function);</span>
+
+        String owner;
+        String name;
+        String desc;
+
+<span class="fc" id="L721">        final InsnList code = new InsnList();</span>
+
+        // This object can create a list containing the types of the function's parameters.
+<span class="fc" id="L724">        final CollectionCompiler&lt;IFormalParameter&gt; params = new CollectionCompiler&lt;IFormalParameter&gt;()</span>
+<span class="fc" id="L725">        {</span>
+            @Override
+            public void compile(IFormalParameter element)
+            {
+<span class="fc" id="L729">                code().add(Utils.ldcClass(element.getType()));</span>
+<span class="fc" id="L730">            }</span>
+
+            @Override
+            public InsnList code()
+            {
+<span class="fc" id="L735">                return code;</span>
+            }
+        };
+
+        ////////////////////////////////////////////////////////////////////////////////////////////
+        // Now we need to create an instance of the ModuleDelegate class.
+        // This involves two steps.
+        // First, we must create an uninitialized ModuleDelegate object.
+        // Second, we must invoke a constructor in the object ot finalize object construction.
+        // The constructor will expect several arguments.
+        // Argument #1 is the singleton instance of the module's class.
+        // Argument #2 is the name of the function that the delegate refers to.
+        // Argument #3 is a list of Class objects that represent the types of
+        //             the function's formal parameters.
+        // Argument #4 is a Class object that represents the function's return type.
+        // Argument #5 is the index of the function within the module.
+        //             This is needed to facilitate invocation of the function via the delegate.
+        ////////////////////////////////////////////////////////////////////////////////////////////
+
+        // Create the uninitialized object.
+<span class="fc" id="L755">        owner = Utils.internalName(program.typesystem.utils.MODULE_DELEGATE);</span>
+<span class="fc" id="L756">        code.add(new TypeInsnNode(Opcodes.NEW, owner));</span>
+
+        // Duplicate the reference to the delegate object.
+        // We need one reference for use during the constructor invocation.
+        // Then, we will need to leave another reference on the operand-stack.
+        // Whoever called this code generation method expects the object reference to be there.
+<span class="fc" id="L762">        code.add(new InsnNode(Opcodes.DUP));</span>
+
+        // Load Argument #1.
+<span class="fc" id="L765">        code.add(new VarInsnNode(Opcodes.ALOAD, 0)); // Load 'this'.</span>
+
+        // Load Argument #2.
+<span class="fc" id="L768">        code.add(new LdcInsnNode(function.type.getName()));</span>
+
+        // Load Argument #3.
+<span class="fc" id="L771">        params.compile(function.type.getParameters());</span>
+
+        // Load Argument #4.
+<span class="fc" id="L774">        code.add(Utils.ldcClass(function.type.getReturnType()));</span>
+
+        // Load Argument #5.
+<span class="fc" id="L777">        code.add(new LdcInsnNode(functions.indexOf(function)));</span>
+
+        // Invoke the constructor.
+<span class="fc" id="L780">        name = &quot;&lt;init&gt;&quot;;</span>
+<span class="fc" id="L781">        desc = &quot;(Lautumn/lang/Module;Ljava/lang/String;Ljava/util/List;Ljava/lang/Class;I)V&quot;;</span>
+<span class="fc" id="L782">        code.add(new MethodInsnNode(Opcodes.INVOKESPECIAL, owner, name, desc));</span>
+
+        // Now, an initialized ModuleDelegate object is on top of the operand-stack.
+
+        // Add the code to the method.
+<span class="fc" id="L787">        m.instructions.add(code);</span>
+<span class="fc" id="L788">    }</span>
+
+    /**
+     * This method generates the instance() special method.
+     *
+     * &lt;p&gt;
+     * The special method returns the only instance of the module's class.
+     * The special method is static and takes no arguments.
+     * &lt;/p&gt;
+     *
+     * @return an object representation of the special method.
+     */
+    private MethodNode buildInstance()
+    {
+<span class="fc" id="L802">        final MethodNode m = new MethodNode();</span>
+
+<span class="fc" id="L804">        m.access = Opcodes.ACC_PUBLIC + Opcodes.ACC_STATIC + Opcodes.ACC_FINAL;</span>
+<span class="fc" id="L805">        m.name = &quot;instance&quot;;</span>
+<span class="fc" id="L806">        m.desc = &quot;()&quot; + type.getDescriptor();</span>
+<span class="fc" id="L807">        m.exceptions = ImmutableList.of();</span>
+
+        // The only instance of the module's class is stored in a static final field.
+        // Get the value from the field and push it onto the operand-stack.
+<span class="fc" id="L811">        m.instructions.add(new FieldInsnNode(Opcodes.GETSTATIC,</span>
+<span class="fc" id="L812">                                             Utils.internalName(type),</span>
+                                             instance_field.name,
+                                             instance_field.desc));
+
+        // Return the instance of the module.
+<span class="fc" id="L817">        m.instructions.add(new InsnNode(Opcodes.ARETURN));</span>
+
+<span class="fc" id="L819">        return m;</span>
+    }
+
+    /**
+     * This method generates the invoke(int, ArgumentStack) special method.
+     *
+     * @return an object representation of the special method.
+     */
+    private MethodNode buildModuleInvokeFunction()
+    {
+<span class="fc" id="L829">        final MethodNode m = new MethodNode();</span>
+
+        String owner;
+        String name;
+        String desc;
+
+<span class="fc" id="L835">        m.access = Opcodes.ACC_PUBLIC + Opcodes.ACC_FINAL;</span>
+<span class="fc" id="L836">        m.name = &quot;invoke&quot;;</span>
+<span class="fc" id="L837">        m.desc = &quot;(ILautumn/lang/internals/ArgumentStack;)V&quot;;</span>
+<span class="fc" id="L838">        m.exceptions = ImmutableList.of(&quot;java/lang/Throwable&quot;);</span>
+
+<span class="fc" id="L840">        final InsnList code = new InsnList();</span>
+
+<span class="fc" id="L842">        final LabelNode[] cases = new LabelNode[functions.size()];</span>
+
+<span class="fc bfc" id="L844" title="All 2 branches covered.">        for (int i = 0; i &lt; functions.size(); i++)</span>
+        {
+<span class="fc" id="L846">            cases[i] = new LabelNode();</span>
+        }
+
+<span class="fc" id="L849">        final LabelNode default_case = new LabelNode();</span>
+
+<span class="fc" id="L851">        code.add(new VarInsnNode(Opcodes.ILOAD, 1));</span>
+
+<span class="fc" id="L853">        code.add(new TableSwitchInsnNode(0,</span>
+<span class="fc" id="L854">                                         functions.size() - 1,</span>
+                                         default_case,
+                                         cases));
+
+<span class="fc" id="L858">        int c = 0;</span>
+
+<span class="fc bfc" id="L860" title="All 2 branches covered.">        for (FunctionCompiler function : functions)</span>
+        {
+            // Add the label that marks the entry-point of the switch case.
+<span class="fc" id="L863">            code.add(cases[c++]);</span>
+
+            // Load the argument-stack onto the operand-stack.
+            // We will need it later in order to return the return-value from the method.
+<span class="fc" id="L867">            code.add(new VarInsnNode(Opcodes.ALOAD, 2));</span>
+
+
+            // Pop the arguments off of the argument-stack and push them onto the operand-stack.
+<span class="fc bfc" id="L871" title="All 2 branches covered.">            for (int i = 0; i &lt; function.type.getParameters().size(); i++)</span>
+            {
+                // Load the argument-stack onto the operand-stack.
+                // The return-value of the function will need pushed onto the argument-stack later.
+<span class="fc" id="L875">                code.add(new VarInsnNode(Opcodes.ALOAD, 2));</span>
+
+<span class="fc" id="L877">                final IExpressionType param = (IExpressionType) function.type</span>
+<span class="fc" id="L878">                        .getParameters()</span>
+<span class="fc" id="L879">                        .get(i)</span>
+<span class="fc" id="L880">                        .getType();</span>
+
+                // Transfer the i-th argument from the argument-stack to the operand-stack.
+<span class="fc" id="L883">                Utils.getArgument(program, code, param, i);</span>
+            }
+
+            // Load the argument-stack onto the operand-stack.
+<span class="fc" id="L887">            code.add(new VarInsnNode(Opcodes.ALOAD, 2));</span>
+
+            // Clear the argument-stack.
+<span class="fc" id="L890">            owner = Utils.internalName(program.typesystem.utils.ARGUMENT_STACK);</span>
+<span class="fc" id="L891">            name = &quot;clear&quot;;</span>
+<span class="fc" id="L892">            desc = &quot;()V&quot;;</span>
+<span class="fc" id="L893">            code.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL, owner, name, desc));</span>
+
+            // Invoke the function.
+<span class="fc" id="L896">            owner = Utils.internalName(type);</span>
+<span class="fc" id="L897">            name = function.type.getName();</span>
+<span class="fc" id="L898">            desc = function.type.getDescriptor();</span>
+<span class="fc" id="L899">            code.add(new MethodInsnNode(Opcodes.INVOKESTATIC, owner, name, desc));</span>
+
+            // Transfer the return-value from the operand-stack to the argument-stack.
+<span class="fc bfc" id="L902" title="All 2 branches covered.">            if (function.type.getReturnType().isVoidType() == false)</span>
+            {
+<span class="fc" id="L904">                Utils.pushArgument(program, code, function.type.getReturnType());</span>
+            }
+            else
+            {
+                // Since the method returns void, null must be loaded onto the argument-stack.
+<span class="fc" id="L909">                code.add(new InsnNode(Opcodes.ACONST_NULL));</span>
+
+<span class="fc" id="L911">                Utils.pushArgument(program, code, function.type.getReturnType());</span>
+            }
+
+            // Do not fall through to the next switch-case.
+<span class="fc" id="L915">            code.add(new InsnNode(Opcodes.RETURN));</span>
+<span class="fc" id="L916">        }</span>
+
+<span class="fc" id="L918">        code.add(default_case);</span>
+<span class="fc" id="L919">        code.add(new InsnNode(Opcodes.RETURN));</span>
+
+<span class="fc" id="L921">        m.instructions.add(code);</span>
+
+
+<span class="fc" id="L924">        return m;</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void performTypeDeclaration()
+    {
+        /**
+         * This object only compiles non empty nodes.
+         */
+<span class="pc bpc" id="L936" title="1 of 2 branches missed.">        assert isEmpty(node) == false;</span>
+
+<span class="pc bpc" id="L938" title="1 of 2 branches missed.">        if (node.getModuleDirectives().size() &lt; 1)</span>
+        {
+            // Error - missing module directive
+            // fail fast
+        }
+
+<span class="pc bpc" id="L944" title="1 of 2 branches missed.">        if (node.getModuleDirectives().size() &gt; 1)</span>
+        {
+            // Error - too many directives
+            // fail fast
+        }
+
+<span class="fc" id="L950">        final ModuleDirective directive = node.getModuleDirectives().asMutableList().get(0);</span>
+
+<span class="fc" id="L952">        final String module_descriptor = processModuleDirective(directive);</span>
+
+        /**
+         * Ensure that the type was not already declared elsewhere.
+         */
+<span class="fc" id="L957">        final Name module_name = node.getModuleDirectives().asMutableList().get(0).getName();</span>
+
+<span class="fc" id="L959">        program.checker.requireNonDuplicateType(module_name, module_descriptor);</span>
+
+        /**
+         * Declare the module's type.
+         */
+<span class="fc" id="L964">        this.type = program.typesystem.typefactory().newClassType(module_descriptor);</span>
+
+        /**
+         * Declare all the designs, structs, tuples, etc that are defined in the module.
+         */
+<span class="fc bfc" id="L969" title="All 2 branches covered.">        for (ICompiler x : compilers())</span>
+        {
+<span class="fc" id="L971">            x.performTypeDeclaration();</span>
+<span class="fc" id="L972">        }</span>
+
+        /**
+         * Process the import directives.
+         */
+<span class="fc" id="L977">        loadImports();</span>
+<span class="fc" id="L978">    }</span>
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void performTypeInitialization()
+    {
+        /**
+         * Create the type-system representations of the annotation-list.
+         */
+<span class="fc" id="L989">        type.setAnnotations(anno_utils.typesOf(module_directive.getAnnotations()));</span>
+
+        /**
+         * Add a special annotation.
+         */
+<span class="fc" id="L994">        anno_utils.add(type, ModuleDefinition.class);</span>
+
+        /**
+         * Initialize the module's type.
+         */
+<span class="fc" id="L999">        this.type.setModifiers(Opcodes.ACC_PUBLIC + Opcodes.ACC_FINAL);</span>
+<span class="fc" id="L1000">        this.type.setSuperclass(program.typesystem.utils.ABSTRACT_MODULE);</span>
+<span class="fc" id="L1001">        this.type.setSuperinterfaces(ImmutableList.&lt;IInterfaceType&gt;of());</span>
+
+<span class="fc bfc" id="L1003" title="All 2 branches covered.">        for (ICompiler x : compilers())</span>
+        {
+<span class="fc" id="L1005">            x.performTypeInitialization();</span>
+<span class="fc" id="L1006">        }</span>
+
+<span class="fc" id="L1008">        final CustomMethod instance = new CustomMethod(type.getTypeFactory(), false);</span>
+<span class="fc" id="L1009">        instance.setOwner(type);</span>
+<span class="fc" id="L1010">        instance.setName(&quot;instance&quot;);</span>
+<span class="fc" id="L1011">        instance.setModifiers(Opcodes.ACC_PUBLIC + Opcodes.ACC_STATIC);</span>
+<span class="fc" id="L1012">        instance.setParameters(new LinkedList());</span>
+<span class="fc" id="L1013">        instance.setReturnType(type);</span>
+<span class="fc" id="L1014">        instance.setThrowsClause(new LinkedList());</span>
+
+        // Add this function's type to the collection of functions in the module's type.
+<span class="fc" id="L1017">        final List&lt;IMethod&gt; list = Lists.newLinkedList(type.getMethods());</span>
+<span class="fc" id="L1018">        list.add(instance);</span>
+<span class="fc" id="L1019">        type.setMethods(list);</span>
+
+        // Create the field that will store the only instance of the module's class.
+<span class="fc" id="L1022">        instance_field = new FieldNode(Opcodes.ACC_PRIVATE + Opcodes.ACC_STATIC + Opcodes.ACC_FINAL,</span>
+                                       &quot;instance&quot;,
+<span class="fc" id="L1024">                                       type.getDescriptor(),</span>
+                                       null,
+                                       null);
+<span class="fc" id="L1027">    }</span>
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void performTypeStructureChecking()
+    {
+        /**
+         * Perform type-structure-checking on all of the functions, etc.
+         */
+<span class="fc bfc" id="L1038" title="All 2 branches covered.">        for (ICompiler x : compilers())</span>
+        {
+<span class="fc" id="L1040">            x.performTypeStructureChecking();</span>
+<span class="fc" id="L1041">        }</span>
+
+        /**
+         * Check the list of annotations.
+         */
+<span class="fc" id="L1046">        program.checker.checkAnnotations(module_directive.getAnnotations(), type.getAnnotations());</span>
+
+        /**
+         * No two functions can have the exact same name and parameters.
+         */
+<span class="fc" id="L1051">        reportDuplicateFunctions();</span>
+<span class="fc" id="L1052">    }</span>
+
+    /**
+     * This method ensures that the module does not contain duplicate functions.
+     *
+     * &lt;p&gt;
+     * A function is a duplicate, if it has the same name and parameter-types as another function.
+     * &lt;/p&gt;
+     */
+    private void reportDuplicateFunctions()
+    {
+<span class="fc" id="L1063">        final Map&lt;String, FunctionCompiler&gt; signatures = Maps.newTreeMap();</span>
+
+        /**
+         * For each function F, map the signature of F to the compiler of F.
+         */
+<span class="fc bfc" id="L1068" title="All 2 branches covered.">        for (FunctionCompiler function : functions)</span>
+        {
+            /**
+             * Note: If the map already contains an entry for the signature,
+             * the old entry will be replaced, which is fine.
+             */
+<span class="fc" id="L1074">            signatures.put(function.type.getNamePlusParameterListDescriptor(), function);</span>
+<span class="fc" id="L1075">        }</span>
+
+        /**
+         * For each function compiler F, ensure that the signature of F is mapped to F.
+         */
+<span class="fc bfc" id="L1080" title="All 2 branches covered.">        for (FunctionCompiler function : functions)</span>
+        {
+            /**
+             * Yes, I really do mean identity inequality here.
+             */
+<span class="fc bfc" id="L1085" title="All 2 branches covered.">            if (function != signatures.get(function.type.getNamePlusParameterListDescriptor()))</span>
+            {
+                /**
+                 * This will throw an exception and issue a compiler-warning.
+                 */
+<span class="nc" id="L1090">                program.checker.reportDuplicateFunction(function);</span>
+            }
+<span class="fc" id="L1092">        }</span>
+<span class="fc" id="L1093">    }</span>
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void performTypeUsageChecking()
+    {
+<span class="fc bfc" id="L1101" title="All 2 branches covered.">        for (ICompiler x : compilers())</span>
+        {
+<span class="fc" id="L1103">            x.performTypeUsageChecking();</span>
+<span class="fc" id="L1104">        }</span>
+<span class="fc" id="L1105">    }</span>
+
+    /**
+     * This method executes all the import-directives and imports the types defined in this module.
+     */
+    private void loadImports()
+    {
+        /**
+         * Import the module itself.
+         */
+<span class="fc" id="L1115">        imports.importType(module_name.substring(module_name.lastIndexOf('.') + 1),</span>
+<span class="fc" id="L1116">                           Utils.sourceName(type));</span>
+
+        // The module name &quot;My&quot; is used to generically refer to the current module.
+<span class="fc" id="L1119">        imports.importType(&quot;My&quot;, Utils.sourceName(type));</span>
+
+        /**
+         * Execute all the import directives.
+         */
+<span class="fc bfc" id="L1124" title="All 2 branches covered.">        for (ImportDirective import_directive : node.getImportDirectives())</span>
+        {
+<span class="fc" id="L1126">            final TypeSpecifier imported_type = import_directive.getType();</span>
+
+<span class="fc" id="L1128">            final String typename = program.typesystem.utils.extractTypeName(imported_type);</span>
+
+<span class="fc" id="L1130">            final String simple_name = imported_type.getName().getName();</span>
+
+<span class="pc bpc" id="L1132" title="1 of 2 branches missed.">            if (imported_type.getDimensions() != null)</span>
+            {
+                // TODO: error
+            }
+
+<span class="fc" id="L1137">            imports.importType(simple_name, typename);</span>
+<span class="fc" id="L1138">        }</span>
+
+        /**
+         * Import all the annotations defined in this module.
+         */
+<span class="fc bfc" id="L1143" title="All 2 branches covered.">        for (AnnotationCompiler cmp : annotations)</span>
+        {
+<span class="fc" id="L1145">            autoimport(cmp.type);</span>
+<span class="fc" id="L1146">        }</span>
+
+        /**
+         * Import all the exceptions defined in this module.
+         */
+<span class="fc bfc" id="L1151" title="All 2 branches covered.">        for (ExceptionCompiler cmp : exceptions)</span>
+        {
+<span class="fc" id="L1153">            autoimport(cmp.type);</span>
+<span class="fc" id="L1154">        }</span>
+
+        /**
+         * Import all the enums defined in this module.
+         */
+<span class="fc bfc" id="L1159" title="All 2 branches covered.">        for (EnumCompiler cmp : enums)</span>
+        {
+<span class="fc" id="L1161">            autoimport(cmp.type);</span>
+<span class="fc" id="L1162">        }</span>
+
+        /**
+         * Import all the designs defined in this module.
+         */
+<span class="fc bfc" id="L1167" title="All 2 branches covered.">        for (DesignCompiler cmp : designs)</span>
+        {
+<span class="fc" id="L1169">            autoimport(cmp.type);</span>
+<span class="fc" id="L1170">        }</span>
+
+        /**
+         * Import all the structs defined in this module.
+         */
+<span class="fc bfc" id="L1175" title="All 2 branches covered.">        for (StructCompiler cmp : structs)</span>
+        {
+<span class="fc" id="L1177">            autoimport(cmp.type);</span>
+<span class="fc" id="L1178">        }</span>
+
+        /**
+         * Import all the tuples defined in this module.
+         */
+<span class="fc bfc" id="L1183" title="All 2 branches covered.">        for (TupleCompiler cmp : tuples)</span>
+        {
+<span class="fc" id="L1185">            autoimport(cmp.type);</span>
+<span class="fc" id="L1186">        }</span>
+
+        /**
+         * Import all the functors defined in this module.
+         */
+<span class="fc bfc" id="L1191" title="All 2 branches covered.">        for (FunctorCompiler cmp : functors)</span>
+        {
+<span class="fc" id="L1193">            autoimport(cmp.type);</span>
+<span class="fc" id="L1194">        }</span>
+<span class="fc" id="L1195">    }</span>
+
+    /**
+     * This method performs the importation of a type declared within the module.
+     *
+     * @param type is the type to import.
+     */
+    private void autoimport(final IDeclaredType type)
+    {
+        /**
+         * Get the fully-qualified internal-name of the type.
+         */
+<span class="fc" id="L1207">        final String internal_name = Utils.internalName(type).replace('/', '.');</span>
+
+        /**
+         * Get the simple-name of the type.
+         */
+<span class="fc" id="L1212">        final String simple_name = internal_name.substring(internal_name.lastIndexOf('.') + 1, internal_name.length());</span>
+
+        /**
+         * Import the type.
+         */
+<span class="fc" id="L1217">        imports.importType(simple_name, internal_name);</span>
+<span class="fc" id="L1218">    }</span>
+
+    private String processModuleDirective(final ModuleDirective directive)
+    {
+<span class="fc" id="L1222">        this.module_directive = directive;</span>
+
+        // This is the name of the package that the module resides in.
+<span class="fc" id="L1225">        final StringBuilder module_package = new StringBuilder();</span>
+
+        // String together the pieces of the package's name.
+<span class="fc bfc" id="L1228" title="All 2 branches covered.">        for (Name n : directive.getNamespace().getNames())</span>
+        {
+<span class="fc" id="L1230">            module_package.append(n.getName());</span>
+<span class="fc" id="L1231">            module_package.append('/');</span>
+<span class="fc" id="L1232">        }</span>
+
+        // This is the name of the module, excluding the name of the enclosing package.
+<span class="fc bfc" id="L1235" title="All 2 branches covered.">        final String module_name = directive.getName() == null</span>
+<span class="fc" id="L1236">                ? createNameForAnonymousModule()</span>
+<span class="fc" id="L1237">                : directive.getName().getName();</span>
+
+        // Remember the full name of the module for later use.
+<span class="fc" id="L1240">        this.module_name = module_package.toString().replace('/', '.') + module_name;</span>
+
+<span class="fc" id="L1242">        final String module_descriptor = &quot;L&quot; + module_package + module_name + &quot;;&quot;;</span>
+
+<span class="fc" id="L1244">        return module_descriptor;</span>
+    }
+
+    /**
+     * This method creates a name for an anonymous module, since there is really no such thing.
+     *
+     * @return a name for the module that is being compiled.
+     */
+    private String createNameForAnonymousModule()
+    {
+<span class="fc" id="L1254">        return &quot;Module$&quot; + F.unique();</span>
+    }
+
+    /**
+     * This method avoids the need for multiple for-loops elsewhere.
+     *
+     * @return the compilers used by this compiler.
+     */
+    private Set&lt;ICompiler&gt; compilers()
+    {
+<span class="fc" id="L1264">        final Set&lt;ICompiler&gt; result = Sets.newHashSet();</span>
+
+<span class="fc" id="L1266">        result.addAll(annotations);</span>
+<span class="fc" id="L1267">        result.addAll(exceptions);</span>
+<span class="fc" id="L1268">        result.addAll(enums);</span>
+<span class="fc" id="L1269">        result.addAll(designs);</span>
+<span class="fc" id="L1270">        result.addAll(structs);</span>
+<span class="fc" id="L1271">        result.addAll(tuples);</span>
+<span class="fc" id="L1272">        result.addAll(functors);</span>
+<span class="fc" id="L1273">        result.addAll(functions);</span>
+
+<span class="fc" id="L1275">        return result;</span>
+    }
+
+    /**
+     * This method converts a list of AST nodes that represent formal parameters
+     * to their type-system based representation.
+     *
+     * @param parameters are the formal parameters as represented by AST nodes.
+     * @return the formal parameters as represented in the type-system.
+     */
+    public List&lt;IFormalParameter&gt; formals(final Iterable&lt;FormalParameter&gt; parameters)
+    {
+<span class="nc" id="L1287">        final List&lt;IFormalParameter&gt; formals = Lists.newArrayList();</span>
+
+<span class="nc bnc" id="L1289" title="All 2 branches missed.">        for (FormalParameter param : parameters)</span>
+        {
+            // This method will issue an error-message, if the type does not exist, etc.
+<span class="nc" id="L1292">            final IVariableType param_type = imports.resolveVariableType(param.getType());</span>
+
+            // Create the type-system representation of the formal parameter.
+<span class="nc" id="L1295">            final CustomFormalParameter formal = new CustomFormalParameter();</span>
+<span class="nc" id="L1296">            formal.setAnnotations(new LinkedList());</span>
+<span class="nc" id="L1297">            formal.setType(param_type);</span>
+
+<span class="nc" id="L1299">            formals.add(formal);</span>
+<span class="nc" id="L1300">        }</span>
+
+<span class="nc" id="L1302">        return formals;</span>
+    }
+
+    /**
+     * This method determines whether a module is empty.
+     *
+     * &lt;p&gt;
+     * Empty modules are caused, for example, by empty source files.
+     * &lt;/p&gt;
+     *
+     * @param node is the AST representation of the module.
+     * @return true, iff the is an empty module.
+     */
+    public static boolean isEmpty(Module node)
+    {
+<span class="fc bfc" id="L1317" title="All 2 branches covered.">        return node.getAnnotations().isEmpty()</span>
+<span class="fc bfc" id="L1318" title="All 2 branches covered.">               &amp;&amp; node.getDesigns().isEmpty()</span>
+<span class="fc bfc" id="L1319" title="All 2 branches covered.">               &amp;&amp; node.getEnums().isEmpty()</span>
+<span class="fc bfc" id="L1320" title="All 2 branches covered.">               &amp;&amp; node.getExceptions().isEmpty()</span>
+<span class="fc bfc" id="L1321" title="All 2 branches covered.">               &amp;&amp; node.getFunctions().isEmpty()</span>
+<span class="fc bfc" id="L1322" title="All 2 branches covered.">               &amp;&amp; node.getFunctors().isEmpty()</span>
+<span class="fc bfc" id="L1323" title="All 2 branches covered.">               &amp;&amp; node.getImportDirectives().isEmpty()</span>
+<span class="fc bfc" id="L1324" title="All 2 branches covered.">               &amp;&amp; node.getModuleDirectives().isEmpty()</span>
+<span class="pc bpc" id="L1325" title="1 of 2 branches missed.">               &amp;&amp; node.getStructs().isEmpty()</span>
+<span class="pc bpc" id="L1326" title="1 of 2 branches missed.">               &amp;&amp; node.getTuples().isEmpty();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

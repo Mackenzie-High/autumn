@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Main.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.mackenziehigh:autumn</a> &gt; <a href="index.source.html" class="el_package">com.mackenziehigh.autumn</a> &gt; <span class="el_source">Main.java</span></div><h1>Main.java</h1><pre class="source lang-java linenums">package com.mackenziehigh.autumn;
+
+import com.mackenziehigh.autumn.lang.compiler.args.Parser;
+import com.mackenziehigh.autumn.lang.compiler.args.Visitor;
+import com.mackenziehigh.autumn.resources.Finished;
+import com.mackenziehigh.snowflake.ITreeNode;
+import com.mackenziehigh.snowflake.ParserOutput;
+
+/**
+ * This is the entry-point of the compiler program.
+ *
+ * @author Mackenzie High
+ */
+@Finished(&quot;2014/08/22&quot;)
+<span class="nc" id="L15">public final class Main</span>
+{
+    /**
+     * Program Entry Point.
+     *
+     * @param args is the command-line broken into pieces.
+     * @throws Exception in order to propagate exceptions thrown within Autumn scripts. .
+     */
+    public static void main(final String[] args)
+            throws Exception
+    {
+        /**
+         * Reassemble the command-line into a single string,
+         * for the command-line parser.
+         */
+<span class="nc" id="L30">        final String input = concatArgs(args);</span>
+
+        /**
+         * Parse the command-line.
+         */
+<span class="nc" id="L35">        final Parser parser = new Parser();</span>
+<span class="nc" id="L36">        final ParserOutput output = parser.parse(input);</span>
+<span class="nc" id="L37">        final ITreeNode root = output.parseTree();</span>
+
+        /**
+         * Execute the commands that were extracted from the command-line.
+         */
+<span class="nc" id="L42">        final Visitor visitor = new Visitor();</span>
+
+<span class="nc bnc" id="L44" title="All 2 branches missed.">        if (root != null)</span>
+        {
+<span class="nc" id="L46">            visitor.visit(root);</span>
+        }
+        else
+        {
+            /**
+             * The command-line was malformed, so all we can really do
+             * is print the default help message.
+             */
+<span class="nc" id="L54">            visitor.printHelp();</span>
+        }
+<span class="nc" id="L56">    }</span>
+
+    /**
+     * This method concatenates a series of argument strings together.
+     *
+     * &lt;p&gt;
+     * Each argument will be enclosed inside of quotation marks.
+     * &lt;/p&gt;
+     *
+     * @param args are the strings to concatenate.
+     * @return the args as a single space separated string.
+     */
+    private static String concatArgs(String[] args)
+    {
+<span class="nc" id="L70">        final StringBuilder result = new StringBuilder();</span>
+
+<span class="nc bnc" id="L72" title="All 2 branches missed.">        for (int i = 0; i &lt; args.length; i++)</span>
+        {
+<span class="nc" id="L74">            result.append(&quot;\&quot;&quot;).append(args[i]).append(&quot;\&quot;&quot;);</span>
+
+<span class="nc" id="L76">            result.append(' ');</span>
+        }
+
+<span class="nc" id="L79">        return result.toString().trim();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

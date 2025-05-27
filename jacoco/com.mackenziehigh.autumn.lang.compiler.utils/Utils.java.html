@@ -1,0 +1,872 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Utils.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.mackenziehigh:autumn</a> &gt; <a href="index.source.html" class="el_package">com.mackenziehigh.autumn.lang.compiler.utils</a> &gt; <span class="el_source">Utils.java</span></div><h1>Utils.java</h1><pre class="source lang-java linenums">package com.mackenziehigh.autumn.lang.compiler.utils;
+
+import autumn.lang.compiler.ast.commons.IConstruct;
+import autumn.lang.internals.Helpers;
+import com.google.common.base.Preconditions;
+import com.google.common.base.Strings;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
+import com.mackenziehigh.autumn.lang.compiler.compilers.ModuleCompiler;
+import com.mackenziehigh.autumn.lang.compiler.compilers.ProgramCompiler;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IArrayType;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IClassType;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IDeclaredType;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IExpressionType;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IInvokableMember;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IPrimitiveType;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IReferenceType;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IReturnType;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IType;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IVariableType;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.Type;
+import org.objectweb.asm.tree.AbstractInsnNode;
+import org.objectweb.asm.tree.FieldInsnNode;
+import org.objectweb.asm.tree.InsnList;
+import org.objectweb.asm.tree.InsnNode;
+import org.objectweb.asm.tree.LabelNode;
+import org.objectweb.asm.tree.LdcInsnNode;
+import org.objectweb.asm.tree.LineNumberNode;
+import org.objectweb.asm.tree.MethodInsnNode;
+import org.objectweb.asm.tree.MethodNode;
+import org.objectweb.asm.tree.TypeInsnNode;
+import org.objectweb.asm.tree.VarInsnNode;
+
+/**
+ * This class contains utility methods needed during bytecode-generation.
+ *
+ * @author Mackenzie High
+ */
+<span class="nc" id="L45">public final class Utils</span>
+{
+    public static final int IF_TRUE = Opcodes.IFNE;
+
+    public static final int IF_FALSE = Opcodes.IFEQ;
+
+    /**
+     * These are the keywords in the Java programming language.
+     */
+<span class="fc" id="L54">    private static final Set&lt;String&gt; KEYWORDS = Sets.newTreeSet();</span>
+
+    static
+    {
+<span class="fc" id="L58">        KEYWORDS.add(&quot;abstract&quot;);</span>
+<span class="fc" id="L59">        KEYWORDS.add(&quot;assert&quot;);</span>
+<span class="fc" id="L60">        KEYWORDS.add(&quot;boolean&quot;);</span>
+<span class="fc" id="L61">        KEYWORDS.add(&quot;break&quot;);</span>
+<span class="fc" id="L62">        KEYWORDS.add(&quot;byte&quot;);</span>
+<span class="fc" id="L63">        KEYWORDS.add(&quot;case&quot;);</span>
+<span class="fc" id="L64">        KEYWORDS.add(&quot;catch&quot;);</span>
+<span class="fc" id="L65">        KEYWORDS.add(&quot;char&quot;);</span>
+<span class="fc" id="L66">        KEYWORDS.add(&quot;class&quot;);</span>
+<span class="fc" id="L67">        KEYWORDS.add(&quot;const&quot;);</span>
+<span class="fc" id="L68">        KEYWORDS.add(&quot;continue&quot;);</span>
+<span class="fc" id="L69">        KEYWORDS.add(&quot;default&quot;);</span>
+<span class="fc" id="L70">        KEYWORDS.add(&quot;do&quot;);</span>
+<span class="fc" id="L71">        KEYWORDS.add(&quot;double&quot;);</span>
+<span class="fc" id="L72">        KEYWORDS.add(&quot;else&quot;);</span>
+<span class="fc" id="L73">        KEYWORDS.add(&quot;enum&quot;);</span>
+<span class="fc" id="L74">        KEYWORDS.add(&quot;extends&quot;);</span>
+<span class="fc" id="L75">        KEYWORDS.add(&quot;final&quot;);</span>
+<span class="fc" id="L76">        KEYWORDS.add(&quot;finally&quot;);</span>
+<span class="fc" id="L77">        KEYWORDS.add(&quot;float&quot;);</span>
+<span class="fc" id="L78">        KEYWORDS.add(&quot;for&quot;);</span>
+<span class="fc" id="L79">        KEYWORDS.add(&quot;goto&quot;);</span>
+<span class="fc" id="L80">        KEYWORDS.add(&quot;if&quot;);</span>
+<span class="fc" id="L81">        KEYWORDS.add(&quot;implements&quot;);</span>
+<span class="fc" id="L82">        KEYWORDS.add(&quot;import&quot;);</span>
+<span class="fc" id="L83">        KEYWORDS.add(&quot;instanceof&quot;);</span>
+<span class="fc" id="L84">        KEYWORDS.add(&quot;int&quot;);</span>
+<span class="fc" id="L85">        KEYWORDS.add(&quot;interface&quot;);</span>
+<span class="fc" id="L86">        KEYWORDS.add(&quot;long&quot;);</span>
+<span class="fc" id="L87">        KEYWORDS.add(&quot;native&quot;);</span>
+<span class="fc" id="L88">        KEYWORDS.add(&quot;new&quot;);</span>
+<span class="fc" id="L89">        KEYWORDS.add(&quot;package&quot;);</span>
+<span class="fc" id="L90">        KEYWORDS.add(&quot;private&quot;);</span>
+<span class="fc" id="L91">        KEYWORDS.add(&quot;protected&quot;);</span>
+<span class="fc" id="L92">        KEYWORDS.add(&quot;public&quot;);</span>
+<span class="fc" id="L93">        KEYWORDS.add(&quot;return&quot;);</span>
+<span class="fc" id="L94">        KEYWORDS.add(&quot;short&quot;);</span>
+<span class="fc" id="L95">        KEYWORDS.add(&quot;static&quot;);</span>
+<span class="fc" id="L96">        KEYWORDS.add(&quot;strictfp&quot;);</span>
+<span class="fc" id="L97">        KEYWORDS.add(&quot;super&quot;);</span>
+<span class="fc" id="L98">        KEYWORDS.add(&quot;switch&quot;);</span>
+<span class="fc" id="L99">        KEYWORDS.add(&quot;synchronized&quot;);</span>
+<span class="fc" id="L100">        KEYWORDS.add(&quot;this&quot;);</span>
+<span class="fc" id="L101">        KEYWORDS.add(&quot;throw&quot;);</span>
+<span class="fc" id="L102">        KEYWORDS.add(&quot;throws&quot;);</span>
+<span class="fc" id="L103">        KEYWORDS.add(&quot;transient&quot;);</span>
+<span class="fc" id="L104">        KEYWORDS.add(&quot;try&quot;);</span>
+<span class="fc" id="L105">        KEYWORDS.add(&quot;void&quot;);</span>
+<span class="fc" id="L106">        KEYWORDS.add(&quot;volatile&quot;);</span>
+<span class="fc" id="L107">        KEYWORDS.add(&quot;while&quot;);</span>
+<span class="fc" id="L108">        KEYWORDS.add(&quot;false&quot;);</span>
+<span class="fc" id="L109">        KEYWORDS.add(&quot;true&quot;);</span>
+<span class="fc" id="L110">        KEYWORDS.add(&quot;null&quot;);</span>
+<span class="fc" id="L111">    }</span>
+
+    /**
+     * This method computes the internal name of a type.
+     *
+     * &lt;p&gt;
+     * Example: &quot;java.lang.String&quot; returns &quot;java/lang/String&quot; &lt;br&gt;
+     * Example: &quot;java.lang.String[]&quot; returns &quot;[Ljava/lang/String;&quot; &lt;br&gt;
+     * &lt;/p&gt;
+     *
+     * @param type is the type whose internal name is requested.
+     * @return the internal name of the type.
+     */
+    public static String internalName(final IReferenceType type)
+    {
+<span class="fc" id="L126">        Preconditions.checkNotNull(type);</span>
+
+<span class="pc bpc" id="L128" title="1 of 2 branches missed.">        assert type.isNullType() == false;</span>
+
+<span class="fc bfc" id="L130" title="All 2 branches covered.">        if (type.isArrayType())</span>
+        {
+<span class="fc" id="L132">            return type.getDescriptor();</span>
+        }
+        else
+        {
+<span class="fc" id="L136">            final String descriptor = type.getDescriptor();</span>
+
+<span class="fc" id="L138">            final String result = descriptor.substring(1).replace(&quot;;&quot;, &quot;&quot;);</span>
+
+<span class="fc" id="L140">            return result;</span>
+        }
+    }
+
+    /**
+     * This method computes the simple name of a type.
+     *
+     * &lt;p&gt;
+     * Example: &quot;java.lang.String&quot; returns &quot;String&quot; &lt;br&gt;
+     * Example: &quot;java.lang.String[]&quot; returns &quot;String[]&quot; &lt;br&gt;
+     * &lt;/p&gt;
+     *
+     * @param type is the type whose simple name is requested.
+     * @return the simple name of the type.
+     */
+    public static String simpleName(final IExpressionType type)
+    {
+<span class="fc" id="L157">        Preconditions.checkNotNull(type);</span>
+
+<span class="pc bpc" id="L159" title="1 of 2 branches missed.">        if (type.isNullType())</span>
+        {
+<span class="nc" id="L161">            return &quot;null&quot;;</span>
+        }
+
+<span class="pc bpc" id="L164" title="1 of 2 branches missed.">        if (type.isVoidType())</span>
+        {
+<span class="nc" id="L166">            return &quot;void&quot;;</span>
+        }
+
+<span class="fc" id="L169">        final String source = sourceName(type);</span>
+
+<span class="fc" id="L171">        final String[] parts = source.split(&quot;\\.&quot;);</span>
+
+<span class="fc" id="L173">        final String name = parts[parts.length - 1];</span>
+
+<span class="fc" id="L175">        return name;</span>
+    }
+
+    /**
+     * This method computes the name of a type as it appears in the source-code.
+     *
+     * @param type is the type whose name is requested.
+     * @return the name of the type as it appears in source-code.
+     */
+    public static String sourceName(final IExpressionType type)
+    {
+<span class="fc" id="L186">        Preconditions.checkNotNull(type);</span>
+
+<span class="pc bpc" id="L188" title="1 of 2 branches missed.">        if (type.isNullType())</span>
+        {
+<span class="nc" id="L190">            return &quot;null&quot;;</span>
+        }
+<span class="pc bpc" id="L192" title="1 of 2 branches missed.">        else if (type.isVoidType())</span>
+        {
+<span class="nc" id="L194">            return &quot;void&quot;;</span>
+        }
+<span class="fc bfc" id="L196" title="All 2 branches covered.">        else if (type.isPrimitiveType())</span>
+        {
+<span class="fc" id="L198">            return ((IPrimitiveType) type).toClass().getName();</span>
+        }
+<span class="pc bpc" id="L200" title="2 of 4 branches missed.">        else if (type.isReferenceType() &amp;&amp; ((IReferenceType) type).isArrayType())</span>
+        {
+<span class="nc" id="L202">            final IArrayType array = (IArrayType) type;</span>
+
+<span class="nc" id="L204">            final String element = sourceName(array.getElement());</span>
+
+<span class="nc" id="L206">            final String dimensions = Strings.repeat(&quot;[]&quot;, array.getDimensions());</span>
+
+<span class="nc" id="L208">            return element + dimensions;</span>
+        }
+        else
+        {
+<span class="fc" id="L212">            final String result = ((IDeclaredType) type).getDescriptor()</span>
+<span class="fc" id="L213">                    .substring(1)</span>
+<span class="fc" id="L214">                    .replace(&quot;;&quot;, &quot;&quot;)</span>
+<span class="fc" id="L215">                    .replace(&quot;/&quot;, &quot;.&quot;);</span>
+
+<span class="fc" id="L217">            return result;</span>
+        }
+    }
+
+    /**
+     * This method selects the appropriate &quot;return&quot; bytecode instruction for a given type.
+     *
+     * &lt;p&gt;
+     * This method will return a RETURN instruction, if the type is void.
+     * &lt;/p&gt;
+     *
+     * @param type is the type of value that will be returned.
+     * @return the bytecode &quot;return&quot; instruction that is used for the given type.
+     */
+    public static AbstractInsnNode selectReturnInsn(final IReturnType type)
+    {
+<span class="pc bpc" id="L233" title="1 of 2 branches missed.">        if (type.isVoidType())</span>
+        {
+<span class="nc" id="L235">            return new InsnNode(Opcodes.RETURN);</span>
+        }
+<span class="fc bfc" id="L237" title="All 2 branches covered.">        else if (type.isReferenceType())</span>
+        {
+<span class="fc" id="L239">            return new InsnNode(Opcodes.ARETURN);</span>
+        }
+<span class="fc bfc" id="L241" title="All 2 branches covered.">        else if (type.getDescriptor().equals(&quot;J&quot;))</span>
+        {
+<span class="fc" id="L243">            return new InsnNode(Opcodes.LRETURN);</span>
+        }
+<span class="fc bfc" id="L245" title="All 2 branches covered.">        else if (type.getDescriptor().equals(&quot;F&quot;))</span>
+        {
+<span class="fc" id="L247">            return new InsnNode(Opcodes.FRETURN);</span>
+        }
+<span class="fc bfc" id="L249" title="All 2 branches covered.">        else if (type.getDescriptor().equals(&quot;D&quot;))</span>
+        {
+<span class="fc" id="L251">            return new InsnNode(Opcodes.DRETURN);</span>
+        }
+        else // booleans, chars, bytes, shorts, and ints
+        {
+<span class="fc" id="L255">            return new InsnNode(Opcodes.IRETURN);</span>
+        }
+    }
+
+    /**
+     * This method selects the appropriate bytecode instruction to load a variable.
+     *
+     * @param type is the type of the variable.
+     * @param address is the address of the variable.
+     * @return the appropriate load instruction.
+     */
+    public static AbstractInsnNode selectLoadVarInsn(final IVariableType type,
+                                                     final int address)
+    {
+<span class="fc bfc" id="L269" title="All 2 branches covered.">        if (type.getDescriptor().equals(&quot;Z&quot;))</span>
+        {
+<span class="fc" id="L271">            return new VarInsnNode(Opcodes.ILOAD, address);</span>
+        }
+<span class="fc bfc" id="L273" title="All 2 branches covered.">        else if (type.getDescriptor().equals(&quot;C&quot;))</span>
+        {
+<span class="fc" id="L275">            return new VarInsnNode(Opcodes.ILOAD, address);</span>
+        }
+<span class="fc bfc" id="L277" title="All 2 branches covered.">        else if (type.getDescriptor().equals(&quot;B&quot;))</span>
+        {
+<span class="fc" id="L279">            return new VarInsnNode(Opcodes.ILOAD, address);</span>
+        }
+<span class="fc bfc" id="L281" title="All 2 branches covered.">        else if (type.getDescriptor().equals(&quot;S&quot;))</span>
+        {
+<span class="fc" id="L283">            return new VarInsnNode(Opcodes.ILOAD, address);</span>
+        }
+<span class="fc bfc" id="L285" title="All 2 branches covered.">        else if (type.getDescriptor().equals(&quot;I&quot;))</span>
+        {
+<span class="fc" id="L287">            return new VarInsnNode(Opcodes.ILOAD, address);</span>
+        }
+<span class="fc bfc" id="L289" title="All 2 branches covered.">        else if (type.getDescriptor().equals(&quot;J&quot;))</span>
+        {
+<span class="fc" id="L291">            return new VarInsnNode(Opcodes.LLOAD, address);</span>
+        }
+<span class="fc bfc" id="L293" title="All 2 branches covered.">        else if (type.getDescriptor().equals(&quot;F&quot;))</span>
+        {
+<span class="fc" id="L295">            return new VarInsnNode(Opcodes.FLOAD, address);</span>
+        }
+<span class="fc bfc" id="L297" title="All 2 branches covered.">        else if (type.getDescriptor().equals(&quot;D&quot;))</span>
+        {
+<span class="fc" id="L299">            return new VarInsnNode(Opcodes.DLOAD, address);</span>
+        }
+        else
+        {
+<span class="fc" id="L303">            return new VarInsnNode(Opcodes.ALOAD, address);</span>
+        }
+    }
+
+    /**
+     * This method selects the appropriate bytecode instruction to store a value in a variable.
+     *
+     * @param type is the type of the variable.
+     * @param address is the address of the variable.
+     * @return the appropriate store instruction.
+     */
+    public static AbstractInsnNode selectStoreVarInsn(final IVariableType type,
+                                                      final int address)
+    {
+<span class="fc bfc" id="L317" title="All 2 branches covered.">        if (type.getDescriptor().equals(&quot;Z&quot;))</span>
+        {
+<span class="fc" id="L319">            return new VarInsnNode(Opcodes.ISTORE, address);</span>
+        }
+<span class="fc bfc" id="L321" title="All 2 branches covered.">        else if (type.getDescriptor().equals(&quot;C&quot;))</span>
+        {
+<span class="fc" id="L323">            return new VarInsnNode(Opcodes.ISTORE, address);</span>
+        }
+<span class="fc bfc" id="L325" title="All 2 branches covered.">        else if (type.getDescriptor().equals(&quot;B&quot;))</span>
+        {
+<span class="fc" id="L327">            return new VarInsnNode(Opcodes.ISTORE, address);</span>
+        }
+<span class="fc bfc" id="L329" title="All 2 branches covered.">        else if (type.getDescriptor().equals(&quot;S&quot;))</span>
+        {
+<span class="fc" id="L331">            return new VarInsnNode(Opcodes.ISTORE, address);</span>
+        }
+<span class="fc bfc" id="L333" title="All 2 branches covered.">        else if (type.getDescriptor().equals(&quot;I&quot;))</span>
+        {
+<span class="fc" id="L335">            return new VarInsnNode(Opcodes.ISTORE, address);</span>
+        }
+<span class="fc bfc" id="L337" title="All 2 branches covered.">        else if (type.getDescriptor().equals(&quot;J&quot;))</span>
+        {
+<span class="fc" id="L339">            return new VarInsnNode(Opcodes.LSTORE, address);</span>
+        }
+<span class="fc bfc" id="L341" title="All 2 branches covered.">        else if (type.getDescriptor().equals(&quot;F&quot;))</span>
+        {
+<span class="fc" id="L343">            return new VarInsnNode(Opcodes.FSTORE, address);</span>
+        }
+<span class="fc bfc" id="L345" title="All 2 branches covered.">        else if (type.getDescriptor().equals(&quot;D&quot;))</span>
+        {
+<span class="fc" id="L347">            return new VarInsnNode(Opcodes.DSTORE, address);</span>
+        }
+        else // (type.isReferenceType())
+        {
+<span class="fc" id="L351">            return new VarInsnNode(Opcodes.ASTORE, address);</span>
+        }
+
+    }
+
+    /**
+     * This method creates a bytecode instruction that loads a class-literal onto the operand-stack.
+     *
+     * @param type is the type that the class-literal represents.
+     * @return the aforedescribed bytecode instruction.
+     */
+    public static AbstractInsnNode ldcClass(final IType type)
+    {
+<span class="fc" id="L364">        final String descriptor = type.getDescriptor();</span>
+
+<span class="fc" id="L366">        final Type klass = Type.getType(descriptor);</span>
+
+<span class="fc" id="L368">        final Map&lt;String, String&gt; predefined = Maps.newTreeMap();</span>
+<span class="fc" id="L369">        predefined.put(&quot;Z&quot;, Type.getInternalName(Boolean.class));</span>
+<span class="fc" id="L370">        predefined.put(&quot;C&quot;, Type.getInternalName(Character.class));</span>
+<span class="fc" id="L371">        predefined.put(&quot;B&quot;, Type.getInternalName(Byte.class));</span>
+<span class="fc" id="L372">        predefined.put(&quot;S&quot;, Type.getInternalName(Short.class));</span>
+<span class="fc" id="L373">        predefined.put(&quot;I&quot;, Type.getInternalName(Integer.class));</span>
+<span class="fc" id="L374">        predefined.put(&quot;J&quot;, Type.getInternalName(Long.class));</span>
+<span class="fc" id="L375">        predefined.put(&quot;F&quot;, Type.getInternalName(Float.class));</span>
+<span class="fc" id="L376">        predefined.put(&quot;D&quot;, Type.getInternalName(Double.class));</span>
+<span class="fc" id="L377">        predefined.put(&quot;V&quot;, Type.getInternalName(Void.class));</span>
+
+
+<span class="fc bfc" id="L380" title="All 2 branches covered.">        if (predefined.containsKey(klass.getDescriptor()))</span>
+        {
+<span class="fc" id="L382">            return new FieldInsnNode(Opcodes.GETSTATIC,</span>
+<span class="fc" id="L383">                                     predefined.get(klass.getDescriptor()),</span>
+                                     &quot;TYPE&quot;,
+<span class="fc" id="L385">                                     Type.getDescriptor(Class.class));</span>
+        }
+        else
+        {
+<span class="fc" id="L389">            return new LdcInsnNode(klass);</span>
+        }
+    }
+
+    /**
+     * This method determines the amount of storage needed for a variable.
+     *
+     * @param type is the type whose size will be determined.
+     * @return the amount of space needed to store a value of the given type.
+     */
+    public static int sizeof(final IType type)
+    {
+<span class="fc bfc" id="L401" title="All 2 branches covered.">        if (type.getDescriptor().equals(&quot;Z&quot;))</span>
+        {
+<span class="fc" id="L403">            return 1;</span>
+        }
+<span class="fc bfc" id="L405" title="All 2 branches covered.">        else if (type.getDescriptor().equals(&quot;C&quot;))</span>
+        {
+<span class="fc" id="L407">            return 1;</span>
+        }
+<span class="fc bfc" id="L409" title="All 2 branches covered.">        else if (type.getDescriptor().equals(&quot;B&quot;))</span>
+        {
+<span class="fc" id="L411">            return 1;</span>
+        }
+<span class="fc bfc" id="L413" title="All 2 branches covered.">        else if (type.getDescriptor().equals(&quot;S&quot;))</span>
+        {
+<span class="fc" id="L415">            return 1;</span>
+        }
+<span class="fc bfc" id="L417" title="All 2 branches covered.">        else if (type.getDescriptor().equals(&quot;I&quot;))</span>
+        {
+<span class="fc" id="L419">            return 1;</span>
+        }
+<span class="fc bfc" id="L421" title="All 2 branches covered.">        else if (type.getDescriptor().equals(&quot;J&quot;))</span>
+        {
+<span class="fc" id="L423">            return 2;</span>
+        }
+<span class="fc bfc" id="L425" title="All 2 branches covered.">        else if (type.getDescriptor().equals(&quot;F&quot;))</span>
+        {
+<span class="fc" id="L427">            return 1;</span>
+        }
+<span class="fc bfc" id="L429" title="All 2 branches covered.">        else if (type.getDescriptor().equals(&quot;D&quot;))</span>
+        {
+<span class="fc" id="L431">            return 2;</span>
+        }
+<span class="pc bpc" id="L433" title="1 of 2 branches missed.">        else if (type.getDescriptor().equals(&quot;V&quot;))</span>
+        {
+<span class="nc" id="L435">            return 0;</span>
+        }
+        else // (type.isReferenceType())
+        {
+<span class="fc" id="L439">            return 1;</span>
+        }
+
+    }
+
+    /**
+     * This method selects a bytecode instruction to pop a value off of the operand-stack.
+     *
+     * &lt;p&gt;
+     * This method returns a NOP instruction, if the type is the void type.
+     * &lt;/p&gt;
+     *
+     * @param type is the type of value that will be popped off of the stack.
+     * @return the aforedescribed bytecode instruction.
+     */
+    public static AbstractInsnNode selectPop(final IType type)
+    {
+<span class="fc bfc" id="L456" title="All 2 branches covered.">        if (&quot;V&quot;.equals(type.getDescriptor())) // void</span>
+        {
+<span class="fc" id="L458">            return new InsnNode(Opcodes.NOP); // There is no value to pop, so return nop.</span>
+        }
+<span class="fc bfc" id="L460" title="All 2 branches covered.">        else if (&quot;J&quot;.equals(type.getDescriptor())) // long</span>
+        {
+<span class="fc" id="L462">            return new InsnNode(Opcodes.POP2);</span>
+        }
+<span class="fc bfc" id="L464" title="All 2 branches covered.">        else if (&quot;D&quot;.equals(type.getDescriptor())) // double</span>
+        {
+<span class="fc" id="L466">            return new InsnNode(Opcodes.POP2);</span>
+        }
+        else // boolean, char, byte, short, int, and object references
+        {
+<span class="fc" id="L470">            return new InsnNode(Opcodes.POP);</span>
+        }
+    }
+
+    /**
+     * This method retrieves the set of words that are reserved in the Java programming language.
+     *
+     * @return the immutable set of reserved words.
+     */
+    public static Set&lt;String&gt; keywords()
+    {
+<span class="fc" id="L481">        return Collections.unmodifiableSet(KEYWORDS);</span>
+    }
+
+    /**
+     * This method determines whether a word is a keyword in the Java programming language.
+     *
+     * @param word is the word that may be a keyword.
+     * @return true, iff the word is a reserved keyword.
+     */
+    public static boolean isKeyword(final String word)
+    {
+<span class="fc" id="L492">        return keywords().contains(word);</span>
+    }
+
+    /**
+     * This method selects a bytecode instruction to push a default value onto the operand-stack.
+     *
+     * @param type is the type of the default value.
+     * @return the aforedescribed instruction.
+     */
+    public static AbstractInsnNode ldcDefault(final IType type)
+    {
+<span class="fc bfc" id="L503" title="All 2 branches covered.">        if (&quot;Z&quot;.equals(type.getDescriptor()))</span>
+        {
+<span class="fc" id="L505">            return new LdcInsnNode(false);</span>
+        }
+<span class="fc bfc" id="L507" title="All 2 branches covered.">        else if (&quot;C&quot;.equals(type.getDescriptor()))</span>
+        {
+<span class="fc" id="L509">            return new LdcInsnNode((char) 0);</span>
+        }
+<span class="fc bfc" id="L511" title="All 2 branches covered.">        else if (&quot;B&quot;.equals(type.getDescriptor()))</span>
+        {
+<span class="fc" id="L513">            return new LdcInsnNode((byte) 0);</span>
+        }
+<span class="fc bfc" id="L515" title="All 2 branches covered.">        else if (&quot;S&quot;.equals(type.getDescriptor()))</span>
+        {
+<span class="fc" id="L517">            return new LdcInsnNode((short) 0);</span>
+        }
+<span class="fc bfc" id="L519" title="All 2 branches covered.">        else if (&quot;I&quot;.equals(type.getDescriptor()))</span>
+        {
+<span class="fc" id="L521">            return new LdcInsnNode((int) 0);</span>
+        }
+<span class="fc bfc" id="L523" title="All 2 branches covered.">        else if (&quot;J&quot;.equals(type.getDescriptor()))</span>
+        {
+<span class="fc" id="L525">            return new LdcInsnNode((long) 0);</span>
+        }
+<span class="fc bfc" id="L527" title="All 2 branches covered.">        else if (&quot;F&quot;.equals(type.getDescriptor()))</span>
+        {
+<span class="fc" id="L529">            return new LdcInsnNode((float) 0);</span>
+        }
+<span class="fc bfc" id="L531" title="All 2 branches covered.">        else if (&quot;D&quot;.equals(type.getDescriptor()))</span>
+        {
+<span class="fc" id="L533">            return new LdcInsnNode((double) 0);</span>
+        }
+        else // object references
+        {
+<span class="fc" id="L537">            return new InsnNode(Opcodes.ACONST_NULL);</span>
+        }
+    }
+
+    /**
+     * This method generates bytecode to invoke the &quot;push&quot; method of an ArgumentStack.
+     *
+     * @param program is the program being compiled.
+     * @param code is the list of generated bytecode to add instructions to.
+     * @param type is the type of the value being pushed.
+     */
+    public static void pushArgument(final ProgramCompiler program,
+                                    final InsnList code,
+                                    final IExpressionType type)
+    {
+<span class="fc" id="L552">        Preconditions.checkNotNull(type);</span>
+
+        // Assume: The ArgumentStack is already on the operand-stack.
+        // Assume: The argument is already on the operand-stack.
+
+<span class="fc" id="L557">        final String OBJECT = &quot;Ljava/lang/Object;&quot;;</span>
+
+<span class="fc" id="L559">        final String owner = &quot;autumn/lang/internals/ArgumentStack&quot;;</span>
+<span class="fc" id="L560">        final String name = &quot;push&quot;;</span>
+<span class="fc bfc" id="L561" title="All 2 branches covered.">        final String desc = &quot;(&quot; + (type.isPrimitiveType() ? type.getDescriptor() : OBJECT) + &quot;)V&quot;;</span>
+
+        // Invoke the push method in order to push the argument onto the argument-stack.
+<span class="fc" id="L564">        code.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL, owner, name, desc));</span>
+<span class="fc" id="L565">    }</span>
+
+    /**
+     * This method generates bytecode to retrieve a value from an ArgumentStack.
+     *
+     * &lt;p&gt;
+     * If the value is a reference type, then it will be downcast.
+     * &lt;/p&gt;
+     *
+     * @param program is the program being compiled.
+     * @param code is the list of generated bytecode to add instructions to.
+     * @param type is the type of the value that will be retrieved.
+     */
+    public static void peekArgument(final ProgramCompiler program,
+                                    final InsnList code,
+                                    final IExpressionType type)
+    {
+        // Assume: The ArgumentStack is already on the operand-stack.
+
+<span class="fc" id="L584">        final String OBJECT = &quot;Ljava/lang/Object;&quot;;</span>
+
+        // Invoke the peek method in order to retrive the value.
+<span class="fc" id="L587">        final String owner = Utils.internalName(program.typesystem.utils.ARGUMENT_STACK);</span>
+<span class="fc bfc" id="L588" title="All 2 branches covered.">        final String name = &quot;peek&quot; + (type.isPrimitiveType() ? type.getDescriptor() : &quot;O&quot;);</span>
+<span class="fc bfc" id="L589" title="All 2 branches covered.">        final String desc = &quot;()&quot; + (type.isPrimitiveType() ? type.getDescriptor() : OBJECT);</span>
+<span class="fc" id="L590">        code.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL, owner, name, desc));</span>
+
+        // If the type is a reference-type, then downcast the value.
+<span class="fc bfc" id="L593" title="All 2 branches covered.">        if (type.isReferenceType())</span>
+        {
+<span class="fc" id="L595">            final String cast = Utils.internalName((IReferenceType) type);</span>
+<span class="fc" id="L596">            code.add(new TypeInsnNode(Opcodes.CHECKCAST, cast));</span>
+        }
+<span class="fc" id="L598">    }</span>
+
+    /**
+     * This method generates bytecode to pop a value off of an ArgumentStack.
+     *
+     * @param program is the program being compiled.
+     * @param code is the list of generated bytecode to add instructions to.
+     */
+    public static void popArgument(final ProgramCompiler program,
+                                   final InsnList code)
+    {
+        // Invoke the peek method in order to retrive the value.
+<span class="fc" id="L610">        final String owner = Utils.internalName(program.typesystem.utils.ARGUMENT_STACK);</span>
+<span class="fc" id="L611">        final String name = &quot;pop&quot;;</span>
+<span class="fc" id="L612">        final String desc = &quot;()V&quot;;</span>
+<span class="fc" id="L613">        code.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL, owner, name, desc));</span>
+<span class="fc" id="L614">    }</span>
+
+    /**
+     * This method generates bytecode to retrieve a value from an ArgumentStack at a given index.
+     *
+     * &lt;p&gt;
+     * The index is numbered from the base of the stack.
+     * So, index zero is the bottommost element.
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * If the value is a reference type, then it will be downcast.
+     * &lt;/p&gt;
+     *
+     * @param program is the program being compiled.
+     * @param code is the list of generated bytecode to add instructions to.
+     * @param type is the type of the value that will be retrieved.
+     * @param index is the index of the argument to retrieve.
+     */
+    public static void getArgument(final ProgramCompiler program,
+                                   final InsnList code,
+                                   final IExpressionType type,
+                                   final int index)
+    {
+        // Assume: The ArgumentStack is already on the operand-stack.
+
+<span class="fc" id="L640">        final String OBJECT = &quot;Ljava/lang/Object;&quot;;</span>
+
+        // Load the index onto the operand-stack.
+<span class="fc" id="L643">        code.add(new LdcInsnNode(index));</span>
+
+        // Invoke the get method in order to retrive the value.
+<span class="fc" id="L646">        final String owner = Utils.internalName(program.typesystem.utils.ARGUMENT_STACK);</span>
+<span class="fc bfc" id="L647" title="All 2 branches covered.">        final String name = &quot;get&quot; + (type.isPrimitiveType() ? type.getDescriptor() : &quot;O&quot;);</span>
+<span class="fc bfc" id="L648" title="All 2 branches covered.">        final String desc = &quot;(I)&quot; + (type.isPrimitiveType() ? type.getDescriptor() : OBJECT);</span>
+<span class="fc" id="L649">        code.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL, owner, name, desc));</span>
+
+        // If the type is a reference-type, then downcast the value.
+<span class="fc bfc" id="L652" title="All 2 branches covered.">        if (type.isReferenceType())</span>
+        {
+<span class="fc" id="L654">            final String cast = Utils.internalName((IReferenceType) type);</span>
+<span class="fc" id="L655">            code.add(new TypeInsnNode(Opcodes.CHECKCAST, cast));</span>
+        }
+<span class="fc" id="L657">    }</span>
+
+    /**
+     * This method appends a list of instructions onto another list of instructions.
+     *
+     * @param out is the list that will have elements added to it.
+     * @param addendum are the elements to add to the other list.
+     */
+    public static void appendToInsnList(final InsnList out,
+                                        final Iterable&lt;AbstractInsnNode&gt; addendum)
+    {
+<span class="nc bnc" id="L668" title="All 2 branches missed.">        for (AbstractInsnNode node : addendum)</span>
+        {
+<span class="nc" id="L670">            out.add(node);</span>
+<span class="nc" id="L671">        }</span>
+<span class="nc" id="L672">    }</span>
+
+    /**
+     * This method generates the bytecode needed to load a delegate onto the operand-stack.
+     *
+     * @param code is the list of bytecode instructions to append the generated code onto.
+     * @param module is the type of the module that contains the delegated function.
+     * @param method is the name of the delegated function.
+     */
+    public static void loadDelegate(final InsnList code,
+                                    final IClassType module,
+                                    final String method)
+    {
+        String owner;
+        String name;
+        String desc;
+
+        /**
+         * Load the an instance of the module onto the operand-stack.
+         */
+<span class="nc" id="L692">        owner = Utils.internalName(module);</span>
+<span class="nc" id="L693">        name = &quot;instance&quot;;</span>
+<span class="nc" id="L694">        desc = &quot;()Lautumn/lang/Module;&quot;;</span>
+<span class="nc" id="L695">        code.add(new MethodInsnNode(Opcodes.INVOKESTATIC, owner, name, desc));</span>
+
+        /**
+         * Load the name of the delegated method onto the operand-stack.
+         */
+<span class="nc" id="L700">        code.add(new LdcInsnNode(method));</span>
+
+        /**
+         * Invoke the helper utility method that resolves the delegate.
+         */
+<span class="nc" id="L705">        owner = &quot;Lautumn/lang/internals/Helpers;&quot;;</span>
+<span class="nc" id="L706">        name = &quot;delegate&quot;;</span>
+<span class="nc" id="L707">        desc = &quot;(Lautumn/lang/Module;Ljava/lang/String;)Lautumn/lang/Delegate;&quot;;</span>
+<span class="nc" id="L708">        code.add(new MethodInsnNode(Opcodes.INVOKESTATIC, owner, name, desc));</span>
+<span class="nc" id="L709">    }</span>
+
+    /**
+     * This method creates the bytecode representation of a constructor or method.
+     *
+     * @param module is essentially the module that is being compiled.
+     * @param member is the type-system representation of the constructor or method.
+     * @return the bytecode representation of the
+     */
+    public static MethodNode bytecodeOf(final ModuleCompiler module,
+                                        final IInvokableMember member)
+    {
+<span class="fc" id="L721">        Preconditions.checkNotNull(module);</span>
+<span class="fc" id="L722">        Preconditions.checkNotNull(member);</span>
+
+<span class="fc" id="L724">        final MethodNode node = new MethodNode();</span>
+
+<span class="fc" id="L726">        node.visibleAnnotations = module.anno_utils.compileAnnotationList(member.getAnnotations());</span>
+<span class="fc" id="L727">        node.access = member.getModifiers();</span>
+<span class="fc" id="L728">        node.name = member.getName();</span>
+<span class="fc" id="L729">        node.desc = member.getDescriptor();</span>
+<span class="fc" id="L730">        node.exceptions = Lists.newLinkedList();</span>
+
+<span class="fc bfc" id="L732" title="All 2 branches covered.">        for (IClassType exception : member.getThrowsClause())</span>
+        {
+<span class="fc" id="L734">            node.exceptions.add(Utils.internalName(exception));</span>
+<span class="fc" id="L735">        }</span>
+
+<span class="fc" id="L737">        return node;</span>
+    }
+
+    /**
+     * This method creates a bytecode instruction that invokes a method.
+     *
+     * @param code is the list of bytecode instruction to append the instruction onto.
+     * @param opcode is the opcode of the new instruction.
+     * @param owner is the type where the method is declared.
+     * @param returns is the return type of the method.
+     * @param name is the name of the method.
+     * @param parameters are the types of the method's parameters.
+     */
+    public static void invoke(final InsnList code,
+                              final int opcode,
+                              final Class owner,
+                              final Class returns,
+                              final String name,
+                              final Class... parameters)
+    {
+<span class="fc" id="L757">        final StringBuilder descriptor = new StringBuilder();</span>
+
+<span class="fc" id="L759">        descriptor.append(&quot;(&quot;);</span>
+        {
+<span class="fc bfc" id="L761" title="All 2 branches covered.">            for (Class param : parameters)</span>
+            {
+<span class="fc" id="L763">                descriptor.append(Type.getDescriptor(param));</span>
+            }
+        }
+<span class="fc" id="L766">        descriptor.append(&quot;)&quot;);</span>
+
+<span class="fc" id="L768">        descriptor.append(Type.getDescriptor(returns));</span>
+
+<span class="fc" id="L770">        final Type type = Type.getType(owner);</span>
+
+<span class="fc" id="L772">        code.add(new MethodInsnNode(opcode, type.getInternalName(), name, descriptor.toString()));</span>
+<span class="fc" id="L773">    }</span>
+
+    /**
+     * This method generates bytecode that makes a list immutable.
+     *
+     * @param code is the list of bytecode instructions to append the instructions onto.
+     */
+    public static void makeListImmutable(final InsnList code)
+    {
+<span class="fc" id="L782">        Utils.invoke(code,</span>
+                     Opcodes.INVOKESTATIC,
+                     Helpers.class,
+                     List.class,
+                     &quot;newImmutableList&quot;,
+                     Iterable.class);
+<span class="fc" id="L788">    }</span>
+
+    /**
+     * This method generates bytecode that creates an immutable map from two lists.
+     *
+     * &lt;p&gt;
+     * The map will preserve the order of the keys.
+     * &lt;/p&gt;
+     *
+     * @param code is the list of bytecode instructions to append the instructions onto.
+     */
+    public static void createImmutableMap(final InsnList code)
+    {
+<span class="nc" id="L801">        Utils.invoke(code,</span>
+                     Opcodes.INVOKESTATIC,
+                     Helpers.class,
+                     Map.class,
+                     &quot;newImmutableMap&quot;,
+                     List.class,
+                     List.class);
+<span class="nc" id="L808">    }</span>
+
+    /**
+     * This method generates the bytecode necessary to load the current thread's
+     * argument-stack onto the operand-stack.
+     *
+     * @param code is the code being generated.
+     */
+    public static void loadArgumentStack(final InsnList code)
+    {
+<span class="fc" id="L818">        code.add(new MethodInsnNode(Opcodes.INVOKESTATIC,</span>
+                                    &quot;autumn/lang/internals/ArgumentStack&quot;,
+                                    &quot;getThreadStack&quot;,
+                                    &quot;()Lautumn/lang/internals/ArgumentStack;&quot;));
+<span class="fc" id="L822">    }</span>
+
+    /**
+     * This method adds a LineNumberNode to a list of bytecode instructions.
+     *
+     * @param code is the bytecode being generated.
+     * @param construct is the construct that provides the line number.
+     */
+    public static void addLineNumber(final InsnList code,
+                                     final IConstruct construct)
+    {
+<span class="pc bpc" id="L833" title="1 of 2 branches missed.">        if (construct.getLocation() == null)</span>
+        {
+<span class="nc" id="L835">            return;</span>
+        }
+
+<span class="fc" id="L838">        final LabelNode label = new LabelNode();</span>
+
+<span class="fc" id="L840">        code.add(label);</span>
+<span class="fc" id="L841">        code.add(new LineNumberNode(construct.getLocation().getLine(), label));</span>
+<span class="fc" id="L842">    }</span>
+
+    /**
+     * This method conditionally generates a checked-cast instruction.
+     *
+     * &lt;p&gt;
+     * In other words, this method will not generate a clearly unnecessary or impossible cast.
+     * &lt;/p&gt;
+     *
+     * @param value is the type of the value being cast.
+     * @param type is the type to cast the value to.
+     * @return the generated instruction.
+     */
+    public static AbstractInsnNode conditionalCast(final IExpressionType value,
+                                                   final IExpressionType type)
+    {
+<span class="pc bpc" id="L858" title="1 of 4 branches missed.">        if (value.isReferenceType() == false || type.isReferenceType() == false)</span>
+        {
+<span class="fc" id="L860">            return new InsnNode(Opcodes.NOP);</span>
+        }
+<span class="fc bfc" id="L862" title="All 2 branches covered.">        else if (value.isSubtypeOf(type))</span>
+        {
+<span class="fc" id="L864">            return new InsnNode(Opcodes.NOP);</span>
+        }
+        else
+        {
+<span class="fc" id="L868">            return new TypeInsnNode(Opcodes.CHECKCAST, Utils.internalName((IReferenceType) type));</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

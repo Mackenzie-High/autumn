@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AbstractNumericLiteral.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.mackenziehigh:autumn</a> &gt; <a href="index.source.html" class="el_package">autumn.lang.compiler.ast.literals</a> &gt; <span class="el_source">AbstractNumericLiteral.java</span></div><h1>AbstractNumericLiteral.java</h1><pre class="source lang-java linenums">package autumn.lang.compiler.ast.literals;
+
+import com.google.common.base.Preconditions;
+import com.mackenziehigh.autumn.resources.Finished;
+
+/**
+ * Instances of this class represent numeric literals in Autumn source-code.
+ *
+ * @author Mackenzie High
+ */
+@Finished(&quot;2014/07/12&quot;)
+public abstract class AbstractNumericLiteral&lt;T&gt;
+{
+    /**
+     * This method converts this literal to its numeric equivalent.
+     *
+     * @return the numeric representation of this literal,
+     * or null, if a lossless conversion is not possible.
+     */
+    public abstract T value();
+
+    /**
+     * This method determines whether this literal would be recognized by the parser.
+     *
+     * &lt;p&gt;
+     * Note: Under some circumstances, a literal may be malformed and parse-able.
+     * &lt;/p&gt;
+     *
+     * @return true, iff the parser would recognize this literal.
+     */
+    public abstract boolean isParsable();
+
+    private final String source;
+
+    /**
+     * Sole Constructor.
+     *
+     * @param source is this literal as it appeared in the source-code.
+     * @throws NullPointerException if source is null.
+     * @throws IllegalArgumentException if source.length() equals zero.
+     */
+    public AbstractNumericLiteral(final String source)
+<span class="fc" id="L43">    {</span>
+<span class="fc" id="L44">        Preconditions.checkNotNull(source);</span>
+<span class="pc bpc" id="L45" title="1 of 2 branches missed.">        Preconditions.checkArgument(source.length() &gt; 0);</span>
+
+<span class="fc" id="L47">        this.source = source;</span>
+<span class="fc" id="L48">    }</span>
+
+    /**
+     * This method returns the source-code representation of this literal.
+     *
+     * @return this literal, as it appeared in the source code.
+     */
+    public final String source()
+    {
+<span class="fc" id="L57">        return source;</span>
+    }
+
+    /**
+     * This method returns the source-code representation of this literal with underscores removed.
+     *
+     * @return this literal, as it appeared in the source code, excluding any underscores.
+     */
+    public final String sourceWithoutUnderscores()
+    {
+<span class="fc" id="L67">        return source().replace(&quot;_&quot;, &quot;&quot;);</span>
+    }
+
+    /**
+     * This method determines whether this literal can be converted to a number accurately.
+     *
+     * @return true, if a conversion would lose information.
+     */
+    public final boolean isMalformed()
+    {
+<span class="fc bfc" id="L77" title="All 2 branches covered.">        return value() == null;</span>
+    }
+
+    /**
+     * This method returns a string representation of this literal.
+     *
+     * @return &lt;code&gt;source()&lt;/code&gt;
+     */
+    @Override
+    public final String toString()
+    {
+<span class="fc" id="L88">        return source();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

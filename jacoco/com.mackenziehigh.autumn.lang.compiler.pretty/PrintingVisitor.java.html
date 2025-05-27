@@ -1,0 +1,1885 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PrintingVisitor.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.mackenziehigh:autumn</a> &gt; <a href="index.source.html" class="el_package">com.mackenziehigh.autumn.lang.compiler.pretty</a> &gt; <span class="el_source">PrintingVisitor.java</span></div><h1>PrintingVisitor.java</h1><pre class="source lang-java linenums">package com.mackenziehigh.autumn.lang.compiler.pretty;
+
+import autumn.lang.compiler.ast.commons.ConstructList;
+import autumn.lang.compiler.ast.commons.IBinaryOperation;
+import autumn.lang.compiler.ast.commons.IConstruct;
+import autumn.lang.compiler.ast.commons.IConversionOperation;
+import autumn.lang.compiler.ast.commons.IExpression;
+import autumn.lang.compiler.ast.commons.IRecord;
+import autumn.lang.compiler.ast.commons.IStatement;
+import autumn.lang.compiler.ast.commons.IUnaryOperation;
+import autumn.lang.compiler.ast.nodes.*;
+import autumn.lang.compiler.exceptions.IncompleteNodeException;
+import autumn.lang.compiler.exceptions.RepeatedNodeException;
+import autumn.lang.compiler.exceptions.UnprintableNodeException;
+import autumn.util.F;
+import com.google.common.base.Preconditions;
+import com.google.common.base.Strings;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
+import com.mackenziehigh.autumn.resources.Finished;
+import java.util.List;
+import java.util.Set;
+
+/**
+ * An instance of this class is a simple pretty-printer of Abstract Syntax Trees.
+ *
+ * &lt;p&gt;
+ * This visitor throws a RepeatedNodeException, if an AST node appears more than once in an AST.
+ * &lt;/p&gt;
+ *
+ * &lt;p&gt;
+ * This visitor throws a IncompleteNodeException, if an AST is incomplete.
+ * &lt;/p&gt;
+ *
+ * &lt;p&gt;
+ * This visitor throws an UnprintableNodeException, if an AST node is unprintable.
+ * &lt;/p&gt;
+ *
+ * &lt;p&gt;
+ * This visitor records the AST nodes that it visits.
+ * This record can be obtained via the visited() method in order to linearize the AST.
+ * &lt;/p&gt;
+ *
+ * @author Mackenzie High
+ */
+<span class="fc" id="L47">@Finished(&quot;2014/07/12&quot;)</span>
+<span class="fc" id="L48">public final class PrintingVisitor</span>
+        implements IAstVisitor
+{
+    private static final String ID_REGEX = &quot;([A-Za-z_$][A-Za-z_$0-9]*)&quot;;
+
+<span class="fc" id="L53">    private final CurlyPrinter p = new CurlyPrinter();</span>
+
+<span class="fc" id="L55">    private final Set&lt;IConstruct&gt; visited = Sets.newIdentityHashSet();</span>
+
+<span class="fc" id="L57">    private final List&lt;IConstruct&gt; linearized = Lists.newLinkedList();</span>
+
+    /**
+     * This method returns all the AST nodes that were visited thus far,
+     * in the order they were visited.
+     *
+     * @return the aforedescribed nodes.
+     */
+    public List&lt;IConstruct&gt; visited()
+    {
+<span class="fc" id="L67">        return ImmutableList.copyOf(linearized);</span>
+    }
+
+    /**
+     * This method retrieves the pretty printable string that was created.
+     *
+     * &lt;p&gt;
+     * Note: Calling this method causes the internal state of this object to be reset.
+     * &lt;/p&gt;
+     *
+     * @return the aforedescribed string.
+     */
+    public String buildString()
+    {
+<span class="fc" id="L81">        visited.clear();</span>
+
+<span class="fc" id="L83">        final String result = p.buildString();</span>
+
+<span class="fc" id="L85">        return result;</span>
+    }
+
+    /**
+     * The method requires that a specific AST node exists.
+     *
+     * @param parent is the parent of the node that must exist.
+     * @param node is the node that must exist.
+     * @throws IncompleteNodeException if the node is null (i.e. does not exist).
+     */
+    private void require(final IConstruct parent,
+                         final IConstruct node)
+    {
+<span class="pc bpc" id="L98" title="1 of 2 branches missed.">        assert parent != null;</span>
+
+<span class="pc bpc" id="L100" title="1 of 2 branches missed.">        if (node == null)</span>
+        {
+<span class="nc" id="L102">            throw new IncompleteNodeException(parent);</span>
+        }
+<span class="fc" id="L104">    }</span>
+
+    /**
+     * The method requires that a list of AST nodes exist.
+     *
+     * @param parent is the parent of the nodes that must exist.
+     * @param list is the list that must exist and contain node that exist.
+     * @throws IncompleteNodeException if the the list or any of its element do not exist.
+     */
+    private void require(final IConstruct parent,
+                         final ConstructList&lt;? extends IConstruct&gt; list)
+    {
+<span class="pc bpc" id="L116" title="1 of 2 branches missed.">        assert parent != null;</span>
+
+<span class="pc bpc" id="L118" title="2 of 4 branches missed.">        if (list == null || list.asMutableList().contains(null))</span>
+        {
+<span class="nc" id="L120">            throw new IncompleteNodeException(parent);</span>
+        }
+<span class="fc" id="L122">    }</span>
+
+    /**
+     * The method reports that an AST node is missing, unless a condition is fulfilled.
+     *
+     * @param parent is the parent of the nodes that must exist.
+     * @param condition is the condition that must be fulfilled.
+     * @throws IncompleteNodeException if the condition is false.
+     */
+    private void require(final IConstruct parent,
+                         final boolean condition)
+    {
+<span class="pc bpc" id="L134" title="1 of 2 branches missed.">        assert parent != null;</span>
+
+<span class="pc bpc" id="L136" title="1 of 2 branches missed.">        if (condition == false)</span>
+        {
+<span class="nc" id="L138">            throw new IncompleteNodeException(parent);</span>
+        }
+<span class="fc" id="L140">    }</span>
+
+    /**
+     * This method records the visitation of an AST node.
+     *
+     * @param node is the node being visited.
+     * @throws RepeatedNodeException if the node was already visited once.
+     * @throws NullPointerException if the node is does not exist (i.e. null).
+     * @throws NullPointerException if the node's location information is missing.
+     */
+    private void record(final IConstruct node)
+    {
+<span class="fc" id="L152">        Preconditions.checkNotNull(node, &quot;An abstract-syntax-tree node is missing.&quot;);</span>
+
+<span class="pc bpc" id="L154" title="1 of 2 branches missed.">        if (node.getLocation() == null)</span>
+        {
+<span class="nc" id="L156">            throw new IncompleteNodeException(node);</span>
+        }
+
+<span class="pc bpc" id="L159" title="1 of 2 branches missed.">        if (visited.contains(node))</span>
+        {
+<span class="nc" id="L161">            throw new RepeatedNodeException(node);</span>
+        }
+
+<span class="fc" id="L164">        visited.add(node);</span>
+<span class="fc" id="L165">        linearized.add(node);</span>
+
+        // The node files are auto-generated.
+        // Therefore, it is not necessary to test the equals(Object) of hashCode() methods.
+        // However, the lack of tests messes up the unit-test coverage statistics.
+        // Thus, these assertions will prevent that issue.
+<span class="pc bpc" id="L171" title="1 of 2 branches missed.">        assert node.toString().equals(node.toString());</span>
+<span class="pc bpc" id="L172" title="1 of 2 branches missed.">        assert node.getLocation().equals(node.getLocation());</span>
+<span class="pc bpc" id="L173" title="1 of 2 branches missed.">        assert node.getLocation().hashCode() == node.getLocation().hashCode();</span>
+<span class="pc bpc" id="L174" title="1 of 2 branches missed.">        assert node.getLocation().toString().equals(node.getLocation().toString());</span>
+<span class="fc" id="L175">    }</span>
+
+    /**
+     * This method reports that an AST node is unprintable, unless a condition is fulfilled.
+     *
+     * @param node is the node that may be unprintable.
+     * @param condition is the condition that must be true for the node to be printable.
+     * @throws UnprintableNodeException if the node is unprintable.
+     */
+    private void reportUnprintableNode(final IConstruct node,
+                                       final boolean condition)
+    {
+<span class="pc bpc" id="L187" title="1 of 2 branches missed.">        if (condition == false)</span>
+        {
+<span class="nc" id="L189">            throw new UnprintableNodeException(node);</span>
+        }
+<span class="fc" id="L191">    }</span>
+
+    @Override
+    public void visit(final autumn.lang.compiler.ast.nodes.Module object)
+    {
+<span class="fc" id="L196">        record(object);</span>
+
+<span class="fc" id="L198">        require(object, object.getImportDirectives());</span>
+<span class="fc" id="L199">        require(object, object.getModuleDirectives());</span>
+<span class="fc" id="L200">        require(object, object.getAnnotations());</span>
+<span class="fc" id="L201">        require(object, object.getExceptions());</span>
+<span class="fc" id="L202">        require(object, object.getEnums());</span>
+<span class="fc" id="L203">        require(object, object.getDesigns());</span>
+<span class="fc" id="L204">        require(object, object.getStructs());</span>
+<span class="fc" id="L205">        require(object, object.getTuples());</span>
+<span class="fc" id="L206">        require(object, object.getFunctors());</span>
+<span class="fc" id="L207">        require(object, object.getFunctions());</span>
+
+<span class="fc bfc" id="L209" title="All 2 branches covered.">        for (ModuleDirective x : object.getModuleDirectives())</span>
+        {
+<span class="fc" id="L211">            x.accept(this);</span>
+<span class="fc" id="L212">        }</span>
+
+<span class="fc" id="L214">        p.addEmptyLine();</span>
+
+<span class="fc bfc" id="L216" title="All 2 branches covered.">        for (ImportDirective x : object.getImportDirectives())</span>
+        {
+<span class="fc" id="L218">            x.accept(this);</span>
+<span class="fc" id="L219">        }</span>
+
+<span class="fc" id="L221">        p.addEmptyLine();</span>
+
+<span class="fc bfc" id="L223" title="All 2 branches covered.">        for (AnnotationDefinition x : object.getAnnotations())</span>
+        {
+<span class="fc" id="L225">            x.accept(this);</span>
+<span class="fc" id="L226">        }</span>
+
+<span class="fc" id="L228">        p.addEmptyLine();</span>
+
+<span class="fc bfc" id="L230" title="All 2 branches covered.">        for (ExceptionDefinition x : object.getExceptions())</span>
+        {
+<span class="fc" id="L232">            x.accept(this);</span>
+<span class="fc" id="L233">        }</span>
+
+<span class="fc" id="L235">        p.addEmptyLine();</span>
+
+<span class="fc bfc" id="L237" title="All 2 branches covered.">        for (EnumDefinition x : object.getEnums())</span>
+        {
+<span class="fc" id="L239">            x.accept(this);</span>
+<span class="fc" id="L240">        }</span>
+
+<span class="fc" id="L242">        p.addEmptyLine();</span>
+
+<span class="fc bfc" id="L244" title="All 2 branches covered.">        for (DesignDefinition x : object.getDesigns())</span>
+        {
+<span class="fc" id="L246">            x.accept(this);</span>
+<span class="fc" id="L247">        }</span>
+
+<span class="fc" id="L249">        p.addEmptyLine();</span>
+
+<span class="fc bfc" id="L251" title="All 2 branches covered.">        for (TupleDefinition x : object.getTuples())</span>
+        {
+<span class="fc" id="L253">            x.accept(this);</span>
+<span class="fc" id="L254">        }</span>
+
+<span class="fc" id="L256">        p.addEmptyLine();</span>
+
+<span class="fc bfc" id="L258" title="All 2 branches covered.">        for (StructDefinition x : object.getStructs())</span>
+        {
+<span class="fc" id="L260">            x.accept(this);</span>
+<span class="fc" id="L261">        }</span>
+
+<span class="fc" id="L263">        p.addEmptyLine();</span>
+
+<span class="fc bfc" id="L265" title="All 2 branches covered.">        for (FunctorDefinition x : object.getFunctors())</span>
+        {
+<span class="fc" id="L267">            x.accept(this);</span>
+<span class="fc" id="L268">        }</span>
+
+<span class="fc" id="L270">        p.addEmptyLine();</span>
+
+<span class="fc bfc" id="L272" title="All 2 branches covered.">        for (FunctionDefinition x : object.getFunctions())</span>
+        {
+<span class="fc" id="L274">            x.accept(this);</span>
+<span class="fc" id="L275">        }</span>
+
+<span class="fc" id="L277">        p.removeEmptyLines();</span>
+<span class="fc" id="L278">    }</span>
+
+    @Override
+    public void visit(final ModuleDirective object)
+    {
+<span class="fc" id="L283">        record(object);</span>
+
+<span class="fc" id="L285">        require(object, object.getComment());</span>
+<span class="fc" id="L286">        require(object, object.getAnnotations());</span>
+<span class="fc" id="L287">        require(object, object.getNamespace());</span>
+
+<span class="fc" id="L289">        object.getComment().accept(this);</span>
+
+<span class="fc" id="L291">        object.getAnnotations().accept(this);</span>
+
+<span class="fc" id="L293">        p.addLine();</span>
+<span class="fc" id="L294">        p.addText(&quot;module &quot;);</span>
+<span class="fc bfc" id="L295" title="All 2 branches covered.">        if (object.getName() == null)</span>
+        {
+<span class="fc" id="L297">            p.addText(&quot;*&quot;);</span>
+        }
+        else
+        {
+<span class="fc" id="L301">            object.getName().accept(this);</span>
+        }
+<span class="fc" id="L303">        p.addText(&quot; in &quot;);</span>
+<span class="fc" id="L304">        object.getNamespace().accept(this);</span>
+<span class="fc" id="L305">        p.addText(&quot;;&quot;);</span>
+<span class="fc" id="L306">    }</span>
+
+    @Override
+    public void visit(final ImportDirective object)
+    {
+<span class="fc" id="L311">        record(object);</span>
+<span class="fc" id="L312">        require(object, object.getType());</span>
+
+<span class="fc" id="L314">        p.addLine();</span>
+<span class="fc" id="L315">        p.addText(&quot;import &quot;);</span>
+<span class="fc" id="L316">        object.getType().accept(this);</span>
+<span class="fc" id="L317">        p.addText(&quot;;&quot;);</span>
+<span class="fc" id="L318">    }</span>
+
+    @Override
+    public void visit(final AnnotationDefinition object)
+    {
+<span class="fc" id="L323">        record(object);</span>
+<span class="fc" id="L324">        require(object, object.getComment());</span>
+<span class="fc" id="L325">        require(object, object.getAnnotations());</span>
+<span class="fc" id="L326">        require(object, object.getName());</span>
+
+<span class="fc" id="L328">        object.getComment().accept(this);</span>
+
+<span class="fc" id="L330">        object.getAnnotations().accept(this);</span>
+
+<span class="fc" id="L332">        p.addLine();</span>
+<span class="fc" id="L333">        p.addText(&quot;annotation &quot;);</span>
+<span class="fc" id="L334">        object.getName().accept(this);</span>
+<span class="fc" id="L335">        p.addText(&quot;;&quot;);</span>
+
+<span class="fc" id="L337">        p.addEmptyLine();</span>
+<span class="fc" id="L338">    }</span>
+
+    @Override
+    public void visit(final ExceptionDefinition object)
+    {
+<span class="fc" id="L343">        record(object);</span>
+<span class="fc" id="L344">        require(object, object.getComment());</span>
+<span class="fc" id="L345">        require(object, object.getAnnotations());</span>
+<span class="fc" id="L346">        require(object, object.getName());</span>
+<span class="fc" id="L347">        require(object, object.getSuperclass());</span>
+
+<span class="fc" id="L349">        object.getComment().accept(this);</span>
+
+<span class="fc" id="L351">        object.getAnnotations().accept(this);</span>
+
+<span class="fc" id="L353">        p.addLine();</span>
+<span class="fc" id="L354">        p.addText(&quot;exception &quot;);</span>
+<span class="fc" id="L355">        object.getName().accept(this);</span>
+<span class="fc" id="L356">        p.addText(&quot; extends &quot;);</span>
+<span class="fc" id="L357">        object.getSuperclass().accept(this);</span>
+<span class="fc" id="L358">        p.addText(&quot;;&quot;);</span>
+
+<span class="fc" id="L360">        p.addEmptyLine();</span>
+<span class="fc" id="L361">    }</span>
+
+    @Override
+    public void visit(final DesignDefinition object)
+    {
+<span class="fc" id="L366">        visitRecord(&quot;design&quot;, object);</span>
+<span class="fc" id="L367">    }</span>
+
+    @Override
+    public void visit(final TupleDefinition object)
+    {
+<span class="fc" id="L372">        visitRecord(&quot;tuple&quot;, object);</span>
+<span class="fc" id="L373">    }</span>
+
+    @Override
+    public void visit(final StructDefinition object)
+    {
+<span class="fc" id="L378">        visitRecord(&quot;struct&quot;, object);</span>
+<span class="fc" id="L379">    }</span>
+
+    @Override
+    public void visit(final FunctorDefinition object)
+    {
+<span class="fc" id="L384">        record(object);</span>
+<span class="fc" id="L385">        require(object, object.getComment());</span>
+<span class="fc" id="L386">        require(object, object.getAnnotations());</span>
+<span class="fc" id="L387">        require(object, object.getName());</span>
+<span class="fc" id="L388">        require(object, object.getParameters());</span>
+<span class="fc" id="L389">        require(object, object.getReturnType());</span>
+
+<span class="fc" id="L391">        object.getComment().accept(this);</span>
+
+<span class="fc" id="L393">        object.getAnnotations().accept(this);</span>
+
+<span class="fc" id="L395">        p.addLine();</span>
+<span class="fc" id="L396">        p.addText(&quot;functor &quot;);</span>
+<span class="fc" id="L397">        object.getName().accept(this);</span>
+<span class="fc" id="L398">        p.addText(&quot; &quot;);</span>
+<span class="fc" id="L399">        object.getParameters().accept(this);</span>
+<span class="fc" id="L400">        p.addText(&quot; : &quot;);</span>
+<span class="fc" id="L401">        object.getReturnType().accept(this);</span>
+
+<span class="fc bfc" id="L403" title="All 2 branches covered.">        if (object.getSuperclass() != null)</span>
+        {
+<span class="fc" id="L405">            p.addText(&quot; extends &quot;);</span>
+<span class="fc" id="L406">            object.getSuperclass().accept(this);</span>
+        }
+
+<span class="fc" id="L409">        p.addText(&quot;;&quot;);</span>
+
+<span class="fc" id="L411">        p.addEmptyLine();</span>
+<span class="fc" id="L412">    }</span>
+
+    @Override
+    public void visit(final EnumDefinition object)
+    {
+<span class="fc" id="L417">        record(object);</span>
+<span class="fc" id="L418">        require(object, object.getComment());</span>
+<span class="fc" id="L419">        require(object, object.getAnnotations());</span>
+<span class="fc" id="L420">        require(object, object.getName());</span>
+<span class="fc" id="L421">        require(object, object.getConstants());</span>
+
+<span class="fc" id="L423">        object.getComment().accept(this);</span>
+
+<span class="fc" id="L425">        object.getAnnotations().accept(this);</span>
+
+<span class="fc" id="L427">        p.addLine();</span>
+<span class="fc" id="L428">        p.addText(&quot;enum &quot;);</span>
+<span class="fc" id="L429">        object.getName().accept(this);</span>
+<span class="fc" id="L430">        p.addText(&quot; &quot;);</span>
+
+<span class="fc" id="L432">        printList(&quot;(&quot;, object.getConstants(), &quot;, &quot;, &quot;)&quot;);</span>
+
+<span class="fc" id="L434">        p.addText(&quot;;&quot;);</span>
+
+<span class="fc" id="L436">        p.addEmptyLine();</span>
+<span class="fc" id="L437">    }</span>
+
+    @Override
+    public void visit(final FunctionDefinition object)
+    {
+<span class="fc" id="L442">        record(object);</span>
+<span class="fc" id="L443">        require(object, object.getComment());</span>
+<span class="fc" id="L444">        require(object, object.getAnnotations());</span>
+<span class="fc" id="L445">        require(object, object.getName());</span>
+<span class="fc" id="L446">        require(object, object.getParameters());</span>
+<span class="fc" id="L447">        require(object, object.getReturnType());</span>
+<span class="fc" id="L448">        require(object, object.getBody());</span>
+
+<span class="fc" id="L450">        object.getComment().accept(this);</span>
+
+<span class="fc" id="L452">        object.getAnnotations().accept(this);</span>
+
+<span class="fc" id="L454">        p.addLine();</span>
+<span class="fc" id="L455">        p.addText(&quot;defun &quot;);</span>
+<span class="fc" id="L456">        object.getName().accept(this);</span>
+<span class="fc" id="L457">        p.addText(&quot; &quot;);</span>
+<span class="fc" id="L458">        object.getParameters().accept(this);</span>
+<span class="fc" id="L459">        p.addText(&quot; : &quot;);</span>
+<span class="fc" id="L460">        object.getReturnType().accept(this);</span>
+
+<span class="fc" id="L462">        object.getBody().accept(this);</span>
+
+<span class="fc" id="L464">        p.addEmptyLine();</span>
+<span class="fc" id="L465">    }</span>
+
+    @Override
+    public void visit(final IfStatement object)
+    {
+<span class="fc" id="L470">        record(object);</span>
+<span class="fc" id="L471">        require(object, object.getMainCase());</span>
+
+<span class="fc" id="L473">        p.addLine();</span>
+<span class="fc" id="L474">        p.addText(&quot;if &quot;);</span>
+<span class="fc" id="L475">        object.getMainCase().accept(this);</span>
+
+<span class="fc bfc" id="L477" title="All 2 branches covered.">        for (ConditionalCase elif_case : object.getElifCases())</span>
+        {
+<span class="fc" id="L479">            p.addLine();</span>
+<span class="fc" id="L480">            p.addText(&quot;elif &quot;);</span>
+<span class="fc" id="L481">            elif_case.accept(this);</span>
+<span class="fc" id="L482">        }</span>
+
+<span class="fc bfc" id="L484" title="All 2 branches covered.">        if (object.getElseCase() != null)</span>
+        {
+<span class="fc" id="L486">            p.addLine();</span>
+<span class="fc" id="L487">            p.addText(&quot;else&quot;);</span>
+
+<span class="fc" id="L489">            object.getElseCase().accept(this);</span>
+        }
+
+<span class="fc" id="L492">        p.addEmptyLine();</span>
+<span class="fc" id="L493">    }</span>
+
+    @Override
+    public void visit(final WhenStatement object)
+    {
+<span class="fc" id="L498">        record(object);</span>
+<span class="fc" id="L499">        require(object, object.getCondition());</span>
+<span class="fc" id="L500">        require(object, object.getBody());</span>
+
+<span class="fc" id="L502">        p.addLine();</span>
+<span class="fc" id="L503">        p.addText(&quot;when (&quot;);</span>
+<span class="fc" id="L504">        object.getCondition().accept(this);</span>
+<span class="fc" id="L505">        p.addText(&quot;) then&quot;);</span>
+<span class="fc" id="L506">        p.addOpeningBracket();</span>
+<span class="fc" id="L507">        object.getBody().accept(this);</span>
+<span class="fc" id="L508">        p.removeEmptyLines();</span>
+<span class="fc" id="L509">        p.addClosingBracket();</span>
+<span class="fc" id="L510">        p.addEmptyLine();</span>
+<span class="fc" id="L511">    }</span>
+
+    @Override
+    public void visit(final GotoStatement object)
+    {
+<span class="fc" id="L516">        record(object);</span>
+<span class="fc" id="L517">        require(object, object.getLabel());</span>
+
+<span class="fc" id="L519">        p.addLine();</span>
+<span class="fc" id="L520">        p.addText(&quot;goto &quot;);</span>
+<span class="fc" id="L521">        object.getLabel().accept(this);</span>
+<span class="fc" id="L522">        p.addText(&quot;;&quot;);</span>
+<span class="fc" id="L523">        p.addEmptyLine();</span>
+<span class="fc" id="L524">    }</span>
+
+    @Override
+    public void visit(final MarkerStatement object)
+    {
+<span class="fc" id="L529">        record(object);</span>
+<span class="fc" id="L530">        require(object, object.getLabel());</span>
+
+<span class="fc" id="L532">        p.addLine();</span>
+<span class="fc" id="L533">        p.addText(&quot;marker &quot;);</span>
+<span class="fc" id="L534">        object.getLabel().accept(this);</span>
+<span class="fc" id="L535">        p.addText(&quot;;&quot;);</span>
+<span class="fc" id="L536">        p.addEmptyLine();</span>
+<span class="fc" id="L537">    }</span>
+
+    @Override
+    public void visit(final BranchStatement object)
+    {
+<span class="fc" id="L542">        record(object);</span>
+<span class="fc" id="L543">        require(object, object.getIndex());</span>
+<span class="fc" id="L544">        require(object, object.getLabels());</span>
+<span class="fc" id="L545">        require(object, object.getDefaultLabel());</span>
+
+<span class="fc" id="L547">        p.addLine();</span>
+<span class="fc" id="L548">        p.addText(&quot;branch &quot;);</span>
+<span class="fc" id="L549">        p.addText(&quot;(&quot;);</span>
+<span class="fc" id="L550">        object.getIndex().accept(this);</span>
+<span class="fc" id="L551">        p.addText(&quot;)&quot;);</span>
+<span class="fc" id="L552">        p.addText(&quot; &quot;);</span>
+<span class="fc" id="L553">        printList(&quot;(&quot;, object.getLabels(), &quot;, &quot;, &quot;)&quot;);</span>
+<span class="fc" id="L554">        p.addText(&quot; default &quot;);</span>
+<span class="fc" id="L555">        object.getDefaultLabel().accept(this);</span>
+<span class="fc" id="L556">        p.addText(&quot;;&quot;);</span>
+<span class="fc" id="L557">        p.addEmptyLine();</span>
+<span class="fc" id="L558">    }</span>
+
+    @Override
+    public void visit(final ForeverStatement object)
+    {
+<span class="fc" id="L563">        record(object);</span>
+<span class="fc" id="L564">        require(object, object.getBody());</span>
+
+<span class="fc" id="L566">        p.addLine();</span>
+<span class="fc" id="L567">        p.addText(&quot;forever&quot;);</span>
+
+<span class="fc" id="L569">        object.getBody().accept(this);</span>
+
+<span class="fc" id="L571">        p.addEmptyLine();</span>
+<span class="fc" id="L572">    }</span>
+
+    @Override
+    public void visit(final WhileStatement object)
+    {
+<span class="fc" id="L577">        record(object);</span>
+<span class="fc" id="L578">        require(object, object.getCondition());</span>
+<span class="fc" id="L579">        require(object, object.getBody());</span>
+
+<span class="fc" id="L581">        p.addLine();</span>
+<span class="fc" id="L582">        p.addText(&quot;while (&quot;);</span>
+<span class="fc" id="L583">        object.getCondition().accept(this);</span>
+<span class="fc" id="L584">        p.addText(&quot;)&quot;);</span>
+
+<span class="fc" id="L586">        object.getBody().accept(this);</span>
+
+<span class="fc" id="L588">        p.addEmptyLine();</span>
+<span class="fc" id="L589">    }</span>
+
+    @Override
+    public void visit(final UntilStatement object)
+    {
+<span class="fc" id="L594">        record(object);</span>
+<span class="fc" id="L595">        require(object, object.getCondition());</span>
+<span class="fc" id="L596">        require(object, object.getBody());</span>
+
+<span class="fc" id="L598">        p.addLine();</span>
+<span class="fc" id="L599">        p.addText(&quot;until (&quot;);</span>
+<span class="fc" id="L600">        object.getCondition().accept(this);</span>
+<span class="fc" id="L601">        p.addText(&quot;)&quot;);</span>
+
+<span class="fc" id="L603">        object.getBody().accept(this);</span>
+
+<span class="fc" id="L605">        p.addEmptyLine();</span>
+<span class="fc" id="L606">    }</span>
+
+    @Override
+    public void visit(final DoWhileStatement object)
+    {
+<span class="fc" id="L611">        record(object);</span>
+<span class="fc" id="L612">        require(object, object.getBody());</span>
+<span class="fc" id="L613">        require(object, object.getCondition());</span>
+
+<span class="fc" id="L615">        p.addLine();</span>
+<span class="fc" id="L616">        p.addText(&quot;do&quot;);</span>
+
+<span class="fc" id="L618">        object.getBody().accept(this);</span>
+
+<span class="fc" id="L620">        p.addLine();</span>
+<span class="fc" id="L621">        p.addText(&quot;while (&quot;);</span>
+<span class="fc" id="L622">        object.getCondition().accept(this);</span>
+<span class="fc" id="L623">        p.addText(&quot;)&quot;);</span>
+
+<span class="fc" id="L625">        p.addEmptyLine();</span>
+<span class="fc" id="L626">    }</span>
+
+    @Override
+    public void visit(final DoUntilStatement object)
+    {
+<span class="fc" id="L631">        record(object);</span>
+<span class="fc" id="L632">        require(object, object.getBody());</span>
+<span class="fc" id="L633">        require(object, object.getCondition());</span>
+
+<span class="fc" id="L635">        p.addLine();</span>
+<span class="fc" id="L636">        p.addText(&quot;do&quot;);</span>
+
+<span class="fc" id="L638">        object.getBody().accept(this);</span>
+
+<span class="fc" id="L640">        p.addLine();</span>
+<span class="fc" id="L641">        p.addText(&quot;until (&quot;);</span>
+<span class="fc" id="L642">        object.getCondition().accept(this);</span>
+<span class="fc" id="L643">        p.addText(&quot;)&quot;);</span>
+
+<span class="fc" id="L645">        p.addEmptyLine();</span>
+<span class="fc" id="L646">    }</span>
+
+    @Override
+    public void visit(final ForStatement object)
+    {
+<span class="fc" id="L651">        record(object);</span>
+<span class="fc" id="L652">        require(object, object.getVariable());</span>
+<span class="fc" id="L653">        require(object, object.getInitializer());</span>
+<span class="fc" id="L654">        require(object, object.getCondition());</span>
+<span class="fc" id="L655">        require(object, object.getNext());</span>
+<span class="fc" id="L656">        require(object, object.getBody());</span>
+
+<span class="fc" id="L658">        p.addLine();</span>
+<span class="fc" id="L659">        p.addText(&quot;for (&quot;);</span>
+<span class="fc" id="L660">        object.getVariable().accept(this);</span>
+<span class="fc" id="L661">        p.addText(&quot; = &quot;);</span>
+<span class="fc" id="L662">        object.getInitializer().accept(this);</span>
+<span class="fc" id="L663">        p.addText(&quot;; &quot;);</span>
+<span class="fc" id="L664">        object.getCondition().accept(this);</span>
+<span class="fc" id="L665">        p.addText(&quot;; &quot;);</span>
+<span class="fc" id="L666">        object.getNext().accept(this);</span>
+<span class="fc" id="L667">        p.addText(&quot;)&quot;);</span>
+
+<span class="fc" id="L669">        object.getBody().accept(this);</span>
+
+<span class="fc" id="L671">        p.addEmptyLine();</span>
+<span class="fc" id="L672">    }</span>
+
+    @Override
+    public void visit(final ForeachStatement object)
+    {
+<span class="fc" id="L677">        record(object);</span>
+<span class="fc" id="L678">        require(object, object.getVariable());</span>
+<span class="fc" id="L679">        require(object, object.getType());</span>
+<span class="fc" id="L680">        require(object, object.getIterable());</span>
+<span class="fc" id="L681">        require(object, object.getBody());</span>
+
+<span class="fc" id="L683">        p.addLine();</span>
+<span class="fc" id="L684">        p.addText(&quot;foreach (&quot;);</span>
+<span class="fc" id="L685">        object.getVariable().accept(this);</span>
+<span class="fc" id="L686">        p.addText(&quot; : &quot;);</span>
+<span class="fc" id="L687">        object.getType().accept(this);</span>
+<span class="fc" id="L688">        p.addText(&quot; in &quot;);</span>
+<span class="fc" id="L689">        object.getIterable().accept(this);</span>
+<span class="fc" id="L690">        p.addText(&quot;)&quot;);</span>
+
+<span class="fc" id="L692">        object.getBody().accept(this);</span>
+
+<span class="fc" id="L694">        p.addEmptyLine();</span>
+<span class="fc" id="L695">    }</span>
+
+    @Override
+    public void visit(final BreakStatement object)
+    {
+<span class="fc" id="L700">        record(object);</span>
+
+<span class="fc" id="L702">        p.addLine();</span>
+<span class="fc" id="L703">        p.addText(&quot;break;&quot;);</span>
+
+<span class="fc" id="L705">        p.addEmptyLine();</span>
+<span class="fc" id="L706">    }</span>
+
+    @Override
+    public void visit(final ContinueStatement object)
+    {
+<span class="fc" id="L711">        record(object);</span>
+
+<span class="fc" id="L713">        p.addLine();</span>
+<span class="fc" id="L714">        p.addText(&quot;continue;&quot;);</span>
+
+<span class="fc" id="L716">        p.addEmptyLine();</span>
+<span class="fc" id="L717">    }</span>
+
+    @Override
+    public void visit(final RedoStatement object)
+    {
+<span class="fc" id="L722">        record(object);</span>
+
+<span class="fc" id="L724">        p.addLine();</span>
+<span class="fc" id="L725">        p.addText(&quot;redo;&quot;);</span>
+<span class="fc" id="L726">        p.addEmptyLine();</span>
+<span class="fc" id="L727">    }</span>
+
+    @Override
+    public void visit(final VarStatement object)
+    {
+<span class="fc" id="L732">        record(object);</span>
+<span class="fc" id="L733">        require(object, object.getVariable());</span>
+<span class="fc" id="L734">        require(object, object.getValue());</span>
+
+<span class="fc" id="L736">        p.addLine();</span>
+<span class="fc" id="L737">        p.addText(&quot;var &quot;);</span>
+<span class="fc" id="L738">        object.getVariable().accept(this);</span>
+<span class="fc" id="L739">        p.addText(&quot; = &quot;);</span>
+<span class="fc" id="L740">        object.getValue().accept(this);</span>
+<span class="fc" id="L741">        p.addText(&quot;;&quot;);</span>
+<span class="fc" id="L742">        p.addEmptyLine();</span>
+<span class="fc" id="L743">    }</span>
+
+    @Override
+    public void visit(final ValStatement object)
+    {
+<span class="fc" id="L748">        record(object);</span>
+<span class="fc" id="L749">        require(object, object.getVariable());</span>
+<span class="fc" id="L750">        require(object, object.getValue());</span>
+
+<span class="fc" id="L752">        p.addLine();</span>
+<span class="fc" id="L753">        p.addText(&quot;val &quot;);</span>
+<span class="fc" id="L754">        object.getVariable().accept(this);</span>
+<span class="fc" id="L755">        p.addText(&quot; = &quot;);</span>
+<span class="fc" id="L756">        object.getValue().accept(this);</span>
+<span class="fc" id="L757">        p.addText(&quot;;&quot;);</span>
+<span class="fc" id="L758">        p.addEmptyLine();</span>
+<span class="fc" id="L759">    }</span>
+
+    @Override
+    public void visit(final LetStatement object)
+    {
+<span class="fc" id="L764">        record(object);</span>
+<span class="fc" id="L765">        require(object, object.getVariable());</span>
+<span class="fc" id="L766">        require(object, object.getValue());</span>
+
+<span class="fc" id="L768">        p.addLine();</span>
+<span class="fc" id="L769">        p.addText(&quot;let &quot;);</span>
+<span class="fc" id="L770">        object.getVariable().accept(this);</span>
+<span class="fc" id="L771">        p.addText(&quot; = &quot;);</span>
+<span class="fc" id="L772">        object.getValue().accept(this);</span>
+<span class="fc" id="L773">        p.addText(&quot;;&quot;);</span>
+<span class="fc" id="L774">        p.addEmptyLine();</span>
+<span class="fc" id="L775">    }</span>
+
+    @Override
+    public void visit(final LambdaStatement object)
+    {
+<span class="fc" id="L780">        record(object);</span>
+<span class="fc" id="L781">        require(object, object.getVariable());</span>
+<span class="fc" id="L782">        require(object, object.getType());</span>
+<span class="fc" id="L783">        require(object, object.getBody());</span>
+
+<span class="fc" id="L785">        p.addLine();</span>
+<span class="fc" id="L786">        p.addText(&quot;lambda &quot;);</span>
+<span class="fc" id="L787">        object.getVariable().accept(this);</span>
+<span class="fc" id="L788">        p.addText(&quot; : &quot;);</span>
+<span class="fc" id="L789">        object.getType().accept(this);</span>
+<span class="fc" id="L790">        p.addText(&quot; =&gt; &quot;);</span>
+<span class="fc" id="L791">        object.getBody().accept(this);</span>
+<span class="fc" id="L792">        p.addText(&quot;;&quot;);</span>
+<span class="fc" id="L793">        p.addEmptyLine();</span>
+<span class="fc" id="L794">    }</span>
+
+    @Override
+    public void visit(final DelegateStatement object)
+    {
+<span class="fc" id="L799">        record(object);</span>
+<span class="fc" id="L800">        require(object, object.getVariable());</span>
+<span class="fc" id="L801">        require(object, object.getType());</span>
+<span class="fc" id="L802">        require(object, object.getOwner());</span>
+<span class="fc" id="L803">        require(object, object.getMethod());</span>
+
+<span class="fc" id="L805">        p.addLine();</span>
+<span class="fc" id="L806">        p.addText(&quot;delegate &quot;);</span>
+<span class="fc" id="L807">        object.getVariable().accept(this);</span>
+<span class="fc" id="L808">        p.addText(&quot; : &quot;);</span>
+<span class="fc" id="L809">        object.getType().accept(this);</span>
+<span class="fc" id="L810">        p.addText(&quot; =&gt; &quot;);</span>
+<span class="fc" id="L811">        printStaticMemberAccess(object.getOwner(), object.getMethod());</span>
+<span class="fc" id="L812">        p.addText(&quot;;&quot;);</span>
+<span class="fc" id="L813">        p.addEmptyLine();</span>
+<span class="fc" id="L814">    }</span>
+
+    @Override
+    public void visit(final SequenceStatement object)
+    {
+<span class="fc" id="L819">        record(object);</span>
+<span class="fc" id="L820">        require(object, object.getElements());</span>
+
+<span class="fc" id="L822">        p.addOpeningBracket();</span>
+        {
+<span class="fc bfc" id="L824" title="All 2 branches covered.">            for (IStatement x : object.getElements())</span>
+            {
+<span class="fc" id="L826">                x.accept(this);</span>
+<span class="fc" id="L827">            }</span>
+        }
+<span class="fc" id="L829">        p.removeEmptyLines();</span>
+<span class="fc" id="L830">        p.addClosingBracket();</span>
+<span class="fc" id="L831">    }</span>
+
+    @Override
+    public void visit(final ExpressionStatement object)
+    {
+<span class="fc" id="L836">        record(object);</span>
+<span class="fc" id="L837">        require(object, object.getExpression());</span>
+
+<span class="fc" id="L839">        p.addLine();</span>
+<span class="fc" id="L840">        object.getExpression().accept(this);</span>
+<span class="fc" id="L841">        p.addText(&quot;;&quot;);</span>
+<span class="fc" id="L842">        p.addEmptyLine();</span>
+<span class="fc" id="L843">    }</span>
+
+    @Override
+    public void visit(final NopStatement object)
+    {
+<span class="fc" id="L848">        record(object);</span>
+
+<span class="fc" id="L850">        p.addLine();</span>
+<span class="fc" id="L851">        p.addText(&quot;nop;&quot;);</span>
+<span class="fc" id="L852">        p.addEmptyLine();</span>
+<span class="fc" id="L853">    }</span>
+
+    @Override
+    public void visit(final TryCatchStatement object)
+    {
+<span class="fc" id="L858">        record(object);</span>
+<span class="fc" id="L859">        require(object, object.getBody());</span>
+<span class="fc" id="L860">        require(object, object.getHandlers());</span>
+<span class="pc bpc" id="L861" title="1 of 2 branches missed.">        require(object, object.getHandlers().isEmpty() == false);</span>
+
+<span class="fc" id="L863">        p.addLine();</span>
+<span class="fc" id="L864">        p.addText(&quot;try&quot;);</span>
+<span class="fc" id="L865">        object.getBody().accept(this);</span>
+<span class="fc bfc" id="L866" title="All 2 branches covered.">        for (ExceptionHandler x : object.getHandlers())</span>
+        {
+<span class="fc" id="L868">            x.accept(this);</span>
+<span class="fc" id="L869">        }</span>
+<span class="fc" id="L870">        p.addEmptyLine();</span>
+<span class="fc" id="L871">    }</span>
+
+    @Override
+    public void visit(final ExceptionHandler object)
+    {
+<span class="fc" id="L876">        record(object);</span>
+<span class="fc" id="L877">        require(object, object.getVariable());</span>
+<span class="fc" id="L878">        require(object, object.getType());</span>
+<span class="fc" id="L879">        require(object, object.getBody());</span>
+
+<span class="fc" id="L881">        p.addLine();</span>
+<span class="fc" id="L882">        p.addText(&quot;catch (&quot;);</span>
+<span class="fc" id="L883">        object.getVariable().accept(this);</span>
+<span class="fc" id="L884">        p.addText(&quot; : &quot;);</span>
+<span class="fc" id="L885">        object.getType().accept(this);</span>
+<span class="fc" id="L886">        p.addText(&quot;)&quot;);</span>
+<span class="fc" id="L887">        object.getBody().accept(this);</span>
+<span class="fc" id="L888">    }</span>
+
+    @Override
+    public void visit(final ThrowStatement object)
+    {
+<span class="fc" id="L893">        record(object);</span>
+<span class="fc" id="L894">        require(object, object.getValue());</span>
+
+<span class="fc" id="L896">        p.addLine();</span>
+<span class="fc" id="L897">        p.addText(&quot;throw &quot;);</span>
+<span class="fc" id="L898">        object.getValue().accept(this);</span>
+<span class="fc" id="L899">        p.addText(&quot;;&quot;);</span>
+<span class="fc" id="L900">        p.addEmptyLine();</span>
+<span class="fc" id="L901">    }</span>
+
+    @Override
+    public void visit(final AssertStatement object)
+    {
+<span class="fc" id="L906">        record(object);</span>
+<span class="fc" id="L907">        require(object, object.getCondition());</span>
+
+<span class="fc" id="L909">        p.addLine();</span>
+<span class="fc" id="L910">        p.addText(&quot;assert &quot;);</span>
+<span class="fc" id="L911">        object.getCondition().accept(this);</span>
+<span class="fc bfc" id="L912" title="All 2 branches covered.">        if (object.getMessage() != null)</span>
+        {
+<span class="fc" id="L914">            p.addText(&quot; echo &quot;);</span>
+<span class="fc" id="L915">            object.getMessage().accept(this);</span>
+        }
+<span class="fc" id="L917">        p.addText(&quot;;&quot;);</span>
+<span class="fc" id="L918">        p.addEmptyLine();</span>
+<span class="fc" id="L919">    }</span>
+
+    @Override
+    public void visit(final AssumeStatement object)
+    {
+<span class="fc" id="L924">        record(object);</span>
+<span class="fc" id="L925">        require(object, object.getCondition());</span>
+
+<span class="fc" id="L927">        p.addLine();</span>
+<span class="fc" id="L928">        p.addText(&quot;assume &quot;);</span>
+<span class="fc" id="L929">        object.getCondition().accept(this);</span>
+<span class="fc bfc" id="L930" title="All 2 branches covered.">        if (object.getMessage() != null)</span>
+        {
+<span class="fc" id="L932">            p.addText(&quot; echo &quot;);</span>
+<span class="fc" id="L933">            object.getMessage().accept(this);</span>
+        }
+<span class="fc" id="L935">        p.addText(&quot;;&quot;);</span>
+<span class="fc" id="L936">        p.addEmptyLine();</span>
+<span class="fc" id="L937">    }</span>
+
+    @Override
+    public void visit(final ReturnVoidStatement object)
+    {
+<span class="fc" id="L942">        record(object);</span>
+
+<span class="fc" id="L944">        p.addLine();</span>
+<span class="fc" id="L945">        p.addText(&quot;return;&quot;);</span>
+<span class="fc" id="L946">        p.addEmptyLine();</span>
+<span class="fc" id="L947">    }</span>
+
+    @Override
+    public void visit(final ReturnValueStatement object)
+    {
+<span class="fc" id="L952">        record(object);</span>
+<span class="fc" id="L953">        require(object, object.getValue());</span>
+
+<span class="fc" id="L955">        p.addLine();</span>
+<span class="fc" id="L956">        p.addText(&quot;return &quot;);</span>
+<span class="fc" id="L957">        object.getValue().accept(this);</span>
+<span class="fc" id="L958">        p.addText(&quot;;&quot;);</span>
+<span class="fc" id="L959">        p.addEmptyLine();</span>
+<span class="fc" id="L960">    }</span>
+
+    @Override
+    public void visit(final RecurStatement object)
+    {
+<span class="fc" id="L965">        record(object);</span>
+<span class="fc" id="L966">        require(object, object.getArguments());</span>
+
+<span class="fc" id="L968">        p.addLine();</span>
+<span class="fc" id="L969">        p.addText(&quot;recur&quot;);</span>
+<span class="fc bfc" id="L970" title="All 2 branches covered.">        printIf(&quot; &quot;, !object.getArguments().isEmpty());</span>
+<span class="fc" id="L971">        printList(&quot;&quot;, object.getArguments(), &quot;, &quot;, &quot;;&quot;);</span>
+<span class="fc" id="L972">        p.addEmptyLine();</span>
+<span class="fc" id="L973">        p.addEmptyLine();</span>
+<span class="fc" id="L974">    }</span>
+
+    @Override
+    public void visit(final PrognExpression object)
+    {
+<span class="fc" id="L979">        record(object);</span>
+<span class="fc" id="L980">        require(object, object.getElements());</span>
+<span class="pc bpc" id="L981" title="1 of 2 branches missed.">        require(object, object.getElements().isEmpty() == false);</span>
+
+<span class="fc" id="L983">        printList(&quot;progn (&quot;, object.getElements(), &quot;, &quot;, &quot;)&quot;);</span>
+<span class="fc" id="L984">    }</span>
+
+    @Override
+    public void visit(final BooleanDatum object)
+    {
+<span class="fc" id="L989">        record(object);</span>
+
+<span class="fc" id="L991">        p.addText(object.getValue());</span>
+<span class="fc" id="L992">    }</span>
+
+    @Override
+    public void visit(final CharDatum object)
+    {
+<span class="fc" id="L997">        record(object);</span>
+<span class="pc bpc" id="L998" title="1 of 2 branches missed.">        require(object, object.getValue() != null);</span>
+<span class="fc" id="L999">        reportUnprintableNode(object, object.getValue().isParsable());</span>
+
+<span class="fc" id="L1001">        final char value = object.getValue().value();</span>
+
+<span class="pc bpc" id="L1003" title="1 of 4 branches missed.">        if (value &gt;= 33 &amp;&amp; value &lt;= 126)</span>
+        {
+<span class="fc" id="L1005">            p.addText(&quot;'&quot; + value + &quot;'&quot;);</span>
+        }
+        else
+        {
+<span class="fc" id="L1009">            p.addText(Long.toString(value) + &quot;C&quot;);</span>
+        }
+<span class="fc" id="L1011">    }</span>
+
+    @Override
+    public void visit(final ByteDatum object)
+    {
+<span class="fc" id="L1016">        record(object);</span>
+<span class="pc bpc" id="L1017" title="1 of 2 branches missed.">        require(object, object.getValue() != null);</span>
+<span class="fc" id="L1018">        reportUnprintableNode(object, object.getValue().isParsable());</span>
+
+<span class="fc" id="L1020">        p.addText(object.getValue());</span>
+<span class="fc" id="L1021">    }</span>
+
+    @Override
+    public void visit(final ShortDatum object)
+    {
+<span class="fc" id="L1026">        record(object);</span>
+<span class="pc bpc" id="L1027" title="1 of 2 branches missed.">        require(object, object.getValue() != null);</span>
+<span class="fc" id="L1028">        reportUnprintableNode(object, object.getValue().isParsable());</span>
+
+<span class="fc" id="L1030">        p.addText(object.getValue());</span>
+<span class="fc" id="L1031">    }</span>
+
+    @Override
+    public void visit(final IntDatum object)
+    {
+<span class="fc" id="L1036">        record(object);</span>
+<span class="pc bpc" id="L1037" title="1 of 2 branches missed.">        require(object, object.getValue() != null);</span>
+<span class="fc" id="L1038">        reportUnprintableNode(object, object.getValue().isParsable());</span>
+
+<span class="fc" id="L1040">        p.addText(object.getValue());</span>
+<span class="fc" id="L1041">    }</span>
+
+    @Override
+    public void visit(final LongDatum object)
+    {
+<span class="fc" id="L1046">        record(object);</span>
+<span class="pc bpc" id="L1047" title="1 of 2 branches missed.">        require(object, object.getValue() != null);</span>
+<span class="fc" id="L1048">        reportUnprintableNode(object, object.getValue().isParsable());</span>
+
+<span class="fc" id="L1050">        p.addText(object.getValue());</span>
+<span class="fc" id="L1051">    }</span>
+
+    @Override
+    public void visit(final FloatDatum object)
+    {
+<span class="fc" id="L1056">        record(object);</span>
+<span class="pc bpc" id="L1057" title="1 of 2 branches missed.">        require(object, object.getValue() != null);</span>
+<span class="fc" id="L1058">        reportUnprintableNode(object, object.getValue().isParsable());</span>
+
+<span class="fc" id="L1060">        p.addText(object.getValue().source());</span>
+<span class="fc" id="L1061">    }</span>
+
+    @Override
+    public void visit(final DoubleDatum object)
+    {
+<span class="fc" id="L1066">        record(object);</span>
+<span class="pc bpc" id="L1067" title="1 of 2 branches missed.">        require(object, object.getValue() != null);</span>
+<span class="fc" id="L1068">        reportUnprintableNode(object, object.getValue().isParsable());</span>
+
+<span class="fc" id="L1070">        p.addText(object.getValue().source());</span>
+<span class="fc" id="L1071">    }</span>
+
+    @Override
+    public void visit(final BigDecimalDatum object)
+    {
+<span class="fc" id="L1076">        record(object);</span>
+<span class="pc bpc" id="L1077" title="1 of 2 branches missed.">        require(object, object.getValue() != null);</span>
+<span class="fc" id="L1078">        reportUnprintableNode(object, object.getValue().isParsable());</span>
+
+<span class="fc" id="L1080">        p.addText(object.getValue().source());</span>
+<span class="fc" id="L1081">    }</span>
+
+    @Override
+    public void visit(final BigIntegerDatum object)
+    {
+<span class="fc" id="L1086">        record(object);</span>
+<span class="pc bpc" id="L1087" title="1 of 2 branches missed.">        require(object, object.getValue() != null);</span>
+<span class="fc" id="L1088">        reportUnprintableNode(object, object.getValue().isParsable());</span>
+
+<span class="fc" id="L1090">        p.addText(object.getValue().source());</span>
+<span class="fc" id="L1091">    }</span>
+
+    @Override
+    public void visit(final StringDatum object)
+    {
+<span class="fc" id="L1096">        record(object);</span>
+<span class="pc bpc" id="L1097" title="1 of 2 branches missed.">        require(object, object.getValue() != null);</span>
+<span class="pc bpc" id="L1098" title="1 of 2 branches missed.">        reportUnprintableNode(object, object.getValue().contains(&quot;'''&quot;) == false);</span>
+
+<span class="fc" id="L1100">        final String value = object.getValue();</span>
+
+<span class="fc bfc" id="L1102" title="All 2 branches covered.">        p.addText(object.getVerbatim() ? &quot;@&quot; : &quot;&quot;);</span>
+<span class="fc" id="L1103">        p.addText(&quot;'''&quot;);</span>
+<span class="fc" id="L1104">        p.addText(value);</span>
+<span class="fc" id="L1105">        p.addText(&quot;'''&quot;);</span>
+<span class="fc" id="L1106">    }</span>
+
+    @Override
+    public void visit(final NullDatum object)
+    {
+<span class="fc" id="L1111">        record(object);</span>
+
+<span class="fc" id="L1113">        p.addText(&quot;null&quot;);</span>
+<span class="fc" id="L1114">    }</span>
+
+    @Override
+    public void visit(final VariableDatum object)
+    {
+<span class="fc" id="L1119">        record(object);</span>
+<span class="fc" id="L1120">        require(object, object.getVariable());</span>
+
+<span class="fc" id="L1122">        object.getVariable().accept(this);</span>
+<span class="fc" id="L1123">    }</span>
+
+    @Override
+    public void visit(final ClassDatum object)
+    {
+<span class="fc" id="L1128">        record(object);</span>
+<span class="fc" id="L1129">        require(object, object.getType());</span>
+
+<span class="fc" id="L1131">        p.addText(&quot;(class &quot;);</span>
+<span class="fc" id="L1132">        object.getType().accept(this);</span>
+<span class="fc" id="L1133">        p.addText(&quot;)&quot;);</span>
+<span class="fc" id="L1134">    }</span>
+
+    @Override
+    public void visit(final ListExpression object)
+    {
+<span class="fc" id="L1139">        record(object);</span>
+<span class="fc" id="L1140">        require(object, object.getElements());</span>
+
+<span class="fc" id="L1142">        printList(&quot;[ &quot;, object.getElements(), &quot;, &quot;, &quot; ]&quot;);</span>
+<span class="fc" id="L1143">    }</span>
+
+    @Override
+    public void visit(final ListComprehensionExpression object)
+    {
+<span class="fc" id="L1148">        record(object);</span>
+<span class="fc" id="L1149">        require(object, object.getModifier());</span>
+<span class="fc" id="L1150">        require(object, object.getVariable());</span>
+<span class="fc" id="L1151">        require(object, object.getType());</span>
+<span class="fc" id="L1152">        require(object, object.getIterable());</span>
+
+<span class="fc" id="L1154">        p.addText(&quot;[&quot;);</span>
+<span class="fc" id="L1155">        object.getModifier().accept(this);</span>
+<span class="fc" id="L1156">        p.addText(&quot; for &quot;);</span>
+<span class="fc" id="L1157">        object.getVariable().accept(this);</span>
+<span class="fc" id="L1158">        p.addText(&quot; : &quot;);</span>
+<span class="fc" id="L1159">        object.getType().accept(this);</span>
+<span class="fc" id="L1160">        p.addText(&quot; in &quot;);</span>
+<span class="fc" id="L1161">        object.getIterable().accept(this);</span>
+
+<span class="fc bfc" id="L1163" title="All 2 branches covered.">        if (object.getCondition() != null)</span>
+        {
+<span class="fc" id="L1165">            p.addText(&quot; if &quot;);</span>
+<span class="fc" id="L1166">            object.getCondition().accept(this);</span>
+        }
+
+<span class="fc" id="L1169">        p.addText(&quot;]&quot;);</span>
+<span class="fc" id="L1170">    }</span>
+
+    @Override
+    public void visit(final DispatchExpression object)
+    {
+<span class="fc" id="L1175">        record(object);</span>
+<span class="fc" id="L1176">        require(object, object.getName());</span>
+<span class="fc" id="L1177">        require(object, object.getArguments());</span>
+
+<span class="fc" id="L1179">        p.addText(&quot;dispatch &quot;);</span>
+<span class="fc" id="L1180">        object.getName().accept(this);</span>
+<span class="fc" id="L1181">        p.addText(&quot; &quot;);</span>
+<span class="fc" id="L1182">        printList(&quot;(&quot;, object.getArguments(), &quot;, &quot;, &quot;)&quot;);</span>
+<span class="fc" id="L1183">    }</span>
+
+    @Override
+    public void visit(final CallStaticMethodExpression object)
+    {
+<span class="fc" id="L1188">        record(object);</span>
+<span class="fc" id="L1189">        require(object, object.getName());</span>
+<span class="fc" id="L1190">        require(object, object.getArguments());</span>
+
+<span class="fc" id="L1192">        p.addText(&quot;call &quot;);</span>
+<span class="fc" id="L1193">        printStaticMemberAccess(object.getOwner(), object.getName());</span>
+<span class="fc" id="L1194">        p.addText(&quot; &quot;);</span>
+<span class="fc" id="L1195">        printList(&quot;(&quot;, object.getArguments(), &quot;, &quot;, &quot;)&quot;);</span>
+<span class="fc" id="L1196">    }</span>
+
+    @Override
+    public void visit(final CallMethodExpression object)
+    {
+<span class="fc" id="L1201">        record(object);</span>
+<span class="fc" id="L1202">        require(object, object.getOwner());</span>
+<span class="fc" id="L1203">        require(object, object.getName());</span>
+<span class="fc" id="L1204">        require(object, object.getArguments());</span>
+
+<span class="fc" id="L1206">        p.addText(&quot;call &quot;);</span>
+<span class="fc" id="L1207">        printInstanceMemberAccess(object.getOwner(), object.getName());</span>
+<span class="fc" id="L1208">        p.addText(&quot; &quot;);</span>
+<span class="fc" id="L1209">        printList(&quot;(&quot;, object.getArguments(), &quot;, &quot;, &quot;)&quot;);</span>
+<span class="fc" id="L1210">    }</span>
+
+    @Override
+    public void visit(final SetStaticFieldExpression object)
+    {
+<span class="fc" id="L1215">        record(object);</span>
+<span class="fc" id="L1216">        require(object, object.getOwner());</span>
+<span class="fc" id="L1217">        require(object, object.getName());</span>
+<span class="fc" id="L1218">        require(object, object.getValue());</span>
+
+<span class="fc" id="L1220">        p.addText(&quot;field &quot;);</span>
+<span class="fc" id="L1221">        printStaticMemberAccess(object.getOwner(), object.getName());</span>
+<span class="fc" id="L1222">        p.addText(&quot; = &quot;);</span>
+<span class="fc" id="L1223">        object.getValue().accept(this);</span>
+<span class="fc" id="L1224">    }</span>
+
+    @Override
+    public void visit(final GetStaticFieldExpression object)
+    {
+<span class="fc" id="L1229">        record(object);</span>
+<span class="fc" id="L1230">        require(object, object.getOwner());</span>
+<span class="fc" id="L1231">        require(object, object.getName());</span>
+
+<span class="fc" id="L1233">        p.addText(&quot;field &quot;);</span>
+<span class="fc" id="L1234">        printStaticMemberAccess(object.getOwner(), object.getName());</span>
+<span class="fc" id="L1235">    }</span>
+
+    @Override
+    public void visit(final NewExpression object)
+    {
+<span class="fc" id="L1240">        record(object);</span>
+<span class="fc" id="L1241">        require(object, object.getType());</span>
+<span class="fc" id="L1242">        require(object, object.getArguments());</span>
+
+<span class="fc" id="L1244">        p.addText(&quot;new &quot;);</span>
+<span class="fc" id="L1245">        object.getType().accept(this);</span>
+<span class="fc" id="L1246">        p.addText(&quot; &quot;);</span>
+<span class="fc" id="L1247">        printList(&quot;(&quot;, object.getArguments(), &quot;, &quot;, &quot;)&quot;);</span>
+<span class="fc" id="L1248">    }</span>
+
+    @Override
+    public void visit(final SetFieldExpression object)
+    {
+<span class="fc" id="L1253">        record(object);</span>
+<span class="fc" id="L1254">        require(object, object.getOwner());</span>
+<span class="fc" id="L1255">        require(object, object.getName());</span>
+<span class="fc" id="L1256">        require(object, object.getValue());</span>
+
+<span class="fc" id="L1258">        p.addText(&quot;field &quot;);</span>
+<span class="fc" id="L1259">        printInstanceMemberAccess(object.getOwner(), object.getName());</span>
+<span class="fc" id="L1260">        p.addText(&quot; = &quot;);</span>
+<span class="fc" id="L1261">        object.getValue().accept(this);</span>
+<span class="fc" id="L1262">    }</span>
+
+    @Override
+    public void visit(final GetFieldExpression object)
+    {
+<span class="fc" id="L1267">        record(object);</span>
+<span class="fc" id="L1268">        require(object, object.getOwner());</span>
+<span class="fc" id="L1269">        require(object, object.getName());</span>
+
+<span class="fc" id="L1271">        p.addText(&quot;field &quot;);</span>
+<span class="fc" id="L1272">        printInstanceMemberAccess(object.getOwner(), object.getName());</span>
+<span class="fc" id="L1273">    }</span>
+
+    @Override
+    public void visit(final InstanceOfExpression object)
+    {
+<span class="fc" id="L1278">        record(object);</span>
+<span class="fc" id="L1279">        require(object, object.getValue());</span>
+<span class="fc" id="L1280">        require(object, object.getType());</span>
+
+<span class="fc" id="L1282">        p.addText(&quot;instanceof &quot;);</span>
+<span class="fc" id="L1283">        object.getValue().accept(this);</span>
+<span class="fc" id="L1284">        p.addText(&quot; : &quot;);</span>
+<span class="fc" id="L1285">        object.getType().accept(this);</span>
+<span class="fc" id="L1286">    }</span>
+
+    @Override
+    public void visit(final TernaryConditionalExpression object)
+    {
+<span class="fc" id="L1291">        record(object);</span>
+<span class="fc" id="L1292">        require(object, object.getCondition());</span>
+<span class="fc" id="L1293">        require(object, object.getCaseTrue());</span>
+<span class="fc" id="L1294">        require(object, object.getCaseFalse());</span>
+
+<span class="fc" id="L1296">        p.addText(&quot;if &quot;);</span>
+<span class="fc" id="L1297">        object.getCondition().accept(this);</span>
+<span class="fc" id="L1298">        p.addText(&quot; then &quot;);</span>
+<span class="fc" id="L1299">        object.getCaseTrue().accept(this);</span>
+<span class="fc" id="L1300">        p.addText(&quot; else &quot;);</span>
+<span class="fc" id="L1301">        object.getCaseFalse().accept(this);</span>
+<span class="fc" id="L1302">    }</span>
+
+    @Override
+    public void visit(final LocalsExpression object)
+    {
+<span class="fc" id="L1307">        record(object);</span>
+
+<span class="fc" id="L1309">        p.addText(&quot;(locals)&quot;);</span>
+<span class="fc" id="L1310">    }</span>
+
+    @Override
+    public void visit(final OnceExpression object)
+    {
+<span class="fc" id="L1315">        record(object);</span>
+
+<span class="fc" id="L1317">        p.addText(&quot;(once &quot;);</span>
+<span class="fc" id="L1318">        object.getValue().accept(this);</span>
+<span class="fc" id="L1319">        p.addText(&quot;)&quot;);</span>
+<span class="fc" id="L1320">    }</span>
+
+    @Override
+    public void visit(final AsOperation object)
+    {
+<span class="fc" id="L1325">        visitConversionOperation(&quot;as&quot;, object);</span>
+<span class="fc" id="L1326">    }</span>
+
+    @Override
+    public void visit(final IsOperation object)
+    {
+<span class="fc" id="L1331">        visitConversionOperation(&quot;is&quot;, object);</span>
+<span class="fc" id="L1332">    }</span>
+
+    @Override
+    public void visit(final NegateOperation object)
+    {
+<span class="fc" id="L1337">        visitUnaryOperation(&quot;-&quot;, object);</span>
+<span class="fc" id="L1338">    }</span>
+
+    @Override
+    public void visit(final NotOperation object)
+    {
+<span class="fc" id="L1343">        visitUnaryOperation(&quot;!&quot;, object);</span>
+<span class="fc" id="L1344">    }</span>
+
+    @Override
+    public void visit(final DivideOperation object)
+    {
+<span class="fc" id="L1349">        visitBinaryOperation(&quot;/&quot;, object);</span>
+<span class="fc" id="L1350">    }</span>
+
+    @Override
+    public void visit(final ModuloOperation object)
+    {
+<span class="fc" id="L1355">        visitBinaryOperation(&quot;%&quot;, object);</span>
+<span class="fc" id="L1356">    }</span>
+
+    @Override
+    public void visit(final MultiplyOperation object)
+    {
+<span class="fc" id="L1361">        visitBinaryOperation(&quot;*&quot;, object);</span>
+<span class="fc" id="L1362">    }</span>
+
+    @Override
+    public void visit(final AddOperation object)
+    {
+<span class="fc" id="L1367">        visitBinaryOperation(&quot;+&quot;, object);</span>
+<span class="fc" id="L1368">    }</span>
+
+    @Override
+    public void visit(final SubtractOperation object)
+    {
+<span class="fc" id="L1373">        visitBinaryOperation(&quot;-&quot;, object);</span>
+<span class="fc" id="L1374">    }</span>
+
+    @Override
+    public void visit(final LessThanOperation object)
+    {
+<span class="fc" id="L1379">        visitBinaryOperation(&quot;&lt;&quot;, object);</span>
+<span class="fc" id="L1380">    }</span>
+
+    @Override
+    public void visit(final LessThanOrEqualsOperation object)
+    {
+<span class="fc" id="L1385">        visitBinaryOperation(&quot;&lt;=&quot;, object);</span>
+<span class="fc" id="L1386">    }</span>
+
+    @Override
+    public void visit(final GreaterThanOperation object)
+    {
+<span class="fc" id="L1391">        visitBinaryOperation(&quot;&gt;&quot;, object);</span>
+<span class="fc" id="L1392">    }</span>
+
+    @Override
+    public void visit(final GreaterThanOrEqualsOperation object)
+    {
+<span class="fc" id="L1397">        visitBinaryOperation(&quot;&gt;=&quot;, object);</span>
+<span class="fc" id="L1398">    }</span>
+
+    @Override
+    public void visit(final EqualsOperation object)
+    {
+<span class="fc" id="L1403">        visitBinaryOperation(&quot;==&quot;, object);</span>
+<span class="fc" id="L1404">    }</span>
+
+    @Override
+    public void visit(final NotEqualsOperation object)
+    {
+<span class="fc" id="L1409">        visitBinaryOperation(&quot;!=&quot;, object);</span>
+<span class="fc" id="L1410">    }</span>
+
+    @Override
+    public void visit(final IdentityEqualsOperation object)
+    {
+<span class="fc" id="L1415">        visitBinaryOperation(&quot;===&quot;, object);</span>
+<span class="fc" id="L1416">    }</span>
+
+    @Override
+    public void visit(final IdentityNotEqualsOperation object)
+    {
+<span class="fc" id="L1421">        visitBinaryOperation(&quot;!==&quot;, object);</span>
+<span class="fc" id="L1422">    }</span>
+
+    @Override
+    public void visit(final AndOperation object)
+    {
+<span class="fc" id="L1427">        visitBinaryOperation(&quot;&amp;&quot;, object);</span>
+<span class="fc" id="L1428">    }</span>
+
+    @Override
+    public void visit(final OrOperation object)
+    {
+<span class="fc" id="L1433">        visitBinaryOperation(&quot;|&quot;, object);</span>
+<span class="fc" id="L1434">    }</span>
+
+    @Override
+    public void visit(final XorOperation object)
+    {
+<span class="fc" id="L1439">        visitBinaryOperation(&quot;^&quot;, object);</span>
+<span class="fc" id="L1440">    }</span>
+
+    @Override
+    public void visit(final ImpliesOperation object)
+    {
+<span class="fc" id="L1445">        visitBinaryOperation(&quot;-&gt;&quot;, object);</span>
+<span class="fc" id="L1446">    }</span>
+
+    @Override
+    public void visit(final NullCoalescingOperation object)
+    {
+<span class="fc" id="L1451">        visitBinaryOperation(&quot;??&quot;, object);</span>
+<span class="fc" id="L1452">    }</span>
+
+    @Override
+    public void visit(final ConcatOperation object)
+    {
+<span class="fc" id="L1457">        visitBinaryOperation(&quot;..&quot;, object);</span>
+<span class="fc" id="L1458">    }</span>
+
+    @Override
+    public void visit(final Variable object)
+    {
+<span class="fc" id="L1463">        record(object);</span>
+<span class="pc bpc" id="L1464" title="1 of 2 branches missed.">        require(object, object.getName() != null);</span>
+<span class="fc" id="L1465">        reportUnprintableNode(object, object.getName().matches(ID_REGEX));</span>
+
+<span class="fc" id="L1467">        p.addText(object.getName());</span>
+<span class="fc" id="L1468">    }</span>
+
+    @Override
+    public void visit(final DocComment object)
+    {
+<span class="fc" id="L1473">        record(object);</span>
+<span class="fc" id="L1474">        require(object, object.getLines());</span>
+
+<span class="fc bfc" id="L1476" title="All 2 branches covered.">        for (DocCommentLine line : object.getLines())</span>
+        {
+<span class="fc" id="L1478">            line.accept(this);</span>
+<span class="fc" id="L1479">        }</span>
+<span class="fc" id="L1480">    }</span>
+
+    @Override
+    public void visit(final DocCommentLine object)
+    {
+<span class="fc" id="L1485">        record(object);</span>
+
+<span class="fc" id="L1487">        p.addLine();</span>
+<span class="fc" id="L1488">        p.addText(&quot;'' &quot;);</span>
+<span class="pc bpc" id="L1489" title="1 of 2 branches missed.">        p.addText(object.getText() == null ? &quot;&quot; : object.getText());</span>
+<span class="fc" id="L1490">    }</span>
+
+    @Override
+    public void visit(final Name object)
+    {
+<span class="fc" id="L1495">        record(object);</span>
+<span class="pc bpc" id="L1496" title="1 of 2 branches missed.">        require(object, object.getName() != null);</span>
+<span class="fc" id="L1497">        reportUnprintableNode(object, object.getName().matches(ID_REGEX));</span>
+
+<span class="fc" id="L1499">        p.addText(object.getName());</span>
+<span class="fc" id="L1500">    }</span>
+
+    @Override
+    public void visit(final TypeSpecifier object)
+    {
+<span class="fc" id="L1505">        record(object);</span>
+<span class="fc" id="L1506">        require(object, object.getName());</span>
+
+<span class="fc" id="L1508">        final Integer dimensions = object.getDimensions();</span>
+<span class="pc bpc" id="L1509" title="1 of 4 branches missed.">        reportUnprintableNode(object, dimensions == null || dimensions &gt;= 0);</span>
+
+<span class="fc bfc" id="L1511" title="All 2 branches covered.">        if (object.getNamespace() != null)</span>
+        {
+<span class="fc" id="L1513">            object.getNamespace().accept(this);</span>
+<span class="pc bpc" id="L1514" title="1 of 2 branches missed.">            printIf(&quot;.&quot;, object.getNamespace() != null);</span>
+        }
+<span class="fc" id="L1516">        object.getName().accept(this);</span>
+<span class="fc bfc" id="L1517" title="All 2 branches covered.">        p.addText(Strings.repeat(&quot;[]&quot;, dimensions == null ? 0 : dimensions));</span>
+<span class="fc" id="L1518">    }</span>
+
+    @Override
+    public void visit(final Namespace object)
+    {
+<span class="fc" id="L1523">        record(object);</span>
+<span class="fc" id="L1524">        require(object, object.getNames());</span>
+<span class="pc bpc" id="L1525" title="1 of 2 branches missed.">        require(object, object.getNames().size() &gt;= 1);</span>
+
+<span class="fc" id="L1527">        int count = 0;</span>
+
+<span class="fc bfc" id="L1529" title="All 2 branches covered.">        for (Name name : object.getNames())</span>
+        {
+<span class="pc bpc" id="L1531" title="1 of 2 branches missed.">            assert name != null;</span>
+
+<span class="fc" id="L1533">            ++count;</span>
+
+<span class="fc" id="L1535">            name.accept(this);</span>
+
+<span class="fc bfc" id="L1537" title="All 2 branches covered.">            if (count &lt; object.getNames().size())</span>
+            {
+<span class="fc" id="L1539">                p.addText(&quot;.&quot;);</span>
+            }
+<span class="fc" id="L1541">        }</span>
+<span class="fc" id="L1542">    }</span>
+
+    @Override
+    public void visit(final AnnotationList object)
+    {
+<span class="fc" id="L1547">        record(object);</span>
+<span class="fc" id="L1548">        require(object, object.getAnnotations());</span>
+
+<span class="fc bfc" id="L1550" title="All 2 branches covered.">        for (Annotation x : object.getAnnotations())</span>
+        {
+<span class="fc" id="L1552">            x.accept(this);</span>
+<span class="fc" id="L1553">        }</span>
+<span class="fc" id="L1554">    }</span>
+
+    @Override
+    public void visit(final Annotation object)
+    {
+<span class="fc" id="L1559">        record(object);</span>
+<span class="fc" id="L1560">        require(object, object.getType());</span>
+
+<span class="fc" id="L1562">        p.addLine();</span>
+<span class="fc" id="L1563">        p.addText(&quot;@&quot;);</span>
+<span class="fc" id="L1564">        object.getType().accept(this);</span>
+
+<span class="fc bfc" id="L1566" title="All 2 branches covered.">        if (object.getValues() != null)</span>
+        {
+<span class="fc" id="L1568">            p.addText(&quot; &quot;);</span>
+<span class="fc" id="L1569">            p.addText(F.str(createArrayOfStringLiterals(object.getValues()), &quot;(&quot;, &quot;, &quot;, &quot;)&quot;));</span>
+        }
+<span class="fc" id="L1571">    }</span>
+
+    @Override
+    public void visit(final FormalParameterList object)
+    {
+<span class="fc" id="L1576">        record(object);</span>
+<span class="fc" id="L1577">        require(object, object.getParameters());</span>
+
+<span class="fc" id="L1579">        p.addText(&quot;(&quot;);</span>
+        {
+<span class="fc" id="L1581">            int count = 0;</span>
+
+<span class="fc bfc" id="L1583" title="All 2 branches covered.">            for (FormalParameter param : object.getParameters())</span>
+            {
+<span class="fc" id="L1585">                ++count;</span>
+
+<span class="fc" id="L1587">                param.accept(this);</span>
+
+<span class="fc bfc" id="L1589" title="All 2 branches covered.">                if (count &lt; object.getParameters().size())</span>
+                {
+<span class="fc" id="L1591">                    p.addText(&quot;, &quot;);</span>
+                }
+<span class="fc" id="L1593">            }</span>
+        }
+<span class="fc" id="L1595">        p.addText(&quot;)&quot;);</span>
+<span class="fc" id="L1596">    }</span>
+
+    @Override
+    public void visit(final FormalParameter object)
+    {
+<span class="fc" id="L1601">        record(object);</span>
+<span class="fc" id="L1602">        require(object, object.getVariable());</span>
+<span class="fc" id="L1603">        require(object, object.getType());</span>
+
+<span class="fc" id="L1605">        object.getVariable().accept(this);</span>
+<span class="fc" id="L1606">        p.addText(&quot; : &quot;);</span>
+<span class="fc" id="L1607">        object.getType().accept(this);</span>
+<span class="fc" id="L1608">    }</span>
+
+    @Override
+    public void visit(final Element object)
+    {
+<span class="fc" id="L1613">        record(object);</span>
+<span class="fc" id="L1614">        require(object, object.getName());</span>
+<span class="fc" id="L1615">        require(object, object.getType());</span>
+
+<span class="fc" id="L1617">        object.getName().accept(this);</span>
+<span class="fc" id="L1618">        p.addText(&quot; : &quot;);</span>
+<span class="fc" id="L1619">        object.getType().accept(this);</span>
+<span class="fc" id="L1620">    }</span>
+
+    @Override
+    public void visit(final ElementList object)
+    {
+<span class="fc" id="L1625">        record(object);</span>
+<span class="fc" id="L1626">        require(object, object.getElements());</span>
+
+<span class="fc" id="L1628">        p.addText(&quot;(&quot;);</span>
+        {
+<span class="fc" id="L1630">            int count = 0;</span>
+
+<span class="fc bfc" id="L1632" title="All 2 branches covered.">            for (Element element : object.getElements())</span>
+            {
+<span class="fc" id="L1634">                ++count;</span>
+
+<span class="fc" id="L1636">                element.accept(this);</span>
+
+<span class="fc bfc" id="L1638" title="All 2 branches covered.">                if (count &lt; object.getElements().size())</span>
+                {
+<span class="fc" id="L1640">                    p.addText(&quot;, &quot;);</span>
+                }
+<span class="fc" id="L1642">            }</span>
+        }
+<span class="fc" id="L1644">        p.addText(&quot;)&quot;);</span>
+<span class="fc" id="L1645">    }</span>
+
+    @Override
+    public void visit(final ConditionalCase object)
+    {
+<span class="fc" id="L1650">        record(object);</span>
+<span class="fc" id="L1651">        require(object, object.getCondition());</span>
+<span class="fc" id="L1652">        require(object, object.getBody());</span>
+
+<span class="fc" id="L1654">        p.addText(&quot;(&quot;);</span>
+<span class="fc" id="L1655">        object.getCondition().accept(this);</span>
+<span class="fc" id="L1656">        p.addText(&quot;)&quot;);</span>
+<span class="fc" id="L1657">        object.getBody().accept(this);</span>
+<span class="fc" id="L1658">    }</span>
+
+    @Override
+    public void visit(final Label object)
+    {
+<span class="fc" id="L1663">        record(object);</span>
+<span class="pc bpc" id="L1664" title="1 of 2 branches missed.">        require(object, object.getName() != null);</span>
+<span class="fc" id="L1665">        reportUnprintableNode(object, object.getName().matches(ID_REGEX));</span>
+
+<span class="fc" id="L1667">        p.addText(object.getName());</span>
+<span class="fc" id="L1668">    }</span>
+
+    @Override
+    public void visit(final SourceLocation object)
+    {
+        // Do Nothing
+<span class="nc" id="L1674">    }</span>
+
+    /**
+     * This method generalizes the visitation of a record definition.
+     *
+     * @param keyword specifies the type of record definition (e.g. tuple, struct, design).
+     * @param object is the definition itself.
+     */
+    private void visitRecord(final String keyword,
+                             final IRecord object)
+    {
+<span class="fc" id="L1685">        record(object);</span>
+<span class="fc" id="L1686">        require(object, object.getComment());</span>
+<span class="fc" id="L1687">        require(object, object.getAnnotations());</span>
+<span class="fc" id="L1688">        require(object, object.getName());</span>
+<span class="fc" id="L1689">        require(object, object.getElements());</span>
+<span class="fc" id="L1690">        require(object, object.getSupers());</span>
+
+<span class="fc" id="L1692">        object.getComment().accept(this);</span>
+
+<span class="fc" id="L1694">        object.getAnnotations().accept(this);</span>
+
+<span class="fc" id="L1696">        p.addLine();</span>
+<span class="fc" id="L1697">        p.addText(keyword);</span>
+<span class="fc" id="L1698">        p.addText(&quot; &quot;);</span>
+<span class="fc" id="L1699">        object.getName().accept(this);</span>
+<span class="fc" id="L1700">        p.addText(&quot; &quot;);</span>
+<span class="fc" id="L1701">        object.getElements().accept(this);</span>
+
+<span class="fc bfc" id="L1703" title="All 2 branches covered.">        if (object.getSupers().isEmpty() == false)</span>
+        {
+<span class="fc" id="L1705">            this.printList(&quot; extends &quot;, object.getSupers(), &quot; &amp; &quot;, &quot;&quot;);</span>
+        }
+
+<span class="fc" id="L1708">        p.addText(&quot;;&quot;);</span>
+
+<span class="fc" id="L1710">        p.addEmptyLine();</span>
+<span class="fc" id="L1711">    }</span>
+
+    /**
+     * This method generalizes the visitation of a conversion operation.
+     *
+     * @param operator is the string representation of the conversion operator.
+     * @param operation is the conversion operation itself.
+     */
+    private void visitConversionOperation(final String operator,
+                                          final IConversionOperation operation)
+    {
+<span class="fc" id="L1722">        record(operation);</span>
+<span class="fc" id="L1723">        require(operation, operation.getValue());</span>
+<span class="fc" id="L1724">        require(operation, operation.getType());</span>
+
+<span class="fc" id="L1726">        p.addText(&quot;(&quot;);</span>
+<span class="fc" id="L1727">        operation.getValue().accept(this);</span>
+<span class="fc" id="L1728">        p.addText(&quot; &quot;);</span>
+<span class="fc" id="L1729">        p.addText(operator);</span>
+<span class="fc" id="L1730">        p.addText(&quot; &quot;);</span>
+<span class="fc" id="L1731">        operation.getType().accept(this);</span>
+<span class="fc" id="L1732">        p.addText(&quot;)&quot;);</span>
+<span class="fc" id="L1733">    }</span>
+
+    /**
+     * This method generalizes the visitation of a unary operation.
+     *
+     * @param operator is the string representation of the unary operator.
+     * @param operation is the operation itself.
+     */
+    private void visitUnaryOperation(final String operator,
+                                     final IUnaryOperation operation)
+    {
+<span class="fc" id="L1744">        record(operation);</span>
+<span class="fc" id="L1745">        require(operation, operation.getOperand());</span>
+
+<span class="fc" id="L1747">        p.addText(&quot;(&quot;);</span>
+<span class="fc" id="L1748">        p.addText(operator);</span>
+<span class="fc" id="L1749">        p.addText(&quot; &quot;);</span>
+<span class="fc" id="L1750">        operation.getOperand().accept(this);</span>
+<span class="fc" id="L1751">        p.addText(&quot;)&quot;);</span>
+<span class="fc" id="L1752">    }</span>
+
+    /**
+     * This method generalizes the visitation of a binary operation.
+     *
+     * @param operator is the string representation of the binary operator.
+     * @param operation is the operation itself.
+     */
+    private void visitBinaryOperation(final String operator,
+                                      final IBinaryOperation operation)
+    {
+<span class="fc" id="L1763">        record(operation);</span>
+<span class="fc" id="L1764">        require(operation, operation.getLeftOperand());</span>
+<span class="fc" id="L1765">        require(operation, operation.getRightOperand());</span>
+
+<span class="fc" id="L1767">        p.addText(&quot;(&quot;);</span>
+<span class="fc" id="L1768">        operation.getLeftOperand().accept(this);</span>
+<span class="fc" id="L1769">        p.addText(&quot; &quot;);</span>
+<span class="fc" id="L1770">        p.addText(operator);</span>
+<span class="fc" id="L1771">        p.addText(&quot; &quot;);</span>
+<span class="fc" id="L1772">        operation.getRightOperand().accept(this);</span>
+<span class="fc" id="L1773">        p.addText(&quot;)&quot;);</span>
+<span class="fc" id="L1774">    }</span>
+
+    /**
+     * This method prints a static member accessor.
+     *
+     * @param owner is the owner of the member being accessed.
+     * @param member is the name of the member being accessed.
+     */
+    private void printStaticMemberAccess(final TypeSpecifier owner,
+                                         final Name member)
+    {
+<span class="pc bpc" id="L1785" title="1 of 2 branches missed.">        assert owner != null;</span>
+<span class="pc bpc" id="L1786" title="1 of 2 branches missed.">        assert member != null;</span>
+
+<span class="fc" id="L1788">        owner.accept(this);</span>
+<span class="fc" id="L1789">        p.addText(&quot;::&quot;);</span>
+<span class="fc" id="L1790">        member.accept(this);</span>
+<span class="fc" id="L1791">    }</span>
+
+    /**
+     * This method prints an instance member accessor.
+     *
+     * @param owner is an expression that produces the owner of the member being accessed.
+     * @param member is the name of the member being accessed.
+     */
+    private void printInstanceMemberAccess(final IExpression owner,
+                                           final Name member)
+    {
+<span class="pc bpc" id="L1802" title="1 of 2 branches missed.">        assert owner != null;</span>
+<span class="pc bpc" id="L1803" title="1 of 2 branches missed.">        assert member != null;</span>
+
+<span class="fc" id="L1805">        owner.accept(this);</span>
+<span class="fc" id="L1806">        p.addText(&quot;.&quot;);</span>
+<span class="fc" id="L1807">        member.accept(this);</span>
+<span class="fc" id="L1808">    }</span>
+
+    /**
+     * This method converts a sequence of strings to string literal style strings.
+     *
+     * @param values are the escaped strings.
+     * @return the values such that they appear to be string literals.
+     */
+    private List&lt;String&gt; createArrayOfStringLiterals(final Iterable&lt;String&gt; values)
+    {
+<span class="fc" id="L1818">        final List&lt;String&gt; result = Lists.newLinkedList();</span>
+
+<span class="fc bfc" id="L1820" title="All 2 branches covered.">        for (String value : values)</span>
+        {
+<span class="fc" id="L1822">            final String unescaped = F.unescape(value);</span>
+
+<span class="fc" id="L1824">            result.add(&quot;\&quot;&quot; + unescaped + &quot;\&quot;&quot;);</span>
+<span class="fc" id="L1825">        }</span>
+
+<span class="fc" id="L1827">        return result;</span>
+    }
+
+    /**
+     * This method prints a list of constructs.
+     *
+     * @param prefix is a string to print immediately before the arguments.
+     * @param arguments are the arguments to print.
+     * @param separator is used to separate the arguments.
+     * @param suffix is a string to print immediately after the arguments.
+     */
+    private void printList(final String prefix,
+                           final ConstructList&lt;? extends IConstruct&gt; arguments,
+                           final String separator,
+                           final String suffix)
+    {
+<span class="pc bpc" id="L1843" title="1 of 2 branches missed.">        assert prefix != null;</span>
+<span class="pc bpc" id="L1844" title="1 of 2 branches missed.">        assert arguments != null;</span>
+<span class="pc bpc" id="L1845" title="1 of 2 branches missed.">        assert suffix != null;</span>
+
+<span class="fc" id="L1847">        p.addText(prefix);</span>
+        {
+<span class="fc" id="L1849">            int count = 0;</span>
+
+<span class="fc bfc" id="L1851" title="All 2 branches covered.">            for (IConstruct arg : arguments)</span>
+            {
+<span class="pc bpc" id="L1853" title="1 of 2 branches missed.">                assert arg != null;</span>
+
+<span class="fc" id="L1855">                ++count;</span>
+
+<span class="fc" id="L1857">                arg.accept(this);</span>
+
+<span class="fc bfc" id="L1859" title="All 2 branches covered.">                if (count &lt; arguments.size())</span>
+                {
+<span class="fc" id="L1861">                    p.addText(separator);</span>
+                }
+<span class="fc" id="L1863">            }</span>
+        }
+<span class="fc" id="L1865">        p.addText(suffix);</span>
+<span class="fc" id="L1866">    }</span>
+
+    /**
+     * This method conditionally prints a string of text.
+     *
+     * @param text is the text that may be printed.
+     * @param condition is true, iff the text is to be printed.
+     */
+    private void printIf(final String text,
+                         final boolean condition)
+    {
+<span class="pc bpc" id="L1877" title="1 of 2 branches missed.">        assert text != null;</span>
+
+<span class="fc bfc" id="L1879" title="All 2 branches covered.">        if (condition)</span>
+        {
+<span class="fc" id="L1881">            p.addText(text);</span>
+        }
+<span class="fc" id="L1883">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ExceptionCompiler.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.mackenziehigh:autumn</a> &gt; <a href="index.source.html" class="el_package">com.mackenziehigh.autumn.lang.compiler.compilers</a> &gt; <span class="el_source">ExceptionCompiler.java</span></div><h1>ExceptionCompiler.java</h1><pre class="source lang-java linenums">package com.mackenziehigh.autumn.lang.compiler.compilers;
+
+import autumn.lang.compiler.ClassFile;
+import autumn.lang.compiler.ast.nodes.ExceptionDefinition;
+import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.CustomConstructor;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.CustomDeclaredType;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IAnnotation;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IClassType;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IConstructor;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IField;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IFormalParameter;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IInterfaceType;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IMethod;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IType;
+import com.mackenziehigh.autumn.lang.compiler.utils.TypeSystemUtils;
+import com.mackenziehigh.autumn.lang.compiler.utils.Utils;
+import com.mackenziehigh.autumn.resources.Finished;
+import java.lang.reflect.Modifier;
+import java.util.List;
+import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.tree.ClassNode;
+import org.objectweb.asm.tree.InsnNode;
+import org.objectweb.asm.tree.MethodInsnNode;
+import org.objectweb.asm.tree.MethodNode;
+import org.objectweb.asm.tree.VarInsnNode;
+
+/**
+ * An instance of this class controls the compilation of an exception-definition.
+ *
+ * @author Mackenzie High
+ */
+@Finished(&quot;2014/08/11&quot;)
+final class ExceptionCompiler
+        implements ICompiler
+{
+    /**
+     * Essentially, this is the program being compiled.
+     */
+    public final ProgramCompiler program;
+
+    /**
+     * Essentially, this is the module that contains the exception-definition.
+     */
+    public final ModuleCompiler module;
+
+    /**
+     * This is the Abstract-Syntax-Tree representation of the exception-definition.
+     */
+    public final ExceptionDefinition node;
+
+    /**
+     * This will be the type-system representation of the exception-definition.
+     *
+     * This field is set during the type-declaration compiler pass.
+     */
+    public CustomDeclaredType type;
+
+    /**
+     * This flag is used to prevent a stack-overflow during constructor-inference.
+     */
+<span class="fc" id="L65">    private boolean inferred = false;</span>
+
+    /**
+     * Sole Constructor.
+     *
+     * @param module is the module that contains the exception being compiled.
+     * @param node is the AST node that represents the exception being compiled.
+     */
+    public ExceptionCompiler(final ModuleCompiler module,
+                             final ExceptionDefinition node)
+<span class="fc" id="L75">    {</span>
+<span class="fc" id="L76">        Preconditions.checkNotNull(module);</span>
+<span class="fc" id="L77">        Preconditions.checkNotNull(node);</span>
+
+<span class="fc" id="L79">        this.program = module.program;</span>
+<span class="fc" id="L80">        this.module = module;</span>
+<span class="fc" id="L81">        this.node = node;</span>
+<span class="fc" id="L82">    }</span>
+
+    /**
+     * This method generates the compiled class-file.
+     *
+     * @return the compiled class-file.
+     */
+    public ClassFile build()
+    {
+<span class="fc" id="L91">        final String exception_internal_name = Utils.internalName(type);</span>
+
+<span class="fc" id="L93">        final String exception_source_name = Utils.sourceName(type);</span>
+
+        /**
+         * Create the bytecode representation of the exception itself.
+         */
+<span class="fc" id="L98">        final ClassNode clazz = new ClassNode();</span>
+        {
+<span class="fc" id="L100">            clazz.version = Opcodes.V1_6;</span>
+<span class="fc" id="L101">            clazz.visibleAnnotations = module.anno_utils.compileAnnotationList(type.getAnnotations());</span>
+<span class="fc" id="L102">            clazz.access = type.getModifiers();</span>
+<span class="fc" id="L103">            clazz.name = exception_internal_name;</span>
+<span class="fc" id="L104">            clazz.superName = Utils.internalName(type.getSuperclass());</span>
+<span class="fc" id="L105">            clazz.interfaces = ImmutableList.of();</span>
+<span class="fc" id="L106">            clazz.fields = ImmutableList.of();</span>
+<span class="fc" id="L107">            clazz.methods = Lists.newLinkedList();</span>
+<span class="fc" id="L108">            clazz.sourceFile = String.valueOf(node.getLocation().getFile());</span>
+
+<span class="fc" id="L110">            addInferredCtors(clazz);</span>
+        }
+
+        /**
+         * Assemble the bytecode into an array of bytes.
+         */
+<span class="fc" id="L116">        final ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_MAXS);</span>
+<span class="fc" id="L117">        clazz.accept(writer);</span>
+<span class="fc" id="L118">        final byte[] bytecode = writer.toByteArray();</span>
+
+        /**
+         * Create the class-file object that will store the emitted bytecode.
+         */
+<span class="fc" id="L123">        final ClassFile file = new ClassFile(exception_source_name, bytecode);</span>
+
+<span class="fc" id="L125">        return file;</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void performTypeDeclaration()
+    {
+        /**
+         * Determine the descriptor of the exception.
+         */
+<span class="fc" id="L137">        final String namespace = module.type.getNamespace().replace('.', '/');</span>
+<span class="fc" id="L138">        final String name = node.getName().getName();</span>
+<span class="fc" id="L139">        final String descriptor = &quot;L&quot; + namespace + '/' + name + ';';</span>
+
+        /**
+         * Ensure that the type was not already declared elsewhere.
+         */
+<span class="fc" id="L144">        program.checker.requireNonDuplicateType(node.getName(), descriptor);</span>
+
+        /**
+         * Declare the exception.
+         */
+<span class="fc" id="L149">        this.type = program.typesystem.typefactory().newClassType(descriptor);</span>
+
+        /**
+         * Publicize this exception, so that it will be possible to infer constructors.
+         */
+<span class="fc" id="L154">        program.symbols.exceptions.put(type, this);</span>
+<span class="fc" id="L155">    }</span>
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void performTypeInitialization()
+    {
+<span class="fc" id="L163">        final IType supertype = module.imports.resolveClassType(node.getSuperclass());</span>
+
+<span class="fc" id="L165">        this.type.setAnnotations(module.anno_utils.typesOf(node.getAnnotations()));</span>
+<span class="fc" id="L166">        this.type.setModifiers(Opcodes.ACC_PUBLIC);</span>
+<span class="fc" id="L167">        this.type.setSuperclass((IClassType) supertype);</span>
+<span class="fc" id="L168">        this.type.setSuperinterfaces(ImmutableList.&lt;IInterfaceType&gt;of());</span>
+<span class="fc" id="L169">        this.type.setFields(ImmutableList.&lt;IField&gt;of());</span>
+<span class="fc" id="L170">        this.type.setConstructors(ImmutableList.&lt;IConstructor&gt;of());</span>
+<span class="fc" id="L171">        this.type.setMethods(ImmutableList.&lt;IMethod&gt;of());</span>
+
+        /**
+         * Add a special annotation.
+         */
+<span class="fc" id="L176">        module.anno_utils.add(type, autumn.lang.internals.annotations.ExceptionDefinition.class);</span>
+
+        /**
+         * Check the list of annotations.
+         */
+<span class="fc" id="L181">        program.checker.checkAnnotations(node.getAnnotations(), type.getAnnotations());</span>
+
+        // Note: The constructors will be inferred after all types are partially initialized.
+        //       An exception-type may infer contructors from a type being created simultaneously.
+        //       If we infer the constructors right now, the superclass may not be ready.
+        //       So, we will wait for the types themselves to be partially constructed.
+        //       Then, the constructors can be safely inferred.
+<span class="fc" id="L188">    }</span>
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void performTypeStructureChecking()
+    {
+        /**
+         * If circular inheritance exists, bad things will happen.
+         */
+<span class="fc bfc" id="L199" title="All 2 branches covered.">        if (TypeSystemUtils.detectCircularInheritance(type))</span>
+        {
+<span class="nc" id="L201">            program.checker.reportCircularInheritance(node, type);</span>
+        }
+
+        /**
+         * The superclass must be a subtype of Throwable.
+         */
+<span class="fc" id="L207">        program.checker.requireThrowable(node.getSuperclass(), type.getSuperclass());</span>
+<span class="fc" id="L208">    }</span>
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void performTypeUsageChecking()
+    {
+        // Pass, because because no type-usage needs checked.
+<span class="fc" id="L217">    }</span>
+
+    /**
+     * This method generates the bytecode representation of the inherited constructors.
+     *
+     * @param clazz is the bytecode representation of the exception's class.
+     */
+    private void addInferredCtors(final ClassNode clazz)
+    {
+<span class="fc bfc" id="L226" title="All 2 branches covered.">        for (IConstructor ctor : type.getConstructors())</span>
+        {
+<span class="fc" id="L228">            final MethodNode m = Utils.bytecodeOf(module, ctor);</span>
+<span class="fc" id="L229">            clazz.methods.add(m);</span>
+
+            // Load 'this'
+<span class="fc" id="L232">            m.instructions.add(new VarInsnNode(Opcodes.ALOAD, 0));</span>
+
+            // Load each actual-parameter onto the operand-stack.
+<span class="fc" id="L235">            int offset = 1; // skip 'this'</span>
+<span class="fc bfc" id="L236" title="All 2 branches covered.">            for (IFormalParameter param : ctor.getParameters())</span>
+            {
+<span class="fc" id="L238">                m.instructions.add(Utils.selectLoadVarInsn(param.getType(), offset));</span>
+<span class="fc" id="L239">                offset = offset + Utils.sizeof(param.getType());</span>
+<span class="fc" id="L240">            }</span>
+
+            // Invoke the super constructor.
+<span class="fc" id="L243">            final String owner = Utils.internalName(type.getSuperclass());</span>
+<span class="fc" id="L244">            final String init = &quot;&lt;init&gt;&quot;;</span>
+<span class="fc" id="L245">            final String desc = ctor.getDescriptor();</span>
+<span class="fc" id="L246">            m.instructions.add(new MethodInsnNode(Opcodes.INVOKESPECIAL, owner, init, desc));</span>
+
+            // Return.
+<span class="fc" id="L249">            m.instructions.add(new InsnNode(Opcodes.RETURN));</span>
+<span class="fc" id="L250">        }</span>
+<span class="fc" id="L251">    }</span>
+
+    /**
+     * This method causes the exception's type to inherit constructors from its superclass.
+     */
+    public void inferConstructors()
+    {
+        // The superclass may have to infer its constructors first.
+<span class="fc bfc" id="L259" title="All 4 branches covered.">        if (!inferred &amp;&amp; program.symbols.exceptions.containsKey(type.getSuperclass()))</span>
+        {
+<span class="fc" id="L261">            inferred = true;</span>
+<span class="fc" id="L262">            program.symbols.exceptions.get(type.getSuperclass()).inferConstructors();</span>
+        }
+
+<span class="fc" id="L265">        final List&lt;IConstructor&gt; ctors = Lists.newLinkedList();</span>
+
+<span class="fc bfc" id="L267" title="All 2 branches covered.">        for (IConstructor ctor : type.getSuperclass().getConstructors())</span>
+        {
+<span class="fc" id="L269">            final boolean public_access = Modifier.isPublic(ctor.getModifiers());</span>
+
+            // The constructor must be public.
+<span class="fc bfc" id="L272" title="All 2 branches covered.">            if (!public_access)</span>
+            {
+<span class="fc" id="L274">                continue;</span>
+            }
+
+            // Copy the constructor from the supertype.
+<span class="fc" id="L278">            final CustomConstructor custom = new CustomConstructor(ctor.getOwner().getTypeFactory());</span>
+<span class="fc" id="L279">            custom.setOwner(type);</span>
+<span class="fc" id="L280">            custom.setAnnotations(ImmutableList.&lt;IAnnotation&gt;of());</span>
+<span class="fc" id="L281">            custom.setModifiers(ctor.getModifiers());</span>
+<span class="fc" id="L282">            custom.setName(ctor.getName());</span>
+<span class="fc" id="L283">            custom.setParameters(ctor.getParameters());</span>
+<span class="fc" id="L284">            custom.setReturnType(ctor.getReturnType());</span>
+<span class="fc" id="L285">            custom.setThrowsClause(ctor.getThrowsClause());</span>
+
+<span class="fc" id="L287">            ctors.add(custom);</span>
+<span class="fc" id="L288">        }</span>
+
+        // Add all the constructors that were copied from the supertype to the type.
+<span class="fc" id="L291">        type.setConstructors(ctors);</span>
+<span class="fc" id="L292">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

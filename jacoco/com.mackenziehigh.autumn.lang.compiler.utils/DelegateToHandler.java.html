@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DelegateToHandler.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.mackenziehigh:autumn</a> &gt; <a href="index.source.html" class="el_package">com.mackenziehigh.autumn.lang.compiler.utils</a> &gt; <span class="el_source">DelegateToHandler.java</span></div><h1>DelegateToHandler.java</h1><pre class="source lang-java linenums">package com.mackenziehigh.autumn.lang.compiler.utils;
+
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IClassType;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IMethod;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IVariableType;
+import java.util.List;
+
+/**
+ * An instance of this class is used to map a delegate to handler function.
+ *
+ * @author mackenzie
+ */
+public final class DelegateToHandler
+{
+<span class="fc" id="L15">    public static enum Errors</span>
+    {
+<span class="fc" id="L17">        NO_SUCH_METHOD,</span>
+<span class="fc" id="L18">        OVERLOADED_METHOD,</span>
+<span class="fc" id="L19">        INCOMPATIBLE_METHOD,</span>
+    }
+
+    /**
+     * This field will be null, unless an error was detected.
+     */
+    public final Errors error;
+
+    /**
+     * This is the type of the delegate's invoke(*) method.
+     */
+    public final IMethod delegate;
+
+    /**
+     * This is the type of the method that the delegate refers to.
+     */
+    public final IMethod handler;
+
+    /**
+     * Sole Constructor.
+     *
+     * @param error is the type of error, if any.
+     * @param member is the delegate.
+     * @param handler is the handler function.
+     */
+    private DelegateToHandler(final Errors error,
+                              final IMethod member,
+                              final IMethod handler)
+<span class="fc" id="L47">    {</span>
+<span class="fc" id="L48">        this.error = error;</span>
+<span class="fc" id="L49">        this.delegate = member;</span>
+<span class="fc" id="L50">        this.handler = handler;</span>
+<span class="fc" id="L51">    }</span>
+
+    public static DelegateToHandler find(final IClassType functor,
+                                         final IClassType owner,
+                                         final String name)
+    {
+<span class="fc" id="L57">        final IMethod invoke = TypeSystemUtils.find(functor.getMethods(), &quot;invoke&quot;);</span>
+
+<span class="fc" id="L59">        final List&lt;IMethod&gt; overloads = TypeSystemUtils.findFunctions(owner, name);</span>
+
+        /**
+         * An overload must exist in order to map the delegate to a handler.
+         */
+<span class="fc bfc" id="L64" title="All 2 branches covered.">        if (overloads.isEmpty())</span>
+        {
+<span class="fc" id="L66">            return new DelegateToHandler(Errors.NO_SUCH_METHOD, invoke, null);</span>
+        }
+
+        /**
+         * Per the specification, a delegate can not target an overloaded function.
+         */
+<span class="fc bfc" id="L72" title="All 2 branches covered.">        if (overloads.size() &gt; 1)</span>
+        {
+<span class="fc" id="L74">            return new DelegateToHandler(Errors.OVERLOADED_METHOD, invoke, null);</span>
+        }
+
+        /**
+         * Get the type of the function that is referred to by the delegate.
+         */
+<span class="fc" id="L80">        final IMethod handler = overloads.get(0);</span>
+
+        /**
+         * The delegate must be compatible with the function that it refers to.
+         */
+<span class="fc bfc" id="L85" title="All 2 branches covered.">        if (checkCompatability(invoke, handler) == false)</span>
+        {
+<span class="fc" id="L87">            return new DelegateToHandler(Errors.INCOMPATIBLE_METHOD, invoke, handler);</span>
+        }
+
+        /**
+         * Everything appear to be OK.
+         */
+<span class="fc" id="L93">        return new DelegateToHandler(null, invoke, handler);</span>
+    }
+
+    /**
+     * This method determines whether a delegate is compatible with the method that it refers to.
+     *
+     * @param functor is the type of the functor's invoke() method.
+     * @param handler is the type of the function that the delegate refers to.
+     * @return true, iff the delegate is compatible with the function that it refers to.
+     */
+    private static boolean checkCompatability(final IMethod functor,
+                                              final IMethod handler)
+    {
+        /**
+         * Per the specification, the handler's return-type must
+         * be a subtype of the functor's return-type.
+         */
+<span class="fc bfc" id="L110" title="All 2 branches covered.">        if (handler.getReturnType().isSubtypeOf(functor.getReturnType()) == false)</span>
+        {
+<span class="fc" id="L112">            return false;</span>
+        }
+
+        /**
+         * Per the specification, the handler and the functor must
+         * take the same number of arguments.
+         */
+<span class="fc bfc" id="L119" title="All 2 branches covered.">        if (functor.getParameters().size() != handler.getParameters().size())</span>
+        {
+<span class="fc" id="L121">            return false;</span>
+        }
+
+        /**
+         * Per the specification, the type of parameter[i] of the functor
+         * must be a subtype of parameter[i] of the handler.
+         */
+<span class="fc bfc" id="L128" title="All 2 branches covered.">        for (int i = 0; i &lt; handler.getParameters().size(); i++)</span>
+        {
+<span class="fc" id="L130">            final IVariableType functor_parameter = functor.getParameters().get(i).getType();</span>
+
+<span class="fc" id="L132">            final IVariableType handler_parameter = handler.getParameters().get(i).getType();</span>
+
+<span class="fc bfc" id="L134" title="All 2 branches covered.">            if (functor_parameter.isSubtypeOf(handler_parameter) == false)</span>
+            {
+<span class="fc" id="L136">                return false;</span>
+            }
+        }
+
+        /**
+         * Everything appears to be OK.
+         */
+<span class="fc" id="L143">        return true;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

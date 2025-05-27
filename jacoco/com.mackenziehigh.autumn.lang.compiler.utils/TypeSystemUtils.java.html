@@ -1,0 +1,1557 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TypeSystemUtils.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.mackenziehigh:autumn</a> &gt; <a href="index.source.html" class="el_package">com.mackenziehigh.autumn.lang.compiler.utils</a> &gt; <span class="el_source">TypeSystemUtils.java</span></div><h1>TypeSystemUtils.java</h1><pre class="source lang-java linenums">package com.mackenziehigh.autumn.lang.compiler.utils;
+
+import autumn.lang.Delegate;
+import autumn.lang.Functor;
+import autumn.lang.Lambda;
+import autumn.lang.Local;
+import autumn.lang.LocalsMap;
+import autumn.lang.Module;
+import autumn.lang.ModuleInfo;
+import autumn.lang.Record;
+import autumn.lang.TypedFunctor;
+import autumn.lang.annotations.Infer;
+import autumn.lang.annotations.Setup;
+import autumn.lang.annotations.Start;
+import autumn.lang.annotations.Sync;
+import autumn.lang.compiler.ast.nodes.Name;
+import autumn.lang.compiler.ast.nodes.TypeSpecifier;
+import autumn.lang.internals.AbstractDefinedFunctor;
+import autumn.lang.internals.AbstractDelegate;
+import autumn.lang.internals.AbstractLambda;
+import autumn.lang.internals.AbstractModule;
+import autumn.lang.internals.AbstractRecord;
+import autumn.lang.internals.ArgumentStack;
+import autumn.lang.internals.Conversions;
+import autumn.lang.internals.Helpers;
+import autumn.lang.internals.ModuleDelegate;
+import autumn.lang.internals.ModuleInfoBuilder;
+import autumn.lang.internals.Operators;
+import autumn.util.test.Test;
+import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.CustomFormalParameter;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IAnnotatable;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IAnnotation;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IAnnotationType;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IClassType;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IConstructor;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IDeclaredType;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IElementType;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IEnumType;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IExpressionType;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IField;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IFormalParameter;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IInterfaceType;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IInvokableMember;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IMember;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IMethod;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.INullType;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IPrimitiveType;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IReferenceType;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IReturnType;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IType;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.ITypeFactory;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IVariableType;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IVoidType;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Modifier;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
+import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.Type;
+import org.objectweb.asm.tree.InsnList;
+import org.objectweb.asm.tree.InsnNode;
+import org.objectweb.asm.tree.MethodInsnNode;
+
+/**
+ * This class provides commonly used functionality involving the processing of types.
+ *
+ * @author Mackenzie High
+ */
+<span class="fc" id="L77">public final class TypeSystemUtils</span>
+{
+    private final ITypeFactory factory;
+
+    public final IPrimitiveType PRIMITIVE_BOOLEAN;
+
+    public final IPrimitiveType PRIMITIVE_CHAR;
+
+    public final IPrimitiveType PRIMITIVE_BYTE;
+
+    public final IPrimitiveType PRIMITIVE_SHORT;
+
+    public final IPrimitiveType PRIMITIVE_INT;
+
+    public final IPrimitiveType PRIMITIVE_LONG;
+
+    public final IPrimitiveType PRIMITIVE_FLOAT;
+
+    public final IPrimitiveType PRIMITIVE_DOUBLE;
+
+    public final IVoidType VOID;
+
+    public final INullType NULL;
+
+    public final IClassType BOXED_BOOLEAN;
+
+    public final IClassType BOXED_CHAR;
+
+    public final IClassType BOXED_BYTE;
+
+    public final IClassType BOXED_SHORT;
+
+    public final IClassType BOXED_INT;
+
+    public final IClassType BOXED_LONG;
+
+    public final IClassType BOXED_FLOAT;
+
+    public final IClassType BOXED_DOUBLE;
+
+    public final IClassType BIG_INTEGER;
+
+    public final IClassType BIG_DECIMAL;
+
+    public final IInterfaceType ANNOTATION;
+
+    public final IClassType OBJECT;
+
+    public final IClassType COMPARABLE;
+
+    public final IClassType NUMBER;
+
+    public final IClassType THROWABLE;
+
+    public final IEnumType ENUM;
+
+    public final IClassType CLASS;
+
+    public final IClassType STRING;
+
+    public final IAnnotationType START;
+
+    public final IInterfaceType LIST;
+
+    public final IInterfaceType ITERABLE;
+
+    public final IInterfaceType DELEGATE;
+
+    public final IInterfaceType FUNCTOR;
+
+    public final IInterfaceType LAMBDA;
+
+    public final IInterfaceType RECORD;
+
+    public final IInterfaceType MODULE;
+
+    public final IClassType MODULE_DELEGATE;
+
+    public final IClassType ABSTRACT_MODULE;
+
+    public final IClassType ABSTRACT_DELEGATE;
+
+    public final IClassType ABSTRACT_LAMBDA;
+
+    public final IClassType ABSTRACT_RECORD;
+
+    public final IClassType ABSTRACT_STATIC_FUNCTOR;
+
+    public final IClassType HELPERS;
+
+    public final IClassType ARGUMENT_STACK;
+
+    public final IClassType CONVERSIONS;
+
+    public final IClassType OPERATORS;
+
+    public final IClassType LOCALS_MAP;
+
+    public final IClassType LOCAL;
+
+    public final IInterfaceType TYPED_FUNCTOR;
+
+    public final IClassType MODULE_INFO_BUILDER;
+
+    public final IInterfaceType MODULE_INFO;
+
+    public final IAnnotationType SETUP;
+
+    public final IAnnotationType SYNC;
+
+    public final IAnnotationType INFER;
+
+    public final IAnnotationType TEST;
+
+    /**
+     * Sole Constructor.
+     *
+     * @param factory is the type-factory being used by the compiler.
+     */
+    public TypeSystemUtils(final ITypeFactory factory)
+<span class="fc" id="L197">    {</span>
+<span class="fc" id="L198">        Preconditions.checkNotNull(factory);</span>
+
+<span class="fc" id="L200">        this.factory = factory;</span>
+
+<span class="fc" id="L202">        this.PRIMITIVE_BOOLEAN = factory.getBoolean();</span>
+<span class="fc" id="L203">        this.PRIMITIVE_CHAR = factory.getChar();</span>
+<span class="fc" id="L204">        this.PRIMITIVE_BYTE = factory.getByte();</span>
+<span class="fc" id="L205">        this.PRIMITIVE_SHORT = factory.getShort();</span>
+<span class="fc" id="L206">        this.PRIMITIVE_INT = factory.getInt();</span>
+<span class="fc" id="L207">        this.PRIMITIVE_LONG = factory.getLong();</span>
+<span class="fc" id="L208">        this.PRIMITIVE_FLOAT = factory.getFloat();</span>
+<span class="fc" id="L209">        this.PRIMITIVE_DOUBLE = factory.getDouble();</span>
+
+<span class="fc" id="L211">        this.VOID = factory.getVoid();</span>
+
+<span class="fc" id="L213">        this.NULL = factory.getNull();</span>
+
+<span class="fc" id="L215">        this.BOXED_BOOLEAN = (IClassType) factory.fromClass(Boolean.class);</span>
+<span class="fc" id="L216">        this.BOXED_CHAR = (IClassType) factory.fromClass(Character.class);</span>
+<span class="fc" id="L217">        this.BOXED_BYTE = (IClassType) factory.fromClass(Byte.class);</span>
+<span class="fc" id="L218">        this.BOXED_SHORT = (IClassType) factory.fromClass(Short.class);</span>
+<span class="fc" id="L219">        this.BOXED_INT = (IClassType) factory.fromClass(Integer.class);</span>
+<span class="fc" id="L220">        this.BOXED_LONG = (IClassType) factory.fromClass(Long.class);</span>
+<span class="fc" id="L221">        this.BOXED_FLOAT = (IClassType) factory.fromClass(Float.class);</span>
+<span class="fc" id="L222">        this.BOXED_DOUBLE = (IClassType) factory.fromClass(Double.class);</span>
+
+<span class="fc" id="L224">        this.BIG_INTEGER = (IClassType) factory.fromClass(BigInteger.class);</span>
+<span class="fc" id="L225">        this.BIG_DECIMAL = (IClassType) factory.fromClass(BigDecimal.class);</span>
+
+<span class="fc" id="L227">        this.ANNOTATION = (IInterfaceType) factory.fromClass(Annotation.class);</span>
+
+<span class="fc" id="L229">        this.OBJECT = (IClassType) factory.fromClass(Object.class);</span>
+
+<span class="fc" id="L231">        this.COMPARABLE = (IClassType) factory.fromClass(Comparable.class);</span>
+
+<span class="fc" id="L233">        this.NUMBER = (IClassType) factory.fromClass(Number.class);</span>
+
+<span class="fc" id="L235">        this.THROWABLE = (IClassType) factory.fromClass(Throwable.class);</span>
+
+<span class="fc" id="L237">        this.ENUM = (IEnumType) factory.fromClass(Enum.class);</span>
+
+<span class="fc" id="L239">        this.CLASS = (IClassType) factory.fromClass(Class.class);</span>
+
+<span class="fc" id="L241">        this.STRING = (IClassType) factory.fromClass(String.class);</span>
+
+<span class="fc" id="L243">        this.RECORD = (IInterfaceType) factory.fromClass(Record.class);</span>
+
+<span class="fc" id="L245">        this.LIST = (IInterfaceType) factory.fromClass(List.class);</span>
+
+<span class="fc" id="L247">        this.ITERABLE = (IInterfaceType) factory.fromClass(Iterable.class);</span>
+
+<span class="fc" id="L249">        this.DELEGATE = (IInterfaceType) factory.fromClass(Delegate.class);</span>
+
+<span class="fc" id="L251">        this.FUNCTOR = (IInterfaceType) factory.fromClass(Functor.class);</span>
+
+<span class="fc" id="L253">        this.TYPED_FUNCTOR = (IInterfaceType) factory.fromClass(TypedFunctor.class);</span>
+
+<span class="fc" id="L255">        this.LAMBDA = (IInterfaceType) factory.fromClass(Lambda.class);</span>
+
+<span class="fc" id="L257">        this.MODULE = (IInterfaceType) factory.fromClass(Module.class);</span>
+
+<span class="fc" id="L259">        this.MODULE_DELEGATE = (IClassType) factory.fromClass(ModuleDelegate.class);</span>
+
+<span class="fc" id="L261">        this.ABSTRACT_RECORD = (IClassType) factory.fromClass(AbstractRecord.class);</span>
+
+<span class="fc" id="L263">        this.ABSTRACT_MODULE = (IClassType) factory.fromClass(AbstractModule.class);</span>
+
+<span class="fc" id="L265">        this.ABSTRACT_DELEGATE = (IClassType) factory.fromClass(AbstractDelegate.class);</span>
+
+<span class="fc" id="L267">        this.ABSTRACT_LAMBDA = (IClassType) factory.fromClass(AbstractLambda.class);</span>
+
+<span class="fc" id="L269">        this.ABSTRACT_STATIC_FUNCTOR = (IClassType) factory.fromClass(AbstractDefinedFunctor.class);</span>
+
+<span class="fc" id="L271">        this.HELPERS = (IClassType) factory.fromClass(Helpers.class);</span>
+
+<span class="fc" id="L273">        this.ARGUMENT_STACK = (IClassType) factory.fromClass(ArgumentStack.class);</span>
+
+<span class="fc" id="L275">        this.START = (IAnnotationType) factory.fromClass(Start.class);</span>
+
+<span class="fc" id="L277">        this.CONVERSIONS = (IClassType) factory.fromClass(Conversions.class);</span>
+
+<span class="fc" id="L279">        this.OPERATORS = (IClassType) factory.fromClass(Operators.class);</span>
+
+<span class="fc" id="L281">        this.LOCALS_MAP = (IClassType) factory.fromClass(LocalsMap.class);</span>
+
+<span class="fc" id="L283">        this.LOCAL = (IClassType) factory.fromClass(Local.class);</span>
+
+<span class="fc" id="L285">        this.MODULE_INFO_BUILDER = (IClassType) factory.fromClass(ModuleInfoBuilder.class);</span>
+
+<span class="fc" id="L287">        this.MODULE_INFO = (IInterfaceType) factory.fromClass(ModuleInfo.class);</span>
+
+<span class="fc" id="L289">        this.SETUP = (IAnnotationType) factory.fromClass(Setup.class);</span>
+
+<span class="fc" id="L291">        this.SYNC = (IAnnotationType) factory.fromClass(Sync.class);</span>
+
+<span class="fc" id="L293">        this.INFER = (IAnnotationType) factory.fromClass(Infer.class);</span>
+
+<span class="fc" id="L295">        this.TEST = (IAnnotationType) factory.fromClass(Test.class);</span>
+<span class="fc" id="L296">    }</span>
+
+    /**
+     * This method determines whether a value of a type X can be converted to a value of a type Y,
+     * as is done during method invocations and variable assignments. Specifically, an assignment
+     * conversion is either a boxing conversion, an unboxing conversion, an identity conversion,
+     * an upcast, or a primitive coercion.
+     *
+     * @param input is the type of value that will be converted.
+     * @param output is the type to convert the input value to.
+     * @return the bytecode that performs the actual conversion,
+     * or null, if no such conversion is possible.
+     */
+    public InsnList assign(final IType input,
+                           final IType output)
+    {
+        // Primitive Type Coercions:
+        //   char  ==&gt; int
+        //   char  ==&gt; long
+        //   byte  ==&gt; short
+        //   byte  ==&gt; int
+        //   byte  ==&gt; long
+        //   short ==&gt; int
+        //   short ==&gt; long
+        //   int   ==&gt; long
+        //   float ==&gt; double
+
+        /**
+         * Case: Primitive-To-Primitive Coercions
+         */
+<span class="fc bfc" id="L326" title="All 4 branches covered.">        if (input.equals(PRIMITIVE_CHAR) &amp;&amp; output.equals(PRIMITIVE_INT))</span>
+        {
+<span class="fc" id="L328">            return new InsnList();</span>
+        }
+<span class="fc bfc" id="L330" title="All 4 branches covered.">        else if (input.equals(PRIMITIVE_CHAR) &amp;&amp; output.equals(PRIMITIVE_LONG))</span>
+        {
+<span class="fc" id="L332">            final InsnList result = new InsnList();</span>
+<span class="fc" id="L333">            result.add(new InsnNode(Opcodes.I2L));</span>
+<span class="fc" id="L334">            return result;</span>
+        }
+<span class="fc bfc" id="L336" title="All 4 branches covered.">        else if (input.equals(PRIMITIVE_BYTE) &amp;&amp; output.equals(PRIMITIVE_SHORT))</span>
+        {
+<span class="fc" id="L338">            return new InsnList();</span>
+        }
+<span class="fc bfc" id="L340" title="All 4 branches covered.">        else if (input.equals(PRIMITIVE_BYTE) &amp;&amp; output.equals(PRIMITIVE_INT))</span>
+        {
+<span class="fc" id="L342">            return new InsnList();</span>
+        }
+<span class="fc bfc" id="L344" title="All 4 branches covered.">        else if (input.equals(PRIMITIVE_BYTE) &amp;&amp; output.equals(PRIMITIVE_LONG))</span>
+        {
+<span class="fc" id="L346">            final InsnList result = new InsnList();</span>
+<span class="fc" id="L347">            result.add(new InsnNode(Opcodes.I2L));</span>
+<span class="fc" id="L348">            return result;</span>
+        }
+<span class="fc bfc" id="L350" title="All 4 branches covered.">        else if (input.equals(PRIMITIVE_SHORT) &amp;&amp; output.equals(PRIMITIVE_INT))</span>
+        {
+<span class="fc" id="L352">            return new InsnList();</span>
+        }
+<span class="fc bfc" id="L354" title="All 4 branches covered.">        else if (input.equals(PRIMITIVE_SHORT) &amp;&amp; output.equals(PRIMITIVE_LONG))</span>
+        {
+<span class="fc" id="L356">            final InsnList result = new InsnList();</span>
+<span class="fc" id="L357">            result.add(new InsnNode(Opcodes.I2L));</span>
+<span class="fc" id="L358">            return result;</span>
+        }
+<span class="fc bfc" id="L360" title="All 4 branches covered.">        else if (input.equals(PRIMITIVE_INT) &amp;&amp; output.equals(PRIMITIVE_LONG))</span>
+        {
+<span class="fc" id="L362">            final InsnList result = new InsnList();</span>
+<span class="fc" id="L363">            result.add(new InsnNode(Opcodes.I2L));</span>
+<span class="fc" id="L364">            return result;</span>
+        }
+<span class="fc bfc" id="L366" title="All 4 branches covered.">        else if (input.equals(PRIMITIVE_FLOAT) &amp;&amp; output.equals(PRIMITIVE_DOUBLE))</span>
+        {
+<span class="fc" id="L368">            final InsnList result = new InsnList();</span>
+<span class="fc" id="L369">            result.add(new InsnNode(Opcodes.F2D));</span>
+<span class="fc" id="L370">            return result;</span>
+        }
+
+        /**
+         * Case: The input is a subtype of the output.
+         */
+<span class="fc bfc" id="L376" title="All 2 branches covered.">        if (input.isSubtypeOf(output))</span>
+        {
+<span class="fc" id="L378">            return new InsnList();</span>
+        }
+
+        /**
+         * Case: Boxing
+         */
+<span class="fc" id="L384">        final InsnList box_code = box(input, output);</span>
+
+<span class="fc bfc" id="L386" title="All 2 branches covered.">        if (box_code != null)</span>
+        {
+<span class="fc" id="L388">            return box_code;</span>
+        }
+
+        /**
+         * Case: Unboxing
+         */
+<span class="fc" id="L394">        final InsnList unbox_code = unbox(input, output);</span>
+
+<span class="fc bfc" id="L396" title="All 2 branches covered.">        if (unbox_code != null)</span>
+        {
+<span class="fc" id="L398">            return unbox_code;</span>
+        }
+
+        /**
+         * Case: Invalid Assignment
+         */
+<span class="fc" id="L404">        return null;</span>
+    }
+
+    /**
+     * This method generates the bytecode necessary to perform a boxing conversion.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;All Possible Boxing Conversions&lt;/b&gt; &lt;br&gt;
+     *
+     * &lt;table border=&quot;1&quot;&gt;
+     * &lt;tr&gt; &lt;td&gt;&lt;code&gt;boolean&lt;/code&gt;&lt;/td&gt; &lt;td&gt;&lt;code&gt;java.lang.Boolean&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;
+     * &lt;tr&gt; &lt;td&gt;&lt;code&gt;char&lt;/code&gt;&lt;/td&gt; &lt;td&gt;&lt;code&gt;java.lang.Character&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;
+     * &lt;tr&gt; &lt;td&gt;&lt;code&gt;byte&lt;/code&gt;&lt;/td&gt; &lt;td&gt;&lt;code&gt;java.lang.Byte&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;
+     * &lt;tr&gt; &lt;td&gt;&lt;code&gt;short&lt;/code&gt;&lt;/td&gt; &lt;td&gt;&lt;code&gt;java.lang.Short&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;
+     * &lt;tr&gt; &lt;td&gt;&lt;code&gt;int&lt;/code&gt;&lt;/td&gt; &lt;td&gt;&lt;code&gt;java.lang.Integer&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;
+     * &lt;tr&gt; &lt;td&gt;&lt;code&gt;long&lt;/code&gt;&lt;/td&gt; &lt;td&gt;&lt;code&gt;java.lang.Long&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;
+     * &lt;tr&gt; &lt;td&gt;&lt;code&gt;float&lt;/code&gt;&lt;/td&gt; &lt;td&gt;&lt;code&gt;java.lang.Float&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;
+     * &lt;tr&gt; &lt;td&gt;&lt;code&gt;double&lt;/code&gt;&lt;/td&gt; &lt;td&gt;&lt;code&gt;java.lang.Double&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;
+     *
+     * &lt;tr&gt; &lt;td&gt;&lt;code&gt;byte&lt;/code&gt;&lt;/td&gt; &lt;td&gt;&lt;code&gt;java.lang.Number&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;
+     * &lt;tr&gt; &lt;td&gt;&lt;code&gt;short&lt;/code&gt;&lt;/td&gt; &lt;td&gt;&lt;code&gt;java.lang.Number&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;
+     * &lt;tr&gt; &lt;td&gt;&lt;code&gt;int&lt;/code&gt;&lt;/td&gt; &lt;td&gt;&lt;code&gt;java.lang.Number&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;
+     * &lt;tr&gt; &lt;td&gt;&lt;code&gt;long&lt;/code&gt;&lt;/td&gt; &lt;td&gt;&lt;code&gt;java.lang.Number&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;
+     * &lt;tr&gt; &lt;td&gt;&lt;code&gt;float&lt;/code&gt;&lt;/td&gt; &lt;td&gt;&lt;code&gt;java.lang.Number&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;
+     * &lt;tr&gt; &lt;td&gt;&lt;code&gt;double&lt;/code&gt;&lt;/td&gt; &lt;td&gt;&lt;code&gt;java.lang.Number&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;
+     *
+     * &lt;tr&gt; &lt;td&gt;&lt;code&gt;boolean&lt;/code&gt;&lt;/td&gt; &lt;td&gt;&lt;code&gt;java.lang.Comparable&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;
+     * &lt;tr&gt; &lt;td&gt;&lt;code&gt;char&lt;/code&gt;&lt;/td&gt; &lt;td&gt;&lt;code&gt;java.lang.Comparable&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;
+     * &lt;tr&gt; &lt;td&gt;&lt;code&gt;byte&lt;/code&gt;&lt;/td&gt; &lt;td&gt;&lt;code&gt;java.lang.Comparable&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;
+     * &lt;tr&gt; &lt;td&gt;&lt;code&gt;short&lt;/code&gt;&lt;/td&gt; &lt;td&gt;&lt;code&gt;java.lang.Comparable&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;
+     * &lt;tr&gt; &lt;td&gt;&lt;code&gt;int&lt;/code&gt;&lt;/td&gt; &lt;td&gt;&lt;code&gt;java.lang.Comparable&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;
+     * &lt;tr&gt; &lt;td&gt;&lt;code&gt;long&lt;/code&gt;&lt;/td&gt; &lt;td&gt;&lt;code&gt;java.lang.Comparable&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;
+     * &lt;tr&gt; &lt;td&gt;&lt;code&gt;float&lt;/code&gt;&lt;/td&gt; &lt;td&gt;&lt;code&gt;java.lang.Comparable&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;
+     * &lt;tr&gt; &lt;td&gt;&lt;code&gt;double&lt;/code&gt;&lt;/td&gt; &lt;td&gt;&lt;code&gt;java.lang.Comparable&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;
+     *
+     * &lt;tr&gt; &lt;td&gt;&lt;code&gt;boolean&lt;/code&gt;&lt;/td&gt; &lt;td&gt;&lt;code&gt;java.lang.Object&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;
+     * &lt;tr&gt; &lt;td&gt;&lt;code&gt;char&lt;/code&gt;&lt;/td&gt; &lt;td&gt;&lt;code&gt;java.lang.Object&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;
+     * &lt;tr&gt; &lt;td&gt;&lt;code&gt;byte&lt;/code&gt;&lt;/td&gt; &lt;td&gt;&lt;code&gt;java.lang.Object&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;
+     * &lt;tr&gt; &lt;td&gt;&lt;code&gt;short&lt;/code&gt;&lt;/td&gt; &lt;td&gt;&lt;code&gt;java.lang.Object&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;
+     * &lt;tr&gt; &lt;td&gt;&lt;code&gt;int&lt;/code&gt;&lt;/td&gt; &lt;td&gt;&lt;code&gt;java.lang.Object&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;
+     * &lt;tr&gt; &lt;td&gt;&lt;code&gt;long&lt;/code&gt;&lt;/td&gt; &lt;td&gt;&lt;code&gt;java.lang.Object&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;
+     * &lt;tr&gt; &lt;td&gt;&lt;code&gt;float&lt;/code&gt;&lt;/td&gt; &lt;td&gt;&lt;code&gt;java.lang.Object&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;
+     * &lt;tr&gt; &lt;td&gt;&lt;code&gt;double&lt;/code&gt;&lt;/td&gt; &lt;td&gt;&lt;code&gt;java.lang.Object&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;
+     * &lt;/table&gt;
+     * &lt;/p&gt;
+     *
+     * @param input is the type of value that will be converted.
+     * @param output is the type to convert the input value to.
+     * @return the bytecode that performs the actual conversion,
+     * or null, if no such conversion is possible.
+     */
+    public InsnList box(final IType input,
+                        final IType output)
+    {
+<span class="fc" id="L458">        final InsnList result = new InsnList();</span>
+
+<span class="fc" id="L460">        final boolean is_object = output.equals(OBJECT);</span>
+
+<span class="fc" id="L462">        final boolean is_number = output.equals(NUMBER);</span>
+
+<span class="fc" id="L464">        final boolean is_comparable = output.equals(factory.fromClass(Comparable.class));</span>
+
+<span class="fc bfc" id="L466" title="All 8 branches covered.">        if (input.equals(PRIMITIVE_BOOLEAN) &amp;&amp; (output.equals(BOXED_BOOLEAN) || is_object || is_comparable))</span>
+        {
+<span class="fc" id="L468">            result.add(new MethodInsnNode(Opcodes.INVOKESTATIC,</span>
+<span class="fc" id="L469">                                          Utils.internalName(CONVERSIONS),</span>
+                                          &quot;box&quot;,
+                                          &quot;(Z)Ljava/lang/Boolean;&quot;));
+        }
+<span class="fc bfc" id="L473" title="All 8 branches covered.">        else if (input.equals(PRIMITIVE_CHAR) &amp;&amp; (output.equals(BOXED_CHAR) || is_object || is_comparable))</span>
+        {
+<span class="fc" id="L475">            result.add(new MethodInsnNode(Opcodes.INVOKESTATIC,</span>
+<span class="fc" id="L476">                                          Utils.internalName(CONVERSIONS),</span>
+                                          &quot;box&quot;,
+                                          &quot;(C)Ljava/lang/Character;&quot;));
+        }
+<span class="fc bfc" id="L480" title="All 10 branches covered.">        else if (input.equals(PRIMITIVE_BYTE) &amp;&amp; (output.equals(BOXED_BYTE) || is_object || is_number || is_comparable))</span>
+        {
+<span class="fc" id="L482">            result.add(new MethodInsnNode(Opcodes.INVOKESTATIC,</span>
+<span class="fc" id="L483">                                          Utils.internalName(CONVERSIONS),</span>
+                                          &quot;box&quot;,
+                                          &quot;(B)Ljava/lang/Byte;&quot;));
+        }
+<span class="fc bfc" id="L487" title="All 10 branches covered.">        else if (input.equals(PRIMITIVE_SHORT) &amp;&amp; (output.equals(BOXED_SHORT) || is_object || is_number || is_comparable))</span>
+        {
+<span class="fc" id="L489">            result.add(new MethodInsnNode(Opcodes.INVOKESTATIC,</span>
+<span class="fc" id="L490">                                          Utils.internalName(CONVERSIONS),</span>
+                                          &quot;box&quot;,
+                                          &quot;(S)Ljava/lang/Short;&quot;));
+        }
+<span class="fc bfc" id="L494" title="All 10 branches covered.">        else if (input.equals(PRIMITIVE_INT) &amp;&amp; (output.equals(BOXED_INT) || is_object || is_number || is_comparable))</span>
+        {
+<span class="fc" id="L496">            result.add(new MethodInsnNode(Opcodes.INVOKESTATIC,</span>
+<span class="fc" id="L497">                                          Utils.internalName(CONVERSIONS),</span>
+                                          &quot;box&quot;,
+                                          &quot;(I)Ljava/lang/Integer;&quot;));
+        }
+<span class="fc bfc" id="L501" title="All 10 branches covered.">        else if (input.equals(PRIMITIVE_LONG) &amp;&amp; (output.equals(BOXED_LONG) || is_object || is_number || is_comparable))</span>
+        {
+<span class="fc" id="L503">            result.add(new MethodInsnNode(Opcodes.INVOKESTATIC,</span>
+<span class="fc" id="L504">                                          Utils.internalName(CONVERSIONS),</span>
+                                          &quot;box&quot;,
+                                          &quot;(J)Ljava/lang/Long;&quot;));
+        }
+<span class="fc bfc" id="L508" title="All 10 branches covered.">        else if (input.equals(PRIMITIVE_FLOAT) &amp;&amp; (output.equals(BOXED_FLOAT) || is_object || is_number || is_comparable))</span>
+        {
+<span class="fc" id="L510">            result.add(new MethodInsnNode(Opcodes.INVOKESTATIC,</span>
+<span class="fc" id="L511">                                          Utils.internalName(CONVERSIONS),</span>
+                                          &quot;box&quot;,
+                                          &quot;(F)Ljava/lang/Float;&quot;));
+        }
+<span class="fc bfc" id="L515" title="All 10 branches covered.">        else if (input.equals(PRIMITIVE_DOUBLE) &amp;&amp; (output.equals(BOXED_DOUBLE) || is_object || is_number || is_comparable))</span>
+        {
+<span class="fc" id="L517">            result.add(new MethodInsnNode(Opcodes.INVOKESTATIC,</span>
+<span class="fc" id="L518">                                          Utils.internalName(CONVERSIONS),</span>
+                                          &quot;box&quot;,
+                                          &quot;(D)Ljava/lang/Double;&quot;));
+        }
+
+<span class="fc bfc" id="L523" title="All 2 branches covered.">        return result.size() == 0 ? null : result;</span>
+    }
+
+    /**
+     * This method generates the bytecode necessary to perform an unboxing conversion.
+     *
+     * &lt;p&gt;
+     * &lt;b&gt;All Possible Unboxing Conversions&lt;/b&gt; &lt;br&gt;
+     *
+     * &lt;table border=&quot;1&quot;&gt;
+     * &lt;tr&gt; &lt;td&gt;&lt;code&gt;java.lang.Boolean&lt;/code&gt;&lt;/td&gt; &lt;td&gt;&lt;code&gt;boolean&lt;/code&gt;&lt;/td&gt; &lt;/tr&gt;
+     * &lt;tr&gt; &lt;td&gt;&lt;code&gt;java.lang.Character&lt;/code&gt;&lt;/td&gt; &lt;td&gt;&lt;code&gt;char&lt;/code&gt;&lt;/td&gt; &lt;/tr&gt;
+     * &lt;tr&gt; &lt;td&gt;&lt;code&gt;java.lang.Byte&lt;/code&gt;&lt;/td&gt; &lt;td&gt;&lt;code&gt;byte&lt;/code&gt;&lt;/td&gt; &lt;/tr&gt;
+     * &lt;tr&gt; &lt;td&gt;&lt;code&gt;java.lang.Short&lt;/code&gt;&lt;/td&gt; &lt;td&gt;&lt;code&gt;short&lt;/code&gt;&lt;/td&gt; &lt;/tr&gt;
+     * &lt;tr&gt; &lt;td&gt;&lt;code&gt;java.lang.Integer&lt;/code&gt;&lt;/td&gt; &lt;td&gt;&lt;code&gt;int&lt;/code&gt;&lt;/td&gt; &lt;/tr&gt;
+     * &lt;tr&gt; &lt;td&gt;&lt;code&gt;java.lang.Long&lt;/code&gt;&lt;/td&gt; &lt;td&gt;&lt;code&gt;long&lt;/code&gt;&lt;/td&gt; &lt;/tr&gt;
+     * &lt;tr&gt; &lt;td&gt;&lt;code&gt;java.lang.Float&lt;/code&gt;&lt;/td&gt; &lt;td&gt;&lt;code&gt;float&lt;/code&gt;&lt;/td&gt; &lt;/tr&gt;
+     * &lt;tr&gt; &lt;td&gt;&lt;code&gt;java.lang.Double&lt;/code&gt;&lt;/td&gt; &lt;td&gt;&lt;code&gt;double&lt;/code&gt;&lt;/td&gt; &lt;/tr&gt;
+     * &lt;/table&gt;
+     * &lt;/p&gt;
+     *
+     * @param input is the type of value that will be be converted.
+     * @param output is the type to convert the input value to.
+     * @return the bytecode that performs the actual conversion,
+     * or null, if no such conversion is possible.
+     */
+    public InsnList unbox(final IType input,
+                          final IType output)
+    {
+<span class="fc" id="L552">        final InsnList result = new InsnList();</span>
+
+<span class="fc" id="L554">        final boolean is_object = output.equals(OBJECT);</span>
+
+<span class="fc" id="L556">        final boolean is_number = output.equals(NUMBER);</span>
+
+<span class="fc bfc" id="L558" title="All 4 branches covered.">        if (output.equals(PRIMITIVE_BOOLEAN) &amp;&amp; input.equals(BOXED_BOOLEAN))</span>
+        {
+<span class="fc" id="L560">            result.add(new MethodInsnNode(Opcodes.INVOKESTATIC,</span>
+<span class="fc" id="L561">                                          Utils.internalName(CONVERSIONS),</span>
+                                          &quot;unbox&quot;,
+                                          &quot;(Ljava/lang/Boolean;)Z&quot;));
+        }
+<span class="fc bfc" id="L565" title="All 4 branches covered.">        else if (output.equals(PRIMITIVE_CHAR) &amp;&amp; input.equals(BOXED_CHAR))</span>
+        {
+<span class="fc" id="L567">            result.add(new MethodInsnNode(Opcodes.INVOKESTATIC,</span>
+<span class="fc" id="L568">                                          Utils.internalName(CONVERSIONS),</span>
+                                          &quot;unbox&quot;,
+                                          &quot;(Ljava/lang/Character;)C&quot;));
+        }
+<span class="fc bfc" id="L572" title="All 4 branches covered.">        else if (output.equals(PRIMITIVE_BYTE) &amp;&amp; input.equals(BOXED_BYTE))</span>
+        {
+<span class="fc" id="L574">            result.add(new MethodInsnNode(Opcodes.INVOKESTATIC,</span>
+<span class="fc" id="L575">                                          Utils.internalName(CONVERSIONS),</span>
+                                          &quot;unbox&quot;,
+                                          &quot;(Ljava/lang/Byte;)B&quot;));
+        }
+<span class="fc bfc" id="L579" title="All 4 branches covered.">        else if (output.equals(PRIMITIVE_SHORT) &amp;&amp; input.equals(BOXED_SHORT))</span>
+        {
+<span class="fc" id="L581">            result.add(new MethodInsnNode(Opcodes.INVOKESTATIC,</span>
+<span class="fc" id="L582">                                          Utils.internalName(CONVERSIONS),</span>
+                                          &quot;unbox&quot;,
+                                          &quot;(Ljava/lang/Short;)S&quot;));
+        }
+<span class="fc bfc" id="L586" title="All 4 branches covered.">        else if (output.equals(PRIMITIVE_INT) &amp;&amp; input.equals(BOXED_INT))</span>
+        {
+<span class="fc" id="L588">            result.add(new MethodInsnNode(Opcodes.INVOKESTATIC,</span>
+<span class="fc" id="L589">                                          Utils.internalName(CONVERSIONS),</span>
+                                          &quot;unbox&quot;,
+                                          &quot;(Ljava/lang/Integer;)I&quot;));
+        }
+<span class="fc bfc" id="L593" title="All 4 branches covered.">        else if (output.equals(PRIMITIVE_LONG) &amp;&amp; input.equals(BOXED_LONG))</span>
+        {
+<span class="fc" id="L595">            result.add(new MethodInsnNode(Opcodes.INVOKESTATIC,</span>
+<span class="fc" id="L596">                                          Utils.internalName(CONVERSIONS),</span>
+                                          &quot;unbox&quot;,
+                                          &quot;(Ljava/lang/Long;)J&quot;));
+        }
+<span class="fc bfc" id="L600" title="All 4 branches covered.">        else if (output.equals(PRIMITIVE_FLOAT) &amp;&amp; input.equals(BOXED_FLOAT))</span>
+        {
+<span class="fc" id="L602">            result.add(new MethodInsnNode(Opcodes.INVOKESTATIC,</span>
+<span class="fc" id="L603">                                          Utils.internalName(CONVERSIONS),</span>
+                                          &quot;unbox&quot;,
+                                          &quot;(Ljava/lang/Float;)F&quot;));
+        }
+<span class="fc bfc" id="L607" title="All 4 branches covered.">        else if (output.equals(PRIMITIVE_DOUBLE) &amp;&amp; input.equals(BOXED_DOUBLE))</span>
+        {
+<span class="fc" id="L609">            result.add(new MethodInsnNode(Opcodes.INVOKESTATIC,</span>
+<span class="fc" id="L610">                                          Utils.internalName(CONVERSIONS),</span>
+                                          &quot;unbox&quot;,
+                                          &quot;(Ljava/lang/Double;)D&quot;));
+        }
+
+<span class="fc bfc" id="L615" title="All 2 branches covered.">        return result.size() == 0 ? null : result;</span>
+    }
+
+    /**
+     * This method sorts a collection of invokable members, using a topological sort,
+     * such that narrowest methods are closest the front of the resultant list.
+     *
+     * @param members are the invokable members to sort.
+     * @return the aforedescribed topologically sorted list.
+     */
+    public &lt;T extends IInvokableMember&gt; List&lt;T&gt; sort(final Collection&lt;T&gt; members)
+    {
+<span class="fc" id="L627">        final TopoSorter&lt;T&gt; sorter = new TopoSorter&lt;T&gt;()</span>
+<span class="fc" id="L628">        {</span>
+            @Override
+            public boolean isLess(final IInvokableMember left,
+                                  final IInvokableMember right)
+            {
+<span class="fc" id="L633">                final boolean result = compare(left, right);</span>
+
+<span class="fc" id="L635">                return result;</span>
+            }
+        };
+
+<span class="fc" id="L639">        sorter.addAll(members);</span>
+
+<span class="fc" id="L641">        return sorter.elements();</span>
+    }
+
+    /**
+     * This method compares a method/constructor X to another method/constructor Y in order to
+     * determine whether X is more specific than Y.
+     *
+     * @param left is X.
+     * @param right is Y.
+     * @return true, if and only if, X is more specific than Y.
+     */
+    final boolean compare(final IInvokableMember left,
+                          final IInvokableMember right)
+    {
+        // Here &quot;less&quot; is synonymous with &quot;more-specific&quot;.
+<span class="fc" id="L656">        final boolean LESS = true;</span>
+
+        /**
+         * Name Comparison
+         */
+<span class="fc bfc" id="L661" title="All 2 branches covered.">        if (left.getName().compareTo(right.getName()) &lt; 0)</span>
+        {
+<span class="fc" id="L663">            return LESS;</span>
+        }
+<span class="fc bfc" id="L665" title="All 2 branches covered.">        else if (left.getName().equals(right.getName()) == false)</span>
+        {
+<span class="fc" id="L667">            return !LESS;</span>
+        }
+
+<span class="pc bpc" id="L670" title="1 of 2 branches missed.">        assert left.getName().equals(right.getName());</span>
+
+<span class="fc" id="L672">        final List&lt;IFormalParameter&gt; left_params = left.getParameters();</span>
+<span class="fc" id="L673">        final List&lt;IFormalParameter&gt; right_params = right.getParameters();</span>
+
+        /**
+         * Parameter Count Comparison
+         */
+<span class="fc bfc" id="L678" title="All 2 branches covered.">        if (left_params.size() &lt; right_params.size())</span>
+        {
+<span class="fc" id="L680">            return LESS;</span>
+        }
+<span class="fc bfc" id="L682" title="All 2 branches covered.">        else if (left_params.size() &gt; right_params.size())</span>
+        {
+<span class="fc" id="L684">            return !LESS;</span>
+        }
+
+<span class="pc bpc" id="L687" title="1 of 2 branches missed.">        assert left_params.size() == right_params.size();</span>
+
+        /**
+         * Owner Comparison
+         */
+<span class="fc bfc" id="L692" title="All 2 branches covered.">        final boolean is_proper_subtype = (!left.getOwner().equals(right.getOwner()))</span>
+<span class="fc bfc" id="L693" title="All 2 branches covered.">                                          &amp;&amp; left.getOwner().isSubtypeOf(right.getOwner());</span>
+
+<span class="fc bfc" id="L695" title="All 2 branches covered.">        if (is_proper_subtype)</span>
+        {
+<span class="fc" id="L697">            return LESS;</span>
+        }
+
+        /**
+         * Parameter Comparison
+         */
+<span class="fc bfc" id="L703" title="All 2 branches covered.">        for (int i = 0; i &lt; left_params.size(); i++)</span>
+        {
+<span class="fc" id="L705">            final IVariableType left_param = left_params.get(i).getType();</span>
+<span class="fc" id="L706">            final IVariableType right_param = right_params.get(i).getType();</span>
+
+<span class="fc bfc" id="L708" title="All 2 branches covered.">            final boolean assignable = assign(left_param, right_param) != null;</span>
+
+<span class="fc bfc" id="L710" title="All 2 branches covered.">            if (left_param.equals(right_param))</span>
+            {
+                // Pass, because a type is not more specific than itself.
+            }
+<span class="fc bfc" id="L714" title="All 2 branches covered.">            else if (left_param.isSubtypeOf(right_param))</span>
+            {
+                // A subtype is more specific than its supertype.
+<span class="fc" id="L717">                return LESS;</span>
+            }
+<span class="fc bfc" id="L719" title="All 4 branches covered.">            else if (left_param.isPrimitiveType() &amp;&amp; !right_param.isPrimitiveType())</span>
+            {
+                // A primitive-type is more specific than a reference-type.
+<span class="fc" id="L722">                return LESS;</span>
+            }
+<span class="pc bpc" id="L724" title="2 of 6 branches missed.">            else if (assignable &amp;&amp; left_param.isPrimitiveType() &amp;&amp; right_param.isPrimitiveType())</span>
+            {
+                // Some primitive-types are more specific than other primitive-types.
+<span class="fc" id="L727">                return LESS;</span>
+            }
+        }
+
+        /**
+         * Return Type Comparison
+         */
+<span class="fc bfc" id="L734" title="All 2 branches covered.">        final boolean more_specific_return = !left.getReturnType().equals(right.getReturnType())</span>
+<span class="fc bfc" id="L735" title="All 2 branches covered.">                                             &amp;&amp; left.getReturnType().isSubtypeOf(right.getReturnType());</span>
+
+<span class="fc bfc" id="L737" title="All 2 branches covered.">        if (more_specific_return)</span>
+        {
+<span class="fc" id="L739">            return LESS;</span>
+        }
+
+<span class="fc" id="L742">        return !LESS;</span>
+    }
+
+    /**
+     * Given the types of the arguments in an arguments-list and a set of invokable members,
+     * this method selects those invokable members whose formal-parameter types are acceptable
+     * matches for the given arguments.
+     *
+     * &lt;p&gt;
+     * A method will be selected, if each argument X is convertible to the related
+     * formal-parameter type P, using an assignment conversion.
+     * &lt;/p&gt;
+     *
+     * @param members is the list invokable members to choose from.
+     * @param arguments are the types of the arguments.
+     * @return a list containing the selected members.
+     */
+    public &lt;T extends IInvokableMember&gt; List&lt;T&gt; checkArgs(final List&lt;T&gt; members,
+                                                          final List&lt;? extends IType&gt; arguments)
+    {
+<span class="fc" id="L762">        final List&lt;T&gt; result = Lists.newLinkedList();</span>
+
+NEXT_METHOD:
+<span class="fc bfc" id="L765" title="All 2 branches covered.">        for (IInvokableMember method : members)</span>
+        {
+<span class="fc bfc" id="L767" title="All 2 branches covered.">            if (method.getParameters().size() != arguments.size())</span>
+            {
+<span class="fc" id="L769">                continue;</span>
+            }
+
+<span class="fc bfc" id="L772" title="All 2 branches covered.">            for (int i = 0; i &lt; arguments.size(); i++)</span>
+            {
+<span class="fc" id="L774">                final IType parameter = method.getParameters().get(i).getType();</span>
+
+<span class="fc" id="L776">                final IType argument = arguments.get(i);</span>
+
+<span class="fc bfc" id="L778" title="All 2 branches covered.">                if (assign(argument, parameter) == null)</span>
+                {
+<span class="fc" id="L780">                    continue NEXT_METHOD;</span>
+                }
+            }
+
+<span class="fc" id="L784">            result.add((T) method);</span>
+<span class="fc" id="L785">        }</span>
+
+<span class="fc" id="L787">        return result;</span>
+    }
+
+    /**
+     * This method selects the accessible members of a type that have a given name.
+     *
+     * @param usage_site is the type from where the members are being accessed from.
+     * @param members are the members to examine and possibly select.
+     * @param shared is true, if and only if, the desired members are static.
+     * @param name the name of the desired members.
+     * @return a list containing the selected members.
+     */
+    public &lt;T extends IMember&gt; List&lt;T&gt; select(final IDeclaredType usage_site,
+                                              final Collection&lt;T&gt; members,
+                                              final boolean shared,
+                                              final String name)
+    {
+<span class="fc" id="L804">        final List&lt;T&gt; result = Lists.newLinkedList();</span>
+
+<span class="fc bfc" id="L806" title="All 2 branches covered.">        for (IMember member : members)</span>
+        {
+<span class="fc" id="L808">            final boolean name_match = member.getName().equals(name);</span>
+
+<span class="fc bfc" id="L810" title="All 2 branches covered.">            final boolean static_match = shared == Modifier.isStatic(member.getModifiers());</span>
+
+<span class="fc" id="L812">            final boolean accessible = isAccessible(usage_site, member);</span>
+
+<span class="fc bfc" id="L814" title="All 6 branches covered.">            if (accessible &amp;&amp; name_match &amp;&amp; static_match)</span>
+            {
+<span class="fc" id="L816">                result.add((T) member);</span>
+            }
+<span class="fc" id="L818">        }</span>
+
+<span class="fc" id="L820">        return result;</span>
+    }
+
+    /**
+     * This method determines whether a given constructor, method, or field is accessible.
+     *
+     * @param user is the place where the member is being used from.
+     * @param member is the member being used.
+     * @return true, iff the member is accessible.
+     */
+    public boolean isAccessible(final IDeclaredType user,
+                                final IMember member)
+    {
+<span class="fc" id="L833">        Preconditions.checkNotNull(user);</span>
+<span class="fc" id="L834">        Preconditions.checkNotNull(member);</span>
+
+        // Case: A member of an inaccessible type is not accessible.
+
+<span class="fc bfc" id="L838" title="All 2 branches covered.">        if (isAccessible(user, member.getOwner()) == false)</span>
+        {
+<span class="fc" id="L840">            return false;</span>
+        }
+
+        // Case: A member with public-access, of an accessible type, is always accessible.
+
+<span class="fc bfc" id="L845" title="All 2 branches covered.">        if (Modifier.isPublic(member.getModifiers()))</span>
+        {
+<span class="fc" id="L847">            return true;</span>
+        }
+
+        // Case: A member with private-access, of an accessible type, is never accessible.
+        //       Remember, Autumn does not support access modifiers is Autumn code.
+
+<span class="fc bfc" id="L853" title="All 2 branches covered.">        if (Modifier.isPrivate(member.getModifiers()))</span>
+        {
+<span class="fc" id="L855">            return false;</span>
+        }
+
+        // Case: A member with package-access, of an accessible type,
+        //       is only accessible from within the same package.
+
+<span class="fc" id="L861">        final String namespace1 = user.getNamespace();</span>
+<span class="fc" id="L862">        final String namespace2 = member.getOwner().getNamespace();</span>
+
+<span class="fc" id="L864">        return namespace1.equals(namespace2);</span>
+    }
+
+    /**
+     * This method determines whether a given type is accessible.
+     *
+     * @param usage_site is the place where the type is being used from.
+     * @param used is the type being used.
+     * @return true, iff the type being used is accessible.
+     */
+    public boolean isAccessible(final IDeclaredType usage_site,
+                                final IDeclaredType used)
+    {
+<span class="fc" id="L877">        Preconditions.checkNotNull(usage_site);</span>
+<span class="fc" id="L878">        Preconditions.checkNotNull(used);</span>
+
+        // Case: A type is always accessible from within itself.
+
+<span class="fc bfc" id="L882" title="All 2 branches covered.">        if (usage_site.equals(used))</span>
+        {
+<span class="fc" id="L884">            return true;</span>
+        }
+
+        // Case: A type that has public-access is always accessible.
+
+<span class="fc bfc" id="L889" title="All 2 branches covered.">        if (Modifier.isPublic(used.getModifiers()))</span>
+        {
+<span class="fc" id="L891">            return true;</span>
+        }
+
+        // Case: A type that has package-access is accessible from
+        //         any other type within the same package.
+
+<span class="fc" id="L897">        final String namespace1 = usage_site.getNamespace();</span>
+<span class="fc" id="L898">        final String namespace2 = used.getNamespace();</span>
+
+<span class="fc" id="L900">        return namespace1.equals(namespace2);</span>
+    }
+
+    /**
+     * This method resolves a non-static field.
+     *
+     * @param user is the site where the field is being accessed.
+     * @param owner is the type that contains the field.
+     * @param name is the name of the field.
+     * @return the resolved field; or null, if no such field could be found.
+     */
+    public IField resolveField(final IDeclaredType user,
+                               final IDeclaredType owner,
+                               final String name)
+    {
+<span class="fc" id="L915">        Preconditions.checkNotNull(user);</span>
+<span class="fc" id="L916">        Preconditions.checkNotNull(owner);</span>
+<span class="fc" id="L917">        Preconditions.checkNotNull(name);</span>
+
+<span class="fc" id="L919">        final List&lt;IField&gt; result = select(user, owner.getFields(), false, name);</span>
+
+<span class="fc bfc" id="L921" title="All 2 branches covered.">        return (result.isEmpty() ? null : result.get(0));</span>
+    }
+
+    /**
+     * This method resolves a static field.
+     *
+     * @param user is the site where the field is being accessed.
+     * @param owner is the type that contains the field.
+     * @param name is the name of the field.
+     * @return the resolved field; or null, if no such field could be found.
+     */
+    public IField resolveStaticField(final IDeclaredType user,
+                                     final IDeclaredType owner,
+                                     final String name)
+    {
+<span class="fc" id="L936">        Preconditions.checkNotNull(user);</span>
+<span class="fc" id="L937">        Preconditions.checkNotNull(owner);</span>
+<span class="fc" id="L938">        Preconditions.checkNotNull(name);</span>
+
+<span class="fc" id="L940">        final List&lt;IField&gt; result = select(user, owner.getFields(), true, name);</span>
+
+<span class="fc bfc" id="L942" title="All 2 branches covered.">        return (result.isEmpty() ? null : result.get(0));</span>
+    }
+
+    /**
+     * This method resolves a constructor.
+     *
+     * @param user is the site where the constructor is being invoked.
+     * @param owner is the type that contains the constructor.
+     * @param arguments are the types of the arguments being passed to the constructor.
+     * @return the resolved constructor; or null, if no such constructor could be found.
+     */
+    public List&lt;IConstructor&gt; resolveCtors(final IDeclaredType user,
+                                           final IDeclaredType owner,
+                                           final List&lt;? extends IType&gt; arguments)
+    {
+<span class="fc" id="L957">        Preconditions.checkNotNull(user);</span>
+<span class="fc" id="L958">        Preconditions.checkNotNull(owner);</span>
+<span class="fc" id="L959">        Preconditions.checkNotNull(arguments);</span>
+
+<span class="fc" id="L961">        final List&lt;IConstructor&gt; selected = select(user,</span>
+<span class="fc" id="L962">                                                   owner.getConstructors(),</span>
+                                                   false,
+                                                   &quot;&lt;init&gt;&quot;);
+
+<span class="fc" id="L966">        final List&lt;IConstructor&gt; applicable = checkArgs(selected, arguments);</span>
+
+<span class="fc" id="L968">        final List&lt;IConstructor&gt; sorted = sort(applicable);</span>
+
+<span class="fc" id="L970">        return sorted;</span>
+    }
+
+    /**
+     * This method resolves a non-static method.
+     *
+     * @param user is the site where the method is being invoked.
+     * @param owner is the type that contains the method.
+     * @param name is the name of the method.
+     * @param arguments are the types of the arguments being passed to the method.
+     * @return the resolved method; or null, if no such method could be found.
+     */
+    public List&lt;IMethod&gt; resolveMethods(final IDeclaredType user,
+                                        final IDeclaredType owner,
+                                        final String name,
+                                        final List&lt;? extends IType&gt; arguments)
+    {
+<span class="fc" id="L987">        Preconditions.checkNotNull(user);</span>
+<span class="fc" id="L988">        Preconditions.checkNotNull(owner);</span>
+<span class="fc" id="L989">        Preconditions.checkNotNull(name);</span>
+<span class="fc" id="L990">        Preconditions.checkNotNull(arguments);</span>
+
+<span class="fc" id="L992">        final List&lt;IMethod&gt; selected = select(user,</span>
+<span class="fc" id="L993">                                              owner.getAllVisibleMethods(),</span>
+                                              false,
+                                              name);
+
+<span class="fc" id="L997">        final List&lt;IMethod&gt; applicable = checkArgs(selected, arguments);</span>
+
+<span class="fc" id="L999">        final List&lt;IMethod&gt; sorted = sort(applicable);</span>
+
+<span class="fc" id="L1001">        return sorted;</span>
+    }
+
+    /**
+     * This method resolves a static method.
+     *
+     * @param user is the site where the method is being invoked.
+     * @param owner is the type that contains the method.
+     * @param name is the name of the method.
+     * @param arguments are the types of the arguments being passed to the method.
+     * @return the resolved method; or null, if no such method could be found.
+     */
+    public List&lt;IMethod&gt; resolveStaticMethods(final IDeclaredType user,
+                                              final IDeclaredType owner,
+                                              final String name,
+                                              final List&lt;? extends IType&gt; arguments)
+    {
+<span class="fc" id="L1018">        Preconditions.checkNotNull(user);</span>
+<span class="fc" id="L1019">        Preconditions.checkNotNull(owner);</span>
+<span class="fc" id="L1020">        Preconditions.checkNotNull(name);</span>
+<span class="fc" id="L1021">        Preconditions.checkNotNull(arguments);</span>
+
+<span class="fc" id="L1023">        final List&lt;IMethod&gt; selected = select(user,</span>
+<span class="fc" id="L1024">                                              owner.getMethods(),</span>
+                                              true,
+                                              name);
+
+<span class="fc" id="L1028">        final List&lt;IMethod&gt; applicable = checkArgs(selected, arguments);</span>
+
+<span class="fc" id="L1030">        final List&lt;IMethod&gt; sorted = sort(applicable);</span>
+
+<span class="fc" id="L1032">        return sorted;</span>
+    }
+
+    /**
+     * This method retrieves a type from the type-factory.
+     *
+     * @param typename is the fully-qualified name of the type. (not descriptor or internal name)
+     * @param dimensions is the number of dimensions in the array-type, otherwise, null.
+     * @return the type denoted by the type-name and the optional dimensions,
+     * or null, if the type does not exist or cannot exist.
+     */
+    public IReturnType findType(final String typename,
+                                final Integer dimensions)
+    {
+<span class="fc" id="L1046">        Preconditions.checkNotNull(typename);</span>
+
+        final IReturnType element;
+
+        // Primitive Types
+<span class="fc bfc" id="L1051" title="All 2 branches covered.">        if (&quot;void&quot;.equals(typename))</span>
+        {
+<span class="fc" id="L1053">            element = this.VOID;</span>
+        }
+<span class="fc bfc" id="L1055" title="All 2 branches covered.">        else if (&quot;boolean&quot;.equals(typename))</span>
+        {
+<span class="fc" id="L1057">            element = this.PRIMITIVE_BOOLEAN;</span>
+        }
+<span class="fc bfc" id="L1059" title="All 2 branches covered.">        else if (&quot;char&quot;.equals(typename))</span>
+        {
+<span class="fc" id="L1061">            element = this.PRIMITIVE_CHAR;</span>
+        }
+<span class="fc bfc" id="L1063" title="All 2 branches covered.">        else if (&quot;byte&quot;.equals(typename))</span>
+        {
+<span class="fc" id="L1065">            element = this.PRIMITIVE_BYTE;</span>
+        }
+<span class="fc bfc" id="L1067" title="All 2 branches covered.">        else if (&quot;short&quot;.equals(typename))</span>
+        {
+<span class="fc" id="L1069">            element = this.PRIMITIVE_SHORT;</span>
+        }
+<span class="fc bfc" id="L1071" title="All 2 branches covered.">        else if (&quot;int&quot;.equals(typename))</span>
+        {
+<span class="fc" id="L1073">            element = this.PRIMITIVE_INT;</span>
+        }
+<span class="fc bfc" id="L1075" title="All 2 branches covered.">        else if (&quot;long&quot;.equals(typename))</span>
+        {
+<span class="fc" id="L1077">            element = this.PRIMITIVE_LONG;</span>
+        }
+<span class="fc bfc" id="L1079" title="All 2 branches covered.">        else if (&quot;float&quot;.equals(typename))</span>
+        {
+<span class="fc" id="L1081">            element = this.PRIMITIVE_FLOAT;</span>
+        }
+<span class="fc bfc" id="L1083" title="All 2 branches covered.">        else if (&quot;double&quot;.equals(typename))</span>
+        {
+<span class="fc" id="L1085">            element = this.PRIMITIVE_DOUBLE;</span>
+        }
+        else
+        {
+<span class="fc" id="L1089">            final String descriptor = &quot;L&quot; + typename.replace('.', '/') + &quot;;&quot;;</span>
+
+<span class="fc" id="L1091">            element = (IReturnType) factory.findType(descriptor);</span>
+        }
+
+<span class="fc bfc" id="L1094" title="All 4 branches covered.">        if (element == null || dimensions == null)</span>
+        {
+<span class="fc" id="L1096">            return element;</span>
+        }
+        else
+        {
+<span class="pc bpc" id="L1100" title="1 of 2 branches missed.">            if (element instanceof IElementType == false)</span>
+            {
+                // For example, void[] cannot exist.
+<span class="nc" id="L1103">                return null;</span>
+            }
+            else
+            {
+<span class="fc" id="L1107">                final IReturnType array = factory.getArrayType((IElementType) element, dimensions);</span>
+
+<span class="fc" id="L1109">                return array;</span>
+            }
+        }
+    }
+
+    /**
+     * This method extract the name of a type from a type-specifier.
+     *
+     * &lt;p&gt;
+     * Example: &quot;java.lang.String[][][]&quot; will return &quot;java.util.String&quot;.
+     * &lt;/p&gt;
+     *
+     * @param specifier is the type-specifier itself.
+     * @return the fully-qualified name, excluding dimensions, of the specified type.
+     */
+    public String extractTypeName(final TypeSpecifier specifier)
+    {
+<span class="fc" id="L1126">        Preconditions.checkNotNull(specifier);</span>
+
+<span class="fc" id="L1128">        final StringBuilder result = new StringBuilder();</span>
+
+<span class="fc bfc" id="L1130" title="All 2 branches covered.">        if (specifier.getNamespace() != null)</span>
+        {
+<span class="fc bfc" id="L1132" title="All 2 branches covered.">            for (Name x : specifier.getNamespace().getNames())</span>
+            {
+<span class="fc" id="L1134">                result.append(x.getName()).append(&quot;.&quot;);</span>
+<span class="fc" id="L1135">            }</span>
+        }
+
+<span class="fc" id="L1138">        result.append(specifier.getName().getName());</span>
+
+<span class="fc" id="L1140">        return result.toString();</span>
+    }
+
+    /**
+     * This method determines whether a type is a subtype of another type.
+     *
+     * @param instance is the possible subtype.
+     * @param supertype is the possible supertype.
+     * @return true, iff the instance is a subtype of the supertype.
+     */
+    public boolean isSubtypeOf(final IType instance,
+                               final Class supertype)
+    {
+<span class="nc" id="L1153">        Preconditions.checkNotNull(instance);</span>
+<span class="nc" id="L1154">        Preconditions.checkNotNull(supertype);</span>
+
+<span class="nc" id="L1156">        final IType target = factory.fromClass(supertype);</span>
+
+<span class="nc bnc" id="L1158" title="All 4 branches missed.">        return target != null &amp;&amp; instance.isSubtypeOf(target);</span>
+    }
+
+    /**
+     * This method sorts a group of types.
+     *
+     * &lt;p&gt;
+     * The returned list will be sorted from most specific to most abstract.
+     * &lt;/p&gt;
+     *
+     * @param types are the types to sort.
+     * @return a sorted immutable list containing the types.
+     */
+    public &lt;T extends IType&gt; List&lt;T&gt; sort(final Iterable&lt;T&gt; types)
+    {
+<span class="nc" id="L1173">        Preconditions.checkNotNull(types);</span>
+
+<span class="nc" id="L1175">        final TopoSorter&lt;T&gt; sorter = new TopoSorter&lt;T&gt;()</span>
+<span class="nc" id="L1176">        {</span>
+            @Override
+            public boolean isLess(IType left,
+                                  IType right)
+            {
+<span class="nc" id="L1181">                return left.isSubtypeOf(right);</span>
+            }
+        };
+
+<span class="nc" id="L1185">        sorter.addAll(types);</span>
+
+<span class="nc" id="L1187">        final List&lt;T&gt; result = ImmutableList.copyOf(sorter.elements());</span>
+
+<span class="nc" id="L1189">        return result;</span>
+    }
+
+    /**
+     * This method determines which of two types is the widest type.
+     *
+     * @param left is first of the two types.
+     * @param right is second of the two types.
+     * @return the widest of the two types, or null, if the two types are incompatible.
+     */
+    public &lt;T extends IType&gt; T widestType(final T left,
+                                          final T right)
+    {
+<span class="fc" id="L1202">        Preconditions.checkNotNull(left);</span>
+<span class="fc" id="L1203">        Preconditions.checkNotNull(right);</span>
+
+<span class="fc" id="L1205">        final boolean test1 = left.isSubtypeOf(right);</span>
+<span class="fc" id="L1206">        final boolean test2 = right.isSubtypeOf(left);</span>
+
+<span class="fc bfc" id="L1208" title="All 2 branches covered.">        if (test1)</span>
+        {
+<span class="fc" id="L1210">            return right;</span>
+        }
+<span class="fc bfc" id="L1212" title="All 2 branches covered.">        else if (test2)</span>
+        {
+<span class="fc" id="L1214">            return left;</span>
+        }
+        else
+        {
+<span class="fc" id="L1218">            return null;</span>
+        }
+    }
+
+    /**
+     * This method searches for an annotation, given the annotation's descriptor.
+     *
+     * @param annotatable is the annotatable entity that may contain the annotation.
+     * @param descriptor is the descriptor of the sought after annotation.
+     * @return the found annotation, or null, if the annotation was not found.
+     */
+    public static IAnnotation findAnnotation(final IAnnotatable annotatable,
+                                             final String descriptor)
+    {
+<span class="fc" id="L1232">        Preconditions.checkNotNull(annotatable);</span>
+<span class="fc" id="L1233">        Preconditions.checkNotNull(descriptor);</span>
+
+<span class="fc bfc" id="L1235" title="All 2 branches covered.">        for (IAnnotation x : annotatable.getAnnotations())</span>
+        {
+<span class="fc bfc" id="L1237" title="All 2 branches covered.">            if (descriptor.equals(x.getAnnotationType().getDescriptor()))</span>
+            {
+<span class="fc" id="L1239">                return x;</span>
+            }
+<span class="fc" id="L1241">        }</span>
+
+<span class="fc" id="L1243">        return null;</span>
+    }
+
+    /**
+     * This method determines whether an annotation is applied to an annotatable entity.
+     *
+     * @param annotatable is the annotatable entity that may contain the annotation.
+     * @param descriptor is the descriptor of the sought after annotation.
+     * @return true, iff the annotation was found.
+     */
+    public static boolean isAnnotationPresent(final IAnnotatable annotatable,
+                                              final String descriptor)
+    {
+<span class="nc bnc" id="L1256" title="All 2 branches missed.">        return findAnnotation(annotatable, descriptor) != null;</span>
+    }
+
+    /**
+     * This method determines whether an annotation is applied to an annotatable entity.
+     *
+     * @param annotatable is the annotatable entity that may contain the annotation.
+     * @param clazz is the type of the sought after annotation.
+     * @return true, iff the annotation was found.
+     */
+    public static boolean isAnnotationPresent(final IAnnotatable annotatable,
+                                              final Class clazz)
+    {
+<span class="fc" id="L1269">        Preconditions.checkNotNull(annotatable);</span>
+<span class="fc" id="L1270">        Preconditions.checkNotNull(clazz);</span>
+
+<span class="fc" id="L1272">        final String descriptor = Type.getDescriptor(clazz);</span>
+
+<span class="fc bfc" id="L1274" title="All 2 branches covered.">        return findAnnotation(annotatable, descriptor) != null;</span>
+    }
+
+    /**
+     * This method counts the number of annotatables that are annotated with a given annotation.
+     *
+     * @param annotatables are the classes/methods/etc that may be annotated.
+     * @param annotation is the annotation that may be applied to the annotatables.
+     * @return the number of annotatables that have the annotation applied to them.
+     */
+    public static int countAnnotations(final Iterable&lt;? extends IAnnotatable&gt; annotatables,
+                                       final Class annotation)
+    {
+<span class="nc" id="L1287">        Preconditions.checkNotNull(annotatables);</span>
+<span class="nc" id="L1288">        Preconditions.checkNotNull(annotation);</span>
+
+<span class="nc" id="L1290">        int count = 0;</span>
+
+<span class="nc bnc" id="L1292" title="All 2 branches missed.">        for (IAnnotatable annotatable : annotatables)</span>
+        {
+<span class="nc bnc" id="L1294" title="All 2 branches missed.">            if (isAnnotationPresent(annotatable, annotation))</span>
+            {
+<span class="nc" id="L1296">                ++count;</span>
+            }
+<span class="nc" id="L1298">        }</span>
+
+<span class="nc" id="L1300">        return count;</span>
+    }
+
+    /**
+     * This method searches through a list for a specific method or constructor.
+     *
+     * @param list is a list of methods and/or constructors.
+     * @param name is the name of the element to find.
+     * @param descriptor is the descriptor of the element to find.
+     * @return the found element; or null, if no such element exists.
+     */
+    public static &lt;T extends IInvokableMember&gt; T find(final Iterable&lt;? extends T&gt; list,
+                                                      final String name,
+                                                      final String descriptor)
+    {
+<span class="fc" id="L1315">        Preconditions.checkNotNull(list);</span>
+<span class="fc" id="L1316">        Preconditions.checkNotNull(name);</span>
+<span class="fc" id="L1317">        Preconditions.checkNotNull(descriptor);</span>
+
+<span class="fc" id="L1319">        Preconditions.checkNotNull(list);</span>
+<span class="fc" id="L1320">        Preconditions.checkNotNull(name);</span>
+<span class="fc" id="L1321">        Preconditions.checkNotNull(descriptor);</span>
+
+<span class="pc bpc" id="L1323" title="1 of 2 branches missed.">        for (T element : list)</span>
+        {
+<span class="fc bfc" id="L1325" title="All 4 branches covered.">            if (element.getName().equals(name) &amp;&amp; element.getDescriptor().equals(descriptor))</span>
+            {
+<span class="fc" id="L1327">                return element;</span>
+            }
+<span class="fc" id="L1329">        }</span>
+
+<span class="nc" id="L1331">        return null;</span>
+    }
+
+    /**
+     * This method searches through a list for a specific method or constructor.
+     *
+     * @param list is a list of methods and/or constructors.
+     * @param name is the name of the element to find.
+     * @return the found element; or null, if no such element exists.
+     */
+    public static &lt;T extends IInvokableMember&gt; T find(final Iterable&lt;? extends T&gt; list,
+                                                      final String name)
+    {
+<span class="fc" id="L1344">        Preconditions.checkNotNull(list);</span>
+<span class="fc" id="L1345">        Preconditions.checkNotNull(name);</span>
+
+<span class="fc" id="L1347">        Preconditions.checkNotNull(list);</span>
+<span class="fc" id="L1348">        Preconditions.checkNotNull(name);</span>
+
+<span class="pc bpc" id="L1350" title="1 of 2 branches missed.">        for (T element : list)</span>
+        {
+<span class="fc bfc" id="L1352" title="All 2 branches covered.">            if (element.getName().equals(name))</span>
+            {
+<span class="fc" id="L1354">                return element;</span>
+            }
+<span class="fc" id="L1356">        }</span>
+
+<span class="nc" id="L1358">        return null;</span>
+    }
+
+    /**
+     * This method generates the bytecode necessary to box a value.
+     *
+     * &lt;p&gt;
+     * This method effectively does nothing, if no boxing is required.
+     * &lt;/p&gt;
+     *
+     * @param type is the type of the topmost value on the operand-stack.
+     */
+    public void autoboxToObject(final InsnList code,
+                                final IType type)
+    {
+<span class="fc" id="L1373">        Preconditions.checkNotNull(type);</span>
+
+        // Generate the code to box the value.
+        // If no boxing is required, then this variable will be assigned null.
+<span class="fc" id="L1377">        InsnList boxing = box(type, OBJECT);</span>
+
+<span class="fc bfc" id="L1379" title="All 2 branches covered.">        boxing = boxing == null ? new InsnList() : boxing;</span>
+
+<span class="fc" id="L1381">        code.add(boxing);</span>
+<span class="fc" id="L1382">    }</span>
+
+    /**
+     * This method creates a list containing the internal-names of a set of reference-types.
+     *
+     * @param types are the reference-types whose internal-names will be placed in a new list.
+     * @return the list containing the internal-names of the given types.
+     */
+    public List&lt;String&gt; internalNamesOf(final Iterable&lt;? extends IReferenceType&gt; types)
+    {
+<span class="fc" id="L1392">        final List&lt;String&gt; result = Lists.newLinkedList();</span>
+
+<span class="fc bfc" id="L1394" title="All 2 branches covered.">        for (IReferenceType x : types)</span>
+        {
+<span class="fc" id="L1396">            result.add(Utils.internalName(x));</span>
+<span class="fc" id="L1397">        }</span>
+
+<span class="fc" id="L1399">        return result;</span>
+    }
+
+    /**
+     * This method creates the type-system representation of a formal-parameter.
+     *
+     * @param type is the type part of the parameter.
+     * @return the new formal parameter.
+     */
+    public IFormalParameter formal(final IVariableType type)
+    {
+<span class="fc" id="L1410">        final CustomFormalParameter param = new CustomFormalParameter();</span>
+<span class="fc" id="L1411">        param.setAnnotations(new LinkedList());</span>
+<span class="fc" id="L1412">        param.setType(type);</span>
+
+<span class="fc" id="L1414">        return param;</span>
+    }
+
+    /**
+     * This method creates a list of the overloads of a specific function.
+     *
+     * &lt;p&gt;
+     * The returned list is not sorted.
+     * &lt;/p&gt;
+     *
+     * @param owner is the type of the module that contains the overloads.
+     * @param name is the name of the function.
+     * @return a list of the overloads of the named function.
+     * If there are no overloads, the list will be empty.
+     */
+    public static List&lt;IMethod&gt; findFunctions(final IDeclaredType owner,
+                                              final String name)
+    {
+<span class="fc" id="L1432">        Preconditions.checkNotNull(owner);</span>
+<span class="fc" id="L1433">        Preconditions.checkNotNull(name);</span>
+<span class="fc" id="L1434">        Preconditions.checkArgument(owner.isSubtypeOf(owner.getTypeFactory().fromClass(Module.class)));</span>
+
+<span class="fc" id="L1436">        final List&lt;IMethod&gt; result = Lists.newLinkedList();</span>
+
+<span class="fc bfc" id="L1438" title="All 2 branches covered.">        for (IMethod function : owner.getMethods())</span>
+        {
+<span class="fc bfc" id="L1440" title="All 2 branches covered.">            if (function.getName().equals(name))</span>
+            {
+<span class="pc bpc" id="L1442" title="1 of 2 branches missed.">                assert Modifier.isPublic(function.getModifiers());</span>
+<span class="pc bpc" id="L1443" title="1 of 2 branches missed.">                assert Modifier.isStatic(function.getModifiers());</span>
+
+<span class="fc" id="L1445">                result.add(function);</span>
+            }
+<span class="fc" id="L1447">        }</span>
+
+<span class="fc" id="L1449">        return result;</span>
+    }
+
+    /**
+     * This method determines whether this class or any of its parents inherit from themselves.
+     *
+     * @param base is the most specific type.
+     * @return true, iff circular inheritance is present.
+     */
+    public static boolean detectCircularInheritance(final IDeclaredType base)
+    {
+<span class="fc" id="L1460">        final Set&lt;IType&gt; set = Sets.newHashSet();</span>
+
+<span class="fc" id="L1462">        set.add(base);</span>
+
+        /**
+         * Detect circular inheritance due to a superclass.
+         */
+<span class="fc" id="L1467">        IClassType p = base.getSuperclass();</span>
+
+<span class="fc bfc" id="L1469" title="All 2 branches covered.">        while (&quot;Ljava/lang/Object;&quot;.equals(p.getDescriptor()) == false)</span>
+        {
+<span class="fc bfc" id="L1471" title="All 2 branches covered.">            if (set.contains(p))</span>
+            {
+<span class="fc" id="L1473">                return true;</span>
+            }
+            else
+            {
+<span class="fc" id="L1477">                set.add(p);</span>
+<span class="fc" id="L1478">                p = p.getSuperclass();</span>
+            }
+        }
+
+        /**
+         * Detect circular inheritance due to superinterfaces.
+         */
+<span class="fc bfc" id="L1485" title="All 2 branches covered.">        if (base.getAllSuperinterfaces().contains(base))</span>
+        {
+<span class="fc" id="L1487">            return true;</span>
+        }
+
+<span class="fc" id="L1490">        return false;</span>
+    }
+
+    /**
+     * This method generates bytecode that assigns a reference-type to another, possibly primitive, type.
+     *
+     * &lt;p&gt;
+     * If the target is a primitive-type, the generated code is a cast to the related boxed-type
+     * and then an unboxing operation.
+     * &lt;/p&gt;
+     *
+     * @param code is the code being generated.
+     * @param target is the type of the assignee.
+     * @param value is the type of the value being assigned to the assignee.
+     */
+    public void forceAssign(final InsnList code,
+                            final IExpressionType target,
+                            final IReferenceType value)
+    {
+<span class="nc bnc" id="L1509" title="All 2 branches missed.">        if (target.equals(PRIMITIVE_BOOLEAN))</span>
+        {
+<span class="nc" id="L1511">            code.add(Utils.conditionalCast(value, BOXED_BOOLEAN));</span>
+<span class="nc" id="L1512">            code.add(unbox(BOXED_BOOLEAN, target));</span>
+        }
+<span class="nc bnc" id="L1514" title="All 2 branches missed.">        else if (target.equals(PRIMITIVE_CHAR))</span>
+        {
+<span class="nc" id="L1516">            code.add(Utils.conditionalCast(value, BOXED_CHAR));</span>
+<span class="nc" id="L1517">            code.add(unbox(BOXED_CHAR, target));</span>
+        }
+<span class="nc bnc" id="L1519" title="All 2 branches missed.">        else if (target.equals(PRIMITIVE_BYTE))</span>
+        {
+<span class="nc" id="L1521">            code.add(Utils.conditionalCast(value, BOXED_BYTE));</span>
+<span class="nc" id="L1522">            code.add(unbox(BOXED_BYTE, target));</span>
+        }
+<span class="nc bnc" id="L1524" title="All 2 branches missed.">        else if (target.equals(PRIMITIVE_SHORT))</span>
+        {
+<span class="nc" id="L1526">            code.add(Utils.conditionalCast(value, BOXED_SHORT));</span>
+<span class="nc" id="L1527">            code.add(unbox(BOXED_SHORT, target));</span>
+        }
+<span class="nc bnc" id="L1529" title="All 2 branches missed.">        else if (target.equals(PRIMITIVE_INT))</span>
+        {
+<span class="nc" id="L1531">            code.add(Utils.conditionalCast(value, BOXED_INT));</span>
+<span class="nc" id="L1532">            code.add(unbox(BOXED_INT, target));</span>
+        }
+<span class="nc bnc" id="L1534" title="All 2 branches missed.">        else if (target.equals(PRIMITIVE_LONG))</span>
+        {
+<span class="nc" id="L1536">            code.add(Utils.conditionalCast(value, BOXED_LONG));</span>
+<span class="nc" id="L1537">            code.add(unbox(BOXED_LONG, target));</span>
+        }
+<span class="nc bnc" id="L1539" title="All 2 branches missed.">        else if (target.equals(PRIMITIVE_FLOAT))</span>
+        {
+<span class="nc" id="L1541">            code.add(Utils.conditionalCast(value, BOXED_FLOAT));</span>
+<span class="nc" id="L1542">            code.add(unbox(BOXED_FLOAT, target));</span>
+        }
+<span class="nc bnc" id="L1544" title="All 2 branches missed.">        else if (target.equals(PRIMITIVE_DOUBLE))</span>
+        {
+<span class="nc" id="L1546">            code.add(Utils.conditionalCast(value, BOXED_DOUBLE));</span>
+<span class="nc" id="L1547">            code.add(unbox(BOXED_DOUBLE, target));</span>
+        }
+        else
+        {
+<span class="nc bnc" id="L1551" title="All 2 branches missed.">            assert target.isReferenceType();</span>
+
+<span class="nc" id="L1553">            code.add(Utils.conditionalCast(value, target));</span>
+        }
+<span class="nc" id="L1555">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

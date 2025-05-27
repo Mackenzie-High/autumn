@@ -1,0 +1,525 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AbstractRecordCompiler.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.mackenziehigh:autumn</a> &gt; <a href="index.source.html" class="el_package">com.mackenziehigh.autumn.lang.compiler.compilers</a> &gt; <span class="el_source">AbstractRecordCompiler.java</span></div><h1>AbstractRecordCompiler.java</h1><pre class="source lang-java linenums">package com.mackenziehigh.autumn.lang.compiler.compilers;
+
+import autumn.lang.compiler.ast.commons.IRecord;
+import autumn.lang.compiler.ast.nodes.DesignDefinition;
+import autumn.lang.compiler.ast.nodes.Element;
+import autumn.lang.compiler.ast.nodes.StructDefinition;
+import autumn.lang.compiler.ast.nodes.TupleDefinition;
+import autumn.lang.compiler.ast.nodes.TypeSpecifier;
+import autumn.lang.internals.annotations.Getter;
+import autumn.lang.internals.annotations.Setter;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.CustomDeclaredType;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.CustomFormalParameter;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.CustomMethod;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IAnnotation;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IConstructor;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IFormalParameter;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IInterfaceType;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IMethod;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IType;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IVariableType;
+import com.mackenziehigh.autumn.lang.compiler.utils.BridgeMethod;
+import com.mackenziehigh.autumn.lang.compiler.utils.CovarianceViolation;
+import com.mackenziehigh.autumn.lang.compiler.utils.GetterMethod;
+import com.mackenziehigh.autumn.lang.compiler.utils.RecordAnalyzer;
+import com.mackenziehigh.autumn.lang.compiler.utils.SetterMethod;
+import com.mackenziehigh.autumn.lang.compiler.utils.TypeSystemUtils;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
+import org.objectweb.asm.Opcodes;
+
+/**
+ * This class provides a partial implementation of the ICompiler interface for compiling records.
+ *
+ * &lt;p&gt;
+ * This class provides the logic necessary to declare and type-check record-types.
+ * &lt;/p&gt;
+ *
+ * @author Mackenzie High
+ */
+<span class="fc" id="L45">abstract class AbstractRecordCompiler</span>
+        implements ICompiler
+{
+    /**
+     * This method creates the type-system representation of the only constructor in the record.
+     *
+     * @return the aforedescribed constructor; or null, if no constructor is needed.
+     */
+    protected abstract IConstructor typeofCtor();
+
+    /**
+     * This method creates the type-system representation of the instance() method.
+     *
+     * @return the aforedescribed method; or null, if no instance() method is needed.
+     */
+    protected abstract IMethod typeofInstance();
+
+    /**
+     * Essentially, this is the program that is being compiled.
+     */
+    public final ProgramCompiler program;
+
+    /**
+     * Essentially, this is the enclosing module that is also being compiled.
+     */
+    public final ModuleCompiler module;
+
+    /**
+     * This is the Abstract-Syntax-Tree representation of the tuple's definition.
+     */
+    public final IRecord node;
+
+    /**
+     * This will be the type-system representation of the tuple's definition.
+     *
+     * This field will be initialized during the type-declaration compiler pass.
+     */
+    public CustomDeclaredType type;
+
+    /**
+     * This object is used to infer inherited elements and detect problems related thereto.
+     *
+     * This field will be initialized during the type-initialization compiler pass.
+     */
+    protected RecordAnalyzer analyzer;
+
+    /**
+     * This list stores the keys of the record.
+     *
+     * Ordering of the keys is important!
+     */
+<span class="fc" id="L96">    protected final Set&lt;String&gt; keys = Sets.newLinkedHashSet();</span>
+
+    /**
+     * This flag is true, iff the record-type being compiled is a design-type.
+     */
+    protected final boolean design;
+
+    /**
+     * This flag is true, iff the record-type being compiled is a struct-type.
+     */
+    protected final boolean struct;
+
+    /**
+     * This flag is true, iff the record-type being compiled is a tuple-type.
+     */
+    protected final boolean tuple;
+
+    /**
+     * These will be the bridge-methods associated with predefined methods.
+     */
+<span class="fc" id="L116">    protected final List&lt;BridgeMethod&gt; special_bridges = Lists.newArrayList();</span>
+
+    /**
+     * Sole Constructor.
+     *
+     * @param module is the module that contains the tuple being compiled.
+     * @param node is the AST node that represents the tuple being compiled.
+     */
+    public AbstractRecordCompiler(final ModuleCompiler module,
+                                  final IRecord node)
+<span class="fc" id="L126">    {</span>
+<span class="pc bpc" id="L127" title="1 of 2 branches missed.">        assert module != null;</span>
+<span class="pc bpc" id="L128" title="1 of 2 branches missed.">        assert node != null;</span>
+
+<span class="fc" id="L130">        this.program = module.program;</span>
+<span class="fc" id="L131">        this.module = module;</span>
+<span class="fc" id="L132">        this.node = node;</span>
+<span class="fc" id="L133">        this.design = node instanceof DesignDefinition;</span>
+<span class="fc" id="L134">        this.struct = node instanceof StructDefinition;</span>
+<span class="fc" id="L135">        this.tuple = node instanceof TupleDefinition;</span>
+<span class="fc" id="L136">    }</span>
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final void performTypeDeclaration()
+    {
+        /**
+         * Determine the descriptor of the tuple.
+         */
+<span class="fc" id="L147">        final String namespace = module.type.getNamespace().replace('.', '/');</span>
+<span class="fc" id="L148">        final String name = node.getName().getName();</span>
+<span class="fc" id="L149">        final String descriptor = &quot;L&quot; + namespace + '/' + name + ';';</span>
+
+        /**
+         * Ensure that the type was not already declared elsewhere.
+         */
+<span class="fc" id="L154">        program.checker.requireNonDuplicateType(node.getName(), descriptor);</span>
+
+        /**
+         * Declare the tuple.
+         */
+<span class="fc bfc" id="L159" title="All 2 branches covered.">        if (design)</span>
+        {
+<span class="fc" id="L161">            this.type = program.typesystem.typefactory().newInterfaceType(descriptor);</span>
+        }
+        else // struct | tuple
+        {
+<span class="fc" id="L165">            this.type = program.typesystem.typefactory().newClassType(descriptor);</span>
+        }
+<span class="fc" id="L167">    }</span>
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final void performTypeInitialization()
+    {
+        /**
+         * Create the type-system representations of the annotation-list.
+         */
+<span class="fc" id="L178">        type.setAnnotations(module.anno_utils.typesOf(node.getAnnotations()));</span>
+
+        /**
+         * Add a special annotation.
+         */
+<span class="fc bfc" id="L183" title="All 2 branches covered.">        if (struct)</span>
+        {
+<span class="fc" id="L185">            module.anno_utils.add(type, autumn.lang.internals.annotations.StructDefinition.class);</span>
+        }
+<span class="fc bfc" id="L187" title="All 2 branches covered.">        else if (tuple)</span>
+        {
+<span class="fc" id="L189">            module.anno_utils.add(type, autumn.lang.internals.annotations.TupleDefinition.class);</span>
+        }
+<span class="pc bpc" id="L191" title="1 of 2 branches missed.">        else if (design)</span>
+        {
+<span class="fc" id="L193">            module.anno_utils.add(type, autumn.lang.internals.annotations.DesignDefinition.class);</span>
+        }
+
+        /**
+         * Check the list of annotations.
+         */
+<span class="fc" id="L199">        program.checker.checkAnnotations(node.getAnnotations(), type.getAnnotations());</span>
+
+        /**
+         * Set the type's modifier flags to public and final.
+         */
+<span class="fc bfc" id="L204" title="All 4 branches covered.">        if (struct || tuple)</span>
+        {
+<span class="fc" id="L206">            type.setModifiers(Opcodes.ACC_PUBLIC | Opcodes.ACC_FINAL);</span>
+        }
+        else // design
+        {
+<span class="fc" id="L210">            type.setModifiers(Opcodes.ACC_PUBLIC | Opcodes.ACC_ABSTRACT | Opcodes.ACC_INTERFACE);</span>
+        }
+
+        /**
+         * Set the superclass of the tuple's type.
+         */
+<span class="fc bfc" id="L216" title="All 4 branches covered.">        if (struct || tuple)</span>
+        {
+<span class="fc" id="L218">            type.setSuperclass(program.typesystem.utils.ABSTRACT_RECORD);</span>
+        }
+        else // design
+        {
+<span class="fc" id="L222">            type.setSuperclass(program.typesystem.utils.OBJECT);</span>
+        }
+
+        /**
+         * These are the types of designs that this record implements.
+         */
+<span class="fc" id="L228">        final List&lt;IInterfaceType&gt; superinterfaces = Lists.newLinkedList();</span>
+
+        /**
+         * Every record-type is a subtype of the Record interface.
+         */
+<span class="fc" id="L233">        superinterfaces.add(program.typesystem.utils.RECORD);</span>
+
+        /**
+         * Each user-specified supertype of a record is really a superinterface.
+         */
+<span class="fc bfc" id="L238" title="All 2 branches covered.">        for (TypeSpecifier supertype : node.getSupers())</span>
+        {
+<span class="fc" id="L240">            superinterfaces.add(module.imports.resolveInterfaceType(supertype));</span>
+<span class="fc" id="L241">        }</span>
+
+        /**
+         * Cause the record's type to implement the inherited designs.
+         */
+<span class="fc" id="L246">        type.setSuperinterfaces(superinterfaces);</span>
+
+        /**
+         * Add the types of the methods defined in the tuple to the tuple's type.
+         */
+<span class="fc" id="L251">        final List&lt;IMethod&gt; methods = Lists.newLinkedList();</span>
+
+        /**
+         * Create the getter and setter methods for each element declared directly in the record.
+         */
+<span class="fc bfc" id="L256" title="All 2 branches covered.">        for (Element entry : node.getElements().getElements())</span>
+        {
+<span class="fc" id="L258">            final String element_name = entry.getName().getName();</span>
+
+<span class="fc" id="L260">            final IVariableType element_type = module.imports.resolveVariableType(entry.getType());</span>
+
+            /**
+             * Remember the name of the element for later use.
+             */
+<span class="fc" id="L265">            keys.add(element_name);</span>
+
+            /**
+             * Each element has an associated getter method and a setter method.
+             */
+<span class="fc" id="L270">            methods.add(typeofSetter(new SetterMethod(type, type, element_name, element_type)));</span>
+<span class="fc" id="L271">            methods.add(typeofGetter(new GetterMethod(type, element_type, element_name)));</span>
+<span class="fc" id="L272">        }</span>
+
+        /**
+         * Now we have generated the types of the methods directly declared in the tuple.
+         */
+<span class="fc" id="L277">        type.setMethods(methods);</span>
+<span class="fc" id="L278">    }</span>
+
+    /**
+     * This method finishes type-initialization in order to avoid another compiler pass.
+     */
+    private void finishTypeInitialization()
+    {
+<span class="fc" id="L285">        final List&lt;IMethod&gt; methods = Lists.newLinkedList();</span>
+
+        /**
+         * Analyze the partially constructed record-type in order to detect inherited elements.
+         */
+<span class="fc" id="L290">        this.analyzer = new RecordAnalyzer(type);</span>
+
+        /**
+         * Clear the list of methods, because we are going to recreate the list.
+         * Bridge methods will be present in the new list.
+         * Replacing the entire list is the least bug-prone way to do this.
+         */
+<span class="fc" id="L297">        type.setMethods(Lists.&lt;IMethod&gt;newLinkedList());</span>
+
+        /**
+         * Add all the setter methods, including the bridge setters.
+         */
+<span class="fc bfc" id="L302" title="All 2 branches covered.">        for (SetterMethod setter : analyzer.setters())</span>
+        {
+<span class="fc" id="L304">            methods.add(typeofSetter(setter));</span>
+<span class="fc" id="L305">        }</span>
+
+        /**
+         * Add all the getter methods, including the bridge getters.
+         */
+<span class="fc bfc" id="L310" title="All 2 branches covered.">        for (GetterMethod getter : analyzer.getters())</span>
+        {
+<span class="fc" id="L312">            methods.add(typeofGetter(getter));</span>
+<span class="fc" id="L313">        }</span>
+
+        /**
+         * Add the type of the static instance() method.
+         */
+<span class="fc" id="L318">        final IMethod instance = typeofInstance();</span>
+
+<span class="fc bfc" id="L320" title="All 2 branches covered.">        if (instance != null)</span>
+        {
+<span class="fc" id="L322">            methods.add(instance);</span>
+        }
+
+        /**
+         * Now we need to generate special bridge methods.
+         * Special bridge methods are for the methods defined in the Record interface.
+         * The bridge methods for the setters and getters will not be generated by this invocation.
+         */
+<span class="fc" id="L330">        addTypesOfSpecialBridgeMethods();</span>
+
+<span class="fc bfc" id="L332" title="All 2 branches covered.">        for (BridgeMethod bridge : special_bridges)</span>
+        {
+<span class="fc" id="L334">            methods.add(bridge.caller);</span>
+<span class="fc" id="L335">        }</span>
+
+        /**
+         * Now we have generated the types of the directly declared and inherited methods.
+         */
+<span class="fc" id="L340">        type.setMethods(methods);</span>
+
+        /**
+         * Add all the inherited keys.
+         */
+<span class="fc bfc" id="L345" title="All 2 branches covered.">        for (String key : analyzer.elements.keySet())</span>
+        {
+<span class="fc" id="L347">            keys.add(key);</span>
+<span class="fc" id="L348">        }</span>
+
+        /**
+         * Structs sort their keys lexicographically.
+         */
+<span class="fc bfc" id="L353" title="All 2 branches covered.">        if (struct)</span>
+        {
+            // Create a sorted set containing the keys in lexicographic order.
+<span class="fc" id="L356">            final TreeSet&lt;String&gt; sorted = Sets.newTreeSet(keys);</span>
+
+            // Clear the original set of keys.
+<span class="fc" id="L359">            keys.clear();</span>
+
+            // Replace the original unsorted keys with the sorted keys.
+<span class="fc" id="L362">            keys.addAll(sorted);</span>
+        }
+
+        /**
+         * Add the type of the constructor defined in the tuple to the tuple's type.
+         *
+         * This cannot be done earlier, because they order of the keys is important.
+         * So, we must wait until all the keys are available and sorted.
+         */
+<span class="fc" id="L371">        final IConstructor ctor = typeofCtor();</span>
+
+<span class="fc bfc" id="L373" title="All 2 branches covered.">        if (ctor != null)</span>
+        {
+<span class="fc" id="L375">            type.setConstructors(Lists.newArrayList(ctor));</span>
+        }
+<span class="fc" id="L377">    }</span>
+
+    /**
+     * This method creates the type-system representation of the method that sets a tuple element.
+     *
+     * @param setter is a description of the setter.
+     * @return the aforedescribed method.
+     */
+    private IMethod typeofSetter(final SetterMethod setter)
+    {
+<span class="fc" id="L387">        final IAnnotation SETTER = module.anno_utils.typeOf(Setter.class);</span>
+
+<span class="fc" id="L389">        final CustomMethod method = new CustomMethod(program.typesystem.typefactory(), false);</span>
+
+<span class="fc" id="L391">        final CustomFormalParameter param = new CustomFormalParameter();</span>
+<span class="fc" id="L392">        param.setType(setter.parameter);</span>
+
+<span class="fc" id="L394">        method.setAnnotations(Lists.newArrayList(SETTER));</span>
+<span class="fc" id="L395">        method.setModifiers(Opcodes.ACC_PUBLIC);</span>
+<span class="fc" id="L396">        method.setName(setter.name);</span>
+<span class="fc" id="L397">        method.setOwner(setter.owner);</span>
+<span class="fc" id="L398">        method.setParameters(Collections.&lt;IFormalParameter&gt;singletonList(param));</span>
+<span class="fc" id="L399">        method.setReturnType(setter.returns);</span>
+<span class="fc" id="L400">        method.setThrowsClause(new LinkedList());</span>
+
+<span class="fc" id="L402">        return method;</span>
+    }
+
+    /**
+     * This method creates the type-system representation of the method that gets a tuple element.
+     *
+     * @param getter is a description of the getter.
+     * @return the aforedescribed method.
+     */
+    private IMethod typeofGetter(final GetterMethod getter)
+    {
+<span class="fc" id="L413">        final IAnnotation GETTER = module.anno_utils.typeOf(Getter.class);</span>
+
+<span class="fc" id="L415">        final CustomMethod method = new CustomMethod(program.typesystem.typefactory(), false);</span>
+
+<span class="fc" id="L417">        method.setAnnotations(Lists.newArrayList(GETTER));</span>
+<span class="fc" id="L418">        method.setModifiers(Opcodes.ACC_PUBLIC);</span>
+<span class="fc" id="L419">        method.setName(getter.name);</span>
+<span class="fc" id="L420">        method.setOwner(type);</span>
+<span class="fc" id="L421">        method.setParameters(new LinkedList());</span>
+<span class="fc" id="L422">        method.setReturnType(getter.returns);</span>
+<span class="fc" id="L423">        method.setThrowsClause(new LinkedList());</span>
+
+<span class="fc" id="L425">        return method;</span>
+    }
+
+    /**
+     * This method creates the special bridge methods.
+     */
+    private void addTypesOfSpecialBridgeMethods()
+    {
+<span class="fc" id="L433">        final IInterfaceType RECORD = program.typesystem.utils.RECORD;</span>
+
+        /**
+         * Method: set(int, Object)
+         */
+<span class="fc" id="L438">        special_bridges.add(new BridgeMethod(type,</span>
+                                             type,
+<span class="fc" id="L440">                                             TypeSystemUtils.find(RECORD.getAllVisibleMethods(),</span>
+                                                                  &quot;set&quot;,
+<span class="fc" id="L442">                                                                  &quot;(ILjava/lang/Object;)&quot; + RECORD.getDescriptor())));</span>
+
+<span class="fc" id="L444">    }</span>
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final void performTypeStructureChecking()
+    {
+        /**
+         * Prevent circular inheritance.
+         */
+<span class="fc bfc" id="L455" title="All 2 branches covered.">        if (TypeSystemUtils.detectCircularInheritance(type))</span>
+        {
+<span class="nc" id="L457">            program.checker.reportCircularInheritance(node, type);</span>
+        }
+
+        /**
+         * TODO: add a new compiler pass for this
+         */
+<span class="fc" id="L463">        finishTypeInitialization();</span>
+
+        /**
+         * Detect and report direct supertypes that are not supposedly design-types.
+         */
+<span class="fc bfc" id="L468" title="All 2 branches covered.">        for (IInterfaceType supertype : type.getSuperinterfaces())</span>
+        {
+<span class="fc" id="L470">            program.checker.requireDesignType(node, supertype);</span>
+<span class="fc" id="L471">        }</span>
+
+        /**
+         * Detect and report duplicate direct supertypes.
+         */
+<span class="fc" id="L476">        final Set&lt;IType&gt; direct_supers = Sets.newHashSet();</span>
+
+<span class="fc bfc" id="L478" title="All 2 branches covered.">        for (IInterfaceType supertype : type.getSuperinterfaces())</span>
+        {
+<span class="fc bfc" id="L480" title="All 2 branches covered.">            if (direct_supers.contains(supertype))</span>
+            {
+<span class="nc" id="L482">                program.checker.reportDuplicateDirectSupertype(node, supertype);</span>
+            }
+            else
+            {
+<span class="fc" id="L486">                direct_supers.add(supertype);</span>
+            }
+<span class="fc" id="L488">        }</span>
+
+        /**
+         * Detect and report any duplicate elements.
+         */
+<span class="fc" id="L493">        final Set&lt;String&gt; direct_elements = Sets.newTreeSet();</span>
+
+<span class="fc bfc" id="L495" title="All 2 branches covered.">        for (Element element : node.getElements().getElements().asMutableList())</span>
+        {
+<span class="fc bfc" id="L497" title="All 2 branches covered.">            if (direct_elements.contains(element.getName().getName()))</span>
+            {
+<span class="nc" id="L499">                program.checker.reportDuplicateElement(element);</span>
+            }
+            else
+            {
+<span class="fc" id="L503">                direct_elements.add(element.getName().getName());</span>
+            }
+<span class="fc" id="L505">        }</span>
+
+        /**
+         * Detect and report any covariance violations.
+         */
+<span class="fc bfc" id="L510" title="All 2 branches covered.">        for (CovarianceViolation violation : analyzer.violations)</span>
+        {
+<span class="nc" id="L512">            program.checker.reportCovarianceViolation(node, violation);</span>
+<span class="nc" id="L513">        }</span>
+<span class="fc" id="L514">    }</span>
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final void performTypeUsageChecking()
+    {
+        // Pass
+<span class="fc" id="L523">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

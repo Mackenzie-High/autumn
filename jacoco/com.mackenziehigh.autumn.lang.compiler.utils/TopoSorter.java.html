@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TopoSorter.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.mackenziehigh:autumn</a> &gt; <a href="index.source.html" class="el_package">com.mackenziehigh.autumn.lang.compiler.utils</a> &gt; <span class="el_source">TopoSorter.java</span></div><h1>TopoSorter.java</h1><pre class="source lang-java linenums">package com.mackenziehigh.autumn.lang.compiler.utils;
+
+import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
+import com.mackenziehigh.autumn.resources.Finished;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.ListIterator;
+
+/**
+ * An instance of this class can sort a list of elements topologically.
+ *
+ * @author Mackenzie High
+ */
+@Finished(&quot;2014/07/12&quot;)
+<span class="fc" id="L17">public abstract class TopoSorter&lt;T&gt;</span>
+{
+    /**
+     * Given two elements, this function determines whether the left one is less than the right one.
+     *
+     * @param left is the elements that may be less than the right element.
+     * @param right is the right element itself.
+     * @return true, iff left is less-than right.
+     */
+    public abstract boolean isLess(T left,
+                                   T right);
+
+    /**
+     * These are the sorted elements.
+     */
+<span class="fc" id="L32">    private final LinkedList&lt;T&gt; elements = Lists.newLinkedList();</span>
+
+    /**
+     * This method adds more elements to this topologically sorted list.
+     *
+     * @param elements are the elements to add.
+     */
+    public void addAll(final Iterable&lt;? extends T&gt; elements)
+    {
+<span class="fc" id="L41">        Preconditions.checkNotNull(elements);</span>
+
+<span class="fc bfc" id="L43" title="All 2 branches covered.">        for (T element : elements)</span>
+        {
+<span class="fc" id="L45">            Preconditions.checkNotNull(element);</span>
+
+<span class="fc" id="L47">            add(element);</span>
+<span class="fc" id="L48">        }</span>
+<span class="fc" id="L49">    }</span>
+
+    /**
+     * This method adds a single element to this topologically sorted list.
+     *
+     * @param element is the element to add.
+     */
+    public void add(final T element)
+    {
+        // Note: This algorithm is currently an O(N^2) in the worst case.
+        // The inputs are usually small enough to make this acceptable.
+        // However, this algorithm could be rewritten at a later date.
+
+<span class="fc" id="L62">        final ListIterator&lt;T&gt; iter = elements.listIterator();</span>
+
+<span class="fc bfc" id="L64" title="All 2 branches covered.">        while (iter.hasNext())</span>
+        {
+<span class="fc" id="L66">            final T next = iter.next();</span>
+
+<span class="fc" id="L68">            final boolean condition = isLess(element, next);</span>
+
+<span class="fc bfc" id="L70" title="All 2 branches covered.">            if (condition)</span>
+            {
+<span class="fc" id="L72">                iter.previous();</span>
+<span class="fc" id="L73">                iter.add(element);</span>
+<span class="fc" id="L74">                return;</span>
+            }
+<span class="fc" id="L76">        }</span>
+
+<span class="fc" id="L78">        elements.add(element);</span>
+<span class="fc" id="L79">    }</span>
+
+    /**
+     * This method converts this topologically sorted list to an immutable list.
+     *
+     * @return this list as an immutable list.
+     */
+    public List&lt;T&gt; elements()
+    {
+<span class="fc" id="L88">        return ImmutableList.copyOf(elements);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Local.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.mackenziehigh:autumn</a> &gt; <a href="index.source.html" class="el_package">autumn.lang</a> &gt; <span class="el_source">Local.java</span></div><h1>Local.java</h1><pre class="source lang-java linenums">package autumn.lang;
+
+import com.google.common.base.Preconditions;
+import com.mackenziehigh.autumn.resources.Finished;
+import java.util.Objects;
+
+/**
+ * An instance of this class represents a single local-variable in a locals-map.
+ *
+ * @author Mackenzie High
+ */
+@Finished(&quot;2014/07/12&quot;)
+public final class Local
+{
+    /**
+     * This is the name of the variable.
+     */
+    private final String name;
+
+    /**
+     * This is the compile-time type of the variable.
+     */
+    private final Class type;
+
+    /**
+     * This is the value stored in the variable at the time of this object's creation.
+     */
+    private final Object value;
+
+    /**
+     * Constructor.
+     *
+     * @param name is the name of the variable.
+     * @param type is the static-type of the variable.
+     * @param value is the value of the variable.
+     */
+    public Local(final String name,
+                 final Class type,
+                 final Object value)
+<span class="fc" id="L40">    {</span>
+<span class="fc" id="L41">        Preconditions.checkNotNull(name);</span>
+<span class="fc" id="L42">        Preconditions.checkNotNull(type);</span>
+
+<span class="fc" id="L44">        this.name = name;</span>
+<span class="fc" id="L45">        this.type = type;</span>
+<span class="fc" id="L46">        this.value = value;</span>
+<span class="fc" id="L47">    }</span>
+
+    /**
+     * This method retrieves the name of the variable.
+     *
+     * @return the name of the variable.
+     */
+    public String name()
+    {
+<span class="fc" id="L56">        return name;</span>
+    }
+
+    /**
+     * This method retrieves the type of the variable.
+     *
+     * @return the type of the variable.
+     */
+    public Class type()
+    {
+<span class="fc" id="L66">        return type;</span>
+    }
+
+    /**
+     * This method retrieves the value of the variable.
+     *
+     * &lt;p&gt;
+     * The value returned is the value of the variable, as it was when this object was created.
+     * &lt;/p&gt;
+     *
+     * @return the value of the variable.
+     */
+    public Object value()
+    {
+<span class="fc" id="L80">        return value;</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString()
+    {
+<span class="nc" id="L89">        final String string = Objects.toString(value);</span>
+
+<span class="nc" id="L91">        final String modified = string.replace(&quot;\r&quot;, &quot;\\r&quot;).replace(&quot;\n&quot;, &quot;\\n&quot;);</span>
+
+<span class="nc" id="L93">        return name + &quot; : &quot; + type.getSimpleName() + &quot; = &quot; + modified;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BranchStatement.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.mackenziehigh:autumn</a> &gt; <a href="index.source.html" class="el_package">autumn.lang.compiler.ast.nodes</a> &gt; <span class="el_source">BranchStatement.java</span></div><h1>BranchStatement.java</h1><pre class="source lang-java linenums">/*
+ * Copyright 2013 Michael Mackenzie High
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+
+package autumn.lang.compiler.ast.nodes;
+
+import autumn.lang.compiler.ast.commons.ConstructList;
+import autumn.lang.compiler.ast.commons.IAnnotated;
+import autumn.lang.compiler.ast.commons.IBinaryOperation;
+import autumn.lang.compiler.ast.commons.IConstruct;
+import autumn.lang.compiler.ast.commons.IConversionOperation;
+import autumn.lang.compiler.ast.commons.IDatum;
+import autumn.lang.compiler.ast.commons.IDirective;
+import autumn.lang.compiler.ast.commons.IDocumented;
+import autumn.lang.compiler.ast.commons.IExpression;
+import autumn.lang.compiler.ast.commons.IRecord;
+import autumn.lang.compiler.ast.commons.IStatement;
+import autumn.lang.compiler.ast.commons.IUnaryOperation;
+import autumn.lang.compiler.ast.literals.BigDecimalLiteral;
+import autumn.lang.compiler.ast.literals.BigIntegerLiteral;
+import autumn.lang.compiler.ast.literals.ByteLiteral;
+import autumn.lang.compiler.ast.literals.CharLiteral;
+import autumn.lang.compiler.ast.literals.DoubleLiteral;
+import autumn.lang.compiler.ast.literals.FloatLiteral;
+import autumn.lang.compiler.ast.literals.IntLiteral;
+import autumn.lang.compiler.ast.literals.LongLiteral;
+import autumn.lang.compiler.ast.literals.ShortLiteral;
+import java.io.File;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
+import java.util.TreeSet;
+
+/**
+ * An instance of this class is an AST node that represents a branch-statement.
+ * 
+ * &lt;p&gt; 
+ * &lt;table border=&quot;1&quot;&gt;
+ *     &lt;tr&gt; &lt;td&gt; &lt;b&gt;Property Name&lt;/b&gt; &lt;/td&gt; &lt;td&gt; &lt;b&gt;Property Description&lt;/b&gt; &lt;/td&gt; &lt;/tr&gt;
+ *     &lt;tr&gt; &lt;td&gt; &lt;code&gt;index&lt;/code&gt; &lt;/td&gt; &lt;td&gt;This is the expression whose value is used to select the label to branch to.&lt;/td&gt; &lt;/tr&gt;
+ *     &lt;tr&gt; &lt;td&gt; &lt;code&gt;labels&lt;/code&gt; &lt;/td&gt; &lt;td&gt;These are the labels that indicate where to jump to, excluding the default-case.&lt;/td&gt; &lt;/tr&gt;
+ *     &lt;tr&gt; &lt;td&gt; &lt;code&gt;default_label&lt;/code&gt; &lt;/td&gt; &lt;td&gt;This is the label that indicates where to jump to, if the index is out-of-bounds.&lt;/td&gt; &lt;/tr&gt;
+ *     &lt;tr&gt; &lt;td&gt; &lt;code&gt;location&lt;/code&gt; &lt;/td&gt; &lt;td&gt;This is the source-location information regarding this construct.&lt;/td&gt; &lt;/tr&gt;
+ * &lt;/table&gt;
+ * &lt;/p&gt;
+ * 
+ * &lt;p&gt; This file was auto-generated on (Sun May 31 11:54:12 EDT 2015).&lt;/p&gt;
+ */
+@SuppressWarnings(&quot;unchecked&quot;)
+<span class="fc" id="L69">public final class BranchStatement extends Object implements IStatement</span>
+{
+    private IExpression index;
+
+<span class="fc" id="L73">    private ConstructList&lt;Label&gt; labels = new ConstructList();</span>
+
+    private Label default_label;
+
+<span class="fc" id="L77">    private SourceLocation location = new SourceLocation();</span>
+
+    /**
+     * Setter.
+     * 
+     * @param value is the new value of property &lt;code&gt;index&lt;/code&gt;.
+     * @return a copy of this object with property &lt;code&gt;index&lt;/code&gt; set to value.
+     */
+    public BranchStatement setIndex(final IExpression value)
+    {
+<span class="fc" id="L87">        final BranchStatement result = this.copy();</span>
+<span class="fc" id="L88">        result.index = value;</span>
+<span class="fc" id="L89">        return result;</span>
+    }
+
+    /**
+     * Getter.
+     * 
+     * @return the value of property &lt;code&gt;index&lt;/code&gt;.
+     */
+    public IExpression getIndex()
+    {
+<span class="fc" id="L99">        final IExpression value = this.index;</span>
+<span class="fc" id="L100">        return value;</span>
+    }
+
+    /**
+     * Setter.
+     * 
+     * @param value is the new value of property &lt;code&gt;labels&lt;/code&gt;.
+     * @return a copy of this object with property &lt;code&gt;labels&lt;/code&gt; set to value.
+     */
+    public BranchStatement setLabels(final ConstructList&lt;Label&gt; value)
+    {
+<span class="fc" id="L111">        final BranchStatement result = this.copy();</span>
+<span class="fc" id="L112">        result.labels = value;</span>
+<span class="fc" id="L113">        return result;</span>
+    }
+
+    /**
+     * Getter.
+     * 
+     * @return the value of property &lt;code&gt;labels&lt;/code&gt;.
+     */
+    public ConstructList&lt;Label&gt; getLabels()
+    {
+<span class="fc" id="L123">        final ConstructList&lt;Label&gt; value = this.labels;</span>
+<span class="fc" id="L124">        return value;</span>
+    }
+
+    /**
+     * Setter.
+     * 
+     * @param value is the new value of property &lt;code&gt;default_label&lt;/code&gt;.
+     * @return a copy of this object with property &lt;code&gt;default_label&lt;/code&gt; set to value.
+     */
+    public BranchStatement setDefaultLabel(final Label value)
+    {
+<span class="fc" id="L135">        final BranchStatement result = this.copy();</span>
+<span class="fc" id="L136">        result.default_label = value;</span>
+<span class="fc" id="L137">        return result;</span>
+    }
+
+    /**
+     * Getter.
+     * 
+     * @return the value of property &lt;code&gt;default_label&lt;/code&gt;.
+     */
+    public Label getDefaultLabel()
+    {
+<span class="fc" id="L147">        final Label value = this.default_label;</span>
+<span class="fc" id="L148">        return value;</span>
+    }
+
+    /**
+     * Setter.
+     * 
+     * @param value is the new value of property &lt;code&gt;location&lt;/code&gt;.
+     * @return a copy of this object with property &lt;code&gt;location&lt;/code&gt; set to value.
+     */
+    public BranchStatement setLocation(final SourceLocation value)
+    {
+<span class="fc" id="L159">        final BranchStatement result = this.copy();</span>
+<span class="fc" id="L160">        result.location = value;</span>
+<span class="fc" id="L161">        return result;</span>
+    }
+
+    /**
+     * Getter.
+     * 
+     * @return the value of property &lt;code&gt;location&lt;/code&gt;.
+     */
+    public SourceLocation getLocation()
+    {
+<span class="fc" id="L171">        final SourceLocation value = this.location;</span>
+<span class="fc" id="L172">        return value;</span>
+    }
+
+    /**
+     * This method creates a new instance of this class.
+     * 
+     * @param index is the value for property &lt;code&gt;index&lt;/code&gt;.
+     * @param labels is the value for property &lt;code&gt;labels&lt;/code&gt;.
+     * @param default_label is the value for property &lt;code&gt;default_label&lt;/code&gt;.
+     * @param location is the value for property &lt;code&gt;location&lt;/code&gt;.
+     * @return a new instance of this class.
+     */
+    public static BranchStatement create(IExpression index, ConstructList&lt;Label&gt; labels, Label default_label, SourceLocation location)
+    {
+<span class="nc" id="L186">        BranchStatement object = new BranchStatement();</span>
+<span class="nc" id="L187">        object = object.setIndex(index);</span>
+<span class="nc" id="L188">        object = object.setLabels(labels);</span>
+<span class="nc" id="L189">        object = object.setDefaultLabel(default_label);</span>
+<span class="nc" id="L190">        object = object.setLocation(location);</span>
+<span class="nc" id="L191">        return object;</span>
+    }
+
+    /**
+     * This method welcomes a visitor that wants to visit this object.
+     * 
+     * @param visitor is the visitor that is visiting this object.
+     */
+    public void accept(final IAstVisitor visitor)
+    {
+<span class="fc" id="L201">        visitor.visit(this);</span>
+<span class="fc" id="L202">    }</span>
+
+    /**
+     * This method creates a shallow copy of this object.
+     * 
+     * @return a shallow copy of this object.
+     */
+    public BranchStatement copy()
+    {
+<span class="fc" id="L211">        final BranchStatement result = new BranchStatement();</span>
+<span class="fc" id="L212">        result.index = this.index;</span>
+<span class="fc" id="L213">        result.labels = this.labels;</span>
+<span class="fc" id="L214">        result.default_label = this.default_label;</span>
+<span class="fc" id="L215">        result.location = this.location;</span>
+<span class="fc" id="L216">        return result;</span>
+    }
+
+    /**
+     * This method creates a map representation of this struct.
+     * 
+     * &lt;p&gt;
+     * Each key is the name of a field.
+     * Each value is the result of calling the key field's getter.
+     * &lt;/p&gt;
+     * 
+     * @return a map containing the entries in this struct.
+     */
+    public Map&lt;String, Object&gt; toMap()
+    {
+<span class="fc" id="L231">        final Map&lt;String, Object&gt; map = new TreeMap&lt;String, Object&gt;();</span>
+<span class="fc" id="L232">        map.put(&quot;index&quot;, this.getIndex());</span>
+<span class="fc" id="L233">        map.put(&quot;labels&quot;, this.getLabels());</span>
+<span class="fc" id="L234">        map.put(&quot;default_label&quot;, this.getDefaultLabel());</span>
+<span class="fc" id="L235">        map.put(&quot;location&quot;, this.getLocation());</span>
+
+<span class="fc" id="L237">        return map;</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString()
+    {
+<span class="fc" id="L246">        return this.toMap().toString();</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

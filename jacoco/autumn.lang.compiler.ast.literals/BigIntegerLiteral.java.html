@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BigIntegerLiteral.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.mackenziehigh:autumn</a> &gt; <a href="index.source.html" class="el_package">autumn.lang.compiler.ast.literals</a> &gt; <span class="el_source">BigIntegerLiteral.java</span></div><h1>BigIntegerLiteral.java</h1><pre class="source lang-java linenums">package autumn.lang.compiler.ast.literals;
+
+import com.mackenziehigh.autumn.resources.Finished;
+import java.math.BigInteger;
+
+/**
+ * An instance of this class represents a
+ * &lt;code&gt;long&lt;/code&gt; literal.
+ *
+ * @author Mackenzie High
+ */
+@Finished(&quot;2014/07/12&quot;)
+public final class BigIntegerLiteral
+        extends AbstractNumericLiteral&lt;BigInteger&gt;
+{
+<span class="fc" id="L16">    private BigInteger value = null;</span>
+
+    /**
+     * Constructor.
+     *
+     * @param source is the source-code representation of this literal.
+     */
+    public BigIntegerLiteral(final String source)
+    {
+<span class="fc" id="L25">        super(source);</span>
+<span class="fc" id="L26">    }</span>
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public BigInteger value()
+    {
+        try
+        {
+<span class="pc bpc" id="L36" title="1 of 2 branches missed.">            if (value == null)</span>
+            {
+<span class="fc" id="L38">                final String source = sourceWithoutUnderscores()</span>
+<span class="fc" id="L39">                        .trim()</span>
+<span class="fc" id="L40">                        .replaceAll(&quot;[Bb][Ii]&quot;, &quot;&quot;);</span>
+
+<span class="fc" id="L42">                final BigInteger result = new BigInteger(source);</span>
+
+<span class="fc" id="L44">                return result;</span>
+            }
+            else
+            {
+<span class="nc" id="L48">                return value;</span>
+            }
+        }
+<span class="fc" id="L51">        catch (Exception ex)</span>
+        {
+            // The literal is malformed.
+<span class="fc" id="L54">            return null;</span>
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isParsable()
+    {
+<span class="fc" id="L64">        return sourceWithoutUnderscores().matches(&quot;-?[0-9]+[Bb][Ii]&quot;);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

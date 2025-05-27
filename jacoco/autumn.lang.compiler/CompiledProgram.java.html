@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CompiledProgram.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.mackenziehigh:autumn</a> &gt; <a href="index.source.html" class="el_package">autumn.lang.compiler</a> &gt; <span class="el_source">CompiledProgram.java</span></div><h1>CompiledProgram.java</h1><pre class="source lang-java linenums">package autumn.lang.compiler;
+
+import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
+import com.mackenziehigh.autumn.resources.Finished;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.net.URL;
+import java.util.List;
+import java.util.jar.Attributes;
+import java.util.jar.JarEntry;
+import java.util.jar.JarOutputStream;
+import java.util.jar.Manifest;
+
+/**
+ * An instance of this class is a compiled Autumn program.
+ *
+ * @author Mackenzie High
+ */
+@Finished(&quot;2014/08/19&quot;)
+public final class CompiledProgram
+{
+    private final String main_class;
+
+<span class="fc" id="L27">    private final List&lt;ClassFile&gt; classes = Lists.newLinkedList();</span>
+
+<span class="fc" id="L29">    private final List&lt;URL&gt; libraries = Lists.newLinkedList();</span>
+
+    /**
+     * Constructor.
+     *
+     * &lt;p&gt;
+     * The main-class parameter must be null, if no entry-point is specified.
+     * For example, this would occur when the compiled program is a library only.
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * The dependency files will be added to the generated generated Jar file's manifest.
+     * &lt;/p&gt;
+     *
+     * @param main_class is the name of the class that contains the program's entry-point.
+     * @param classes are the classes that the compiled program is composed of.
+     */
+    public CompiledProgram(final String main_class,
+                           final List&lt;ClassFile&gt; classes)
+<span class="fc" id="L48">    {</span>
+<span class="fc" id="L49">        Preconditions.checkNotNull(classes);</span>
+
+<span class="fc" id="L51">        this.main_class = main_class;</span>
+<span class="fc" id="L52">        this.classes.addAll(classes);</span>
+<span class="fc" id="L53">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param program is the original compiled program.
+     * @param libraries are the paths to libraries that the program relies upon.
+     * @throws NullPointerException if program is null.
+     * @throws NullPointerException if libraries is null.
+     */
+    public CompiledProgram(final CompiledProgram program,
+                           final List&lt;URL&gt; libraries)
+    {
+<span class="fc" id="L66">        this(program.main_class, program.classes);</span>
+
+<span class="fc" id="L68">        Preconditions.checkNotNull(libraries);</span>
+
+<span class="fc" id="L70">        this.libraries.addAll(libraries);</span>
+<span class="fc" id="L71">    }</span>
+
+    /**
+     * This method retrieves the name of the module that contains the entry-point.
+     *
+     * &lt;p&gt;
+     * This is the fully-qualified name as it would appear in source code.
+     * &lt;/p&gt;
+     *
+     * @return the aforedescribed name (may be null).
+     */
+    public String mainClass()
+    {
+<span class="fc" id="L84">        return main_class;</span>
+    }
+
+    /**
+     * This method retrieves the class-files that are part of the compiled program.
+     *
+     * @return the program's class-files.
+     */
+    public List&lt;ClassFile&gt; classes()
+    {
+<span class="fc" id="L94">        return ImmutableList.copyOf(classes);</span>
+    }
+
+    /**
+     * This method retrieves the list of libraries that this program relies upon.
+     *
+     * @return an immutable list containing the URLs of the aforesaid libraries.
+     */
+    public List&lt;URL&gt; libraries()
+    {
+<span class="fc" id="L104">        return ImmutableList.copyOf(libraries);</span>
+    }
+
+    /**
+     * This method writes this compiled program to a specified JAR file.
+     *
+     * &lt;p&gt;
+     * If the JAR already exists, then it will be overwritten.
+     * If the JAR does not exist, then it will be created.
+     * &lt;/p&gt;
+     *
+     * @param path is the path to the new jar file.
+     */
+    public void jar(final File path)
+            throws IOException
+    {
+<span class="nc" id="L120">        final Manifest manifest = createManifest();</span>
+
+<span class="nc" id="L122">        final FileOutputStream fos = new FileOutputStream(path);</span>
+
+<span class="nc" id="L124">        final JarOutputStream jos = new JarOutputStream(fos, manifest);</span>
+
+<span class="nc bnc" id="L126" title="All 2 branches missed.">        for (ClassFile file : classes)</span>
+        {
+<span class="nc" id="L128">            writeClassFile(jos, file);</span>
+<span class="nc" id="L129">        }</span>
+
+<span class="nc" id="L131">        jos.close();</span>
+<span class="nc" id="L132">    }</span>
+
+    /**
+     * This method creates the MANIFEST.MF file to put into the JAR file.
+     *
+     * @return the manifest as an object.
+     */
+    private Manifest createManifest()
+    {
+<span class="nc" id="L141">        final Manifest manifest = new Manifest();</span>
+
+        /**
+         * Set the manifest version.
+         */
+<span class="nc" id="L146">        manifest.getMainAttributes().put(Attributes.Name.MANIFEST_VERSION, &quot;1.0&quot;);</span>
+
+        /**
+         * Set the main-class attribute.
+         */
+<span class="nc bnc" id="L151" title="All 2 branches missed.">        if (mainClass() != null)</span>
+        {
+<span class="nc" id="L153">            manifest.getMainAttributes().put(Attributes.Name.MAIN_CLASS, mainClass());</span>
+        }
+
+<span class="nc" id="L156">        return manifest;</span>
+    }
+
+    /**
+     * This method writes a class-file to a JAR file.
+     *
+     * @param jos is the the JAR file being written
+     * @param file is the class-file to write to the JAR file.
+     */
+    private void writeClassFile(final JarOutputStream jos,
+                                final ClassFile file)
+            throws IOException
+    {
+        /**
+         * Compute the name of the class-file as a regular file.
+         * In other words, the package part of the name specifies a folder hierarchy.
+         */
+<span class="nc" id="L173">        final String name = file.name().replace('.', '/') + &quot;.class&quot;;</span>
+
+        /**
+         * Add the class-file to the jar-file.
+         */
+<span class="nc" id="L178">        final JarEntry entry = new JarEntry(name);</span>
+<span class="nc" id="L179">        entry.setTime(System.currentTimeMillis());</span>
+<span class="nc" id="L180">        jos.putNextEntry(entry);</span>
+<span class="nc" id="L181">        jos.write(file.bytecode());</span>
+<span class="nc" id="L182">        jos.closeEntry();</span>
+<span class="nc" id="L183">    }</span>
+
+    /**
+     * This method creates a new class-loader and uses it to load this program.
+     *
+     * @param parent is the parent of the new class-loader.
+     * @return the newly created class-loader with this program loaded into it.
+     */
+    public DynamicLoader load(final ClassLoader parent)
+    {
+<span class="fc" id="L193">        final DynamicLoader loader = new DynamicLoader(parent, this);</span>
+
+<span class="fc" id="L195">        return loader;</span>
+    }
+
+    /**
+     * This method creates a new class-loader and uses it to load this program.
+     *
+     * &lt;p&gt;
+     * Note: The parent of the new class-loader is the system's class-loader.
+     * &lt;/p&gt;
+     *
+     * @return the newly created class-loader with this program loaded into it.
+     */
+    public DynamicLoader load()
+    {
+<span class="fc" id="L209">        return load(ClassLoader.getSystemClassLoader());</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CovarianceViolationDetector.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.mackenziehigh:autumn</a> &gt; <a href="index.source.html" class="el_package">com.mackenziehigh.autumn.lang.compiler.utils</a> &gt; <span class="el_source">CovarianceViolationDetector.java</span></div><h1>CovarianceViolationDetector.java</h1><pre class="source lang-java linenums">package com.mackenziehigh.autumn.lang.compiler.utils;
+
+import com.google.common.collect.Sets;
+import java.util.Collections;
+import java.util.Set;
+
+/**
+ * This class can be used to detect covariance violations in a record-type.
+ *
+ * &lt;p&gt;
+ * Example Violation:
+ * &lt;ul&gt;
+ * &lt;li&gt;Let R be a design.&lt;/li&gt;
+ * &lt;li&gt;Let S be a struct.&lt;/li&gt;
+ * &lt;li&gt;S is a subtype of R.&lt;/li&gt;
+ * &lt;li&gt;R defines an element E of type String.&lt;/li&gt;
+ * &lt;li&gt;S defines an element E of type Object.&lt;/li&gt;
+ * &lt;/ul&gt;
+ * &lt;br&gt;
+ * This is a covariance-violation. because S-&gt;E is not a subtype of R-&gt;E.
+ * &lt;/p&gt;
+ *
+ * @author Mackenzie High
+ */
+<span class="nc" id="L25">final class CovarianceViolationDetector</span>
+{
+    /**
+     * This method detects the covariance-violations in a given record-type.
+     *
+     * @param record is a representation of the record-type.
+     * @return an immutable set containing descriptions of the violation.
+     */
+    public static Set&lt;CovarianceViolation&gt; detect(final RecordAnalyzer record)
+    {
+<span class="fc" id="L35">        final Set&lt;CovarianceViolation&gt; violations = Sets.newHashSet();</span>
+
+<span class="fc bfc" id="L37" title="All 2 branches covered.">        for (SetterMethod setter1 : record.setters)</span>
+        {
+<span class="fc bfc" id="L39" title="All 2 branches covered.">            for (SetterMethod setter2 : record.setters)</span>
+            {
+<span class="fc" id="L41">                final CovarianceViolation violation = detect(setter1, setter2);</span>
+
+<span class="fc bfc" id="L43" title="All 2 branches covered.">                if (violation != null)</span>
+                {
+<span class="fc" id="L45">                    violations.add(violation);</span>
+                }
+<span class="fc" id="L47">            }</span>
+<span class="fc" id="L48">        }</span>
+
+<span class="fc" id="L50">        return Collections.unmodifiableSet(violations);</span>
+    }
+
+    /**
+     * This method determines whether two setter methods cause a covariance violation.
+     *
+     * @param setter1 is the description of a setter method.
+     * @param setter2 is the description of a setter method.
+     * @return a non-null value, iff a violation exists.
+     */
+    private static CovarianceViolation detect(final SetterMethod setter1,
+                                              final SetterMethod setter2)
+    {
+        /**
+         * Two setters can only conflict, if they set the same element.
+         */
+<span class="fc bfc" id="L66" title="All 2 branches covered.">        if (setter1.name.equals(setter2.name) == false)</span>
+        {
+<span class="fc" id="L68">            return null;</span>
+        }
+
+        /**
+         * setter1 must be declared in a proper subtype of the type that declares setter2.
+         */
+<span class="fc bfc" id="L74" title="All 2 branches covered.">        if (setter1.owner.equals(setter2.owner))</span>
+        {
+<span class="fc" id="L76">            return null;</span>
+        }
+
+<span class="fc bfc" id="L79" title="All 2 branches covered.">        if (setter1.owner.isSubtypeOf(setter2.owner) == false)</span>
+        {
+<span class="fc" id="L81">            return null;</span>
+        }
+
+        /**
+         * No problem exists, if setter1 or setter2 can simply redirect to the other.
+         */
+<span class="fc bfc" id="L87" title="All 2 branches covered.">        if (setter1.parameter.isSubtypeOf(setter2.parameter))</span>
+        {
+<span class="fc" id="L89">            return null;</span>
+        }
+
+<span class="fc" id="L92">        return new CovarianceViolation(setter1, setter2);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

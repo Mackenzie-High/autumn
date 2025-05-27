@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ReflectiveField.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.mackenziehigh:autumn</a> &gt; <a href="index.source.html" class="el_package">com.mackenziehigh.autumn.lang.compiler.typesystem</a> &gt; <span class="el_source">ReflectiveField.java</span></div><h1>ReflectiveField.java</h1><pre class="source lang-java linenums">package com.mackenziehigh.autumn.lang.compiler.typesystem;
+
+import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IAnnotation;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IDeclaredType;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IEnumConstant;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IField;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.ITypeFactory;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IVariableType;
+import com.mackenziehigh.autumn.resources.Finished;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
+import java.util.List;
+
+/**
+ * An instance of this class represents a field.
+ *
+ * @author Mackenzie High
+ */
+@Finished(&quot;2014/07/12&quot;)
+public final class ReflectiveField
+        extends AbstractMember
+        implements IField,
+                   IEnumConstant
+{
+    protected final Field field;
+
+    /**
+     * Sole Constructor.
+     *
+     * @param factory is the type-factory that is used to access types.
+     * @param field is the field that this new object will represent.
+     */
+    public ReflectiveField(final ITypeFactory factory,
+                           final Field field)
+    {
+<span class="fc" id="L39">        super(factory);</span>
+
+<span class="fc" id="L41">        Preconditions.checkNotNull(field);</span>
+
+<span class="fc" id="L43">        this.field = field;</span>
+<span class="fc" id="L44">    }</span>
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public IDeclaredType getOwner()
+    {
+<span class="fc" id="L52">        return (IDeclaredType) getTypeFactory().fromClass(field.getDeclaringClass());</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Field getField()
+    {
+<span class="fc" id="L61">        return field;</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List&lt;IAnnotation&gt; getAnnotations()
+    {
+<span class="fc" id="L70">        final List result = Lists.newLinkedList();</span>
+
+<span class="fc bfc" id="L72" title="All 2 branches covered.">        for (Annotation element : field.getDeclaredAnnotations())</span>
+        {
+<span class="fc" id="L74">            final IAnnotation annotation = CustomAnnotation.fromAnnotation(getTypeFactory(), element);</span>
+
+<span class="fc" id="L76">            result.add(annotation);</span>
+        }
+
+<span class="fc" id="L79">        return ImmutableList.copyOf(result);</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int getModifiers()
+    {
+<span class="fc" id="L88">        return field.getModifiers();</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getName()
+    {
+<span class="fc" id="L97">        return field.getName();</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public IVariableType getType()
+    {
+<span class="fc" id="L106">        return (IVariableType) getTypeFactory().fromClass(field.getType());</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isEnumConstant()
+    {
+<span class="fc" id="L115">        return field.isEnumConstant();</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int getOrdinal()
+    {
+<span class="nc" id="L124">        final Object[] constants = field.getDeclaringClass().getEnumConstants();</span>
+
+<span class="nc" id="L126">        int i = 0;</span>
+
+<span class="nc bnc" id="L128" title="All 2 branches missed.">        for (Object x : constants)</span>
+        {
+<span class="nc" id="L130">            final Enum constant = (Enum) x;</span>
+
+<span class="nc bnc" id="L132" title="All 2 branches missed.">            if (constant.name().equals(this.getName()))</span>
+            {
+<span class="nc" id="L134">                break;</span>
+            }
+            else
+            {
+<span class="nc" id="L138">                ++i;</span>
+            }
+        }
+
+<span class="nc" id="L142">        return i;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

@@ -1,0 +1,1442 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ExpressionCodeGenerator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.mackenziehigh:autumn</a> &gt; <a href="index.source.html" class="el_package">com.mackenziehigh.autumn.lang.compiler.compilers</a> &gt; <span class="el_source">ExpressionCodeGenerator.java</span></div><h1>ExpressionCodeGenerator.java</h1><pre class="source lang-java linenums">package com.mackenziehigh.autumn.lang.compiler.compilers;
+
+import autumn.lang.annotations.Infer;
+import autumn.lang.compiler.ast.commons.ConstructList;
+import autumn.lang.compiler.ast.commons.IBinaryOperation;
+import autumn.lang.compiler.ast.commons.IExpression;
+import autumn.lang.compiler.ast.commons.IUnaryOperation;
+import autumn.lang.compiler.ast.nodes.*;
+import autumn.util.F;
+import com.google.common.base.Preconditions;
+import com.google.common.collect.Lists;
+import com.mackenziehigh.autumn.lang.compiler.compilers.ModuleCompiler.HiddenField;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IDeclaredType;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IExpressionType;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IField;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IInvokableMember;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IMethod;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IReferenceType;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IReturnType;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IType;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IVariableType;
+import com.mackenziehigh.autumn.lang.compiler.utils.Conversion;
+import com.mackenziehigh.autumn.lang.compiler.utils.TypeSystemUtils;
+import com.mackenziehigh.autumn.lang.compiler.utils.Utils;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.tree.FieldInsnNode;
+import org.objectweb.asm.tree.InsnList;
+import org.objectweb.asm.tree.InsnNode;
+import org.objectweb.asm.tree.JumpInsnNode;
+import org.objectweb.asm.tree.LabelNode;
+import org.objectweb.asm.tree.LdcInsnNode;
+import org.objectweb.asm.tree.MethodInsnNode;
+import org.objectweb.asm.tree.TypeInsnNode;
+
+/**
+ * An instance of this class performs the bytecode generation related to an expression.
+ *
+ * @author Mackenzie High
+ */
+class ExpressionCodeGenerator
+        extends AbstractAstVisitor
+{
+    /**
+     * Basically, this is the program that is being compiled.
+     */
+    protected final ProgramCompiler program;
+
+    /**
+     * Basically, this is the module that contains the expressions compiled by this object.
+     */
+    protected final ModuleCompiler module;
+
+    /**
+     * This is the type-system in use by the compiler.
+     */
+    protected final TypeSystem types;
+
+    /**
+     * This object manages the allocation of local variables.
+     */
+    protected final VariableAllocator allocator;
+
+    /**
+     * This object simplifies the manipulation of variables.
+     */
+    protected final VariableManipulator vars;
+
+    /**
+     * This is the list of instructions being generated.
+     * The whole purpose of this ExpressionCodeGenerator is to add instructions to this list.
+     */
+    protected final InsnList code;
+
+    /**
+     * Sole Constructor.
+     *
+     * @param module is the module being compiled.
+     * @param vars is the enclosing scope.
+     * @param code is the list of bytecode instructions being generated.
+     */
+    public ExpressionCodeGenerator(final ModuleCompiler module,
+                                   final VariableManipulator vars,
+                                   final InsnList code)
+<span class="fc" id="L87">    {</span>
+<span class="fc" id="L88">        Preconditions.checkNotNull(module);</span>
+<span class="fc" id="L89">        Preconditions.checkNotNull(vars);</span>
+<span class="fc" id="L90">        Preconditions.checkNotNull(code);</span>
+
+<span class="fc" id="L92">        this.program = module.program;</span>
+<span class="fc" id="L93">        this.module = module;</span>
+<span class="fc" id="L94">        this.types = program.typesystem;</span>
+<span class="fc" id="L95">        this.vars = vars;</span>
+<span class="fc" id="L96">        this.allocator = vars.allocator();</span>
+<span class="fc" id="L97">        this.code = code;</span>
+<span class="fc" id="L98">    }</span>
+
+    /**
+     * This method generalizes the compilation of a unary operator.
+     *
+     * @param operation is the operation to compile.
+     */
+    protected void compileUnaryOperator(final IUnaryOperation operation)
+    {
+<span class="fc" id="L107">        Preconditions.checkNotNull(operation);</span>
+
+<span class="fc" id="L109">        final IMethod method = (IMethod) program.symbols.calls.get(operation);</span>
+
+<span class="fc" id="L111">        ConstructList&lt;IExpression&gt; operands = new ConstructList&lt;IExpression&gt;();</span>
+<span class="fc" id="L112">        operands = operands.add(operation.getOperand());</span>
+
+<span class="fc" id="L114">        compileStaticMethodCall(method, operands);</span>
+<span class="fc" id="L115">    }</span>
+
+    /**
+     * This method generalizes the compilation of a binary operator.
+     *
+     * @param operation is the operation to compile.
+     */
+    protected void compileBinaryOperator(final IBinaryOperation operation)
+    {
+<span class="fc" id="L124">        Preconditions.checkNotNull(operation);</span>
+
+        // During type-checking a method was selected that implements the operation.
+        // The method is a static utility method in the standard-library Operators class.
+<span class="fc" id="L128">        final IMethod method = (IMethod) program.symbols.calls.get(operation);</span>
+
+        // Get the types of the operands.
+<span class="fc" id="L131">        final IExpression left = operation.getLeftOperand();</span>
+<span class="fc" id="L132">        final IExpression right = operation.getRightOperand();</span>
+
+        // Generate an invocation of the static utility method.
+        // The optimizer may optimize out the invocation later.
+<span class="fc" id="L136">        compileStaticMethodCall(method, Lists.newArrayList(left, right));</span>
+<span class="fc" id="L137">    }</span>
+
+    /**
+     * This method generalizes the compilation of a static method invocation.
+     *
+     * @param method is the method being invoked.
+     * @param arguments are the expressions that produce the arguments.
+     */
+    protected void compileStaticMethodCall(final IMethod method,
+                                           final Iterable&lt;IExpression&gt; arguments)
+    {
+<span class="fc" id="L148">        Preconditions.checkNotNull(method);</span>
+<span class="fc" id="L149">        Preconditions.checkNotNull(arguments);</span>
+
+        // Convert the iterable to a list.
+<span class="fc" id="L152">        final List&lt;IExpression&gt; args = Lists.newArrayList(arguments);</span>
+
+        /**
+         * Generate the bytecode for each argument.
+         */
+<span class="fc bfc" id="L157" title="All 2 branches covered.">        for (int i = 0; i &lt; args.size(); i++)</span>
+        {
+<span class="fc" id="L159">            final IType parameter = method.getParameters().get(i).getType();</span>
+<span class="fc" id="L160">            final IType argument = program.symbols.expressions.get(args.get(i));</span>
+
+            // Generate the argument's bytecode.
+<span class="fc" id="L163">            args.get(i).accept(this);</span>
+
+            // Generate code to box/unbox the argument, if needed.
+<span class="fc" id="L166">            code.add(types.utils.assign(argument, parameter));</span>
+        }
+
+        /**
+         * Generate the method invocation itself.
+         */
+<span class="fc" id="L172">        code.add(new MethodInsnNode(Opcodes.INVOKESTATIC,</span>
+<span class="fc" id="L173">                                    Utils.internalName(method.getOwner()),</span>
+<span class="fc" id="L174">                                    method.getName(),</span>
+<span class="fc" id="L175">                                    method.getDescriptor()));</span>
+
+        /**
+         * Downcast the return-value, if the return-type is inferred.
+         */
+<span class="fc bfc" id="L180" title="All 2 branches covered.">        if (TypeSystemUtils.isAnnotationPresent(method, Infer.class))</span>
+        {
+<span class="pc bpc" id="L182" title="1 of 2 branches missed.">            if (method.getParameters().isEmpty())</span>
+            {
+                // Pass, there should not be a @InferReturnType annotation on the method.
+            }
+<span class="pc bpc" id="L186" title="1 of 2 branches missed.">            else if (program.symbols.expressions.get(args.get(0)).isReferenceType() == false)</span>
+            {
+                // Pass, there should not be a @InferReturnType annotation on the method.
+            }
+            else
+            {
+<span class="fc" id="L192">                final IReferenceType type = (IReferenceType) program.symbols.expressions.get(args.get(0));</span>
+
+<span class="fc" id="L194">                code.add(new TypeInsnNode(Opcodes.CHECKCAST, Utils.internalName(type)));</span>
+            }
+        }
+<span class="fc" id="L197">    }</span>
+
+    /**
+     * This method generalizes the compilation of a condition expression.
+     *
+     * &lt;p&gt;
+     * The condition will be evaluated, and automatically boxed or unboxed when necessary.
+     * &lt;/p&gt;
+     *
+     * @param condition is the expression that is really a condition.
+     */
+    protected final void compileCondition(final IExpression condition)
+    {
+<span class="fc" id="L210">        Preconditions.checkNotNull(condition);</span>
+
+        // Retrieve the type of the expression.
+<span class="fc" id="L213">        final IType type = program.symbols.expressions.get(condition);</span>
+
+        // Compile the expression itself.
+<span class="fc" id="L216">        condition.accept(this);</span>
+
+        // If the expression evaluates to a boxed-boolean rather than a primitive-boolean,
+        // then it is necessary to unbox the value.
+<span class="fc bfc" id="L220" title="All 2 branches covered.">        if (type.equals(program.typesystem.utils.BOXED_BOOLEAN))</span>
+        {
+<span class="fc" id="L222">            final IType input = program.typesystem.utils.BOXED_BOOLEAN;</span>
+
+<span class="fc" id="L224">            final IType output = program.typesystem.utils.PRIMITIVE_BOOLEAN;</span>
+
+<span class="fc" id="L226">            code.add(program.typesystem.utils.unbox(input, output));</span>
+        }
+<span class="fc" id="L228">    }</span>
+
+    /**
+     * This method generates bytecode that converts an expression's value to another type.
+     *
+     * &lt;p&gt;
+     * The generated bytecode expects that the expression's value is the topmost value
+     * on the operand-stack.
+     * &lt;/p&gt;
+     *
+     * @param type is the type to which the value will be converted.
+     * @param expression is the expression whose value is being converted.
+     */
+    protected final void convert(final IType type,
+                                 final IExpression expression)
+    {
+<span class="fc" id="L244">        Preconditions.checkNotNull(type);</span>
+<span class="fc" id="L245">        Preconditions.checkNotNull(expression);</span>
+
+<span class="fc" id="L247">        final IType etype = program.symbols.expressions.get(expression);</span>
+
+<span class="fc" id="L249">        code.add(program.typesystem.utils.assign(etype, type));</span>
+<span class="fc" id="L250">    }</span>
+
+    @Override
+    public void visit(final BooleanDatum object)
+    {
+        // Generated Bytecode;
+        //
+        // LDC value
+        //
+        /////////////////////////////////////////////////
+
+<span class="fc" id="L261">        code.add(new LdcInsnNode(object.getValue()));</span>
+<span class="fc" id="L262">    }</span>
+
+    @Override
+    public void visit(final CharDatum object)
+    {
+        // Generated Bytecode;
+        //
+        // LDC value
+        //
+        /////////////////////////////////////////////////
+
+<span class="fc" id="L273">        code.add(new LdcInsnNode(object.getValue().value()));</span>
+<span class="fc" id="L274">    }</span>
+
+    @Override
+    public void visit(final ByteDatum object)
+    {
+        // Generated Bytecode;
+        //
+        // LDC value
+        //
+        /////////////////////////////////////////////////
+
+<span class="fc" id="L285">        code.add(new LdcInsnNode(object.getValue().value()));</span>
+<span class="fc" id="L286">    }</span>
+
+    @Override
+    public void visit(final ShortDatum object)
+    {
+        // Generated Bytecode;
+        //
+        // LDC value
+        //
+        /////////////////////////////////////////////////
+
+<span class="fc" id="L297">        code.add(new LdcInsnNode(object.getValue().value()));</span>
+<span class="fc" id="L298">    }</span>
+
+    @Override
+    public void visit(final IntDatum object)
+    {
+        // Generated Bytecode;
+        //
+        // LDC value
+        //
+        /////////////////////////////////////////////////
+
+<span class="fc" id="L309">        code.add(new LdcInsnNode(object.getValue().value()));</span>
+<span class="fc" id="L310">    }</span>
+
+    @Override
+    public void visit(final LongDatum object)
+    {
+        // Generated Bytecode;
+        //
+        // LDC value
+        //
+        /////////////////////////////////////////////////
+
+<span class="fc" id="L321">        final long value = object.getValue().value();</span>
+
+<span class="fc" id="L323">        code.add(new LdcInsnNode(value));</span>
+<span class="fc" id="L324">    }</span>
+
+    @Override
+    public void visit(final FloatDatum object)
+    {
+        // Generated Bytecode;
+        //
+        // LDC value
+        //
+        /////////////////////////////////////////////////
+
+<span class="fc" id="L335">        code.add(new LdcInsnNode(object.getValue().value()));</span>
+<span class="fc" id="L336">    }</span>
+
+    @Override
+    public void visit(final DoubleDatum object)
+    {
+        // Generated Bytecode;
+        //
+        // LDC value
+        //
+        /////////////////////////////////////////////////////////////////////////
+
+<span class="fc" id="L347">        final double value = object.getValue().value();</span>
+
+<span class="fc" id="L349">        code.add(new LdcInsnNode(value));</span>
+<span class="fc" id="L350">    }</span>
+
+    @Override
+    public void visit(final BigIntegerDatum object)
+    {
+        // Generated Bytecode;
+        //
+        // LDC source
+        // INVOKESTATIC Helpers.createBigInteger(String) : BigInteger
+        //
+        /////////////////////////////////////////////////////////////////////////
+
+<span class="fc" id="L362">        final String source = object.getValue().value().toString();</span>
+
+<span class="fc" id="L364">        code.add(new LdcInsnNode(source));</span>
+
+<span class="fc" id="L366">        code.add(new MethodInsnNode(Opcodes.INVOKESTATIC,</span>
+<span class="fc" id="L367">                                    Utils.internalName(program.typesystem.utils.HELPERS),</span>
+                                    &quot;createBigInteger&quot;,
+                                    &quot;(Ljava/lang/String;)Ljava/math/BigInteger;&quot;));
+<span class="fc" id="L370">    }</span>
+
+    @Override
+    public void visit(final BigDecimalDatum object)
+    {
+        // Generated Bytecode;
+        //
+        // LDC source
+        // INVOKESTATIC Helpers.createBigDecimal(String) : BigDecimal
+        //
+        /////////////////////////////////////////////////////////////////////////
+
+<span class="fc" id="L382">        final String source = object.getValue().value().toString();</span>
+
+<span class="fc" id="L384">        code.add(new LdcInsnNode(source));</span>
+
+<span class="fc" id="L386">        code.add(new MethodInsnNode(Opcodes.INVOKESTATIC,</span>
+<span class="fc" id="L387">                                    Utils.internalName(program.typesystem.utils.HELPERS),</span>
+                                    &quot;createBigDecimal&quot;,
+                                    &quot;(Ljava/lang/String;)Ljava/math/BigDecimal;&quot;));
+<span class="fc" id="L390">    }</span>
+
+    @Override
+    public void visit(final StringDatum object)
+    {
+        // Generated Bytecode;
+        //
+        // LDC value
+        //
+        /////////////////////////////////////////////////
+
+<span class="fc" id="L401">        final String value = object.getValue();</span>
+
+<span class="fc bfc" id="L403" title="All 2 branches covered.">        final String string = object.getVerbatim() ? value : F.escape(value);</span>
+
+<span class="fc" id="L405">        code.add(new LdcInsnNode(string));</span>
+<span class="fc" id="L406">    }</span>
+
+    @Override
+    public void visit(final NullDatum object)
+    {
+        // Generated Bytecode;
+        //
+        // ACONST_NULL
+        //
+        /////////////////////////////////////////////////
+
+<span class="fc" id="L417">        code.add(new InsnNode(Opcodes.ACONST_NULL));</span>
+<span class="fc" id="L418">    }</span>
+
+    @Override
+    public void visit(final VariableDatum object)
+    {
+<span class="fc" id="L423">        vars.load(object.getVariable().getName());</span>
+<span class="fc" id="L424">    }</span>
+
+    @Override
+    public void visit(final ClassDatum object)
+    {
+        // Generated Bytecode;
+        //
+        // LDC class
+        //
+        /////////////////////////////////////////////////
+
+<span class="fc" id="L435">        final IReturnType type = module.imports.resolveReturnType(object.getType());</span>
+
+<span class="fc" id="L437">        code.add(Utils.ldcClass(type));</span>
+<span class="fc" id="L438">    }</span>
+
+    @Override
+    public void visit(final PrognExpression object)
+    {
+<span class="fc" id="L443">        final Iterator&lt;IExpression&gt; iter = object.getElements().iterator();</span>
+
+        // For each expression in the progn-expression.
+<span class="fc bfc" id="L446" title="All 2 branches covered.">        while (iter.hasNext())</span>
+        {
+            // Get the expression and its type.
+<span class="fc" id="L449">            final IExpression element = iter.next();</span>
+<span class="fc" id="L450">            final IType type = program.symbols.expressions.get(element);</span>
+
+            // Generate the expression's bytecode.
+<span class="fc" id="L453">            element.accept(this);</span>
+
+            // If the expression is not the last element in the progn-expression,
+            // then pop its value off of the operand-stack.
+<span class="fc bfc" id="L457" title="All 2 branches covered.">            if (iter.hasNext())</span>
+            {
+<span class="fc" id="L459">                code.add(Utils.selectPop(type));</span>
+            }
+<span class="fc" id="L461">        }</span>
+<span class="fc" id="L462">    }</span>
+
+    @Override
+    public void visit(final ListExpression object)
+    {
+<span class="fc" id="L467">        final ExpressionCodeGenerator THIS = this;</span>
+
+<span class="fc" id="L469">        final CollectionCompiler&lt;IExpression&gt; cmp = new CollectionCompiler&lt;IExpression&gt;()</span>
+<span class="fc" id="L470">        {</span>
+            @Override
+            public void compile(final IExpression element)
+            {
+<span class="fc" id="L474">                final IType element_type = program.symbols.expressions.get(element);</span>
+
+<span class="fc" id="L476">                element.accept(THIS);</span>
+
+<span class="fc" id="L478">                program.typesystem.utils.autoboxToObject(code(), element_type);</span>
+<span class="fc" id="L479">            }</span>
+
+            @Override
+            public InsnList code()
+            {
+<span class="fc" id="L484">                return THIS.code;</span>
+            }
+        };
+
+        // Create list.
+<span class="fc" id="L489">        cmp.compile(object.getElements());</span>
+<span class="fc" id="L490">    }</span>
+
+    @Override
+    public void visit(final ListComprehensionExpression object)
+    {
+        // Generated Bytecode:
+        //
+        // NEW LinkedList                       - Create a new uninitialized linked-list.
+        // DUP                                  - Duplicate the reference to the list.
+        // INVOKESPECIAL &lt;init&gt;()               - Initialize the linked-list.
+        // ASTORE list                          - Store the list in a temporary variable.
+        //                                      - This list will be the result of the comprehension.
+        //
+        // &lt;iterable&gt;                           - Evaluate the iterable.
+        // INVOKEINTERFACE iterable.iterator()  - Get an Iterator from the Iterable.
+        // ASTORE iterator                      - Save the iterator for later.
+        //
+        // @CONTINUE                            - This is where each iteration starts.
+        // ALOAD iterator                       - Load the iterator object.
+        // INVOKEINTERFACE iterator.hasNext()   - Ask whether the iterator has more elements.
+        // IF_FALSE @BREAK                      - If no, we can now exit the loop.
+        //
+        // ALOAD iterator                       - Load the iterator object.
+        // INVOKEINTERFACE iterator.next()      - Get the next element in the sequence.
+        // CHECKCAST type                       - Cast the element to the required type.
+        // ASTORE variable                      - Put the element into the variable.
+        //
+        // @REDO                                - This is where redo-statements jump to.
+        //
+        //
+        //                                      - The following code is not always generated.
+        // &lt;condition&gt;                          - Evaluate the condition.
+        // &lt;unbox&gt;                              - Unbox the condition, if needed.
+        // IF_FALSE @CONTINUE                   - If the condition is false skip the element.
+        //                                      - The code above is not always generated.
+        //
+        // &lt;modifier&gt;                           - Evaluate the modifier expression.
+        // &lt;box&gt;                                - Box the result, if needed.
+        // ALOAD list                           - Get the list that is being created.
+        // INVOKEINTERFACE List.add(Object)     - Add the result to the list.
+        // POP                                  - Pop the return-value of the add(Object) method.
+        //
+        // GOTO CONTINUE                        - Goto the start of the next iteration.
+        //
+        // @BREAK                               - This is the exit-point of the loop.
+        //
+        // ACONST_NULL                          - Load null.
+        // ASTORE iterator                      - Clear the iterator temporary variable.
+        //
+        // ALOAD list                           - Return the list.
+        //
+        // ACONST_NULL                          - Load null.
+        // ASTORE list                          - Clear the list temporary variable.
+        //
+        //////////////////////////////////////////////////////////////////////////
+
+<span class="fc" id="L546">        final IDeclaredType type = (IDeclaredType) module.imports.resolveVariableType(object.getType());</span>
+
+<span class="fc" id="L548">        final LabelNode BREAK = new LabelNode();</span>
+<span class="fc" id="L549">        final LabelNode CONTINUE = new LabelNode();</span>
+<span class="fc" id="L550">        final LabelNode REDO = new LabelNode();</span>
+
+        /**
+         * Declare the temporary variable that will store the iterator.
+         */
+<span class="fc" id="L555">        final String iterator = &quot;autumn$temp$&quot; + F.unique();</span>
+<span class="fc" id="L556">        allocator.declareTemp(iterator, program.typesystem.utils.OBJECT);</span>
+
+        /**
+         * Declare the temporary variable that will store the list.
+         */
+<span class="fc" id="L561">        final String list = &quot;autumn$temp$&quot; + F.unique();</span>
+<span class="fc" id="L562">        allocator.declareTemp(list, program.typesystem.utils.LIST);</span>
+
+        // Create the list and put it into the variable that will store it.
+<span class="fc" id="L565">        code.add(new TypeInsnNode(Opcodes.NEW, &quot;java/util/LinkedList&quot;));</span>
+<span class="fc" id="L566">        code.add(new InsnNode(Opcodes.DUP));</span>
+<span class="fc" id="L567">        code.add(new MethodInsnNode(Opcodes.INVOKESPECIAL,</span>
+                                    &quot;java/util/LinkedList&quot;,
+                                    &quot;&lt;init&gt;&quot;,
+                                    &quot;()V&quot;));
+<span class="fc" id="L571">        vars.store(list);</span>
+
+        // Evaluate the iterable.
+<span class="fc" id="L574">        object.getIterable().accept(this);</span>
+
+        // Get an iterator over the iterable.
+<span class="fc" id="L577">        code.add(new MethodInsnNode(Opcodes.INVOKEINTERFACE,</span>
+                                    &quot;java/lang/Iterable&quot;,
+                                    &quot;iterator&quot;,
+                                    &quot;()Ljava/util/Iterator;&quot;));
+
+        // Save the iterator for later.
+<span class="fc" id="L583">        vars.store(iterator);</span>
+
+<span class="fc" id="L585">        code.add(CONTINUE);</span>
+
+        // If the iterator is consumed, then break out of the loop.
+<span class="fc" id="L588">        vars.load(iterator);</span>
+<span class="fc" id="L589">        code.add(new MethodInsnNode(Opcodes.INVOKEINTERFACE,</span>
+                                    &quot;java/util/Iterator&quot;,
+                                    &quot;hasNext&quot;,
+                                    &quot;()Z&quot;));
+<span class="fc" id="L593">        code.add(new JumpInsnNode(Utils.IF_FALSE, BREAK));</span>
+
+        // Get the next element from the iterator.
+<span class="fc" id="L596">        vars.load(iterator);</span>
+<span class="fc" id="L597">        code.add(new MethodInsnNode(Opcodes.INVOKEINTERFACE,</span>
+                                    &quot;java/util/Iterator&quot;,
+                                    &quot;next&quot;,
+                                    &quot;()Ljava/lang/Object;&quot;));
+
+        // Cast the value to the expected type.
+<span class="fc" id="L603">        code.add(new TypeInsnNode(Opcodes.CHECKCAST, Utils.internalName(type)));</span>
+
+        // Assign the value to the variable.
+<span class="fc" id="L606">        vars.store(object.getVariable().getName());</span>
+
+        // Execute the body of the loop.
+<span class="fc" id="L609">        code.add(REDO);</span>
+        {
+            // Evaluate the condition, if it exists.
+            // If the condition evaluates to false, jump to @CONTINUE.
+<span class="fc bfc" id="L613" title="All 2 branches covered.">            if (object.getCondition() != null)</span>
+            {
+<span class="fc" id="L615">                compileCondition(object.getCondition());</span>
+<span class="fc" id="L616">                code.add(new JumpInsnNode(Utils.IF_FALSE, CONTINUE));</span>
+            }
+
+            // Evaluate the expression that produces the value to add to the list.
+<span class="fc" id="L620">            object.getModifier().accept(this);</span>
+
+            // Autobox the value, if needed.
+<span class="fc" id="L623">            program.typesystem.utils.autoboxToObject(code, program.symbols.expressions.get(object.getModifier()));</span>
+
+            // Add the value to the list.
+<span class="fc" id="L626">            vars.load(list);</span>
+<span class="fc" id="L627">            code.add(new InsnNode(Opcodes.SWAP));</span>
+<span class="fc" id="L628">            code.add(new MethodInsnNode(Opcodes.INVOKEINTERFACE,</span>
+                                        &quot;java/util/List&quot;,
+                                        &quot;add&quot;,
+                                        &quot;(Ljava/lang/Object;)Z&quot;));
+<span class="fc" id="L632">            code.add(new InsnNode(Opcodes.POP)); // Pop the boolean off the operand-stack.</span>
+        }
+<span class="fc" id="L634">        code.add(new JumpInsnNode(Opcodes.GOTO, CONTINUE));</span>
+<span class="fc" id="L635">        code.add(BREAK);</span>
+
+        // Clear the iterator temporary variable.
+<span class="fc" id="L638">        code.add(new InsnNode(Opcodes.ACONST_NULL));</span>
+<span class="fc" id="L639">        vars.store(iterator);</span>
+
+        // Load the generated list onto the operand-stack.
+<span class="fc" id="L642">        vars.load(list);</span>
+
+        // Clear the list temporary variable.
+<span class="fc" id="L645">        code.add(new InsnNode(Opcodes.ACONST_NULL));</span>
+<span class="fc" id="L646">        vars.store(list);</span>
+<span class="fc" id="L647">    }</span>
+
+    @Override
+    public void visit(final DispatchExpression object)
+    {
+        /**
+         * Dispatch-expressions are compiled using a specialized object,
+         * because of the intricacy of such expressions.
+         */
+<span class="fc" id="L656">        final DispatchCompiler cmp = program.symbols.dispatches.get(object);</span>
+
+        /**
+         * Generate the bytecode.
+         */
+<span class="fc" id="L661">        cmp.compile(this);</span>
+<span class="fc" id="L662">    }</span>
+
+    @Override
+    public void visit(final CallStaticMethodExpression object)
+    {
+        /**
+         * Get the method overload that was selected during type-checking.
+         */
+<span class="fc" id="L670">        final IMethod method = (IMethod) module.program.symbols.calls.get(object);</span>
+
+        /**
+         * Generate the bytecode that evaluates the arguments invokes the overload.
+         */
+<span class="fc" id="L675">        compileStaticMethodCall(method, object.getArguments());</span>
+<span class="fc" id="L676">    }</span>
+
+    @Override
+    public void visit(final SetStaticFieldExpression object)
+    {
+        // Generated Bytecode:
+        //
+        // &lt;value&gt;                   - Evaluate the value expression.
+        // &lt;convert&gt;                 - Box, Unbox, or Coerce the value, if needed.
+        // PUTSTATIC field = value   - Put the value into the field.
+        //
+        ////////////////////////////////////////////////////////////////////
+
+        /**
+         * Get the type of the value.
+         */
+<span class="fc" id="L692">        final IExpressionType value = program.symbols.expressions.get(object.getValue());</span>
+
+        /**
+         * Get the field that was selected during type-checking.
+         */
+<span class="fc" id="L697">        final IField field = program.symbols.fields.get(object);</span>
+
+<span class="fc" id="L699">        final String owner = Utils.internalName(field.getOwner());</span>
+<span class="fc" id="L700">        final String name = field.getName();</span>
+<span class="fc" id="L701">        final String desc = field.getType().getDescriptor();</span>
+
+        // Evaluate the expression that produces the value to put into the field.
+<span class="fc" id="L704">        object.getValue().accept(this);</span>
+
+        // Convert the value to the type stored in the field.
+<span class="fc" id="L707">        code.add(program.typesystem.utils.assign(value, field.getType()));</span>
+
+        // Set the field.
+<span class="fc" id="L710">        code.add(new FieldInsnNode(Opcodes.PUTSTATIC, owner, name, desc));</span>
+<span class="fc" id="L711">    }</span>
+
+    @Override
+    public void visit(final GetStaticFieldExpression object)
+    {
+        // Generated Bytecode:
+        //
+        // GETSTATIC field = value   - Get the value from the field.
+        //
+        ////////////////////////////////////////////////////////////////////
+
+        /**
+         * Get the field that was selected during type-checking.
+         */
+<span class="fc" id="L725">        final IField field = program.symbols.fields.get(object);</span>
+
+<span class="fc" id="L727">        final String owner = Utils.internalName(field.getOwner());</span>
+<span class="fc" id="L728">        final String name = field.getName();</span>
+<span class="fc" id="L729">        final String desc = field.getType().getDescriptor();</span>
+
+        // Get the value from the field.
+<span class="fc" id="L732">        code.add(new FieldInsnNode(Opcodes.GETSTATIC, owner, name, desc));</span>
+<span class="fc" id="L733">    }</span>
+
+    @Override
+    public void visit(final NewExpression object)
+    {
+        // Generated Bytecode:
+        //
+        // NEW type              - Create a new uninitialized instance of the type.
+        // DUP                   - Duplicate the reference to the instance.
+        // &lt;argument [0]&gt;        - Evaluate argument[0]
+        // &lt;argument [1]&gt;        - Evaluate argument[1]
+        // &lt;argument [2]&gt;        - Evaluate argument[2]
+        // &lt;argument [.]&gt;        - Evaluate argument[.]
+        // &lt;argument [N]&gt;        - Evaluate argument[N]
+        // INVOKESPECIAL &lt;init&gt;  - Invoke the selected constructor.
+        //
+        /////////////////////////////////////////////////////////
+
+        /**
+         * Get the constructor overload that was selected during type-checking.
+         */
+<span class="fc" id="L754">        final IInvokableMember method = program.symbols.calls.get(object);</span>
+
+        /**
+         * Compute the internal name of the type that will be instantiated.
+         */
+<span class="fc" id="L759">        final String type = Utils.internalName(method.getOwner());</span>
+
+        /**
+         * Generate the bytecode.
+         */
+<span class="fc" id="L764">        code.add(new TypeInsnNode(Opcodes.NEW, type));</span>
+
+<span class="fc" id="L766">        code.add(new InsnNode(Opcodes.DUP));</span>
+
+<span class="fc" id="L768">        final List&lt;IExpression&gt; arguments = object.getArguments().asMutableList();</span>
+
+<span class="fc bfc" id="L770" title="All 2 branches covered.">        for (int i = 0; i &lt; arguments.size(); i++)</span>
+        {
+<span class="fc" id="L772">            final IType parameter = method.getParameters().get(i).getType();</span>
+<span class="fc" id="L773">            final IType argument = program.symbols.expressions.get(arguments.get(i));</span>
+
+            // Generate the argument's bytecode.
+<span class="fc" id="L776">            arguments.get(i).accept(this);</span>
+
+            // Generate code to box/unbox the argument, if needed.
+<span class="fc" id="L779">            code.add(types.utils.assign(argument, parameter));</span>
+        }
+
+<span class="fc" id="L782">        code.add(new MethodInsnNode(Opcodes.INVOKESPECIAL,</span>
+                                    type,
+<span class="fc" id="L784">                                    method.getName(),</span>
+<span class="fc" id="L785">                                    method.getDescriptor()));</span>
+<span class="fc" id="L786">    }</span>
+
+    @Override
+    public void visit(final CallMethodExpression object)
+    {
+        // Generated Bytecode:
+        //
+        // &lt;owner&gt;               - Evaluate the owner expression.
+        // &lt;argument [0]&gt;        - Evaluate argument[0]
+        // &lt;argument [1]&gt;        - Evaluate argument[1]
+        // &lt;argument [2]&gt;        - Evaluate argument[2]
+        // &lt;argument [.]&gt;        - Evaluate argument[.]
+        // &lt;argument [N]&gt;        - Evaluate argument[N]
+        // INVOKE-X method       - Invoke the selected method overload.
+        //
+        ///////////////////////////////////////////////////////////////////////
+
+        /**
+         * Get the method overload that was selected during type-checking.
+         */
+<span class="fc" id="L806">        final IMethod method = (IMethod) program.symbols.calls.get(object);</span>
+
+        /**
+         * Generate the bytecode of the owner expression.
+         */
+<span class="fc" id="L811">        object.getOwner().accept(this);</span>
+
+        /**
+         * Generate the bytecode of the arguments.
+         */
+<span class="fc" id="L816">        final List&lt;IExpression&gt; arguments = object.getArguments().asMutableList();</span>
+
+<span class="fc bfc" id="L818" title="All 2 branches covered.">        for (int i = 0; i &lt; arguments.size(); i++)</span>
+        {
+<span class="fc" id="L820">            final IType parameter = method.getParameters().get(i).getType();</span>
+<span class="fc" id="L821">            final IType argument = program.symbols.expressions.get(arguments.get(i));</span>
+
+            // Generate the argument's bytecode.
+<span class="fc" id="L824">            arguments.get(i).accept(this);</span>
+
+            // Generate code to box/unbox the argument, if needed.
+<span class="fc" id="L827">            code.add(types.utils.assign(argument, parameter));</span>
+        }
+
+        /**
+         * Generate the actual invocation.
+         */
+<span class="fc bfc" id="L833" title="All 2 branches covered.">        final int opcode = method.getOwner().isInterfaceType()</span>
+<span class="fc" id="L834">                ? Opcodes.INVOKEINTERFACE</span>
+<span class="fc" id="L835">                : Opcodes.INVOKEVIRTUAL;</span>
+
+<span class="fc" id="L837">        code.add(new MethodInsnNode(opcode,</span>
+<span class="fc" id="L838">                                    Utils.internalName(method.getOwner()),</span>
+<span class="fc" id="L839">                                    method.getName(),</span>
+<span class="fc" id="L840">                                    method.getDescriptor()));</span>
+<span class="fc" id="L841">    }</span>
+
+    @Override
+    public void visit(final SetFieldExpression object)
+    {
+        // Generated Bytecode:
+        //
+        // &lt;owner&gt;                        - Evaluate the owner expression.
+        // &lt;value&gt;                        - Evaluate the value expression.
+        // &lt;convert&gt;                      - Box, Unbox, or Coerce the value, if needed.
+        // PUTFIELD owner.field = value   - Put the value into the field.
+        //
+        /////////////////////////////////////////////////////////////////////////////////////
+
+        /**
+         * Get the type of the value.
+         */
+<span class="fc" id="L858">        final IExpressionType value = program.symbols.expressions.get(object.getValue());</span>
+
+        /**
+         * Get the field that was chosen during type-checking.
+         */
+<span class="fc" id="L863">        final IField field = program.symbols.fields.get(object);</span>
+
+<span class="fc" id="L865">        final String owner = Utils.internalName(field.getOwner());</span>
+<span class="fc" id="L866">        final String name = field.getName();</span>
+<span class="fc" id="L867">        final String desc = field.getType().getDescriptor();</span>
+
+        // Evaluate the expression that produces the owner of the field.
+<span class="fc" id="L870">        object.getOwner().accept(this);</span>
+
+        // Evaluate the expression that produces the value to put into the field.
+<span class="fc" id="L873">        object.getValue().accept(this);</span>
+
+        // Convert the value to the type stored in the field.
+<span class="fc" id="L876">        code.add(program.typesystem.utils.assign(value, field.getType()));</span>
+
+        // Set the field.
+<span class="fc" id="L879">        code.add(new FieldInsnNode(Opcodes.PUTFIELD, owner, name, desc));</span>
+<span class="fc" id="L880">    }</span>
+
+    @Override
+    public void visit(final GetFieldExpression object)
+    {
+        // Generated Bytecode:
+        //
+        // &lt;owner&gt;                - Evaluate the owner expression.
+        // GETFIELD owner.field   - Get the value stored in the field.
+        //
+        //////////////////////////////////////////////////////////////////
+
+        // Get the field that was chosen during type-checking.
+<span class="fc" id="L893">        final IField field = program.symbols.fields.get(object);</span>
+
+<span class="fc" id="L895">        final String owner = Utils.internalName(field.getOwner());</span>
+<span class="fc" id="L896">        final String name = field.getName();</span>
+<span class="fc" id="L897">        final String desc = field.getType().getDescriptor();</span>
+
+        // Evaluate the expression that produces the owner of the field.
+<span class="fc" id="L900">        object.getOwner().accept(this);</span>
+
+        // Get the value from the field.
+<span class="fc" id="L903">        code.add(new FieldInsnNode(Opcodes.GETFIELD, owner, name, desc));</span>
+<span class="fc" id="L904">    }</span>
+
+    @Override
+    public void visit(final InstanceOfExpression object)
+    {
+        // Generated Bytecode:
+        //
+        // &lt;value&gt;                   - Evaluate the value expression.
+        // INSTANCEOF value : type   - Perform the instance-of operation.
+        //
+        ////////////////////////////////////////////////////////////////////
+
+<span class="fc" id="L916">        final IType type = module.imports.resolveDeclaredType(object.getType());</span>
+
+        // Evaluate the expression.
+<span class="fc" id="L919">        object.getValue().accept(this);</span>
+
+        // Perform the instance-of check.
+<span class="fc" id="L922">        code.add(new TypeInsnNode(Opcodes.INSTANCEOF, Utils.internalName((IDeclaredType) type)));</span>
+<span class="fc" id="L923">    }</span>
+
+    @Override
+    public void visit(final TernaryConditionalExpression object)
+    {
+        // Generated Bytecode:
+        //
+        // &lt;condition&gt;       - Evaluate the condition expression.
+        // IF_FALSE @ELSE    - Conditionally jump to the expression to evaluate.
+        // &lt;true-case&gt;       - Evaluate the true-case expression.
+        // GOTO @END         - Exit the expression.
+        // @ELSE
+        // &lt;false-case&gt;      - Evaluate the false-case expression.
+        // @END
+        //
+        ////////////////////////////////////////////////////////////////////////////////////
+
+<span class="fc" id="L940">        final LabelNode ELSE = new LabelNode();</span>
+<span class="fc" id="L941">        final LabelNode END = new LabelNode();</span>
+
+<span class="fc" id="L943">        compileCondition(object.getCondition());</span>
+<span class="fc" id="L944">        code.add(new JumpInsnNode(Utils.IF_FALSE, ELSE));</span>
+        {
+<span class="fc" id="L946">            object.getCaseTrue().accept(this);</span>
+        }
+<span class="fc" id="L948">        code.add(new JumpInsnNode(Opcodes.GOTO, END));</span>
+<span class="fc" id="L949">        code.add(ELSE);</span>
+        {
+<span class="fc" id="L951">            object.getCaseFalse().accept(this);</span>
+        }
+<span class="fc" id="L953">        code.add(END);</span>
+<span class="fc" id="L954">    }</span>
+
+    @Override
+    public void visit(final AsOperation object)
+    {
+        // The type-checker created an object that describes the conversion to perform.
+<span class="fc" id="L960">        final Conversion conversion = program.symbols.conversions.get(object);</span>
+
+<span class="fc bfc" id="L962" title="All 2 branches covered.">        if (conversion.cast)</span>
+        {
+<span class="fc" id="L964">            final LabelNode ELSE = new LabelNode();</span>
+<span class="fc" id="L965">            final LabelNode END = new LabelNode();</span>
+
+            // Evaluate the expression that produces the value to convert.
+<span class="fc" id="L968">            object.getValue().accept(this);</span>
+
+            // Duplicate the object reference.
+<span class="fc" id="L971">            code.add(new InsnNode(Opcodes.DUP));</span>
+
+            // Perform the instanceof check.
+            // This will pop one object reference off of the operand-stack.
+<span class="fc" id="L975">            code.add(new TypeInsnNode(Opcodes.INSTANCEOF, Utils.internalName((IReferenceType) conversion.type)));</span>
+
+            // If the check failed, replace the value with null.
+            // Otherwise, perform a cast that will definitely succeed at runtime.
+<span class="fc" id="L979">            code.add(new JumpInsnNode(Utils.IF_TRUE, ELSE));</span>
+            {
+<span class="fc" id="L981">                code.add(new InsnNode(Opcodes.POP));</span>
+
+<span class="fc" id="L983">                code.add(new InsnNode(Opcodes.ACONST_NULL));</span>
+            }
+<span class="fc" id="L985">            code.add(new JumpInsnNode(Opcodes.GOTO, END));</span>
+<span class="fc" id="L986">            code.add(ELSE);</span>
+            {
+<span class="fc" id="L988">                code.add(new TypeInsnNode(Opcodes.CHECKCAST, Utils.internalName((IReferenceType) conversion.type)));</span>
+            }
+<span class="fc" id="L990">            code.add(END);</span>
+<span class="fc" id="L991">        }</span>
+        else
+        {
+            // Evaluate the expression that produces the value to convert.
+<span class="fc" id="L995">            object.getValue().accept(this);</span>
+
+            // Invoke the conversion method.
+<span class="fc" id="L998">            final String owner = Utils.internalName(program.typesystem.utils.CONVERSIONS);</span>
+<span class="fc" id="L999">            final String name = conversion.name;</span>
+<span class="fc" id="L1000">            final String desc = &quot;(&quot; + conversion.value.getDescriptor() + &quot;)&quot; + conversion.type.getDescriptor();</span>
+<span class="fc" id="L1001">            code.add(new MethodInsnNode(Opcodes.INVOKESTATIC, owner, name, desc));</span>
+        }
+<span class="fc" id="L1003">    }</span>
+
+    @Override
+    public void visit(final IsOperation object)
+    {
+        // The type-checker created an object that describes the conversion to perform.
+<span class="fc" id="L1009">        final Conversion conversion = program.symbols.conversions.get(object);</span>
+
+<span class="fc bfc" id="L1011" title="All 2 branches covered.">        if (conversion.cast)</span>
+        {
+            // Evaluate the expression that produces the value to convert.
+<span class="fc" id="L1014">            object.getValue().accept(this);</span>
+
+            // Perform the checked cast.
+<span class="fc" id="L1017">            code.add(new TypeInsnNode(Opcodes.CHECKCAST, Utils.internalName((IReferenceType) conversion.type)));</span>
+        }
+        else
+        {
+            // Evaluate the expression that produces the value to convert.
+<span class="fc" id="L1022">            object.getValue().accept(this);</span>
+
+            // Invoke the conversion method.
+<span class="fc" id="L1025">            final String owner = Utils.internalName(program.typesystem.utils.CONVERSIONS);</span>
+<span class="fc" id="L1026">            final String name = conversion.name;</span>
+<span class="fc" id="L1027">            final String desc = &quot;(&quot; + conversion.value.getDescriptor() + &quot;)&quot; + conversion.type.getDescriptor();</span>
+<span class="fc" id="L1028">            code.add(new MethodInsnNode(Opcodes.INVOKESTATIC, owner, name, desc));</span>
+        }
+<span class="fc" id="L1030">    }</span>
+
+    @Override
+    public void visit(final NegateOperation object)
+    {
+<span class="fc" id="L1035">        compileUnaryOperator(object);</span>
+<span class="fc" id="L1036">    }</span>
+
+    @Override
+    public void visit(final NotOperation object)
+    {
+<span class="fc" id="L1041">        compileUnaryOperator(object);</span>
+<span class="fc" id="L1042">    }</span>
+
+    @Override
+    public void visit(final DivideOperation object)
+    {
+<span class="fc" id="L1047">        compileBinaryOperator(object);</span>
+<span class="fc" id="L1048">    }</span>
+
+    @Override
+    public void visit(final ModuloOperation object)
+    {
+<span class="fc" id="L1053">        compileBinaryOperator(object);</span>
+<span class="fc" id="L1054">    }</span>
+
+    @Override
+    public void visit(final MultiplyOperation object)
+    {
+<span class="fc" id="L1059">        compileBinaryOperator(object);</span>
+<span class="fc" id="L1060">    }</span>
+
+    @Override
+    public void visit(final AddOperation object)
+    {
+<span class="fc" id="L1065">        compileBinaryOperator(object);</span>
+<span class="fc" id="L1066">    }</span>
+
+    @Override
+    public void visit(final ConcatOperation object)
+    {
+<span class="fc" id="L1071">        compileBinaryOperator(object);</span>
+<span class="fc" id="L1072">    }</span>
+
+    @Override
+    public void visit(final SubtractOperation object)
+    {
+<span class="fc" id="L1077">        compileBinaryOperator(object);</span>
+<span class="fc" id="L1078">    }</span>
+
+    @Override
+    public void visit(final LessThanOperation object)
+    {
+<span class="fc" id="L1083">        compileBinaryOperator(object);</span>
+<span class="fc" id="L1084">    }</span>
+
+    @Override
+    public void visit(final LessThanOrEqualsOperation object)
+    {
+<span class="fc" id="L1089">        compileBinaryOperator(object);</span>
+<span class="fc" id="L1090">    }</span>
+
+    @Override
+    public void visit(final GreaterThanOperation object)
+    {
+<span class="fc" id="L1095">        compileBinaryOperator(object);</span>
+<span class="fc" id="L1096">    }</span>
+
+    @Override
+    public void visit(final GreaterThanOrEqualsOperation object)
+    {
+<span class="fc" id="L1101">        compileBinaryOperator(object);</span>
+<span class="fc" id="L1102">    }</span>
+
+    @Override
+    public void visit(final EqualsOperation object)
+    {
+<span class="fc" id="L1107">        compileBinaryOperator(object);</span>
+<span class="fc" id="L1108">    }</span>
+
+    @Override
+    public void visit(final NotEqualsOperation object)
+    {
+<span class="fc" id="L1113">        compileBinaryOperator(object);</span>
+<span class="fc" id="L1114">    }</span>
+
+    @Override
+    public void visit(final IdentityEqualsOperation object)
+    {
+<span class="fc" id="L1119">        compileBinaryOperator(object);</span>
+<span class="fc" id="L1120">    }</span>
+
+    @Override
+    public void visit(final IdentityNotEqualsOperation object)
+    {
+<span class="fc" id="L1125">        compileBinaryOperator(object);</span>
+<span class="fc" id="L1126">    }</span>
+
+    @Override
+    public void visit(final AndOperation object)
+    {
+        // Generated Bytecode:
+        //
+        // &lt;left-operand&gt;
+        // IF_FALSE @ELSE
+        // &lt;right-operand&gt;
+        // GOTO @END
+        // @ELSE
+        // LDC false
+        // @END
+        ///////////////////////////////
+
+<span class="fc" id="L1142">        final LabelNode ELSE = new LabelNode();</span>
+<span class="fc" id="L1143">        final LabelNode END = new LabelNode();</span>
+
+<span class="fc" id="L1145">        compileCondition(object.getLeftOperand());</span>
+
+<span class="fc" id="L1147">        code.add(new JumpInsnNode(Utils.IF_FALSE, ELSE));</span>
+        {
+<span class="fc" id="L1149">            compileCondition(object.getRightOperand());</span>
+        }
+<span class="fc" id="L1151">        code.add(new JumpInsnNode(Opcodes.GOTO, END));</span>
+<span class="fc" id="L1152">        code.add(ELSE);</span>
+        {
+<span class="fc" id="L1154">            code.add(new LdcInsnNode(false));</span>
+        }
+<span class="fc" id="L1156">        code.add(END);</span>
+<span class="fc" id="L1157">    }</span>
+
+    @Override
+    public void visit(final OrOperation object)
+    {
+        // Generated Bytecode:
+        //
+        // &lt;left-operand&gt;
+        // IF_TRUE @ELSE
+        // &lt;right-operand&gt;
+        // GOTO @END
+        // @ELSE
+        // LDC true
+        // @END
+        ///////////////////////////////
+
+<span class="fc" id="L1173">        final LabelNode ELSE = new LabelNode();</span>
+<span class="fc" id="L1174">        final LabelNode END = new LabelNode();</span>
+
+<span class="fc" id="L1176">        compileCondition(object.getLeftOperand());</span>
+
+<span class="fc" id="L1178">        code.add(new JumpInsnNode(Utils.IF_TRUE, ELSE));</span>
+        {
+<span class="fc" id="L1180">            compileCondition(object.getRightOperand());</span>
+        }
+<span class="fc" id="L1182">        code.add(new JumpInsnNode(Opcodes.GOTO, END));</span>
+<span class="fc" id="L1183">        code.add(ELSE);</span>
+        {
+<span class="fc" id="L1185">            code.add(new LdcInsnNode(true));</span>
+        }
+<span class="fc" id="L1187">        code.add(END);</span>
+<span class="fc" id="L1188">    }</span>
+
+    @Override
+    public void visit(final XorOperation object)
+    {
+        // Generated Bytecode:
+        //
+        // &lt;left-operand&gt;
+        // &lt;right-operand&gt;
+        // IXOR
+        //
+        ///////////////////////////////
+
+<span class="fc" id="L1201">        compileCondition(object.getLeftOperand());</span>
+<span class="fc" id="L1202">        compileCondition(object.getRightOperand());</span>
+
+<span class="fc" id="L1204">        code.add(new InsnNode(Opcodes.IXOR));</span>
+<span class="fc" id="L1205">    }</span>
+
+    @Override
+    public void visit(final ImpliesOperation object)
+    {
+        // Generated Bytecode:
+        //
+        // &lt;left-operand&gt;
+        // IF_FALSE @ELSE
+        // &lt;right-operand&gt;
+        // GOTO @END
+        // @ELSE
+        // LDC true
+        // @END
+        ///////////////////////////////
+
+<span class="fc" id="L1221">        final LabelNode ELSE = new LabelNode();</span>
+<span class="fc" id="L1222">        final LabelNode END = new LabelNode();</span>
+
+<span class="fc" id="L1224">        compileCondition(object.getLeftOperand());</span>
+
+<span class="fc" id="L1226">        code.add(new JumpInsnNode(Utils.IF_FALSE, ELSE));</span>
+        {
+<span class="fc" id="L1228">            compileCondition(object.getRightOperand());</span>
+        }
+<span class="fc" id="L1230">        code.add(new JumpInsnNode(Opcodes.GOTO, END));</span>
+<span class="fc" id="L1231">        code.add(ELSE);</span>
+        {
+<span class="fc" id="L1233">            code.add(new LdcInsnNode(true));</span>
+        }
+<span class="fc" id="L1235">        code.add(END);</span>
+<span class="fc" id="L1236">    }</span>
+
+    @Override
+    public void visit(final NullCoalescingOperation object)
+    {
+        // Generated Bytecode:
+        //
+        // &lt;left-operand&gt;
+        // DUP
+        // IF_NON_NULL @END
+        // POP
+        // &lt;right-operand&gt;
+        // @END
+        ///////////////////////////////
+
+<span class="fc" id="L1251">        final LabelNode END = new LabelNode();</span>
+
+<span class="fc" id="L1253">        object.getLeftOperand().accept(this);</span>
+
+<span class="fc" id="L1255">        code.add(new InsnNode(Opcodes.DUP));</span>
+
+<span class="fc" id="L1257">        code.add(new JumpInsnNode(Opcodes.IFNONNULL, END));</span>
+        {
+<span class="fc" id="L1259">            code.add(new InsnNode(Opcodes.POP));</span>
+
+<span class="fc" id="L1261">            object.getRightOperand().accept(this);</span>
+        }
+<span class="fc" id="L1263">        code.add(END);</span>
+<span class="fc" id="L1264">    }</span>
+
+    @Override
+    public void visit(final OnceExpression object)
+    {
+        // Generated Bytecode;
+        //
+        // GETSTATIC hidden.status  - Get the status flag, which indicates whether a memoized value is available.
+        // IF_FALSE @ELSE           - If no memoized value is available, this is the first evaluation of the expression.
+        //
+        // GETSTATIC hidden.value   - Get the previously memoized value.
+        // GOTO @END                - We will simply return the previously memoized value.
+        //
+        //
+        // @ELSE
+        //
+        // LDC true
+        // PUTSTATIC hidden.status  - Set the status flag to indicate that a memoized value is now available.
+        // &lt;value&gt;                  - Evaluate the expression that produces the value to store.
+        // DUP                      - One copy will be memoized and the other one will be returned.
+        // PUTSTATIC hidden.value   - Place the value into the hidden field.
+        //
+        // @END
+        //
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+<span class="fc" id="L1290">        final LabelNode ELSE = new LabelNode();</span>
+<span class="fc" id="L1291">        final LabelNode END = new LabelNode();</span>
+
+<span class="fc" id="L1293">        final HiddenField status = new HiddenField(program.typesystem.utils.PRIMITIVE_BOOLEAN, false);</span>
+<span class="fc" id="L1294">        final HiddenField value = new HiddenField((IVariableType) program.symbols.expressions.get(object), false);</span>
+
+<span class="fc" id="L1296">        module.hidden.add(status);</span>
+<span class="fc" id="L1297">        module.hidden.add(value);</span>
+
+<span class="fc" id="L1299">        code.add(new FieldInsnNode(Opcodes.GETSTATIC,</span>
+<span class="fc" id="L1300">                                   Utils.internalName(module.type),</span>
+                                   status.name,
+<span class="fc" id="L1302">                                   status.type.getDescriptor()));</span>
+
+<span class="fc" id="L1304">        code.add(new JumpInsnNode(Utils.IF_FALSE, ELSE));</span>
+
+<span class="fc" id="L1306">        code.add(new FieldInsnNode(Opcodes.GETSTATIC,</span>
+<span class="fc" id="L1307">                                   Utils.internalName(module.type),</span>
+                                   value.name,
+<span class="fc" id="L1309">                                   value.type.getDescriptor()));</span>
+
+<span class="fc" id="L1311">        code.add(new JumpInsnNode(Opcodes.GOTO, END));</span>
+
+<span class="fc" id="L1313">        code.add(ELSE);</span>
+
+<span class="fc" id="L1315">        code.add(new LdcInsnNode(true));</span>
+
+<span class="fc" id="L1317">        code.add(new FieldInsnNode(Opcodes.PUTSTATIC,</span>
+<span class="fc" id="L1318">                                   Utils.internalName(module.type),</span>
+                                   status.name,
+<span class="fc" id="L1320">                                   status.type.getDescriptor()));</span>
+
+<span class="fc" id="L1322">        object.getValue().accept(this);</span>
+
+<span class="fc" id="L1324">        code.add(new InsnNode(Opcodes.DUP));</span>
+
+<span class="fc" id="L1326">        code.add(new FieldInsnNode(Opcodes.PUTSTATIC,</span>
+<span class="fc" id="L1327">                                   Utils.internalName(module.type),</span>
+                                   value.name,
+<span class="fc" id="L1329">                                   value.type.getDescriptor()));</span>
+
+<span class="fc" id="L1331">        code.add(END);</span>
+<span class="fc" id="L1332">    }</span>
+
+    @Override
+    public void visit(final LocalsExpression object)
+    {
+        /**
+         * Get the names of the variables that will be captured.
+         */
+<span class="fc" id="L1340">        final Set&lt;String&gt; visible = program.symbols.locals.get(object);</span>
+
+        /**
+         * Generate the bytecode that creates the LocalsMap.
+         */
+<span class="fc" id="L1345">        loadLocalsMap(object.getLocation(), visible);</span>
+<span class="fc" id="L1346">    }</span>
+
+    /**
+     * This method generates bytecode that creates a LocalsMap object.
+     *
+     * @param location is the source-location to embed in the LocalsMap.
+     * @param variables are the names of the local variables captured in the LocalsMap.
+     */
+    protected void loadLocalsMap(final SourceLocation location,
+                                 final Set&lt;String&gt; variables)
+    {
+<span class="fc" id="L1357">        final String STRING = &quot;Ljava/lang/String;&quot;;</span>
+<span class="fc" id="L1358">        final String ITERABLE = &quot;Ljava/lang/Iterable;&quot;;</span>
+
+<span class="fc" id="L1360">        final String owner = Utils.internalName(program.typesystem.utils.LOCALS_MAP);</span>
+<span class="fc" id="L1361">        final String name = &quot;&lt;init&gt;&quot;;</span>
+<span class="fc" id="L1362">        final String desc = '(' + STRING + 'I' + 'I' + ITERABLE + ')' + 'V';</span>
+
+        // Create the uninitialized LocalsMap object.
+<span class="fc" id="L1365">        code.add(new TypeInsnNode(Opcodes.NEW, owner));</span>
+
+        // Duplicate the reference to the map.
+<span class="fc" id="L1368">        code.add(new InsnNode(Opcodes.DUP));</span>
+
+        // Load the arguments to pass to the constructor.
+<span class="fc" id="L1371">        code.add(new LdcInsnNode(location.getFile().toString()));</span>
+<span class="fc" id="L1372">        code.add(new LdcInsnNode(location.getLine()));</span>
+<span class="fc" id="L1373">        code.add(new LdcInsnNode(location.getColumn()));</span>
+<span class="fc" id="L1374">        loadLocals(variables);</span>
+
+        // Invoke the constructor.
+<span class="fc" id="L1377">        code.add(new MethodInsnNode(Opcodes.INVOKESPECIAL, owner, name, desc));</span>
+
+        // The initialized LocalsMap is now the topmost value on the operand-stack.
+<span class="fc" id="L1380">    }</span>
+
+    /**
+     * This method generates bytecode that creates a list of Local objects.
+     *
+     * @param variables are the names of the local variables described by the elements of the list.
+     */
+    private void loadLocals(final Set&lt;String&gt; variables)
+    {
+<span class="fc" id="L1389">        final String CLASS = &quot;Ljava/lang/Class;&quot;;</span>
+<span class="fc" id="L1390">        final String STRING = &quot;Ljava/lang/String;&quot;;</span>
+<span class="fc" id="L1391">        final String OBJECT = &quot;Ljava/lang/Object;&quot;;</span>
+
+<span class="fc" id="L1393">        final String owner = Utils.internalName(program.typesystem.utils.LOCAL);</span>
+<span class="fc" id="L1394">        final String init = &quot;&lt;init&gt;&quot;;</span>
+<span class="fc" id="L1395">        final String desc = '(' + STRING + CLASS + OBJECT + ')' + 'V';</span>
+
+        /**
+         * This object will be used to create a list of Local objects.
+         * Each Local object represents a local variable in the enclosing scope.
+         * There will be one object in the list for each local variable.
+         */
+<span class="fc" id="L1402">        final CollectionCompiler cmp = new CollectionCompiler()</span>
+<span class="fc" id="L1403">        {</span>
+            @Override
+            public void compile(Object element)
+            {
+<span class="fc" id="L1407">                final String name = (String) element;</span>
+
+<span class="fc" id="L1409">                final IVariableType type = allocator.typeOf(name);</span>
+
+<span class="fc" id="L1411">                final int address = allocator.addressOf(name);</span>
+
+                // Create the uninitialized Local object.
+<span class="fc" id="L1414">                code().add(new TypeInsnNode(Opcodes.NEW, owner));</span>
+
+                // Duplicate the reference to the Local object.
+<span class="fc" id="L1417">                code().add(new InsnNode(Opcodes.DUP));</span>
+
+                // Puch the arguments to pass to the constructor.
+<span class="fc" id="L1420">                code().add(new LdcInsnNode(name));</span>
+<span class="fc" id="L1421">                code().add(Utils.ldcClass(type));</span>
+<span class="fc" id="L1422">                code().add(Utils.selectLoadVarInsn(type, address));</span>
+<span class="fc" id="L1423">                program.typesystem.utils.autoboxToObject(code(), type);</span>
+
+                // Invoke the constructor.
+<span class="fc" id="L1426">                code().add(new MethodInsnNode(Opcodes.INVOKESPECIAL, owner, init, desc));</span>
+
+                // The initialized Local object is now the topmost value on the operand-stack.
+<span class="fc" id="L1429">            }</span>
+
+            @Override
+            public InsnList code()
+            {
+<span class="fc" id="L1434">                return code;</span>
+            }
+        };
+
+        // Generate the list.
+<span class="fc" id="L1439">        cmp.compile(variables);</span>
+<span class="fc" id="L1440">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

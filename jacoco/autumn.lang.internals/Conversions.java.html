@@ -1,0 +1,1016 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Conversions.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.mackenziehigh:autumn</a> &gt; <a href="index.source.html" class="el_package">autumn.lang.internals</a> &gt; <span class="el_source">Conversions.java</span></div><h1>Conversions.java</h1><pre class="source lang-java linenums">package autumn.lang.internals;
+
+import com.mackenziehigh.autumn.resources.Finished;
+
+/**
+ * This class provides the static utility methods that perform the predefined conversions.
+ *
+ * @author Mackenzie High
+ */
+@Finished(&quot;2014/07/12&quot;)
+<span class="nc" id="L11">public final class Conversions</span>
+{
+    /**
+     * This method boxes a given input value.
+     *
+     * @param input is the value to box.
+     * @return the boxed value.
+     */
+    public static Boolean box(final boolean input)
+    {
+<span class="fc" id="L21">        return (boolean) input;</span>
+    }
+
+    /**
+     * This method boxes a given input value.
+     *
+     * @param input is the value to box.
+     * @return the boxed value.
+     */
+    public static Character box(final char input)
+    {
+<span class="fc" id="L32">        return (char) input;</span>
+    }
+
+    /**
+     * This method boxes a given input value.
+     *
+     * @param input is the value to box.
+     * @return the boxed value.
+     */
+    public static Byte box(final byte input)
+    {
+<span class="fc" id="L43">        return (byte) input;</span>
+    }
+
+    /**
+     * This method boxes a given input value.
+     *
+     * @param input is the value to box.
+     * @return the boxed value.
+     */
+    public static Short box(final short input)
+    {
+<span class="fc" id="L54">        return (short) input;</span>
+    }
+
+    /**
+     * This method boxes a given input value.
+     *
+     * @param input is the value to box.
+     * @return the boxed value.
+     */
+    public static Integer box(final int input)
+    {
+<span class="fc" id="L65">        return (int) input;</span>
+    }
+
+    /**
+     * This method boxes a given input value.
+     *
+     * @param input is the value to box.
+     * @return the boxed value.
+     */
+    public static Long box(final long input)
+    {
+<span class="fc" id="L76">        return (long) input;</span>
+    }
+
+    /**
+     * This method boxes a given input value.
+     *
+     * @param input is the value to box.
+     * @return the boxed value.
+     */
+    public static Float box(final float input)
+    {
+<span class="fc" id="L87">        return (float) input;</span>
+    }
+
+    /**
+     * This method boxes a given input value.
+     *
+     * @param input is the value to box.
+     * @return the boxed value.
+     */
+    public static Double box(final double input)
+    {
+<span class="fc" id="L98">        return (double) input;</span>
+    }
+
+    /**
+     * This method boxes a given input value.
+     *
+     * @param input is the value to box.
+     * @return the boxed value.
+     */
+    public static Object boxToObject(final boolean input)
+    {
+<span class="fc" id="L109">        return (boolean) input;</span>
+    }
+
+    /**
+     * This method boxes a given input value.
+     *
+     * @param input is the value to box.
+     * @return the boxed value.
+     */
+    public static Object boxToObject(final char input)
+    {
+<span class="fc" id="L120">        return (char) input;</span>
+    }
+
+    /**
+     * This method boxes a given input value.
+     *
+     * @param input is the value to box.
+     * @return the boxed value.
+     */
+    public static Object boxToObject(final byte input)
+    {
+<span class="fc" id="L131">        return (byte) input;</span>
+    }
+
+    /**
+     * This method boxes a given input value.
+     *
+     * @param input is the value to box.
+     * @return the boxed value.
+     */
+    public static Object boxToObject(final short input)
+    {
+<span class="fc" id="L142">        return (short) input;</span>
+    }
+
+    /**
+     * This method boxes a given input value.
+     *
+     * @param input is the value to box.
+     * @return the boxed value.
+     */
+    public static Object boxToObject(final int input)
+    {
+<span class="fc" id="L153">        return (int) input;</span>
+    }
+
+    /**
+     * This method boxes a given input value.
+     *
+     * @param input is the value to box.
+     * @return the boxed value.
+     */
+    public static Object boxToObject(final long input)
+    {
+<span class="fc" id="L164">        return (long) input;</span>
+    }
+
+    /**
+     * This method boxes a given input value.
+     *
+     * @param input is the value to box.
+     * @return the boxed value.
+     */
+    public static Object boxToObject(final float input)
+    {
+<span class="fc" id="L175">        return (float) input;</span>
+    }
+
+    /**
+     * This method boxes a given input value.
+     *
+     * @param input is the value to box.
+     * @return the boxed value.
+     */
+    public static Object boxToObject(final double input)
+    {
+<span class="fc" id="L186">        return (double) input;</span>
+    }
+
+    /**
+     * This method unboxes a given input value.
+     *
+     * @param input is the value to unbox.
+     * @return the unboxed value.
+     */
+    public static boolean unbox(final Boolean input)
+    {
+<span class="fc bfc" id="L197" title="All 2 branches covered.">        return input == null ? false : (boolean) input;</span>
+    }
+
+    /**
+     * This method unboxes a given input value.
+     *
+     * @param input is the value to unbox.
+     * @return the unboxed value.
+     */
+    public static char unbox(final Character input)
+    {
+<span class="fc bfc" id="L208" title="All 2 branches covered.">        return input == null ? 0 : (char) input;</span>
+    }
+
+    /**
+     * This method unboxes a given input value.
+     *
+     * @param input is the value to unbox.
+     * @return the unboxed value.
+     */
+    public static byte unbox(final Byte input)
+    {
+<span class="fc bfc" id="L219" title="All 2 branches covered.">        return input == null ? 0 : (byte) input;</span>
+    }
+
+    /**
+     * This method unboxes a given input value.
+     *
+     * @param input is the value to unbox.
+     * @return the unboxed value.
+     */
+    public static short unbox(final Short input)
+    {
+<span class="fc bfc" id="L230" title="All 2 branches covered.">        return input == null ? 0 : (short) input;</span>
+    }
+
+    /**
+     * This method unboxes a given input value.
+     *
+     * @param input is the value to unbox.
+     * @return the unboxed value.
+     */
+    public static int unbox(final Integer input)
+    {
+<span class="fc bfc" id="L241" title="All 2 branches covered.">        return input == null ? 0 : (int) input;</span>
+    }
+
+    /**
+     * This method unboxes a given input value.
+     *
+     * @param input is the value to unbox.
+     * @return the unboxed value.
+     */
+    public static long unbox(final Long input)
+    {
+<span class="fc bfc" id="L252" title="All 2 branches covered.">        return input == null ? 0 : (long) input;</span>
+    }
+
+    /**
+     * This method unboxes a given input value.
+     *
+     * @param input is the value to unbox.
+     * @return the unboxed value.
+     */
+    public static float unbox(final Float input)
+    {
+<span class="fc bfc" id="L263" title="All 2 branches covered.">        return input == null ? 0 : (float) input;</span>
+    }
+
+    /**
+     * This method unboxes a given input value.
+     *
+     * @param input is the value to unbox.
+     * @return the unboxed value.
+     */
+    public static double unbox(final Double input)
+    {
+<span class="fc bfc" id="L274" title="All 2 branches covered.">        return input == null ? 0 : (double) input;</span>
+    }
+
+    /**
+     * This method converts a value to its string representation.
+     *
+     * @param input is the value to stringify.
+     * @return the string representation of the input value.
+     */
+    public static String convertToString(final boolean input)
+    {
+<span class="fc" id="L285">        return &quot;&quot; + input;</span>
+    }
+
+    /**
+     * This method converts a value to its string representation.
+     *
+     * @param input is the value to stringify.
+     * @return the string representation of the input value.
+     */
+    public static String convertToString(final char input)
+    {
+<span class="fc" id="L296">        return &quot;&quot; + input;</span>
+    }
+
+    /**
+     * This method converts a value to its string representation.
+     *
+     * @param input is the value to stringify.
+     * @return the string representation of the input value.
+     */
+    public static String convertToString(final byte input)
+    {
+<span class="fc" id="L307">        return &quot;&quot; + input;</span>
+    }
+
+    /**
+     * This method converts a value to its string representation.
+     *
+     * @param input is the value to stringify.
+     * @return the string representation of the input value.
+     */
+    public static String convertToString(final short input)
+    {
+<span class="fc" id="L318">        return &quot;&quot; + input;</span>
+    }
+
+    /**
+     * This method converts a value to its string representation.
+     *
+     * @param input is the value to stringify.
+     * @return the string representation of the input value.
+     */
+    public static String convertToString(final int input)
+    {
+<span class="fc" id="L329">        return &quot;&quot; + input;</span>
+    }
+
+    /**
+     * This method converts a value to its string representation.
+     *
+     * @param input is the value to stringify.
+     * @return the string representation of the input value.
+     */
+    public static String convertToString(final long input)
+    {
+<span class="fc" id="L340">        return &quot;&quot; + input;</span>
+    }
+
+    /**
+     * This method converts a value to its string representation.
+     *
+     * @param input is the value to stringify.
+     * @return the string representation of the input value.
+     */
+    public static String convertToString(final float input)
+    {
+<span class="fc" id="L351">        return &quot;&quot; + input;</span>
+    }
+
+    /**
+     * This method converts a value to its string representation.
+     *
+     * @param input is the value to stringify.
+     * @return the string representation of the input value.
+     */
+    public static String convertToString(final double input)
+    {
+<span class="fc" id="L362">        return &quot;&quot; + input;</span>
+    }
+
+    /**
+     * This method converts a value to its string representation.
+     *
+     * @param input is the value to stringify.
+     * @return the string representation of the input value.
+     */
+    public static String convertToString(final Object input)
+    {
+<span class="fc" id="L373">        return &quot;&quot; + input;</span>
+    }
+
+    /**
+     * This method converts a boolean value to a boolean value.
+     *
+     * @param value is the value to convert.
+     */
+    public static boolean convertToBoolean(boolean value)
+    {
+<span class="fc" id="L383">        return (boolean) value;</span>
+    }
+
+    /**
+     * This method converts a char value to a boolean value.
+     *
+     * @param value is the value to convert.
+     */
+    public static boolean convertToBoolean(char value)
+    {
+<span class="fc bfc" id="L393" title="All 2 branches covered.">        return value != 0;</span>
+    }
+
+    /**
+     * This method converts a byte value to a boolean value.
+     *
+     * @param value is the value to convert.
+     */
+    public static boolean convertToBoolean(byte value)
+    {
+<span class="fc bfc" id="L403" title="All 2 branches covered.">        return value != 0;</span>
+    }
+
+    /**
+     * This method converts a short value to a boolean value.
+     *
+     * @param value is the value to convert.
+     */
+    public static boolean convertToBoolean(short value)
+    {
+<span class="fc bfc" id="L413" title="All 2 branches covered.">        return value != 0;</span>
+    }
+
+    /**
+     * This method converts a int value to a boolean value.
+     *
+     * @param value is the value to convert.
+     */
+    public static boolean convertToBoolean(int value)
+    {
+<span class="fc bfc" id="L423" title="All 2 branches covered.">        return value != 0;</span>
+    }
+
+    /**
+     * This method converts a long value to a boolean value.
+     *
+     * @param value is the value to convert.
+     */
+    public static boolean convertToBoolean(long value)
+    {
+<span class="fc bfc" id="L433" title="All 2 branches covered.">        return value != 0;</span>
+    }
+
+    /**
+     * This method converts a float value to a boolean value.
+     *
+     * @param value is the value to convert.
+     */
+    public static boolean convertToBoolean(float value)
+    {
+<span class="fc bfc" id="L443" title="All 2 branches covered.">        return value != 0;</span>
+    }
+
+    /**
+     * This method converts a double value to a boolean value.
+     *
+     * @param value is the value to convert.
+     */
+    public static boolean convertToBoolean(double value)
+    {
+<span class="fc bfc" id="L453" title="All 2 branches covered.">        return value != 0;</span>
+    }
+
+    /**
+     * This method converts a boolean value to a char value.
+     *
+     * @param value is the value to convert.
+     */
+    public static char convertToChar(boolean value)
+    {
+<span class="fc bfc" id="L463" title="All 2 branches covered.">        return (char) (value ? 1 : 0);</span>
+    }
+
+    /**
+     * This method converts a char value to a char value.
+     *
+     * @param value is the value to convert.
+     */
+    public static char convertToChar(char value)
+    {
+<span class="fc" id="L473">        return (char) value;</span>
+    }
+
+    /**
+     * This method converts a byte value to a char value.
+     *
+     * @param value is the value to convert.
+     */
+    public static char convertToChar(byte value)
+    {
+<span class="fc" id="L483">        return (char) value;</span>
+    }
+
+    /**
+     * This method converts a short value to a char value.
+     *
+     * @param value is the value to convert.
+     */
+    public static char convertToChar(short value)
+    {
+<span class="fc" id="L493">        return (char) value;</span>
+    }
+
+    /**
+     * This method converts a int value to a char value.
+     *
+     * @param value is the value to convert.
+     */
+    public static char convertToChar(int value)
+    {
+<span class="fc" id="L503">        return (char) value;</span>
+    }
+
+    /**
+     * This method converts a long value to a char value.
+     *
+     * @param value is the value to convert.
+     */
+    public static char convertToChar(long value)
+    {
+<span class="fc" id="L513">        return (char) value;</span>
+    }
+
+    /**
+     * This method converts a float value to a char value.
+     *
+     * @param value is the value to convert.
+     */
+    public static char convertToChar(float value)
+    {
+<span class="fc" id="L523">        return (char) value;</span>
+    }
+
+    /**
+     * This method converts a double value to a char value.
+     *
+     * @param value is the value to convert.
+     */
+    public static char convertToChar(double value)
+    {
+<span class="fc" id="L533">        return (char) value;</span>
+    }
+
+    /**
+     * This method converts a boolean value to a byte value.
+     *
+     * @param value is the value to convert.
+     */
+    public static byte convertToByte(boolean value)
+    {
+<span class="fc bfc" id="L543" title="All 2 branches covered.">        return (byte) (value ? 1 : 0);</span>
+    }
+
+    /**
+     * This method converts a char value to a byte value.
+     *
+     * @param value is the value to convert.
+     */
+    public static byte convertToByte(char value)
+    {
+<span class="fc" id="L553">        return (byte) value;</span>
+    }
+
+    /**
+     * This method converts a byte value to a byte value.
+     *
+     * @param value is the value to convert.
+     */
+    public static byte convertToByte(byte value)
+    {
+<span class="fc" id="L563">        return (byte) value;</span>
+    }
+
+    /**
+     * This method converts a short value to a byte value.
+     *
+     * @param value is the value to convert.
+     */
+    public static byte convertToByte(short value)
+    {
+<span class="fc" id="L573">        return (byte) value;</span>
+    }
+
+    /**
+     * This method converts a int value to a byte value.
+     *
+     * @param value is the value to convert.
+     */
+    public static byte convertToByte(int value)
+    {
+<span class="fc" id="L583">        return (byte) value;</span>
+    }
+
+    /**
+     * This method converts a long value to a byte value.
+     *
+     * @param value is the value to convert.
+     */
+    public static byte convertToByte(long value)
+    {
+<span class="fc" id="L593">        return (byte) value;</span>
+    }
+
+    /**
+     * This method converts a float value to a byte value.
+     *
+     * @param value is the value to convert.
+     */
+    public static byte convertToByte(float value)
+    {
+<span class="fc" id="L603">        return (byte) value;</span>
+    }
+
+    /**
+     * This method converts a double value to a byte value.
+     *
+     * @param value is the value to convert.
+     */
+    public static byte convertToByte(double value)
+    {
+<span class="fc" id="L613">        return (byte) value;</span>
+    }
+
+    /**
+     * This method converts a boolean value to a short value.
+     *
+     * @param value is the value to convert.
+     */
+    public static short convertToShort(boolean value)
+    {
+<span class="fc bfc" id="L623" title="All 2 branches covered.">        return (short) (value ? 1 : 0);</span>
+    }
+
+    /**
+     * This method converts a char value to a short value.
+     *
+     * @param value is the value to convert.
+     */
+    public static short convertToShort(char value)
+    {
+<span class="fc" id="L633">        return (short) value;</span>
+    }
+
+    /**
+     * This method converts a byte value to a short value.
+     *
+     * @param value is the value to convert.
+     */
+    public static short convertToShort(byte value)
+    {
+<span class="fc" id="L643">        return (short) value;</span>
+    }
+
+    /**
+     * This method converts a short value to a short value.
+     *
+     * @param value is the value to convert.
+     */
+    public static short convertToShort(short value)
+    {
+<span class="fc" id="L653">        return (short) value;</span>
+    }
+
+    /**
+     * This method converts a int value to a short value.
+     *
+     * @param value is the value to convert.
+     */
+    public static short convertToShort(int value)
+    {
+<span class="fc" id="L663">        return (short) value;</span>
+    }
+
+    /**
+     * This method converts a long value to a short value.
+     *
+     * @param value is the value to convert.
+     */
+    public static short convertToShort(long value)
+    {
+<span class="fc" id="L673">        return (short) value;</span>
+    }
+
+    /**
+     * This method converts a float value to a short value.
+     *
+     * @param value is the value to convert.
+     */
+    public static short convertToShort(float value)
+    {
+<span class="fc" id="L683">        return (short) value;</span>
+    }
+
+    /**
+     * This method converts a double value to a short value.
+     *
+     * @param value is the value to convert.
+     */
+    public static short convertToShort(double value)
+    {
+<span class="fc" id="L693">        return (short) value;</span>
+    }
+
+    /**
+     * This method converts a boolean value to a int value.
+     *
+     * @param value is the value to convert.
+     */
+    public static int convertToInt(boolean value)
+    {
+<span class="fc bfc" id="L703" title="All 2 branches covered.">        return (int) (value ? 1 : 0);</span>
+    }
+
+    /**
+     * This method converts a char value to a int value.
+     *
+     * @param value is the value to convert.
+     */
+    public static int convertToInt(char value)
+    {
+<span class="fc" id="L713">        return (int) value;</span>
+    }
+
+    /**
+     * This method converts a byte value to a int value.
+     *
+     * @param value is the value to convert.
+     */
+    public static int convertToInt(byte value)
+    {
+<span class="fc" id="L723">        return (int) value;</span>
+    }
+
+    /**
+     * This method converts a short value to a int value.
+     *
+     * @param value is the value to convert.
+     */
+    public static int convertToInt(short value)
+    {
+<span class="fc" id="L733">        return (int) value;</span>
+    }
+
+    /**
+     * This method converts a int value to a int value.
+     *
+     * @param value is the value to convert.
+     */
+    public static int convertToInt(int value)
+    {
+<span class="fc" id="L743">        return (int) value;</span>
+    }
+
+    /**
+     * This method converts a long value to a int value.
+     *
+     * @param value is the value to convert.
+     */
+    public static int convertToInt(long value)
+    {
+<span class="fc" id="L753">        return (int) value;</span>
+    }
+
+    /**
+     * This method converts a float value to a int value.
+     *
+     * @param value is the value to convert.
+     */
+    public static int convertToInt(float value)
+    {
+<span class="fc" id="L763">        return (int) value;</span>
+    }
+
+    /**
+     * This method converts a double value to a int value.
+     *
+     * @param value is the value to convert.
+     */
+    public static int convertToInt(double value)
+    {
+<span class="fc" id="L773">        return (int) value;</span>
+    }
+
+    /**
+     * This method converts a boolean value to a long value.
+     *
+     * @param value is the value to convert.
+     */
+    public static long convertToLong(boolean value)
+    {
+<span class="fc bfc" id="L783" title="All 2 branches covered.">        return (long) (value ? 1 : 0);</span>
+    }
+
+    /**
+     * This method converts a char value to a long value.
+     *
+     * @param value is the value to convert.
+     */
+    public static long convertToLong(char value)
+    {
+<span class="fc" id="L793">        return (long) value;</span>
+    }
+
+    /**
+     * This method converts a byte value to a long value.
+     *
+     * @param value is the value to convert.
+     */
+    public static long convertToLong(byte value)
+    {
+<span class="fc" id="L803">        return (long) value;</span>
+    }
+
+    /**
+     * This method converts a short value to a long value.
+     *
+     * @param value is the value to convert.
+     */
+    public static long convertToLong(short value)
+    {
+<span class="fc" id="L813">        return (long) value;</span>
+    }
+
+    /**
+     * This method converts a int value to a long value.
+     *
+     * @param value is the value to convert.
+     */
+    public static long convertToLong(int value)
+    {
+<span class="fc" id="L823">        return (long) value;</span>
+    }
+
+    /**
+     * This method converts a long value to a long value.
+     *
+     * @param value is the value to convert.
+     */
+    public static long convertToLong(long value)
+    {
+<span class="fc" id="L833">        return (long) value;</span>
+    }
+
+    /**
+     * This method converts a float value to a long value.
+     *
+     * @param value is the value to convert.
+     */
+    public static long convertToLong(float value)
+    {
+<span class="fc" id="L843">        return (long) value;</span>
+    }
+
+    /**
+     * This method converts a double value to a long value.
+     *
+     * @param value is the value to convert.
+     */
+    public static long convertToLong(double value)
+    {
+<span class="fc" id="L853">        return (long) value;</span>
+    }
+
+    /**
+     * This method converts a boolean value to a float value.
+     *
+     * @param value is the value to convert.
+     */
+    public static float convertToFloat(boolean value)
+    {
+<span class="fc bfc" id="L863" title="All 2 branches covered.">        return (float) (value ? 1 : 0);</span>
+    }
+
+    /**
+     * This method converts a char value to a float value.
+     *
+     * @param value is the value to convert.
+     */
+    public static float convertToFloat(char value)
+    {
+<span class="fc" id="L873">        return (float) value;</span>
+    }
+
+    /**
+     * This method converts a byte value to a float value.
+     *
+     * @param value is the value to convert.
+     */
+    public static float convertToFloat(byte value)
+    {
+<span class="fc" id="L883">        return (float) value;</span>
+    }
+
+    /**
+     * This method converts a short value to a float value.
+     *
+     * @param value is the value to convert.
+     */
+    public static float convertToFloat(short value)
+    {
+<span class="fc" id="L893">        return (float) value;</span>
+    }
+
+    /**
+     * This method converts a int value to a float value.
+     *
+     * @param value is the value to convert.
+     */
+    public static float convertToFloat(int value)
+    {
+<span class="fc" id="L903">        return (float) value;</span>
+    }
+
+    /**
+     * This method converts a long value to a float value.
+     *
+     * @param value is the value to convert.
+     */
+    public static float convertToFloat(long value)
+    {
+<span class="fc" id="L913">        return (float) value;</span>
+    }
+
+    /**
+     * This method converts a float value to a float value.
+     *
+     * @param value is the value to convert.
+     */
+    public static float convertToFloat(float value)
+    {
+<span class="fc" id="L923">        return (float) value;</span>
+    }
+
+    /**
+     * This method converts a double value to a float value.
+     *
+     * @param value is the value to convert.
+     */
+    public static float convertToFloat(double value)
+    {
+<span class="fc" id="L933">        return (float) value;</span>
+    }
+
+    /**
+     * This method converts a boolean value to a double value.
+     *
+     * @param value is the value to convert.
+     */
+    public static double convertToDouble(boolean value)
+    {
+<span class="fc bfc" id="L943" title="All 2 branches covered.">        return (double) (value ? 1 : 0);</span>
+    }
+
+    /**
+     * This method converts a char value to a double value.
+     *
+     * @param value is the value to convert.
+     */
+    public static double convertToDouble(char value)
+    {
+<span class="fc" id="L953">        return (double) value;</span>
+    }
+
+    /**
+     * This method converts a byte value to a double value.
+     *
+     * @param value is the value to convert.
+     */
+    public static double convertToDouble(byte value)
+    {
+<span class="fc" id="L963">        return (double) value;</span>
+    }
+
+    /**
+     * This method converts a short value to a double value.
+     *
+     * @param value is the value to convert.
+     */
+    public static double convertToDouble(short value)
+    {
+<span class="fc" id="L973">        return (double) value;</span>
+    }
+
+    /**
+     * This method converts a int value to a double value.
+     *
+     * @param value is the value to convert.
+     */
+    public static double convertToDouble(int value)
+    {
+<span class="fc" id="L983">        return (double) value;</span>
+    }
+
+    /**
+     * This method converts a long value to a double value.
+     *
+     * @param value is the value to convert.
+     */
+    public static double convertToDouble(long value)
+    {
+<span class="fc" id="L993">        return (double) value;</span>
+    }
+
+    /**
+     * This method converts a float value to a double value.
+     *
+     * @param value is the value to convert.
+     */
+    public static double convertToDouble(float value)
+    {
+<span class="fc" id="L1003">        return (double) value;</span>
+    }
+
+    /**
+     * This method converts a double value to a double value.
+     *
+     * @param value is the value to convert.
+     */
+    public static double convertToDouble(double value)
+    {
+<span class="fc" id="L1013">        return (double) value;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

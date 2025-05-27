@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Parser.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.mackenziehigh:autumn</a> &gt; <a href="index.source.html" class="el_package">com.mackenziehigh.autumn.util.json.parser</a> &gt; <span class="el_source">Parser.java</span></div><h1>Parser.java</h1><pre class="source lang-java linenums">package com.mackenziehigh.autumn.util.json.parser;
+
+import com.mackenziehigh.snowflake.Grammar;
+import com.mackenziehigh.snowflake.GrammarBuilder;
+import com.mackenziehigh.snowflake.IParser;
+import com.mackenziehigh.snowflake.ParserOutput;
+
+
+/**
+ * This class was auto-generated using the Snowflake parser-generator.
+ *
+ * &lt;p&gt;Generated On: Sun Nov 16 06:03:02 EST 2014&lt;/p&gt;
+ */
+<span class="fc" id="L14">public final class Parser implements IParser</span>
+{
+
+<span class="fc" id="L17">    private static final Grammar grammar = grammar();</span>
+
+
+    /**
+     * This method constructs the grammar object.
+     */
+    private static Grammar grammar()
+    {
+<span class="fc" id="L25">        final GrammarBuilder g = new GrammarBuilder();</span>
+
+        // Character Classes
+<span class="fc" id="L28">        g.range(&quot;@class0&quot;, (char) 46, (char) 46);</span>
+<span class="fc" id="L29">        g.range(&quot;@class1&quot;, (char) 46, (char) 46);</span>
+<span class="fc" id="L30">        g.range(&quot;@class2&quot;, (char) 46, (char) 46);</span>
+<span class="fc" id="L31">        g.range(&quot;@class3&quot;, (char) 45, (char) 45);</span>
+<span class="fc" id="L32">        g.range(&quot;@class4&quot;, (char) 34, (char) 34);</span>
+<span class="fc" id="L33">        g.range(&quot;@class5&quot;, (char) 34, (char) 34);</span>
+<span class="fc" id="L34">        g.range(&quot;@class6&quot;, (char) 92, (char) 92);</span>
+<span class="fc" id="L35">        g.range(&quot;@class7&quot;, (char) 34, (char) 34);</span>
+<span class="fc" id="L36">        g.range(&quot;@class8&quot;, (char) 116, (char) 116);</span>
+<span class="fc" id="L37">        g.range(&quot;@class9&quot;, (char) 34, (char) 34);</span>
+<span class="fc" id="L38">        g.combine(&quot;@class10&quot;, &quot;@class9&quot;);</span>
+<span class="fc" id="L39">        g.negate(&quot;@class11&quot;, &quot;@class10&quot;);</span>
+<span class="fc" id="L40">        g.range(&quot;@class12&quot;, (char) 91, (char) 91);</span>
+<span class="fc" id="L41">        g.range(&quot;@class13&quot;, (char) 93, (char) 93);</span>
+<span class="fc" id="L42">        g.range(&quot;@class14&quot;, (char) 44, (char) 44);</span>
+<span class="fc" id="L43">        g.range(&quot;@class15&quot;, (char) 123, (char) 123);</span>
+<span class="fc" id="L44">        g.range(&quot;@class16&quot;, (char) 125, (char) 125);</span>
+<span class="fc" id="L45">        g.range(&quot;@class17&quot;, (char) 44, (char) 44);</span>
+<span class="fc" id="L46">        g.range(&quot;@class18&quot;, (char) 58, (char) 58);</span>
+<span class="fc" id="L47">        g.range(&quot;@class19&quot;, (char) 48, (char) 57);</span>
+<span class="fc" id="L48">        g.range(&quot;@class20&quot;, (char) 10, (char) 10);</span>
+<span class="fc" id="L49">        g.range(&quot;@class21&quot;, (char) 13, (char) 13);</span>
+<span class="fc" id="L50">        g.range(&quot;@class22&quot;, (char) 32, (char) 32);</span>
+<span class="fc" id="L51">        g.combine(&quot;@class23&quot;, &quot;@class20&quot;, &quot;@class21&quot;, &quot;@class22&quot;);</span>
+
+        // Grammar Rules
+<span class="fc" id="L54">        g.choose(&quot;@20&quot;, &quot;@18&quot;, &quot;@19&quot;);</span>
+<span class="fc" id="L55">        g.choose(&quot;@4&quot;, &quot;@2&quot;, &quot;@3&quot;);</span>
+<span class="fc" id="L56">        g.choose(&quot;STR_CHAR&quot;, &quot;ESCAPE_SEQUENCE&quot;, &quot;NON_QUOTE&quot;);</span>
+<span class="fc" id="L57">        g.choose(&quot;e&quot;, &quot;@9&quot;, &quot;@10&quot;, &quot;@11&quot;, &quot;@12&quot;, &quot;@13&quot;, &quot;@14&quot;);</span>
+<span class="fc" id="L58">        g.choose(&quot;number_value&quot;, &quot;number_value_4&quot;, &quot;number_value_3&quot;, &quot;number_value_2&quot;, &quot;number_value_1&quot;);</span>
+<span class="fc" id="L59">        g.choose(&quot;value&quot;, &quot;null&quot;, &quot;boolean&quot;, &quot;number&quot;, &quot;string&quot;, &quot;array&quot;, &quot;object&quot;);</span>
+<span class="fc" id="L60">        g.chr(&quot;@15&quot;, &quot;@class4&quot;);</span>
+<span class="fc" id="L61">        g.chr(&quot;@16&quot;, &quot;@class5&quot;);</span>
+<span class="fc" id="L62">        g.chr(&quot;@17&quot;, &quot;@class6&quot;);</span>
+<span class="fc" id="L63">        g.chr(&quot;@18&quot;, &quot;@class7&quot;);</span>
+<span class="fc" id="L64">        g.chr(&quot;@19&quot;, &quot;@class8&quot;);</span>
+<span class="fc" id="L65">        g.chr(&quot;@21&quot;, &quot;@class12&quot;);</span>
+<span class="fc" id="L66">        g.chr(&quot;@22&quot;, &quot;@class13&quot;);</span>
+<span class="fc" id="L67">        g.chr(&quot;@23&quot;, &quot;@class14&quot;);</span>
+<span class="fc" id="L68">        g.chr(&quot;@27&quot;, &quot;@class15&quot;);</span>
+<span class="fc" id="L69">        g.chr(&quot;@28&quot;, &quot;@class16&quot;);</span>
+<span class="fc" id="L70">        g.chr(&quot;@29&quot;, &quot;@class17&quot;);</span>
+<span class="fc" id="L71">        g.chr(&quot;@33&quot;, &quot;@class18&quot;);</span>
+<span class="fc" id="L72">        g.chr(&quot;@5&quot;, &quot;@class0&quot;);</span>
+<span class="fc" id="L73">        g.chr(&quot;@6&quot;, &quot;@class1&quot;);</span>
+<span class="fc" id="L74">        g.chr(&quot;@7&quot;, &quot;@class2&quot;);</span>
+<span class="fc" id="L75">        g.chr(&quot;@8&quot;, &quot;@class3&quot;);</span>
+<span class="fc" id="L76">        g.chr(&quot;DIGIT&quot;, &quot;@class19&quot;);</span>
+<span class="fc" id="L77">        g.chr(&quot;NON_QUOTE&quot;, &quot;@class11&quot;);</span>
+<span class="fc" id="L78">        g.chr(&quot;WS_CHR&quot;, &quot;@class23&quot;);</span>
+<span class="fc" id="L79">        g.repeat(&quot;@0&quot;, &quot;value&quot;, 0, 1);</span>
+<span class="fc" id="L80">        g.repeat(&quot;@25&quot;, &quot;@24&quot;, 0, 2147483647);</span>
+<span class="fc" id="L81">        g.repeat(&quot;@31&quot;, &quot;@30&quot;, 0, 2147483647);</span>
+<span class="fc" id="L82">        g.repeat(&quot;DIGITS&quot;, &quot;DIGIT&quot;, 1, 2147483647);</span>
+<span class="fc" id="L83">        g.repeat(&quot;STR_CHARS&quot;, &quot;STR_CHAR&quot;, 0, 2147483647);</span>
+<span class="fc" id="L84">        g.repeat(&quot;WS&quot;, &quot;WS_CHR&quot;, 0, 2147483647);</span>
+<span class="fc" id="L85">        g.repeat(&quot;elements&quot;, &quot;@26&quot;, 0, 1);</span>
+<span class="fc" id="L86">        g.repeat(&quot;members&quot;, &quot;@32&quot;, 0, 1);</span>
+<span class="fc" id="L87">        g.repeat(&quot;sign&quot;, &quot;@8&quot;, 0, 1);</span>
+<span class="fc" id="L88">        g.sequence(&quot;@24&quot;, &quot;WS&quot;, &quot;@23&quot;, &quot;WS&quot;, &quot;value&quot;);</span>
+<span class="fc" id="L89">        g.sequence(&quot;@26&quot;, &quot;value&quot;, &quot;@25&quot;);</span>
+<span class="fc" id="L90">        g.sequence(&quot;@30&quot;, &quot;WS&quot;, &quot;@29&quot;, &quot;WS&quot;, &quot;pair&quot;);</span>
+<span class="fc" id="L91">        g.sequence(&quot;@32&quot;, &quot;pair&quot;, &quot;@31&quot;);</span>
+<span class="fc" id="L92">        g.sequence(&quot;ESCAPE_SEQUENCE&quot;, &quot;@17&quot;, &quot;@20&quot;);</span>
+<span class="fc" id="L93">        g.sequence(&quot;array&quot;, &quot;@21&quot;, &quot;WS&quot;, &quot;elements&quot;, &quot;WS&quot;, &quot;@22&quot;, &quot;WS&quot;);</span>
+<span class="fc" id="L94">        g.sequence(&quot;boolean&quot;, &quot;@4&quot;, &quot;WS&quot;);</span>
+<span class="fc" id="L95">        g.sequence(&quot;input&quot;, &quot;WS&quot;, &quot;@0&quot;, &quot;WS&quot;, &quot;END&quot;);</span>
+<span class="fc" id="L96">        g.sequence(&quot;null&quot;, &quot;@1&quot;, &quot;WS&quot;);</span>
+<span class="fc" id="L97">        g.sequence(&quot;number&quot;, &quot;number_value&quot;, &quot;WS&quot;);</span>
+<span class="fc" id="L98">        g.sequence(&quot;number_value_1&quot;, &quot;sign&quot;, &quot;DIGITS&quot;);</span>
+<span class="fc" id="L99">        g.sequence(&quot;number_value_2&quot;, &quot;sign&quot;, &quot;DIGITS&quot;, &quot;@5&quot;, &quot;DIGITS&quot;);</span>
+<span class="fc" id="L100">        g.sequence(&quot;number_value_3&quot;, &quot;sign&quot;, &quot;DIGITS&quot;, &quot;@6&quot;, &quot;e&quot;, &quot;DIGITS&quot;);</span>
+<span class="fc" id="L101">        g.sequence(&quot;number_value_4&quot;, &quot;sign&quot;, &quot;DIGITS&quot;, &quot;@7&quot;, &quot;DIGITS&quot;, &quot;e&quot;, &quot;DIGITS&quot;);</span>
+<span class="fc" id="L102">        g.sequence(&quot;object&quot;, &quot;@27&quot;, &quot;WS&quot;, &quot;members&quot;, &quot;@28&quot;, &quot;WS&quot;);</span>
+<span class="fc" id="L103">        g.sequence(&quot;pair&quot;, &quot;string&quot;, &quot;WS&quot;, &quot;@33&quot;, &quot;WS&quot;, &quot;value&quot;, &quot;WS&quot;);</span>
+<span class="fc" id="L104">        g.sequence(&quot;string&quot;, &quot;@15&quot;, &quot;STR_CHARS&quot;, &quot;@16&quot;, &quot;WS&quot;);</span>
+<span class="fc" id="L105">        g.str(&quot;@1&quot;, &quot;null&quot;);</span>
+<span class="fc" id="L106">        g.str(&quot;@10&quot;, &quot;e-&quot;);</span>
+<span class="fc" id="L107">        g.str(&quot;@11&quot;, &quot;e&quot;);</span>
+<span class="fc" id="L108">        g.str(&quot;@12&quot;, &quot;E+&quot;);</span>
+<span class="fc" id="L109">        g.str(&quot;@13&quot;, &quot;E-&quot;);</span>
+<span class="fc" id="L110">        g.str(&quot;@14&quot;, &quot;E&quot;);</span>
+<span class="fc" id="L111">        g.str(&quot;@2&quot;, &quot;true&quot;);</span>
+<span class="fc" id="L112">        g.str(&quot;@3&quot;, &quot;false&quot;);</span>
+<span class="fc" id="L113">        g.str(&quot;@9&quot;, &quot;e+&quot;);</span>
+
+        // Specify which rule is the root of the grammar.
+<span class="fc" id="L116">        g.setRoot(&quot;input&quot;);</span>
+
+        // Specify the number of tracing records to store concurrently.
+<span class="fc" id="L119">        g.setTraceCount(1024);</span>
+
+        // Perform the actual construction of the grammar object.
+<span class="fc" id="L122">        return g.build();</span>
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ParserOutput parse(final char[] input)
+    {
+<span class="fc" id="L132">        return grammar.newParser().parse(input);</span>
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ParserOutput parse(final String input)
+    {
+<span class="fc" id="L142">        return parse(input.toCharArray());</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

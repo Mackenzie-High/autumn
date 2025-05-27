@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AbstractDeclaredType.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.mackenziehigh:autumn</a> &gt; <a href="index.source.html" class="el_package">com.mackenziehigh.autumn.lang.compiler.typesystem</a> &gt; <span class="el_source">AbstractDeclaredType.java</span></div><h1>AbstractDeclaredType.java</h1><pre class="source lang-java linenums">package com.mackenziehigh.autumn.lang.compiler.typesystem;
+
+import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IAnnotationMethod;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IClassType;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IDeclaredType;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IEnumConstant;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IField;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IInterfaceType;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IMethod;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IType;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.ITypeFactory;
+import com.mackenziehigh.autumn.resources.Finished;
+import java.lang.reflect.Modifier;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
+
+/**
+ * This class provides a partial implementation of the IDeclaredType interface.
+ *
+ * @author Mackenzie High
+ */
+@Finished(&quot;2014/07/12&quot;)
+public abstract class AbstractDeclaredType
+        extends AbstractType
+        implements IDeclaredType
+{
+    /**
+     * Sole Constructor.
+     *
+     * @param factory type-factory that is used to access types.
+     * @param descriptor is the type-descriptor of the new type.
+     */
+    public AbstractDeclaredType(final ITypeFactory factory,
+                                final String descriptor)
+    {
+<span class="fc" id="L43">        super(factory, descriptor);</span>
+
+<span class="fc" id="L45">        Preconditions.checkNotNull(factory);</span>
+<span class="fc" id="L46">        Preconditions.checkNotNull(descriptor);</span>
+<span class="fc" id="L47">    }</span>
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getNamespace()
+    {
+<span class="fc" id="L55">        final String full_name = getDescriptor();</span>
+
+<span class="fc" id="L57">        final int last_slash = full_name.lastIndexOf('/');</span>
+
+<span class="fc" id="L59">        final String no_slashes = full_name.replace('/', '.');</span>
+
+<span class="fc" id="L61">        final String result = no_slashes.substring(1, last_slash);</span>
+
+<span class="fc" id="L63">        return result;</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List&lt;IClassType&gt; getAllSuperclasses()
+    {
+<span class="fc" id="L72">        final List&lt;IClassType&gt; result = Lists.newLinkedList();</span>
+
+<span class="fc" id="L74">        IClassType p = this.getSuperclass();</span>
+
+<span class="fc bfc" id="L76" title="All 2 branches covered.">        if (this.getDescriptor().equals(&quot;Ljava/lang/Object;&quot;))</span>
+        {
+<span class="fc" id="L78">            result.add((IClassType) getTypeFactory().fromClass(Object.class));</span>
+        }
+        else
+        {
+<span class="fc" id="L82">            result.add(this.getSuperclass());</span>
+<span class="fc" id="L83">            result.addAll(this.getSuperclass().getAllSuperclasses());</span>
+        }
+
+<span class="fc" id="L86">        return ImmutableList.copyOf(result);</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Collection&lt;IInterfaceType&gt; getAllSuperinterfaces()
+    {
+<span class="fc" id="L95">        final Set&lt;IInterfaceType&gt; result = Sets.newHashSet();</span>
+
+<span class="fc" id="L97">        final Set&lt;IDeclaredType&gt; visited = Sets.newHashSet();</span>
+
+<span class="fc" id="L99">        findSuperinterfaces(result, visited, this);</span>
+
+<span class="fc" id="L101">        return ImmutableSet.copyOf(result);</span>
+    }
+
+    private void findSuperinterfaces(final Set&lt;IInterfaceType&gt; output,
+                                     final Set&lt;IDeclaredType&gt; visited,
+                                     final IDeclaredType target)
+    {
+<span class="fc bfc" id="L108" title="All 2 branches covered.">        if (visited.contains(target))</span>
+        {
+<span class="fc" id="L110">            return;</span>
+        }
+        else
+        {
+<span class="fc" id="L114">            visited.add(target);</span>
+        }
+
+<span class="fc" id="L117">        output.addAll(target.getSuperinterfaces());</span>
+
+<span class="fc" id="L119">        findSuperinterfaces(output, visited, target.getSuperclass());</span>
+
+<span class="fc bfc" id="L121" title="All 2 branches covered.">        for (IInterfaceType direct_superinterface : target.getSuperinterfaces())</span>
+        {
+<span class="fc" id="L123">            findSuperinterfaces(output, visited, direct_superinterface);</span>
+<span class="fc" id="L124">        }</span>
+<span class="fc" id="L125">    }</span>
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Collection&lt;IMethod&gt; getAllVisibleMethods()
+    {
+<span class="fc" id="L133">        final List&lt;IDeclaredType&gt; supertypes = Lists.newLinkedList();</span>
+<span class="fc" id="L134">        supertypes.addAll(this.getAllSuperclasses());</span>
+<span class="fc" id="L135">        supertypes.addAll(this.getAllSuperinterfaces());</span>
+
+<span class="fc" id="L137">        final Set&lt;IMethod&gt; result = Sets.newHashSet();</span>
+
+<span class="fc" id="L139">        result.addAll(this.getMethods());</span>
+
+<span class="fc bfc" id="L141" title="All 2 branches covered.">        for (IDeclaredType supertype : supertypes)</span>
+        {
+<span class="fc bfc" id="L143" title="All 2 branches covered.">            for (IMethod method : supertype.getMethods())</span>
+            {
+<span class="fc" id="L145">                final int modifiers = method.getModifiers();</span>
+
+<span class="fc bfc" id="L147" title="All 4 branches covered.">                if (!Modifier.isStatic(modifiers) &amp;&amp; !Modifier.isPrivate(modifiers))</span>
+                {
+<span class="fc" id="L149">                    result.add(method);</span>
+                }
+<span class="fc" id="L151">            }</span>
+<span class="fc" id="L152">        }</span>
+
+<span class="fc" id="L154">        return Collections.unmodifiableCollection(result);</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isSubtypeOf(final IType target)
+    {
+<span class="fc" id="L163">        Preconditions.checkNotNull(target);</span>
+
+<span class="fc bfc" id="L165" title="All 2 branches covered.">        if (this.equals(target))</span>
+        {
+<span class="fc" id="L167">            return true; // Because, target is this.</span>
+        }
+<span class="fc bfc" id="L169" title="All 2 branches covered.">        else if (this.getAllSuperclasses().contains(target))</span>
+        {
+<span class="fc" id="L171">            return true; // Because, target is a superclass of this.</span>
+        }
+<span class="fc bfc" id="L173" title="All 2 branches covered.">        else if (this.getAllSuperinterfaces().contains(target))</span>
+        {
+<span class="fc" id="L175">            return true; // Because, target is a superinterfaces of this.</span>
+        }
+        else
+        {
+<span class="fc" id="L179">            return false;</span>
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public Collection&lt;IAnnotationMethod&gt; getAnnotationMethods()
+    {
+<span class="nc" id="L188">        final List&lt;IAnnotationMethod&gt; result = Lists.newLinkedList();</span>
+
+<span class="nc bnc" id="L190" title="All 2 branches missed.">        for (IMethod method : this.getMethods())</span>
+        {
+<span class="nc bnc" id="L192" title="All 2 branches missed.">            if (method.isAnnotationMethod())</span>
+            {
+<span class="nc" id="L194">                result.add((IAnnotationMethod) method);</span>
+            }
+<span class="nc" id="L196">        }</span>
+
+<span class="nc" id="L198">        return ImmutableList.copyOf(result);</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public Collection&lt;IEnumConstant&gt; getEnumConstants()
+    {
+<span class="fc" id="L206">        final List&lt;IEnumConstant&gt; result = Lists.newLinkedList();</span>
+
+<span class="fc bfc" id="L208" title="All 2 branches covered.">        for (IField field : this.getFields())</span>
+        {
+<span class="pc bpc" id="L210" title="1 of 2 branches missed.">            if (field.isEnumConstant())</span>
+            {
+<span class="fc" id="L212">                result.add((IEnumConstant) field);</span>
+            }
+<span class="fc" id="L214">        }</span>
+
+<span class="fc" id="L216">        return ImmutableList.copyOf(result);</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString()
+    {
+<span class="nc" id="L225">        return getDescriptor();</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isNullType()
+    {
+<span class="fc" id="L234">        return false;</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isVoidType()
+    {
+<span class="fc" id="L243">        return false;</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isPrimitiveType()
+    {
+<span class="fc" id="L252">        return false;</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isReferenceType()
+    {
+<span class="fc" id="L261">        return true;</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isArrayType()
+    {
+<span class="fc" id="L270">        return false;</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isDeclaredType()
+    {
+<span class="fc" id="L279">        return true;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

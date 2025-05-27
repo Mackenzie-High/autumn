@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ConstructList.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.mackenziehigh:autumn</a> &gt; <a href="index.source.html" class="el_package">autumn.lang.compiler.ast.commons</a> &gt; <span class="el_source">ConstructList.java</span></div><h1>ConstructList.java</h1><pre class="source lang-java linenums">package autumn.lang.compiler.ast.commons;
+
+import autumn.lang.compiler.ast.nodes.IAstVisitor;
+import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableList;
+import com.mackenziehigh.autumn.resources.Finished;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.ListIterator;
+
+/**
+ * An instance of this class is an immutable list of constructs.
+ *
+ * @author Mackenzie High
+ */
+@Finished(&quot;2014/07/12&quot;)
+public final class ConstructList&lt;T extends IConstruct&gt;
+        implements Iterable&lt;T&gt;
+{
+    private ImmutableList&lt;T&gt; elements;
+
+    /**
+     * Constructor.
+     */
+    public ConstructList()
+<span class="fc" id="L26">    {</span>
+<span class="fc" id="L27">        this.elements = ImmutableList.of();</span>
+<span class="fc" id="L28">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param elements are the elements in the new list of constructs.
+     */
+    public ConstructList(final Iterable&lt;T&gt; elements)
+<span class="fc" id="L36">    {</span>
+<span class="fc" id="L37">        Preconditions.checkNotNull(elements);</span>
+
+<span class="fc" id="L39">        this.elements = ImmutableList.copyOf(elements);</span>
+<span class="fc" id="L40">    }</span>
+
+    /**
+     * This method non-destructively adds elements to this list.
+     *
+     * @param elements are the elements to add to this list.
+     * @return a modified variant of this object.
+     */
+    public ConstructList&lt;T&gt; addAll(final Iterable&lt;T&gt; elements)
+    {
+<span class="fc" id="L50">        final List&lt;T&gt; xoo = this.asMutableList();</span>
+
+<span class="fc bfc" id="L52" title="All 2 branches covered.">        for (T x : elements)</span>
+        {
+<span class="fc" id="L54">            xoo.add(x);</span>
+<span class="fc" id="L55">        }</span>
+
+<span class="fc" id="L57">        return new ConstructList(xoo);</span>
+    }
+
+    /**
+     * This method non-destructively adds an element to this list.
+     *
+     * @param value is the element to add.
+     * @return a modified variant of this object.
+     */
+    public ConstructList&lt;T&gt; add(final T value)
+    {
+<span class="fc" id="L68">        final List&lt;T&gt; xoo = this.asMutableList();</span>
+
+<span class="fc" id="L70">        xoo.add(value);</span>
+
+<span class="fc" id="L72">        return new ConstructList(xoo);</span>
+    }
+
+    /**
+     * This method retrieves the element at a given index.
+     *
+     * @param index is the index of the element to retrieve.
+     * @return the element at the given index.
+     * @throws IndexOutOfBoundsException if the index is out-of-bounds.
+     */
+    public T get(final int index)
+    {
+<span class="fc" id="L84">        return this.elements.get(index);</span>
+    }
+
+    /**
+     * This method computes the number of elements in this list.
+     *
+     * @return the size of this list.
+     */
+    public int size()
+    {
+<span class="fc" id="L94">        return elements.size();</span>
+    }
+
+    /**
+     * This method determines whether the is list is empty.
+     *
+     * @return true, iff this list is empty.
+     */
+    public boolean isEmpty()
+    {
+<span class="fc" id="L104">        return elements.isEmpty();</span>
+    }
+
+    /**
+     * This method creates and returns an iterator over this list.
+     *
+     * &lt;p&gt;
+     * Note: The iterator cannot be used to modify this list.
+     * &lt;/p&gt;
+     *
+     * @return an iterator over this list.
+     */
+    @Override
+    public ListIterator&lt;T&gt; iterator()
+    {
+<span class="fc" id="L119">        return elements.listIterator();</span>
+    }
+
+    /**
+     * This method creates a mutable copy of this list.
+     *
+     * @return a mutable copy of this list.
+     */
+    public List&lt;T&gt; asMutableList()
+    {
+<span class="fc" id="L129">        return new LinkedList&lt;T&gt;(elements);</span>
+    }
+
+    /**
+     * This method causes each element in this list to accept a given visitor.
+     *
+     * @param visitor is the visitor that will visit the elements.
+     */
+    public void accept(final IAstVisitor visitor)
+    {
+<span class="fc" id="L139">        Preconditions.checkNotNull(visitor);</span>
+
+<span class="fc bfc" id="L141" title="All 2 branches covered.">        for (T element : elements)</span>
+        {
+<span class="fc" id="L143">            element.accept(visitor);</span>
+<span class="fc" id="L144">        }</span>
+<span class="fc" id="L145">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

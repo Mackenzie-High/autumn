@@ -1,0 +1,1833 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>StaticChecker.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.mackenziehigh:autumn</a> &gt; <a href="index.source.html" class="el_package">com.mackenziehigh.autumn.lang.compiler.compilers</a> &gt; <span class="el_source">StaticChecker.java</span></div><h1>StaticChecker.java</h1><pre class="source lang-java linenums">package com.mackenziehigh.autumn.lang.compiler.compilers;
+
+import autumn.lang.DefinedFunctor;
+import autumn.lang.compiler.ast.commons.IBinaryOperation;
+import autumn.lang.compiler.ast.commons.IConstruct;
+import autumn.lang.compiler.ast.commons.IDatum;
+import autumn.lang.compiler.ast.commons.IExpression;
+import autumn.lang.compiler.ast.commons.IStatement;
+import autumn.lang.compiler.ast.commons.IUnaryOperation;
+import autumn.lang.compiler.ast.nodes.Annotation;
+import autumn.lang.compiler.ast.nodes.AnnotationList;
+import autumn.lang.compiler.ast.nodes.AsOperation;
+import autumn.lang.compiler.ast.nodes.BreakStatement;
+import autumn.lang.compiler.ast.nodes.ContinueStatement;
+import autumn.lang.compiler.ast.nodes.DelegateStatement;
+import autumn.lang.compiler.ast.nodes.Element;
+import autumn.lang.compiler.ast.nodes.ExceptionHandler;
+import autumn.lang.compiler.ast.nodes.FunctionDefinition;
+import autumn.lang.compiler.ast.nodes.InstanceOfExpression;
+import autumn.lang.compiler.ast.nodes.IsOperation;
+import autumn.lang.compiler.ast.nodes.Label;
+import autumn.lang.compiler.ast.nodes.Name;
+import autumn.lang.compiler.ast.nodes.PrognExpression;
+import autumn.lang.compiler.ast.nodes.RecurStatement;
+import autumn.lang.compiler.ast.nodes.RedoStatement;
+import autumn.lang.compiler.ast.nodes.StringDatum;
+import autumn.lang.compiler.ast.nodes.TypeSpecifier;
+import autumn.lang.compiler.ast.nodes.Variable;
+import autumn.lang.compiler.errors.ErrorCode;
+import autumn.lang.compiler.errors.ErrorReport;
+import autumn.lang.compiler.errors.IErrorReporter;
+import autumn.util.F;
+import com.google.common.base.Preconditions;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IAnnotation;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IClassType;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IDeclaredType;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IEnumType;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IExpressionType;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IField;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IMethod;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IReferenceType;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IReturnType;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IType;
+import com.mackenziehigh.autumn.lang.compiler.utils.CovarianceViolation;
+import com.mackenziehigh.autumn.lang.compiler.utils.TypeSystemUtils;
+import com.mackenziehigh.autumn.lang.compiler.utils.Utils;
+import java.lang.reflect.Modifier;
+import java.util.List;
+import java.util.Set;
+
+/**
+ * An instance of this class provides methods which check for and report static type errors.
+ *
+ * @author Mackenzie High
+ */
+<span class="fc" id="L58">final class StaticChecker</span>
+{
+    /**
+     * This is the program that is being compiled.
+     */
+    private final ProgramCompiler program;
+
+    /**
+     * This is the error-reporter that will be used to report any errors that are found.
+     */
+    private final IErrorReporter reporter;
+
+    /**
+     * Sole Constructor.
+     *
+     * @param program is the program that is being compiled.
+     */
+    public StaticChecker(final ProgramCompiler program)
+<span class="fc" id="L76">    {</span>
+<span class="pc bpc" id="L77" title="1 of 2 branches missed.">        assert program != null;</span>
+
+<span class="fc" id="L79">        this.program = program;</span>
+<span class="fc" id="L80">        this.reporter = program.reporter;</span>
+<span class="fc" id="L81">    }</span>
+
+    /**
+     * This method is invoked in order to actually issue an error report,
+     * regarding a type-usage.
+     *
+     * @param report is the error report to issue.
+     * @throws TypeCheckFailed always.
+     */
+    private void report(final ErrorReport report)
+    {
+<span class="fc" id="L92">        reporter.reportFailedCheck(report);</span>
+<span class="fc" id="L93">        throw new TypeCheckFailed();</span>
+    }
+
+    /**
+     * This method ensures that a literal's value is within the bounds of its datatype.
+     *
+     * @param value is the value of the literal.
+     * @param source the value as it appears in the source code.
+     * @param min is the minimum allowed value.
+     * @param max is the maximum allowed value.
+     */
+    public void checkLiteral(final IDatum node,
+                             final Comparable value,
+                             final String source,
+                             final Comparable min,
+                             final Comparable max)
+    {
+
+        /**
+         * The value will be null, if it is not acceptable.
+         */
+<span class="fc bfc" id="L114" title="All 2 branches covered.">        if (value != null)</span>
+        {
+<span class="fc" id="L116">            return;</span>
+        }
+
+        /**
+         * Create the error-report.
+         */
+<span class="fc" id="L122">        final ErrorCode code = ErrorCode.INACCURATE_NUMERIC_LITERAL;</span>
+<span class="fc" id="L123">        final String message = &quot;A literal cannot be accurately compiled.&quot;;</span>
+<span class="fc" id="L124">        final ErrorReport report = new ErrorReport(node, code, message);</span>
+<span class="fc" id="L125">        report.addDetail(&quot;Minimum&quot;, min.toString());</span>
+<span class="fc" id="L126">        report.addDetail(&quot;Maximum&quot;, max.toString());</span>
+<span class="fc" id="L127">        report.addDetail(&quot;Value&quot;, source);</span>
+
+        /**
+         * Issue the error-report to the user.
+         */
+<span class="nc" id="L132">        report(report);</span>
+<span class="nc" id="L133">    }</span>
+
+    /**
+     * This method ensures that a condition expression returns either primitive or boxed boolean.
+     *
+     * @param condition is the condition expression itself.
+     */
+    public void checkCondition(final IExpression condition)
+    {
+<span class="pc bpc" id="L142" title="1 of 2 branches missed.">        assert condition != null;</span>
+
+<span class="fc" id="L144">        final IExpressionType type = (IExpressionType) program.symbols.expressions.get(condition);</span>
+
+<span class="fc" id="L146">        final boolean primitive_boolean = &quot;Z&quot;.equals(type.getDescriptor());</span>
+<span class="fc" id="L147">        final boolean boxed_boolean = &quot;Ljava/lang/Boolean;&quot;.equals(type.getDescriptor());</span>
+
+<span class="fc bfc" id="L149" title="All 4 branches covered.">        if (primitive_boolean || boxed_boolean)</span>
+        {
+<span class="fc" id="L151">            return;</span>
+        }
+
+        /**
+         * Create the error-report.
+         */
+<span class="fc" id="L157">        final ErrorCode code = ErrorCode.EXPECTED_CONDITION;</span>
+<span class="fc" id="L158">        final String message = &quot;A boolean condition was expected.&quot;;</span>
+<span class="fc" id="L159">        final ErrorReport report = new ErrorReport(condition, code, message);</span>
+<span class="fc" id="L160">        report.addDetail(&quot;Expected&quot;, &quot;boolean OR java.lang.Boolean&quot;);</span>
+<span class="fc" id="L161">        report.addDetail(&quot;Actual&quot;, Utils.sourceName(type));</span>
+
+        /**
+         * Issue the error-report to the user.
+         */
+<span class="nc" id="L166">        report(report);</span>
+<span class="nc" id="L167">    }</span>
+
+    /**
+     * This method ensures that a variable was already declared.
+     *
+     * @param scope should contain the variable.
+     * @param allocator manages the allocation of local variables.
+     */
+    public void checkDeclared(final VariableAllocator allocator,
+                              final Variable variable)
+    {
+<span class="fc" id="L178">        final boolean declared = allocator.isDeclared(variable.getName());</span>
+
+<span class="fc bfc" id="L180" title="All 2 branches covered.">        if (declared)</span>
+        {
+<span class="fc" id="L182">            return;</span>
+        }
+
+<span class="fc" id="L185">        final ErrorReport report = new ErrorReport(variable,</span>
+                                                   ErrorCode.NO_SUCH_VARIABLE,
+                                                   &quot;A variable was used before it was declared.&quot;);
+
+<span class="fc" id="L189">        report.addDetail(&quot;Variable&quot;, variable.getName());</span>
+
+        /**
+         * Issue the error-report to the user.
+         */
+<span class="nc" id="L194">        report(report);</span>
+<span class="nc" id="L195">    }</span>
+
+    /**
+     * This method ensures that a variable is in scope.
+     *
+     * @param allocator manages the allocation of local variables.
+     * @param variable is the variable itself.
+     */
+    public void checkScope(final VariableAllocator allocator,
+                           final Variable variable)
+    {
+<span class="fc" id="L206">        final boolean usable = allocator.isUsable(variable.getName());</span>
+
+<span class="fc bfc" id="L208" title="All 2 branches covered.">        if (usable)</span>
+        {
+<span class="fc" id="L210">            return;</span>
+        }
+
+<span class="fc" id="L213">        final ErrorReport report = new ErrorReport(variable,</span>
+                                                   ErrorCode.VARIABLE_OUTSIDE_OF_SCOPE,
+                                                   &quot;A variable was outside of its declared scope.&quot;);
+
+<span class="fc" id="L217">        report.addDetail(&quot;Variable&quot;, variable.getName());</span>
+
+        /**
+         * Issue the error-report to the user.
+         */
+<span class="nc" id="L222">        report(report);</span>
+<span class="nc" id="L223">    }</span>
+
+    /**
+     * This method ensures that an annotation-list is valid.
+     *
+     * @param site is the Abstract-Syntax-Tree annotation-list.
+     * @param annotations is the type-system representation of the annotation-list.
+     */
+    public void checkAnnotations(final AnnotationList site,
+                                 final List&lt;IAnnotation&gt; annotations)
+    {
+<span class="pc bpc" id="L234" title="1 of 2 branches missed.">        assert site.getAnnotations().size() &lt;= annotations.size();</span>
+
+<span class="fc" id="L236">        final Set&lt;IType&gt; types = Sets.newHashSet();</span>
+
+        /**
+         * Check for duplicate annotations.
+         */
+<span class="fc bfc" id="L241" title="All 2 branches covered.">        for (IAnnotation anno : annotations)</span>
+        {
+<span class="fc bfc" id="L243" title="All 2 branches covered.">            if (types.contains(anno.getAnnotationType()))</span>
+            {
+<span class="nc" id="L245">                this.reportDuplicateAnnotation(site, anno);</span>
+            }
+            else
+            {
+<span class="fc" id="L249">                types.add(anno.getAnnotationType());</span>
+            }
+<span class="fc" id="L251">        }</span>
+
+        /**
+         * Check the validity of the annotation assignments.
+         */
+<span class="fc bfc" id="L256" title="All 2 branches covered.">        for (int i = 0; i &lt; site.getAnnotations().size(); i++)</span>
+        {
+            //checkAnnotation(site.getAnnotations().get(i), annotations.get(i));
+        }
+<span class="fc" id="L260">    }</span>
+
+    /**
+     * This method checks an annotation-value assignment.
+     *
+     * @param site is the Abstract-Syntax-Tree annotation.
+     * @param annotation is the type-system representation of the annotation.
+     */
+    private void checkAnnotation(final Annotation site,
+                                 final IAnnotation annotation)
+    {
+<span class="nc" id="L271">        final IMethod method = TypeSystemUtils.find(annotation.getAnnotationType().getMethods(),</span>
+                                                    &quot;value&quot;);
+
+        /**
+         * 1. If a value is being assigned to the annotation, then it must have a value() method.
+         * 2. Annotations written in Java *may* have too many methods.
+         * 3. Autumn based annotations always have exactly one method.
+         */
+<span class="nc bnc" id="L279" title="All 4 branches missed.">        if (site.getValues() != null &amp;&amp; annotation.getAnnotationType().getMethods().size() != 1)</span>
+        {
+<span class="nc" id="L281">            reportUnusableAnnotation(site, annotation);</span>
+        }
+
+        /**
+         * The return-type of the value() method must return a String.
+         */
+<span class="nc bnc" id="L287" title="All 4 branches missed.">        if (method != null &amp;&amp; !method.getReturnType().equals(program.typesystem.utils.STRING))</span>
+        {
+<span class="nc" id="L289">            reportUnusableAnnotation(site, annotation);</span>
+        }
+<span class="nc" id="L291">    }</span>
+
+    /**
+     * This method ensures that an expression's static-type is a subtype of the expected type.
+     *
+     * @param expression is the expression to check.
+     * @param expected is the widest static-type that the expression can have.
+     */
+    public void expectSubtype(final IExpression expression,
+                              final IExpressionType expected)
+    {
+<span class="nc" id="L302">        final IExpressionType actual = program.symbols.expressions.get(expression);</span>
+
+<span class="nc bnc" id="L304" title="All 2 branches missed.">        if (actual.isSubtypeOf(expected))</span>
+        {
+<span class="nc" id="L306">            return;</span>
+        }
+
+<span class="nc" id="L309">        final String MESSAGE = &quot;The static-type of an expression was unexpected.&quot;;</span>
+
+<span class="nc" id="L311">        final ErrorReport report = new ErrorReport(expression, ErrorCode.WRONG_TYPE, MESSAGE);</span>
+        {
+<span class="nc" id="L313">            report.addDetail(&quot;Expected&quot;, Utils.sourceName(expected));</span>
+<span class="nc" id="L314">            report.addDetail(&quot;Actual&quot;, Utils.sourceName(actual));</span>
+        }
+
+        /**
+         * Issue the error-report to the user.
+         */
+<span class="nc" id="L320">        report(report);</span>
+<span class="nc" id="L321">    }</span>
+
+    public void expectVoidFunction(final IStatement statement,
+                                   final IMethod function)
+    {
+//        if (function.getReturnType().isVoidType() == false)
+//        {
+//            return;
+//        }
+//
+//        final ErrorCode ERROR_CODE = ErrorCode.EXPECTED_VOID_FUNCTION;
+//
+//        final String MESSAGE = &quot;Void was found were it is not allowed.&quot;;
+//
+//        final ErrorReport report = new ErrorReport(statement, ERROR_CODE, MESSAGE);
+//
+//        reporter.reportFailedCheck(report);
+//
+//        throw new TypeUsageCheckFailed();
+<span class="nc" id="L340">    }</span>
+
+    /**
+     * This method ensures that an expression does not have a static-type of void.
+     *
+     * @param expression is the expression that cannot be void.
+     */
+    public void requireNonVoid(final IExpression expression)
+    {
+<span class="fc" id="L349">        final IType actual = program.symbols.expressions.get(expression);</span>
+
+<span class="fc bfc" id="L351" title="All 2 branches covered.">        if (&quot;V&quot;.equals(actual.getDescriptor()) == false)</span>
+        {
+<span class="fc" id="L353">            return;</span>
+        }
+
+<span class="fc" id="L356">        final ErrorCode ERROR_CODE = ErrorCode.VALUE_REQUIRED;</span>
+
+<span class="fc" id="L358">        final String MESSAGE = &quot;The type of an expression is void when it is forbidden to be.&quot;;</span>
+
+<span class="fc" id="L360">        final ErrorReport report = new ErrorReport(expression, ERROR_CODE, MESSAGE);</span>
+
+        /**
+         * Issue the error-report to the user.
+         */
+<span class="nc" id="L365">        report(report);</span>
+<span class="nc" id="L366">    }</span>
+
+    /**
+     * This method ensures that an expression does not have the null-type as its static-type.
+     *
+     * @param expression is the expression that cannot be of the null-type.
+     */
+    public void requireNonNull(final IExpression expression)
+    {
+<span class="fc" id="L375">    }</span>
+
+    /**
+     * This method ensures that the static-type of an expression is a reference-type.
+     *
+     * @param expression is the expression that must be a reference-type.
+     */
+    public void requireReferenceType(final IExpression expression)
+    {
+<span class="fc" id="L384">        final IExpressionType actual = program.symbols.expressions.get(expression);</span>
+
+<span class="fc bfc" id="L386" title="All 2 branches covered.">        if (actual.isReferenceType())</span>
+        {
+<span class="fc" id="L388">            return;</span>
+        }
+
+<span class="fc" id="L391">        final ErrorCode ERROR_CODE = ErrorCode.EXPECTED_REFERENCE_TYPE;</span>
+
+<span class="fc" id="L393">        final String MESSAGE = &quot;The type of a particular expression must be a reference-type.&quot;;</span>
+
+<span class="fc" id="L395">        final ErrorReport report = new ErrorReport(expression, ERROR_CODE, MESSAGE);</span>
+
+        /**
+         * Issue the error-report to the user.
+         */
+<span class="nc" id="L400">        report(report);</span>
+<span class="nc" id="L401">    }</span>
+
+    /**
+     * This method ensures that a type is a variable-type.
+     *
+     * @param construct is the construct that is performing the type-check.
+     * @param expression is the expression that must be a variable-type.
+     */
+    public void requireVariableType(final IConstruct construct,
+                                    final IExpressionType type)
+    {
+<span class="fc bfc" id="L412" title="All 2 branches covered.">        if (type.isPrimitiveType())</span>
+        {
+<span class="fc" id="L414">            return;</span>
+        }
+<span class="fc bfc" id="L416" title="All 4 branches covered.">        else if (type.isReferenceType() &amp;&amp; !type.isNullType())</span>
+        {
+<span class="fc" id="L418">            return;</span>
+        }
+
+<span class="fc" id="L421">        final ErrorCode ERROR_CODE = ErrorCode.EXPECTED_VARIABLE_TYPE;</span>
+
+<span class="fc" id="L423">        final String MESSAGE = &quot;A variable-type was expected.&quot;;</span>
+
+<span class="fc" id="L425">        final ErrorReport report = new ErrorReport(construct, ERROR_CODE, MESSAGE);</span>
+
+        /**
+         * Issue the error-report to the user.
+         */
+<span class="nc" id="L430">        report(report);</span>
+<span class="nc" id="L431">    }</span>
+
+    /**
+     * This method ensures that a type is a return-type.
+     *
+     * @param construct is the construct that is performing the type-check.
+     * @param expression is the expression that must be a return-type.
+     */
+    public void requireReturnType(final IConstruct construct,
+                                  final IExpressionType type)
+    {
+<span class="pc bpc" id="L442" title="1 of 2 branches missed.">        if (type instanceof IReturnType)</span>
+        {
+<span class="fc" id="L444">            return;</span>
+        }
+
+<span class="nc" id="L447">        final ErrorCode ERROR_CODE = ErrorCode.EXPECTED_RETURN_TYPE;</span>
+
+<span class="nc" id="L449">        final String MESSAGE = &quot;A return-type was expected.&quot;;</span>
+
+<span class="nc" id="L451">        final ErrorReport report = new ErrorReport(construct, ERROR_CODE, MESSAGE);</span>
+
+        /**
+         * Issue the error-report to the user.
+         */
+<span class="nc" id="L456">        report(report);</span>
+<span class="nc" id="L457">    }</span>
+
+    /**
+     * This method ensures that a type is a reference-type.
+     *
+     * @param construct is the construct that is performing the type-check.
+     * @param expression is the expression that must be a variable-type.
+     */
+    public void requireReferenceType(final IConstruct construct,
+                                     final IExpressionType type)
+    {
+<span class="fc bfc" id="L468" title="All 2 branches covered.">        if (type instanceof IReferenceType)</span>
+        {
+<span class="fc" id="L470">            return;</span>
+        }
+
+<span class="fc" id="L473">        final ErrorCode ERROR_CODE = ErrorCode.EXPECTED_REFERENCE_TYPE;</span>
+
+<span class="fc" id="L475">        final String MESSAGE = &quot;A reference-type was expected.&quot;;</span>
+
+<span class="fc" id="L477">        final ErrorReport report = new ErrorReport(construct, ERROR_CODE, MESSAGE);</span>
+
+        /**
+         * Issue the error-report to the user.
+         */
+<span class="nc" id="L482">        report(report);</span>
+<span class="nc" id="L483">    }</span>
+
+    /**
+     * This method ensures that a type is a class-type.
+     *
+     * @param construct is the construct that is performing the type-check.
+     * @param expression is the expression that must be a variable-type.
+     */
+    public void requireClassType(final IConstruct construct,
+                                 final IExpressionType type)
+    {
+<span class="pc bpc" id="L494" title="1 of 4 branches missed.">        if (type.isReferenceType() &amp;&amp; ((IReferenceType) type).isClassType())</span>
+        {
+<span class="fc" id="L496">            return;</span>
+        }
+
+<span class="fc" id="L499">        final ErrorCode ERROR_CODE = ErrorCode.EXPECTED_CLASS_TYPE;</span>
+
+<span class="fc" id="L501">        final String MESSAGE = &quot;A class-type was expected.&quot;;</span>
+
+<span class="fc" id="L503">        final ErrorReport report = new ErrorReport(construct, ERROR_CODE, MESSAGE);</span>
+
+        /**
+         * Issue the error-report to the user.
+         */
+<span class="nc" id="L508">        report(report);</span>
+<span class="nc" id="L509">    }</span>
+
+    /**
+     * This method ensures that a type is an interface-type.
+     *
+     * @param construct is the construct that is performing the type-check.
+     * @param expression is the expression that must be an interface-type.
+     */
+    public void requireInterfaceType(final IConstruct construct,
+                                     final IExpressionType type)
+    {
+<span class="fc bfc" id="L520" title="All 4 branches covered.">        if (type.isReferenceType() &amp;&amp; ((IReferenceType) type).isInterfaceType())</span>
+        {
+<span class="fc" id="L522">            return;</span>
+        }
+
+<span class="fc" id="L525">        final ErrorCode ERROR_CODE = ErrorCode.EXPECTED_INTERFACE_TYPE;</span>
+
+<span class="fc" id="L527">        final String MESSAGE = &quot;An interface-type was expected.&quot;;</span>
+
+<span class="fc" id="L529">        final ErrorReport report = new ErrorReport(construct, ERROR_CODE, MESSAGE);</span>
+
+        /**
+         * Issue the error-report to the user.
+         */
+<span class="nc" id="L534">        report(report);</span>
+<span class="nc" id="L535">    }</span>
+
+    /**
+     * This method ensures that a type is a design-type.
+     *
+     * @param construct is the construct that is performing the type-check.
+     * @param expression is the expression that must be a design-type.
+     */
+    public void requireDesignType(final IConstruct construct,
+                                  final IExpressionType type)
+    {
+<span class="pc bpc" id="L546" title="2 of 6 branches missed.">        if (type.isReferenceType() &amp;&amp; ((IReferenceType) type).isInterfaceType() &amp;&amp; type.isSubtypeOf(program.typesystem.utils.RECORD))</span>
+        {
+<span class="fc" id="L548">            return;</span>
+        }
+
+<span class="fc" id="L551">        final ErrorCode ERROR_CODE = ErrorCode.EXPECTED_DESIGN_TYPE;</span>
+
+<span class="fc" id="L553">        final String MESSAGE = &quot;A design-type was expected.&quot;;</span>
+
+<span class="fc" id="L555">        final ErrorReport report = new ErrorReport(construct, ERROR_CODE, MESSAGE);</span>
+
+        /**
+         * Issue the error-report to the user.
+         */
+<span class="nc" id="L560">        report(report);</span>
+<span class="nc" id="L561">    }</span>
+
+    /**
+     * This method ensures that a type is a declared-type.
+     *
+     * @param construct is the construct that is performing the type-check.
+     * @param expression is the expression that must be a declared-type.
+     */
+    public void requireDeclaredType(final IConstruct construct,
+                                    final IExpressionType type)
+    {
+<span class="fc bfc" id="L572" title="All 4 branches covered.">        if (type.isReferenceType() &amp;&amp; ((IReferenceType) type).isDeclaredType())</span>
+        {
+<span class="fc" id="L574">            return;</span>
+        }
+
+<span class="fc" id="L577">        final ErrorCode ERROR_CODE = ErrorCode.EXPECTED_DECLARED_TYPE;</span>
+
+<span class="fc" id="L579">        final String MESSAGE = &quot;A declared-type was expected.&quot;;</span>
+
+<span class="fc" id="L581">        final ErrorReport report = new ErrorReport(construct, ERROR_CODE, MESSAGE);</span>
+
+        /**
+         * Issue the error-report to the user.
+         */
+<span class="nc" id="L586">        report(report);</span>
+<span class="nc" id="L587">    }</span>
+
+    public void requireString(final IExpression expression)
+    {
+<span class="fc" id="L591">        final IType actual = program.symbols.expressions.get(expression);</span>
+
+<span class="fc bfc" id="L593" title="All 2 branches covered.">        if (&quot;Ljava/lang/String;&quot;.equals(actual.getDescriptor()))</span>
+        {
+<span class="fc" id="L595">            return;</span>
+        }
+
+<span class="fc" id="L598">        final ErrorCode ERROR_CODE = ErrorCode.EXPECTED_STRING;</span>
+
+<span class="fc" id="L600">        final String MESSAGE = &quot;A java.lang.String was expected.&quot;;</span>
+
+<span class="fc" id="L602">        final ErrorReport report = new ErrorReport(expression, ERROR_CODE, MESSAGE);</span>
+
+        /**
+         * Issue the error-report to the user.
+         */
+<span class="nc" id="L607">        report(report);</span>
+<span class="nc" id="L608">    }</span>
+
+    /**
+     * This method ensures that an expression produces an primitive-int result.
+     *
+     * @param expression is the expression to type-check.
+     */
+    public void requireInteger(final IExpression expression)
+    {
+<span class="fc" id="L617">        final IType actual = program.symbols.expressions.get(expression);</span>
+
+<span class="fc bfc" id="L619" title="All 2 branches covered.">        if (program.typesystem.utils.assign(actual, program.typesystem.utils.PRIMITIVE_INT) != null)</span>
+        {
+<span class="fc" id="L621">            return;</span>
+        }
+
+<span class="fc" id="L624">        final ErrorCode ERROR_CODE = ErrorCode.EXPECTED_INTEGER;</span>
+
+<span class="fc" id="L626">        final String MESSAGE = &quot;An integer was expected.&quot;;</span>
+
+<span class="fc" id="L628">        final ErrorReport report = new ErrorReport(expression, ERROR_CODE, MESSAGE);</span>
+
+        /**
+         * Issue the error-report to the user.
+         */
+<span class="nc" id="L633">        report(report);</span>
+<span class="nc" id="L634">    }</span>
+
+    public void requireIterable(final IExpression expression)
+    {
+<span class="fc" id="L638">        final IType actual = program.symbols.expressions.get(expression);</span>
+
+<span class="fc bfc" id="L640" title="All 2 branches covered.">        if (actual.isSubtypeOf(program.typesystem.utils.ITERABLE))</span>
+        {
+<span class="fc" id="L642">            return;</span>
+        }
+
+<span class="fc" id="L645">        final ErrorCode ERROR_CODE = ErrorCode.EXPECTED_ITERABLE;</span>
+
+<span class="fc" id="L647">        final String MESSAGE = &quot;A java.lang.Iterable was expected.&quot;;</span>
+
+<span class="fc" id="L649">        final ErrorReport report = new ErrorReport(expression, ERROR_CODE, MESSAGE);</span>
+
+        /**
+         * Issue the error-report to the user.
+         */
+<span class="nc" id="L654">        report(report);</span>
+<span class="nc" id="L655">    }</span>
+
+    public void requireThrowable(final IExpression expression)
+    {
+<span class="fc" id="L659">        final IType actual = program.symbols.expressions.get(expression);</span>
+
+<span class="fc bfc" id="L661" title="All 2 branches covered.">        if (actual.isSubtypeOf(program.typesystem.utils.THROWABLE))</span>
+        {
+<span class="fc" id="L663">            return;</span>
+        }
+
+<span class="fc" id="L666">        final ErrorCode ERROR_CODE = ErrorCode.EXPECTED_THROWABLE;</span>
+
+<span class="fc" id="L668">        final String MESSAGE = &quot;A java.lang.Throwable was expected.&quot;;</span>
+
+<span class="fc" id="L670">        final ErrorReport report = new ErrorReport(expression, ERROR_CODE, MESSAGE);</span>
+
+        /**
+         * Issue the error-report to the user.
+         */
+<span class="nc" id="L675">        report(report);</span>
+<span class="nc" id="L676">    }</span>
+
+    /**
+     * This method ensures that a type-specifier specifies a Throwable type.
+     *
+     * @param specifier must specify a Throwable type.
+     * @param type must be a subtype of Throwable.
+     */
+    public void requireThrowable(final TypeSpecifier specifier,
+                                 final IType type)
+    {
+<span class="fc bfc" id="L687" title="All 2 branches covered.">        if (type.isSubtypeOf(program.typesystem.utils.THROWABLE))</span>
+        {
+<span class="fc" id="L689">            return;</span>
+        }
+
+<span class="fc" id="L692">        final ErrorCode ERROR_CODE = ErrorCode.EXPECTED_THROWABLE;</span>
+
+<span class="fc" id="L694">        final String MESSAGE = &quot;A java.lang.Throwable was expected.&quot;;</span>
+
+<span class="fc" id="L696">        final ErrorReport report = new ErrorReport(specifier, ERROR_CODE, MESSAGE);</span>
+
+        /**
+         * Issue the error-report to the user.
+         */
+<span class="nc" id="L701">        report(report);</span>
+<span class="nc" id="L702">    }</span>
+
+    /**
+     * This method ensures that a type-specifier specifies a defined-functor-type.
+     *
+     * @param specifier must specify a defined-functor-type.
+     * @param type must be a subtype of DefinedFunctor.
+     */
+    public void requireDefinedFunctorType(final TypeSpecifier specifier,
+                                          final IType type)
+    {
+<span class="fc bfc" id="L713" title="All 2 branches covered.">        if (type.isSubtypeOf(program.typesystem.typefactory().fromClass(DefinedFunctor.class)))</span>
+        {
+<span class="fc" id="L715">            return;</span>
+        }
+
+<span class="fc" id="L718">        final ErrorCode ERROR_CODE = ErrorCode.EXPECTED_DEFINED_FUNCTOR_TYPE;</span>
+
+<span class="fc" id="L720">        final String MESSAGE = &quot;An autumn.lang.DefinedFunctor was expected.&quot;;</span>
+
+<span class="fc" id="L722">        final ErrorReport report = new ErrorReport(specifier, ERROR_CODE, MESSAGE);</span>
+
+        /**
+         * Issue the error-report to the user.
+         */
+<span class="nc" id="L727">        report(report);</span>
+<span class="nc" id="L728">    }</span>
+
+    /**
+     * This method ensures that a type-specifier specifies a functor-type.
+     *
+     * @param specifier must specify a functor-type.
+     * @param type must be a subtype of Functor.
+     */
+    public void requireFunctorType(final TypeSpecifier specifier,
+                                   final IType type)
+    {
+<span class="nc bnc" id="L739" title="All 2 branches missed.">        if (type.isSubtypeOf(program.typesystem.utils.FUNCTOR))</span>
+        {
+<span class="nc" id="L741">            return;</span>
+        }
+
+<span class="nc" id="L744">        final ErrorCode ERROR_CODE = ErrorCode.EXPECTED_FUNCTOR_TYPE;</span>
+
+<span class="nc" id="L746">        final String MESSAGE = &quot;An autumn.lang.Functor was expected.&quot;;</span>
+
+<span class="nc" id="L748">        final ErrorReport report = new ErrorReport(specifier, ERROR_CODE, MESSAGE);</span>
+
+        /**
+         * Issue the error-report to the user.
+         */
+<span class="nc" id="L753">        report(report);</span>
+<span class="nc" id="L754">    }</span>
+
+    /**
+     * This method ensures that a type-specifier specifies a module-type.
+     *
+     * @param specifier must specify a module-type.
+     * @param type must be a subtype of Module.
+     */
+    public void requireModule(final TypeSpecifier specifier,
+                              final IType type)
+    {
+<span class="fc bfc" id="L765" title="All 2 branches covered.">        if (type.isSubtypeOf(program.typesystem.utils.MODULE))</span>
+        {
+<span class="fc" id="L767">            return;</span>
+        }
+
+<span class="fc" id="L770">        final ErrorCode ERROR_CODE = ErrorCode.EXPECTED_MODULE_TYPE;</span>
+
+<span class="fc" id="L772">        final String MESSAGE = &quot;An autumn.lang.Module was expected.&quot;;</span>
+
+<span class="fc" id="L774">        final ErrorReport report = new ErrorReport(specifier, ERROR_CODE, MESSAGE);</span>
+
+        /**
+         * Issue the error-report to the user.
+         */
+<span class="nc" id="L779">        report(report);</span>
+<span class="nc" id="L780">    }</span>
+
+    /**
+     * This method ensures that a type is the void-type.
+     *
+     * @param site is the location of the type-check.
+     * @param type must be the void-type.
+     */
+    public void requireVoid(final IConstruct site,
+                            final IType type)
+    {
+<span class="fc bfc" id="L791" title="All 2 branches covered.">        if (type.equals(program.typesystem.utils.VOID))</span>
+        {
+<span class="fc" id="L793">            return;</span>
+        }
+
+<span class="fc" id="L796">        final ErrorCode ERROR_CODE = ErrorCode.EXPECTED_VOID;</span>
+
+<span class="fc" id="L798">        final String MESSAGE = &quot;Type void was expected.&quot;;</span>
+
+<span class="fc" id="L800">        final ErrorReport report = new ErrorReport(site, ERROR_CODE, MESSAGE);</span>
+
+        /**
+         * Issue the error-report to the user.
+         */
+<span class="nc" id="L805">        report(report);</span>
+<span class="nc" id="L806">    }</span>
+
+    /**
+     * This method ensures that a type-declaration is not a duplicate.
+     *
+     * @param type is the name of the type being declared.
+     * @param descriptor is the type-descriptor of the type being declared.
+     */
+    public void requireNonDuplicateType(final Name type,
+                                        final String descriptor)
+    {
+<span class="fc bfc" id="L817" title="All 2 branches covered.">        if (program.typesystem.typefactory().findType(descriptor) == null)</span>
+        {
+<span class="fc" id="L819">            return;</span>
+        }
+
+<span class="fc" id="L822">        final ErrorCode ERROR_CODE = ErrorCode.DUPLICATE_TYPE;</span>
+
+<span class="fc" id="L824">        final String MESSAGE = &quot;The fully-qualified name of a type must be unique.&quot;;</span>
+
+<span class="fc" id="L826">        final ErrorReport report = new ErrorReport(type, ERROR_CODE, MESSAGE);</span>
+
+<span class="fc" id="L828">        report.addDetail(&quot;Type&quot;, type.getName());</span>
+
+        /**
+         * Issue the error-report to the user.
+         */
+<span class="nc" id="L833">        report(report);</span>
+<span class="nc" id="L834">    }</span>
+
+    /**
+     * This method reports that a type is not accessible where it is used.
+     *
+     * @param specifier specifies the inaccessible type.
+     * @param type is the type that is inaccessible.
+     */
+    public void reportInaccessibleType(final TypeSpecifier specifier,
+                                       final IReturnType type)
+    {
+<span class="fc" id="L845">        final ErrorCode ERROR_CODE = ErrorCode.INACCESSIBLE_TYPE;</span>
+
+<span class="fc" id="L847">        final String MESSAGE = &quot;The specified type is not accessible from where it is used.&quot;;</span>
+
+<span class="fc" id="L849">        final ErrorReport report = new ErrorReport(specifier, ERROR_CODE, MESSAGE);</span>
+
+<span class="fc" id="L851">        report.addDetail(&quot;Type&quot;, Utils.sourceName(type));</span>
+
+        /**
+         * Issue the error-report to the user.
+         */
+<span class="nc" id="L856">        report(report);</span>
+<span class="nc" id="L857">    }</span>
+
+    /**
+     * This method reports that a type inherits from itself.
+     *
+     * @param declaration is the declaration of the erroneous type.
+     * @param type is the type-system representation of the erroneous type.
+     */
+    public void reportCircularInheritance(final IConstruct declaration,
+                                          final IReturnType type)
+    {
+<span class="fc" id="L868">        final ErrorCode ERROR_CODE = ErrorCode.CIRCULAR_INHERITANCE;</span>
+
+<span class="fc" id="L870">        final String MESSAGE = &quot;A type cannot be a subtype of itself.&quot;;</span>
+
+<span class="fc" id="L872">        final ErrorReport report = new ErrorReport(declaration, ERROR_CODE, MESSAGE);</span>
+
+<span class="fc" id="L874">        report.addDetail(&quot;Type&quot;, Utils.sourceName(type));</span>
+
+        /**
+         * Issue the error-report to the user.
+         */
+<span class="nc" id="L879">        report(report);</span>
+<span class="nc" id="L880">    }</span>
+
+    /**
+     * This method reports a duplicate enum-constant.
+     *
+     * @param enumeration is the type-system representation of the enum.
+     * @param constant is the name of the duplicated enum-constant.
+     */
+    public void reportDuplicateEnumConstant(final IEnumType enumeration,
+                                            final Name constant)
+    {
+<span class="fc" id="L891">        final ErrorCode ERROR_CODE = ErrorCode.DUPLICATE_CONSTANT;</span>
+
+<span class="fc" id="L893">        final String MESSAGE = &quot;No two enum-constants, in the same enum, can share their name.&quot;;</span>
+
+<span class="fc" id="L895">        final ErrorReport report = new ErrorReport(constant, ERROR_CODE, MESSAGE);</span>
+
+<span class="fc" id="L897">        report.addDetail(&quot;Enum Type&quot;, Utils.sourceName(enumeration));</span>
+
+<span class="fc" id="L899">        report.addDetail(&quot;Constant&quot;, constant.getName());</span>
+
+        /**
+         * Issue the error-report to the user.
+         */
+<span class="nc" id="L904">        report(report);</span>
+<span class="nc" id="L905">    }</span>
+
+    public void reportNoSuchAsConversion(final AsOperation conversion,
+                                         final IReturnType type)
+    {
+<span class="fc" id="L910">        final IExpressionType actual = program.symbols.expressions.get(conversion.getValue());</span>
+
+<span class="fc" id="L912">        final ErrorCode ERROR_CODE = ErrorCode.IMPOSSIBLE_CONVERSION;</span>
+
+<span class="fc" id="L914">        final String MESSAGE = &quot;An as-conversion is not possible.&quot;;</span>
+
+<span class="fc" id="L916">        final ErrorReport report = new ErrorReport(conversion, ERROR_CODE, MESSAGE);</span>
+
+        /**
+         * Issue the error-report to the user.
+         */
+<span class="nc" id="L921">        report(report);</span>
+<span class="nc" id="L922">    }</span>
+
+    public void reportNoSuchIsConversion(final IsOperation conversion,
+                                         final IReturnType type)
+    {
+<span class="fc" id="L927">        final IExpressionType actual = program.symbols.expressions.get(conversion.getValue());</span>
+
+<span class="fc" id="L929">        final ErrorCode ERROR_CODE = ErrorCode.IMPOSSIBLE_CONVERSION;</span>
+
+<span class="fc" id="L931">        final String MESSAGE = &quot;An is-conversion is not possible.&quot;;</span>
+
+<span class="fc" id="L933">        final ErrorReport report = new ErrorReport(conversion, ERROR_CODE, MESSAGE);</span>
+
+        /**
+         * Issue the error-report to the user.
+         */
+<span class="nc" id="L938">        report(report);</span>
+<span class="nc" id="L939">    }</span>
+
+    /**
+     * This method reports that two operands are not compatible with each other.
+     *
+     * @param operation is the operation that owns the operands.
+     * @param left is the left-operand.
+     * @param right is the right-operand.
+     */
+    public void reportIncompatibleOperands(final IExpression operation,
+                                           final IExpressionType left,
+                                           final IExpressionType right)
+    {
+<span class="fc" id="L952">        final ErrorCode ERROR_CODE = ErrorCode.INCOMPATIBLE_OPERANDS;</span>
+
+<span class="fc" id="L954">        final String MESSAGE = &quot;One of the operands must be a subtype of the other.&quot;;</span>
+
+<span class="fc" id="L956">        final ErrorReport report = new ErrorReport(operation, ERROR_CODE, MESSAGE);</span>
+
+<span class="fc" id="L958">        report.addDetail(&quot;left.type&quot;, Utils.simpleName(left));</span>
+
+<span class="fc" id="L960">        report.addDetail(&quot;right.type&quot;, Utils.simpleName(right));</span>
+
+        /**
+         * Issue the error-report to the user.
+         */
+<span class="nc" id="L965">        report(report);</span>
+<span class="nc" id="L966">    }</span>
+
+    /**
+     * This method reports that an instance-of operation is not viable.
+     *
+     * @param operation is the instance-of operation.
+     * @param value is the static-type of the &lt;i&gt;value&lt;/i&gt;.
+     * @param type is the static-type of the &lt;i&gt;type&lt;/i&gt;.
+     */
+    public void reportNonViableInstanceOf(final InstanceOfExpression operation,
+                                          final IExpressionType value,
+                                          final IDeclaredType type)
+    {
+<span class="fc" id="L979">        final ErrorCode ERROR_CODE = ErrorCode.NON_VIABLE_INSTANCEOF;</span>
+
+<span class="fc" id="L981">        final String MESSAGE = &quot;An instance-of operation must be viable.&quot;;</span>
+
+<span class="fc" id="L983">        final ErrorReport report = new ErrorReport(operation, ERROR_CODE, MESSAGE);</span>
+
+<span class="fc" id="L985">        report.addDetail(&quot;Problem&quot;, Utils.simpleName(value) + &quot; is never an instance-of &quot; + Utils.simpleName(type));</span>
+
+        /**
+         * Issue the error-report to the user.
+         */
+<span class="nc" id="L990">        report(report);</span>
+<span class="nc" id="L991">    }</span>
+
+    /**
+     * This method reports that the resolution of a field failed.
+     *
+     *
+     * @param construct is the invocation itself.
+     * @param shared is true, iff a static method was being resolved.
+     * @param owner is the type of the method's owner.
+     * @param name is then name of the method.
+     * @param arguments are the types of the method's arguments.
+     */
+    public void reportNoSuchField(final IConstruct construct,
+                                  final boolean shared,
+                                  final IReturnType owner,
+                                  final String name)
+    {
+<span class="fc" id="L1008">        final ErrorCode ERROR_CODE = ErrorCode.NO_SUCH_FIELD;</span>
+
+<span class="fc" id="L1010">        final String MESSAGE = &quot;No acceptable field was found.&quot;;</span>
+
+<span class="fc" id="L1012">        final ErrorReport report = new ErrorReport(construct, ERROR_CODE, MESSAGE);</span>
+
+<span class="fc bfc" id="L1014" title="All 2 branches covered.">        final String dot = shared ? &quot;::&quot; : &quot;.&quot;;</span>
+
+<span class="fc" id="L1016">        report.addDetail(&quot;Field&quot;, Utils.simpleName(owner) + dot + name);</span>
+
+        /**
+         * Issue the error-report to the user.
+         */
+<span class="nc" id="L1021">        report(report);</span>
+<span class="nc" id="L1022">    }</span>
+
+    /**
+     * This method reports that the resolution of a constructor failed.
+     *
+     * @param site is the location where the constructor is being invoked from.
+     * @param owner is the type that owns the constructor.
+     * @param arguments are the types of the arguments to the constructor.
+     */
+    public void reportNoSuchConstructor(final IConstruct site,
+                                        final IReturnType owner,
+                                        final List&lt;IExpressionType&gt; arguments)
+    {
+<span class="fc" id="L1035">        final ErrorCode ERROR_CODE = ErrorCode.NO_SUCH_CONSTRUCTOR;</span>
+
+<span class="fc" id="L1037">        final String MESSAGE = &quot;No accessible constructor was found that will accept the given arguments.&quot;;</span>
+
+<span class="fc" id="L1039">        final ErrorReport report = new ErrorReport(site, ERROR_CODE, MESSAGE);</span>
+
+<span class="fc" id="L1041">        report.addDetail(&quot;Type&quot;, Utils.sourceName(owner));</span>
+
+        /**
+         * Issue the error-report to the user.
+         */
+<span class="nc" id="L1046">        report(report);</span>
+<span class="nc" id="L1047">    }</span>
+
+    /**
+     * This method reports that the resolution of a method failed.
+     *
+     * @param construct is the invocation itself.
+     * @param shared is true, iff a static method was being resolved.
+     * @param owner is the type of the method's owner.
+     * @param name is then name of the method.
+     * @param arguments are the types of the method's arguments.
+     */
+    public void reportNoSuchMethod(final IConstruct construct,
+                                   final boolean shared,
+                                   final IReturnType owner,
+                                   final String name,
+                                   final List&lt;IExpressionType&gt; arguments)
+    {
+<span class="fc" id="L1064">        final ErrorCode ERROR_CODE = ErrorCode.NO_SUCH_METHOD;</span>
+
+<span class="fc" id="L1066">        final String MESSAGE = &quot;No acceptable method overload was found.&quot;;</span>
+
+<span class="fc" id="L1068">        final ErrorReport report = new ErrorReport(construct, ERROR_CODE, MESSAGE);</span>
+
+<span class="fc bfc" id="L1070" title="All 2 branches covered.">        final String dot = shared ? &quot;::&quot; : &quot;.&quot;;</span>
+
+<span class="fc" id="L1072">        report.addDetail(&quot;Invocation&quot;, describeInvocation(owner, dot, name, arguments));</span>
+
+        /**
+         * Issue the error-report to the user.
+         */
+<span class="nc" id="L1077">        report(report);</span>
+<span class="nc" id="L1078">    }</span>
+
+    public void requireType(final TypeSpecifier specifier,
+                            final IType type)
+    {
+<span class="fc bfc" id="L1083" title="All 2 branches covered.">        if (type != null)</span>
+        {
+<span class="fc" id="L1085">            return;</span>
+        }
+
+<span class="fc" id="L1088">        final ErrorCode ERROR_CODE = ErrorCode.NO_SUCH_TYPE;</span>
+
+<span class="fc" id="L1090">        final String MESSAGE = &quot;The specified type does not exist.&quot;;</span>
+
+<span class="fc" id="L1092">        final ErrorReport report = new ErrorReport(specifier, ERROR_CODE, MESSAGE);</span>
+
+<span class="fc" id="L1094">        report.addDetail(&quot;Type&quot;, program.typesystem.utils.extractTypeName(specifier));</span>
+
+        /**
+         * Issue the error-report to the user.
+         */
+<span class="nc" id="L1099">        report(report);</span>
+<span class="nc" id="L1100">    }</span>
+
+    public void requireArguments(final Iterable&lt;IExpression&gt; arguments)
+    {
+<span class="fc bfc" id="L1104" title="All 2 branches covered.">        for (IExpression x : arguments)</span>
+        {
+<span class="fc" id="L1106">            requireNonVoid(x);</span>
+<span class="fc" id="L1107">        }</span>
+<span class="fc" id="L1108">    }</span>
+
+    /**
+     * This method ensures that an a string-literal does not contain malformed escapes-sequences.
+     *
+     * @param expression is the expression to type-check.
+     */
+    public void requireWellFormedStringLiteral(final StringDatum datum)
+    {
+<span class="fc bfc" id="L1117" title="All 2 branches covered.">        if (datum.getVerbatim())</span>
+        {
+<span class="fc" id="L1119">            return;</span>
+        }
+
+        try
+        {
+<span class="fc" id="L1124">            F.escape(datum.getValue());</span>
+        }
+<span class="fc" id="L1126">        catch (IllegalArgumentException ex)</span>
+        {
+<span class="fc" id="L1128">            final ErrorCode ERROR_CODE = ErrorCode.MALFORMED_STRING_LITERAL;</span>
+
+<span class="fc" id="L1130">            final String MESSAGE = &quot;A non-verbatim string cannot contain malformed escape-sequences.&quot;;</span>
+
+<span class="fc" id="L1132">            final ErrorReport report = new ErrorReport(datum, ERROR_CODE, MESSAGE);</span>
+
+<span class="fc" id="L1134">            report.addDetail(&quot;Detail&quot;, ex.getMessage());</span>
+
+            /**
+             * Issue the error-report to the user.
+             */
+<span class="nc" id="L1139">            report(report);</span>
+<span class="fc" id="L1140">        }</span>
+<span class="fc" id="L1141">    }</span>
+
+    public void reportDuplicateVariable(final Variable variable,
+                                        boolean condition)
+    {
+<span class="fc bfc" id="L1146" title="All 2 branches covered.">        if (!condition)</span>
+        {
+<span class="fc" id="L1148">            return;</span>
+        }
+
+<span class="fc" id="L1151">        final ErrorCode ERROR_CODE = ErrorCode.DUPLICATE_VARIABLE;</span>
+
+<span class="fc" id="L1153">        final String MESSAGE = &quot;A variable was declared more than once in the same scope.&quot;;</span>
+
+<span class="fc" id="L1155">        final ErrorReport report = new ErrorReport(variable, ERROR_CODE, MESSAGE);</span>
+
+<span class="fc" id="L1157">        report.addDetail(&quot;Variable&quot;, variable.getName());</span>
+
+        /**
+         * Issue the error-report to the user.
+         */
+<span class="nc" id="L1162">        report(report);</span>
+<span class="nc" id="L1163">    }</span>
+
+    public void reportDuplicateExceptionHandler(final ExceptionHandler handler,
+                                                final IExpressionType type)
+    {
+<span class="fc" id="L1168">        final ErrorCode ERROR_CODE = ErrorCode.DUPLICATE_EXCEPTION_HANDLER;</span>
+
+<span class="fc" id="L1170">        final String MESSAGE = &quot;Exception handlers in a try-catch block share a type.&quot;;</span>
+
+<span class="fc" id="L1172">        final ErrorReport report = new ErrorReport(handler, ERROR_CODE, MESSAGE);</span>
+
+<span class="fc" id="L1174">        report.details().put(&quot;Type&quot;, Utils.sourceName(type));</span>
+
+        /**
+         * Issue the error-report to the user.
+         */
+<span class="nc" id="L1179">        report(report);</span>
+<span class="nc" id="L1180">    }</span>
+
+    /**
+     * This method reports that a break-statement is located outside of a loop.
+     *
+     * @param statement is the break-statement itself.
+     */
+    public void reportBreakOutsideOfLoop(final BreakStatement statement)
+    {
+<span class="fc" id="L1189">        final ErrorCode ERROR_CODE = ErrorCode.BREAK_OUTSIDE_OF_LOOP;</span>
+
+<span class="fc" id="L1191">        final String MESSAGE = &quot;A break-statement can only be used inside of a loop construct.&quot;;</span>
+
+<span class="fc" id="L1193">        final ErrorReport report = new ErrorReport(statement, ERROR_CODE, MESSAGE);</span>
+
+        /**
+         * Issue the error-report to the user.
+         */
+<span class="nc" id="L1198">        report(report);</span>
+<span class="nc" id="L1199">    }</span>
+
+    /**
+     * This method reports that a continue-statement is located outside of a loop.
+     *
+     * @param statement is the continue-statement itself.
+     */
+    public void reportContinueOutsideOfLoop(final ContinueStatement statement)
+    {
+<span class="fc" id="L1208">        final ErrorCode ERROR_CODE = ErrorCode.CONTINUE_OUTSIDE_OF_LOOP;</span>
+
+<span class="fc" id="L1210">        final String MESSAGE = &quot;A continue-statement can only be used inside of a loop construct.&quot;;</span>
+
+<span class="fc" id="L1212">        final ErrorReport report = new ErrorReport(statement, ERROR_CODE, MESSAGE);</span>
+
+        /**
+         * Issue the error-report to the user.
+         */
+<span class="nc" id="L1217">        report(report);</span>
+<span class="nc" id="L1218">    }</span>
+
+    /**
+     * This method reports that a redo-statement is located outside of a loop.
+     *
+     * @param statement is the redo-statement itself.
+     */
+    public void reportRedoOutsideOfLoop(final RedoStatement statement)
+    {
+<span class="fc" id="L1227">        final ErrorCode ERROR_CODE = ErrorCode.REDO_OUTSIDE_OF_LOOP;</span>
+
+<span class="fc" id="L1229">        final String MESSAGE = &quot;A redo-statement can only be used inside of a loop construct.&quot;;</span>
+
+<span class="fc" id="L1231">        final ErrorReport report = new ErrorReport(statement, ERROR_CODE, MESSAGE);</span>
+
+        /**
+         * Issue the error-report to the user.
+         */
+<span class="nc" id="L1236">        report(report);</span>
+<span class="nc" id="L1237">    }</span>
+
+    public void requireTypedFunctor(final IExpressionType type)
+    {
+<span class="nc" id="L1241">    }</span>
+
+    public void requireAutumnObject(final IExpressionType type)
+    {
+<span class="nc" id="L1245">    }</span>
+
+    public void requireEnum(final IExpressionType type)
+    {
+<span class="nc" id="L1249">    }</span>
+
+    public void reportDuplicateLabel(final Label label)
+    {
+<span class="fc" id="L1253">        final ErrorCode ERROR_CODE = ErrorCode.DUPLICATE_LABEL;</span>
+
+<span class="fc" id="L1255">        final String MESSAGE = &quot;A label was declared more than once in the same scope.&quot;;</span>
+
+<span class="fc" id="L1257">        final ErrorReport report = new ErrorReport(label, ERROR_CODE, MESSAGE);</span>
+
+<span class="fc" id="L1259">        report.addDetail(&quot;Label&quot;, label.getName());</span>
+
+        /**
+         * Issue the error-report to the user.
+         */
+<span class="nc" id="L1264">        report(report);</span>
+<span class="nc" id="L1265">    }</span>
+
+    public void reportUndeclaredLabel(final Label label)
+    {
+<span class="fc" id="L1269">        final ErrorCode ERROR_CODE = ErrorCode.NO_SUCH_LABEL;</span>
+
+<span class="fc" id="L1271">        final String MESSAGE = &quot;A label was used, but not declared.&quot;;</span>
+
+<span class="fc" id="L1273">        final ErrorReport report = new ErrorReport(label, ERROR_CODE, MESSAGE);</span>
+
+<span class="fc" id="L1275">        report.addDetail(&quot;Label&quot;, label.getName());</span>
+
+        /**
+         * Issue the error-report to the user.
+         */
+<span class="nc" id="L1280">        report(report);</span>
+<span class="nc" id="L1281">    }</span>
+
+    /**
+     * This method reports that a unary operator cannot be applied to its operand.
+     *
+     * @param operation is the unary operation itself.
+     */
+    public void reportNoSuchUnaryOperator(final IUnaryOperation operation,
+                                          final IExpressionType operand)
+    {
+<span class="fc" id="L1291">        final ErrorCode ERROR_CODE = ErrorCode.NO_SUCH_UNARY_OPERATOR;</span>
+
+<span class="fc" id="L1293">        final String MESSAGE = &quot;A unary operator cannot be applied to the given operand type.&quot;;</span>
+
+<span class="fc" id="L1295">        final ErrorReport report = new ErrorReport(operation, ERROR_CODE, MESSAGE);</span>
+
+<span class="fc" id="L1297">        report.addDetail(&quot;operand.type&quot;, Utils.sourceName(operand));</span>
+
+        /**
+         * Issue the error-report to the user.
+         */
+<span class="nc" id="L1302">        report(report);</span>
+<span class="nc" id="L1303">    }</span>
+
+    /**
+     * This method reports that a binary operator cannot be applied to its operands.
+     *
+     * @param operation is the binary operation itself.
+     */
+    public void reportNoSuchBinaryOperator(final IBinaryOperation operation,
+                                           final IExpressionType left,
+                                           final IExpressionType right)
+    {
+<span class="fc" id="L1314">        final ErrorCode ERROR_CODE = ErrorCode.NO_SUCH_BINARY_OPERATOR;</span>
+
+<span class="fc" id="L1316">        final String MESSAGE = &quot;A binary operator cannot be applied to the given operand types.&quot;;</span>
+
+<span class="fc" id="L1318">        final ErrorReport report = new ErrorReport(operation, ERROR_CODE, MESSAGE);</span>
+
+<span class="fc" id="L1320">        report.addDetail(&quot;left.type  &quot;, Utils.sourceName(left));</span>
+<span class="fc" id="L1321">        report.addDetail(&quot;right.type &quot;, Utils.sourceName(right));</span>
+
+        /**
+         * Issue the error-report to the user.
+         */
+<span class="nc" id="L1326">        report(report);</span>
+<span class="nc" id="L1327">    }</span>
+
+    /**
+     * This method creates a string that describes a method invocation.
+     *
+     * @param owner is the owner-type.
+     * @param dot is the separator between the owner and the name.
+     * @param name is the name of the method.
+     * @param arguments are the types of the arguments.
+     * @return the description.
+     */
+    private String describeInvocation(final IExpressionType owner,
+                                      final String dot,
+                                      final String name,
+                                      final Iterable&lt;IExpressionType&gt; arguments)
+    {
+        /**
+         * Get the simple-names of the arguments.
+         */
+<span class="fc" id="L1346">        final List&lt;String&gt; args = Lists.newLinkedList();</span>
+
+<span class="fc bfc" id="L1348" title="All 2 branches covered.">        for (IExpressionType arg : arguments)</span>
+        {
+<span class="fc" id="L1350">            args.add(Utils.simpleName(arg));</span>
+<span class="fc" id="L1351">        }</span>
+
+        /**
+         * Create the description.
+         */
+<span class="fc" id="L1356">        final StringBuilder result = new StringBuilder();</span>
+
+<span class="fc" id="L1358">        result.append(Utils.simpleName(owner));</span>
+<span class="fc" id="L1359">        result.append(dot);</span>
+<span class="fc" id="L1360">        result.append(name);</span>
+<span class="fc" id="L1361">        result.append(F.str(args, &quot;(&quot;, &quot;, &quot;, &quot;)&quot;));</span>
+
+<span class="fc" id="L1363">        return result.toString();</span>
+    }
+
+    /**
+     * This method ensures that an expression is assignable to a particular type.
+     *
+     * &lt;p&gt;
+     * This method takes into account boxing, unboxing, and coercion.
+     * &lt;/p&gt;
+     *
+     * @param site is the construct that is performing the assignment.
+     * @param target is the type of the location where the value will be assigned.
+     * @param expression is the expression that produces the value to assign.
+     */
+    public void checkAssign(final IConstruct site,
+                            final IExpressionType target,
+                            final IExpression expression)
+    {
+<span class="fc" id="L1381">        final IExpressionType etype = program.symbols.expressions.get(expression);</span>
+
+<span class="fc bfc" id="L1383" title="All 2 branches covered.">        if (program.typesystem.utils.assign(etype, target) != null)</span>
+        {
+<span class="fc" id="L1385">            return; // OK</span>
+        }
+
+<span class="fc" id="L1388">        final ErrorCode ERROR_CODE = ErrorCode.IMPOSSIBLE_ASSIGNMENT;</span>
+
+<span class="fc" id="L1390">        final String MESSAGE = &quot;An impossible assignment operation was detected.&quot;;</span>
+
+<span class="fc" id="L1392">        final ErrorReport report = new ErrorReport(site, ERROR_CODE, MESSAGE);</span>
+
+<span class="fc" id="L1394">        report.addDetail(&quot;Assignment&quot;, Utils.simpleName(target) + &quot; (Target) = &quot; + Utils.simpleName(etype) + &quot; (Value)&quot;);</span>
+
+        /**
+         * Issue the error-report to the user.
+         */
+<span class="nc" id="L1399">        report(report);</span>
+<span class="nc" id="L1400">    }</span>
+
+    /**
+     * This method ensures that an expression is returnable given a function's return-type.
+     *
+     * &lt;p&gt;
+     * This method takes into account boxing, unboxing, and coercion.
+     * &lt;/p&gt;
+     *
+     * @param site is the construct that is performing the return.
+     * @param target is the return-type of the function.
+     * @param expression is the expression that produces the value to return.
+     */
+    public void checkReturn(final IConstruct site,
+                            final IExpressionType target,
+                            final IExpression expression)
+    {
+<span class="fc" id="L1417">        final IExpressionType etype = program.symbols.expressions.get(expression);</span>
+
+<span class="fc bfc" id="L1419" title="All 2 branches covered.">        if (program.typesystem.utils.assign(etype, target) != null)</span>
+        {
+<span class="fc" id="L1421">            return; // OK</span>
+        }
+
+<span class="fc" id="L1424">        final ErrorCode ERROR_CODE = ErrorCode.WRONG_TYPE;</span>
+
+<span class="fc" id="L1426">        final String MESSAGE = &quot;The value being returned must be assignable to the return-type.&quot;;</span>
+
+<span class="fc" id="L1428">        final ErrorReport report = new ErrorReport(site, ERROR_CODE, MESSAGE);</span>
+
+<span class="fc" id="L1430">        report.addDetail(&quot;Return Type&quot;, Utils.simpleName(target));</span>
+<span class="fc" id="L1431">        report.addDetail(&quot;Actual Type&quot;, Utils.simpleName(etype));</span>
+
+        /**
+         * Issue the error-report to the user.
+         */
+<span class="nc" id="L1436">        report(report);</span>
+<span class="nc" id="L1437">    }</span>
+
+    /**
+     * This method reports that an assignment is not to a readonly field.
+     *
+     * @param site is the construct that is performing the assignment.
+     * @param field is the field being assigned to.
+     */
+    public void requireNonFinalFieldAssignment(final IConstruct site,
+                                               final IField field)
+    {
+<span class="fc bfc" id="L1448" title="All 2 branches covered.">        if (Modifier.isFinal(field.getModifiers()) == false)</span>
+        {
+<span class="fc" id="L1450">            return; // OK</span>
+        }
+
+<span class="fc" id="L1453">        final ErrorCode ERROR_CODE = ErrorCode.ASSIGNMENT_TO_READONLY;</span>
+
+<span class="fc" id="L1455">        final String MESSAGE = &quot;A value cannot be assigned to a final field.&quot;;</span>
+
+<span class="fc" id="L1457">        final ErrorReport report = new ErrorReport(site, ERROR_CODE, MESSAGE);</span>
+
+<span class="fc bfc" id="L1459" title="All 2 branches covered.">        final String dot = Modifier.isStatic(field.getModifiers()) ? &quot;::&quot; : &quot;.&quot;;</span>
+
+<span class="fc" id="L1461">        report.addDetail(&quot;Field&quot;, Utils.simpleName(field.getOwner()) + dot + field.getName());</span>
+
+        /**
+         * Issue the error-report to the user.
+         */
+<span class="nc" id="L1466">        report(report);</span>
+<span class="nc" id="L1467">    }</span>
+
+    /**
+     * This method reports that a direct supertype appeared twice in a type declaration.
+     *
+     * @param site is the struct that declares the same supertype twice.
+     * @param type is the supertype that is declared twice.
+     */
+    public void reportDuplicateDirectSupertype(final IConstruct site,
+                                               final IExpressionType type)
+    {
+<span class="fc" id="L1478">        final ErrorCode ERROR_CODE = ErrorCode.DUPLICATE_SUPERTYPE;</span>
+
+<span class="fc" id="L1480">        final String MESSAGE = &quot;A supertype can appear only once in an extends-clause.&quot;;</span>
+
+<span class="fc" id="L1482">        final ErrorReport report = new ErrorReport(site, ERROR_CODE, MESSAGE);</span>
+
+<span class="fc" id="L1484">        report.addDetail(&quot;Super Type&quot;, Utils.sourceName(type));</span>
+
+        /**
+         * Issue the error-report to the user.
+         */
+<span class="nc" id="L1489">        report(report);</span>
+<span class="nc" id="L1490">    }</span>
+
+    /**
+     * This method reports that a design/struct/tuple contains a duplicate element.
+     *
+     * @param element is one of the duplicates.
+     */
+    public void reportDuplicateElement(final Element element)
+    {
+<span class="fc" id="L1499">        final ErrorCode ERROR_CODE = ErrorCode.DUPLICATE_ELEMENT;</span>
+
+<span class="fc" id="L1501">        final String MESSAGE = &quot;A record can only declare an element once per definition&quot;;</span>
+
+<span class="fc" id="L1503">        final ErrorReport report = new ErrorReport(element, ERROR_CODE, MESSAGE);</span>
+
+<span class="fc" id="L1505">        report.addDetail(&quot;Element&quot;, element.getName().getName());</span>
+
+        /**
+         * Issue the error-report to the user.
+         */
+<span class="nc" id="L1510">        report(report);</span>
+<span class="nc" id="L1511">    }</span>
+
+    /**
+     * This method reports a duplicate annotation in an annotation-list.
+     *
+     * @param annotations is the list of annotations.
+     * @param annotation is the duplicate annotation.
+     */
+    public void reportDuplicateAnnotation(final AnnotationList annotations,
+                                          final IAnnotation annotation)
+    {
+<span class="fc" id="L1522">        final ErrorCode ERROR_CODE = ErrorCode.DUPLICATE_ANNOTATION;</span>
+
+<span class="fc" id="L1524">        final String MESSAGE = &quot;An annotation can only occur once in a list of annotations.&quot;;</span>
+
+<span class="fc" id="L1526">        final ErrorReport report = new ErrorReport(annotations, ERROR_CODE, MESSAGE);</span>
+
+<span class="fc" id="L1528">        report.addDetail(&quot;Type&quot;, Utils.sourceName(annotation.getAnnotationType()));</span>
+
+        /**
+         * Issue the error-report to the user.
+         */
+<span class="nc" id="L1533">        report(report);</span>
+<span class="nc" id="L1534">    }</span>
+
+    /**
+     * This method reports that an annotation cannot be used by Autumn.
+     *
+     * @param site is the annotation's AST node.
+     * @param type is the type of the annotation.
+     */
+    public void reportUnusableAnnotation(final Annotation site,
+                                         final IAnnotation type)
+    {
+<span class="nc" id="L1545">        final ErrorCode ERROR_CODE = ErrorCode.UNUSABLE_ANNOTATION;</span>
+
+<span class="nc" id="L1547">        final String MESSAGE = &quot;An unusable annotation was encountered.&quot;;</span>
+
+<span class="nc" id="L1549">        final ErrorReport report = new ErrorReport(site, ERROR_CODE, MESSAGE);</span>
+
+<span class="nc" id="L1551">        report.addDetail(&quot;Type&quot;, Utils.sourceName(type.getAnnotationType()));</span>
+
+        /**
+         * Issue the error-report to the user.
+         */
+<span class="nc" id="L1556">        report(report);</span>
+<span class="nc" id="L1557">    }</span>
+
+    /**
+     * This method reports that an element in a design/struct/tuple cannot override another.
+     *
+     * @param site is the AST node of the definition.
+     * @param violation describes the covariance violation.
+     */
+    public void reportCovarianceViolation(final IConstruct site,
+                                          final CovarianceViolation violation)
+    {
+<span class="fc" id="L1568">        final ErrorCode ERROR_CODE = ErrorCode.COVARIANCE_VIOLATION;</span>
+
+<span class="fc" id="L1570">        final String MESSAGE = &quot;A covariance violation was encountered.&quot;;</span>
+
+<span class="fc" id="L1572">        final ErrorReport report = new ErrorReport(site, ERROR_CODE, MESSAGE);</span>
+
+<span class="fc" id="L1574">        report.addDetail(&quot;Element&quot;, violation.lower.name);</span>
+<span class="fc" id="L1575">        report.addDetail(&quot;Upper&quot;, Utils.sourceName(violation.upper.parameter));</span>
+<span class="fc" id="L1576">        report.addDetail(&quot;Lower&quot;, Utils.sourceName(violation.lower.parameter));</span>
+
+        /**
+         * Issue the error-report to the user.
+         */
+<span class="nc" id="L1581">        report(report);</span>
+<span class="nc" id="L1582">    }</span>
+
+    /**
+     * This method reports that a progn-expression is empty.
+     *
+     * @param site is the AST node of the progn-expression.
+     */
+    public void reportEmptyProgn(final PrognExpression site)
+    {
+<span class="fc" id="L1591">        final ErrorCode ERROR_CODE = ErrorCode.EMPTY_PROGN;</span>
+
+<span class="fc" id="L1593">        final String MESSAGE = &quot;A progn-expression cannot be empty.&quot;;</span>
+
+<span class="fc" id="L1595">        final ErrorReport report = new ErrorReport(site, ERROR_CODE, MESSAGE);</span>
+
+        /**
+         * Issue the error-report to the user.
+         */
+<span class="nc" id="L1600">        report(report);</span>
+<span class="nc" id="L1601">    }</span>
+
+    /**
+     * This method reports that a variable is not mutable.
+     *
+     * @param site is the AST node representation of the variable.
+     * @param mutable is true, iff the variable is true.
+     */
+    public void requireMutableVariable(final Variable site,
+                                       final boolean mutable)
+    {
+<span class="fc bfc" id="L1612" title="All 2 branches covered.">        if (mutable)</span>
+        {
+<span class="fc" id="L1614">            return;</span>
+        }
+
+<span class="fc" id="L1617">        final ErrorCode ERROR_CODE = ErrorCode.MUTABLE_VARIABLE_REQUIRED;</span>
+
+<span class="fc" id="L1619">        final String MESSAGE = &quot;A mutable variable is required.&quot;;</span>
+
+<span class="fc" id="L1621">        final ErrorReport report = new ErrorReport(site, ERROR_CODE, MESSAGE);</span>
+
+<span class="fc" id="L1623">        report.addDetail(&quot;Variable&quot;, site.getName());</span>
+
+        /**
+         * Issue the error-report to the user.
+         */
+<span class="nc" id="L1628">        report(report);</span>
+<span class="nc" id="L1629">    }</span>
+
+    /**
+     * This method reports that the number of given arguments does not match the number of parameters.
+     *
+     * @param site is the recur-statement that is providing the arguments.
+     * @param required is the number of parameters.
+     */
+    public void reportBadArgumentCount(final RecurStatement site,
+                                       final int required)
+    {
+<span class="fc" id="L1640">        final ErrorCode ERROR_CODE = ErrorCode.BAD_ARGUMENT_COUNT;</span>
+
+<span class="fc" id="L1642">        final String MESSAGE = &quot;The number of arguments must match the number of parameters.&quot;;</span>
+
+<span class="fc" id="L1644">        final ErrorReport report = new ErrorReport(site, ERROR_CODE, MESSAGE);</span>
+
+<span class="fc" id="L1646">        report.addDetail(&quot;Argument Count&quot;, &quot;&quot; + site.getArguments().size());</span>
+<span class="fc" id="L1647">        report.addDetail(&quot;Parameter Count&quot;, &quot;&quot; + required);</span>
+
+        /**
+         * Issue the error-report to the user.
+         */
+<span class="nc" id="L1652">        report(report);</span>
+<span class="nc" id="L1653">    }</span>
+
+    /**
+     * This method reports that a method does not exist.
+     *
+     * @param object is the site where the method is needed.
+     * @param owner is the type that should contain the method.
+     * @param name is the name of the method.
+     */
+    public void reportNoSuchMethod(final DelegateStatement site,
+                                   final IClassType owner,
+                                   final String name)
+    {
+<span class="fc" id="L1666">        final ErrorCode ERROR_CODE = ErrorCode.NO_SUCH_METHOD;</span>
+
+<span class="fc" id="L1668">        final String MESSAGE = &quot;The handler function does not exist.&quot;;</span>
+
+<span class="fc" id="L1670">        final ErrorReport report = new ErrorReport(site, ERROR_CODE, MESSAGE);</span>
+
+<span class="fc" id="L1672">        report.addDetail(&quot;Owner&quot;, Utils.sourceName(owner));</span>
+<span class="fc" id="L1673">        report.addDetail(&quot;Name&quot;, name);</span>
+
+        /**
+         * Issue the error-report to the user.
+         */
+<span class="nc" id="L1678">        report(report);</span>
+<span class="nc" id="L1679">    }</span>
+
+    /**
+     * This method reports that a method is overloaded when it should not be overloaded.
+     *
+     * @param object is the site where the method is being used.
+     * @param owner is the type that contains the method.
+     * @param name is the name of the method.
+     */
+    public void reportOverloadedMethod(final DelegateStatement site,
+                                       final IClassType owner,
+                                       final String name)
+    {
+<span class="fc" id="L1692">        final ErrorCode ERROR_CODE = ErrorCode.OVERLOADED_METHOD;</span>
+
+<span class="fc" id="L1694">        final String MESSAGE = &quot;The handler function cannot be overloaded.&quot;;</span>
+
+<span class="fc" id="L1696">        final ErrorReport report = new ErrorReport(site, ERROR_CODE, MESSAGE);</span>
+
+        /**
+         * Issue the error-report to the user.
+         */
+<span class="nc" id="L1701">        report(report);</span>
+<span class="nc" id="L1702">    }</span>
+
+    /**
+     * This method reports that a delegate is incompatible with the function that it refers to.
+     *
+     * @param site is the site where the delegate is being created.
+     * @param delegate is the type of the delegate's invoke(*) method.
+     * @param handler is the type of the function that the delegate refers to.
+     */
+    public void reportIncompatibleDelegate(final DelegateStatement site,
+                                           final IMethod delegate,
+                                           final IMethod handler)
+    {
+<span class="fc" id="L1715">        final ErrorCode ERROR_CODE = ErrorCode.INCOMPATIBLE_DELEGATE;</span>
+
+<span class="fc" id="L1717">        final String MESSAGE = &quot;The handler function is not compatible with the delegate.&quot;;</span>
+
+<span class="fc" id="L1719">        final ErrorReport report = new ErrorReport(site, ERROR_CODE, MESSAGE);</span>
+
+        // TODO: improve error details
+
+        /**
+         * Issue the error-report to the user.
+         */
+<span class="nc" id="L1726">        report(report);</span>
+<span class="nc" id="L1727">    }</span>
+
+    /**
+     * This method reports that a function is a duplicate.
+     *
+     * @param function is basically the function itself.
+     */
+    public void reportDuplicateFunction(final FunctionCompiler function)
+    {
+<span class="fc" id="L1736">        Preconditions.checkNotNull(function);</span>
+
+<span class="fc" id="L1738">        final ErrorCode ERROR_CODE = ErrorCode.DUPLICATE_FUNCTION;</span>
+
+<span class="fc" id="L1740">        final String MESSAGE = &quot;Functions in the same module cannot share both their name and parameters.&quot;;</span>
+
+<span class="fc" id="L1742">        final ErrorReport report = new ErrorReport(function.node, ERROR_CODE, MESSAGE);</span>
+
+<span class="fc" id="L1744">        report.addDetail(&quot;Name&quot;, function.type.getName());</span>
+
+        // TODO: Improve error details
+
+        /**
+         * Issue the error-report to the user.
+         */
+<span class="nc" id="L1751">        report(report);</span>
+<span class="nc" id="L1752">    }</span>
+
+    /**
+     * This method ensures that a name is not a given forbidden name.
+     *
+     * @param name is the name that may be forbidden.
+     * @param forbidden is the name that is unspeakable.
+     */
+    public void checkName(final Name name,
+                          final String forbidden)
+    {
+<span class="fc" id="L1763">        Preconditions.checkNotNull(name);</span>
+<span class="fc" id="L1764">        Preconditions.checkNotNull(forbidden);</span>
+
+<span class="fc bfc" id="L1766" title="All 2 branches covered.">        if (forbidden.equals(name.getName()))</span>
+        {
+
+<span class="fc" id="L1769">            final ErrorCode ERROR_CODE = ErrorCode.NAME_CONFLICT;</span>
+
+<span class="fc" id="L1771">            final String MESSAGE = &quot;An unspeakable name was spoken.&quot;;</span>
+
+<span class="fc" id="L1773">            final ErrorReport report = new ErrorReport(name, ERROR_CODE, MESSAGE);</span>
+
+<span class="fc" id="L1775">            report.addDetail(&quot;Name&quot;, forbidden);</span>
+
+            /**
+             * Issue the error-report to the user.
+             */
+<span class="nc" id="L1780">            report(report);</span>
+        }
+<span class="fc" id="L1782">    }</span>
+
+    /**
+     * This method reports that a compilation-unit contains more than one entry-point.
+     *
+     * @param function is one of the entry-points.
+     */
+    public void reportTooManyStarts(final FunctionDefinition node)
+    {
+<span class="fc" id="L1791">        Preconditions.checkNotNull(node);</span>
+
+<span class="fc" id="L1793">        final ErrorCode ERROR_CODE = ErrorCode.TOO_MANY_STARTS;</span>
+
+<span class="fc" id="L1795">        final String MESSAGE = &quot;A compilation-unit can only contain a single start-function.&quot;;</span>
+
+<span class="fc" id="L1797">        final ErrorReport report = new ErrorReport(node, ERROR_CODE, MESSAGE);</span>
+
+        /**
+         * Issue the error-report to the user.
+         */
+<span class="nc" id="L1802">        report(report);</span>
+
+<span class="nc" id="L1804">    }</span>
+
+    /**
+     * This method reports that the signature of a function is inappropriate given a particular annotation.
+     *
+     * @param function is basically the function itself..
+     * @param code is the error-code to issue.
+     * @param signature is a description of what the function signature should be.
+     */
+    public void reportWrongSignatureForAnnotation(final FunctionCompiler function,
+                                                final ErrorCode code,
+                                                final String signature)
+    {
+<span class="fc" id="L1817">        Preconditions.checkNotNull(function);</span>
+<span class="fc" id="L1818">        Preconditions.checkNotNull(code);</span>
+
+<span class="fc" id="L1820">        final String MESSAGE = &quot;A different function signature is required.&quot;;</span>
+
+<span class="fc" id="L1822">        final ErrorReport report = new ErrorReport(function.node, code, MESSAGE);</span>
+
+<span class="fc" id="L1824">        report.addDetail(&quot;Required Signature&quot;, signature);</span>
+
+        /**
+         * Issue the error-report to the user.
+         */
+<span class="nc" id="L1829">        report(report);</span>
+
+<span class="nc" id="L1831">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ProxyHandler.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.mackenziehigh:autumn</a> &gt; <a href="index.source.html" class="el_package">autumn.util.functors</a> &gt; <span class="el_source">ProxyHandler.java</span></div><h1>ProxyHandler.java</h1><pre class="source lang-java linenums">package autumn.util.functors;
+
+import autumn.lang.TypedFunctor;
+import autumn.lang.internals.AbstractDefinedFunctor;
+import autumn.lang.internals.annotations.FunctorDefinition;
+import com.google.common.collect.ImmutableList;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.util.List;
+
+/**
+ *
+ * @author mackenzie
+ */
+@FunctorDefinition
+public class ProxyHandler
+        extends AbstractDefinedFunctor
+        implements InvocationHandler
+{
+    /**
+     * Sole Constructor.
+     *
+     * @param inner is the functor that provides the actual functionality.
+     */
+    public ProxyHandler(final TypedFunctor inner)
+    {
+<span class="nc" id="L27">        super(inner);</span>
+<span class="nc" id="L28">    }</span>
+
+    /**
+     * This method invokes the inner functor.
+     *
+     * @param arg1 is the 1st argument.
+     * @param arg2 is the 2nd argument.
+     * @param arg3 is the 3rd argument.
+     */
+    @Override
+    public Object invoke(Object proxy,
+                         Method method,
+                         Object[] args)
+            throws Throwable
+    {
+<span class="nc" id="L43">        throw new UnsupportedOperationException(&quot;Not supported yet.&quot;);</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List&lt;Class&gt; parameterTypes()
+    {
+<span class="nc" id="L52">        return ImmutableList.&lt;Class&gt;of(Object.class, Object.class, Object.class);</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Class returnType()
+    {
+<span class="nc" id="L61">        return Object.class;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

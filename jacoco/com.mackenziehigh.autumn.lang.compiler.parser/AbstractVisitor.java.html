@@ -1,0 +1,2963 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AbstractVisitor.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.mackenziehigh:autumn</a> &gt; <a href="index.source.html" class="el_package">com.mackenziehigh.autumn.lang.compiler.parser</a> &gt; <span class="el_source">AbstractVisitor.java</span></div><h1>AbstractVisitor.java</h1><pre class="source lang-java linenums">package com.mackenziehigh.autumn.lang.compiler.parser;
+
+import com.mackenziehigh.snowflake.ITreeNode;
+import com.mackenziehigh.snowflake.ITreeNodeVisitor;
+
+
+/**
+ * This class was auto-generated using the Snowflake parser-generator.
+ *
+ * &lt;p&gt;Generated On: Fri Jan 16 12:55:49 EST 2015&lt;/p&gt;
+ */
+<span class="fc" id="L12">public abstract class AbstractVisitor implements ITreeNodeVisitor</span>
+{
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void visit(ITreeNode node)
+    {
+<span class="fc" id="L21">        final String name = node.rule();</span>
+
+<span class="fc bfc" id="L23" title="All 2 branches covered.">        if(&quot;module&quot;.equals(name)) { visit_module(node); }</span>
+<span class="fc bfc" id="L24" title="All 2 branches covered.">        else if(&quot;module_members&quot;.equals(name)) { visit_module_members(node); }</span>
+<span class="fc bfc" id="L25" title="All 2 branches covered.">        else if(&quot;module_member&quot;.equals(name)) { visit_module_member(node); }</span>
+<span class="fc bfc" id="L26" title="All 2 branches covered.">        else if(&quot;module_directive&quot;.equals(name)) { visit_module_directive(node); }</span>
+<span class="fc bfc" id="L27" title="All 2 branches covered.">        else if(&quot;module_name&quot;.equals(name)) { visit_module_name(node); }</span>
+<span class="fc bfc" id="L28" title="All 2 branches covered.">        else if(&quot;name_of_anonymous_module&quot;.equals(name)) { visit_name_of_anonymous_module(node); }</span>
+<span class="fc bfc" id="L29" title="All 2 branches covered.">        else if(&quot;name_of_named_module&quot;.equals(name)) { visit_name_of_named_module(node); }</span>
+<span class="fc bfc" id="L30" title="All 2 branches covered.">        else if(&quot;import_directive&quot;.equals(name)) { visit_import_directive(node); }</span>
+<span class="fc bfc" id="L31" title="All 2 branches covered.">        else if(&quot;definition&quot;.equals(name)) { visit_definition(node); }</span>
+<span class="fc bfc" id="L32" title="All 2 branches covered.">        else if(&quot;annotation_definition&quot;.equals(name)) { visit_annotation_definition(node); }</span>
+<span class="fc bfc" id="L33" title="All 2 branches covered.">        else if(&quot;exception_definition&quot;.equals(name)) { visit_exception_definition(node); }</span>
+<span class="fc bfc" id="L34" title="All 2 branches covered.">        else if(&quot;enum_definition&quot;.equals(name)) { visit_enum_definition(node); }</span>
+<span class="fc bfc" id="L35" title="All 2 branches covered.">        else if(&quot;enum_constant_list&quot;.equals(name)) { visit_enum_constant_list(node); }</span>
+<span class="fc bfc" id="L36" title="All 2 branches covered.">        else if(&quot;enum_constant&quot;.equals(name)) { visit_enum_constant(node); }</span>
+<span class="fc bfc" id="L37" title="All 2 branches covered.">        else if(&quot;design_definition&quot;.equals(name)) { visit_design_definition(node); }</span>
+<span class="fc bfc" id="L38" title="All 2 branches covered.">        else if(&quot;tuple_definition&quot;.equals(name)) { visit_tuple_definition(node); }</span>
+<span class="fc bfc" id="L39" title="All 2 branches covered.">        else if(&quot;struct_definition&quot;.equals(name)) { visit_struct_definition(node); }</span>
+<span class="fc bfc" id="L40" title="All 2 branches covered.">        else if(&quot;functor_definition&quot;.equals(name)) { visit_functor_definition(node); }</span>
+<span class="fc bfc" id="L41" title="All 2 branches covered.">        else if(&quot;super_functor&quot;.equals(name)) { visit_super_functor(node); }</span>
+<span class="fc bfc" id="L42" title="All 2 branches covered.">        else if(&quot;function_definition&quot;.equals(name)) { visit_function_definition(node); }</span>
+<span class="fc bfc" id="L43" title="All 2 branches covered.">        else if(&quot;statement&quot;.equals(name)) { visit_statement(node); }</span>
+<span class="fc bfc" id="L44" title="All 2 branches covered.">        else if(&quot;sequence_statement&quot;.equals(name)) { visit_sequence_statement(node); }</span>
+<span class="fc bfc" id="L45" title="All 2 branches covered.">        else if(&quot;statements&quot;.equals(name)) { visit_statements(node); }</span>
+<span class="fc bfc" id="L46" title="All 2 branches covered.">        else if(&quot;expression_statement&quot;.equals(name)) { visit_expression_statement(node); }</span>
+<span class="fc bfc" id="L47" title="All 2 branches covered.">        else if(&quot;nop_statement&quot;.equals(name)) { visit_nop_statement(node); }</span>
+<span class="fc bfc" id="L48" title="All 2 branches covered.">        else if(&quot;if_statement&quot;.equals(name)) { visit_if_statement(node); }</span>
+<span class="fc bfc" id="L49" title="All 2 branches covered.">        else if(&quot;if_case&quot;.equals(name)) { visit_if_case(node); }</span>
+<span class="fc bfc" id="L50" title="All 2 branches covered.">        else if(&quot;elif_cases_opt&quot;.equals(name)) { visit_elif_cases_opt(node); }</span>
+<span class="fc bfc" id="L51" title="All 2 branches covered.">        else if(&quot;elif_case&quot;.equals(name)) { visit_elif_case(node); }</span>
+<span class="fc bfc" id="L52" title="All 2 branches covered.">        else if(&quot;else_case_opt&quot;.equals(name)) { visit_else_case_opt(node); }</span>
+<span class="fc bfc" id="L53" title="All 2 branches covered.">        else if(&quot;else_case&quot;.equals(name)) { visit_else_case(node); }</span>
+<span class="fc bfc" id="L54" title="All 2 branches covered.">        else if(&quot;when_statement&quot;.equals(name)) { visit_when_statement(node); }</span>
+<span class="fc bfc" id="L55" title="All 2 branches covered.">        else if(&quot;goto_statement&quot;.equals(name)) { visit_goto_statement(node); }</span>
+<span class="fc bfc" id="L56" title="All 2 branches covered.">        else if(&quot;marker_statement&quot;.equals(name)) { visit_marker_statement(node); }</span>
+<span class="fc bfc" id="L57" title="All 2 branches covered.">        else if(&quot;branch_statement&quot;.equals(name)) { visit_branch_statement(node); }</span>
+<span class="fc bfc" id="L58" title="All 2 branches covered.">        else if(&quot;index&quot;.equals(name)) { visit_index(node); }</span>
+<span class="fc bfc" id="L59" title="All 2 branches covered.">        else if(&quot;labels&quot;.equals(name)) { visit_labels(node); }</span>
+<span class="fc bfc" id="L60" title="All 2 branches covered.">        else if(&quot;assert_statement&quot;.equals(name)) { visit_assert_statement(node); }</span>
+<span class="fc bfc" id="L61" title="All 2 branches covered.">        else if(&quot;assertion_echo_opt&quot;.equals(name)) { visit_assertion_echo_opt(node); }</span>
+<span class="fc bfc" id="L62" title="All 2 branches covered.">        else if(&quot;assertion_echo_empty&quot;.equals(name)) { visit_assertion_echo_empty(node); }</span>
+<span class="fc bfc" id="L63" title="All 2 branches covered.">        else if(&quot;assertion_echo&quot;.equals(name)) { visit_assertion_echo(node); }</span>
+<span class="fc bfc" id="L64" title="All 2 branches covered.">        else if(&quot;assume_statement&quot;.equals(name)) { visit_assume_statement(node); }</span>
+<span class="fc bfc" id="L65" title="All 2 branches covered.">        else if(&quot;assumption_echo_opt&quot;.equals(name)) { visit_assumption_echo_opt(node); }</span>
+<span class="fc bfc" id="L66" title="All 2 branches covered.">        else if(&quot;assumption_echo_empty&quot;.equals(name)) { visit_assumption_echo_empty(node); }</span>
+<span class="fc bfc" id="L67" title="All 2 branches covered.">        else if(&quot;assumption_echo&quot;.equals(name)) { visit_assumption_echo(node); }</span>
+<span class="fc bfc" id="L68" title="All 2 branches covered.">        else if(&quot;throw_statement&quot;.equals(name)) { visit_throw_statement(node); }</span>
+<span class="fc bfc" id="L69" title="All 2 branches covered.">        else if(&quot;try_catch_statement&quot;.equals(name)) { visit_try_catch_statement(node); }</span>
+<span class="fc bfc" id="L70" title="All 2 branches covered.">        else if(&quot;trycatch_body&quot;.equals(name)) { visit_trycatch_body(node); }</span>
+<span class="fc bfc" id="L71" title="All 2 branches covered.">        else if(&quot;trycatch_handlers&quot;.equals(name)) { visit_trycatch_handlers(node); }</span>
+<span class="fc bfc" id="L72" title="All 2 branches covered.">        else if(&quot;trycatch_handler&quot;.equals(name)) { visit_trycatch_handler(node); }</span>
+<span class="fc bfc" id="L73" title="All 2 branches covered.">        else if(&quot;trycatch_vardec&quot;.equals(name)) { visit_trycatch_vardec(node); }</span>
+<span class="fc bfc" id="L74" title="All 2 branches covered.">        else if(&quot;break_statement&quot;.equals(name)) { visit_break_statement(node); }</span>
+<span class="fc bfc" id="L75" title="All 2 branches covered.">        else if(&quot;continue_statement&quot;.equals(name)) { visit_continue_statement(node); }</span>
+<span class="fc bfc" id="L76" title="All 2 branches covered.">        else if(&quot;redo_statement&quot;.equals(name)) { visit_redo_statement(node); }</span>
+<span class="fc bfc" id="L77" title="All 2 branches covered.">        else if(&quot;for_statement&quot;.equals(name)) { visit_for_statement(node); }</span>
+<span class="fc bfc" id="L78" title="All 2 branches covered.">        else if(&quot;for_controller&quot;.equals(name)) { visit_for_controller(node); }</span>
+<span class="fc bfc" id="L79" title="All 2 branches covered.">        else if(&quot;for_init&quot;.equals(name)) { visit_for_init(node); }</span>
+<span class="fc bfc" id="L80" title="All 2 branches covered.">        else if(&quot;for_condition&quot;.equals(name)) { visit_for_condition(node); }</span>
+<span class="fc bfc" id="L81" title="All 2 branches covered.">        else if(&quot;for_modifier&quot;.equals(name)) { visit_for_modifier(node); }</span>
+<span class="fc bfc" id="L82" title="All 2 branches covered.">        else if(&quot;for_body&quot;.equals(name)) { visit_for_body(node); }</span>
+<span class="fc bfc" id="L83" title="All 2 branches covered.">        else if(&quot;foreach_statement&quot;.equals(name)) { visit_foreach_statement(node); }</span>
+<span class="fc bfc" id="L84" title="All 2 branches covered.">        else if(&quot;foreach_controller&quot;.equals(name)) { visit_foreach_controller(node); }</span>
+<span class="fc bfc" id="L85" title="All 2 branches covered.">        else if(&quot;foreach_vardec&quot;.equals(name)) { visit_foreach_vardec(node); }</span>
+<span class="fc bfc" id="L86" title="All 2 branches covered.">        else if(&quot;foreach_iterator&quot;.equals(name)) { visit_foreach_iterator(node); }</span>
+<span class="fc bfc" id="L87" title="All 2 branches covered.">        else if(&quot;foreach_body&quot;.equals(name)) { visit_foreach_body(node); }</span>
+<span class="fc bfc" id="L88" title="All 2 branches covered.">        else if(&quot;forever_statement&quot;.equals(name)) { visit_forever_statement(node); }</span>
+<span class="fc bfc" id="L89" title="All 2 branches covered.">        else if(&quot;until_statement&quot;.equals(name)) { visit_until_statement(node); }</span>
+<span class="fc bfc" id="L90" title="All 2 branches covered.">        else if(&quot;while_statement&quot;.equals(name)) { visit_while_statement(node); }</span>
+<span class="fc bfc" id="L91" title="All 2 branches covered.">        else if(&quot;do_statement&quot;.equals(name)) { visit_do_statement(node); }</span>
+<span class="fc bfc" id="L92" title="All 2 branches covered.">        else if(&quot;do_until&quot;.equals(name)) { visit_do_until(node); }</span>
+<span class="fc bfc" id="L93" title="All 2 branches covered.">        else if(&quot;do_until_trigger&quot;.equals(name)) { visit_do_until_trigger(node); }</span>
+<span class="fc bfc" id="L94" title="All 2 branches covered.">        else if(&quot;do_while&quot;.equals(name)) { visit_do_while(node); }</span>
+<span class="fc bfc" id="L95" title="All 2 branches covered.">        else if(&quot;do_while_trigger&quot;.equals(name)) { visit_do_while_trigger(node); }</span>
+<span class="fc bfc" id="L96" title="All 2 branches covered.">        else if(&quot;var_statement&quot;.equals(name)) { visit_var_statement(node); }</span>
+<span class="fc bfc" id="L97" title="All 2 branches covered.">        else if(&quot;val_statement&quot;.equals(name)) { visit_val_statement(node); }</span>
+<span class="fc bfc" id="L98" title="All 2 branches covered.">        else if(&quot;let_statement&quot;.equals(name)) { visit_let_statement(node); }</span>
+<span class="fc bfc" id="L99" title="All 2 branches covered.">        else if(&quot;lambda_statement&quot;.equals(name)) { visit_lambda_statement(node); }</span>
+<span class="fc bfc" id="L100" title="All 2 branches covered.">        else if(&quot;delegate_statement&quot;.equals(name)) { visit_delegate_statement(node); }</span>
+<span class="fc bfc" id="L101" title="All 2 branches covered.">        else if(&quot;recur_statement&quot;.equals(name)) { visit_recur_statement(node); }</span>
+<span class="fc bfc" id="L102" title="All 2 branches covered.">        else if(&quot;return_void_statement&quot;.equals(name)) { visit_return_void_statement(node); }</span>
+<span class="fc bfc" id="L103" title="All 2 branches covered.">        else if(&quot;return_value_statement&quot;.equals(name)) { visit_return_value_statement(node); }</span>
+<span class="fc bfc" id="L104" title="All 2 branches covered.">        else if(&quot;expression&quot;.equals(name)) { visit_expression(node); }</span>
+<span class="fc bfc" id="L105" title="All 2 branches covered.">        else if(&quot;p1&quot;.equals(name)) { visit_p1(node); }</span>
+<span class="fc bfc" id="L106" title="All 2 branches covered.">        else if(&quot;p1_operand&quot;.equals(name)) { visit_p1_operand(node); }</span>
+<span class="fc bfc" id="L107" title="All 2 branches covered.">        else if(&quot;p1_operations&quot;.equals(name)) { visit_p1_operations(node); }</span>
+<span class="fc bfc" id="L108" title="All 2 branches covered.">        else if(&quot;p1_operation&quot;.equals(name)) { visit_p1_operation(node); }</span>
+<span class="fc bfc" id="L109" title="All 2 branches covered.">        else if(&quot;as_operation&quot;.equals(name)) { visit_as_operation(node); }</span>
+<span class="fc bfc" id="L110" title="All 2 branches covered.">        else if(&quot;is_operation&quot;.equals(name)) { visit_is_operation(node); }</span>
+<span class="fc bfc" id="L111" title="All 2 branches covered.">        else if(&quot;p2&quot;.equals(name)) { visit_p2(node); }</span>
+<span class="fc bfc" id="L112" title="All 2 branches covered.">        else if(&quot;p2_operand&quot;.equals(name)) { visit_p2_operand(node); }</span>
+<span class="fc bfc" id="L113" title="All 2 branches covered.">        else if(&quot;p2_operations&quot;.equals(name)) { visit_p2_operations(node); }</span>
+<span class="fc bfc" id="L114" title="All 2 branches covered.">        else if(&quot;p2_operation&quot;.equals(name)) { visit_p2_operation(node); }</span>
+<span class="fc bfc" id="L115" title="All 2 branches covered.">        else if(&quot;null_coalescing_operation&quot;.equals(name)) { visit_null_coalescing_operation(node); }</span>
+<span class="fc bfc" id="L116" title="All 2 branches covered.">        else if(&quot;p3&quot;.equals(name)) { visit_p3(node); }</span>
+<span class="fc bfc" id="L117" title="All 2 branches covered.">        else if(&quot;p3_operand&quot;.equals(name)) { visit_p3_operand(node); }</span>
+<span class="fc bfc" id="L118" title="All 2 branches covered.">        else if(&quot;p3_operations&quot;.equals(name)) { visit_p3_operations(node); }</span>
+<span class="fc bfc" id="L119" title="All 2 branches covered.">        else if(&quot;p3_operation&quot;.equals(name)) { visit_p3_operation(node); }</span>
+<span class="fc bfc" id="L120" title="All 2 branches covered.">        else if(&quot;and_operation&quot;.equals(name)) { visit_and_operation(node); }</span>
+<span class="fc bfc" id="L121" title="All 2 branches covered.">        else if(&quot;or_operation&quot;.equals(name)) { visit_or_operation(node); }</span>
+<span class="fc bfc" id="L122" title="All 2 branches covered.">        else if(&quot;xor_operation&quot;.equals(name)) { visit_xor_operation(node); }</span>
+<span class="fc bfc" id="L123" title="All 2 branches covered.">        else if(&quot;implies_operation&quot;.equals(name)) { visit_implies_operation(node); }</span>
+<span class="fc bfc" id="L124" title="All 2 branches covered.">        else if(&quot;p4&quot;.equals(name)) { visit_p4(node); }</span>
+<span class="fc bfc" id="L125" title="All 2 branches covered.">        else if(&quot;p4_operand&quot;.equals(name)) { visit_p4_operand(node); }</span>
+<span class="fc bfc" id="L126" title="All 2 branches covered.">        else if(&quot;p4_operations&quot;.equals(name)) { visit_p4_operations(node); }</span>
+<span class="fc bfc" id="L127" title="All 2 branches covered.">        else if(&quot;p4_operation&quot;.equals(name)) { visit_p4_operation(node); }</span>
+<span class="fc bfc" id="L128" title="All 2 branches covered.">        else if(&quot;identity_equals_operation&quot;.equals(name)) { visit_identity_equals_operation(node); }</span>
+<span class="fc bfc" id="L129" title="All 2 branches covered.">        else if(&quot;identity_not_equals_operation&quot;.equals(name)) { visit_identity_not_equals_operation(node); }</span>
+<span class="fc bfc" id="L130" title="All 2 branches covered.">        else if(&quot;equals_operation&quot;.equals(name)) { visit_equals_operation(node); }</span>
+<span class="fc bfc" id="L131" title="All 2 branches covered.">        else if(&quot;not_equals_operation&quot;.equals(name)) { visit_not_equals_operation(node); }</span>
+<span class="fc bfc" id="L132" title="All 2 branches covered.">        else if(&quot;greater_or_equals_operation&quot;.equals(name)) { visit_greater_or_equals_operation(node); }</span>
+<span class="fc bfc" id="L133" title="All 2 branches covered.">        else if(&quot;less_or_equals_operation&quot;.equals(name)) { visit_less_or_equals_operation(node); }</span>
+<span class="fc bfc" id="L134" title="All 2 branches covered.">        else if(&quot;greater_operation&quot;.equals(name)) { visit_greater_operation(node); }</span>
+<span class="fc bfc" id="L135" title="All 2 branches covered.">        else if(&quot;less_operation&quot;.equals(name)) { visit_less_operation(node); }</span>
+<span class="fc bfc" id="L136" title="All 2 branches covered.">        else if(&quot;p5&quot;.equals(name)) { visit_p5(node); }</span>
+<span class="fc bfc" id="L137" title="All 2 branches covered.">        else if(&quot;p5_operand&quot;.equals(name)) { visit_p5_operand(node); }</span>
+<span class="fc bfc" id="L138" title="All 2 branches covered.">        else if(&quot;p5_operations&quot;.equals(name)) { visit_p5_operations(node); }</span>
+<span class="fc bfc" id="L139" title="All 2 branches covered.">        else if(&quot;p5_operation&quot;.equals(name)) { visit_p5_operation(node); }</span>
+<span class="fc bfc" id="L140" title="All 2 branches covered.">        else if(&quot;concat_operation&quot;.equals(name)) { visit_concat_operation(node); }</span>
+<span class="fc bfc" id="L141" title="All 2 branches covered.">        else if(&quot;p6&quot;.equals(name)) { visit_p6(node); }</span>
+<span class="fc bfc" id="L142" title="All 2 branches covered.">        else if(&quot;p6_operand&quot;.equals(name)) { visit_p6_operand(node); }</span>
+<span class="fc bfc" id="L143" title="All 2 branches covered.">        else if(&quot;p6_operations&quot;.equals(name)) { visit_p6_operations(node); }</span>
+<span class="fc bfc" id="L144" title="All 2 branches covered.">        else if(&quot;p6_operation&quot;.equals(name)) { visit_p6_operation(node); }</span>
+<span class="fc bfc" id="L145" title="All 2 branches covered.">        else if(&quot;add_operation&quot;.equals(name)) { visit_add_operation(node); }</span>
+<span class="fc bfc" id="L146" title="All 2 branches covered.">        else if(&quot;subtract_operation&quot;.equals(name)) { visit_subtract_operation(node); }</span>
+<span class="fc bfc" id="L147" title="All 2 branches covered.">        else if(&quot;p7&quot;.equals(name)) { visit_p7(node); }</span>
+<span class="fc bfc" id="L148" title="All 2 branches covered.">        else if(&quot;p7_operand&quot;.equals(name)) { visit_p7_operand(node); }</span>
+<span class="fc bfc" id="L149" title="All 2 branches covered.">        else if(&quot;p7_operations&quot;.equals(name)) { visit_p7_operations(node); }</span>
+<span class="fc bfc" id="L150" title="All 2 branches covered.">        else if(&quot;p7_operation&quot;.equals(name)) { visit_p7_operation(node); }</span>
+<span class="fc bfc" id="L151" title="All 2 branches covered.">        else if(&quot;divide_operation&quot;.equals(name)) { visit_divide_operation(node); }</span>
+<span class="fc bfc" id="L152" title="All 2 branches covered.">        else if(&quot;modulo_operation&quot;.equals(name)) { visit_modulo_operation(node); }</span>
+<span class="fc bfc" id="L153" title="All 2 branches covered.">        else if(&quot;multiply_operation&quot;.equals(name)) { visit_multiply_operation(node); }</span>
+<span class="fc bfc" id="L154" title="All 2 branches covered.">        else if(&quot;p8&quot;.equals(name)) { visit_p8(node); }</span>
+<span class="fc bfc" id="L155" title="All 2 branches covered.">        else if(&quot;p8_operand&quot;.equals(name)) { visit_p8_operand(node); }</span>
+<span class="fc bfc" id="L156" title="All 2 branches covered.">        else if(&quot;p8_operations&quot;.equals(name)) { visit_p8_operations(node); }</span>
+<span class="fc bfc" id="L157" title="All 2 branches covered.">        else if(&quot;p8_operation&quot;.equals(name)) { visit_p8_operation(node); }</span>
+<span class="fc bfc" id="L158" title="All 2 branches covered.">        else if(&quot;p9&quot;.equals(name)) { visit_p9(node); }</span>
+<span class="fc bfc" id="L159" title="All 2 branches covered.">        else if(&quot;negate_operation&quot;.equals(name)) { visit_negate_operation(node); }</span>
+<span class="fc bfc" id="L160" title="All 2 branches covered.">        else if(&quot;not_operation&quot;.equals(name)) { visit_not_operation(node); }</span>
+<span class="fc bfc" id="L161" title="All 2 branches covered.">        else if(&quot;keyword_expression&quot;.equals(name)) { visit_keyword_expression(node); }</span>
+<span class="fc bfc" id="L162" title="All 2 branches covered.">        else if(&quot;nested_expression&quot;.equals(name)) { visit_nested_expression(node); }</span>
+<span class="pc bpc" id="L163" title="1 of 2 branches missed.">        else if(&quot;paren_expression&quot;.equals(name)) { visit_paren_expression(node); }</span>
+<span class="fc bfc" id="L164" title="All 2 branches covered.">        else if(&quot;datum&quot;.equals(name)) { visit_datum(node); }</span>
+<span class="fc bfc" id="L165" title="All 2 branches covered.">        else if(&quot;boolean_datum&quot;.equals(name)) { visit_boolean_datum(node); }</span>
+<span class="fc bfc" id="L166" title="All 2 branches covered.">        else if(&quot;char_datum&quot;.equals(name)) { visit_char_datum(node); }</span>
+<span class="fc bfc" id="L167" title="All 2 branches covered.">        else if(&quot;string_datum&quot;.equals(name)) { visit_string_datum(node); }</span>
+<span class="fc bfc" id="L168" title="All 2 branches covered.">        else if(&quot;byte_datum&quot;.equals(name)) { visit_byte_datum(node); }</span>
+<span class="fc bfc" id="L169" title="All 2 branches covered.">        else if(&quot;short_datum&quot;.equals(name)) { visit_short_datum(node); }</span>
+<span class="fc bfc" id="L170" title="All 2 branches covered.">        else if(&quot;int_datum&quot;.equals(name)) { visit_int_datum(node); }</span>
+<span class="fc bfc" id="L171" title="All 2 branches covered.">        else if(&quot;long_datum&quot;.equals(name)) { visit_long_datum(node); }</span>
+<span class="fc bfc" id="L172" title="All 2 branches covered.">        else if(&quot;big_integer_datum&quot;.equals(name)) { visit_big_integer_datum(node); }</span>
+<span class="fc bfc" id="L173" title="All 2 branches covered.">        else if(&quot;float_datum&quot;.equals(name)) { visit_float_datum(node); }</span>
+<span class="fc bfc" id="L174" title="All 2 branches covered.">        else if(&quot;double_datum&quot;.equals(name)) { visit_double_datum(node); }</span>
+<span class="fc bfc" id="L175" title="All 2 branches covered.">        else if(&quot;big_decimal_datum&quot;.equals(name)) { visit_big_decimal_datum(node); }</span>
+<span class="fc bfc" id="L176" title="All 2 branches covered.">        else if(&quot;class_datum&quot;.equals(name)) { visit_class_datum(node); }</span>
+<span class="fc bfc" id="L177" title="All 2 branches covered.">        else if(&quot;null_datum&quot;.equals(name)) { visit_null_datum(node); }</span>
+<span class="fc bfc" id="L178" title="All 2 branches covered.">        else if(&quot;variable_datum&quot;.equals(name)) { visit_variable_datum(node); }</span>
+<span class="fc bfc" id="L179" title="All 2 branches covered.">        else if(&quot;locals_expression&quot;.equals(name)) { visit_locals_expression(node); }</span>
+<span class="fc bfc" id="L180" title="All 2 branches covered.">        else if(&quot;ternary_conditional_expression&quot;.equals(name)) { visit_ternary_conditional_expression(node); }</span>
+<span class="fc bfc" id="L181" title="All 2 branches covered.">        else if(&quot;list_comprehension_expression&quot;.equals(name)) { visit_list_comprehension_expression(node); }</span>
+<span class="fc bfc" id="L182" title="All 2 branches covered.">        else if(&quot;list_comprehension_body&quot;.equals(name)) { visit_list_comprehension_body(node); }</span>
+<span class="fc bfc" id="L183" title="All 2 branches covered.">        else if(&quot;if_opt&quot;.equals(name)) { visit_if_opt(node); }</span>
+<span class="fc bfc" id="L184" title="All 2 branches covered.">        else if(&quot;list_expression&quot;.equals(name)) { visit_list_expression(node); }</span>
+<span class="fc bfc" id="L185" title="All 2 branches covered.">        else if(&quot;progn_expression&quot;.equals(name)) { visit_progn_expression(node); }</span>
+<span class="fc bfc" id="L186" title="All 2 branches covered.">        else if(&quot;dispatch_expression&quot;.equals(name)) { visit_dispatch_expression(node); }</span>
+<span class="fc bfc" id="L187" title="All 2 branches covered.">        else if(&quot;new_expression&quot;.equals(name)) { visit_new_expression(node); }</span>
+<span class="fc bfc" id="L188" title="All 2 branches covered.">        else if(&quot;call_method_expression&quot;.equals(name)) { visit_call_method_expression(node); }</span>
+<span class="fc bfc" id="L189" title="All 2 branches covered.">        else if(&quot;call_static_method_expression&quot;.equals(name)) { visit_call_static_method_expression(node); }</span>
+<span class="fc bfc" id="L190" title="All 2 branches covered.">        else if(&quot;get_field_expression&quot;.equals(name)) { visit_get_field_expression(node); }</span>
+<span class="fc bfc" id="L191" title="All 2 branches covered.">        else if(&quot;set_field_expression&quot;.equals(name)) { visit_set_field_expression(node); }</span>
+<span class="fc bfc" id="L192" title="All 2 branches covered.">        else if(&quot;get_static_expression&quot;.equals(name)) { visit_get_static_expression(node); }</span>
+<span class="fc bfc" id="L193" title="All 2 branches covered.">        else if(&quot;set_static_expression&quot;.equals(name)) { visit_set_static_expression(node); }</span>
+<span class="fc bfc" id="L194" title="All 2 branches covered.">        else if(&quot;instanceof_expression&quot;.equals(name)) { visit_instanceof_expression(node); }</span>
+<span class="fc bfc" id="L195" title="All 2 branches covered.">        else if(&quot;once_expression&quot;.equals(name)) { visit_once_expression(node); }</span>
+<span class="fc bfc" id="L196" title="All 2 branches covered.">        else if(&quot;argument_list&quot;.equals(name)) { visit_argument_list(node); }</span>
+<span class="fc bfc" id="L197" title="All 2 branches covered.">        else if(&quot;arguments&quot;.equals(name)) { visit_arguments(node); }</span>
+<span class="fc bfc" id="L198" title="All 2 branches covered.">        else if(&quot;argument&quot;.equals(name)) { visit_argument(node); }</span>
+<span class="fc bfc" id="L199" title="All 2 branches covered.">        else if(&quot;api_comment&quot;.equals(name)) { visit_api_comment(node); }</span>
+<span class="fc bfc" id="L200" title="All 2 branches covered.">        else if(&quot;api_comment_line&quot;.equals(name)) { visit_api_comment_line(node); }</span>
+<span class="fc bfc" id="L201" title="All 2 branches covered.">        else if(&quot;api_comment_text&quot;.equals(name)) { visit_api_comment_text(node); }</span>
+<span class="fc bfc" id="L202" title="All 2 branches covered.">        else if(&quot;annotation_list&quot;.equals(name)) { visit_annotation_list(node); }</span>
+<span class="fc bfc" id="L203" title="All 2 branches covered.">        else if(&quot;annotation&quot;.equals(name)) { visit_annotation(node); }</span>
+<span class="fc bfc" id="L204" title="All 2 branches covered.">        else if(&quot;annotation_type&quot;.equals(name)) { visit_annotation_type(node); }</span>
+<span class="fc bfc" id="L205" title="All 2 branches covered.">        else if(&quot;annotation_assignment_opt&quot;.equals(name)) { visit_annotation_assignment_opt(node); }</span>
+<span class="fc bfc" id="L206" title="All 2 branches covered.">        else if(&quot;annotation_assignment&quot;.equals(name)) { visit_annotation_assignment(node); }</span>
+<span class="fc bfc" id="L207" title="All 2 branches covered.">        else if(&quot;annotation_values&quot;.equals(name)) { visit_annotation_values(node); }</span>
+<span class="fc bfc" id="L208" title="All 2 branches covered.">        else if(&quot;annotation_value&quot;.equals(name)) { visit_annotation_value(node); }</span>
+<span class="pc bpc" id="L209" title="1 of 2 branches missed.">        else if(&quot;filepath&quot;.equals(name)) { visit_filepath(node); }</span>
+<span class="fc bfc" id="L210" title="All 2 branches covered.">        else if(&quot;namespace&quot;.equals(name)) { visit_namespace(node); }</span>
+<span class="fc bfc" id="L211" title="All 2 branches covered.">        else if(&quot;namespace_explicit&quot;.equals(name)) { visit_namespace_explicit(node); }</span>
+<span class="pc bpc" id="L212" title="1 of 2 branches missed.">        else if(&quot;namespace_implicit&quot;.equals(name)) { visit_namespace_implicit(node); }</span>
+<span class="fc bfc" id="L213" title="All 2 branches covered.">        else if(&quot;condition&quot;.equals(name)) { visit_condition(node); }</span>
+<span class="fc bfc" id="L214" title="All 2 branches covered.">        else if(&quot;paren_condition&quot;.equals(name)) { visit_paren_condition(node); }</span>
+<span class="fc bfc" id="L215" title="All 2 branches covered.">        else if(&quot;signature&quot;.equals(name)) { visit_signature(node); }</span>
+<span class="fc bfc" id="L216" title="All 2 branches covered.">        else if(&quot;return_type&quot;.equals(name)) { visit_return_type(node); }</span>
+<span class="fc bfc" id="L217" title="All 2 branches covered.">        else if(&quot;supers_opt&quot;.equals(name)) { visit_supers_opt(node); }</span>
+<span class="fc bfc" id="L218" title="All 2 branches covered.">        else if(&quot;supers&quot;.equals(name)) { visit_supers(node); }</span>
+<span class="fc bfc" id="L219" title="All 2 branches covered.">        else if(&quot;supers_list&quot;.equals(name)) { visit_supers_list(node); }</span>
+<span class="fc bfc" id="L220" title="All 2 branches covered.">        else if(&quot;supers_list_cons&quot;.equals(name)) { visit_supers_list_cons(node); }</span>
+<span class="fc bfc" id="L221" title="All 2 branches covered.">        else if(&quot;supers_list_end&quot;.equals(name)) { visit_supers_list_end(node); }</span>
+<span class="fc bfc" id="L222" title="All 2 branches covered.">        else if(&quot;elements&quot;.equals(name)) { visit_elements(node); }</span>
+<span class="fc bfc" id="L223" title="All 2 branches covered.">        else if(&quot;element&quot;.equals(name)) { visit_element(node); }</span>
+<span class="fc bfc" id="L224" title="All 2 branches covered.">        else if(&quot;formals&quot;.equals(name)) { visit_formals(node); }</span>
+<span class="fc bfc" id="L225" title="All 2 branches covered.">        else if(&quot;parameter&quot;.equals(name)) { visit_parameter(node); }</span>
+<span class="fc bfc" id="L226" title="All 2 branches covered.">        else if(&quot;name&quot;.equals(name)) { visit_name(node); }</span>
+<span class="fc bfc" id="L227" title="All 2 branches covered.">        else if(&quot;name_id&quot;.equals(name)) { visit_name_id(node); }</span>
+<span class="fc bfc" id="L228" title="All 2 branches covered.">        else if(&quot;type&quot;.equals(name)) { visit_type(node); }</span>
+<span class="fc bfc" id="L229" title="All 2 branches covered.">        else if(&quot;dimensions&quot;.equals(name)) { visit_dimensions(node); }</span>
+<span class="fc bfc" id="L230" title="All 2 branches covered.">        else if(&quot;dimension&quot;.equals(name)) { visit_dimension(node); }</span>
+<span class="fc bfc" id="L231" title="All 2 branches covered.">        else if(&quot;type_name&quot;.equals(name)) { visit_type_name(node); }</span>
+<span class="fc bfc" id="L232" title="All 2 branches covered.">        else if(&quot;type_namespace&quot;.equals(name)) { visit_type_namespace(node); }</span>
+<span class="fc bfc" id="L233" title="All 2 branches covered.">        else if(&quot;type_namespace_explicit&quot;.equals(name)) { visit_type_namespace_explicit(node); }</span>
+<span class="fc bfc" id="L234" title="All 2 branches covered.">        else if(&quot;type_namespace_implicit&quot;.equals(name)) { visit_type_namespace_implicit(node); }</span>
+<span class="fc bfc" id="L235" title="All 2 branches covered.">        else if(&quot;simple_name&quot;.equals(name)) { visit_simple_name(node); }</span>
+<span class="fc bfc" id="L236" title="All 2 branches covered.">        else if(&quot;instance_member_access&quot;.equals(name)) { visit_instance_member_access(node); }</span>
+<span class="fc bfc" id="L237" title="All 2 branches covered.">        else if(&quot;static_member_access&quot;.equals(name)) { visit_static_member_access(node); }</span>
+<span class="fc bfc" id="L238" title="All 2 branches covered.">        else if(&quot;static_owner&quot;.equals(name)) { visit_static_owner(node); }</span>
+<span class="fc bfc" id="L239" title="All 2 branches covered.">        else if(&quot;static_owner_explicit&quot;.equals(name)) { visit_static_owner_explicit(node); }</span>
+<span class="pc bpc" id="L240" title="1 of 2 branches missed.">        else if(&quot;static_owner_implicit&quot;.equals(name)) { visit_static_owner_implicit(node); }</span>
+<span class="fc bfc" id="L241" title="All 2 branches covered.">        else if(&quot;conditional_case&quot;.equals(name)) { visit_conditional_case(node); }</span>
+<span class="fc bfc" id="L242" title="All 2 branches covered.">        else if(&quot;variable&quot;.equals(name)) { visit_variable(node); }</span>
+<span class="fc bfc" id="L243" title="All 2 branches covered.">        else if(&quot;label&quot;.equals(name)) { visit_label(node); }</span>
+<span class="fc bfc" id="L244" title="All 2 branches covered.">        else if(&quot;boolean_value&quot;.equals(name)) { visit_boolean_value(node); }</span>
+<span class="fc bfc" id="L245" title="All 2 branches covered.">        else if(&quot;true&quot;.equals(name)) { visit_true(node); }</span>
+<span class="fc bfc" id="L246" title="All 2 branches covered.">        else if(&quot;false&quot;.equals(name)) { visit_false(node); }</span>
+<span class="fc bfc" id="L247" title="All 2 branches covered.">        else if(&quot;char_value&quot;.equals(name)) { visit_char_value(node); }</span>
+<span class="fc bfc" id="L248" title="All 2 branches covered.">        else if(&quot;literal_char_value&quot;.equals(name)) { visit_literal_char_value(node); }</span>
+<span class="fc bfc" id="L249" title="All 2 branches covered.">        else if(&quot;numeric_char_value&quot;.equals(name)) { visit_numeric_char_value(node); }</span>
+<span class="fc bfc" id="L250" title="All 2 branches covered.">        else if(&quot;byte_value&quot;.equals(name)) { visit_byte_value(node); }</span>
+<span class="fc bfc" id="L251" title="All 2 branches covered.">        else if(&quot;short_value&quot;.equals(name)) { visit_short_value(node); }</span>
+<span class="fc bfc" id="L252" title="All 2 branches covered.">        else if(&quot;int_value&quot;.equals(name)) { visit_int_value(node); }</span>
+<span class="fc bfc" id="L253" title="All 2 branches covered.">        else if(&quot;long_value&quot;.equals(name)) { visit_long_value(node); }</span>
+<span class="fc bfc" id="L254" title="All 2 branches covered.">        else if(&quot;big_integer_value&quot;.equals(name)) { visit_big_integer_value(node); }</span>
+<span class="fc bfc" id="L255" title="All 2 branches covered.">        else if(&quot;float_value&quot;.equals(name)) { visit_float_value(node); }</span>
+<span class="fc bfc" id="L256" title="All 2 branches covered.">        else if(&quot;double_value&quot;.equals(name)) { visit_double_value(node); }</span>
+<span class="fc bfc" id="L257" title="All 2 branches covered.">        else if(&quot;big_decimal_value&quot;.equals(name)) { visit_big_decimal_value(node); }</span>
+<span class="fc bfc" id="L258" title="All 2 branches covered.">        else if(&quot;string_value&quot;.equals(name)) { visit_string_value(node); }</span>
+<span class="fc bfc" id="L259" title="All 2 branches covered.">        else if(&quot;verbatim_string_value&quot;.equals(name)) { visit_verbatim_string_value(node); }</span>
+<span class="fc bfc" id="L260" title="All 2 branches covered.">        else if(&quot;regular_string_value&quot;.equals(name)) { visit_regular_string_value(node); }</span>
+<span class="fc bfc" id="L261" title="All 2 branches covered.">        else if(&quot;class_value&quot;.equals(name)) { visit_class_value(node); }</span>
+<span class="fc bfc" id="L262" title="All 2 branches covered.">        else if(&quot;null_value&quot;.equals(name)) { visit_null_value(node); }</span>
+<span class="fc bfc" id="L263" title="All 2 branches covered.">        else if(&quot;SEMICOLON&quot;.equals(name)) { visit_SEMICOLON(node); }</span>
+<span class="fc bfc" id="L264" title="All 2 branches covered.">        else if(&quot;ID&quot;.equals(name)) { visit_ID(node); }</span>
+<span class="fc bfc" id="L265" title="All 2 branches covered.">        else if(&quot;DIGITS&quot;.equals(name)) { visit_DIGITS(node); }</span>
+<span class="fc bfc" id="L266" title="All 2 branches covered.">        else if(&quot;DIGIT&quot;.equals(name)) { visit_DIGIT(node); }</span>
+<span class="fc bfc" id="L267" title="All 2 branches covered.">        else if(&quot;EXPONENT_OPT&quot;.equals(name)) { visit_EXPONENT_OPT(node); }</span>
+<span class="fc bfc" id="L268" title="All 2 branches covered.">        else if(&quot;EXPONENT&quot;.equals(name)) { visit_EXPONENT(node); }</span>
+<span class="fc bfc" id="L269" title="All 2 branches covered.">        else if(&quot;STRING_LITERAL&quot;.equals(name)) { visit_STRING_LITERAL(node); }</span>
+<span class="fc bfc" id="L270" title="All 2 branches covered.">        else if(&quot;STRING_LITERAL_STYLE1&quot;.equals(name)) { visit_STRING_LITERAL_STYLE1(node); }</span>
+<span class="fc bfc" id="L271" title="All 2 branches covered.">        else if(&quot;QUOTE&quot;.equals(name)) { visit_QUOTE(node); }</span>
+<span class="fc bfc" id="L272" title="All 2 branches covered.">        else if(&quot;NON_QUOTES&quot;.equals(name)) { visit_NON_QUOTES(node); }</span>
+<span class="fc bfc" id="L273" title="All 2 branches covered.">        else if(&quot;NON_QUOTE&quot;.equals(name)) { visit_NON_QUOTE(node); }</span>
+<span class="fc bfc" id="L274" title="All 2 branches covered.">        else if(&quot;STRING_LITERAL_STYLE2&quot;.equals(name)) { visit_STRING_LITERAL_STYLE2(node); }</span>
+<span class="fc bfc" id="L275" title="All 2 branches covered.">        else if(&quot;TRIPLE_QUOTE&quot;.equals(name)) { visit_TRIPLE_QUOTE(node); }</span>
+<span class="fc bfc" id="L276" title="All 2 branches covered.">        else if(&quot;NON_TRIPLE_QUOTES&quot;.equals(name)) { visit_NON_TRIPLE_QUOTES(node); }</span>
+<span class="fc bfc" id="L277" title="All 2 branches covered.">        else if(&quot;NON_TRIPLE_QUOTE&quot;.equals(name)) { visit_NON_TRIPLE_QUOTE(node); }</span>
+<span class="fc bfc" id="L278" title="All 2 branches covered.">        else if(&quot;ESCAPE_SEQUENCE&quot;.equals(name)) { visit_ESCAPE_SEQUENCE(node); }</span>
+<span class="fc bfc" id="L279" title="All 2 branches covered.">        else if(&quot;ESCAPE_CHAR&quot;.equals(name)) { visit_ESCAPE_CHAR(node); }</span>
+<span class="fc bfc" id="L280" title="All 2 branches covered.">        else if(&quot;WS&quot;.equals(name)) { visit_WS(node); }</span>
+<span class="fc bfc" id="L281" title="All 2 branches covered.">        else if(&quot;COMMENT&quot;.equals(name)) { visit_COMMENT(node); }</span>
+<span class="fc bfc" id="L282" title="All 2 branches covered.">        else if(&quot;SINGLE_LINE_COMMENT&quot;.equals(name)) { visit_SINGLE_LINE_COMMENT(node); }</span>
+<span class="pc bpc" id="L283" title="1 of 2 branches missed.">        else if(&quot;MULTI_LINE_COMMENT&quot;.equals(name)) { visit_MULTI_LINE_COMMENT(node); }</span>
+<span class="pc bpc" id="L284" title="1 of 2 branches missed.">        else if(&quot;NEWLINE&quot;.equals(name)) { visit_NEWLINE(node); }</span>
+<span class="pc bpc" id="L285" title="1 of 2 branches missed.">        else if(&quot;NON_NEWLINE&quot;.equals(name)) { visit_NON_NEWLINE(node); }</span>
+<span class="pc bpc" id="L286" title="1 of 2 branches missed.">        else if(&quot;NON_NEWLINES&quot;.equals(name)) { visit_NON_NEWLINES(node); }</span>
+<span class="fc bfc" id="L287" title="All 2 branches covered.">        else if(&quot;SP&quot;.equals(name)) { visit_SP(node); }</span>
+<span class="fc bfc" id="L288" title="All 2 branches covered.">        else if(&quot;PS&quot;.equals(name)) { visit_PS(node); }</span>
+<span class="fc" id="L289">        else { visitUnknown(node); }</span>
+<span class="fc" id="L290">    }</span>
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void visitUnknown(ITreeNode node)
+    {
+        // You should *not* place your code right here.
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L300">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;COMMENT&quot;.
+     */
+    protected void visit_COMMENT(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L309">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L310">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;DIGIT&quot;.
+     */
+    protected void visit_DIGIT(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L319">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L320">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;DIGITS&quot;.
+     */
+    protected void visit_DIGITS(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L329">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L330">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;ESCAPE_CHAR&quot;.
+     */
+    protected void visit_ESCAPE_CHAR(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L339">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L340">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;ESCAPE_SEQUENCE&quot;.
+     */
+    protected void visit_ESCAPE_SEQUENCE(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L349">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L350">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;EXPONENT&quot;.
+     */
+    protected void visit_EXPONENT(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L359">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L360">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;EXPONENT_OPT&quot;.
+     */
+    protected void visit_EXPONENT_OPT(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L369">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L370">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;ID&quot;.
+     */
+    protected void visit_ID(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L379">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L380">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;MULTI_LINE_COMMENT&quot;.
+     */
+    protected void visit_MULTI_LINE_COMMENT(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L389">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L390">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;NEWLINE&quot;.
+     */
+    protected void visit_NEWLINE(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L399">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L400">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;NON_NEWLINE&quot;.
+     */
+    protected void visit_NON_NEWLINE(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L409">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L410">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;NON_NEWLINES&quot;.
+     */
+    protected void visit_NON_NEWLINES(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L419">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L420">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;NON_QUOTE&quot;.
+     */
+    protected void visit_NON_QUOTE(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L429">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L430">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;NON_QUOTES&quot;.
+     */
+    protected void visit_NON_QUOTES(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L439">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L440">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;NON_TRIPLE_QUOTE&quot;.
+     */
+    protected void visit_NON_TRIPLE_QUOTE(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L449">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L450">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;NON_TRIPLE_QUOTES&quot;.
+     */
+    protected void visit_NON_TRIPLE_QUOTES(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L459">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L460">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;PS&quot;.
+     */
+    protected void visit_PS(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L469">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L470">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;QUOTE&quot;.
+     */
+    protected void visit_QUOTE(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L479">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L480">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;SEMICOLON&quot;.
+     */
+    protected void visit_SEMICOLON(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L489">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L490">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;SINGLE_LINE_COMMENT&quot;.
+     */
+    protected void visit_SINGLE_LINE_COMMENT(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L499">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L500">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;SP&quot;.
+     */
+    protected void visit_SP(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L509">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L510">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;STRING_LITERAL&quot;.
+     */
+    protected void visit_STRING_LITERAL(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L519">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L520">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;STRING_LITERAL_STYLE1&quot;.
+     */
+    protected void visit_STRING_LITERAL_STYLE1(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L529">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L530">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;STRING_LITERAL_STYLE2&quot;.
+     */
+    protected void visit_STRING_LITERAL_STYLE2(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L539">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L540">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;TRIPLE_QUOTE&quot;.
+     */
+    protected void visit_TRIPLE_QUOTE(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L549">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L550">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;WS&quot;.
+     */
+    protected void visit_WS(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L559">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L560">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;add_operation&quot;.
+     */
+    protected void visit_add_operation(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L569">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L570">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;and_operation&quot;.
+     */
+    protected void visit_and_operation(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L579">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L580">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;annotation&quot;.
+     */
+    protected void visit_annotation(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L589">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L590">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;annotation_assignment&quot;.
+     */
+    protected void visit_annotation_assignment(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L599">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L600">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;annotation_assignment_opt&quot;.
+     */
+    protected void visit_annotation_assignment_opt(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L609">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L610">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;annotation_definition&quot;.
+     */
+    protected void visit_annotation_definition(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L619">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L620">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;annotation_list&quot;.
+     */
+    protected void visit_annotation_list(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L629">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L630">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;annotation_type&quot;.
+     */
+    protected void visit_annotation_type(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L639">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L640">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;annotation_value&quot;.
+     */
+    protected void visit_annotation_value(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L649">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L650">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;annotation_values&quot;.
+     */
+    protected void visit_annotation_values(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L659">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L660">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;api_comment&quot;.
+     */
+    protected void visit_api_comment(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L669">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L670">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;api_comment_line&quot;.
+     */
+    protected void visit_api_comment_line(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L679">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L680">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;api_comment_text&quot;.
+     */
+    protected void visit_api_comment_text(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L689">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L690">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;argument&quot;.
+     */
+    protected void visit_argument(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L699">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L700">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;argument_list&quot;.
+     */
+    protected void visit_argument_list(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L709">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L710">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;arguments&quot;.
+     */
+    protected void visit_arguments(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L719">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L720">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;as_operation&quot;.
+     */
+    protected void visit_as_operation(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L729">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L730">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;assert_statement&quot;.
+     */
+    protected void visit_assert_statement(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L739">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L740">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;assertion_echo&quot;.
+     */
+    protected void visit_assertion_echo(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L749">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L750">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;assertion_echo_empty&quot;.
+     */
+    protected void visit_assertion_echo_empty(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L759">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L760">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;assertion_echo_opt&quot;.
+     */
+    protected void visit_assertion_echo_opt(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L769">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L770">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;assume_statement&quot;.
+     */
+    protected void visit_assume_statement(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L779">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L780">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;assumption_echo&quot;.
+     */
+    protected void visit_assumption_echo(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L789">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L790">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;assumption_echo_empty&quot;.
+     */
+    protected void visit_assumption_echo_empty(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L799">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L800">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;assumption_echo_opt&quot;.
+     */
+    protected void visit_assumption_echo_opt(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L809">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L810">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;big_decimal_datum&quot;.
+     */
+    protected void visit_big_decimal_datum(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L819">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L820">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;big_decimal_value&quot;.
+     */
+    protected void visit_big_decimal_value(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L829">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L830">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;big_integer_datum&quot;.
+     */
+    protected void visit_big_integer_datum(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L839">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L840">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;big_integer_value&quot;.
+     */
+    protected void visit_big_integer_value(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L849">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L850">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;boolean_datum&quot;.
+     */
+    protected void visit_boolean_datum(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L859">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L860">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;boolean_value&quot;.
+     */
+    protected void visit_boolean_value(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L869">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L870">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;branch_statement&quot;.
+     */
+    protected void visit_branch_statement(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L879">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L880">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;break_statement&quot;.
+     */
+    protected void visit_break_statement(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L889">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L890">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;byte_datum&quot;.
+     */
+    protected void visit_byte_datum(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L899">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L900">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;byte_value&quot;.
+     */
+    protected void visit_byte_value(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L909">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L910">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;call_method_expression&quot;.
+     */
+    protected void visit_call_method_expression(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L919">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L920">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;call_static_method_expression&quot;.
+     */
+    protected void visit_call_static_method_expression(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L929">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L930">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;char_datum&quot;.
+     */
+    protected void visit_char_datum(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L939">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L940">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;char_value&quot;.
+     */
+    protected void visit_char_value(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L949">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L950">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;class_datum&quot;.
+     */
+    protected void visit_class_datum(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L959">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L960">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;class_value&quot;.
+     */
+    protected void visit_class_value(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L969">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L970">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;concat_operation&quot;.
+     */
+    protected void visit_concat_operation(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L979">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L980">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;condition&quot;.
+     */
+    protected void visit_condition(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L989">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L990">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;conditional_case&quot;.
+     */
+    protected void visit_conditional_case(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L999">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L1000">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;continue_statement&quot;.
+     */
+    protected void visit_continue_statement(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L1009">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L1010">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;datum&quot;.
+     */
+    protected void visit_datum(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L1019">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L1020">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;definition&quot;.
+     */
+    protected void visit_definition(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L1029">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L1030">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;delegate_statement&quot;.
+     */
+    protected void visit_delegate_statement(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L1039">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L1040">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;design_definition&quot;.
+     */
+    protected void visit_design_definition(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L1049">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L1050">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;dimension&quot;.
+     */
+    protected void visit_dimension(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L1059">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L1060">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;dimensions&quot;.
+     */
+    protected void visit_dimensions(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L1069">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L1070">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;dispatch_expression&quot;.
+     */
+    protected void visit_dispatch_expression(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L1079">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L1080">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;divide_operation&quot;.
+     */
+    protected void visit_divide_operation(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L1089">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L1090">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;do_statement&quot;.
+     */
+    protected void visit_do_statement(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L1099">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L1100">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;do_until&quot;.
+     */
+    protected void visit_do_until(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L1109">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L1110">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;do_until_trigger&quot;.
+     */
+    protected void visit_do_until_trigger(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L1119">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L1120">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;do_while&quot;.
+     */
+    protected void visit_do_while(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L1129">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L1130">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;do_while_trigger&quot;.
+     */
+    protected void visit_do_while_trigger(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L1139">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L1140">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;double_datum&quot;.
+     */
+    protected void visit_double_datum(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L1149">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L1150">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;double_value&quot;.
+     */
+    protected void visit_double_value(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L1159">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L1160">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;element&quot;.
+     */
+    protected void visit_element(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L1169">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L1170">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;elements&quot;.
+     */
+    protected void visit_elements(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L1179">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L1180">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;elif_case&quot;.
+     */
+    protected void visit_elif_case(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L1189">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L1190">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;elif_cases_opt&quot;.
+     */
+    protected void visit_elif_cases_opt(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L1199">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L1200">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;else_case&quot;.
+     */
+    protected void visit_else_case(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L1209">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L1210">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;else_case_opt&quot;.
+     */
+    protected void visit_else_case_opt(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L1219">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L1220">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;enum_constant&quot;.
+     */
+    protected void visit_enum_constant(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L1229">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L1230">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;enum_constant_list&quot;.
+     */
+    protected void visit_enum_constant_list(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L1239">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L1240">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;enum_definition&quot;.
+     */
+    protected void visit_enum_definition(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L1249">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L1250">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;equals_operation&quot;.
+     */
+    protected void visit_equals_operation(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L1259">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L1260">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;exception_definition&quot;.
+     */
+    protected void visit_exception_definition(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L1269">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L1270">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;expression&quot;.
+     */
+    protected void visit_expression(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L1279">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L1280">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;expression_statement&quot;.
+     */
+    protected void visit_expression_statement(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L1289">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L1290">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;false&quot;.
+     */
+    protected void visit_false(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L1299">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L1300">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;filepath&quot;.
+     */
+    protected void visit_filepath(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L1309">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L1310">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;float_datum&quot;.
+     */
+    protected void visit_float_datum(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L1319">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L1320">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;float_value&quot;.
+     */
+    protected void visit_float_value(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L1329">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L1330">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;for_body&quot;.
+     */
+    protected void visit_for_body(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L1339">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L1340">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;for_condition&quot;.
+     */
+    protected void visit_for_condition(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L1349">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L1350">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;for_controller&quot;.
+     */
+    protected void visit_for_controller(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L1359">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L1360">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;for_init&quot;.
+     */
+    protected void visit_for_init(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L1369">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L1370">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;for_modifier&quot;.
+     */
+    protected void visit_for_modifier(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L1379">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L1380">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;for_statement&quot;.
+     */
+    protected void visit_for_statement(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L1389">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L1390">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;foreach_body&quot;.
+     */
+    protected void visit_foreach_body(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L1399">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L1400">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;foreach_controller&quot;.
+     */
+    protected void visit_foreach_controller(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L1409">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L1410">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;foreach_iterator&quot;.
+     */
+    protected void visit_foreach_iterator(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L1419">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L1420">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;foreach_statement&quot;.
+     */
+    protected void visit_foreach_statement(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L1429">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L1430">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;foreach_vardec&quot;.
+     */
+    protected void visit_foreach_vardec(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L1439">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L1440">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;forever_statement&quot;.
+     */
+    protected void visit_forever_statement(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L1449">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L1450">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;formals&quot;.
+     */
+    protected void visit_formals(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L1459">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L1460">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;function_definition&quot;.
+     */
+    protected void visit_function_definition(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L1469">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L1470">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;functor_definition&quot;.
+     */
+    protected void visit_functor_definition(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L1479">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L1480">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;get_field_expression&quot;.
+     */
+    protected void visit_get_field_expression(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L1489">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L1490">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;get_static_expression&quot;.
+     */
+    protected void visit_get_static_expression(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L1499">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L1500">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;goto_statement&quot;.
+     */
+    protected void visit_goto_statement(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L1509">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L1510">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;greater_operation&quot;.
+     */
+    protected void visit_greater_operation(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L1519">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L1520">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;greater_or_equals_operation&quot;.
+     */
+    protected void visit_greater_or_equals_operation(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L1529">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L1530">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;identity_equals_operation&quot;.
+     */
+    protected void visit_identity_equals_operation(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L1539">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L1540">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;identity_not_equals_operation&quot;.
+     */
+    protected void visit_identity_not_equals_operation(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L1549">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L1550">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;if_case&quot;.
+     */
+    protected void visit_if_case(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L1559">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L1560">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;if_opt&quot;.
+     */
+    protected void visit_if_opt(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L1569">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L1570">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;if_statement&quot;.
+     */
+    protected void visit_if_statement(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L1579">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L1580">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;implies_operation&quot;.
+     */
+    protected void visit_implies_operation(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L1589">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L1590">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;import_directive&quot;.
+     */
+    protected void visit_import_directive(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L1599">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L1600">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;index&quot;.
+     */
+    protected void visit_index(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L1609">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L1610">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;instance_member_access&quot;.
+     */
+    protected void visit_instance_member_access(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L1619">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L1620">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;instanceof_expression&quot;.
+     */
+    protected void visit_instanceof_expression(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L1629">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L1630">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;int_datum&quot;.
+     */
+    protected void visit_int_datum(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L1639">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L1640">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;int_value&quot;.
+     */
+    protected void visit_int_value(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L1649">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L1650">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;is_operation&quot;.
+     */
+    protected void visit_is_operation(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L1659">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L1660">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;keyword_expression&quot;.
+     */
+    protected void visit_keyword_expression(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L1669">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L1670">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;label&quot;.
+     */
+    protected void visit_label(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L1679">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L1680">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;labels&quot;.
+     */
+    protected void visit_labels(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L1689">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L1690">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;lambda_statement&quot;.
+     */
+    protected void visit_lambda_statement(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L1699">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L1700">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;less_operation&quot;.
+     */
+    protected void visit_less_operation(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L1709">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L1710">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;less_or_equals_operation&quot;.
+     */
+    protected void visit_less_or_equals_operation(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L1719">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L1720">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;let_statement&quot;.
+     */
+    protected void visit_let_statement(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L1729">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L1730">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;list_comprehension_body&quot;.
+     */
+    protected void visit_list_comprehension_body(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L1739">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L1740">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;list_comprehension_expression&quot;.
+     */
+    protected void visit_list_comprehension_expression(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L1749">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L1750">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;list_expression&quot;.
+     */
+    protected void visit_list_expression(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L1759">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L1760">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;literal_char_value&quot;.
+     */
+    protected void visit_literal_char_value(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L1769">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L1770">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;locals_expression&quot;.
+     */
+    protected void visit_locals_expression(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L1779">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L1780">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;long_datum&quot;.
+     */
+    protected void visit_long_datum(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L1789">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L1790">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;long_value&quot;.
+     */
+    protected void visit_long_value(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L1799">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L1800">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;marker_statement&quot;.
+     */
+    protected void visit_marker_statement(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L1809">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L1810">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;module&quot;.
+     */
+    protected void visit_module(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L1819">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L1820">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;module_directive&quot;.
+     */
+    protected void visit_module_directive(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L1829">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L1830">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;module_member&quot;.
+     */
+    protected void visit_module_member(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L1839">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L1840">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;module_members&quot;.
+     */
+    protected void visit_module_members(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L1849">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L1850">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;module_name&quot;.
+     */
+    protected void visit_module_name(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L1859">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L1860">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;modulo_operation&quot;.
+     */
+    protected void visit_modulo_operation(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L1869">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L1870">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;multiply_operation&quot;.
+     */
+    protected void visit_multiply_operation(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L1879">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L1880">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;name&quot;.
+     */
+    protected void visit_name(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L1889">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L1890">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;name_id&quot;.
+     */
+    protected void visit_name_id(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L1899">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L1900">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;name_of_anonymous_module&quot;.
+     */
+    protected void visit_name_of_anonymous_module(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L1909">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L1910">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;name_of_named_module&quot;.
+     */
+    protected void visit_name_of_named_module(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L1919">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L1920">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;namespace&quot;.
+     */
+    protected void visit_namespace(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L1929">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L1930">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;namespace_explicit&quot;.
+     */
+    protected void visit_namespace_explicit(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L1939">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L1940">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;namespace_implicit&quot;.
+     */
+    protected void visit_namespace_implicit(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L1949">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L1950">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;negate_operation&quot;.
+     */
+    protected void visit_negate_operation(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L1959">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L1960">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;nested_expression&quot;.
+     */
+    protected void visit_nested_expression(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L1969">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L1970">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;new_expression&quot;.
+     */
+    protected void visit_new_expression(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L1979">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L1980">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;nop_statement&quot;.
+     */
+    protected void visit_nop_statement(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L1989">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L1990">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;not_equals_operation&quot;.
+     */
+    protected void visit_not_equals_operation(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L1999">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L2000">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;not_operation&quot;.
+     */
+    protected void visit_not_operation(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L2009">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L2010">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;null_coalescing_operation&quot;.
+     */
+    protected void visit_null_coalescing_operation(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L2019">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L2020">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;null_datum&quot;.
+     */
+    protected void visit_null_datum(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L2029">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L2030">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;null_value&quot;.
+     */
+    protected void visit_null_value(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L2039">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L2040">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;numeric_char_value&quot;.
+     */
+    protected void visit_numeric_char_value(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L2049">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L2050">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;once_expression&quot;.
+     */
+    protected void visit_once_expression(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L2059">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L2060">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;or_operation&quot;.
+     */
+    protected void visit_or_operation(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L2069">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L2070">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;p1&quot;.
+     */
+    protected void visit_p1(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L2079">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L2080">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;p1_operand&quot;.
+     */
+    protected void visit_p1_operand(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L2089">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L2090">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;p1_operation&quot;.
+     */
+    protected void visit_p1_operation(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L2099">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L2100">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;p1_operations&quot;.
+     */
+    protected void visit_p1_operations(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L2109">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L2110">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;p2&quot;.
+     */
+    protected void visit_p2(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L2119">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L2120">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;p2_operand&quot;.
+     */
+    protected void visit_p2_operand(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L2129">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L2130">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;p2_operation&quot;.
+     */
+    protected void visit_p2_operation(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L2139">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L2140">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;p2_operations&quot;.
+     */
+    protected void visit_p2_operations(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L2149">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L2150">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;p3&quot;.
+     */
+    protected void visit_p3(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L2159">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L2160">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;p3_operand&quot;.
+     */
+    protected void visit_p3_operand(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L2169">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L2170">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;p3_operation&quot;.
+     */
+    protected void visit_p3_operation(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L2179">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L2180">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;p3_operations&quot;.
+     */
+    protected void visit_p3_operations(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L2189">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L2190">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;p4&quot;.
+     */
+    protected void visit_p4(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L2199">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L2200">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;p4_operand&quot;.
+     */
+    protected void visit_p4_operand(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L2209">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L2210">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;p4_operation&quot;.
+     */
+    protected void visit_p4_operation(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L2219">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L2220">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;p4_operations&quot;.
+     */
+    protected void visit_p4_operations(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L2229">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L2230">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;p5&quot;.
+     */
+    protected void visit_p5(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L2239">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L2240">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;p5_operand&quot;.
+     */
+    protected void visit_p5_operand(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L2249">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L2250">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;p5_operation&quot;.
+     */
+    protected void visit_p5_operation(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L2259">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L2260">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;p5_operations&quot;.
+     */
+    protected void visit_p5_operations(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L2269">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L2270">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;p6&quot;.
+     */
+    protected void visit_p6(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L2279">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L2280">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;p6_operand&quot;.
+     */
+    protected void visit_p6_operand(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L2289">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L2290">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;p6_operation&quot;.
+     */
+    protected void visit_p6_operation(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L2299">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L2300">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;p6_operations&quot;.
+     */
+    protected void visit_p6_operations(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L2309">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L2310">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;p7&quot;.
+     */
+    protected void visit_p7(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L2319">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L2320">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;p7_operand&quot;.
+     */
+    protected void visit_p7_operand(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L2329">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L2330">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;p7_operation&quot;.
+     */
+    protected void visit_p7_operation(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L2339">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L2340">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;p7_operations&quot;.
+     */
+    protected void visit_p7_operations(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L2349">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L2350">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;p8&quot;.
+     */
+    protected void visit_p8(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L2359">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L2360">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;p8_operand&quot;.
+     */
+    protected void visit_p8_operand(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L2369">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L2370">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;p8_operation&quot;.
+     */
+    protected void visit_p8_operation(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L2379">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L2380">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;p8_operations&quot;.
+     */
+    protected void visit_p8_operations(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L2389">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L2390">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;p9&quot;.
+     */
+    protected void visit_p9(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L2399">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L2400">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;parameter&quot;.
+     */
+    protected void visit_parameter(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L2409">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L2410">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;paren_condition&quot;.
+     */
+    protected void visit_paren_condition(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L2419">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L2420">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;paren_expression&quot;.
+     */
+    protected void visit_paren_expression(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L2429">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L2430">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;progn_expression&quot;.
+     */
+    protected void visit_progn_expression(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L2439">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L2440">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;recur_statement&quot;.
+     */
+    protected void visit_recur_statement(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L2449">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L2450">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;redo_statement&quot;.
+     */
+    protected void visit_redo_statement(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L2459">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L2460">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;regular_string_value&quot;.
+     */
+    protected void visit_regular_string_value(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L2469">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L2470">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;return_type&quot;.
+     */
+    protected void visit_return_type(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L2479">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L2480">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;return_value_statement&quot;.
+     */
+    protected void visit_return_value_statement(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L2489">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L2490">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;return_void_statement&quot;.
+     */
+    protected void visit_return_void_statement(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L2499">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L2500">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;sequence_statement&quot;.
+     */
+    protected void visit_sequence_statement(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L2509">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L2510">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;set_field_expression&quot;.
+     */
+    protected void visit_set_field_expression(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L2519">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L2520">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;set_static_expression&quot;.
+     */
+    protected void visit_set_static_expression(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L2529">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L2530">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;short_datum&quot;.
+     */
+    protected void visit_short_datum(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L2539">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L2540">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;short_value&quot;.
+     */
+    protected void visit_short_value(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L2549">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L2550">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;signature&quot;.
+     */
+    protected void visit_signature(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L2559">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L2560">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;simple_name&quot;.
+     */
+    protected void visit_simple_name(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L2569">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L2570">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;statement&quot;.
+     */
+    protected void visit_statement(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L2579">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L2580">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;statements&quot;.
+     */
+    protected void visit_statements(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L2589">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L2590">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;static_member_access&quot;.
+     */
+    protected void visit_static_member_access(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L2599">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L2600">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;static_owner&quot;.
+     */
+    protected void visit_static_owner(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L2609">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L2610">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;static_owner_explicit&quot;.
+     */
+    protected void visit_static_owner_explicit(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L2619">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L2620">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;static_owner_implicit&quot;.
+     */
+    protected void visit_static_owner_implicit(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L2629">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L2630">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;string_datum&quot;.
+     */
+    protected void visit_string_datum(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L2639">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L2640">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;string_value&quot;.
+     */
+    protected void visit_string_value(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L2649">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L2650">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;struct_definition&quot;.
+     */
+    protected void visit_struct_definition(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L2659">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L2660">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;subtract_operation&quot;.
+     */
+    protected void visit_subtract_operation(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L2669">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L2670">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;super_functor&quot;.
+     */
+    protected void visit_super_functor(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L2679">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L2680">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;supers&quot;.
+     */
+    protected void visit_supers(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L2689">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L2690">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;supers_list&quot;.
+     */
+    protected void visit_supers_list(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L2699">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L2700">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;supers_list_cons&quot;.
+     */
+    protected void visit_supers_list_cons(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L2709">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L2710">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;supers_list_end&quot;.
+     */
+    protected void visit_supers_list_end(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L2719">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L2720">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;supers_opt&quot;.
+     */
+    protected void visit_supers_opt(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L2729">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L2730">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;ternary_conditional_expression&quot;.
+     */
+    protected void visit_ternary_conditional_expression(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L2739">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L2740">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;throw_statement&quot;.
+     */
+    protected void visit_throw_statement(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L2749">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L2750">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;true&quot;.
+     */
+    protected void visit_true(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L2759">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L2760">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;try_catch_statement&quot;.
+     */
+    protected void visit_try_catch_statement(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L2769">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L2770">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;trycatch_body&quot;.
+     */
+    protected void visit_trycatch_body(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L2779">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L2780">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;trycatch_handler&quot;.
+     */
+    protected void visit_trycatch_handler(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L2789">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L2790">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;trycatch_handlers&quot;.
+     */
+    protected void visit_trycatch_handlers(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L2799">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L2800">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;trycatch_vardec&quot;.
+     */
+    protected void visit_trycatch_vardec(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L2809">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L2810">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;tuple_definition&quot;.
+     */
+    protected void visit_tuple_definition(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L2819">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L2820">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;type&quot;.
+     */
+    protected void visit_type(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L2829">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L2830">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;type_name&quot;.
+     */
+    protected void visit_type_name(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L2839">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L2840">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;type_namespace&quot;.
+     */
+    protected void visit_type_namespace(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="fc" id="L2849">        visitUnknown(node); // Default Behavior</span>
+<span class="fc" id="L2850">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;type_namespace_explicit&quot;.
+     */
+    protected void visit_type_namespace_explicit(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L2859">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L2860">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;type_namespace_implicit&quot;.
+     */
+    protected void visit_type_namespace_implicit(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L2869">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L2870">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;until_statement&quot;.
+     */
+    protected void visit_until_statement(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L2879">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L2880">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;val_statement&quot;.
+     */
+    protected void visit_val_statement(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L2889">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L2890">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;var_statement&quot;.
+     */
+    protected void visit_var_statement(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L2899">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L2900">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;variable&quot;.
+     */
+    protected void visit_variable(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L2909">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L2910">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;variable_datum&quot;.
+     */
+    protected void visit_variable_datum(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L2919">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L2920">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;verbatim_string_value&quot;.
+     */
+    protected void visit_verbatim_string_value(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L2929">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L2930">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;when_statement&quot;.
+     */
+    protected void visit_when_statement(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L2939">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L2940">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;while_statement&quot;.
+     */
+    protected void visit_while_statement(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L2949">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L2950">    }</span>
+
+    /**
+     * This method visits a parse-tree node created by rule &quot;xor_operation&quot;.
+     */
+    protected void visit_xor_operation(ITreeNode node)
+    {
+        // You should *not* place your code right here. 
+        // Instead, you should override this method via a subclass.
+<span class="nc" id="L2959">        visitUnknown(node); // Default Behavior</span>
+<span class="nc" id="L2960">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

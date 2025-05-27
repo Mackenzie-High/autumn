@@ -1,0 +1,464 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DispatchCompiler.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.mackenziehigh:autumn</a> &gt; <a href="index.source.html" class="el_package">com.mackenziehigh.autumn.lang.compiler.compilers</a> &gt; <span class="el_source">DispatchCompiler.java</span></div><h1>DispatchCompiler.java</h1><pre class="source lang-java linenums">package com.mackenziehigh.autumn.lang.compiler.compilers;
+
+import autumn.lang.compiler.ast.commons.IExpression;
+import autumn.lang.compiler.ast.nodes.DispatchExpression;
+import autumn.util.F;
+import com.google.common.base.Preconditions;
+import com.google.common.collect.Lists;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IExpressionType;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IFormalParameter;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IMethod;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IReferenceType;
+import com.mackenziehigh.autumn.lang.compiler.utils.Utils;
+import com.mackenziehigh.autumn.resources.Finished;
+import java.util.List;
+import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.tree.InsnList;
+import org.objectweb.asm.tree.InsnNode;
+import org.objectweb.asm.tree.JumpInsnNode;
+import org.objectweb.asm.tree.LabelNode;
+import org.objectweb.asm.tree.MethodInsnNode;
+import org.objectweb.asm.tree.TypeInsnNode;
+
+/**
+ * An instance of this class performs the compilation of a dispatch-expression.
+ *
+ * @author Mackenzie High
+ */
+<span class="fc" id="L28">@Finished(&quot;2015/01/16&quot;)</span>
+final class DispatchCompiler
+{
+    /**
+     * This is the Abstract Syntax Tree representation of the dispatch-expression itself.
+     */
+    private final DispatchExpression node;
+
+    /**
+     * Essentially, this is the module that encloses the dispatch-expression.
+     */
+    private final ModuleCompiler module;
+
+    /**
+     * This object controls the allocation of local variables in the enclosing function.
+     */
+    private final VariableAllocator allocator;
+
+    /**
+     * This object simplifies the manipulation of local-variables.
+     */
+    private final VariableManipulator vars;
+
+    /**
+     * This is the name of the function whose overloads will handle the invocation.
+     */
+    private final String name;
+
+    /**
+     * These are the expressions that produce the arguments of the invocation.
+     */
+    private final List&lt;IExpression&gt; arguments;
+
+    /**
+     * These are the types of the static-types of the arguments.
+     */
+<span class="fc" id="L64">    private final List&lt;IExpressionType&gt; argument_types = Lists.newArrayList();</span>
+
+    /**
+     * These are the overloads of the function that may handle the invocation.
+     */
+<span class="fc" id="L69">    private final List&lt;IMethod&gt; applicable = Lists.newArrayList();</span>
+
+    /**
+     * These are the names of the temporary local variables used to store the arguments.
+     */
+<span class="fc" id="L74">    private final List&lt;String&gt; temporaries = Lists.newArrayList();</span>
+
+    /**
+     * This is used to ensure that this class is used correctly.
+     */
+<span class="fc" id="L79">    private int state = 1;</span>
+
+    /**
+     * Sole Constructor.
+     *
+     * @param node is the dispatch-expression itself.
+     * @param module is essentially the enclosing module.
+     * @param allocator is used to allocate variables.
+     * @param vars is used to generate bytecode that manipulates variables.
+     * @param name is the name of the function being dispatched.
+     * @param arguments are the arguments being passed to the function.
+     */
+    public DispatchCompiler(final DispatchExpression node,
+                            final ModuleCompiler module,
+                            final VariableAllocator allocator,
+                            final VariableManipulator vars,
+                            final String name,
+                            final List&lt;IExpression&gt; arguments)
+<span class="fc" id="L97">    {</span>
+<span class="fc" id="L98">        Preconditions.checkNotNull(node);</span>
+<span class="fc" id="L99">        Preconditions.checkNotNull(module);</span>
+<span class="fc" id="L100">        Preconditions.checkNotNull(allocator);</span>
+<span class="fc" id="L101">        Preconditions.checkNotNull(vars);</span>
+<span class="fc" id="L102">        Preconditions.checkNotNull(name);</span>
+<span class="fc" id="L103">        Preconditions.checkNotNull(arguments);</span>
+
+<span class="fc" id="L105">        this.node = node;</span>
+<span class="fc" id="L106">        this.allocator = allocator;</span>
+<span class="fc" id="L107">        this.arguments = arguments;</span>
+<span class="fc" id="L108">        this.module = module;</span>
+<span class="fc" id="L109">        this.name = name;</span>
+<span class="fc" id="L110">        this.vars = vars;</span>
+
+        /**
+         * Retrieve the types of the arguments.
+         */
+<span class="fc bfc" id="L115" title="All 2 branches covered.">        for (IExpression arg : arguments)</span>
+        {
+<span class="fc" id="L117">            argument_types.add(module.program.symbols.expressions.get(arg));</span>
+<span class="fc" id="L118">        }</span>
+<span class="fc" id="L119">    }</span>
+
+    /**
+     * This method searches for the applicable function overloads.
+     */
+    public void resolve()
+    {
+        /**
+         * This is the 1st step in the compilation of a dispatch-expression.
+         */
+<span class="pc bpc" id="L129" title="1 of 2 branches missed.">        assert state++ == 1;</span>
+
+        /**
+         * Select the overloads that are applicable under the terms of a regular invocation.
+         */
+<span class="fc" id="L134">        final List&lt;IMethod&gt; selected = module.program.typesystem.utils.select(module.type,</span>
+<span class="fc" id="L135">                                                                              module.type.getAllVisibleMethods(),</span>
+                                                                              true,
+                                                                              name);
+
+        /**
+         * This list will hold the unsorted applicable overloads.
+         */
+<span class="fc" id="L142">        final List&lt;IMethod&gt; unsorted = Lists.newArrayList();</span>
+
+        /**
+         * Transfer the truly applicable overloads to the unsorted list.
+         */
+<span class="fc bfc" id="L147" title="All 2 branches covered.">        for (IMethod method : selected)</span>
+        {
+<span class="fc bfc" id="L149" title="All 2 branches covered.">            if (isApplicable(method))</span>
+            {
+<span class="fc" id="L151">                unsorted.add(method);</span>
+            }
+<span class="fc" id="L153">        }</span>
+
+        /**
+         * Sort the overloads and store them for later.
+         */
+<span class="fc" id="L158">        applicable.addAll(module.program.typesystem.utils.sort(unsorted));</span>
+<span class="fc" id="L159">    }</span>
+
+    /**
+     * This method determines whether a function is potentially applicable to the arguments.
+     *
+     * @param function is the function overload that may be able to accept the arguments.
+     * @return true, iff the function is potentially applicable to the arguments.
+     */
+    private boolean isApplicable(final IMethod function)
+    {
+        /**
+         * Dispatch-expressions can only invoke functions whose parameters are reference-types.
+         */
+<span class="fc bfc" id="L172" title="All 2 branches covered.">        for (IFormalParameter parameter : function.getParameters())</span>
+        {
+<span class="fc bfc" id="L174" title="All 2 branches covered.">            if (parameter.getType().isReferenceType() == false)</span>
+            {
+<span class="fc" id="L176">                return false;</span>
+            }
+<span class="fc" id="L178">        }</span>
+
+        /**
+         * The function is potentially applicable to the arguments.
+         */
+<span class="fc" id="L183">        return true;</span>
+    }
+
+    /**
+     * This method performs the static-checking of the dispatch-expression.
+     */
+    public void check()
+    {
+        /**
+         * This is the 2nd step in the compilation of a dispatch-expression.
+         */
+<span class="pc bpc" id="L194" title="1 of 2 branches missed.">        assert state++ == 2;</span>
+
+        /**
+         * There must be applicable function overloads available.
+         */
+<span class="fc bfc" id="L199" title="All 2 branches covered.">        if (applicable.isEmpty())</span>
+        {
+<span class="nc" id="L201">            module.program.checker.reportNoSuchMethod(node, true, module.type, name, argument_types);</span>
+        }
+
+        /**
+         * The arguments must produce a value.
+         */
+<span class="fc bfc" id="L207" title="All 2 branches covered.">        for (IExpression argument : arguments)</span>
+        {
+<span class="fc" id="L209">            module.program.checker.requireNonVoid(argument);</span>
+<span class="fc" id="L210">        }</span>
+<span class="fc" id="L211">    }</span>
+
+    /**
+     * This function performs the actual bytecode generation.
+     *
+     * @param expr is used to compile the argument expressions.
+     */
+    public void compile(final ExpressionCodeGenerator expr)
+    {
+        /**
+         * This is the 3rd step in the compilation of a dispatch-expression.
+         */
+<span class="pc bpc" id="L223" title="1 of 2 branches missed.">        assert state++ == 3;</span>
+
+        /**
+         * This label marks the location that execution jumps to after a successful dispatch.
+         */
+<span class="fc" id="L228">        final LabelNode done = new LabelNode();</span>
+
+        /**
+         * Evaluate the arguments and store them in temporaries.
+         */
+<span class="fc" id="L233">        loadTemps(expr);</span>
+
+        /**
+         * Dispatch Table
+         */
+<span class="fc bfc" id="L238" title="All 2 branches covered.">        for (IMethod function : applicable)</span>
+        {
+<span class="fc" id="L240">            generateDispatchTableEntry(expr.code, function, done);</span>
+<span class="fc" id="L241">        }</span>
+
+        /**
+         * Default Termination
+         */
+<span class="fc" id="L246">        generateDefaultDispatch(expr.code);</span>
+<span class="fc" id="L247">        expr.code.add(done);</span>
+<span class="fc" id="L248">    }</span>
+
+    /**
+     * This method generates the bytecode that evaluates the argument expressions
+     * and then places the resulting arguments into the temporary local variables.
+     *
+     * @param expr will be used to compile the argument expressions.
+     */
+    private void loadTemps(final ExpressionCodeGenerator expr)
+    {
+<span class="fc bfc" id="L258" title="All 2 branches covered.">        for (IExpression argument : arguments)</span>
+        {
+            /**
+             * Get the static-type of the argument.
+             */
+<span class="fc" id="L263">            final IExpressionType type = module.program.symbols.expressions.get(argument);</span>
+
+            /**
+             * Declare a new temporary local variable.
+             */
+<span class="fc" id="L268">            final String local = &quot;autumn$dispatch$&quot; + F.unique();</span>
+<span class="fc" id="L269">            allocator.declareTemp(local, module.program.typesystem.utils.OBJECT);</span>
+<span class="fc" id="L270">            temporaries.add(local);</span>
+
+            /**
+             * Compile the argument expression.
+             */
+<span class="fc" id="L275">            argument.accept(expr);</span>
+
+            /**
+             * Generate bytecode that automatically boxes the argument, if necessary.
+             */
+<span class="fc" id="L280">            module.program.typesystem.utils.autoboxToObject(expr.code, type);</span>
+
+            /**
+             * Generate bytecode that places the argument into the temporary.
+             */
+<span class="fc" id="L285">            vars.store(local);</span>
+<span class="fc" id="L286">        }</span>
+<span class="fc" id="L287">    }</span>
+
+    /**
+     * This method generates the bytecode of a single entry in the dispatch-table entry.
+     *
+     * &lt;p&gt;
+     * A bytecode generated by a dispatch-table entry does several things.
+     * The entry decides whether the related overload is applicable to the arguments.
+     * If so, the entry invokes the related overload passing in the arguments.
+     * Then, the entry forces execution to exit the dispatch-expression.
+     * If not, the entry simply allows execution to fall through.
+     * &lt;/p&gt;
+     *
+     * @param code is the bytecode that is being generated.
+     * @param target represents the function overload associated with the entry.
+     * @param done is a bytecode label that marks the end of the dispatch-expression.
+     */
+    private void generateDispatchTableEntry(final InsnList code,
+                                            final IMethod target,
+                                            final LabelNode done)
+    {
+<span class="pc bpc" id="L308" title="1 of 2 branches missed.">        assert arguments.size() == target.getParameters().size();</span>
+
+        /**
+         * This label marks the end of the this dispatch-table entry only.
+         */
+<span class="fc" id="L313">        final LabelNode skip = new LabelNode();</span>
+
+        /**
+         * Generate bytecode that determines whether the arguments match the parameters.
+         *
+         * If any of the arguments fail to match, skip this entry in the dispatch-table.
+         */
+<span class="fc bfc" id="L320" title="All 2 branches covered.">        for (int i = 0; i &lt; arguments.size(); i++)</span>
+        {
+<span class="fc" id="L322">            generateArgumentTest(code, target, skip, i);</span>
+        }
+
+        /**
+         * Since all the arguments matched, invoke the target method.
+         */
+<span class="fc" id="L328">        generateInvocation(code, target);</span>
+
+        /**
+         * Exit the dispatch expression.
+         */
+<span class="fc" id="L333">        code.add(new JumpInsnNode(Opcodes.GOTO, done));</span>
+<span class="fc" id="L334">        code.add(skip);</span>
+<span class="fc" id="L335">    }</span>
+
+    /**
+     * This method generates bytecode that determines whether an argument matches a parameter.
+     *
+     * @param code is the bytecode being generated.
+     * @param target is the function overload that contains the parameter.
+     * @param skip is a bytecode label that marks the endpoint of the enclosing dispatch-table entry.
+     * @param index identifies the argument and parameter.
+     */
+    private void generateArgumentTest(final InsnList code,
+                                      final IMethod target,
+                                      final LabelNode skip,
+                                      final int index)
+    {
+<span class="pc bpc" id="L350" title="1 of 2 branches missed.">        assert arguments.size() == target.getParameters().size();</span>
+
+        /**
+         * Get the static-type of the parameter.
+         */
+<span class="fc" id="L355">        final IReferenceType parameter = (IReferenceType) target.getParameters().get(index).getType();</span>
+
+        /**
+         * Get the name of the temporary local variable that stores the argument.
+         */
+<span class="fc" id="L360">        final String argument = temporaries.get(index);</span>
+
+        /**
+         * If the argument matches the parameter, execution will redirect to the location of this label.
+         */
+<span class="fc" id="L365">        final LabelNode ok = new LabelNode();</span>
+
+        /**
+         * Generated Bytecode:
+         *
+         * LOAD argument - Load the argument onto the operand-stack.
+         * IFNULL ok - If the argument is null, then the argument matches.
+         * LOAD argument - Load the argument onto the operand-stack.
+         * INSTANCEOF argument : parameter - If (argument instanceof parameter-type), then the argument matches.
+         * IF_FALSE skip - Otherwise, the argument does not match.
+         * LABEL ok -
+         */
+<span class="fc" id="L377">        vars.load(argument);</span>
+<span class="fc" id="L378">        code.add(new JumpInsnNode(Opcodes.IFNULL, ok));</span>
+<span class="fc" id="L379">        vars.load(argument);</span>
+<span class="fc" id="L380">        code.add(new TypeInsnNode(Opcodes.INSTANCEOF, Utils.internalName(parameter)));</span>
+<span class="fc" id="L381">        code.add(new JumpInsnNode(Utils.IF_FALSE, skip));</span>
+<span class="fc" id="L382">        code.add(ok);</span>
+<span class="fc" id="L383">    }</span>
+
+    /**
+     * This method generates the bytecode of a function invocation.
+     *
+     * @param code is the bytecode that is being generated.
+     * @param target is the function overload
+     */
+    private void generateInvocation(final InsnList code,
+                                    final IMethod function)
+    {
+        /**
+         * Load the arguments onto the operand-stack.
+         */
+<span class="fc bfc" id="L397" title="All 2 branches covered.">        for (int i = 0; i &lt; temporaries.size(); i++)</span>
+        {
+            /**
+             * Get the name of the temporary local variable that stores the argument.
+             */
+<span class="fc" id="L402">            final String argument = temporaries.get(i);</span>
+
+            /**
+             * Get the type of the parameter related to the argument.
+             */
+<span class="fc" id="L407">            final IReferenceType type = (IReferenceType) function.getParameters().get(i).getType();</span>
+
+            /**
+             * Generate the bytecode that loads the argument onto the operand-stack.
+             */
+<span class="fc" id="L412">            vars.load(argument);</span>
+
+            /**
+             * Generate a checked-cast that casts the argument to the type of the parameter.
+             */
+<span class="fc" id="L417">            code.add(new TypeInsnNode(Opcodes.CHECKCAST, Utils.internalName(type)));</span>
+        }
+
+        /**
+         * Generate the bytecode that actually performs the invocation of the function.
+         */
+<span class="fc" id="L423">        code.add(new MethodInsnNode(Opcodes.INVOKESTATIC,</span>
+<span class="fc" id="L424">                                    Utils.internalName(function.getOwner()),</span>
+<span class="fc" id="L425">                                    function.getName(),</span>
+<span class="fc" id="L426">                                    function.getDescriptor()));</span>
+
+        /**
+         * If the function returns void, make it appear to return null instead.
+         */
+<span class="fc bfc" id="L431" title="All 2 branches covered.">        if (function.getReturnType().isVoidType())</span>
+        {
+<span class="fc" id="L433">            code.add(new InsnNode(Opcodes.ACONST_NULL));</span>
+        }
+        /**
+         * If the function returns a primitive-type, box the return-value.
+         */
+<span class="fc bfc" id="L438" title="All 2 branches covered.">        else if (function.getReturnType().isPrimitiveType())</span>
+        {
+<span class="fc" id="L440">            module.program.typesystem.utils.autoboxToObject(code, function.getReturnType());</span>
+        }
+<span class="fc" id="L442">    }</span>
+
+    /**
+     * This method generates the bytecode that executes when dispatch fails.
+     *
+     * &lt;p&gt;
+     * The generated bytecode creates an exception object and then throws it.
+     * &lt;/p&gt;
+     *
+     * @param code is the bytecode being generated.
+     */
+    private void generateDefaultDispatch(final InsnList code)
+    {
+<span class="fc" id="L455">        code.add(new TypeInsnNode(Opcodes.NEW, &quot;autumn/lang/exceptions/DispatchException&quot;));</span>
+<span class="fc" id="L456">        code.add(new InsnNode(Opcodes.DUP));</span>
+<span class="fc" id="L457">        code.add(new MethodInsnNode(Opcodes.INVOKESPECIAL,</span>
+                                    &quot;autumn/lang/exceptions/DispatchException&quot;,
+                                    &quot;&lt;init&gt;&quot;,
+                                    &quot;()V&quot;));
+<span class="fc" id="L461">        code.add(new InsnNode(Opcodes.ATHROW));</span>
+<span class="fc" id="L462">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

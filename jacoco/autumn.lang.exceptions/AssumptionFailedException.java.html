@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AssumptionFailedException.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.mackenziehigh:autumn</a> &gt; <a href="index.source.html" class="el_package">autumn.lang.exceptions</a> &gt; <span class="el_source">AssumptionFailedException.java</span></div><h1>AssumptionFailedException.java</h1><pre class="source lang-java linenums">package autumn.lang.exceptions;
+
+import com.google.common.base.Preconditions;
+import com.mackenziehigh.autumn.resources.Finished;
+
+/**
+ * This type of exception is thrown by assume-statements, when a required condition does not hold.
+ *
+ * @author Mackenzie High
+ */
+@Finished(&quot;2014/07/12&quot;)
+public class AssumptionFailedException
+        extends RuntimeException
+{
+    /**
+     * This is the path to the source-code file that contains the assumption.
+     */
+    private final String file;
+
+    /**
+     * This is the index of the line that contains the assumption.
+     */
+    private final int line;
+
+    /**
+     * Constructor.
+     *
+     * @param file is the file that contains the assumption.
+     * @param line is the index of the line that contains the assumption.
+     * @param message is a user-defined error-message.
+     */
+    public AssumptionFailedException(final String file,
+                                     final int line,
+                                     final String message)
+    {
+<span class="fc" id="L36">        super(message);</span>
+
+<span class="fc" id="L38">        Preconditions.checkNotNull(file);</span>
+<span class="fc" id="L39">        Preconditions.checkNotNull(message);</span>
+
+<span class="fc" id="L41">        this.file = file;</span>
+<span class="fc" id="L42">        this.line = line;</span>
+<span class="fc" id="L43">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param file is the file that contains the assumption.
+     * @param line is the index of the line that contains the assumption.
+     */
+    public AssumptionFailedException(final String file,
+                                     final int line)
+    {
+<span class="fc" id="L54">        super();</span>
+
+<span class="fc" id="L56">        Preconditions.checkNotNull(file);</span>
+
+<span class="fc" id="L58">        this.file = file;</span>
+<span class="fc" id="L59">        this.line = line;</span>
+<span class="fc" id="L60">    }</span>
+
+    /**
+     * This method retrieves the path to the file that contains the assumption.
+     *
+     * @return the path to the file that contains the assumption.
+     */
+    public String file()
+    {
+<span class="nc" id="L69">        return file;</span>
+    }
+
+    /**
+     * This method retrieves the index of the line that contains the assumption.
+     *
+     * @return the index of the line that contains the assumption.
+     */
+    public int line()
+    {
+<span class="nc" id="L79">        return line;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

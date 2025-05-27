@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AbstractRecord.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.mackenziehigh:autumn</a> &gt; <a href="index.source.html" class="el_package">autumn.lang.internals</a> &gt; <span class="el_source">AbstractRecord.java</span></div><h1>AbstractRecord.java</h1><pre class="source lang-java linenums">package autumn.lang.internals;
+
+import autumn.lang.Record;
+import autumn.util.F;
+import com.mackenziehigh.autumn.util.T;
+import com.google.common.collect.Lists;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+
+/**
+ * This class provides a partial implementation of the Record type.
+ *
+ * &lt;p&gt;
+ * A subclass must provide a single constructor.
+ * The constructor takes one parameter for each element in the record.
+ * The constructor simply places its parameters into the appropriate elements.
+ * The new record must be immutable.
+ * &lt;/p&gt;
+ *
+ * &lt;p&gt;
+ * A subclass needs to implement the following methods:
+ * &lt;ul&gt;
+ * &lt;li&gt;static method instance() - Returns an immutable empty instance.&lt;/li&gt;
+ * &lt;li&gt;isStruct()&lt;/li&gt;
+ * &lt;li&gt;isTuple()&lt;/li&gt;
+ * &lt;li&gt;keys()&lt;/li&gt;
+ * &lt;li&gt;types()&lt;/li&gt;
+ * &lt;li&gt;values()&lt;/li&gt;
+ * &lt;li&gt;set(int, Object)&lt;/li&gt;
+ * &lt;li&gt;get(int)&lt;/li&gt;
+ * &lt;/ul&gt;
+ * &lt;/p&gt;
+ *
+ * &lt;p&gt;
+ * A subclass must provide bridge methods for every method herein that returns a Record.
+ * The return-type of the bridge method must be the subclass itself.
+ * For example in a subclass T, method copy() : Record should have a bridge method copy() : T.
+ * &lt;br&gt;
+ * &lt;ul&gt;
+ * &lt;li&gt;set(int, Object)&lt;/li&gt;
+ * &lt;li&gt;copy()&lt;/li&gt;
+ * &lt;/ul&gt;
+ * &lt;/p&gt;
+ *
+ * @author Mackenzie High
+ */
+<span class="fc" id="L48">public abstract class AbstractRecord</span>
+        implements Record
+{
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public abstract List&lt;String&gt; keys();
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public abstract List&lt;Class&gt; types();
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public abstract boolean isStruct();
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public abstract boolean isTuple();
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public abstract Record set(int index,
+                               Object value);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public abstract Object get(int index);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final List&lt;Object&gt; values()
+    {
+<span class="fc" id="L94">        final int size = size();</span>
+
+<span class="fc" id="L96">        final List&lt;Object&gt; values = Lists.newLinkedList();</span>
+
+<span class="fc bfc" id="L98" title="All 2 branches covered.">        for (int i = 0; i &lt; size; i++)</span>
+        {
+<span class="fc" id="L100">            values.add(get(i));</span>
+        }
+
+<span class="fc" id="L103">        final List&lt;Object&gt; result = Collections.unmodifiableList(values);</span>
+
+<span class="fc" id="L105">        return result;</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final int size()
+    {
+<span class="fc" id="L114">        return keys().size();</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final boolean isEmpty()
+    {
+<span class="fc bfc" id="L123" title="All 2 branches covered.">        return size() == 0;</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final int compareTo(final Record other)
+    {
+<span class="pc bpc" id="L132" title="1 of 2 branches missed.">        if (other == null)</span>
+        {
+<span class="nc" id="L134">            return 1; // Null is always less than an object.</span>
+        }
+<span class="pc bpc" id="L136" title="1 of 2 branches missed.">        else if (keys().equals(other.keys()) == false)</span>
+        {
+<span class="nc" id="L138">            throw new UnsupportedOperationException();</span>
+        }
+        else
+        {
+<span class="fc bfc" id="L142" title="All 2 branches covered.">            for (int i = 0; i &lt; size(); i++)</span>
+            {
+                try
+                {
+<span class="fc" id="L146">                    final Comparable operand1 = (Comparable) this.get(i);</span>
+<span class="fc" id="L147">                    final Comparable operand2 = (Comparable) other.get(i);</span>
+
+<span class="fc" id="L149">                    final int relationship = T.compare(operand1, operand2);</span>
+
+<span class="fc bfc" id="L151" title="All 2 branches covered.">                    if (relationship &lt; 0)</span>
+                    {
+<span class="fc" id="L153">                        return -1;</span>
+                    }
+<span class="fc bfc" id="L155" title="All 2 branches covered.">                    else if (relationship &gt; 0)</span>
+                    {
+<span class="fc" id="L157">                        return 1;</span>
+                    }
+                }
+<span class="fc" id="L160">                catch (ClassCastException ex)</span>
+                {
+<span class="fc" id="L162">                    throw new UnsupportedOperationException(ex);</span>
+<span class="fc" id="L163">                }</span>
+            }
+        }
+
+<span class="fc" id="L167">        return 0;</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final boolean equals(final Object other)
+    {
+<span class="fc bfc" id="L176" title="All 2 branches covered.">        if (other == null)</span>
+        {
+<span class="fc" id="L178">            return false;</span>
+        }
+
+<span class="pc bpc" id="L181" title="1 of 2 branches missed.">        if (this == other)</span>
+        {
+<span class="nc" id="L183">            return true;</span>
+        }
+
+<span class="fc bfc" id="L186" title="All 2 branches covered.">        if (other instanceof Record == false)</span>
+        {
+<span class="fc" id="L188">            return false;</span>
+        }
+
+<span class="fc" id="L191">        final Record record = (Record) other;</span>
+
+<span class="pc bpc" id="L193" title="1 of 4 branches missed.">        final boolean answer = keys().equals(record.keys()) &amp;&amp; values().equals(record.values());</span>
+
+<span class="fc" id="L195">        return answer;</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final int hashCode()
+    {
+<span class="fc" id="L204">        return keys().hashCode() ^ values().hashCode();</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final Iterator&lt;Object&gt; iterator()
+    {
+<span class="fc" id="L213">        return values().iterator();</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final String toString()
+    {
+<span class="fc" id="L222">        final String result = F.str(values(), &quot;(&quot;, &quot;, &quot;, &quot;)&quot;);</span>
+
+<span class="fc" id="L224">        return result;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

@@ -1,0 +1,1970 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>T.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.mackenziehigh:autumn</a> &gt; <a href="index.source.html" class="el_package">com.mackenziehigh.autumn.util</a> &gt; <span class="el_source">T.java</span></div><h1>T.java</h1><pre class="source lang-java linenums">package com.mackenziehigh.autumn.util;
+
+import autumn.lang.Module;
+import autumn.lang.Record;
+import autumn.lang.TypedFunctor;
+import autumn.lang.annotations.Infer;
+import autumn.lang.exceptions.CheckedException;
+import autumn.lang.internals.ArgumentStack;
+import autumn.lang.internals.Helpers;
+import autumn.lang.internals.Operators;
+import com.mackenziehigh.autumn.resources.dev.AsyncTask;
+import autumn.util.F;
+import autumn.util.functors.Action;
+import autumn.util.functors.Function1;
+import autumn.util.functors.Function2;
+import autumn.util.functors.Predicate;
+import com.google.common.base.Preconditions;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Iterators;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.mackenziehigh.autumn.util.json.JsonDecoder;
+import com.mackenziehigh.autumn.util.json.JsonEncoder;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.AbstractList;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.NoSuchElementException;
+import java.util.Scanner;
+
+/**
+ * This class provides commonly used static utility methods.
+ *
+ * &lt;p&gt;
+ * This class has a single letter name, because it will be used very frequently.
+ * As a result, the shorter name saves Autumn programmers some typing.
+ * &lt;/p&gt;
+ *
+ * @author Mackenzie High
+ */
+public final class T
+{
+    private static abstract class ArrayBackedList&lt;E&gt;
+            extends AbstractList&lt;E&gt;
+    {
+    }
+
+<span class="fc" id="L61">    private static BigInteger unique = BigInteger.ZERO;</span>
+
+    /**
+     * Sole Constructor.
+     */
+    private T()
+    {
+        // Pass, because this is merely a static utility class.
+    }
+
+    /**
+     * This method rethrows an exception quietly.
+     *
+     * &lt;p&gt;
+     * If the exception is checked, then it will be wrapped in a CheckedException object
+     * and then rethrown; otherwise, the exception will simply be rethrown immediately.
+     * &lt;/p&gt;
+     *
+     * @param problem is the exception to rethrow.
+     */
+    public static void rethrow(final Throwable problem)
+    {
+<span class="nc bnc" id="L83" title="All 2 branches missed.">        if (problem instanceof RuntimeException)</span>
+        {
+<span class="nc" id="L85">            throw (RuntimeException) problem;</span>
+        }
+<span class="nc bnc" id="L87" title="All 2 branches missed.">        else if (problem instanceof Error)</span>
+        {
+<span class="nc" id="L89">            throw (Error) problem;</span>
+        }
+        else
+        {
+<span class="nc" id="L93">            throw new CheckedException(problem);</span>
+        }
+    }
+
+    /**
+     * This method applies a functor to a list of arguments.
+     *
+     * @param functor is the functor itself.
+     * @param arguments are the arguments to apply the functor to.
+     * @return the result of applying the functor to the arguments.
+     * @throws NullPointerException if functor is null.
+     * @throws NullPointerException if arguments is null.
+     * @throws Throwable in order to propagate any exceptions thrown by the functor.
+     */
+    public static Object apply(final TypedFunctor functor,
+                               final Iterable&lt;?&gt; arguments)
+            throws Throwable
+    {
+<span class="fc" id="L111">        final ArgumentStack stack = ArgumentStack.getThreadStack();</span>
+
+        // Clear the stack in order to prevent unexpected bugs.
+<span class="fc" id="L114">        stack.clear();</span>
+
+        // Push the arguments onto the stack.
+<span class="fc bfc" id="L117" title="All 2 branches covered.">        for (Object argument : arguments)</span>
+        {
+<span class="fc" id="L119">            stack.push(argument);</span>
+<span class="fc" id="L120">        }</span>
+
+        // The number of arguments must match the number of parameters.
+<span class="fc bfc" id="L123" title="All 2 branches covered.">        if (functor.parameterTypes().size() != stack.size())</span>
+        {
+<span class="fc" id="L125">            stack.clear();</span>
+<span class="fc" id="L126">            throw new IllegalArgumentException(&quot;arguments.length != parameters.length&quot;);</span>
+        }
+
+        // Invoke the functor.
+<span class="fc" id="L130">        functor.apply(stack);</span>
+
+        // Retrieve the return-value of the functor.
+<span class="fc" id="L133">        final Object result = stack.popResult();</span>
+
+<span class="fc" id="L135">        return result;</span>
+    }
+
+    /**
+     * This method prints a formated string to standard-output.
+     *
+     * &lt;p&gt;
+     * This is simply a convenience method on top of PrintStream's printf(String, Object[]).
+     * &lt;/p&gt;
+     *
+     * @param format is the format specifier.
+     * @param args are the arguments to substitute into the format string.
+     */
+    public static void printf(final String format,
+                              final Iterable&lt;Object&gt; args)
+    {
+<span class="nc" id="L151">        Preconditions.checkNotNull(format);</span>
+<span class="nc" id="L152">        Preconditions.checkNotNull(args);</span>
+
+<span class="nc" id="L154">        System.out.printf(format, Lists.newLinkedList(args).toArray());</span>
+<span class="nc" id="L155">    }</span>
+
+    /**
+     * This method prints a formated string to standard-error.
+     *
+     * &lt;p&gt;
+     * This is simply a convenience method on top of PrintStream's printf(String, Object[]).
+     * &lt;/p&gt;
+     *
+     * @param format is the format specifier.
+     * @param args are the arguments to substitute into the format string.
+     */
+    public static void printerrf(final String format,
+                                 final Iterable&lt;Object&gt; args)
+    {
+<span class="nc" id="L170">        Preconditions.checkNotNull(format);</span>
+<span class="nc" id="L171">        Preconditions.checkNotNull(args);</span>
+
+<span class="nc" id="L173">        System.out.printf(format, Lists.newLinkedList(args).toArray());</span>
+<span class="nc" id="L174">    }</span>
+
+    /**
+     * This method reads a line of text from standard-input.
+     *
+     * @return the line of text.
+     */
+    public static String readln()
+    {
+<span class="nc" id="L183">        final Scanner scanner = new Scanner(System.in);</span>
+
+<span class="nc" id="L185">        final String input = scanner.nextLine();</span>
+
+<span class="nc" id="L187">        return input;</span>
+    }
+
+    /**
+     * This method creates an iterable that iterates over the integers in a discrete range.
+     *
+     * @param start is the inclusive lowest value in the range.
+     * @param end is the inclusive highest value in the range.
+     * @param step is the distance that elements in the range are separated for one another.
+     * @return a lazy list of integers.
+     * @throws IllegalArgumentException if end is less-than start.
+     */
+    public static Iterable&lt;Integer&gt; range(final int start,
+                                          final int end,
+                                          final int step)
+    {
+        // TODO: test
+
+<span class="nc bnc" id="L205" title="All 2 branches missed.">        Preconditions.checkArgument(start &lt;= end);</span>
+
+<span class="nc" id="L207">        return new Iterable&lt;Integer&gt;()</span>
+<span class="nc" id="L208">        {</span>
+            @Override
+            public Iterator&lt;Integer&gt; iterator()
+            {
+<span class="nc" id="L212">                return new Iterator&lt;Integer&gt;()</span>
+<span class="nc" id="L213">                {</span>
+<span class="nc" id="L214">                    private int index = start;</span>
+
+                    @Override
+                    public boolean hasNext()
+                    {
+<span class="nc bnc" id="L219" title="All 2 branches missed.">                        return index &lt;= end;</span>
+                    }
+
+                    @Override
+                    public Integer next()
+                    {
+<span class="nc" id="L225">                        final int result = index;</span>
+
+<span class="nc" id="L227">                        index = index + step;</span>
+
+<span class="nc" id="L229">                        return result;</span>
+                    }
+
+                    @Override
+                    public void remove()
+                    {
+<span class="nc" id="L235">                        throw new UnsupportedOperationException(&quot;Sorry, you cannot remove a number from the number line.&quot;);</span>
+                    }
+                };
+            }
+        };
+    }
+
+    /**
+     * This method creates an iterator over a given array of booleans.
+     *
+     * &lt;p&gt;
+     * The returned iterator will not support the remove() method.
+     * &lt;/p&gt;
+     *
+     * @param array is the array itself.
+     * @return an iterable whose iterator can iterate over the given array.
+     */
+    public static List&lt;Boolean&gt; iter(final boolean[] array)
+    {
+        /**
+         * Create a list that wraps the array.
+         */
+<span class="fc" id="L257">        final ArrayBackedList&lt;Boolean&gt; list = new ArrayBackedList&lt;Boolean&gt;()</span>
+<span class="fc" id="L258">        {</span>
+            @Override
+            public Boolean get(int index)
+            {
+<span class="fc" id="L262">                return array[index];</span>
+            }
+
+            @Override
+            public int size()
+            {
+<span class="fc" id="L268">                return array.length;</span>
+            }
+        };
+
+        /**
+         * Make sure the list is unmodifiable.
+         */
+<span class="fc" id="L275">        return Collections.unmodifiableList(list);</span>
+    }
+
+    /**
+     * This method creates an iterator over a given array of chars.
+     *
+     * &lt;p&gt;
+     * The returned iterator will not support the remove() method.
+     * &lt;/p&gt;
+     *
+     * @param array is the array itself.
+     * @return an iterable whose iterator can iterate over the given array.
+     */
+    public static List&lt;Character&gt; iter(final char[] array)
+    {
+        /**
+         * Create a list that wraps the array.
+         */
+<span class="fc" id="L293">        final ArrayBackedList&lt;Character&gt; list = new ArrayBackedList&lt;Character&gt;()</span>
+<span class="fc" id="L294">        {</span>
+            @Override
+            public Character get(int index)
+            {
+<span class="fc" id="L298">                return array[index];</span>
+            }
+
+            @Override
+            public int size()
+            {
+<span class="fc" id="L304">                return array.length;</span>
+            }
+        };
+
+        /**
+         * Make sure the list is unmodifiable.
+         */
+<span class="fc" id="L311">        return Collections.unmodifiableList(list);</span>
+    }
+
+    /**
+     * This method creates an iterator over a given array of bytes.
+     *
+     * &lt;p&gt;
+     * The returned iterator will not support the remove() method.
+     * &lt;/p&gt;
+     *
+     * @param array is the array itself.
+     * @return an iterable whose iterator can iterate over the given array.
+     */
+    public static List&lt;Byte&gt; iter(final byte[] array)
+    {
+        /**
+         * Create a list that wraps the array.
+         */
+<span class="fc" id="L329">        final ArrayBackedList&lt;Byte&gt; list = new ArrayBackedList&lt;Byte&gt;()</span>
+<span class="fc" id="L330">        {</span>
+            @Override
+            public Byte get(int index)
+            {
+<span class="fc" id="L334">                return array[index];</span>
+            }
+
+            @Override
+            public int size()
+            {
+<span class="fc" id="L340">                return array.length;</span>
+            }
+        };
+
+        /**
+         * Make sure the list is unmodifiable.
+         */
+<span class="fc" id="L347">        return Collections.unmodifiableList(list);</span>
+    }
+
+    /**
+     * This method creates an iterator over a given array of shorts.
+     *
+     * &lt;p&gt;
+     * The returned iterator will not support the remove() method.
+     * &lt;/p&gt;
+     *
+     * @param array is the array itself.
+     * @return an iterable whose iterator can iterate over the given array.
+     */
+    public static List&lt;Short&gt; iter(final short[] array)
+    {
+        /**
+         * Create a list that wraps the array.
+         */
+<span class="fc" id="L365">        final ArrayBackedList&lt;Short&gt; list = new ArrayBackedList&lt;Short&gt;()</span>
+<span class="fc" id="L366">        {</span>
+            @Override
+            public Short get(int index)
+            {
+<span class="fc" id="L370">                return array[index];</span>
+            }
+
+            @Override
+            public int size()
+            {
+<span class="fc" id="L376">                return array.length;</span>
+            }
+        };
+
+        /**
+         * Make sure the list is unmodifiable.
+         */
+<span class="fc" id="L383">        return Collections.unmodifiableList(list);</span>
+    }
+
+    /**
+     * This method creates an iterator over a given array of ints.
+     *
+     * &lt;p&gt;
+     * The returned iterator will not support the remove() method.
+     * &lt;/p&gt;
+     *
+     * @param array is the array itself.
+     * @return an iterable whose iterator can iterate over the given array.
+     */
+    public static List&lt;Integer&gt; iter(final int[] array)
+    {
+        /**
+         * Create a list that wraps the array.
+         */
+<span class="fc" id="L401">        final ArrayBackedList&lt;Integer&gt; list = new ArrayBackedList&lt;Integer&gt;()</span>
+<span class="fc" id="L402">        {</span>
+            @Override
+            public Integer get(int index)
+            {
+<span class="fc" id="L406">                return array[index];</span>
+            }
+
+            @Override
+            public int size()
+            {
+<span class="fc" id="L412">                return array.length;</span>
+            }
+        };
+
+        /**
+         * Make sure the list is unmodifiable.
+         */
+<span class="fc" id="L419">        return Collections.unmodifiableList(list);</span>
+    }
+
+    /**
+     * This method creates an iterator over a given array of longs.
+     *
+     * &lt;p&gt;
+     * The returned iterator will not support the remove() method.
+     * &lt;/p&gt;
+     *
+     * @param array is the array itself.
+     * @return an iterable whose iterator can iterate over the given array.
+     */
+    public static List&lt;Long&gt; iter(final long[] array)
+    {
+        /**
+         * Create a list that wraps the array.
+         */
+<span class="fc" id="L437">        final ArrayBackedList&lt;Long&gt; list = new ArrayBackedList&lt;Long&gt;()</span>
+<span class="fc" id="L438">        {</span>
+            @Override
+            public Long get(int index)
+            {
+<span class="fc" id="L442">                return array[index];</span>
+            }
+
+            @Override
+            public int size()
+            {
+<span class="fc" id="L448">                return array.length;</span>
+            }
+        };
+
+        /**
+         * Make sure the list is unmodifiable.
+         */
+<span class="fc" id="L455">        return Collections.unmodifiableList(list);</span>
+    }
+
+    /**
+     * This method creates an iterator over a given array of floats.
+     *
+     * &lt;p&gt;
+     * The returned iterator will not support the remove() method.
+     * &lt;/p&gt;
+     *
+     * @param array is the array itself.
+     * @return an iterable whose iterator can iterate over the given array.
+     */
+    public static List&lt;Float&gt; iter(final float[] array)
+    {
+        /**
+         * Create a list that wraps the array.
+         */
+<span class="fc" id="L473">        final ArrayBackedList&lt;Float&gt; list = new ArrayBackedList&lt;Float&gt;()</span>
+<span class="fc" id="L474">        {</span>
+            @Override
+            public Float get(int index)
+            {
+<span class="fc" id="L478">                return array[index];</span>
+            }
+
+            @Override
+            public int size()
+            {
+<span class="fc" id="L484">                return array.length;</span>
+            }
+        };
+
+        /**
+         * Make sure the list is unmodifiable.
+         */
+<span class="fc" id="L491">        return Collections.unmodifiableList(list);</span>
+    }
+
+    /**
+     * This method creates an iterator over a given array of doubles.
+     *
+     * &lt;p&gt;
+     * The returned iterator will not support the remove() method.
+     * &lt;/p&gt;
+     *
+     * @param array is the array itself.
+     * @return an iterable whose iterator can iterate over the given array.
+     */
+    public static List&lt;Double&gt; iter(final double[] array)
+    {
+        /**
+         * Create a list that wraps the array.
+         */
+<span class="fc" id="L509">        final ArrayBackedList&lt;Double&gt; list = new ArrayBackedList&lt;Double&gt;()</span>
+<span class="fc" id="L510">        {</span>
+            @Override
+            public Double get(int index)
+            {
+<span class="fc" id="L514">                return array[index];</span>
+            }
+
+            @Override
+            public int size()
+            {
+<span class="fc" id="L520">                return array.length;</span>
+            }
+        };
+
+        /**
+         * Make sure the list is unmodifiable.
+         */
+<span class="fc" id="L527">        return Collections.unmodifiableList(list);</span>
+    }
+
+    /**
+     * This method creates an iterator over a given array of objects.
+     *
+     * &lt;p&gt;
+     * The returned iterator will not support the remove() method.
+     * &lt;/p&gt;
+     *
+     * @param array is the array itself.
+     * @return an iterable whose iterator can iterate over the given array.
+     */
+    public static &lt;T&gt; List&lt;T&gt; iter(final T[] array)
+    {
+        /**
+         * Create a list that wraps the array.
+         */
+<span class="fc" id="L545">        final ArrayBackedList&lt;T&gt; list = new ArrayBackedList&lt;T&gt;()</span>
+<span class="fc" id="L546">        {</span>
+            @Override
+            public T get(int index)
+            {
+<span class="fc" id="L550">                return array[index];</span>
+            }
+
+            @Override
+            public int size()
+            {
+<span class="fc" id="L556">                return array.length;</span>
+            }
+        };
+
+        /**
+         * Make sure the list is unmodifiable.
+         */
+<span class="fc" id="L563">        return Collections.unmodifiableList(list);</span>
+    }
+
+    /**
+     * This method creates an iterator over an iterable.
+     *
+     * @param iterable is the iterable itself.
+     * @return iterable.
+     */
+    public static &lt;T&gt; List&lt;T&gt; iter(final Iterable&lt;T&gt; iterable)
+    {
+        /**
+         * Special Case: The iterable is a list.
+         */
+<span class="fc bfc" id="L577" title="All 2 branches covered.">        if (iterable instanceof List)</span>
+        {
+<span class="fc" id="L579">            return Collections.unmodifiableList((List) iterable);</span>
+        }
+
+        /**
+         * Create a list that wraps the array.
+         */
+<span class="fc" id="L585">        final ArrayBackedList&lt;T&gt; list = new ArrayBackedList&lt;T&gt;()</span>
+<span class="fc" id="L586">        {</span>
+            @Override
+            public T get(int index)
+            {
+<span class="fc" id="L590">                return Iterables.get(iterable, index);</span>
+            }
+
+            @Override
+            public int size()
+            {
+<span class="fc" id="L596">                return Iterables.size(iterable);</span>
+            }
+
+            @Override
+            public Iterator&lt;T&gt; iterator()
+            {
+<span class="fc" id="L602">                return Iterators.unmodifiableIterator(iterable.iterator());</span>
+            }
+        };
+
+        /**
+         * Make sure the list is unmodifiable.
+         */
+<span class="fc" id="L609">        return Collections.unmodifiableList(list);</span>
+    }
+
+    /**
+     * This method creates an iterator over an iterator.
+     *
+     * @param iterable is the iterator itself.
+     * @return an iterable that wraps the iterator.
+     */
+    public static &lt;T&gt; Iterable&lt;T&gt; iter(final Iterator&lt;T&gt; iterable)
+    {
+<span class="fc" id="L620">        return new Iterable&lt;T&gt;()</span>
+<span class="fc" id="L621">        {</span>
+            @Override
+            public Iterator&lt;T&gt; iterator()
+            {
+<span class="fc" id="L625">                return iterable;</span>
+            }
+        };
+    }
+
+    public static List&lt;String&gt; iter(final Annotation anno)
+    {
+        try
+        {
+<span class="fc" id="L634">            Preconditions.checkNotNull(anno);</span>
+
+            /**
+             * The values stored in the annotation will be added to this list.
+             */
+<span class="fc" id="L639">            final List&lt;String&gt; result = new LinkedList();</span>
+
+            /**
+             * If the annotation is an Autumn-style annotation,
+             * then it must have a value() : String[] method.
+             */
+<span class="fc" id="L645">            final Method method = F.findMethod(anno.annotationType(), &quot;value&quot;, Collections.EMPTY_LIST);</span>
+
+            /**
+             * If the annotation is not an Autumn-style annotation,
+             * then we cannot extract any values from it.
+             */
+<span class="fc bfc" id="L651" title="All 4 branches covered.">            if (method == null || method.getReturnType() != String[].class)</span>
+            {
+<span class="fc" id="L653">                return Collections.EMPTY_LIST;</span>
+            }
+
+            /**
+             * Extract the values from the annotation.
+             */
+<span class="fc" id="L659">            final String[] values = (String[]) method.invoke(anno);</span>
+<span class="fc" id="L660">            result.addAll(Arrays.asList(values));</span>
+
+            /**
+             * Return the result as an immutable list.
+             */
+<span class="fc" id="L665">            return Collections.unmodifiableList(result);</span>
+        }
+<span class="nc" id="L667">        catch (IllegalAccessException ex)</span>
+        {
+<span class="nc" id="L669">            return Collections.EMPTY_LIST;</span>
+        }
+<span class="fc" id="L671">        catch (InvocationTargetException ex)</span>
+        {
+<span class="fc" id="L673">            return Collections.EMPTY_LIST;</span>
+        }
+    }
+
+    /**
+     * This method returns the default value of a given type.
+     *
+     * &lt;p&gt;
+     * The boolean type returns false. &lt;br&gt;
+     * Numeric types return zero. &lt;br&gt;
+     * Reference types return null. &lt;br&gt;
+     * &lt;/p&gt;
+     *
+     * @param type is the type that indicates the value to return.
+     * @return
+     * @throws NullPointerException if the type is null.
+     * @throws IllegalArgumentException if the type is the void-type.
+     */
+    public static Object defaultValue(final Class type)
+    {
+<span class="fc" id="L693">        Preconditions.checkNotNull(type);</span>
+<span class="pc bpc" id="L694" title="1 of 2 branches missed.">        Preconditions.checkArgument(type != void.class,</span>
+                                    &quot;The void-type does not have a default value.&quot;);
+
+<span class="fc bfc" id="L697" title="All 2 branches covered.">        if (type == boolean.class)</span>
+        {
+<span class="fc" id="L699">            return false;</span>
+        }
+<span class="fc bfc" id="L701" title="All 2 branches covered.">        else if (type == char.class)</span>
+        {
+<span class="fc" id="L703">            return (char) 0;</span>
+        }
+<span class="fc bfc" id="L705" title="All 2 branches covered.">        else if (type == byte.class)</span>
+        {
+<span class="fc" id="L707">            return (byte) 0;</span>
+        }
+<span class="fc bfc" id="L709" title="All 2 branches covered.">        else if (type == short.class)</span>
+        {
+<span class="fc" id="L711">            return (short) 0;</span>
+        }
+<span class="fc bfc" id="L713" title="All 2 branches covered.">        else if (type == int.class)</span>
+        {
+<span class="fc" id="L715">            return (int) 0;</span>
+        }
+<span class="fc bfc" id="L717" title="All 2 branches covered.">        else if (type == long.class)</span>
+        {
+<span class="fc" id="L719">            return (long) 0;</span>
+        }
+<span class="fc bfc" id="L721" title="All 2 branches covered.">        else if (type == float.class)</span>
+        {
+<span class="fc" id="L723">            return (float) 0;</span>
+        }
+<span class="fc bfc" id="L725" title="All 2 branches covered.">        else if (type == double.class)</span>
+        {
+<span class="fc" id="L727">            return (double) 0;</span>
+        }
+        else // reference types
+        {
+<span class="fc" id="L731">            return null;</span>
+        }
+    }
+
+    /**
+     * This method never returns the same BigInteger twice.
+     *
+     * @return a new unique positive integer.
+     */
+    public static synchronized BigInteger unique()
+    {
+<span class="fc" id="L742">        final BigInteger result = unique;</span>
+
+<span class="fc" id="L744">        unique = unique.add(BigInteger.ONE);</span>
+
+<span class="fc" id="L746">        return result;</span>
+    }
+
+    /**
+     * This method compares to comparable values.
+     *
+     * &lt;p&gt;
+     * A result of negative one indicates that the left operand is less than the right operand.
+     * A result of positive one indicates that the left operand is greater than the right operand.
+     * A zero result indicates that the operands are equal.
+     * &lt;/p&gt;
+     *
+     * &lt;/p&gt;
+     * This method considers null to be less than an object.
+     * &lt;/p&gt;
+     *
+     * @param left is the left operand.
+     * @param right is the right operand.
+     * @return an integer that represents the relationship between the operands.
+     */
+    public static int compare(final Comparable left,
+                              final Comparable right)
+    {
+<span class="fc bfc" id="L769" title="All 4 branches covered.">        if (left == null &amp;&amp; right == null)</span>
+        {
+<span class="fc" id="L771">            return 0;</span>
+        }
+<span class="pc bpc" id="L773" title="1 of 4 branches missed.">        else if (left == null &amp;&amp; right != null)</span>
+        {
+<span class="fc" id="L775">            return -1;</span>
+        }
+<span class="pc bpc" id="L777" title="1 of 4 branches missed.">        else if (left != null &amp;&amp; right == null)</span>
+        {
+<span class="fc" id="L779">            return 1;</span>
+        }
+        else
+        {
+<span class="fc" id="L783">            final int relationship = ((Comparable) left).compareTo(right);</span>
+
+<span class="fc bfc" id="L785" title="All 2 branches covered.">            if (relationship == 0)</span>
+            {
+<span class="fc" id="L787">                return 0;</span>
+            }
+<span class="fc bfc" id="L789" title="All 2 branches covered.">            else if (relationship &gt; 0)</span>
+            {
+<span class="fc" id="L791">                return 1;</span>
+            }
+            else // relationship &lt; 0
+            {
+<span class="fc" id="L795">                return -1;</span>
+            }
+        }
+    }
+
+    /**
+     * This method calculates the sum of a set of values.
+     *
+     * @param values are the values to sum.
+     * @return the sum of the values.
+     */
+    public static BigDecimal sum(final Iterable&lt;?&gt; values)
+    {
+<span class="fc" id="L808">        BigDecimal total = F.big(BigDecimal.ZERO);</span>
+
+<span class="fc bfc" id="L810" title="All 2 branches covered.">        for (Object value : values)</span>
+        {
+<span class="fc" id="L812">            Preconditions.checkNotNull(value);</span>
+
+<span class="fc" id="L814">            total = total.add(F.big(value));</span>
+<span class="fc" id="L815">        }</span>
+
+<span class="fc" id="L817">        return total;</span>
+    }
+
+    /**
+     * This method calculates the average of a set of values.
+     *
+     * @param values are the values to average.
+     * @return the average of the values.
+     */
+    public static BigDecimal average(final Iterable&lt;?&gt; values)
+    {
+<span class="pc bpc" id="L828" title="1 of 2 branches missed.">        assert values != null;</span>
+
+<span class="fc" id="L830">        BigDecimal total = BigDecimal.ZERO;</span>
+
+<span class="fc" id="L832">        int count = 0;</span>
+
+<span class="fc bfc" id="L834" title="All 2 branches covered.">        for (Object value : values)</span>
+        {
+<span class="fc" id="L836">            final BigDecimal big = F.big(value);</span>
+
+<span class="fc" id="L838">            total = total.add(big);</span>
+<span class="fc" id="L839">            ++count;</span>
+<span class="fc" id="L840">        }</span>
+
+<span class="fc" id="L842">        final BigDecimal result = total.divide(F.big(count));</span>
+
+<span class="fc" id="L844">        return F.big(result);</span>
+    }
+
+    /**
+     * This method searches for the minimum value in a set of values.
+     *
+     * @param values are the values to search through.
+     * @return the minimum value in the group.
+     * @throws NullPointerException if values is null.
+     */
+    public static Comparable minimum(final Iterable&lt;Comparable&gt; values)
+    {
+<span class="fc" id="L856">        Preconditions.checkNotNull(values);</span>
+
+<span class="fc" id="L858">        final Iterator&lt;Comparable&gt; iter = values.iterator();</span>
+
+        /**
+         * If there are no values, then return null;
+         * otherwise, return the minimum value.
+         */
+<span class="pc bpc" id="L864" title="1 of 2 branches missed.">        if (iter.hasNext() == false)</span>
+        {
+<span class="nc" id="L866">            return null;</span>
+        }
+        else
+        {
+<span class="fc" id="L870">            Comparable least = iter.next();</span>
+
+<span class="fc bfc" id="L872" title="All 2 branches covered.">            while (iter.hasNext())</span>
+            {
+<span class="fc" id="L874">                final Comparable value = iter.next();</span>
+
+<span class="fc bfc" id="L876" title="All 2 branches covered.">                least = compare(value, least) &lt; 0 ? value : least;</span>
+<span class="fc" id="L877">            }</span>
+
+<span class="fc" id="L879">            return least;</span>
+        }
+    }
+
+    /**
+     * This method searches for the maximum value in a set of values.
+     *
+     * @param values are the values to search through.
+     * @return the maximum value in the group.
+     * @throws NullPointerException if values is null.
+     */
+    public static Comparable maximum(final Iterable&lt;Comparable&gt; values)
+    {
+<span class="fc" id="L892">        Preconditions.checkNotNull(values);</span>
+
+<span class="fc" id="L894">        final Iterator&lt;Comparable&gt; iter = values.iterator();</span>
+
+        /**
+         * If there are no values, then return null;
+         * otherwise, return the maximum value.
+         */
+<span class="pc bpc" id="L900" title="1 of 2 branches missed.">        if (iter.hasNext() == false)</span>
+        {
+<span class="nc" id="L902">            return null;</span>
+        }
+        else
+        {
+<span class="fc" id="L906">            Comparable greatest = iter.next();</span>
+
+<span class="fc bfc" id="L908" title="All 2 branches covered.">            while (iter.hasNext())</span>
+            {
+<span class="fc" id="L910">                final Comparable value = iter.next();</span>
+
+<span class="fc bfc" id="L912" title="All 2 branches covered.">                greatest = compare(value, greatest) &gt; 0 ? value : greatest;</span>
+<span class="fc" id="L913">            }</span>
+
+<span class="fc" id="L915">            return greatest;</span>
+        }
+    }
+
+    /**
+     * This method determines whether any of the values in an iterable match a predicate.
+     *
+     * @param values are the values to check.
+     * @param condition is the condition that may match one of the values.
+     * @return true, iff at least one of the values matches the predicate.
+     */
+    public static boolean any(final Iterable&lt;?&gt; values,
+                              final Predicate condition)
+            throws Throwable
+    {
+<span class="fc bfc" id="L930" title="All 2 branches covered.">        for (Object value : values)</span>
+        {
+<span class="fc bfc" id="L932" title="All 2 branches covered.">            if (condition.invoke(value))</span>
+            {
+<span class="fc" id="L934">                return true;</span>
+            }
+<span class="fc" id="L936">        }</span>
+
+<span class="fc" id="L938">        return false;</span>
+    }
+
+    /**
+     * This method determines whether all of the values in an iterable match a predicate.
+     *
+     * @param values are the values to check.
+     * @param condition is the condition that may match the values.
+     * @return true, iff all of the values match the predicate.
+     */
+    public static boolean all(final Iterable&lt;?&gt; values,
+                              final Predicate condition)
+            throws Throwable
+    {
+<span class="fc bfc" id="L952" title="All 2 branches covered.">        for (Object value : values)</span>
+        {
+<span class="fc bfc" id="L954" title="All 2 branches covered.">            if (condition.invoke(value) == false)</span>
+            {
+<span class="fc" id="L956">                return false;</span>
+            }
+<span class="fc" id="L958">        }</span>
+
+<span class="fc" id="L960">        return true;</span>
+    }
+
+    /**
+     * This method counts the the values that match a predicate
+     *
+     * @param values are the values to check.
+     * @param condition is the condition that may match some of the values.
+     * @return the number of values (may be zero) that match the predicate.
+     */
+    public static int count(final Iterable&lt;?&gt; values,
+                            final Predicate condition)
+            throws Throwable
+    {
+<span class="fc" id="L974">        int count = 0;</span>
+
+<span class="fc bfc" id="L976" title="All 2 branches covered.">        for (Object value : values)</span>
+        {
+<span class="fc bfc" id="L978" title="All 2 branches covered.">            if (condition.invoke(value))</span>
+            {
+<span class="fc" id="L980">                ++count;</span>
+            }
+<span class="fc" id="L982">        }</span>
+
+<span class="fc" id="L984">        return count;</span>
+    }
+
+    /**
+     * This method applies a functor to each element of an iterable and collects the results.
+     *
+     * @param iterable is the iterable that provides input for the functor.
+     * @param function is the functor(Object) : Object that processes the input.
+     * @return an immutable list containing the output of the functor.
+     * @throws Throwable in order to allow exceptions to propagate from the functor.
+     */
+    public static List&lt;Object&gt; map(final Iterable iterable,
+                                   final Function1 function)
+            throws Throwable
+    {
+<span class="fc" id="L999">        Preconditions.checkNotNull(iterable);</span>
+<span class="fc" id="L1000">        Preconditions.checkNotNull(function);</span>
+
+<span class="fc" id="L1002">        final List&lt;Object&gt; output = Lists.newLinkedList();</span>
+
+<span class="fc bfc" id="L1004" title="All 2 branches covered.">        for (Object element : iterable)</span>
+        {
+<span class="fc" id="L1006">            output.add(T.apply(function, Collections.singletonList(element)));</span>
+<span class="fc" id="L1007">        }</span>
+
+<span class="fc" id="L1009">        return Collections.unmodifiableList(output);</span>
+    }
+
+    public static List&lt;Object&gt; filter(final Iterable&lt;?&gt; iterable,
+                                      final Predicate function)
+            throws Throwable
+    {
+<span class="fc" id="L1016">        Preconditions.checkNotNull(iterable);</span>
+<span class="fc" id="L1017">        Preconditions.checkNotNull(function);</span>
+
+<span class="fc" id="L1019">        final List&lt;Object&gt; result = new LinkedList();</span>
+
+<span class="fc bfc" id="L1021" title="All 2 branches covered.">        for (Object value : iterable)</span>
+        {
+<span class="fc bfc" id="L1023" title="All 2 branches covered.">            if (function.invoke(value))</span>
+            {
+<span class="fc" id="L1025">                result.add(value);</span>
+            }
+<span class="fc" id="L1027">        }</span>
+
+<span class="fc" id="L1029">        return Collections.unmodifiableList(result);</span>
+    }
+
+    public static Object reduce(final Iterable iterable,
+                                final Function2 functor)
+            throws Throwable
+    {
+<span class="nc" id="L1036">        return null;</span>
+    }
+
+    public static Object find(final Iterable&lt;?&gt; iterable,
+                              final Predicate function,
+                              final int skip)
+            throws Throwable
+    {
+<span class="fc" id="L1044">        Preconditions.checkNotNull(iterable);</span>
+<span class="fc" id="L1045">        Preconditions.checkNotNull(function);</span>
+<span class="pc bpc" id="L1046" title="1 of 2 branches missed.">        Preconditions.checkArgument(skip &gt;= 0);</span>
+
+<span class="fc" id="L1048">        int count = 0;</span>
+
+<span class="fc bfc" id="L1050" title="All 2 branches covered.">        for (Object value : iterable)</span>
+        {
+<span class="fc" id="L1052">            final boolean match = function.invoke(value);</span>
+
+<span class="fc bfc" id="L1054" title="All 4 branches covered.">            if (match &amp;&amp; count == skip)</span>
+            {
+<span class="fc" id="L1056">                return value;</span>
+            }
+<span class="pc bpc" id="L1058" title="1 of 4 branches missed.">            else if (match &amp;&amp; count != skip)</span>
+            {
+<span class="fc" id="L1060">                ++count;</span>
+            }
+<span class="fc" id="L1062">        }</span>
+
+<span class="fc" id="L1064">        return null;</span>
+    }
+
+    /**
+     * This method creates a sorted list from an unsorted iterable.
+     *
+     * &lt;p&gt;
+     * If an in-place sort is preferred, consider using method
+     * &lt;code&gt;sort(List)&lt;/code&gt; in class
+     * &lt;code&gt;java.util.Collections&lt;/code&gt;.
+     * &lt;/p&gt;
+     *
+     * @param iterable provides the elements for the new sorted list.
+     * @return a sorted list that contains the elements of the given input iterable.
+     */
+    public static &lt;T extends Comparable&gt; List&lt;T&gt; sorted(final Iterable&lt;T&gt; iterable)
+    {
+<span class="nc" id="L1081">        Preconditions.checkNotNull(iterable);</span>
+
+<span class="nc" id="L1083">        final ArrayList&lt;T&gt; result = Lists.newArrayList(iterable);</span>
+
+<span class="nc" id="L1085">        Collections.sort(result);</span>
+
+<span class="nc" id="L1087">        return result;</span>
+    }
+
+    /**
+     * This method creates a sorted list from an unsorted iterable.
+     *
+     * &lt;p&gt;
+     * If an in-place sort is preferred, consider using method
+     * &lt;code&gt;sort(List)&lt;/code&gt; in class
+     * &lt;code&gt;java.util.Collections&lt;/code&gt;.
+     * &lt;/p&gt;
+     *
+     * @param iterable provides the elements for the new sorted list.
+     * @param comparator is a function object that can compare elements of the iterable.
+     * @return a sorted list that contains the elements of the given input iterable.
+     */
+    public static &lt;T&gt; List&lt;T&gt; sorted(final Iterable&lt;T&gt; iterable,
+                                     final Comparator&lt;T&gt; comparator)
+    {
+<span class="nc" id="L1106">        Preconditions.checkNotNull(iterable);</span>
+
+<span class="nc" id="L1108">        final ArrayList&lt;T&gt; result = Lists.newArrayList(iterable);</span>
+
+<span class="nc" id="L1110">        Collections.sort(result, comparator);</span>
+
+<span class="nc" id="L1112">        return result;</span>
+    }
+
+    /**
+     * This method replaces escape-sequences in a string with the characters they represent.
+     *
+     * @param string the string that may contain escape-sequences.
+     * @return the modified string.
+     * @throws NullPointerException if string is null.
+     * @throws IllegalArgumentException if an escape-sequence is malformed.
+     */
+    public static String escape(final CharSequence string)
+    {
+<span class="fc" id="L1125">        Preconditions.checkNotNull(string);</span>
+
+        // This is the string being built.
+<span class="fc" id="L1128">        final StringBuilder result = new StringBuilder();</span>
+
+        // This is true, when an escape-sequence is being processed.
+<span class="fc" id="L1131">        boolean in_escape = false;</span>
+
+        // This is the number of characters to advance forward.
+        int increment;
+
+<span class="fc bfc" id="L1136" title="All 2 branches covered.">        for (int i = 0; i &lt; string.length(); i = i + increment)</span>
+        {
+<span class="fc" id="L1138">            increment = 1;</span>
+
+<span class="fc" id="L1140">            final char chr = string.charAt(i);</span>
+
+<span class="fc bfc" id="L1142" title="All 4 branches covered.">            if (in_escape == false &amp;&amp; chr == '\\')</span>
+            {
+<span class="fc" id="L1144">                in_escape = true;</span>
+            }
+<span class="fc bfc" id="L1146" title="All 4 branches covered.">            else if (in_escape &amp;&amp; chr == 't')</span>
+            {
+<span class="fc" id="L1148">                result.append('\t');</span>
+<span class="fc" id="L1149">                in_escape = false;</span>
+            }
+<span class="fc bfc" id="L1151" title="All 4 branches covered.">            else if (in_escape &amp;&amp; chr == 'b')</span>
+            {
+<span class="fc" id="L1153">                result.append('\b');</span>
+<span class="fc" id="L1154">                in_escape = false;</span>
+            }
+<span class="fc bfc" id="L1156" title="All 4 branches covered.">            else if (in_escape &amp;&amp; chr == 'n')</span>
+            {
+<span class="fc" id="L1158">                result.append('\n');</span>
+<span class="fc" id="L1159">                in_escape = false;</span>
+            }
+<span class="fc bfc" id="L1161" title="All 4 branches covered.">            else if (in_escape &amp;&amp; chr == 'r')</span>
+            {
+<span class="fc" id="L1163">                result.append('\r');</span>
+<span class="fc" id="L1164">                in_escape = false;</span>
+            }
+<span class="fc bfc" id="L1166" title="All 4 branches covered.">            else if (in_escape &amp;&amp; chr == 'f')</span>
+            {
+<span class="fc" id="L1168">                result.append('\f');</span>
+<span class="fc" id="L1169">                in_escape = false;</span>
+            }
+<span class="fc bfc" id="L1171" title="All 4 branches covered.">            else if (in_escape &amp;&amp; chr == '\'')</span>
+            {
+<span class="fc" id="L1173">                result.append('\'');</span>
+<span class="fc" id="L1174">                in_escape = false;</span>
+            }
+<span class="fc bfc" id="L1176" title="All 4 branches covered.">            else if (in_escape &amp;&amp; chr == '&quot;')</span>
+            {
+<span class="fc" id="L1178">                result.append('\&quot;');</span>
+<span class="fc" id="L1179">                in_escape = false;</span>
+            }
+<span class="fc bfc" id="L1181" title="All 4 branches covered.">            else if (in_escape &amp;&amp; chr == '\\')</span>
+            {
+<span class="fc" id="L1183">                result.append('\\');</span>
+<span class="fc" id="L1184">                in_escape = false;</span>
+            }
+<span class="fc bfc" id="L1186" title="All 4 branches covered.">            else if (in_escape &amp;&amp; string.length() &gt;= i + 5)</span>
+            {
+                /**
+                 * Get the character-code, which consist of five digits.
+                 */
+<span class="fc" id="L1191">                final String escape_string = string.subSequence(i, i + 5).toString();</span>
+
+                /**
+                 * The string must contain exactly five digits.
+                 */
+<span class="pc bpc" id="L1196" title="1 of 2 branches missed.">                if (!escape_string.matches(&quot;[0-9][0-9][0-9][0-9][0-9]&quot;))</span>
+                {
+<span class="nc" id="L1198">                    Preconditions.checkArgument(false, &quot;Invalid Escape Sequence: \\&quot; + escape_string);</span>
+                }
+
+                /**
+                 * The character-code must be an integer in range [0, Character.MAX_VALUE].
+                 */
+<span class="fc" id="L1204">                final int value = Integer.parseInt(escape_string);</span>
+
+<span class="pc bpc" id="L1206" title="2 of 4 branches missed.">                if (value &lt; 0 || value &gt; Character.MAX_VALUE)</span>
+                {
+<span class="nc" id="L1208">                    Preconditions.checkArgument(false, &quot;Invalid Escape Sequence: \\&quot; + escape_string);</span>
+                }
+
+                /**
+                 * Add the specified character to the string.
+                 */
+<span class="fc" id="L1214">                final char character = (char) value;</span>
+<span class="fc" id="L1215">                result.append(character);</span>
+
+                /**
+                 * Skip over the escape-string and exit the escape-sequence.
+                 */
+<span class="fc" id="L1220">                increment = increment + 4;</span>
+<span class="fc" id="L1221">                in_escape = false;</span>
+<span class="fc" id="L1222">            }</span>
+<span class="fc bfc" id="L1223" title="All 2 branches covered.">            else if (in_escape)</span>
+            {
+<span class="nc" id="L1225">                Preconditions.checkArgument(false, &quot;Invalid Escape Sequence: \\&quot; + chr);</span>
+            }
+            else
+            {
+<span class="fc" id="L1229">                result.append(chr);</span>
+            }
+        }
+
+<span class="fc" id="L1233">        return result.toString();</span>
+    }
+
+    /**
+     * This method replaces escapable characters with escape-sequences.
+     *
+     * @param string is the string to un-escape.
+     * @return the string with escapable characters replaced with escape-sequences.
+     */
+    public static String unescape(final CharSequence string)
+    {
+<span class="fc" id="L1244">        Preconditions.checkNotNull(string);</span>
+
+        // These are the characters that can be replaced with an escape-sequence.
+<span class="fc" id="L1247">        final String escapable = &quot;\t\b\n\r\f\'\&quot;\\&quot;;</span>
+
+<span class="fc" id="L1249">        final String escaped = &quot;tbnrf'\&quot;\\&quot;;</span>
+
+<span class="fc" id="L1251">        final StringBuilder result = new StringBuilder();</span>
+
+<span class="fc bfc" id="L1253" title="All 2 branches covered.">        for (int i = 0; i &lt; string.length(); i++)</span>
+        {
+<span class="fc" id="L1255">            final char chr = string.charAt(i);</span>
+
+<span class="fc bfc" id="L1257" title="All 2 branches covered.">            if (escapable.indexOf(chr) &gt;= 0)</span>
+            {
+<span class="fc" id="L1259">                result.append('\\');</span>
+<span class="fc" id="L1260">                result.append(escaped.charAt(escapable.indexOf(chr)));</span>
+            }
+<span class="pc bpc" id="L1262" title="1 of 2 branches missed.">            else if (chr == 0)</span>
+            {
+<span class="nc" id="L1264">                result.append(&quot;\\00000&quot;);</span>
+            }
+            else
+            {
+<span class="fc" id="L1268">                result.append(chr);</span>
+            }
+        }
+
+<span class="fc" id="L1272">        return result.toString();</span>
+    }
+
+    /**
+     * This method pads the start of a string.
+     *
+     * @param string is the string to pad.
+     * @param character is the padding character.
+     * @param length is the required minimum length of the string.
+     * @return the padded string.
+     */
+    public static String padStart(final CharSequence string,
+                                  final char character,
+                                  final int length)
+    {
+<span class="nc" id="L1287">        Preconditions.checkNotNull(string);</span>
+<span class="nc bnc" id="L1288" title="All 2 branches missed.">        Preconditions.checkArgument(length &gt;= 0);</span>
+
+<span class="nc" id="L1290">        final int size = string.length();</span>
+
+<span class="nc" id="L1292">        final StringBuilder result = new StringBuilder();</span>
+
+        // Add the padding characters.
+<span class="nc bnc" id="L1295" title="All 2 branches missed.">        while ((result.length() + size) &lt; length)</span>
+        {
+<span class="nc" id="L1297">            result.append(character);</span>
+        }
+
+<span class="nc" id="L1300">        result.append(string);</span>
+
+<span class="nc" id="L1302">        return result.toString();</span>
+    }
+
+    /**
+     * This method pads the end of a string.
+     *
+     * @param string is the string to pad.
+     * @param character is the padding character.
+     * @param length is the required minimum length of the string.
+     * @return the padded string.
+     */
+    public static String padEnd(final CharSequence string,
+                                final char character,
+                                final int length)
+    {
+<span class="nc" id="L1317">        Preconditions.checkNotNull(string);</span>
+<span class="nc bnc" id="L1318" title="All 2 branches missed.">        Preconditions.checkArgument(length &gt;= 0);</span>
+
+<span class="nc" id="L1320">        final int size = string.length();</span>
+
+<span class="nc" id="L1322">        final StringBuilder result = new StringBuilder(string);</span>
+
+        // Add the padding characters.
+<span class="nc bnc" id="L1325" title="All 2 branches missed.">        while ((result.length() + size) &lt; length)</span>
+        {
+<span class="nc" id="L1327">            result.append(character);</span>
+        }
+
+<span class="nc" id="L1330">        return result.toString();</span>
+    }
+
+    /**
+     * This method pads the beginning of a string with zeros, if needed.
+     *
+     * @param string is the string to possibly pad.
+     * @param length is the desired minimum length of the result.
+     * @return the padded string.
+     */
+    public static String zfill(final CharSequence string,
+                               final int length)
+    {
+<span class="nc" id="L1343">        return padStart(string, '0', length);</span>
+    }
+
+    /**
+     * This method creates a string representation for an iterable.
+     *
+     * @param iterable is the iterable itself.
+     * @param prefix is a string to prepend onto the result.
+     * @param separator is the substring used to separate elements in the result.
+     * @param suffix is a string to append onto the result.
+     * @return the aforedescribed result.
+     */
+    public static String str(final Iterable&lt;?&gt; iterable,
+                             final String prefix,
+                             final String separator,
+                             final String suffix)
+    {
+<span class="fc" id="L1360">        Preconditions.checkNotNull(iterable);</span>
+<span class="fc" id="L1361">        Preconditions.checkNotNull(prefix);</span>
+<span class="fc" id="L1362">        Preconditions.checkNotNull(separator);</span>
+<span class="fc" id="L1363">        Preconditions.checkNotNull(suffix);</span>
+
+<span class="fc" id="L1365">        final List&lt;?&gt; elements = Lists.newArrayList(iterable);</span>
+
+<span class="fc" id="L1367">        final StringBuilder result = new StringBuilder();</span>
+
+<span class="fc" id="L1369">        result.append(prefix);</span>
+        {
+<span class="fc" id="L1371">            int count = 0;</span>
+
+<span class="fc bfc" id="L1373" title="All 2 branches covered.">            for (Object arg : elements)</span>
+            {
+<span class="fc" id="L1375">                ++count;</span>
+
+<span class="fc" id="L1377">                result.append(arg);</span>
+
+<span class="fc bfc" id="L1379" title="All 2 branches covered.">                if (count &lt; elements.size())</span>
+                {
+<span class="fc" id="L1381">                    result.append(separator);</span>
+                }
+<span class="fc" id="L1383">            }</span>
+        }
+<span class="fc" id="L1385">        result.append(suffix);</span>
+
+<span class="fc" id="L1387">        return result.toString();</span>
+    }
+
+    /**
+     * This method creates a string representation for a map.
+     *
+     * @param map is the map itself.
+     * @param prefix is a string to prepend onto the result.
+     * @param assign is the substring to place between keys and values in the result.
+     * @param seperator is the substring used to separate key-value-pairs from each other in the result.
+     * @param suffix is a string to append onto the result.
+     * @return the aforedescribed result.
+     */
+    public static String str(final Map&lt;?, ?&gt; map,
+                             final String prefix,
+                             final String assign,
+                             final String separator,
+                             final String suffix)
+    {
+<span class="nc" id="L1406">        Preconditions.checkNotNull(map);</span>
+<span class="nc" id="L1407">        Preconditions.checkNotNull(prefix);</span>
+<span class="nc" id="L1408">        Preconditions.checkNotNull(assign);</span>
+<span class="nc" id="L1409">        Preconditions.checkNotNull(separator);</span>
+<span class="nc" id="L1410">        Preconditions.checkNotNull(suffix);</span>
+
+<span class="nc" id="L1412">        final StringBuilder result = new StringBuilder();</span>
+
+<span class="nc" id="L1414">        result.append(prefix);</span>
+        {
+<span class="nc" id="L1416">            int count = 0;</span>
+
+<span class="nc bnc" id="L1418" title="All 2 branches missed.">            for (Entry&lt;?, ?&gt; entry : map.entrySet())</span>
+            {
+<span class="nc" id="L1420">                ++count;</span>
+
+<span class="nc" id="L1422">                result.append(entry.getKey());</span>
+<span class="nc" id="L1423">                result.append(assign);</span>
+<span class="nc" id="L1424">                result.append(entry.getValue());</span>
+
+<span class="nc bnc" id="L1426" title="All 2 branches missed.">                if (count &lt; map.size())</span>
+                {
+<span class="nc" id="L1428">                    result.append(separator);</span>
+                }
+<span class="nc" id="L1430">            }</span>
+        }
+<span class="nc" id="L1432">        result.append(suffix);</span>
+
+<span class="nc" id="L1434">        return result.toString();</span>
+    }
+
+    /**
+     * This method synchronizes the invocation of a functor.
+     *
+     * @param locked is the object to obtain a lock on.
+     * @param body is the functor to invoke.
+     * @throws Throwable if an exception is thrown by the functor.
+     * @throws IllegalArgumentException if the functor is non-nullary.
+     */
+    public static void sync(final Object locked,
+                            final Action body)
+            throws Throwable
+    {
+<span class="nc" id="L1449">        Preconditions.checkNotNull(body);</span>
+<span class="nc" id="L1450">        Preconditions.checkArgument(body.parameterTypes().isEmpty(),</span>
+                                    &quot;The functor cannot take any parameters.&quot;);
+
+<span class="nc" id="L1453">        synchronized (locked)</span>
+        {
+<span class="nc" id="L1455">            T.apply(body, Collections.EMPTY_LIST);</span>
+<span class="nc" id="L1456">        }</span>
+<span class="nc" id="L1457">    }</span>
+
+    /**
+     * This method sets the value of each element to its default value.
+     *
+     * &lt;p&gt;
+     * This method does not affect the special-method bindings.
+     * &lt;/p&gt;
+     *
+     * @return this object, if this record is mutable; otherwise, return a modified copy thereof.
+     */
+    @Infer
+    public static &lt;T extends Record&gt; T clear(final T self)
+    {
+<span class="fc" id="L1471">        T p = self;</span>
+
+<span class="fc" id="L1473">        final List&lt;Class&gt; types = self.types();</span>
+
+<span class="pc bpc" id="L1475" title="1 of 2 branches missed.">        for (int i = 0; i &lt; self.size(); i++)</span>
+        {
+<span class="nc" id="L1477">            p = (T) p.set(i, F.defaultValueOf(types.get(i)));</span>
+        }
+
+<span class="fc" id="L1480">        return p;</span>
+    }
+
+    /**
+     * This method assigns a new value to a specific element.
+     *
+     * &lt;p&gt;
+     * Auto-unboxing will be performed, if necessary.
+     * However, the unboxed value will not be auto-widened.
+     * &lt;/p&gt;
+     *
+     * &lt;p&gt;
+     * This is a linear-time operation in the worst case.
+     * &lt;/p&gt;
+     *
+     * @param key is the name of the element to assign the value to.
+     * @param value is the new value.
+     * @return this object, if this record is mutable; otherwise, return a modified copy thereof.
+     * @throws NullPointerException if the key is null.
+     * @throws NoSuchElementException if the key does not refer to an actual element.
+     * @throws ClassCastException if the object is not of an acceptable type.
+     */
+    @Infer
+    public static &lt;T extends Record&gt; T set(final T self,
+                                           final String key,
+                                           final Object value)
+    {
+<span class="nc" id="L1507">        Preconditions.checkNotNull(key);</span>
+
+<span class="nc" id="L1509">        final int index = self.keys().indexOf(key);</span>
+
+<span class="nc bnc" id="L1511" title="All 2 branches missed.">        if (index &lt; 0)</span>
+        {
+<span class="nc" id="L1513">            throw new NoSuchElementException(&quot;Key: &quot; + key);</span>
+        }
+
+<span class="nc" id="L1516">        final Record result = self.set(index, value);</span>
+
+<span class="nc" id="L1518">        return (T) result;</span>
+    }
+
+    /**
+     * This method retrieves the value of a specific element.
+     *
+     * &lt;p&gt;
+     * This is a linear-time operation in the worst case.
+     * &lt;/p&gt;
+     *
+     * @param key is the name of the element to retrieve.
+     * @return the value of the element.
+     * @throws NullPointerException if the key is null.
+     * @throws NoSuchElementException if no element is identified by the given key.
+     */
+    public static Object get(final Record self,
+                             final String key)
+    {
+<span class="nc" id="L1536">        Preconditions.checkNotNull(key);</span>
+
+<span class="nc" id="L1538">        final int index = self.keys().indexOf(key);</span>
+
+<span class="nc bnc" id="L1540" title="All 2 branches missed.">        if (index &lt; 0)</span>
+        {
+<span class="nc" id="L1542">            throw new NoSuchElementException(&quot;Key: &quot; + key);</span>
+        }
+
+<span class="nc" id="L1545">        final Object result = self.get(index);</span>
+
+<span class="nc" id="L1547">        return result;</span>
+    }
+
+    /**
+     * This method determines whether the set of entries in one record
+     * is a subset of the records in another record.
+     *
+     * @param subtype is the possible subset record.
+     * @param supertype is the possible superset record.
+     * @return true, if subtype.keys() is a subset of supertype.keys().
+     */
+    public static boolean isSubset(final Record subtype,
+                                   final Record supertype)
+    {
+<span class="nc" id="L1561">        Preconditions.checkNotNull(subtype);</span>
+<span class="nc" id="L1562">        Preconditions.checkNotNull(supertype);</span>
+
+<span class="nc" id="L1564">        final boolean answer = subtype.keys().containsAll(supertype.keys());</span>
+
+<span class="nc" id="L1566">        return answer;</span>
+    }
+
+    @Infer
+    public static &lt;T extends Record&gt; T set(final T assignee,
+                                           final Map&lt;Object, Object&gt; value)
+    {
+<span class="fc" id="L1573">        Preconditions.checkNotNull(assignee, &quot;The assignee cannot be null.&quot;);</span>
+<span class="fc" id="L1574">        Preconditions.checkNotNull(value, &quot;The value cannot be null.&quot;);</span>
+
+<span class="fc" id="L1576">        T p = assignee;</span>
+
+<span class="fc bfc" id="L1578" title="All 2 branches covered.">        for (Entry&lt;Object, Object&gt; entry : value.entrySet())</span>
+        {
+<span class="pc bpc" id="L1580" title="1 of 2 branches missed.">            if (entry.getKey() instanceof Integer)</span>
+            {
+<span class="nc" id="L1582">                p = (T) F.set(p, (Integer) entry.getKey(), entry.getValue());</span>
+            }
+            else
+            {
+<span class="fc" id="L1586">                p = (T) F.set(p, (String) entry.getKey(), entry.getValue());</span>
+            }
+<span class="fc" id="L1588">        }</span>
+
+<span class="fc" id="L1590">        return p;</span>
+    }
+
+    @Infer
+    public static &lt;T extends Record&gt; T set(final T assignee,
+                                           final Record value)
+    {
+<span class="nc" id="L1597">        Preconditions.checkNotNull(assignee, &quot;The assignee cannot be null.&quot;);</span>
+<span class="nc" id="L1598">        Preconditions.checkNotNull(value, &quot;The value cannot be null.&quot;);</span>
+
+<span class="nc" id="L1600">        T p = assignee;</span>
+
+<span class="nc bnc" id="L1602" title="All 2 branches missed.">        for (String key : value.keys())</span>
+        {
+<span class="nc" id="L1604">            p = (T) F.set(p, key, value);</span>
+<span class="nc" id="L1605">        }</span>
+
+<span class="nc" id="L1607">        return p;</span>
+    }
+
+    public static String json(final Object input)
+    {
+<span class="fc" id="L1612">        final JsonEncoder encoder = new JsonEncoder();</span>
+
+<span class="fc" id="L1614">        final String output = encoder.encode(input);</span>
+
+<span class="fc" id="L1616">        return output;</span>
+    }
+
+    public static Object json(final String input,
+                              final Module module)
+    {
+<span class="fc" id="L1622">        final JsonDecoder decoder = new JsonDecoder();</span>
+
+<span class="fc" id="L1624">        final Object result = decoder.decode(module, input);</span>
+
+<span class="fc" id="L1626">        return result;</span>
+    }
+
+    public static void remember(final Object target,
+                                final Object key,
+                                final Object value)
+    {
+<span class="nc" id="L1633">    }</span>
+
+    public static Object recall(final Object target,
+                                final Object key)
+    {
+<span class="nc" id="L1638">        return null;</span>
+    }
+
+    public static Field findField(final Class owner,
+                                  final String name)
+    {
+<span class="fc" id="L1644">        Preconditions.checkNotNull(owner);</span>
+<span class="fc" id="L1645">        Preconditions.checkNotNull(name);</span>
+
+        try
+        {
+<span class="fc" id="L1649">            return owner.getField(name);</span>
+        }
+<span class="fc" id="L1651">        catch (Exception ex)</span>
+        {
+<span class="fc" id="L1653">            return null;</span>
+        }
+    }
+
+    public static Constructor findConstructor(final Class owner,
+                                              final Iterable&lt;Class&gt; formals)
+    {
+<span class="fc" id="L1660">        Preconditions.checkNotNull(owner);</span>
+<span class="fc" id="L1661">        Preconditions.checkNotNull(formals);</span>
+
+<span class="fc" id="L1663">        final Class[] params = (Class[]) F.immutable(formals).toArray(new Class[0]);</span>
+
+        try
+        {
+<span class="fc" id="L1667">            return owner.getConstructor(params);</span>
+        }
+<span class="fc" id="L1669">        catch (Exception ex)</span>
+        {
+<span class="fc" id="L1671">            return null;</span>
+        }
+    }
+
+    public static Method findMethod(final Class owner,
+                                    final String name,
+                                    final Iterable&lt;Class&gt; formals)
+    {
+<span class="fc" id="L1679">        Preconditions.checkNotNull(owner);</span>
+<span class="fc" id="L1680">        Preconditions.checkNotNull(name);</span>
+<span class="fc" id="L1681">        Preconditions.checkNotNull(formals);</span>
+
+<span class="fc" id="L1683">        final Class[] params = (Class[]) F.immutable(formals).toArray(new Class[0]);</span>
+
+        try
+        {
+<span class="fc" id="L1687">            return owner.getMethod(name, params);</span>
+        }
+<span class="fc" id="L1689">        catch (Exception ex)</span>
+        {
+<span class="fc" id="L1691">            return null;</span>
+        }
+    }
+
+    /**
+     * TODO: This must be a weak map.
+     */
+<span class="fc" id="L1698">    private static final Map&lt;Object, Map&lt;Object, Object&gt;&gt; details = Maps.newIdentityHashMap();</span>
+
+    /**
+     * This method associates a detail with a given exception.
+     *
+     * @param problem is the exception that the detail is in reference to.
+     * @param key identifies the detail.
+     * @param value is the content of the detail.
+     * @throws NullPointerException if problem is null.
+     * @throws NullPointerException if key is null.
+     */
+    public static void set(final Throwable problem,
+                           final String key,
+                           final Object value)
+    {
+<span class="nc" id="L1713">        Preconditions.checkNotNull(problem);</span>
+<span class="nc" id="L1714">        Preconditions.checkNotNull(key);</span>
+
+<span class="nc bnc" id="L1716" title="All 2 branches missed.">        if (details.containsKey(problem) == false)</span>
+        {
+<span class="nc" id="L1718">            details.put(problem, Maps.newHashMap());</span>
+        }
+
+<span class="nc" id="L1721">        final Map&lt;Object, Object&gt; map = details.get(problem);</span>
+
+<span class="nc" id="L1723">        map.put(key, value);</span>
+<span class="nc" id="L1724">    }</span>
+
+    /**
+     * This method retrieves a detail that is associated with a given exception.
+     *
+     * @param problem is the exception that the detail is in reference to.
+     * @param key identifies the detail.
+     * @return the value of the detail, or null, if the detail does not exist.
+     * @throws NullPointerException if problem is null.
+     * @throws NullPointerException if key is null.
+     */
+    public static Object get(final Throwable problem,
+                             final String key)
+    {
+<span class="nc" id="L1738">        Preconditions.checkNotNull(problem);</span>
+<span class="nc" id="L1739">        Preconditions.checkNotNull(key);</span>
+
+<span class="nc bnc" id="L1741" title="All 2 branches missed.">        if (details.containsKey(problem) == false)</span>
+        {
+<span class="nc" id="L1743">            return null;</span>
+        }
+
+<span class="nc" id="L1746">        final Map&lt;Object, Object&gt; map = details.get(problem);</span>
+
+<span class="nc" id="L1748">        final Object result = map.get(key);</span>
+
+<span class="nc" id="L1750">        return result;</span>
+    }
+
+    /**
+     * This method converts a value to a BigDecimal.
+     *
+     * @param value is the value to convert.
+     * @return the value as a BigDecimal.
+     * @throws NullPointerException if value is null.
+     */
+    public static BigDecimal big(final Object value)
+    {
+<span class="fc" id="L1762">        Preconditions.checkNotNull(value);</span>
+
+        /**
+         * Convert the value to a BigDecimal.
+         */
+        final BigDecimal result;
+
+<span class="fc bfc" id="L1769" title="All 2 branches covered.">        if (value instanceof Character)</span>
+        {
+<span class="fc" id="L1771">            result = BigDecimal.valueOf((long) (Character) value);</span>
+        }
+<span class="fc bfc" id="L1773" title="All 2 branches covered.">        else if (value instanceof Byte)</span>
+        {
+<span class="fc" id="L1775">            result = BigDecimal.valueOf((long) (Byte) value);</span>
+        }
+<span class="fc bfc" id="L1777" title="All 2 branches covered.">        else if (value instanceof Short)</span>
+        {
+<span class="fc" id="L1779">            result = BigDecimal.valueOf((long) (Short) value);</span>
+        }
+<span class="fc bfc" id="L1781" title="All 2 branches covered.">        else if (value instanceof Integer)</span>
+        {
+<span class="fc" id="L1783">            result = BigDecimal.valueOf((long) (Integer) value);</span>
+        }
+<span class="fc bfc" id="L1785" title="All 2 branches covered.">        else if (value instanceof Long)</span>
+        {
+<span class="fc" id="L1787">            result = BigDecimal.valueOf((long) (Long) value);</span>
+        }
+<span class="fc bfc" id="L1789" title="All 2 branches covered.">        else if (value instanceof Float)</span>
+        {
+<span class="fc" id="L1791">            result = BigDecimal.valueOf((double) (Float) value);</span>
+        }
+<span class="fc bfc" id="L1793" title="All 2 branches covered.">        else if (value instanceof Double)</span>
+        {
+<span class="fc" id="L1795">            result = BigDecimal.valueOf((double) (Double) value);</span>
+        }
+<span class="fc bfc" id="L1797" title="All 2 branches covered.">        else if (value instanceof BigInteger)</span>
+        {
+<span class="fc" id="L1799">            result = new BigDecimal((BigInteger) value);</span>
+        }
+<span class="fc bfc" id="L1801" title="All 2 branches covered.">        else if (value instanceof BigDecimal)</span>
+        {
+<span class="fc" id="L1803">            result = (BigDecimal) value;</span>
+        }
+        else
+        {
+<span class="fc" id="L1807">            throw new IllegalArgumentException(&quot;The value cannot be converted to a BigDecimal.&quot;);</span>
+        }
+
+        /**
+         * Ensure that the scale of the result is correct.
+         */
+<span class="fc" id="L1813">        final BigDecimal datum = Helpers.createBigDecimal(result);</span>
+
+        /**
+         * Return the value as a BigDecimal.
+         */
+<span class="fc" id="L1818">        return datum;</span>
+    }
+
+    /**
+     * This method creates a list of [index, element] pairs.
+     *
+     * @param iterable provides the elements.
+     * @return the list of [index, element] pairs.
+     * @throws NullPointerException if iterable is null.
+     */
+    public static List&lt;List&lt;Object&gt;&gt; enumerate(final Iterable&lt;?&gt; iterable)
+    {
+<span class="fc" id="L1830">        Preconditions.checkNotNull(iterable);</span>
+
+<span class="fc" id="L1832">        final List&lt;List&lt;Object&gt;&gt; pairs = Lists.newLinkedList();</span>
+
+<span class="fc" id="L1834">        int index = 0;</span>
+
+<span class="fc bfc" id="L1836" title="All 2 branches covered.">        for (Object value : iterable)</span>
+        {
+<span class="fc" id="L1838">            final List&lt;Object&gt; pair = Lists.newArrayList(index++, value);</span>
+
+<span class="fc" id="L1840">            pairs.add(Collections.unmodifiableList(pair));</span>
+<span class="fc" id="L1841">        }</span>
+
+<span class="fc" id="L1843">        return Collections.unmodifiableList(pairs);</span>
+    }
+
+    public static AsyncTask async(final Action action)
+    {
+<span class="nc" id="L1848">        return null;</span>
+    }
+
+    public static boolean isAssignableTo(final Class T,
+                                         final Class X)
+    {
+        /**
+         * Case: X is T
+         */
+<span class="fc bfc" id="L1857" title="All 2 branches covered.">        if (Operators.equals(T, X))</span>
+        {
+<span class="fc" id="L1859">            return true;</span>
+        }
+
+        /**
+         * Case: X is null
+         */
+<span class="fc bfc" id="L1865" title="All 4 branches covered.">        if (X == null &amp;&amp; Object.class.isAssignableFrom(T))</span>
+        {
+<span class="fc" id="L1867">            return true;</span>
+        }
+
+        /**
+         * From now on, T cannot be the null-type or the void-type.
+         * Likewise, X cannot be the void-type.
+         */
+<span class="fc bfc" id="L1874" title="All 6 branches covered.">        if (T == null || T == void.class || X == void.class)</span>
+        {
+<span class="fc" id="L1876">            return false;</span>
+        }
+
+        /**
+         * Case: Boxing
+         */
+<span class="fc bfc" id="L1882" title="All 34 branches covered.">        final boolean boxing = (X == boolean.class &amp;&amp; T == Boolean.class)</span>
+                               || (X == char.class &amp;&amp; T == Character.class)
+                               || (X == byte.class &amp;&amp; T == Byte.class)
+                               || (X == short.class &amp;&amp; T == Short.class)
+                               || (X == int.class &amp;&amp; T == Integer.class)
+                               || (X == long.class &amp;&amp; T == Long.class)
+                               || (X == float.class &amp;&amp; T == Float.class)
+                               || (X == double.class &amp;&amp; T == Double.class)
+<span class="fc bfc" id="L1890" title="All 6 branches covered.">                               || (X != null &amp;&amp; X.isPrimitive() &amp;&amp; T == Object.class)</span>
+<span class="fc bfc" id="L1891" title="All 6 branches covered.">                               || (X != null &amp;&amp; X.isPrimitive() &amp;&amp; T == Comparable.class)</span>
+<span class="fc bfc" id="L1892" title="All 8 branches covered.">                               || (X != null &amp;&amp; X.isPrimitive() &amp;&amp; X != boolean.class &amp;&amp; X != char.class &amp;&amp; T == Number.class);</span>
+
+<span class="fc bfc" id="L1894" title="All 2 branches covered.">        if (boxing)</span>
+        {
+<span class="fc" id="L1896">            return true;</span>
+        }
+
+
+        /**
+         * Case: Unboxing
+         */
+<span class="fc bfc" id="L1903" title="All 32 branches covered.">        final boolean unboxing = (X == Boolean.class &amp;&amp; T == boolean.class)</span>
+                                 || (X == Character.class &amp;&amp; T == char.class)
+                                 || (X == Byte.class &amp;&amp; T == byte.class)
+                                 || (X == Short.class &amp;&amp; T == short.class)
+                                 || (X == Integer.class &amp;&amp; T == int.class)
+                                 || (X == Long.class &amp;&amp; T == long.class)
+                                 || (X == Float.class &amp;&amp; T == float.class)
+                                 || (X == Double.class &amp;&amp; T == double.class);
+
+<span class="fc bfc" id="L1912" title="All 2 branches covered.">        if (unboxing)</span>
+        {
+<span class="fc" id="L1914">            return true;</span>
+        }
+
+        /**
+         * Case: Coercion
+         */
+<span class="fc bfc" id="L1920" title="All 36 branches covered.">        final boolean coercion = (X == char.class &amp;&amp; T == int.class)</span>
+                                 || (X == char.class &amp;&amp; T == long.class)
+                                 || (X == byte.class &amp;&amp; T == short.class)
+                                 || (X == byte.class &amp;&amp; T == int.class)
+                                 || (X == byte.class &amp;&amp; T == long.class)
+                                 || (X == short.class &amp;&amp; T == int.class)
+                                 || (X == short.class &amp;&amp; T == long.class)
+                                 || (X == int.class &amp;&amp; T == long.class)
+                                 || (X == float.class &amp;&amp; T == double.class);
+
+<span class="fc bfc" id="L1930" title="All 2 branches covered.">        if (coercion)</span>
+        {
+<span class="fc" id="L1932">            return true;</span>
+        }
+
+        /**
+         * Case: Subtyping
+         */
+<span class="fc bfc" id="L1938" title="All 2 branches covered.">        if (isSubtypeOf(X, T))</span>
+        {
+<span class="fc" id="L1940">            return true;</span>
+        }
+
+        /**
+         * Case: Not Assignable
+         */
+<span class="fc" id="L1946">        return false;</span>
+    }
+
+    public static boolean isSubtypeOf(final Class subtype,
+                                      final Class supertype)
+    {
+<span class="fc bfc" id="L1952" title="All 2 branches covered.">        if (Operators.equals(subtype, supertype))</span>
+        {
+<span class="fc" id="L1954">            return true;</span>
+        }
+<span class="fc bfc" id="L1956" title="All 4 branches covered.">        else if (subtype == null &amp;&amp; Object.class.isAssignableFrom(supertype))</span>
+        {
+<span class="fc" id="L1958">            return true;</span>
+        }
+<span class="pc bpc" id="L1960" title="1 of 6 branches missed.">        else if (subtype != null &amp;&amp; supertype != null &amp;&amp; supertype.isAssignableFrom(subtype))</span>
+        {
+<span class="fc" id="L1962">            return true;</span>
+        }
+        else
+        {
+<span class="fc" id="L1966">            return false;</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

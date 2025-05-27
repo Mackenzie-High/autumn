@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Visitor.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.mackenziehigh:autumn</a> &gt; <a href="index.source.html" class="el_package">com.mackenziehigh.autumn.util.json.parser</a> &gt; <span class="el_source">Visitor.java</span></div><h1>Visitor.java</h1><pre class="source lang-java linenums">package com.mackenziehigh.autumn.util.json.parser;
+
+import autumn.lang.Record;
+import autumn.util.F;
+import com.mackenziehigh.snowflake.ITreeNode;
+import java.math.BigDecimal;
+import java.util.AbstractMap.SimpleImmutableEntry;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+import java.util.Stack;
+
+/**
+ * An instance of this class can be used to convert a JSON string to an Autumn object tree.
+ *
+ * @author Mackenzie High
+ */
+<span class="fc" id="L21">public final class Visitor</span>
+        extends AbstractVisitor
+{
+    /**
+     * This stack is used to hold intermediate values during the conversion process.
+     */
+<span class="fc" id="L27">    public final Stack&lt;Object&gt; stack = new Stack&lt;Object&gt;();</span>
+
+    /**
+     * This map maps a set containing the keys of a record to the record itself.
+     * The records are used as prototypes for creating new records.
+     */
+<span class="fc" id="L33">    public final Map&lt;Set&lt;String&gt;, Record&gt; prototypes = new HashMap&lt;Set&lt;String&gt;, Record&gt;();</span>
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void visitUnknown(final ITreeNode node)
+    {
+<span class="fc bfc" id="L41" title="All 2 branches covered.">        for (ITreeNode child : node.children())</span>
+        {
+<span class="fc" id="L43">            visit(child);</span>
+        }
+<span class="fc" id="L45">    }</span>
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void visit_null(final ITreeNode node)
+    {
+<span class="fc" id="L53">        stack.push(null);</span>
+<span class="fc" id="L54">    }</span>
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void visit_boolean(final ITreeNode node)
+    {
+<span class="fc bfc" id="L62" title="All 2 branches covered.">        if (node.text().equalsIgnoreCase(&quot;true&quot;))</span>
+        {
+<span class="fc" id="L64">            stack.push(Boolean.TRUE);</span>
+        }
+        else
+        {
+<span class="fc" id="L68">            stack.push(Boolean.FALSE);</span>
+        }
+<span class="fc" id="L70">    }</span>
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void visit_number(final ITreeNode node)
+    {
+<span class="fc" id="L78">        final String text = node.text().trim();</span>
+
+<span class="fc" id="L80">        final BigDecimal number = F.parseBigDecimal(text);</span>
+
+<span class="fc" id="L82">        stack.push(number);</span>
+<span class="fc" id="L83">    }</span>
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void visit_string(final ITreeNode node)
+    {
+<span class="fc" id="L91">        String text = node.text().trim();</span>
+
+        // TODO: Fix Grammar - capturing WS
+
+<span class="fc" id="L95">        text = text.substring(1, text.length() - 1);</span>
+
+<span class="fc" id="L97">        stack.push(text);</span>
+<span class="fc" id="L98">    }</span>
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void visit_pair(final ITreeNode node)
+    {
+<span class="fc" id="L106">        visitUnknown(node);</span>
+
+<span class="fc" id="L108">        final Object value = stack.pop();</span>
+
+<span class="fc" id="L110">        final Object key = stack.pop();</span>
+
+<span class="fc" id="L112">        final SimpleImmutableEntry entry = new SimpleImmutableEntry(key, value);</span>
+
+<span class="fc" id="L114">        stack.push(entry);</span>
+<span class="fc" id="L115">    }</span>
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void visit_object(final ITreeNode node)
+    {
+<span class="fc" id="L123">        final int size = stack.size();</span>
+
+<span class="fc" id="L125">        visitUnknown(node);</span>
+
+<span class="fc" id="L127">        final Map&lt;Object, Object&gt; builder = new HashMap&lt;Object, Object&gt;();</span>
+
+<span class="fc bfc" id="L129" title="All 2 branches covered.">        while (stack.size() &gt; size)</span>
+        {
+<span class="fc" id="L131">            final Entry entry = (Entry) stack.pop();</span>
+
+<span class="fc" id="L133">            builder.put(entry.getKey().toString(), entry.getValue());</span>
+<span class="fc" id="L134">        }</span>
+
+<span class="pc bpc" id="L136" title="1 of 2 branches missed.">        if (prototypes.containsKey(builder.keySet()))</span>
+        {
+<span class="fc" id="L138">            final Record prototype = prototypes.get(builder.keySet());</span>
+
+<span class="fc" id="L140">            final Record record = F.set(prototype, builder);</span>
+
+<span class="fc" id="L142">            stack.push(record);</span>
+<span class="fc" id="L143">        }</span>
+        else
+        {
+<span class="nc" id="L146">            stack.push(F.unmodifiable(builder));</span>
+        }
+<span class="fc" id="L148">    }</span>
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void visit_array(final ITreeNode node)
+    {
+<span class="fc" id="L156">        final int size = stack.size();</span>
+
+<span class="fc" id="L158">        visitUnknown(node);</span>
+
+<span class="fc" id="L160">        final List builder = new LinkedList();</span>
+
+<span class="fc bfc" id="L162" title="All 2 branches covered.">        while (stack.size() &gt; size)</span>
+        {
+<span class="fc" id="L164">            builder.add(0, stack.pop());</span>
+        }
+
+<span class="fc" id="L167">        stack.push(F.unmodifiable(builder));</span>
+<span class="fc" id="L168">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

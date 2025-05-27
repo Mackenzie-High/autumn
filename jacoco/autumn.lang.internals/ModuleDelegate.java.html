@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ModuleDelegate.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.mackenziehigh:autumn</a> &gt; <a href="index.source.html" class="el_package">autumn.lang.internals</a> &gt; <span class="el_source">ModuleDelegate.java</span></div><h1>ModuleDelegate.java</h1><pre class="source lang-java linenums">package autumn.lang.internals;
+
+import autumn.lang.Module;
+import autumn.util.F;
+import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
+import com.mackenziehigh.autumn.resources.Finished;
+import java.util.List;
+
+/**
+ * An instance of this class is a delegate that refers to a function within a module.
+ *
+ * @author Mackenzie High
+ */
+@Finished(&quot;2014/07/12&quot;)
+public final class ModuleDelegate
+        extends AbstractDelegate
+{
+    /**
+     * This is an instance of the module that contains the referenced function.
+     */
+    private final Module owner;
+
+    /**
+     * This is the name of the referenced function.
+     */
+    private final String name;
+
+    /**
+     * These are the types of the referenced function's formal parameters.
+     */
+    private final ImmutableList&lt;Class&gt; parameters;
+
+    /**
+     * This is the return-type of the referenced function.
+     */
+    private final Class returns;
+
+    /**
+     * This is the index of the referenced function in its enclosing method.
+     */
+    private final int index;
+
+    /**
+     * Sole Constructor.
+     *
+     * @param owner is the module that contains the referenced function.
+     * @param name is the name of the referenced function.
+     * @param parameters are the types of the function's formal parameters.
+     * @param returns is the function's return-type.
+     * @param index is the index of the function within the module.
+     */
+    public ModuleDelegate(final Module owner,
+                          final String name,
+                          final List&lt;Class&gt; parameters,
+                          final Class returns,
+                          final int index)
+<span class="fc" id="L59">    {</span>
+        // Warning: Do not reorder the parameters.
+        //          Because, This constructor is invoked from bytecode.
+
+<span class="fc" id="L63">        Preconditions.checkNotNull(owner);</span>
+<span class="fc" id="L64">        Preconditions.checkNotNull(name);</span>
+<span class="fc" id="L65">        Preconditions.checkNotNull(parameters);</span>
+<span class="pc bpc" id="L66" title="1 of 2 branches missed.">        Preconditions.checkArgument(parameters.contains(null) == false);</span>
+<span class="fc" id="L67">        Preconditions.checkNotNull(returns);</span>
+<span class="pc bpc" id="L68" title="1 of 2 branches missed.">        Preconditions.checkArgument(index &gt;= 0);</span>
+
+<span class="fc" id="L70">        this.owner = owner;</span>
+<span class="fc" id="L71">        this.name = name;</span>
+<span class="fc" id="L72">        this.parameters = ImmutableList.copyOf(parameters);</span>
+<span class="fc" id="L73">        this.returns = returns;</span>
+<span class="fc" id="L74">        this.index = index;</span>
+<span class="fc" id="L75">    }</span>
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Module module()
+    {
+<span class="fc" id="L83">        return owner;</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Class owner()
+    {
+<span class="fc" id="L92">        return owner.getClass();</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String name()
+    {
+<span class="fc" id="L101">        return name;</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Class returnType()
+    {
+<span class="fc" id="L110">        return returns;</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List&lt;Class&gt; parameterTypes()
+    {
+<span class="fc" id="L119">        return parameters;</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void apply(ArgumentStack stack)
+            throws Throwable
+    {
+<span class="fc" id="L129">        owner.invoke(index, stack);</span>
+<span class="fc" id="L130">    }</span>
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString()
+    {
+<span class="fc" id="L138">        final StringBuilder result = new StringBuilder();</span>
+
+        /**
+         * Determine the simple-names of the parameters.
+         */
+<span class="fc" id="L143">        final List&lt;String&gt; list = Lists.newLinkedList();</span>
+
+<span class="fc bfc" id="L145" title="All 2 branches covered.">        for (Class parameter : parameterTypes())</span>
+        {
+<span class="fc" id="L147">            list.add(parameter.getSimpleName());</span>
+<span class="fc" id="L148">        }</span>
+
+        /**
+         * Create the desired string representation of his delegate.
+         */
+<span class="fc" id="L153">        result.append(owner().getSimpleName());</span>
+<span class="fc" id="L154">        result.append(&quot;::&quot;);</span>
+<span class="fc" id="L155">        result.append(name);</span>
+<span class="fc" id="L156">        result.append(&quot; &quot;);</span>
+<span class="fc" id="L157">        result.append(F.str(list, &quot;(&quot;, &quot;, &quot;, &quot;)&quot;));</span>
+<span class="fc" id="L158">        result.append(&quot; : &quot;);</span>
+<span class="fc" id="L159">        result.append(returnType().getSimpleName());</span>
+
+<span class="fc" id="L161">        return result.toString();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

@@ -1,0 +1,765 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>StatementTypeChecker.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.mackenziehigh:autumn</a> &gt; <a href="index.source.html" class="el_package">com.mackenziehigh.autumn.lang.compiler.compilers</a> &gt; <span class="el_source">StatementTypeChecker.java</span></div><h1>StatementTypeChecker.java</h1><pre class="source lang-java linenums">package com.mackenziehigh.autumn.lang.compiler.compilers;
+
+import autumn.lang.compiler.ast.commons.IExpression;
+import autumn.lang.compiler.ast.commons.IStatement;
+import autumn.lang.compiler.ast.nodes.*;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Sets;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IClassType;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IExpressionType;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IReferenceType;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IType;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IVariableType;
+import com.mackenziehigh.autumn.lang.compiler.utils.DelegateToHandler;
+import com.mackenziehigh.autumn.lang.compiler.utils.TopoSorter;
+import java.util.List;
+import java.util.Set;
+
+/**
+ * An instance of this class performs type usage checking on a statement.
+ *
+ * @author Mackenzie High
+ */
+final class StatementTypeChecker
+        extends ExpressionTypeChecker
+{
+<span class="fc" id="L26">    private int loop_nesting_level = 0;</span>
+
+    private final FunctionCompiler function;
+
+    public StatementTypeChecker(final FunctionCompiler function)
+    {
+<span class="fc" id="L32">        super(function, function.allocator);</span>
+
+<span class="fc" id="L34">        this.function = function;</span>
+<span class="fc" id="L35">    }</span>
+
+    @Override
+    public void visit(final IfStatement object)
+    {
+        // Visit the conditional case that is always present.
+<span class="fc" id="L41">        object.getMainCase().accept(this);</span>
+
+        // Visit the elif-cases, if there are any elif-clauses present.
+<span class="pc bpc" id="L44" title="1 of 2 branches missed.">        if (object.getElifCases() != null)</span>
+        {
+<span class="fc bfc" id="L46" title="All 2 branches covered.">            for (ConditionalCase x : object.getElifCases())</span>
+            {
+<span class="fc" id="L48">                x.accept(this);</span>
+<span class="fc" id="L49">            }</span>
+        }
+
+        // Visit the else-clause, if there is an else-clause present.
+<span class="fc bfc" id="L53" title="All 2 branches covered.">        if (object.getElseCase() != null)</span>
+        {
+<span class="fc" id="L55">            object.getElseCase().accept(this);</span>
+        }
+<span class="fc" id="L57">    }</span>
+
+    @Override
+    public void visit(final ConditionalCase object)
+    {
+        // Visit and type-check the condition.
+<span class="fc" id="L63">        condition(object.getCondition());</span>
+
+        // Visit the body.
+<span class="fc" id="L66">        object.getBody().accept(this);</span>
+<span class="fc" id="L67">    }</span>
+
+    @Override
+    public void visit(final WhenStatement object)
+    {
+        // Visit and type-check the condition.
+<span class="fc" id="L73">        condition(object.getCondition());</span>
+
+        // Visit the body.
+<span class="fc" id="L76">        object.getBody().accept(this);</span>
+<span class="fc" id="L77">    }</span>
+
+    @Override
+    public void visit(final GotoStatement object)
+    {
+        /**
+         * The checking of the labels will be done later.
+         * This prevents the need for another compiler-pass.
+         */
+<span class="fc" id="L86">        function.labels.defer(object);</span>
+<span class="fc" id="L87">    }</span>
+
+    @Override
+    public void visit(final MarkerStatement object)
+    {
+        /**
+         * The checking of the labels will be done later.
+         * This prevents the need for another compiler-pass.
+         */
+<span class="fc" id="L96">        function.labels.defer(object);</span>
+<span class="fc" id="L97">    }</span>
+
+    @Override
+    public void visit(final BranchStatement object)
+    {
+        /**
+         * The checking of the labels will be done later.
+         * This prevents the need for another compiler-pass.
+         */
+<span class="fc" id="L106">        function.labels.defer(object);</span>
+
+        /**
+         * However, we can check the index now.
+         */
+<span class="fc" id="L111">        object.getIndex().accept(this);</span>
+<span class="fc" id="L112">        program.checker.requireInteger(object.getIndex());</span>
+<span class="fc" id="L113">    }</span>
+
+    @Override
+    public void visit(final ForeverStatement object)
+    {
+        /**
+         * Visit the body.
+         */
+<span class="fc" id="L121">        ++loop_nesting_level;</span>
+        {
+<span class="fc" id="L123">            object.getBody().accept(this);</span>
+        }
+<span class="fc" id="L125">        --loop_nesting_level;</span>
+<span class="fc" id="L126">    }</span>
+
+    @Override
+    public void visit(final WhileStatement object)
+    {
+        /**
+         * Visit and type-check the condition.
+         */
+<span class="fc" id="L134">        condition(object.getCondition());</span>
+
+        /**
+         * Visit the body.
+         */
+<span class="fc" id="L139">        ++loop_nesting_level;</span>
+        {
+<span class="fc" id="L141">            object.getBody().accept(this);</span>
+        }
+<span class="fc" id="L143">        --loop_nesting_level;</span>
+<span class="fc" id="L144">    }</span>
+
+    @Override
+    public void visit(final UntilStatement object)
+    {
+        /**
+         * Visit and type-check the condition.
+         */
+<span class="fc" id="L152">        condition(object.getCondition());</span>
+
+        /**
+         * Visit the body.
+         */
+<span class="fc" id="L157">        ++loop_nesting_level;</span>
+        {
+<span class="fc" id="L159">            object.getBody().accept(this);</span>
+        }
+<span class="fc" id="L161">        --loop_nesting_level;</span>
+<span class="fc" id="L162">    }</span>
+
+    @Override
+    public void visit(final DoWhileStatement object)
+    {
+        /**
+         * Visit and type-check the condition.
+         */
+<span class="fc" id="L170">        condition(object.getCondition());</span>
+
+        /**
+         * Visit the body.
+         */
+<span class="fc" id="L175">        ++loop_nesting_level;</span>
+        {
+<span class="fc" id="L177">            object.getBody().accept(this);</span>
+        }
+<span class="fc" id="L179">        --loop_nesting_level;</span>
+<span class="fc" id="L180">    }</span>
+
+    @Override
+    public void visit(final DoUntilStatement object)
+    {
+        /**
+         * Visit and type-check the condition.
+         */
+<span class="fc" id="L188">        condition(object.getCondition());</span>
+
+        /**
+         * Visit the body.
+         */
+<span class="fc" id="L193">        ++loop_nesting_level;</span>
+        {
+<span class="fc" id="L195">            object.getBody().accept(this);</span>
+        }
+<span class="fc" id="L197">        --loop_nesting_level;</span>
+<span class="fc" id="L198">    }</span>
+
+    @Override
+    public void visit(final ForStatement object)
+    {
+        /**
+         * Visit and type-check the initializer.
+         *
+         * Warning: Do *not* move this code into the following try-catch.
+         */
+<span class="fc" id="L208">        object.getInitializer().accept(this);</span>
+<span class="fc" id="L209">        program.checker.requireInteger(object.getInitializer());</span>
+
+        try
+        {
+            /**
+             * A for-loop defines a nested scope that covers the condition, modifier, and body.
+             */
+<span class="fc" id="L216">            allocator.enterScope();</span>
+
+            /**
+             * Declare the control variable.
+             */
+<span class="fc" id="L221">            super.declareVar(object.getVariable(), program.typesystem.utils.PRIMITIVE_INT, false);</span>
+
+            /**
+             * Visit and type-check the condition.
+             */
+<span class="fc" id="L226">            condition(object.getCondition());</span>
+
+            /**
+             * Visit and type-check the modifier.
+             */
+<span class="fc" id="L231">            object.getNext().accept(this);</span>
+<span class="fc" id="L232">            program.checker.requireInteger(object.getNext());</span>
+
+            /**
+             * Visit the body.
+             */
+<span class="fc" id="L237">            ++loop_nesting_level;</span>
+            {
+<span class="fc" id="L239">                object.getBody().accept(this);</span>
+            }
+<span class="fc" id="L241">            --loop_nesting_level;</span>
+        }
+<span class="fc" id="L243">        catch (TypeCheckFailed ex)</span>
+        {
+<span class="fc" id="L245">            throw ex;</span>
+        }
+        finally
+        {
+            /**
+             * This must always be done; otherwise, the scope management could get messed up.
+             */
+<span class="fc" id="L252">            allocator.exitScope();</span>
+        }
+<span class="fc" id="L254">    }</span>
+
+    @Override
+    public void visit(final ForeachStatement object)
+    {
+        /**
+         * Visit and type-check the iterable.
+         *
+         * Warning: Do *not* move this code into the following try-catch.
+         */
+<span class="fc" id="L264">        object.getIterable().accept(this);</span>
+<span class="fc" id="L265">        program.checker.requireIterable(object.getIterable());</span>
+
+        try
+        {
+            /**
+             * A foreach-loop defines a nested scope that covers body.
+             */
+<span class="fc" id="L272">            allocator.enterScope();</span>
+
+            /**
+             * Declare the variable and type-check the type.
+             */
+<span class="fc" id="L277">            final Variable variable = object.getVariable();</span>
+<span class="fc" id="L278">            final IReferenceType type = function.module.imports.resolveReferenceType(object.getType());</span>
+<span class="fc" id="L279">            super.declareVar(variable, type, false);</span>
+
+            /**
+             * Visit the body.
+             */
+<span class="fc" id="L284">            ++loop_nesting_level;</span>
+            {
+<span class="fc" id="L286">                object.getBody().accept(this);</span>
+            }
+<span class="fc" id="L288">            --loop_nesting_level;</span>
+        }
+<span class="fc" id="L290">        catch (TypeCheckFailed ex)</span>
+        {
+<span class="fc" id="L292">            throw ex;</span>
+        }
+        finally
+        {
+            /**
+             * This must always be done; otherwise, the scope management could get messed up.
+             */
+<span class="fc" id="L299">            allocator.exitScope();</span>
+        }
+<span class="fc" id="L301">    }</span>
+
+    @Override
+    public void visit(final BreakStatement object)
+    {
+        /**
+         * Ensure that the break-statement is actually inside of a loop.
+         */
+<span class="fc bfc" id="L309" title="All 2 branches covered.">        if (loop_nesting_level == 0)</span>
+        {
+<span class="nc" id="L311">            program.checker.reportBreakOutsideOfLoop(object);</span>
+        }
+<span class="fc" id="L313">    }</span>
+
+    @Override
+    public void visit(final ContinueStatement object)
+    {
+        /**
+         * Ensure that the continue-statement is actually inside of a loop.
+         */
+<span class="fc bfc" id="L321" title="All 2 branches covered.">        if (loop_nesting_level == 0)</span>
+        {
+<span class="nc" id="L323">            program.checker.reportContinueOutsideOfLoop(object);</span>
+        }
+<span class="fc" id="L325">    }</span>
+
+    @Override
+    public void visit(final RedoStatement object)
+    {
+        /**
+         * Ensure that the redo-statement is actually inside of a loop.
+         */
+<span class="fc bfc" id="L333" title="All 2 branches covered.">        if (loop_nesting_level == 0)</span>
+        {
+<span class="nc" id="L335">            program.checker.reportRedoOutsideOfLoop(object);</span>
+        }
+<span class="fc" id="L337">    }</span>
+
+    @Override
+    public void visit(final VarStatement object)
+    {
+        /**
+         * Visit and type-check the expression.
+         */
+<span class="fc" id="L345">        object.getValue().accept(this);</span>
+
+        /**
+         * Declare the assignee.
+         */
+<span class="fc" id="L350">        final Variable assignee = object.getVariable();</span>
+
+<span class="fc" id="L352">        final IExpression value = object.getValue();</span>
+
+<span class="fc" id="L354">        final IExpressionType type = program.symbols.expressions.get(value);</span>
+
+<span class="fc" id="L356">        super.declareVar(assignee, type, true);</span>
+<span class="fc" id="L357">    }</span>
+
+    @Override
+    public void visit(final ValStatement object)
+    {
+        /**
+         * Visit and type-check the expression.
+         */
+<span class="fc" id="L365">        object.getValue().accept(this);</span>
+
+        /**
+         * Declare the assignee.
+         */
+<span class="fc" id="L370">        final Variable assignee = object.getVariable();</span>
+
+<span class="fc" id="L372">        final IExpression value = object.getValue();</span>
+
+<span class="fc" id="L374">        final IExpressionType type = program.symbols.expressions.get(value);</span>
+
+<span class="fc" id="L376">        super.declareVar(assignee, type, false);</span>
+<span class="fc" id="L377">    }</span>
+
+    @Override
+    public void visit(final LetStatement object)
+    {
+        /**
+         * Generate the bytecode that produces the value.
+         */
+<span class="fc" id="L385">        object.getValue().accept(this);</span>
+
+        /**
+         * The variable must have been declared somewhere.
+         */
+<span class="fc" id="L390">        program.checker.checkDeclared(function.allocator, object.getVariable());</span>
+
+        /**
+         * The variable cannot be readonly.
+         */
+<span class="fc bfc" id="L395" title="All 2 branches covered.">        final boolean readonly = !function.vars.allocator().isReadOnly(object.getVariable().getName());</span>
+
+<span class="fc" id="L397">        program.checker.requireMutableVariable(object.getVariable(), readonly);</span>
+
+        /**
+         * The assignment must actually be possible type wise.
+         */
+<span class="fc" id="L402">        final IVariableType expected = function.allocator.typeOf(object.getVariable().getName());</span>
+
+<span class="fc" id="L404">        program.checker.checkAssign(object, expected, object.getValue());</span>
+<span class="fc" id="L405">    }</span>
+
+    @Override
+    public void visit(final LambdaStatement object)
+    {
+        /**
+         * Get the type of the lambda.
+         */
+<span class="fc" id="L413">        final IClassType functor_type = module.imports.resolveClassType(object.getType());</span>
+
+        /**
+         * Declare the lambda variable.
+         */
+<span class="fc" id="L418">        super.declareVar(object.getVariable(), functor_type, false);</span>
+
+        try
+        {
+            /**
+             * A lambda-statement defines a nested scope that covers its parameters and body.
+             */
+<span class="fc" id="L425">            allocator.enterScope();</span>
+
+            /**
+             * Create the lambda itself.
+             */
+<span class="fc" id="L430">            final LambdaCompiler lambda = new LambdaCompiler(function, object);</span>
+
+            /**
+             * Visit and type-check the lambda's body.
+             */
+<span class="fc" id="L435">            lambda.performTypeUsageChecking();</span>
+
+            /**
+             * Save the lambda-compiler, because it will generate the lambda's bytecode later.
+             */
+<span class="fc" id="L440">            program.symbols.lambdas.put(object, lambda);</span>
+        }
+<span class="fc" id="L442">        catch (TypeCheckFailed ex)</span>
+        {
+<span class="fc" id="L444">            throw ex;</span>
+        }
+        finally
+        {
+            /**
+             * This must always be done; otherwise, the scope management could get messed up.
+             */
+<span class="fc" id="L451">            allocator.exitScope();</span>
+        }
+<span class="fc" id="L453">    }</span>
+
+    @Override
+    public void visit(final DelegateStatement object)
+    {
+        /**
+         * Get the assignee variable.
+         */
+<span class="fc" id="L461">        final Variable assignee = object.getVariable();</span>
+
+        /**
+         * Get the name of the function that will be delegated to.
+         */
+<span class="fc" id="L466">        final String name = object.getMethod().getName();</span>
+
+        /**
+         * Get the type of the delegate itself.
+         */
+<span class="fc" id="L471">        final IClassType functor_type = module.imports.resolveDefinedFunctorType(object.getType());</span>
+
+        /**
+         * The functor-type must also be a class-type.
+         */
+<span class="fc" id="L476">        program.checker.requireClassType(object, functor_type);</span>
+
+        /**
+         * Get the type of the module that contains the function that will be delegated to.
+         */
+<span class="fc" id="L481">        final IClassType owner_type = module.imports.resolveModuleType(object.getOwner());</span>
+
+        /**
+         * Resolve the method that will be delegated to.
+         */
+<span class="fc" id="L486">        final DelegateToHandler mapping = DelegateToHandler.find(functor_type, owner_type, name);</span>
+
+<span class="fc bfc" id="L488" title="All 2 branches covered.">        if (mapping.error == DelegateToHandler.Errors.NO_SUCH_METHOD)</span>
+        {
+            // This will throw an exception.
+<span class="nc" id="L491">            program.checker.reportNoSuchMethod(object, owner_type, name);</span>
+        }
+<span class="fc bfc" id="L493" title="All 2 branches covered.">        else if (mapping.error == DelegateToHandler.Errors.OVERLOADED_METHOD)</span>
+        {
+            // This will throw an exception.
+<span class="nc" id="L496">            program.checker.reportOverloadedMethod(object, owner_type, name);</span>
+        }
+<span class="fc bfc" id="L498" title="All 2 branches covered.">        else if (mapping.error == DelegateToHandler.Errors.INCOMPATIBLE_METHOD)</span>
+        {
+            // This will throw an exception.
+<span class="nc" id="L501">            program.checker.reportIncompatibleDelegate(object, mapping.delegate, mapping.handler);</span>
+        }
+
+        /**
+         * Declare the assignee variable as a readonly local variable.
+         */
+<span class="fc" id="L507">        super.declareVar(assignee, functor_type, false);</span>
+
+        /**
+         * Remember the delegate-method, because it will be needed during code generation.
+         */
+<span class="fc" id="L512">        program.symbols.delegates.put(object, mapping.handler);</span>
+<span class="fc" id="L513">    }</span>
+
+    @Override
+    public void visit(final SequenceStatement object)
+    {
+<span class="fc" id="L518">        allocator.enterScope();</span>
+
+<span class="fc bfc" id="L520" title="All 2 branches covered.">        for (IStatement s : object.getElements())</span>
+        {
+            /**
+             * The following code must be in a try-catch.
+             * Otherwise, an exception would mess up the scope management.
+             */
+            try
+            {
+<span class="fc" id="L528">                s.accept(this);</span>
+            }
+<span class="fc" id="L530">            catch (TypeCheckFailed ex)</span>
+            {
+                // Pass in order to report as many errors as possible.
+<span class="fc" id="L533">            }</span>
+<span class="fc" id="L534">        }</span>
+
+<span class="fc" id="L536">        allocator.exitScope();</span>
+<span class="fc" id="L537">    }</span>
+
+    @Override
+    public void visit(final ExpressionStatement object)
+    {
+        /**
+         * Visit and type-check the expression itself.
+         */
+<span class="fc" id="L545">        object.getExpression().accept(this);</span>
+<span class="fc" id="L546">    }</span>
+
+    @Override
+    public void visit(final NopStatement object)
+    {
+        // Pass, because there is nothing to check.
+<span class="fc" id="L552">    }</span>
+
+    @Override
+    public void visit(final TryCatchStatement object)
+    {
+        /**
+         * Visit and type-check the body.
+         */
+<span class="fc" id="L560">        object.getBody().accept(this);</span>
+
+        /**
+         * Visit and type-check all of the handlers.
+         */
+<span class="fc" id="L565">        object.getHandlers().accept(this);</span>
+
+        /**
+         * Sort the handlers based on the type of exception they catch.
+         * For example, a handler that catches Exception should come before
+         * a handler that catches Throwable, because Exception is more specific
+         * than Throwable.
+         */
+<span class="fc" id="L573">        final TopoSorter&lt;ExceptionHandler&gt; sorter = new TopoSorter&lt;ExceptionHandler&gt;()</span>
+<span class="fc" id="L574">        {</span>
+            @Override
+            public boolean isLess(final ExceptionHandler left,
+                                  final ExceptionHandler right)
+            {
+<span class="fc" id="L579">                final IType left_type = function.module.imports.resolveReturnType(left.getType());</span>
+<span class="fc" id="L580">                final IType right_type = function.module.imports.resolveReturnType(right.getType());</span>
+
+<span class="fc" id="L582">                return left_type.isSubtypeOf(right_type);</span>
+            }
+        };
+
+<span class="fc" id="L586">        sorter.addAll(object.getHandlers());</span>
+
+<span class="fc" id="L588">        final List&lt;ExceptionHandler&gt; sorted = ImmutableList.copyOf(sorter.elements());</span>
+
+        /**
+         * Remember the sorted handlers, so the code-generator can generate them in sorted order.
+         */
+<span class="fc" id="L593">        program.symbols.handlers.put(object, sorted);</span>
+
+        /**
+         * Detect duplicate exception handlers.
+         */
+<span class="fc" id="L598">        final Set&lt;IExpressionType&gt; types = Sets.newHashSet();</span>
+
+<span class="fc bfc" id="L600" title="All 2 branches covered.">        for (ExceptionHandler handler : sorted)</span>
+        {
+<span class="fc" id="L602">            final IExpressionType type = function.module.imports.resolveReturnType(handler.getType());</span>
+
+<span class="fc bfc" id="L604" title="All 2 branches covered.">            if (types.contains(type))</span>
+            {
+<span class="nc" id="L606">                program.checker.reportDuplicateExceptionHandler(handler, type);</span>
+            }
+
+<span class="fc" id="L609">            types.add(type);</span>
+<span class="fc" id="L610">        }</span>
+<span class="fc" id="L611">    }</span>
+
+    @Override
+    public void visit(final ExceptionHandler object)
+    {
+        /**
+         * Get the type of exception that the handler will handle.
+         */
+<span class="fc" id="L619">        final IExpressionType type = function.module.imports.resolveReturnType(object.getType());</span>
+
+        try
+        {
+            /**
+             * The handler defines a scope that covers the body of the handler.
+             */
+<span class="fc" id="L626">            allocator.enterScope();</span>
+
+            /**
+             * The handler can only be used to catch exception-types.
+             */
+<span class="fc" id="L631">            program.checker.requireType(object.getType(), type);</span>
+<span class="fc" id="L632">            program.checker.requireThrowable(object.getType(), type);</span>
+
+            /**
+             * Declare the exception variable.
+             */
+<span class="fc" id="L637">            super.declareVar(object.getVariable(), type, false);</span>
+
+            /**
+             * Visit and type-check the body of the handler.
+             */
+<span class="fc" id="L642">            object.getBody().accept(this);</span>
+        }
+<span class="fc" id="L644">        catch (TypeCheckFailed ex)</span>
+        {
+<span class="fc" id="L646">            throw ex;</span>
+        }
+        finally
+        {
+            /**
+             * This must always be done; otherwise, the scope management could get messed up.
+             */
+<span class="fc" id="L653">            allocator.exitScope();</span>
+        }
+<span class="fc" id="L655">    }</span>
+
+    @Override
+    public void visit(final ThrowStatement object)
+    {
+<span class="fc" id="L660">        object.getValue().accept(this);</span>
+
+        // A throw-statement can only throw throwable objects.
+<span class="fc" id="L663">        program.checker.requireThrowable(object.getValue());</span>
+<span class="fc" id="L664">    }</span>
+
+    @Override
+    public void visit(final AssertStatement object)
+    {
+<span class="fc" id="L669">        object.getCondition().accept(this);</span>
+
+        // The condition must produce a some sort of boolean.
+<span class="fc" id="L672">        condition(object.getCondition());</span>
+
+        // The message, if present, must produce a string.
+<span class="fc bfc" id="L675" title="All 2 branches covered.">        if (object.getMessage() != null)</span>
+        {
+<span class="fc" id="L677">            object.getMessage().accept(this);</span>
+<span class="fc" id="L678">            program.checker.requireString(object.getMessage());</span>
+        }
+<span class="fc" id="L680">    }</span>
+
+    @Override
+    public void visit(final AssumeStatement object)
+    {
+<span class="fc" id="L685">        object.getCondition().accept(this);</span>
+
+        // The condition must produce a some sort of boolean.
+<span class="fc" id="L688">        condition(object.getCondition());</span>
+
+        // The message, if present, must produce a string.
+<span class="fc bfc" id="L691" title="All 2 branches covered.">        if (object.getMessage() != null)</span>
+        {
+<span class="fc" id="L693">            object.getMessage().accept(this);</span>
+<span class="fc" id="L694">            program.checker.requireString(object.getMessage());</span>
+        }
+<span class="fc" id="L696">    }</span>
+
+    @Override
+    public void visit(final ReturnVoidStatement object)
+    {
+        /**
+         * Only a function whose return-type is void can contain a return-void statement.
+         */
+<span class="fc" id="L704">        program.checker.requireVoid(object, function.type.getReturnType());</span>
+<span class="fc" id="L705">    }</span>
+
+    @Override
+    public void visit(final ReturnValueStatement object)
+    {
+        /**
+         * Visit and type-check the expression that produces the value to return.
+         */
+<span class="fc" id="L713">        object.getValue().accept(this);</span>
+
+        /**
+         * The expression must return a non void value.
+         */
+<span class="fc" id="L718">        program.checker.requireNonVoid(object.getValue());</span>
+
+        /**
+         * The type of the expression must be assignable to the return-type of the function.
+         */
+<span class="fc" id="L723">        program.checker.checkReturn(object, function.type.getReturnType(), object.getValue());</span>
+<span class="fc" id="L724">    }</span>
+
+    @Override
+    public void visit(final RecurStatement object)
+    {
+        /**
+         * The number of arguments must match the number of parameters.
+         */
+<span class="fc bfc" id="L732" title="All 2 branches covered.">        if (function.type.getParameters().size() != object.getArguments().size())</span>
+        {
+            // This will throw an exception.
+<span class="nc" id="L735">            program.checker.reportBadArgumentCount(object, function.type.getParameters().size());</span>
+        }
+
+        /**
+         * Each argument must be assignable to the related parameter.
+         */
+<span class="fc bfc" id="L741" title="All 2 branches covered.">        for (int i = 0; i &lt; object.getArguments().size(); i++)</span>
+        {
+            /**
+             * Get the argument expression.
+             */
+<span class="fc" id="L746">            final IExpression argument = object.getArguments().get(i);</span>
+
+            /**
+             * Get the type of the related parameter.
+             */
+<span class="fc" id="L751">            final IVariableType parameter = function.type.getParameters().get(i).getType();</span>
+
+            /**
+             * Visit and type-check the argument.
+             */
+<span class="fc" id="L756">            argument.accept(this);</span>
+
+            /**
+             * The argument must be assignable to the parameter.
+             */
+<span class="fc" id="L761">            program.checker.checkAssign(object, parameter, argument);</span>
+        }
+<span class="fc" id="L763">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

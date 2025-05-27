@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Function0.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.mackenziehigh:autumn</a> &gt; <a href="index.source.html" class="el_package">autumn.util.functors</a> &gt; <span class="el_source">Function0.java</span></div><h1>Function0.java</h1><pre class="source lang-java linenums">package autumn.util.functors;
+
+import autumn.lang.TypedFunctor;
+import autumn.lang.exceptions.CheckedException;
+import autumn.lang.internals.AbstractDefinedFunctor;
+import autumn.lang.internals.ArgumentStack;
+import autumn.lang.internals.annotations.FunctorDefinition;
+import com.google.common.collect.ImmutableList;
+import java.util.List;
+import java.util.concurrent.Callable;
+
+/**
+ * &lt;code&gt;
+ * functor Function0 () : Object
+ * &lt;/code&gt;
+ *
+ * @author Mackenzie High
+ */
+@FunctorDefinition
+public class Function0
+        extends AbstractDefinedFunctor
+        implements Callable
+{
+    /**
+     * Sole Constructor.
+     *
+     * @param inner is the functor that provides the actual functionality.
+     */
+    public Function0(final TypedFunctor inner)
+    {
+<span class="fc" id="L31">        super(inner);</span>
+<span class="fc" id="L32">    }</span>
+
+    /**
+     * This method invokes the inner functor.
+     *
+     * @return the result produced by the inner functor.
+     */
+    public Object invoke()
+            throws Throwable
+    {
+        // Get the stack that is associated with this thread.
+<span class="fc" id="L43">        final ArgumentStack stack = ArgumentStack.getThreadStack();</span>
+
+        // Invoke the inner functor.
+<span class="fc" id="L46">        inner().apply(stack);</span>
+
+        // Pop the result off of the argument-stack.
+        // Also, clear the stack in order to prevent unexpected bugs.
+<span class="fc" id="L50">        final Object result = stack.popResult();</span>
+
+        // Return the result of invoking the inner functor.
+<span class="fc" id="L53">        return result;</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List&lt;Class&gt; parameterTypes()
+    {
+<span class="fc" id="L62">        return ImmutableList.&lt;Class&gt;of();</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Class returnType()
+    {
+<span class="fc" id="L71">        return Object.class;</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Object call()
+            throws Exception
+    {
+        try
+        {
+<span class="nc" id="L83">            return invoke();</span>
+        }
+<span class="nc" id="L85">        catch (RuntimeException ex)</span>
+        {
+<span class="nc" id="L87">            throw ex;</span>
+        }
+<span class="nc" id="L89">        catch (Exception ex)</span>
+        {
+<span class="nc" id="L91">            throw ex;</span>
+        }
+<span class="nc" id="L93">        catch (Throwable ex)</span>
+        {
+<span class="nc" id="L95">            throw new CheckedException(ex);</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

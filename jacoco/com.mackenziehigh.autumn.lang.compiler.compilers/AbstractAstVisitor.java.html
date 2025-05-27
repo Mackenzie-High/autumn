@@ -1,0 +1,669 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AbstractAstVisitor.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.mackenziehigh:autumn</a> &gt; <a href="index.source.html" class="el_package">com.mackenziehigh.autumn.lang.compiler.compilers</a> &gt; <span class="el_source">AbstractAstVisitor.java</span></div><h1>AbstractAstVisitor.java</h1><pre class="source lang-java linenums">package com.mackenziehigh.autumn.lang.compiler.compilers;
+
+import autumn.lang.compiler.ast.nodes.*;
+import com.mackenziehigh.autumn.resources.Finished;
+
+/**
+ * This class provides a partial implementation of the IAstVisitor interface.
+ *
+ * @author Mackenzie High
+ */
+@Finished(&quot;2014/07/12&quot;)
+<span class="fc" id="L12">class AbstractAstVisitor</span>
+        implements IAstVisitor
+{
+    @Override
+    public void visit(autumn.lang.compiler.ast.nodes.Module object)
+    {
+<span class="nc" id="L18">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(ModuleDirective object)
+    {
+<span class="nc" id="L24">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(ImportDirective object)
+    {
+<span class="nc" id="L30">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(Annotation object)
+    {
+<span class="nc" id="L36">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(AnnotationList object)
+    {
+<span class="nc" id="L42">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(AnnotationDefinition object)
+    {
+<span class="nc" id="L48">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(ExceptionDefinition object)
+    {
+<span class="nc" id="L54">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(DesignDefinition object)
+    {
+<span class="nc" id="L60">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(TupleDefinition object)
+    {
+<span class="nc" id="L66">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(StructDefinition object)
+    {
+<span class="nc" id="L72">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(FunctorDefinition object)
+    {
+<span class="nc" id="L78">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(EnumDefinition object)
+    {
+<span class="nc" id="L84">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(FunctionDefinition object)
+    {
+<span class="nc" id="L90">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(IfStatement object)
+    {
+<span class="nc" id="L96">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(WhenStatement object)
+    {
+<span class="nc" id="L102">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(GotoStatement object)
+    {
+<span class="nc" id="L108">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(MarkerStatement object)
+    {
+<span class="nc" id="L114">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(BranchStatement object)
+    {
+<span class="nc" id="L120">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(ForeverStatement object)
+    {
+<span class="nc" id="L126">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(WhileStatement object)
+    {
+<span class="nc" id="L132">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(UntilStatement object)
+    {
+<span class="nc" id="L138">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(DoWhileStatement object)
+    {
+<span class="nc" id="L144">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(DoUntilStatement object)
+    {
+<span class="nc" id="L150">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(ForStatement object)
+    {
+<span class="nc" id="L156">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(ForeachStatement object)
+    {
+<span class="nc" id="L162">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(BreakStatement object)
+    {
+<span class="nc" id="L168">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(ContinueStatement object)
+    {
+<span class="nc" id="L174">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(RedoStatement object)
+    {
+<span class="nc" id="L180">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(VarStatement object)
+    {
+<span class="nc" id="L186">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(ValStatement object)
+    {
+<span class="nc" id="L192">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(LetStatement object)
+    {
+<span class="nc" id="L198">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(LambdaStatement object)
+    {
+<span class="nc" id="L204">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(DelegateStatement object)
+    {
+<span class="nc" id="L210">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(SequenceStatement object)
+    {
+<span class="nc" id="L216">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(ExpressionStatement object)
+    {
+<span class="nc" id="L222">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(NopStatement object)
+    {
+<span class="nc" id="L228">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(TryCatchStatement object)
+    {
+<span class="nc" id="L234">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(ExceptionHandler object)
+    {
+<span class="nc" id="L240">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(ThrowStatement object)
+    {
+<span class="nc" id="L246">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(AssertStatement object)
+    {
+<span class="nc" id="L252">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(AssumeStatement object)
+    {
+<span class="nc" id="L258">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(ReturnVoidStatement object)
+    {
+<span class="nc" id="L264">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(ReturnValueStatement object)
+    {
+<span class="nc" id="L270">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(RecurStatement object)
+    {
+<span class="nc" id="L276">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(BooleanDatum object)
+    {
+<span class="nc" id="L282">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(CharDatum object)
+    {
+<span class="nc" id="L288">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(ByteDatum object)
+    {
+<span class="nc" id="L294">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(ShortDatum object)
+    {
+<span class="nc" id="L300">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(IntDatum object)
+    {
+<span class="nc" id="L306">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(LongDatum object)
+    {
+<span class="nc" id="L312">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(FloatDatum object)
+    {
+<span class="nc" id="L318">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(DoubleDatum object)
+    {
+<span class="nc" id="L324">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(BigIntegerDatum object)
+    {
+<span class="nc" id="L330">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(BigDecimalDatum object)
+    {
+<span class="nc" id="L336">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(StringDatum object)
+    {
+<span class="nc" id="L342">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(NullDatum object)
+    {
+<span class="nc" id="L348">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(VariableDatum object)
+    {
+<span class="nc" id="L354">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(ClassDatum object)
+    {
+<span class="nc" id="L360">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(PrognExpression object)
+    {
+<span class="nc" id="L366">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(ListExpression object)
+    {
+<span class="nc" id="L372">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(ListComprehensionExpression object)
+    {
+<span class="nc" id="L378">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(DispatchExpression object)
+    {
+<span class="nc" id="L384">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(CallStaticMethodExpression object)
+    {
+<span class="nc" id="L390">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(SetStaticFieldExpression object)
+    {
+<span class="nc" id="L396">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(GetStaticFieldExpression object)
+    {
+<span class="nc" id="L402">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(NewExpression object)
+    {
+<span class="nc" id="L408">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(CallMethodExpression object)
+    {
+<span class="nc" id="L414">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(SetFieldExpression object)
+    {
+<span class="nc" id="L420">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(GetFieldExpression object)
+    {
+<span class="nc" id="L426">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(InstanceOfExpression object)
+    {
+<span class="nc" id="L432">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(TernaryConditionalExpression object)
+    {
+<span class="nc" id="L438">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(LocalsExpression object)
+    {
+<span class="nc" id="L444">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(OnceExpression object)
+    {
+<span class="nc" id="L450">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(AsOperation object)
+    {
+<span class="nc" id="L456">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(IsOperation object)
+    {
+<span class="nc" id="L462">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(NegateOperation object)
+    {
+<span class="nc" id="L468">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(NotOperation object)
+    {
+<span class="nc" id="L474">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(DivideOperation object)
+    {
+<span class="nc" id="L480">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(ModuloOperation object)
+    {
+<span class="nc" id="L486">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(MultiplyOperation object)
+    {
+<span class="nc" id="L492">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(AddOperation object)
+    {
+<span class="nc" id="L498">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(SubtractOperation object)
+    {
+<span class="nc" id="L504">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(LessThanOperation object)
+    {
+<span class="nc" id="L510">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(LessThanOrEqualsOperation object)
+    {
+<span class="nc" id="L516">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(GreaterThanOperation object)
+    {
+<span class="nc" id="L522">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(GreaterThanOrEqualsOperation object)
+    {
+<span class="nc" id="L528">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(EqualsOperation object)
+    {
+<span class="nc" id="L534">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(NotEqualsOperation object)
+    {
+<span class="nc" id="L540">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(IdentityEqualsOperation object)
+    {
+<span class="nc" id="L546">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(IdentityNotEqualsOperation object)
+    {
+<span class="nc" id="L552">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(AndOperation object)
+    {
+<span class="nc" id="L558">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(OrOperation object)
+    {
+<span class="nc" id="L564">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(XorOperation object)
+    {
+<span class="nc" id="L570">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(ImpliesOperation object)
+    {
+<span class="nc" id="L576">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(NullCoalescingOperation object)
+    {
+<span class="nc" id="L582">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(ConcatOperation object)
+    {
+<span class="nc" id="L588">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(Variable object)
+    {
+<span class="nc" id="L594">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(DocComment object)
+    {
+<span class="nc" id="L600">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(DocCommentLine object)
+    {
+<span class="nc" id="L606">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(Name object)
+    {
+<span class="nc" id="L612">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(TypeSpecifier object)
+    {
+<span class="nc" id="L618">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(Namespace object)
+    {
+<span class="nc" id="L624">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(ElementList object)
+    {
+<span class="nc" id="L630">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(Element object)
+    {
+<span class="nc" id="L636">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(FormalParameterList object)
+    {
+<span class="nc" id="L642">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(FormalParameter object)
+    {
+<span class="nc" id="L648">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(ConditionalCase object)
+    {
+<span class="nc" id="L654">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(Label object)
+    {
+<span class="nc" id="L660">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+
+    @Override
+    public void visit(SourceLocation object)
+    {
+<span class="nc" id="L666">        throw new UnsupportedOperationException(&quot;This should never happen.&quot;);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

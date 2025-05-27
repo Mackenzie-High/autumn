@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>JsonEncoder.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.mackenziehigh:autumn</a> &gt; <a href="index.source.html" class="el_package">com.mackenziehigh.autumn.util.json</a> &gt; <span class="el_source">JsonEncoder.java</span></div><h1>JsonEncoder.java</h1><pre class="source lang-java linenums">package com.mackenziehigh.autumn.util.json;
+
+import autumn.lang.Record;
+import autumn.util.F;
+import com.google.common.collect.Lists;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
+/**
+ * An instance of this class can convert an Autumn object to a Json string.
+ *
+ * @author Mackenzie High
+ */
+<span class="fc" id="L18">public final class JsonEncoder</span>
+{
+    public String encode(final Object value)
+    {
+<span class="fc bfc" id="L22" title="All 2 branches covered.">        if (value == null)</span>
+        {
+<span class="fc" id="L24">            return &quot;null&quot;;</span>
+        }
+<span class="fc bfc" id="L26" title="All 2 branches covered.">        else if (value instanceof Record)</span>
+        {
+<span class="fc" id="L28">            return encode((Record) value);</span>
+        }
+<span class="fc bfc" id="L30" title="All 2 branches covered.">        else if (value instanceof Boolean)</span>
+        {
+<span class="fc" id="L32">            return encode((boolean) (Boolean) value);</span>
+        }
+<span class="pc bpc" id="L34" title="1 of 2 branches missed.">        else if (value instanceof Character)</span>
+        {
+<span class="nc" id="L36">            return encode((char) (Character) value);</span>
+        }
+<span class="fc bfc" id="L38" title="All 2 branches covered.">        else if (value instanceof Byte)</span>
+        {
+<span class="fc" id="L40">            return encode(F.big(value));</span>
+        }
+<span class="fc bfc" id="L42" title="All 2 branches covered.">        else if (value instanceof Short)</span>
+        {
+<span class="fc" id="L44">            return encode(F.big(value));</span>
+        }
+<span class="fc bfc" id="L46" title="All 2 branches covered.">        else if (value instanceof Integer)</span>
+        {
+<span class="fc" id="L48">            return encode(F.big(value));</span>
+        }
+<span class="fc bfc" id="L50" title="All 2 branches covered.">        else if (value instanceof Long)</span>
+        {
+<span class="fc" id="L52">            return encode(F.big(value));</span>
+        }
+<span class="fc bfc" id="L54" title="All 2 branches covered.">        else if (value instanceof Float)</span>
+        {
+<span class="fc" id="L56">            return encode(F.big(value));</span>
+        }
+<span class="fc bfc" id="L58" title="All 2 branches covered.">        else if (value instanceof Double)</span>
+        {
+<span class="fc" id="L60">            return encode(F.big(value));</span>
+        }
+<span class="fc bfc" id="L62" title="All 2 branches covered.">        else if (value instanceof BigInteger)</span>
+        {
+<span class="fc" id="L64">            return encode(F.big(value));</span>
+        }
+<span class="fc bfc" id="L66" title="All 2 branches covered.">        else if (value instanceof BigDecimal)</span>
+        {
+<span class="fc" id="L68">            return encode(F.big(value));</span>
+        }
+<span class="fc bfc" id="L70" title="All 2 branches covered.">        else if (value instanceof String)</span>
+        {
+<span class="fc" id="L72">            return encode((String) value);</span>
+        }
+<span class="pc bpc" id="L74" title="1 of 2 branches missed.">        else if (value instanceof Map)</span>
+        {
+<span class="nc" id="L76">            return encode((Map) value);</span>
+        }
+<span class="pc bpc" id="L78" title="1 of 2 branches missed.">        else if (value instanceof List)</span>
+        {
+<span class="fc" id="L80">            return encode((List) value);</span>
+        }
+        else
+        {
+<span class="nc" id="L84">            throw new IllegalArgumentException(&quot;The given object cannot be converted to a JSON string.&quot;);</span>
+        }
+    }
+
+    public String encode(final Record record)
+    {
+<span class="fc" id="L90">        final List&lt;String&gt; pairs = Lists.newLinkedList();</span>
+
+<span class="fc bfc" id="L92" title="All 2 branches covered.">        for (String key : record.keys())</span>
+        {
+<span class="fc" id="L94">            final String value = encode(F.get(record, key));</span>
+
+<span class="fc" id="L96">            final String pair = String.format(&quot;\&quot;%s\&quot; : %s&quot;, key, value);</span>
+
+<span class="fc" id="L98">            pairs.add(pair);</span>
+<span class="fc" id="L99">        }</span>
+
+<span class="fc" id="L101">        final String result = F.str(pairs, &quot;{ &quot;, &quot;, &quot;, &quot; }&quot;);</span>
+
+<span class="fc" id="L103">        return result;</span>
+    }
+
+    public String encode(final boolean value)
+    {
+<span class="fc" id="L108">        final String text = F.str(value);</span>
+
+<span class="fc" id="L110">        return text;</span>
+    }
+
+    public String encode(final char value)
+    {
+<span class="nc" id="L115">        final String text = F.str((int) value);</span>
+
+<span class="nc" id="L117">        final String result = text;</span>
+
+<span class="nc" id="L119">        return result;</span>
+    }
+
+    public String encode(final BigDecimal value)
+    {
+<span class="pc bpc" id="L124" title="1 of 2 branches missed.">        if (value.equals(F.big(0)))</span>
+        {
+<span class="nc" id="L126">            return &quot;0&quot;;</span>
+        }
+
+<span class="fc" id="L129">        final String result = value</span>
+<span class="fc" id="L130">                .toString()</span>
+<span class="fc" id="L131">                .replaceAll(&quot;0*[Ee]&quot;, &quot;E&quot;)</span>
+<span class="fc" id="L132">                .replaceAll(&quot;\\.0*$&quot;, &quot;&quot;);</span>
+
+<span class="pc bpc" id="L134" title="1 of 2 branches missed.">        assert F.parseBigDecimal(result).equals(F.big(value));</span>
+
+<span class="fc" id="L136">        return result;</span>
+    }
+
+    public String encode(final String value)
+    {
+<span class="fc" id="L141">        return &quot;\&quot;&quot; + F.str(value) + &quot;\&quot;&quot;;</span>
+    }
+
+    public String encode(final Map&lt;String, ? extends Object&gt; map)
+    {
+<span class="nc" id="L146">        final List&lt;String&gt; pairs = Lists.newLinkedList();</span>
+
+<span class="nc bnc" id="L148" title="All 2 branches missed.">        for (Entry&lt;String, ? extends Object&gt; entry : map.entrySet())</span>
+        {
+<span class="nc" id="L150">            final String key = entry.getKey();</span>
+
+<span class="nc" id="L152">            final String value = encode(entry.getValue());</span>
+
+<span class="nc" id="L154">            final String pair = String.format(&quot;\&quot;%s\&quot; : %s&quot;, key, value);</span>
+
+<span class="nc" id="L156">            pairs.add(pair);</span>
+<span class="nc" id="L157">        }</span>
+
+<span class="nc" id="L159">        final String result = F.str(pairs, &quot;{ &quot;, &quot;, &quot;, &quot; }&quot;);</span>
+
+<span class="nc" id="L161">        return result;</span>
+    }
+
+    public String encode(final List value)
+    {
+<span class="fc" id="L166">        final List&lt;String&gt; elements = Lists.newLinkedList();</span>
+
+<span class="fc bfc" id="L168" title="All 2 branches covered.">        for (Object element : value)</span>
+        {
+<span class="fc" id="L170">            elements.add(encode(element));</span>
+<span class="fc" id="L171">        }</span>
+
+<span class="fc" id="L173">        final String result = F.str(elements, &quot;[&quot;, &quot;, &quot;, &quot;]&quot;);</span>
+
+<span class="fc" id="L175">        return result;</span>
+    }
+
+    public static void main(String[] args)
+    {
+<span class="nc" id="L180">        Map m = new HashMap();</span>
+<span class="nc" id="L181">        m.put(&quot;Emma&quot;, &quot;Pretty&quot;);</span>
+
+
+<span class="nc" id="L184">        Object x = Lists.newArrayList(12, 'A', &quot;Hello&quot;, F.parseBigDecimal(&quot;123.0&quot;), true, null, m);</span>
+
+
+<span class="nc" id="L187">        final String json = (new JsonEncoder()).encode(x);</span>
+<span class="nc" id="L188">        System.out.println(json);</span>
+<span class="nc" id="L189">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

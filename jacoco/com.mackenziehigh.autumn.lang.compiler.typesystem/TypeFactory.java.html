@@ -1,0 +1,423 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TypeFactory.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.mackenziehigh:autumn</a> &gt; <a href="index.source.html" class="el_package">com.mackenziehigh.autumn.lang.compiler.typesystem</a> &gt; <span class="el_source">TypeFactory.java</span></div><h1>TypeFactory.java</h1><pre class="source lang-java linenums">package com.mackenziehigh.autumn.lang.compiler.typesystem;
+
+import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Maps;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IArrayType;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IElementType;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.INullType;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IPrimitiveType;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IType;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.ITypeFactory;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IVoidType;
+import com.mackenziehigh.autumn.resources.Finished;
+import java.util.Collection;
+import java.util.Map;
+
+/**
+ * An instance of this class is a concrete implementation of the ITypeFactory interface.
+ *
+ * @author Mackenzie High
+ */
+<span class="fc" id="L22">@Finished(&quot;2014/07/12&quot;)</span>
+public final class TypeFactory
+        implements ITypeFactory
+{
+<span class="fc" id="L26">    private final IPrimitiveType BOOLEAN = new PrimitiveType(this, boolean.class);</span>
+
+<span class="fc" id="L28">    private final IPrimitiveType CHAR = new PrimitiveType(this, char.class);</span>
+
+<span class="fc" id="L30">    private final IPrimitiveType BYTE = new PrimitiveType(this, byte.class);</span>
+
+<span class="fc" id="L32">    private final IPrimitiveType SHORT = new PrimitiveType(this, short.class);</span>
+
+<span class="fc" id="L34">    private final IPrimitiveType INT = new PrimitiveType(this, int.class);</span>
+
+<span class="fc" id="L36">    private final IPrimitiveType LONG = new PrimitiveType(this, long.class);</span>
+
+<span class="fc" id="L38">    private final IPrimitiveType FLOAT = new PrimitiveType(this, float.class);</span>
+
+<span class="fc" id="L40">    private final IPrimitiveType DOUBLE = new PrimitiveType(this, double.class);</span>
+
+<span class="fc" id="L42">    private final IVoidType VOID = new VoidType(this);</span>
+
+<span class="fc" id="L44">    private final INullType NULL = new NullType(this);</span>
+
+<span class="fc" id="L46">    private final Map&lt;String, IType&gt; names_to_types = Maps.newTreeMap();</span>
+
+<span class="fc" id="L48">    private final Map&lt;Class, IType&gt; classes_to_types = Maps.newHashMap();</span>
+
+    private final ClassLoader class_loader;
+
+    /**
+     * Constructor.
+     *
+     * &lt;p&gt;
+     * The new factory will use the bootstrap class-loader to resolve previously loaded classes.
+     * &lt;/p&gt;
+     */
+    public TypeFactory()
+    {
+<span class="fc" id="L61">        this(String.class.getClassLoader());</span>
+<span class="fc" id="L62">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param class_loader is the class-loader that will be used to resolve loaded classes.
+     */
+    public TypeFactory(final ClassLoader class_loader)
+<span class="fc" id="L70">    {</span>
+<span class="fc bfc" id="L71" title="All 2 branches covered.">        this.class_loader = class_loader == null</span>
+<span class="fc" id="L72">                ? ClassLoader.getSystemClassLoader()</span>
+<span class="fc" id="L73">                : class_loader;</span>
+
+<span class="fc" id="L75">        names_to_types.put(&quot;Z&quot;, getBoolean());</span>
+<span class="fc" id="L76">        names_to_types.put(&quot;C&quot;, getChar());</span>
+<span class="fc" id="L77">        names_to_types.put(&quot;B&quot;, getByte());</span>
+<span class="fc" id="L78">        names_to_types.put(&quot;S&quot;, getShort());</span>
+<span class="fc" id="L79">        names_to_types.put(&quot;I&quot;, getInt());</span>
+<span class="fc" id="L80">        names_to_types.put(&quot;J&quot;, getLong());</span>
+<span class="fc" id="L81">        names_to_types.put(&quot;F&quot;, getFloat());</span>
+<span class="fc" id="L82">        names_to_types.put(&quot;D&quot;, getDouble());</span>
+<span class="fc" id="L83">        names_to_types.put(&quot;V&quot;, getVoid());</span>
+<span class="fc" id="L84">        names_to_types.put(&quot;Lnull;&quot;, getNull());</span>
+
+<span class="fc" id="L86">        classes_to_types.put(boolean.class, getBoolean());</span>
+<span class="fc" id="L87">        classes_to_types.put(char.class, getChar());</span>
+<span class="fc" id="L88">        classes_to_types.put(byte.class, getByte());</span>
+<span class="fc" id="L89">        classes_to_types.put(short.class, getShort());</span>
+<span class="fc" id="L90">        classes_to_types.put(int.class, getInt());</span>
+<span class="fc" id="L91">        classes_to_types.put(long.class, getLong());</span>
+<span class="fc" id="L92">        classes_to_types.put(float.class, getFloat());</span>
+<span class="fc" id="L93">        classes_to_types.put(double.class, getDouble());</span>
+<span class="fc" id="L94">        classes_to_types.put(void.class, getVoid());</span>
+<span class="fc" id="L95">    }</span>
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public IPrimitiveType getBoolean()
+    {
+<span class="fc" id="L103">        return BOOLEAN;</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public IPrimitiveType getChar()
+    {
+<span class="fc" id="L112">        return CHAR;</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public IPrimitiveType getByte()
+    {
+<span class="fc" id="L121">        return BYTE;</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public IPrimitiveType getShort()
+    {
+<span class="fc" id="L130">        return SHORT;</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public IPrimitiveType getInt()
+    {
+<span class="fc" id="L139">        return INT;</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public IPrimitiveType getLong()
+    {
+<span class="fc" id="L148">        return LONG;</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public IPrimitiveType getFloat()
+    {
+<span class="fc" id="L157">        return FLOAT;</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public IPrimitiveType getDouble()
+    {
+<span class="fc" id="L166">        return DOUBLE;</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public INullType getNull()
+    {
+<span class="fc" id="L175">        return NULL;</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public IVoidType getVoid()
+    {
+<span class="fc" id="L184">        return VOID;</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public IArrayType getArrayType(final IElementType element,
+                                   final int dimensions)
+    {
+<span class="fc" id="L194">        Preconditions.checkNotNull(element);</span>
+<span class="pc bpc" id="L195" title="1 of 2 branches missed.">        Preconditions.checkArgument(dimensions &gt;= 1);</span>
+
+<span class="fc" id="L197">        return new ArrayType(this, element, dimensions, null);</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public IType fromClass(final Class&lt;?&gt; clazz)
+    {
+<span class="fc bfc" id="L206" title="All 2 branches covered.">        if (classes_to_types.containsKey(clazz))</span>
+        {
+<span class="fc" id="L208">            return classes_to_types.get(clazz);</span>
+        }
+
+        final IType result;
+
+<span class="fc bfc" id="L213" title="All 2 branches covered.">        if (clazz.isArray())</span>
+        {
+<span class="fc" id="L215">            final Class element_class = getElementType(clazz);</span>
+
+<span class="fc" id="L217">            final IElementType element = (IElementType) fromClass(element_class);</span>
+
+<span class="fc" id="L219">            final int dimensions = getDimensions(clazz);</span>
+
+<span class="fc" id="L221">            result = new ArrayType(this, element, dimensions, clazz);</span>
+<span class="fc" id="L222">        }</span>
+<span class="fc bfc" id="L223" title="All 2 branches covered.">        else if (clazz.isAnnotation())</span>
+        {
+<span class="fc" id="L225">            result = new ReflectiveDeclaredType(this, clazz);</span>
+        }
+<span class="fc bfc" id="L227" title="All 2 branches covered.">        else if (clazz.isInterface())</span>
+        {
+<span class="fc" id="L229">            result = new ReflectiveDeclaredType(this, clazz);</span>
+        }
+<span class="fc bfc" id="L231" title="All 2 branches covered.">        else if (clazz.isEnum())</span>
+        {
+<span class="fc" id="L233">            result = new ReflectiveDeclaredType(this, clazz);</span>
+        }
+        else // clazz.isClass()
+        {
+<span class="fc" id="L237">            result = new ReflectiveDeclaredType(this, clazz);</span>
+        }
+
+<span class="fc" id="L240">        classes_to_types.put(clazz, result);</span>
+
+<span class="fc" id="L242">        names_to_types.put(result.getDescriptor(), result);</span>
+
+<span class="fc" id="L244">        return result;</span>
+    }
+
+    /**
+     * This method extracts the element-type from an array-type.
+     *
+     * &lt;p&gt;
+     * Example: int[][][] returns int
+     * &lt;/p&gt;
+     *
+     * @param array is the array-type.
+     * @return the type of the elements in an array of the array-type.
+     */
+    private Class getElementType(final Class array)
+    {
+<span class="pc bpc" id="L259" title="1 of 2 branches missed.">        assert array.isArray();</span>
+
+<span class="fc" id="L261">        Class p = array;</span>
+
+<span class="fc bfc" id="L263" title="All 2 branches covered.">        while (p.getComponentType() != null)</span>
+        {
+<span class="fc" id="L265">            p = p.getComponentType();</span>
+        }
+
+<span class="fc" id="L268">        return p;</span>
+    }
+
+    /**
+     * This method counts the number of dimensions in an array-type.
+     *
+     * @param array is the array-type.
+     * @return the number of dimensions in the array-type.
+     */
+    private int getDimensions(final Class array)
+    {
+<span class="pc bpc" id="L279" title="1 of 2 branches missed.">        assert array.isArray();</span>
+
+<span class="fc" id="L281">        int dimensions = 0;</span>
+
+<span class="fc" id="L283">        Class p = array;</span>
+
+<span class="fc bfc" id="L285" title="All 2 branches covered.">        while (p.getComponentType() != null)</span>
+        {
+<span class="fc" id="L287">            ++dimensions;</span>
+
+<span class="fc" id="L289">            p = p.getComponentType();</span>
+        }
+
+<span class="fc" id="L292">        return dimensions;</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public IType findType(final String descriptor)
+    {
+<span class="fc" id="L301">        Preconditions.checkNotNull(descriptor);</span>
+
+        /**
+         * If object that represents the type was already created, then simply return it.
+         */
+<span class="fc bfc" id="L306" title="All 2 branches covered.">        if (names_to_types.containsKey(descriptor))</span>
+        {
+<span class="fc" id="L308">            return names_to_types.get(descriptor);</span>
+        }
+
+        /**
+         * Since the object that represents the type was not already created,
+         * there are only two possibilities left. First, entity that the type represents
+         * may already have been loaded into the class-loader, but its types has not been
+         * encountered here before. Second, the the type simply does not exist.
+         */
+        try
+        {
+            // Get the name of the type as it appears in source-code.
+<span class="fc" id="L320">            final String name = descriptor.substring(1).replace(&quot;;&quot;, &quot;&quot;).replace(&quot;/&quot;, &quot;.&quot;);</span>
+
+            // If there is a class object for the aforesaid name,
+            // then the type exists but has not been encountered here before.
+<span class="fc" id="L324">            final Class clazz = Class.forName(name, true, class_loader);</span>
+
+            // Create an object that represents the type that is described by the class object.
+<span class="fc" id="L327">            return fromClass(clazz);</span>
+        }
+<span class="fc" id="L329">        catch (ClassNotFoundException ex)</span>
+        {
+            /* Do Nothing */
+        }
+
+        /**
+         * This type-factory does not know of any type associated with the given descriptor.
+         */
+<span class="fc" id="L337">        return null;</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Collection&lt;IType&gt; getTypes()
+    {
+<span class="nc" id="L346">        return ImmutableSet.copyOf(names_to_types.values());</span>
+    }
+
+    /**
+     * This method declares a new annotation-type.
+     *
+     * @param descriptor is the type-descriptor of the new type.
+     * @return the object that represents the new type.
+     */
+    public CustomDeclaredType newAnnotationType(final String descriptor)
+    {
+<span class="fc" id="L357">        Preconditions.checkNotNull(descriptor);</span>
+<span class="pc bpc" id="L358" title="1 of 2 branches missed.">        Preconditions.checkState(!names_to_types.containsKey(descriptor));</span>
+
+<span class="fc" id="L360">        final CustomDeclaredType result = CustomDeclaredType.newAnnotationType(this,</span>
+                                                                               descriptor);
+
+<span class="fc" id="L363">        names_to_types.put(descriptor, result);</span>
+
+<span class="fc" id="L365">        return result;</span>
+    }
+
+    /**
+     * This method declares a new class-type.
+     *
+     * @param descriptor is the type-descriptor of the new type.
+     * @return the object that represents the new type.
+     */
+    public CustomDeclaredType newClassType(final String descriptor)
+    {
+<span class="fc" id="L376">        Preconditions.checkNotNull(descriptor);</span>
+<span class="pc bpc" id="L377" title="1 of 2 branches missed.">        Preconditions.checkState(!names_to_types.containsKey(descriptor));</span>
+
+<span class="fc" id="L379">        final CustomDeclaredType result = CustomDeclaredType.newClassType(this, descriptor);</span>
+
+<span class="fc" id="L381">        names_to_types.put(descriptor, result);</span>
+
+<span class="fc" id="L383">        return result;</span>
+    }
+
+    /**
+     * This method declares a new enum-type.
+     *
+     * @param descriptor is the type-descriptor of the new type.
+     * @return the object that represents the new type.
+     */
+    public CustomDeclaredType newEnumType(final String descriptor)
+    {
+<span class="fc" id="L394">        Preconditions.checkNotNull(descriptor);</span>
+<span class="pc bpc" id="L395" title="1 of 2 branches missed.">        Preconditions.checkState(!names_to_types.containsKey(descriptor));</span>
+
+<span class="fc" id="L397">        final CustomDeclaredType result = CustomDeclaredType.newEnumType(this, descriptor);</span>
+
+<span class="fc" id="L399">        names_to_types.put(descriptor, result);</span>
+
+<span class="fc" id="L401">        return result;</span>
+    }
+
+    /**
+     * This method declares a new interface-type.
+     *
+     * @param descriptor is the type-descriptor of the new type.
+     * @return the object that represents the new type.
+     */
+    public CustomDeclaredType newInterfaceType(final String descriptor)
+    {
+<span class="fc" id="L412">        Preconditions.checkNotNull(descriptor);</span>
+<span class="pc bpc" id="L413" title="1 of 2 branches missed.">        Preconditions.checkState(!names_to_types.containsKey(descriptor));</span>
+
+<span class="fc" id="L415">        final CustomDeclaredType result = CustomDeclaredType.newInterfaceType(this,</span>
+                                                                              descriptor);
+
+<span class="fc" id="L418">        names_to_types.put(descriptor, result);</span>
+
+<span class="fc" id="L420">        return result;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AnnotationUtils.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.mackenziehigh:autumn</a> &gt; <a href="index.source.html" class="el_package">com.mackenziehigh.autumn.lang.compiler.utils</a> &gt; <span class="el_source">AnnotationUtils.java</span></div><h1>AnnotationUtils.java</h1><pre class="source lang-java linenums">package com.mackenziehigh.autumn.lang.compiler.utils;
+
+import autumn.lang.compiler.ast.nodes.Annotation;
+import autumn.lang.compiler.ast.nodes.AnnotationList;
+import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
+import com.mackenziehigh.autumn.lang.compiler.compilers.ModuleCompiler;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.CustomAnnotation;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.ICustomAnnotatable;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IAnnotation;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IAnnotationType;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IType;
+import java.util.LinkedList;
+import java.util.List;
+import org.objectweb.asm.tree.AnnotationNode;
+
+/**
+ * An instance of this class provides generalized methods for processing annotations.
+ *
+ * @author Mackenzie High
+ */
+public final class AnnotationUtils
+{
+    /**
+     * Essentially, this is the enclosing module that is bing compiled.
+     */
+    private final ModuleCompiler module;
+
+    /**
+     * Sole Constructor.
+     *
+     * @param module is essentially the module that is being compiled.
+     */
+    public AnnotationUtils(final ModuleCompiler module)
+<span class="fc" id="L36">    {</span>
+<span class="fc" id="L37">        Preconditions.checkNotNull(module);</span>
+
+<span class="fc" id="L39">        this.module = module;</span>
+<span class="fc" id="L40">    }</span>
+
+    /**
+     * This method compiles a single annotation to its bytecode representation.
+     *
+     * &lt;p&gt;
+     * Note: This method does not perform any type-checking.
+     * &lt;/p&gt;
+     *
+     * @param annotation is the annotation to compile.
+     * @return the bytecode representation of the given annotation.
+     */
+    public AnnotationNode compileAnnotation(final IAnnotation annotation)
+    {
+<span class="fc" id="L54">        Preconditions.checkNotNull(annotation);</span>
+
+<span class="fc" id="L56">        final String descriptor = annotation.getAnnotationType().getDescriptor();</span>
+
+<span class="fc" id="L58">        final AnnotationNode node = new AnnotationNode(descriptor);</span>
+
+<span class="fc" id="L60">        final List&lt;String&gt; values = annotation.getAnnotationValues();</span>
+
+<span class="fc bfc" id="L62" title="All 2 branches covered.">        if (values == null)</span>
+        {
+<span class="fc" id="L64">            node.values = null;</span>
+        }
+        else
+        {
+<span class="fc" id="L68">            node.values = Lists.newArrayList(&quot;value&quot;, values);</span>
+        }
+
+<span class="fc" id="L71">        return node;</span>
+    }
+
+    /**
+     * This method compiles a list of annotations to their bytecode representations.
+     *
+     * &lt;p&gt;
+     * Note: This method does not perform any type-checking.
+     * &lt;/p&gt;
+     *
+     * @param annotations are the annotations to compile.
+     * @return an immutable list containing the compiled list of annotations.
+     */
+    public List&lt;AnnotationNode&gt; compileAnnotationList(final Iterable&lt;IAnnotation&gt; annotations)
+    {
+<span class="fc" id="L86">        Preconditions.checkNotNull(annotations);</span>
+
+<span class="fc" id="L88">        final List&lt;AnnotationNode&gt; result = Lists.newLinkedList();</span>
+
+<span class="fc bfc" id="L90" title="All 2 branches covered.">        for (IAnnotation anno : annotations)</span>
+        {
+<span class="fc" id="L92">            result.add(this.compileAnnotation(anno));</span>
+<span class="fc" id="L93">        }</span>
+
+<span class="fc" id="L95">        return ImmutableList.copyOf(result);</span>
+    }
+
+    /**
+     * This method gets the type representations of the annotations in an annotation-list.
+     *
+     * &lt;p&gt;
+     * This method performs type-checking on the annotation-list.
+     * &lt;/p&gt;
+     *
+     * @param annotations is the annotation-list itself.
+     * @return an immutable list containing the types of the annotations in the annotation-list.
+     */
+    public List&lt;IAnnotation&gt; typesOf(final AnnotationList annotations)
+    {
+<span class="fc" id="L110">        Preconditions.checkNotNull(annotations);</span>
+
+<span class="fc" id="L112">        final List&lt;IAnnotation&gt; result = Lists.newLinkedList();</span>
+
+<span class="fc bfc" id="L114" title="All 2 branches covered.">        for (Annotation anno : annotations.getAnnotations())</span>
+        {
+<span class="fc" id="L116">            final IAnnotation type = this.typeOf(anno);</span>
+
+<span class="fc" id="L118">            result.add(type);</span>
+<span class="fc" id="L119">        }</span>
+
+<span class="fc" id="L121">        return ImmutableList.copyOf(result);</span>
+    }
+
+    /**
+     * This method creates the type-system representation of an annotation from its AST node.
+     *
+     * &lt;p&gt;
+     * The method will issue an error-message, if the annotation-type does not exist.
+     * &lt;/p&gt;
+     *
+     * @param annotation is the AST node that represents the annotation.
+     * @return the annotation's type-system representation,
+     * or null, if no such representation can be created.
+     */
+    public IAnnotation typeOf(final Annotation annotation)
+    {
+<span class="fc" id="L137">        Preconditions.checkNotNull(annotation);</span>
+
+<span class="fc" id="L139">        final IType type = module.imports.resolveReturnType(annotation.getType());</span>
+
+<span class="pc bpc" id="L141" title="2 of 4 branches missed.">        if (type == null || type instanceof IAnnotationType == false)</span>
+        {
+<span class="nc" id="L143">            return null;</span>
+        }
+
+<span class="fc" id="L146">        final List&lt;String&gt; values = annotation.getValues();</span>
+
+<span class="fc" id="L148">        final IAnnotation result = new CustomAnnotation(null, values, (IAnnotationType) type);</span>
+
+<span class="fc" id="L150">        return result;</span>
+    }
+
+    /**
+     * This method creates the type-system representation of an annotation a Class object.
+     *
+     * @param type is the class-object that represents the annotation-type.
+     * @return the annotation's type-system representation,
+     * or null, if no such representation can be created.
+     */
+    public IAnnotation typeOf(final Class type)
+    {
+<span class="fc" id="L162">        Preconditions.checkNotNull(type);</span>
+
+<span class="fc" id="L164">        final IAnnotationType annotation_type = (IAnnotationType) module.program.typesystem</span>
+<span class="fc" id="L165">                .typefactory()</span>
+<span class="fc" id="L166">                .fromClass(type);</span>
+
+<span class="fc" id="L168">        final IAnnotation result = new CustomAnnotation(null, null, annotation_type);</span>
+
+<span class="fc" id="L170">        return result;</span>
+    }
+
+    /**
+     * This method adds a marker annotation to an annotatable custom entity.
+     *
+     * @param annotated is the annotatable custom entity.
+     * @param type is the type of the annotation.
+     */
+    public void add(final ICustomAnnotatable annotated,
+                    final Class type)
+    {
+<span class="fc" id="L182">        Preconditions.checkNotNull(annotated);</span>
+<span class="fc" id="L183">        Preconditions.checkNotNull(type);</span>
+
+        /**
+         * Get the type-system representation of the marker annotation.
+         */
+<span class="fc" id="L188">        final IAnnotation annotation = typeOf(type);</span>
+
+        /**
+         * Get the annotations that are already applied to the entity.
+         */
+<span class="fc" id="L193">        final List&lt;IAnnotation&gt; immutable = annotated.getAnnotations();</span>
+
+        /**
+         * We need an immutable list in order to add the new annotation.
+         */
+<span class="fc" id="L198">        final List&lt;IAnnotation&gt; mutable = new LinkedList&lt;IAnnotation&gt;(immutable);</span>
+
+        /**
+         * Add the new marker annotation to the entity.
+         */
+<span class="fc" id="L203">        mutable.add(annotation);</span>
+<span class="fc" id="L204">        annotated.setAnnotations(mutable);</span>
+<span class="fc" id="L205">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

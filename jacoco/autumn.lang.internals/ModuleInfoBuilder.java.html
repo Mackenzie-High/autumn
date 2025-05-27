@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ModuleInfoBuilder.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.mackenziehigh:autumn</a> &gt; <a href="index.source.html" class="el_package">autumn.lang.internals</a> &gt; <span class="el_source">ModuleInfoBuilder.java</span></div><h1>ModuleInfoBuilder.java</h1><pre class="source lang-java linenums">package autumn.lang.internals;
+
+import autumn.lang.Delegate;
+import autumn.lang.Module;
+import autumn.lang.ModuleInfo;
+import autumn.lang.annotations.Start;
+import com.google.common.base.Preconditions;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
+
+/**
+ * Instances of this class are used to construct ModuleInfo objects.
+ *
+ * @author Mackenzie High
+ */
+public final class ModuleInfoBuilder
+{
+    private final Module instance;
+
+<span class="fc" id="L24">    private final ArrayList&lt;Class&gt; annotations = Lists.newArrayList();</span>
+
+<span class="fc" id="L26">    private final ArrayList&lt;Class&gt; exceptions = Lists.newArrayList();</span>
+
+<span class="fc" id="L28">    private final ArrayList&lt;Class&gt; enums = Lists.newArrayList();</span>
+
+<span class="fc" id="L30">    private final ArrayList&lt;Class&gt; designs = Lists.newArrayList();</span>
+
+<span class="fc" id="L32">    private final ArrayList&lt;Class&gt; structs = Lists.newArrayList();</span>
+
+<span class="fc" id="L34">    private final ArrayList&lt;Class&gt; tuples = Lists.newArrayList();</span>
+
+<span class="fc" id="L36">    private final ArrayList&lt;Class&gt; functors = Lists.newArrayList();</span>
+
+<span class="fc" id="L38">    private final ArrayList&lt;Delegate&gt; delegates = Lists.newArrayList();</span>
+
+    /**
+     * Sole Constructor.
+     *
+     * @param instance is the module object itself.
+     */
+    public ModuleInfoBuilder(final Module instance)
+<span class="fc" id="L46">    {</span>
+<span class="fc" id="L47">        Preconditions.checkNotNull(instance);</span>
+
+<span class="fc" id="L49">        this.instance = instance;</span>
+<span class="fc" id="L50">    }</span>
+
+    /**
+     * This method declares that an annotation-type is defined directly within the module.
+     *
+     * @param type is the type.
+     */
+    public void addAnnotation(final Class type)
+    {
+<span class="fc" id="L59">        Preconditions.checkNotNull(type);</span>
+
+<span class="fc" id="L61">        annotations.add(type);</span>
+<span class="fc" id="L62">    }</span>
+
+    /**
+     * This method declares that an exception-type is defined directly within the module.
+     *
+     * @param type is the type.
+     */
+    public void addException(final Class type)
+    {
+<span class="fc" id="L71">        Preconditions.checkNotNull(type);</span>
+
+<span class="fc" id="L73">        exceptions.add(type);</span>
+<span class="fc" id="L74">    }</span>
+
+    /**
+     * This method declares that an enum-type is defined directly within the module.
+     *
+     * @param type is the type.
+     */
+    public void addEnum(final Class type)
+    {
+<span class="fc" id="L83">        Preconditions.checkNotNull(type);</span>
+
+<span class="fc" id="L85">        enums.add(type);</span>
+<span class="fc" id="L86">    }</span>
+
+    /**
+     * This method declares that a design-type is defined directly within the module.
+     *
+     * @param type is the type.
+     */
+    public void addDesign(final Class type)
+    {
+<span class="fc" id="L95">        Preconditions.checkNotNull(type);</span>
+
+<span class="fc" id="L97">        designs.add(type);</span>
+<span class="fc" id="L98">    }</span>
+
+    /**
+     * This method declares that a struct-type is defined directly within the module.
+     *
+     * @param type is the type.
+     */
+    public void addStruct(final Class type)
+    {
+<span class="fc" id="L107">        Preconditions.checkNotNull(type);</span>
+
+<span class="fc" id="L109">        structs.add(type);</span>
+<span class="fc" id="L110">    }</span>
+
+    /**
+     * This method declares that a tuple-type is defined directly within the module.
+     *
+     * @param type is the type.
+     */
+    public void addTuple(final Class type)
+    {
+<span class="fc" id="L119">        Preconditions.checkNotNull(type);</span>
+
+<span class="fc" id="L121">        tuples.add(type);</span>
+<span class="fc" id="L122">    }</span>
+
+    /**
+     * This method declares that a functor-type is defined directly within the module.
+     *
+     * @param type is the type.
+     */
+    public void addFunctor(final Class type)
+    {
+<span class="fc" id="L131">        Preconditions.checkNotNull(type);</span>
+
+<span class="fc" id="L133">        functors.add(type);</span>
+<span class="fc" id="L134">    }</span>
+
+    /**
+     * This method declares that a function is defined directly within the module.
+     *
+     * @param delegate refers to the function.
+     */
+    public void add(final Delegate delegate)
+    {
+<span class="fc" id="L143">        Preconditions.checkNotNull(delegate);</span>
+
+<span class="fc" id="L145">        delegates.add(delegate);</span>
+<span class="fc" id="L146">    }</span>
+
+    /**
+     * This method creates a ModuleInfo object based on the information that was provided to this builder.
+     *
+     * @return the newly created object.
+     */
+    public ModuleInfo build()
+    {
+<span class="fc" id="L155">        final ModuleInfoBuilder SELF = this;</span>
+
+        /**
+         * TODO: This should be static in order to avoid holding onto the builder.
+         */
+<span class="fc" id="L160">        return new ModuleInfo()</span>
+<span class="fc" id="L161">        {</span>
+<span class="fc" id="L162">            private final List&lt;Class&gt; annotations = Collections.unmodifiableList(SELF.annotations);</span>
+
+<span class="fc" id="L164">            private final List&lt;Class&gt; exceptions = Collections.unmodifiableList(SELF.exceptions);</span>
+
+<span class="fc" id="L166">            private final List&lt;Class&gt; enums = Collections.unmodifiableList(SELF.enums);</span>
+
+<span class="fc" id="L168">            private final List&lt;Class&gt; designs = Collections.unmodifiableList(SELF.designs);</span>
+
+<span class="fc" id="L170">            private final List&lt;Class&gt; structs = Collections.unmodifiableList(SELF.structs);</span>
+
+<span class="fc" id="L172">            private final List&lt;Class&gt; tuples = Collections.unmodifiableList(SELF.tuples);</span>
+
+<span class="fc" id="L174">            private final List&lt;Class&gt; functors = Collections.unmodifiableList(SELF.functors);</span>
+
+<span class="fc" id="L176">            private final List&lt;Delegate&gt; delegates = Collections.unmodifiableList(SELF.delegates);</span>
+
+            @Override
+            public Module instance()
+            {
+<span class="fc" id="L181">                return instance;</span>
+            }
+
+            @Override
+            public String name()
+            {
+<span class="fc" id="L187">                return type().getName();</span>
+            }
+
+            @Override
+            public Class type()
+            {
+<span class="fc" id="L193">                return instance().getClass();</span>
+            }
+
+            @Override
+            public List&lt;Class&gt; annotations()
+            {
+<span class="fc" id="L199">                return annotations;</span>
+            }
+
+            @Override
+            public List&lt;Class&gt; enums()
+            {
+<span class="fc" id="L205">                return enums;</span>
+            }
+
+            @Override
+            public List&lt;Class&gt; exceptions()
+            {
+<span class="fc" id="L211">                return exceptions;</span>
+            }
+
+            @Override
+            public List&lt;Class&gt; designs()
+            {
+<span class="fc" id="L217">                return designs;</span>
+            }
+
+            @Override
+            public List&lt;Class&gt; tuples()
+            {
+<span class="fc" id="L223">                return tuples;</span>
+            }
+
+            @Override
+            public List&lt;Class&gt; structs()
+            {
+<span class="fc" id="L229">                return structs;</span>
+            }
+
+            @Override
+            public List&lt;Class&gt; functors()
+            {
+<span class="fc" id="L235">                return functors;</span>
+            }
+
+            @Override
+            public List&lt;Delegate&gt; functions()
+            {
+<span class="fc" id="L241">                return delegates;</span>
+            }
+
+            @Override
+            public boolean isStart()
+            {
+<span class="nc bnc" id="L247" title="All 2 branches missed.">                for (Delegate x : functions())</span>
+                {
+<span class="nc" id="L249">                    final boolean test1 = x.method().isAnnotationPresent(Start.class);</span>
+
+<span class="nc bnc" id="L251" title="All 4 branches missed.">                    final boolean test2 = test1 &amp;&amp; x.name().equals(&quot;main&quot;);</span>
+
+<span class="nc bnc" id="L253" title="All 4 branches missed.">                    final boolean test3 = test1 &amp;&amp; x.parameterTypes().equals(Lists.newArrayList(String[].class));</span>
+
+<span class="nc bnc" id="L255" title="All 4 branches missed.">                    final boolean test4 = test1 &amp;&amp; x.returnType().equals(void.class);</span>
+
+<span class="nc bnc" id="L257" title="All 8 branches missed.">                    if (test1 &amp;&amp; test2 &amp;&amp; test3 &amp;&amp; test4)</span>
+                    {
+<span class="nc" id="L259">                        return true;</span>
+                    }
+<span class="nc" id="L261">                }</span>
+
+<span class="nc" id="L263">                return false;</span>
+            }
+
+            @Override
+            public Set&lt;Class&gt; types()
+            {
+<span class="nc" id="L269">                final Set&lt;Class&gt; result = Sets.newIdentityHashSet();</span>
+
+<span class="nc" id="L271">                result.addAll(annotations());</span>
+<span class="nc" id="L272">                result.addAll(designs());</span>
+<span class="nc" id="L273">                result.addAll(enums());</span>
+<span class="nc" id="L274">                result.addAll(exceptions());</span>
+<span class="nc" id="L275">                result.addAll(functors());</span>
+<span class="nc" id="L276">                result.addAll(structs());</span>
+<span class="nc" id="L277">                result.addAll(tuples());</span>
+
+<span class="nc" id="L279">                return Collections.unmodifiableSet(result);</span>
+            }
+
+            @Override
+            public String toString()
+            {
+<span class="fc" id="L285">                return name();</span>
+            }
+        };
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

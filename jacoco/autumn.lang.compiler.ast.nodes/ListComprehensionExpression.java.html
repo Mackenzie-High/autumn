@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ListComprehensionExpression.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.mackenziehigh:autumn</a> &gt; <a href="index.source.html" class="el_package">autumn.lang.compiler.ast.nodes</a> &gt; <span class="el_source">ListComprehensionExpression.java</span></div><h1>ListComprehensionExpression.java</h1><pre class="source lang-java linenums">/*
+ * Copyright 2013 Michael Mackenzie High
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+
+package autumn.lang.compiler.ast.nodes;
+
+import autumn.lang.compiler.ast.commons.ConstructList;
+import autumn.lang.compiler.ast.commons.IAnnotated;
+import autumn.lang.compiler.ast.commons.IBinaryOperation;
+import autumn.lang.compiler.ast.commons.IConstruct;
+import autumn.lang.compiler.ast.commons.IConversionOperation;
+import autumn.lang.compiler.ast.commons.IDatum;
+import autumn.lang.compiler.ast.commons.IDirective;
+import autumn.lang.compiler.ast.commons.IDocumented;
+import autumn.lang.compiler.ast.commons.IExpression;
+import autumn.lang.compiler.ast.commons.IRecord;
+import autumn.lang.compiler.ast.commons.IStatement;
+import autumn.lang.compiler.ast.commons.IUnaryOperation;
+import autumn.lang.compiler.ast.literals.BigDecimalLiteral;
+import autumn.lang.compiler.ast.literals.BigIntegerLiteral;
+import autumn.lang.compiler.ast.literals.ByteLiteral;
+import autumn.lang.compiler.ast.literals.CharLiteral;
+import autumn.lang.compiler.ast.literals.DoubleLiteral;
+import autumn.lang.compiler.ast.literals.FloatLiteral;
+import autumn.lang.compiler.ast.literals.IntLiteral;
+import autumn.lang.compiler.ast.literals.LongLiteral;
+import autumn.lang.compiler.ast.literals.ShortLiteral;
+import java.io.File;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
+import java.util.TreeSet;
+
+/**
+ * An instance of this class is an AST node that represents a list comprehension.
+ * 
+ * &lt;p&gt; 
+ * &lt;table border=&quot;1&quot;&gt;
+ *     &lt;tr&gt; &lt;td&gt; &lt;b&gt;Property Name&lt;/b&gt; &lt;/td&gt; &lt;td&gt; &lt;b&gt;Property Description&lt;/b&gt; &lt;/td&gt; &lt;/tr&gt;
+ *     &lt;tr&gt; &lt;td&gt; &lt;code&gt;modifier&lt;/code&gt; &lt;/td&gt; &lt;td&gt;This is the expression that transforms the value produced by the iterator.&lt;/td&gt; &lt;/tr&gt;
+ *     &lt;tr&gt; &lt;td&gt; &lt;code&gt;variable&lt;/code&gt; &lt;/td&gt; &lt;td&gt;This is the variable that will store values produced by the iterator.&lt;/td&gt; &lt;/tr&gt;
+ *     &lt;tr&gt; &lt;td&gt; &lt;code&gt;type&lt;/code&gt; &lt;/td&gt; &lt;td&gt;This is the static-type of the variable.&lt;/td&gt; &lt;/tr&gt;
+ *     &lt;tr&gt; &lt;td&gt; &lt;code&gt;iterable&lt;/code&gt; &lt;/td&gt; &lt;td&gt;This expression produces the iterable that will be iterated over.&lt;/td&gt; &lt;/tr&gt;
+ *     &lt;tr&gt; &lt;td&gt; &lt;code&gt;condition&lt;/code&gt; &lt;/td&gt; &lt;td&gt;(optional) This expression is used to determine whether an element should be skipped or not.&lt;/td&gt; &lt;/tr&gt;
+ *     &lt;tr&gt; &lt;td&gt; &lt;code&gt;location&lt;/code&gt; &lt;/td&gt; &lt;td&gt;This is the source-location information regarding this construct.&lt;/td&gt; &lt;/tr&gt;
+ * &lt;/table&gt;
+ * &lt;/p&gt;
+ * 
+ * &lt;p&gt; This file was auto-generated on (Sun May 31 11:54:12 EDT 2015).&lt;/p&gt;
+ */
+@SuppressWarnings(&quot;unchecked&quot;)
+<span class="fc" id="L71">public final class ListComprehensionExpression extends Object implements IExpression</span>
+{
+    private IExpression modifier;
+
+    private Variable variable;
+
+    private TypeSpecifier type;
+
+    private IExpression iterable;
+
+    private IExpression condition;
+
+<span class="fc" id="L83">    private SourceLocation location = new SourceLocation();</span>
+
+    /**
+     * Setter.
+     * 
+     * @param value is the new value of property &lt;code&gt;modifier&lt;/code&gt;.
+     * @return a copy of this object with property &lt;code&gt;modifier&lt;/code&gt; set to value.
+     */
+    public ListComprehensionExpression setModifier(final IExpression value)
+    {
+<span class="fc" id="L93">        final ListComprehensionExpression result = this.copy();</span>
+<span class="fc" id="L94">        result.modifier = value;</span>
+<span class="fc" id="L95">        return result;</span>
+    }
+
+    /**
+     * Getter.
+     * 
+     * @return the value of property &lt;code&gt;modifier&lt;/code&gt;.
+     */
+    public IExpression getModifier()
+    {
+<span class="fc" id="L105">        final IExpression value = this.modifier;</span>
+<span class="fc" id="L106">        return value;</span>
+    }
+
+    /**
+     * Setter.
+     * 
+     * @param value is the new value of property &lt;code&gt;variable&lt;/code&gt;.
+     * @return a copy of this object with property &lt;code&gt;variable&lt;/code&gt; set to value.
+     */
+    public ListComprehensionExpression setVariable(final Variable value)
+    {
+<span class="fc" id="L117">        final ListComprehensionExpression result = this.copy();</span>
+<span class="fc" id="L118">        result.variable = value;</span>
+<span class="fc" id="L119">        return result;</span>
+    }
+
+    /**
+     * Getter.
+     * 
+     * @return the value of property &lt;code&gt;variable&lt;/code&gt;.
+     */
+    public Variable getVariable()
+    {
+<span class="fc" id="L129">        final Variable value = this.variable;</span>
+<span class="fc" id="L130">        return value;</span>
+    }
+
+    /**
+     * Setter.
+     * 
+     * @param value is the new value of property &lt;code&gt;type&lt;/code&gt;.
+     * @return a copy of this object with property &lt;code&gt;type&lt;/code&gt; set to value.
+     */
+    public ListComprehensionExpression setType(final TypeSpecifier value)
+    {
+<span class="fc" id="L141">        final ListComprehensionExpression result = this.copy();</span>
+<span class="fc" id="L142">        result.type = value;</span>
+<span class="fc" id="L143">        return result;</span>
+    }
+
+    /**
+     * Getter.
+     * 
+     * @return the value of property &lt;code&gt;type&lt;/code&gt;.
+     */
+    public TypeSpecifier getType()
+    {
+<span class="fc" id="L153">        final TypeSpecifier value = this.type;</span>
+<span class="fc" id="L154">        return value;</span>
+    }
+
+    /**
+     * Setter.
+     * 
+     * @param value is the new value of property &lt;code&gt;iterable&lt;/code&gt;.
+     * @return a copy of this object with property &lt;code&gt;iterable&lt;/code&gt; set to value.
+     */
+    public ListComprehensionExpression setIterable(final IExpression value)
+    {
+<span class="fc" id="L165">        final ListComprehensionExpression result = this.copy();</span>
+<span class="fc" id="L166">        result.iterable = value;</span>
+<span class="fc" id="L167">        return result;</span>
+    }
+
+    /**
+     * Getter.
+     * 
+     * @return the value of property &lt;code&gt;iterable&lt;/code&gt;.
+     */
+    public IExpression getIterable()
+    {
+<span class="fc" id="L177">        final IExpression value = this.iterable;</span>
+<span class="fc" id="L178">        return value;</span>
+    }
+
+    /**
+     * Setter.
+     * 
+     * @param value is the new value of property &lt;code&gt;condition&lt;/code&gt;.
+     * @return a copy of this object with property &lt;code&gt;condition&lt;/code&gt; set to value.
+     */
+    public ListComprehensionExpression setCondition(final IExpression value)
+    {
+<span class="fc" id="L189">        final ListComprehensionExpression result = this.copy();</span>
+<span class="fc" id="L190">        result.condition = value;</span>
+<span class="fc" id="L191">        return result;</span>
+    }
+
+    /**
+     * Getter.
+     * 
+     * @return the value of property &lt;code&gt;condition&lt;/code&gt;.
+     */
+    public IExpression getCondition()
+    {
+<span class="fc" id="L201">        final IExpression value = this.condition;</span>
+<span class="fc" id="L202">        return value;</span>
+    }
+
+    /**
+     * Setter.
+     * 
+     * @param value is the new value of property &lt;code&gt;location&lt;/code&gt;.
+     * @return a copy of this object with property &lt;code&gt;location&lt;/code&gt; set to value.
+     */
+    public ListComprehensionExpression setLocation(final SourceLocation value)
+    {
+<span class="fc" id="L213">        final ListComprehensionExpression result = this.copy();</span>
+<span class="fc" id="L214">        result.location = value;</span>
+<span class="fc" id="L215">        return result;</span>
+    }
+
+    /**
+     * Getter.
+     * 
+     * @return the value of property &lt;code&gt;location&lt;/code&gt;.
+     */
+    public SourceLocation getLocation()
+    {
+<span class="fc" id="L225">        final SourceLocation value = this.location;</span>
+<span class="fc" id="L226">        return value;</span>
+    }
+
+    /**
+     * This method creates a new instance of this class.
+     * 
+     * @param modifier is the value for property &lt;code&gt;modifier&lt;/code&gt;.
+     * @param variable is the value for property &lt;code&gt;variable&lt;/code&gt;.
+     * @param type is the value for property &lt;code&gt;type&lt;/code&gt;.
+     * @param iterable is the value for property &lt;code&gt;iterable&lt;/code&gt;.
+     * @param condition is the value for property &lt;code&gt;condition&lt;/code&gt;.
+     * @param location is the value for property &lt;code&gt;location&lt;/code&gt;.
+     * @return a new instance of this class.
+     */
+    public static ListComprehensionExpression create(IExpression modifier, Variable variable, TypeSpecifier type, IExpression iterable, IExpression condition, SourceLocation location)
+    {
+<span class="nc" id="L242">        ListComprehensionExpression object = new ListComprehensionExpression();</span>
+<span class="nc" id="L243">        object = object.setModifier(modifier);</span>
+<span class="nc" id="L244">        object = object.setVariable(variable);</span>
+<span class="nc" id="L245">        object = object.setType(type);</span>
+<span class="nc" id="L246">        object = object.setIterable(iterable);</span>
+<span class="nc" id="L247">        object = object.setCondition(condition);</span>
+<span class="nc" id="L248">        object = object.setLocation(location);</span>
+<span class="nc" id="L249">        return object;</span>
+    }
+
+    /**
+     * This method welcomes a visitor that wants to visit this object.
+     * 
+     * @param visitor is the visitor that is visiting this object.
+     */
+    public void accept(final IAstVisitor visitor)
+    {
+<span class="fc" id="L259">        visitor.visit(this);</span>
+<span class="fc" id="L260">    }</span>
+
+    /**
+     * This method creates a shallow copy of this object.
+     * 
+     * @return a shallow copy of this object.
+     */
+    public ListComprehensionExpression copy()
+    {
+<span class="fc" id="L269">        final ListComprehensionExpression result = new ListComprehensionExpression();</span>
+<span class="fc" id="L270">        result.modifier = this.modifier;</span>
+<span class="fc" id="L271">        result.variable = this.variable;</span>
+<span class="fc" id="L272">        result.type = this.type;</span>
+<span class="fc" id="L273">        result.iterable = this.iterable;</span>
+<span class="fc" id="L274">        result.condition = this.condition;</span>
+<span class="fc" id="L275">        result.location = this.location;</span>
+<span class="fc" id="L276">        return result;</span>
+    }
+
+    /**
+     * This method creates a map representation of this struct.
+     * 
+     * &lt;p&gt;
+     * Each key is the name of a field.
+     * Each value is the result of calling the key field's getter.
+     * &lt;/p&gt;
+     * 
+     * @return a map containing the entries in this struct.
+     */
+    public Map&lt;String, Object&gt; toMap()
+    {
+<span class="fc" id="L291">        final Map&lt;String, Object&gt; map = new TreeMap&lt;String, Object&gt;();</span>
+<span class="fc" id="L292">        map.put(&quot;modifier&quot;, this.getModifier());</span>
+<span class="fc" id="L293">        map.put(&quot;variable&quot;, this.getVariable());</span>
+<span class="fc" id="L294">        map.put(&quot;type&quot;, this.getType());</span>
+<span class="fc" id="L295">        map.put(&quot;iterable&quot;, this.getIterable());</span>
+<span class="fc" id="L296">        map.put(&quot;condition&quot;, this.getCondition());</span>
+<span class="fc" id="L297">        map.put(&quot;location&quot;, this.getLocation());</span>
+
+<span class="fc" id="L299">        return map;</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString()
+    {
+<span class="fc" id="L308">        return this.toMap().toString();</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

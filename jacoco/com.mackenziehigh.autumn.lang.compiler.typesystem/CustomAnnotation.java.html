@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CustomAnnotation.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.mackenziehigh:autumn</a> &gt; <a href="index.source.html" class="el_package">com.mackenziehigh.autumn.lang.compiler.typesystem</a> &gt; <span class="el_source">CustomAnnotation.java</span></div><h1>CustomAnnotation.java</h1><pre class="source lang-java linenums">package com.mackenziehigh.autumn.lang.compiler.typesystem;
+
+import autumn.util.F;
+import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableList;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IAnnotation;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IAnnotationType;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.ITypeFactory;
+import com.mackenziehigh.autumn.resources.Finished;
+import java.lang.annotation.Annotation;
+import java.util.List;
+
+/**
+ * An instance of this class represents an annotation instantiation.
+ *
+ * &lt;p&gt;
+ * &lt;b&gt;Example:&lt;/b&gt;
+ * &lt;code&gt;@Person&lt;/code&gt; &lt;br&gt;
+ * &quot;Person&quot; is the name of the annotation type (i.e. the annotation-definition).
+ * &lt;/p&gt;
+ *
+ * @author Mackenzie High
+ */
+@Finished(&quot;2014/07/12&quot;)
+public final class CustomAnnotation
+        implements IAnnotation
+{
+    private final Annotation annotation;
+
+    private final List&lt;String&gt; values;
+
+    private final IAnnotationType definition;
+
+    /**
+     * Constructor.
+     *
+     * @param annotation is the annotation that the new object will represent,
+     * or null, if the new object is not backed by a real annotation.
+     * @param values are the values stored in the annotation, or null, if no such values are present.
+     * @param definition is the type of the annotation's definition.
+     */
+    public CustomAnnotation(final Annotation annotation,
+                            final List&lt;String&gt; values,
+                            final IAnnotationType definition)
+<span class="fc" id="L45">    {</span>
+<span class="fc" id="L46">        Preconditions.checkNotNull(definition);</span>
+
+<span class="fc" id="L48">        this.annotation = annotation;</span>
+<span class="fc" id="L49">        this.definition = definition;</span>
+<span class="fc bfc" id="L50" title="All 2 branches covered.">        this.values = values == null ? null : ImmutableList.copyOf(values);</span>
+<span class="fc" id="L51">    }</span>
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public IAnnotationType getAnnotationType()
+    {
+<span class="fc" id="L59">        return definition;</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List&lt;String&gt; getAnnotationValues()
+    {
+<span class="fc" id="L68">        return values;</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Annotation toAnnotation()
+    {
+<span class="fc" id="L77">        return annotation;</span>
+    }
+
+    /**
+     * This method creates a new IAnnotation from an actual annotation.
+     *
+     * @param factory type-factory that is used to access types.
+     * @param annotation is the actual annotation.
+     * @return the type-system representation of the annotation.
+     */
+    public static IAnnotation fromAnnotation(final ITypeFactory factory,
+                                             final Annotation annotation)
+    {
+<span class="fc" id="L90">        Preconditions.checkNotNull(factory);</span>
+<span class="fc" id="L91">        Preconditions.checkNotNull(annotation);</span>
+
+<span class="fc" id="L93">        final Class clazz = annotation.annotationType();</span>
+
+<span class="fc" id="L95">        final IAnnotationType type = (IAnnotationType) factory.fromClass(clazz);</span>
+
+<span class="fc" id="L97">        final List&lt;String&gt; values = F.iter(annotation);</span>
+
+<span class="fc" id="L99">        final IAnnotation result = new CustomAnnotation(annotation, values, type);</span>
+
+<span class="fc" id="L101">        return result;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

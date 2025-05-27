@@ -1,0 +1,475 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EnumCompiler.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.mackenziehigh:autumn</a> &gt; <a href="index.source.html" class="el_package">com.mackenziehigh.autumn.lang.compiler.compilers</a> &gt; <span class="el_source">EnumCompiler.java</span></div><h1>EnumCompiler.java</h1><pre class="source lang-java linenums">package com.mackenziehigh.autumn.lang.compiler.compilers;
+
+import autumn.lang.compiler.ClassFile;
+import autumn.lang.compiler.ast.nodes.EnumDefinition;
+import autumn.lang.compiler.ast.nodes.Name;
+import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.CustomDeclaredType;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.CustomField;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.CustomFormalParameter;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.CustomMethod;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IAnnotation;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IEnumConstant;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IField;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IFormalParameter;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IInterfaceType;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IMethod;
+import com.mackenziehigh.autumn.lang.compiler.utils.Utils;
+import com.mackenziehigh.autumn.resources.Finished;
+import java.util.List;
+import java.util.Set;
+import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.tree.ClassNode;
+import org.objectweb.asm.tree.FieldInsnNode;
+import org.objectweb.asm.tree.FieldNode;
+import org.objectweb.asm.tree.InsnNode;
+import org.objectweb.asm.tree.LdcInsnNode;
+import org.objectweb.asm.tree.MethodInsnNode;
+import org.objectweb.asm.tree.MethodNode;
+import org.objectweb.asm.tree.TypeInsnNode;
+import org.objectweb.asm.tree.VarInsnNode;
+
+/**
+ * An instance of this class controls the compilation of an enum-definition.
+ *
+ * @author Mackenzie High
+ */
+@Finished(&quot;2014/08/11&quot;)
+final class EnumCompiler
+        implements ICompiler
+{
+    /**
+     * Essentially, this is the program that is being compiled.
+     */
+    public final ProgramCompiler program;
+
+    /**
+     * Essentially, this is the module that contains the enum-definition.
+     */
+    public final ModuleCompiler module;
+
+    /**
+     * This is the Abstract-Syntax-Tree representation of the enum-definition.
+     */
+    public final EnumDefinition node;
+
+    /**
+     * This will be the type-system representation of the enum-definition.
+     *
+     * This field is set during the type-declaration compiler pass.
+     */
+    public CustomDeclaredType type;
+
+    /**
+     * This is the type of the values() method.
+     */
+    private final CustomMethod method_values;
+
+    /**
+     * This is the type of the valueOf(String) method.
+     */
+    private final CustomMethod method_valueof;
+
+    /**
+     * Sole Constructor.
+     *
+     * @param module is the module that contains the enum being compiled.
+     * @param node is the AST node that represents the enum being compiled.
+     */
+    public EnumCompiler(final ModuleCompiler module,
+                        final EnumDefinition node)
+<span class="fc" id="L85">    {</span>
+<span class="fc" id="L86">        Preconditions.checkNotNull(module);</span>
+<span class="fc" id="L87">        Preconditions.checkNotNull(node);</span>
+
+<span class="fc" id="L89">        this.program = module.program;</span>
+<span class="fc" id="L90">        this.module = module;</span>
+<span class="fc" id="L91">        this.node = node;</span>
+
+<span class="fc" id="L93">        this.method_values = new CustomMethod(program.typesystem.typefactory(), false);</span>
+<span class="fc" id="L94">        this.method_valueof = new CustomMethod(program.typesystem.typefactory(), false);</span>
+<span class="fc" id="L95">    }</span>
+
+    /**
+     * This method generates the compiled class-file.
+     *
+     * @return the compiled class-file.
+     */
+    public ClassFile build()
+    {
+<span class="fc" id="L104">        final String enum_internal_name = Utils.internalName(type);</span>
+
+<span class="fc" id="L106">        final String enum_source_name = Utils.sourceName(type);</span>
+
+        /**
+         * Create the bytecode representations of the enum-constants' fields.
+         */
+<span class="fc" id="L111">        final List&lt;FieldNode&gt; fields = Lists.newLinkedList();</span>
+        {
+<span class="fc bfc" id="L113" title="All 2 branches covered.">            for (IEnumConstant ec : type.getEnumConstants())</span>
+            {
+<span class="fc" id="L115">                final int access = ec.getModifiers();</span>
+<span class="fc" id="L116">                final String name = ec.getName();</span>
+<span class="fc" id="L117">                final String desc = ec.getType().getDescriptor();</span>
+<span class="fc" id="L118">                final FieldNode field = new FieldNode(access, name, desc, null, null);</span>
+
+<span class="fc" id="L120">                fields.add(field);</span>
+<span class="fc" id="L121">            }</span>
+        }
+
+        /**
+         * Create the bytecode representation of the enum itself.
+         */
+<span class="fc" id="L127">        final ClassNode clazz = new ClassNode();</span>
+        {
+<span class="fc" id="L129">            clazz.version = Opcodes.V1_6;</span>
+<span class="fc" id="L130">            clazz.visibleAnnotations = module.anno_utils.compileAnnotationList(type.getAnnotations());</span>
+<span class="fc" id="L131">            clazz.access = type.getModifiers();</span>
+<span class="fc" id="L132">            clazz.name = enum_internal_name;</span>
+<span class="fc" id="L133">            clazz.superName = Utils.internalName(type.getSuperclass());</span>
+<span class="fc" id="L134">            clazz.interfaces = Lists.newLinkedList();</span>
+<span class="fc" id="L135">            clazz.fields = fields;</span>
+<span class="fc" id="L136">            clazz.methods = Lists.newLinkedList();</span>
+<span class="fc" id="L137">            clazz.sourceFile = String.valueOf(node.getLocation().getFile());</span>
+
+            // Add some special methods to the enum.
+<span class="fc" id="L140">            clazz.methods.add(generateStaticInitializer());</span>
+<span class="fc" id="L141">            clazz.methods.add(generateConstructor());</span>
+<span class="fc" id="L142">            clazz.methods.add(generateMethodValues());</span>
+<span class="fc" id="L143">            clazz.methods.add(generateMethodValueOf());</span>
+        }
+
+        /**
+         * Assemble the bytecode into an array of bytes.
+         */
+<span class="fc" id="L149">        final ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_MAXS);</span>
+<span class="fc" id="L150">        clazz.accept(writer);</span>
+<span class="fc" id="L151">        final byte[] bytecode = writer.toByteArray();</span>
+
+        /**
+         * Create the class-file object that will store the emitted bytecode.
+         */
+<span class="fc" id="L156">        final ClassFile file = new ClassFile(enum_source_name, bytecode);</span>
+
+<span class="fc" id="L158">        return file;</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void performTypeDeclaration()
+    {
+        /**
+         * Determine the descriptor of the enum.
+         */
+<span class="fc" id="L170">        final String namespace = module.type.getNamespace().replace('.', '/');</span>
+<span class="fc" id="L171">        final String name = node.getName().getName();</span>
+<span class="fc" id="L172">        final String descriptor = &quot;L&quot; + namespace + '/' + name + ';';</span>
+
+        /**
+         * Ensure that the type was not already declared elsewhere.
+         */
+<span class="fc" id="L177">        program.checker.requireNonDuplicateType(node.getName(), descriptor);</span>
+
+        /**
+         * Declare the enum.
+         */
+<span class="fc" id="L182">        this.type = program.typesystem.typefactory().newEnumType(descriptor);</span>
+<span class="fc" id="L183">    }</span>
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void performTypeInitialization()
+    {
+        /**
+         * Create the type-system representations of the annotation-list.
+         */
+<span class="fc" id="L194">        type.setAnnotations(module.anno_utils.typesOf(node.getAnnotations()));</span>
+
+        /**
+         * Add a special annotation.
+         */
+<span class="fc" id="L199">        module.anno_utils.add(type, autumn.lang.internals.annotations.EnumDefinition.class);</span>
+
+        /**
+         * Check the list of annotations.
+         */
+<span class="fc" id="L204">        program.checker.checkAnnotations(node.getAnnotations(), type.getAnnotations());</span>
+
+        /**
+         * Set the type's access modifiers and make the type an enum.
+         */
+<span class="fc" id="L209">        type.setModifiers(Opcodes.ACC_PUBLIC | Opcodes.ACC_FINAL | Opcodes.ACC_SUPER | Opcodes.ACC_ENUM);</span>
+
+        /**
+         * Create the type-system representations of the enum-constant's field.
+         */
+<span class="fc" id="L214">        final List&lt;IField&gt; constants = Lists.newLinkedList();</span>
+        {
+<span class="fc" id="L216">            int ordinal = 0;</span>
+
+<span class="fc bfc" id="L218" title="All 2 branches covered.">            for (Name ec : node.getConstants())</span>
+            {
+<span class="fc" id="L220">                final CustomField field = new CustomField(program.typesystem.typefactory());</span>
+                {
+<span class="fc" id="L222">                    field.setOwner(type);</span>
+<span class="fc" id="L223">                    field.setModifiers(Opcodes.ACC_PUBLIC</span>
+                                       | Opcodes.ACC_STATIC
+                                       | Opcodes.ACC_ENUM
+                                       | Opcodes.ACC_FINAL);
+<span class="fc" id="L227">                    field.setName(ec.getName());</span>
+<span class="fc" id="L228">                    field.setType(type);</span>
+<span class="fc" id="L229">                    field.setOrdinal(ordinal++);</span>
+
+<span class="fc" id="L231">                    constants.add(field);</span>
+                }
+<span class="fc" id="L233">            }</span>
+        }
+
+        /**
+         * Initialize the type-system representation of the values() method.
+         */
+<span class="fc" id="L239">        method_values.setOwner(type);</span>
+<span class="fc" id="L240">        method_values.setAnnotations(ImmutableList.&lt;IAnnotation&gt;of());</span>
+<span class="fc" id="L241">        method_values.setModifiers(Opcodes.ACC_PUBLIC | Opcodes.ACC_STATIC | Opcodes.ACC_FINAL);</span>
+<span class="fc" id="L242">        method_values.setName(&quot;values&quot;);</span>
+<span class="fc" id="L243">        method_values.setParameters(ImmutableList.&lt;IFormalParameter&gt;of());</span>
+<span class="fc" id="L244">        method_values.setReturnType(program.typesystem.typefactory().getArrayType(type, 1));</span>
+
+        /**
+         * Initialize the type-system representation of the valueOf(String) method.
+         */
+<span class="fc" id="L249">        method_valueof.setOwner(type);</span>
+<span class="fc" id="L250">        method_valueof.setAnnotations(ImmutableList.&lt;IAnnotation&gt;of());</span>
+<span class="fc" id="L251">        method_valueof.setModifiers(Opcodes.ACC_PUBLIC | Opcodes.ACC_STATIC | Opcodes.ACC_FINAL);</span>
+<span class="fc" id="L252">        method_valueof.setName(&quot;valueOf&quot;);</span>
+<span class="fc" id="L253">        final CustomFormalParameter param = new CustomFormalParameter();</span>
+<span class="fc" id="L254">        param.setType(program.typesystem.utils.STRING);</span>
+<span class="fc" id="L255">        method_valueof.setParameters(ImmutableList.&lt;IFormalParameter&gt;of(param));</span>
+<span class="fc" id="L256">        method_valueof.setReturnType(type);</span>
+
+        /**
+         * Initialize the type that represents the enum being compiled.
+         */
+<span class="fc" id="L261">        type.setModifiers(Opcodes.ACC_PUBLIC | Opcodes.ACC_FINAL | Opcodes.ACC_ENUM);</span>
+<span class="fc" id="L262">        type.setSuperclass(program.typesystem.utils.ENUM);</span>
+<span class="fc" id="L263">        type.setSuperinterfaces(ImmutableList.&lt;IInterfaceType&gt;of());</span>
+<span class="fc" id="L264">        type.setFields(constants);</span>
+<span class="fc" id="L265">        type.setMethods(ImmutableList.&lt;IMethod&gt;of(method_values, method_valueof));</span>
+<span class="fc" id="L266">    }</span>
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void performTypeStructureChecking()
+    {
+<span class="fc" id="L274">        final Set&lt;String&gt; constants = Sets.newHashSet();</span>
+
+<span class="fc bfc" id="L276" title="All 2 branches covered.">        for (Name name : node.getConstants())</span>
+        {
+            /**
+             * No two enum-constants can have the same name.
+             */
+<span class="fc bfc" id="L281" title="All 2 branches covered.">            if (constants.contains(name.getName()))</span>
+            {
+<span class="nc" id="L283">                program.checker.reportDuplicateEnumConstant(type, name);</span>
+            }
+            else
+            {
+<span class="fc" id="L287">                constants.add(name.getName());</span>
+            }
+<span class="fc" id="L289">        }</span>
+<span class="fc" id="L290">    }</span>
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void performTypeUsageChecking()
+    {
+        // Pass, because no type-usages exist to check.
+<span class="fc" id="L299">    }</span>
+
+    /**
+     * This method generates the static-initializer that initializes the enum-constant fields.
+     *
+     * @return the bytecode representation of the generated method.
+     */
+    private MethodNode generateStaticInitializer()
+    {
+<span class="fc" id="L308">        final MethodNode method = new MethodNode();</span>
+<span class="fc" id="L309">        method.access = Opcodes.ACC_PRIVATE | Opcodes.ACC_STATIC;</span>
+<span class="fc" id="L310">        method.name = &quot;&lt;clinit&gt;&quot;;</span>
+<span class="fc" id="L311">        method.desc = &quot;()V&quot;;</span>
+<span class="fc" id="L312">        method.exceptions = ImmutableList.of();</span>
+
+        // Now bytecode will be generated that initializes the enum-constants' fields.
+
+<span class="fc bfc" id="L316" title="All 2 branches covered.">        for (IEnumConstant ec : type.getEnumConstants())</span>
+        {
+            // Create an instance of the enum.
+<span class="fc" id="L319">            method.instructions.add(new TypeInsnNode(Opcodes.NEW, Utils.internalName(type)));</span>
+
+            // Duplicate the enum object-reference on the operand-stack.
+<span class="fc" id="L322">            method.instructions.add(new InsnNode(Opcodes.DUP));</span>
+
+            // Push the enum-constant's name onto the operand-stack.
+<span class="fc" id="L325">            method.instructions.add(new LdcInsnNode(ec.getName()));</span>
+
+            // Push the enum-constant's ordinal onto the stack.
+<span class="fc" id="L328">            method.instructions.add(new LdcInsnNode(ec.getOrdinal()));</span>
+
+            // Call the enum's instance constructor.
+<span class="fc" id="L331">            method.instructions.add(new MethodInsnNode(Opcodes.INVOKESPECIAL,</span>
+<span class="fc" id="L332">                                                       Utils.internalName(type),</span>
+                                                       &quot;&lt;init&gt;&quot;,
+                                                       &quot;(Ljava/lang/String;I)V&quot;));
+
+            // Assign the enum object-reference to the enum-constant's field.
+<span class="fc" id="L337">            method.instructions.add(new FieldInsnNode(Opcodes.PUTSTATIC,</span>
+<span class="fc" id="L338">                                                      Utils.internalName(type),</span>
+<span class="fc" id="L339">                                                      ec.getName(),</span>
+<span class="fc" id="L340">                                                      ec.getType().getDescriptor()));</span>
+
+            // Add NOPs to aid debugging bytecode.
+<span class="fc" id="L343">            method.instructions.add(new InsnNode(Opcodes.NOP));</span>
+<span class="fc" id="L344">            method.instructions.add(new InsnNode(Opcodes.NOP));</span>
+<span class="fc" id="L345">        }</span>
+
+        // Return.
+<span class="fc" id="L348">        method.instructions.add(new InsnNode(Opcodes.RETURN));</span>
+
+<span class="fc" id="L350">        return method;</span>
+    }
+
+    /**
+     * This method generates an instance constructor for the enum.
+     *
+     * @return the bytecode representation of the generated method.
+     */
+    private MethodNode generateConstructor()
+    {
+<span class="fc" id="L360">        final MethodNode method = new MethodNode();</span>
+<span class="fc" id="L361">        method.access = Opcodes.ACC_PRIVATE;</span>
+<span class="fc" id="L362">        method.name = &quot;&lt;init&gt;&quot;;</span>
+<span class="fc" id="L363">        method.desc = &quot;(Ljava/lang/String;I)V&quot;;</span>
+<span class="fc" id="L364">        method.exceptions = ImmutableList.of();</span>
+
+        // Invoke the super constructor.
+<span class="fc" id="L367">        method.instructions.add(new VarInsnNode(Opcodes.ALOAD, 0)); // load 'this'</span>
+<span class="fc" id="L368">        method.instructions.add(new VarInsnNode(Opcodes.ALOAD, 1)); // load argument #1 (name)</span>
+<span class="fc" id="L369">        method.instructions.add(new VarInsnNode(Opcodes.ILOAD, 2)); // load argument #2 (ordinal)</span>
+<span class="fc" id="L370">        method.instructions.add(new MethodInsnNode(Opcodes.INVOKESPECIAL,</span>
+                                                   &quot;java/lang/Enum&quot;,
+                                                   &quot;&lt;init&gt;&quot;,
+                                                   &quot;(Ljava/lang/String;I)V&quot;));
+
+        // Return.
+<span class="fc" id="L376">        method.instructions.add(new InsnNode(Opcodes.RETURN));</span>
+
+<span class="fc" id="L378">        return method;</span>
+    }
+
+    /**
+     * This method generates the values() method for the enum.
+     *
+     * @return the bytecode representation of the generated method.
+     */
+    private MethodNode generateMethodValues()
+    {
+<span class="fc" id="L388">        final MethodNode method = Utils.bytecodeOf(module, method_values);</span>
+
+        // Now bytecode will be generated that creates an array and then returns it.
+
+        // Push the size of the array onto the operand-stack.
+<span class="fc" id="L393">        method.instructions.add(new LdcInsnNode(type.getEnumConstants().size()));</span>
+
+        // Create the array that will contain the enum-constants.
+<span class="fc" id="L396">        method.instructions.add(new TypeInsnNode(Opcodes.ANEWARRAY, Utils.internalName(type)));</span>
+
+        // Push the initial value of a counter onto the operand-stack.
+<span class="fc" id="L399">        method.instructions.add(new LdcInsnNode(0));</span>
+
+        // Add NOPs to aid debugging bytecode.
+<span class="fc" id="L402">        method.instructions.add(new InsnNode(Opcodes.NOP));</span>
+<span class="fc" id="L403">        method.instructions.add(new InsnNode(Opcodes.NOP));</span>
+
+<span class="fc bfc" id="L405" title="All 2 branches covered.">        for (IEnumConstant ec : type.getEnumConstants())</span>
+        {
+            // Duplicate the top two elements on the operand-stack.
+            // Specifically, duplicate the array-reference and the counter.
+<span class="fc" id="L409">            method.instructions.add(new InsnNode(Opcodes.DUP2));</span>
+
+            // Get the value stored in the enum-constant's field.
+<span class="fc" id="L412">            method.instructions.add(new FieldInsnNode(Opcodes.GETSTATIC,</span>
+<span class="fc" id="L413">                                                      Utils.internalName(type),</span>
+<span class="fc" id="L414">                                                      ec.getName(),</span>
+<span class="fc" id="L415">                                                      ec.getType().getDescriptor()));</span>
+
+            // Put the value from the enum-constant's field into the array.
+            // The index of the array element is the counter.
+<span class="fc" id="L419">            method.instructions.add(new InsnNode(Opcodes.AASTORE));</span>
+
+            // Increment the counter, by one.
+<span class="fc" id="L422">            method.instructions.add(new LdcInsnNode(1));</span>
+<span class="fc" id="L423">            method.instructions.add(new InsnNode(Opcodes.IADD));</span>
+
+            // Add NOPs to aid debugging bytecode.
+<span class="fc" id="L426">            method.instructions.add(new InsnNode(Opcodes.NOP));</span>
+<span class="fc" id="L427">            method.instructions.add(new InsnNode(Opcodes.NOP));</span>
+<span class="fc" id="L428">        }</span>
+
+        // Pop the counter off of the operand-stack.
+<span class="fc" id="L431">        method.instructions.add(new InsnNode(Opcodes.POP));</span>
+
+        // Return the array.
+<span class="fc" id="L434">        method.instructions.add(new InsnNode(Opcodes.ARETURN));</span>
+
+<span class="fc" id="L436">        return method;</span>
+    }
+
+    /**
+     * This method generates the valueOf(String) method for the enum.
+     *
+     * @return the bytecode representation of the generated method.
+     */
+    private MethodNode generateMethodValueOf()
+    {
+<span class="fc" id="L446">        final MethodNode method = Utils.bytecodeOf(module, method_valueof);</span>
+
+        // Now bytecode will be generated that searches for the specified enum-constant.
+
+        // Get an array containing all of the num-constants, by calling the values() method.
+<span class="fc" id="L451">        method.instructions.add(new MethodInsnNode(Opcodes.INVOKESTATIC,</span>
+<span class="fc" id="L452">                                                   Utils.internalName(type),</span>
+<span class="fc" id="L453">                                                   method_values.getName(),</span>
+<span class="fc" id="L454">                                                   method_values.getDescriptor()));</span>
+
+        // Load the name of the enum-constant to search for onto the operand-stack.
+<span class="fc" id="L457">        method.instructions.add(new VarInsnNode(Opcodes.ALOAD, 0));</span>
+
+        // Call a helper method that will perform the search.
+<span class="fc" id="L460">        method.instructions.add(new MethodInsnNode(Opcodes.INVOKESTATIC,</span>
+<span class="fc" id="L461">                                                   Utils.internalName(program.typesystem.utils.HELPERS),</span>
+                                                   &quot;findEnumConstant&quot;,
+                                                   &quot;([Ljava/lang/Enum;Ljava/lang/String;)Ljava/lang/Enum;&quot;));
+
+        // Cast the return-value of the helper method to the type of the enum being compiled.
+        // Note: This cast will always succeed at runtime.
+<span class="fc" id="L467">        method.instructions.add(new TypeInsnNode(Opcodes.CHECKCAST, Utils.internalName(type)));</span>
+
+        // Return the enum-constant that was found.
+<span class="fc" id="L470">        method.instructions.add(new InsnNode(Opcodes.ARETURN));</span>
+
+<span class="fc" id="L472">        return method;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

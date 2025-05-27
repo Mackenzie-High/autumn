@@ -1,0 +1,387 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Utils.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.mackenziehigh:autumn</a> &gt; <a href="index.source.html" class="el_package">com.mackenziehigh.autumn.lang.compiler.parser</a> &gt; <span class="el_source">Utils.java</span></div><h1>Utils.java</h1><pre class="source lang-java linenums">package com.mackenziehigh.autumn.lang.compiler.parser;
+
+import autumn.lang.compiler.TreeBuilder;
+import autumn.lang.compiler.ast.commons.IConstruct;
+import autumn.lang.compiler.ast.commons.IExpression;
+import autumn.lang.compiler.ast.literals.BigDecimalLiteral;
+import autumn.lang.compiler.ast.literals.BigIntegerLiteral;
+import autumn.lang.compiler.ast.literals.ByteLiteral;
+import autumn.lang.compiler.ast.literals.CharLiteral;
+import autumn.lang.compiler.ast.literals.DoubleLiteral;
+import autumn.lang.compiler.ast.literals.FloatLiteral;
+import autumn.lang.compiler.ast.literals.IntLiteral;
+import autumn.lang.compiler.ast.literals.LongLiteral;
+import autumn.lang.compiler.ast.literals.ShortLiteral;
+import autumn.lang.compiler.ast.nodes.Name;
+import autumn.util.F;
+import com.google.common.collect.Lists;
+import com.mackenziehigh.autumn.resources.Finished;
+import com.mackenziehigh.snowflake.ITreeNode;
+import com.mackenziehigh.snowflake.LinesAndColumns;
+import com.mackenziehigh.snowflake.NewlineStyles;
+import com.mackenziehigh.snowflake.TreeNode;
+import java.io.File;
+import java.net.URL;
+import java.util.Collections;
+import java.util.List;
+import java.util.Stack;
+
+/**
+ * This class is used by the parser to help facilitate the building of an abstract-syntax-tree.
+ * This class helps connect the parser to the tree-builder.
+ * Specifically, this class provides a location to store state and place utility methods.
+ *
+ * &lt;p&gt;
+ * &lt;b&gt;Warning: &lt;/b&gt;Only one parser can be utilizing this class at a time.
+ * &lt;/p&gt;
+ *
+ * @author Mackenzie High
+ */
+@Finished(&quot;2014/07/12&quot;)
+<span class="nc" id="L41">public final class Utils</span>
+{
+    /**
+     * It is OK for this to be public.
+     */
+<span class="fc" id="L46">    public static URL source_file = null;</span>
+
+    /**
+     * This builder is used to construct an AST.
+     */
+<span class="fc" id="L51">    private static final TreeBuilder builder = new TreeBuilder();</span>
+
+    /**
+     * This method retrieves the builder that is building the AST.
+     *
+     * @return the aforedescribed builder.
+     */
+    public static TreeBuilder builder()
+    {
+<span class="fc" id="L60">        return builder;</span>
+    }
+
+    /**
+     * Whenever a string-literal is encountered, this field will be assigned its content.
+     */
+    private static String last_string;
+
+    /**
+     * Whenever a string-literal is encountered, this field will be set.
+     */
+    private static boolean verbatim;
+
+    public static void storeStringValue(final ITreeNode node,
+                                        final boolean verbatim)
+    {
+<span class="fc" id="L76">        Utils.verbatim = verbatim;</span>
+
+<span class="fc" id="L78">        String literal = TreeNode.find(node, &quot;STRING_LITERAL&quot;).text().trim();</span>
+
+<span class="fc bfc" id="L80" title="All 2 branches covered.">        if (literal.startsWith(&quot;'''&quot;))</span>
+        {
+<span class="fc" id="L82">            last_string = literal.substring(3, literal.length() - 3);</span>
+        }
+        else // literal.startsWith(&quot;\&quot;&quot;)
+        {
+<span class="fc" id="L86">            last_string = literal.substring(1, literal.length() - 1);</span>
+        }
+
+<span class="fc bfc" id="L89" title="All 2 branches covered.">        if (verbatim)</span>
+        {
+<span class="fc" id="L91">            return;</span>
+        }
+
+        // TODO: escape sequences
+<span class="fc" id="L95">    }</span>
+
+    public static boolean getVerbatim()
+    {
+<span class="fc" id="L99">        return verbatim;</span>
+    }
+
+    public static String getString()
+    {
+<span class="fc" id="L104">        return last_string;</span>
+    }
+
+    public static File getFile()
+    {
+<span class="nc" id="L109">        return new File(last_string);</span>
+    }
+
+    public static void createChainedMethodCall()
+    {
+<span class="fc bfc" id="L114" title="All 2 branches covered.">        if (builder.size() == 1)</span>
+        {
+<span class="fc" id="L116">            return;</span>
+        }
+
+        /**
+         * The primary stack looks something like this (from top to bottom):
+         *
+         * . argument[N]
+         * . argument[2]
+         * . argument[1]
+         * . name
+         * . argument[N]
+         * . argument[2]
+         * . argument[1]
+         * . name
+         * . argument[N]
+         * . argument[2]
+         * . argument[1]
+         * . name
+         * . owner
+         *
+         * Get the primary stack off of the stack of stacks.
+         */
+<span class="fc" id="L138">        final Stack&lt;IConstruct&gt; stack = builder.copyStack();</span>
+
+        /**
+         * Remove the primary stack from the stack of stack.
+         */
+<span class="fc" id="L143">        builder.clear();</span>
+<span class="fc" id="L144">        builder.popStack();</span>
+
+        /**
+         * Reverse the order of the stack (i.e. the former primary stack).
+         * So now, the stack looks something like this (from top to bottom):
+         *
+         * . owner
+         * . name
+         * . argument[1]
+         * . argument[2]
+         * . argument[N]
+         * . name
+         * . argument[1]
+         * . argument[2]
+         * . argument[N]
+         * . name
+         * . argument[1]
+         * . argument[2]
+         * . argument[N]
+         */
+<span class="fc" id="L164">        Collections.reverse(stack);</span>
+
+        /**
+         * Push a new primary stack onto the stack of stacks.
+         */
+<span class="fc" id="L169">        builder.pushStack();</span>
+
+        /**
+         * Transfer the owner onto the primary stack.
+         */
+<span class="pc bpc" id="L174" title="1 of 2 branches missed.">        assert stack.peek() instanceof IExpression;</span>
+<span class="fc" id="L175">        builder.push(stack.pop());</span>
+
+        /**
+         * For each chained method call:
+         */
+<span class="fc bfc" id="L180" title="All 2 branches covered.">        while (stack.isEmpty() == false)</span>
+        {
+            /**
+             * Transfer the name onto the primary stack.
+             */
+<span class="pc bpc" id="L185" title="1 of 2 branches missed.">            assert stack.peek() instanceof Name;</span>
+<span class="fc" id="L186">            builder.push(stack.pop());</span>
+
+            /**
+             * Transfer each argument onto the primary stack.
+             */
+<span class="fc bfc" id="L191" title="All 4 branches covered.">            while (stack.isEmpty() == false &amp;&amp; stack.peek() instanceof Name == false)</span>
+            {
+<span class="pc bpc" id="L193" title="1 of 2 branches missed.">                assert stack.peek() instanceof IExpression;</span>
+<span class="fc" id="L194">                builder.push(stack.pop());</span>
+            }
+
+            /**
+             * Create a call-method-expression given the single chained method call
+             * that is currently in pieces on the primary stack.
+             */
+<span class="fc" id="L201">            builder.createExpressionCallMethod();</span>
+        }
+
+<span class="pc bpc" id="L204" title="1 of 2 branches missed.">        assert stack.isEmpty();</span>
+<span class="pc bpc" id="L205" title="1 of 2 branches missed.">        assert builder.size() == 1;</span>
+<span class="fc" id="L206">    }</span>
+
+    public static void createComponentTypeSpecifier(final ITreeNode node)
+    {
+<span class="fc" id="L210">        final int dimensions = TreeNode.findAll(node, &quot;dimension&quot;).size();</span>
+
+<span class="fc bfc" id="L212" title="All 2 branches covered.">        builder.createComponentTypeSpecifier(dimensions == 0 ? null : dimensions);</span>
+<span class="fc" id="L213">    }</span>
+
+    public static void createComponentName(final ITreeNode node)
+    {
+<span class="fc" id="L217">        final String identifier = TreeNode.find(node, &quot;ID&quot;).text().trim();</span>
+
+<span class="fc" id="L219">        Name result = new Name();</span>
+<span class="fc" id="L220">        result = result.setName(identifier);</span>
+
+<span class="fc" id="L222">        builder.push(result);</span>
+<span class="fc" id="L223">    }</span>
+
+    public static void createComponentVariable(final ITreeNode node)
+    {
+<span class="fc" id="L227">        final String identifier = node.childAt(0).text().trim();</span>
+
+<span class="fc" id="L229">        builder.createComponentVariable(identifier);</span>
+<span class="fc" id="L230">    }</span>
+
+    public static void createComponentLabel(final ITreeNode node)
+    {
+<span class="fc" id="L234">        final String identifier = node.childAt(0).text().trim();</span>
+
+<span class="fc" id="L236">        builder.createComponentLabel(identifier);</span>
+<span class="fc" id="L237">    }</span>
+
+    public static IntLiteral extractIntLiteral(final ITreeNode node)
+    {
+<span class="nc" id="L241">        final ITreeNode integer = TreeNode.find(node.iterableBFS(), &quot;int_value&quot;);</span>
+
+<span class="nc" id="L243">        final IntLiteral constant = extractIntValue(integer);</span>
+
+<span class="nc" id="L245">        return constant;</span>
+    }
+
+    public static boolean extractBooleanValue(final ITreeNode node)
+    {
+<span class="fc" id="L250">        final String value = node.childAt(0).text().trim();</span>
+
+<span class="fc" id="L252">        return Boolean.valueOf(value);</span>
+    }
+
+    public static CharLiteral extractCharValue(final ITreeNode node)
+    {
+<span class="fc" id="L257">        return new CharLiteral(removeWS(node));</span>
+    }
+
+    public static ByteLiteral extractByteValue(final ITreeNode node)
+    {
+<span class="fc" id="L262">        return new ByteLiteral(removeWS(node));</span>
+    }
+
+    public static ShortLiteral extractShortValue(final ITreeNode node)
+    {
+<span class="fc" id="L267">        return new ShortLiteral(removeWS(node));</span>
+    }
+
+    public static IntLiteral extractIntValue(final ITreeNode node)
+    {
+<span class="fc" id="L272">        return new IntLiteral(removeWS(node));</span>
+    }
+
+    public static LongLiteral extractLongValue(final ITreeNode node)
+    {
+<span class="fc" id="L277">        return new LongLiteral(removeWS(node));</span>
+    }
+
+    public static FloatLiteral extractFloatValue(final ITreeNode node)
+    {
+<span class="fc" id="L282">        return new FloatLiteral(removeWS(node));</span>
+    }
+
+    public static DoubleLiteral extractDoubleValue(final ITreeNode node)
+    {
+<span class="fc" id="L287">        return new DoubleLiteral(removeWS(node));</span>
+    }
+
+    public static BigIntegerLiteral extractBigIntegerValue(final ITreeNode node)
+    {
+<span class="fc" id="L292">        return new BigIntegerLiteral(removeWS(node));</span>
+    }
+
+    public static BigDecimalLiteral extractBigDecimalValue(final ITreeNode node)
+    {
+<span class="fc" id="L297">        return new BigDecimalLiteral(removeWS(node));</span>
+    }
+
+    public static List&lt;String&gt; extractAnnotationValues(final ITreeNode node)
+    {
+<span class="fc" id="L302">        final List&lt;ITreeNode&gt; nodes = TreeNode.findAll(node, &quot;annotation_value&quot;);</span>
+
+<span class="fc bfc" id="L304" title="All 2 branches covered.">        if (nodes.isEmpty())</span>
+        {
+<span class="fc" id="L306">            return null;</span>
+        }
+
+<span class="fc" id="L309">        final List&lt;String&gt; values = Lists.newLinkedList();</span>
+
+<span class="fc bfc" id="L311" title="All 2 branches covered.">        for (ITreeNode x : nodes)</span>
+        {
+<span class="fc" id="L313">            values.add(extractAnnotationValue(x));</span>
+<span class="fc" id="L314">        }</span>
+
+<span class="fc" id="L316">        return values;</span>
+    }
+
+    private static String extractAnnotationValue(final ITreeNode node)
+    {
+<span class="fc" id="L321">        final ITreeNode annotation_value = TreeNode.find(node, &quot;annotation_value&quot;);</span>
+
+<span class="pc bpc" id="L323" title="1 of 2 branches missed.">        if (annotation_value == null)</span>
+        {
+<span class="nc" id="L325">            return null;</span>
+        }
+
+<span class="fc" id="L328">        final String text = annotation_value.text().trim();</span>
+
+<span class="pc bpc" id="L330" title="3 of 4 branches missed.">        final String modified = text.startsWith(&quot;\&quot;&quot;) || text.startsWith(&quot;'&quot;)</span>
+<span class="fc" id="L331">                ? text.substring(1, text.length() - 1)</span>
+<span class="pc" id="L332">                : text;</span>
+
+<span class="fc" id="L334">        final String escaped = F.escape(modified);</span>
+
+<span class="fc" id="L336">        return escaped;</span>
+    }
+
+    public static String extractCommentLine(final ITreeNode node)
+    {
+<span class="fc" id="L341">        return TreeNode.find(node, &quot;api_comment_text&quot;).text().trim();</span>
+    }
+
+    public static String removeWS(final ITreeNode node)
+    {
+        // This method removes all nodes created by the WS rule.
+        // Then, the leaf nodes are used to form a string, which is then returned.
+
+<span class="fc" id="L349">        final StringBuilder result = new StringBuilder();</span>
+
+<span class="fc bfc" id="L351" title="All 2 branches covered.">        for (ITreeNode kid : node.children())</span>
+        {
+<span class="fc bfc" id="L353" title="All 2 branches covered.">            if (kid.rule().equals(&quot;WS&quot;))</span>
+            {
+                // Do Nothing
+            }
+<span class="fc bfc" id="L357" title="All 2 branches covered.">            else if (kid.childCount() == 0)</span>
+            {
+<span class="fc" id="L359">                result.append(kid.text());</span>
+            }
+            else
+            {
+<span class="fc" id="L363">                result.append(removeWS(kid));</span>
+            }
+        }
+
+<span class="fc" id="L367">        return result.toString();</span>
+    }
+
+    public static void setSourceLocation(final ITreeNode node)
+    {
+<span class="fc" id="L372">        final char[] code = node.input();</span>
+
+<span class="fc" id="L374">        final int position = node.start();</span>
+
+<span class="fc" id="L376">        final NewlineStyles newline = NewlineStyles.fromSystem();</span>
+
+<span class="fc" id="L378">        final LinesAndColumns finder = new LinesAndColumns(code, newline);</span>
+
+<span class="fc bfc" id="L380" title="All 2 branches covered.">        final int line = finder.lineNumbers().length == 0 ? 1 : finder.lineNumbers()[position];</span>
+
+<span class="fc bfc" id="L382" title="All 2 branches covered.">        final int column = finder.columnNumbers().length == 0 ? 1 : finder.columnNumbers()[position];</span>
+
+<span class="fc" id="L384">        builder.setSourceLocation(source_file, line, column, null);</span>
+<span class="fc" id="L385">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

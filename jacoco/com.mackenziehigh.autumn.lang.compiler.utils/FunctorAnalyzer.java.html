@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FunctorAnalyzer.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.mackenziehigh:autumn</a> &gt; <a href="index.source.html" class="el_package">com.mackenziehigh.autumn.lang.compiler.utils</a> &gt; <span class="el_source">FunctorAnalyzer.java</span></div><h1>FunctorAnalyzer.java</h1><pre class="source lang-java linenums">package com.mackenziehigh.autumn.lang.compiler.utils;
+
+import autumn.lang.DefinedFunctor;
+import com.google.common.base.Preconditions;
+import com.google.common.collect.Lists;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IClassType;
+import com.mackenziehigh.autumn.lang.compiler.typesystem.design.IMethod;
+import java.util.Collections;
+import java.util.List;
+
+/**
+ * An instance of this class can be used to analyze a well-formed functor type.
+ *
+ * &lt;p&gt;
+ * Note: A functor-type never declares more than one invoke(*) method directly.
+ * However, a functor-type may inherit multiple invoke(*) methods.
+ * &lt;/p&gt;
+ *
+ * @author Mackenzie High
+ */
+<span class="fc" id="L21">public final class FunctorAnalyzer</span>
+{
+    /**
+     * This is the functor-type being analyzed.
+     */
+    private final IClassType functor;
+
+    /**
+     * This object is needed in order to sort methods.
+     */
+    private final TypeSystemUtils utils;
+
+    /**
+     * There is no need to search for the invoke(*) methods multiple times.
+     */
+    private List&lt;IMethod&gt; cache;
+
+    /**
+     * Sole Constructor.
+     *
+     * @param functor is the functor-type to analyze.
+     */
+    public FunctorAnalyzer(final TypeSystemUtils utils,
+                           final IClassType functor)
+<span class="fc" id="L45">    {</span>
+<span class="fc" id="L46">        Preconditions.checkNotNull(utils);</span>
+<span class="fc" id="L47">        Preconditions.checkNotNull(functor);</span>
+
+<span class="pc bpc" id="L49" title="1 of 2 branches missed.">        assert functor.isSubtypeOf(functor.getTypeFactory().fromClass(DefinedFunctor.class));</span>
+
+<span class="fc" id="L51">        this.utils = utils;</span>
+<span class="fc" id="L52">        this.functor = functor;</span>
+<span class="fc" id="L53">    }</span>
+
+    /**
+     * This method retrieves the invoke(*) methods from the type.
+     *
+     * &lt;p&gt;
+     * The functor-type and each of its superclasses should define one invoke methods
+     * &lt;/p&gt;
+     *
+     * @return the methods sorted topologically based on their specificity.
+     */
+    public List&lt;IMethod&gt; invokeMethods()
+    {
+        /**
+         * If we already found the methods, simply return them.
+         */
+<span class="fc bfc" id="L69" title="All 2 branches covered.">        if (cache != null)</span>
+        {
+<span class="fc" id="L71">            return cache;</span>
+        }
+
+<span class="fc" id="L74">        final List&lt;IClassType&gt; types = Lists.newLinkedList();</span>
+
+<span class="fc" id="L76">        types.add(functor);</span>
+<span class="fc" id="L77">        types.addAll(functor.getAllSuperclasses());</span>
+
+<span class="fc" id="L79">        final List&lt;IMethod&gt; methods = Lists.newLinkedList();</span>
+
+        /**
+         * Transverse the functor-type and its superclasses.
+         */
+<span class="fc bfc" id="L84" title="All 2 branches covered.">        for (IClassType type : types)</span>
+        {
+            /**
+             * Find the invoke methods declared in the type, if any.
+             */
+<span class="fc bfc" id="L89" title="All 2 branches covered.">            for (IMethod method : type.getMethods())</span>
+            {
+<span class="pc bpc" id="L91" title="1 of 4 branches missed.">                if (method.getOwner().isClassType() &amp;&amp; method.getName().equals(&quot;invoke&quot;))</span>
+                {
+<span class="fc" id="L93">                    methods.add(method);</span>
+                }
+<span class="fc" id="L95">            }</span>
+<span class="fc" id="L96">        }</span>
+
+        /**
+         * Sort the methods.
+         */
+<span class="fc" id="L101">        cache = Collections.unmodifiableList(utils.sort(methods));</span>
+
+<span class="fc" id="L103">        return cache;</span>
+    }
+
+    /**
+     * This method retrieves the most-specific of the invoke(*) methods.
+     *
+     * @return the most-specific of invoke-method.
+     */
+    public IMethod invokeMethod()
+    {
+<span class="fc" id="L113">        return invokeMethods().get(0);</span>
+    }
+
+    /**
+     * Every invoke(*) method in a subclass must be compatible with those in its superclasses.
+     *
+     * &lt;p&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt;Let M be an invoke(*) method in type P. &lt;/li&gt;
+     * &lt;li&gt;Let W be an invoke(*) method in type Q. &lt;/li&gt;
+     * &lt;li&gt;Assume P is a subclass of Q. &lt;/li&gt;
+     * &lt;li&gt;Requirement: M.formals.length == W.formals.length &lt;/li&gt;
+     * &lt;li&gt;Requirement: M.return-type is a subtype of W.return-type &lt;/li&gt;
+     * &lt;li&gt;Requirement: M.formals[i].type is a subtype of W.formals[i].type &lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/p&gt;
+     *
+     * @return a description of the violation, or null, if no violation exists.
+     */
+    public FunctorSubtypingViolation detectSubtypeViolation()
+    {
+        // Note: This is an O(n^2) algorithm.
+        //       However, the inputs should always be small.
+        //       So, until a profiler says otherwise, this algorithm is acceptable.
+
+<span class="nc" id="L138">        final List&lt;IMethod&gt; invoke_methods = invokeMethods();</span>
+
+<span class="nc bnc" id="L140" title="All 2 branches missed.">        for (IMethod invoke1 : invoke_methods)</span>
+        {
+<span class="nc bnc" id="L142" title="All 2 branches missed.">            for (IMethod invoke2 : invoke_methods)</span>
+            {
+<span class="nc bnc" id="L144" title="All 2 branches missed.">                if (invoke1.getOwner().isSubtypeOf(invoke2.getReturnType()))</span>
+                {
+<span class="nc" id="L146">                    final FunctorSubtypingViolation potential_violation = new FunctorSubtypingViolation(invoke1, invoke2);</span>
+
+<span class="nc bnc" id="L148" title="All 2 branches missed.">                    if (potential_violation.isParameterLengthViolation())</span>
+                    {
+<span class="nc" id="L150">                        return potential_violation;</span>
+                    }
+
+<span class="nc bnc" id="L153" title="All 2 branches missed.">                    if (potential_violation.isReturnTypeViolation())</span>
+                    {
+<span class="nc" id="L155">                        return potential_violation;</span>
+                    }
+
+<span class="nc bnc" id="L158" title="All 2 branches missed.">                    if (potential_violation.isParameterTypeViolation())</span>
+                    {
+<span class="nc" id="L160">                        return potential_violation;</span>
+                    }
+                }
+<span class="nc" id="L163">            }</span>
+<span class="nc" id="L164">        }</span>
+
+<span class="nc" id="L166">        return null; // No Violation Detected</span>
+    }
+
+    /**
+     * This method creates a list of the bridge methods that the functor-type must provide.
+     *
+     * @return a list of the bridge methods.
+     */
+    public List&lt;BridgeMethod&gt; bridges()
+    {
+<span class="fc" id="L176">        final List&lt;BridgeMethod&gt; bridges = Lists.newLinkedList();</span>
+
+<span class="fc" id="L178">        final List&lt;IMethod&gt; invoke_methods = invokeMethods();</span>
+
+        /**
+         * This is the method that the bridge methods will invoke.
+         */
+<span class="fc" id="L183">        final IMethod target = invokeMethod();</span>
+
+        /**
+         * Create the bridge method objects.
+         */
+<span class="fc bfc" id="L188" title="All 2 branches covered.">        for (int i = 0; i &lt; invoke_methods.size(); i++)</span>
+        {
+<span class="fc" id="L190">            final IMethod bridge = invoke_methods.get(i);</span>
+
+            /**
+             * No bridge is needed, if the descriptors are the same.
+             * Simple inheritance will work instead.
+             */
+<span class="pc bpc" id="L196" title="1 of 2 branches missed.">            if (target.getDescriptor().equals(target.getDescriptor()) == false)</span>
+            {
+<span class="nc" id="L198">                final BridgeMethod object = new BridgeMethod(bridge, target);</span>
+
+<span class="nc" id="L200">                bridges.add(object);</span>
+            }
+        }
+
+<span class="fc" id="L204">        return Collections.unmodifiableList(bridges);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CurlyPrinter.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.mackenziehigh:autumn</a> &gt; <a href="index.source.html" class="el_package">com.mackenziehigh.autumn.lang.compiler.pretty</a> &gt; <span class="el_source">CurlyPrinter.java</span></div><h1>CurlyPrinter.java</h1><pre class="source lang-java linenums">package com.mackenziehigh.autumn.lang.compiler.pretty;
+
+import com.google.common.base.Preconditions;
+import com.google.common.base.Strings;
+import com.google.common.collect.Lists;
+import com.mackenziehigh.autumn.resources.Finished;
+import java.util.LinkedList;
+
+/**
+ * An instance of this class aids in the pretty-printing of curly-bracket style languages.
+ *
+ * @author Mackenzie High
+ */
+<span class="fc" id="L14">@Finished(&quot;2014/07/12&quot;)</span>
+<span class="fc" id="L15">final class CurlyPrinter</span>
+{
+<span class="fc" id="L17">    private static enum LineTypes</span>
+    {
+<span class="fc" id="L19">        BRACKET_OPEN,</span>
+<span class="fc" id="L20">        BRACKET_CLOSE,</span>
+<span class="fc" id="L21">        STRING,</span>
+<span class="fc" id="L22">        EMPTY_LINE,</span>
+    }
+
+    /**
+     * This is the current indentation level.
+     */
+<span class="fc" id="L28">    private int indent = 0;</span>
+
+    /**
+     * The nth element of this list is the type of information on the nth line.
+     */
+<span class="fc" id="L33">    private final LinkedList&lt;LineTypes&gt; line_types = Lists.newLinkedList();</span>
+
+    /**
+     * The nth element of this list is the text of the nth line.
+     */
+<span class="fc" id="L38">    private final LinkedList&lt;StringBuilder&gt; line_texts = Lists.newLinkedList();</span>
+
+    /**
+     * This method begins printing a new non-empty line.
+     */
+    public void addLine()
+    {
+<span class="fc" id="L45">        final StringBuilder line = new StringBuilder();</span>
+<span class="fc" id="L46">        line.append(buildIndent());</span>
+
+<span class="fc" id="L48">        line_types.add(LineTypes.STRING);</span>
+<span class="fc" id="L49">        line_texts.add(line);</span>
+<span class="fc" id="L50">    }</span>
+
+    /**
+     * This method adds a line that is deliberately empty.
+     *
+     * &lt;p&gt;
+     * This method will ignore an invocation, if it would result in a duplicate empty line.
+     * &lt;/p&gt;
+     */
+    public void addEmptyLine()
+    {
+<span class="pc bpc" id="L61" title="1 of 4 branches missed.">        if (!line_types.isEmpty() &amp;&amp; line_types.getLast() == LineTypes.EMPTY_LINE)</span>
+        {
+<span class="fc" id="L63">            return;</span>
+        }
+
+<span class="fc" id="L66">        line_types.add(LineTypes.EMPTY_LINE);</span>
+<span class="fc" id="L67">        line_texts.add(new StringBuilder());</span>
+<span class="fc" id="L68">    }</span>
+
+    /**
+     * This method adds an opening bracket that starts an indented region.
+     */
+    public void addOpeningBracket()
+    {
+<span class="fc" id="L75">        final StringBuilder line = new StringBuilder();</span>
+<span class="fc" id="L76">        line.append(buildIndent());</span>
+<span class="fc" id="L77">        line.append(&quot;{&quot;);</span>
+
+<span class="fc" id="L79">        line_types.add(LineTypes.BRACKET_OPEN);</span>
+<span class="fc" id="L80">        line_texts.add(line);</span>
+
+<span class="fc" id="L82">        ++indent;</span>
+<span class="fc" id="L83">    }</span>
+
+    /**
+     * This method adds a closing bracket that terminates an indented region.
+     */
+    public void addClosingBracket()
+    {
+<span class="fc" id="L90">        --indent;</span>
+
+<span class="fc" id="L92">        final StringBuilder line = new StringBuilder();</span>
+<span class="fc" id="L93">        line.append(buildIndent());</span>
+<span class="fc" id="L94">        line.append(&quot;}&quot;);</span>
+
+<span class="fc" id="L96">        line_types.add(LineTypes.BRACKET_CLOSE);</span>
+<span class="fc" id="L97">        line_texts.add(line);</span>
+<span class="fc" id="L98">    }</span>
+
+    /**
+     * This method adds a string of text to the current line.
+     *
+     * @param value is the text to add.
+     * @throws IllegalStateException if the current line cannot be written to.
+     */
+    public void addText(final Object value)
+    {
+<span class="pc bpc" id="L108" title="1 of 2 branches missed.">        assert line_types.size() == line_texts.size();</span>
+
+<span class="pc bpc" id="L110" title="1 of 2 branches missed.">        Preconditions.checkState(line_types.isEmpty() == false);</span>
+<span class="pc bpc" id="L111" title="1 of 2 branches missed.">        Preconditions.checkState(line_types.getLast() == LineTypes.STRING);</span>
+
+<span class="fc" id="L113">        line_texts.get(line_texts.size() - 1).append(value);</span>
+<span class="fc" id="L114">    }</span>
+
+    /**
+     * If the last lines added were empty-lines, then remove them; otherwise, do nothing.
+     */
+    public void removeEmptyLines()
+    {
+<span class="pc bpc" id="L121" title="1 of 4 branches missed.">        while (!line_types.isEmpty() &amp;&amp; line_types.getLast() == LineTypes.EMPTY_LINE)</span>
+        {
+<span class="fc" id="L123">            line_types.removeLast();</span>
+<span class="fc" id="L124">            line_texts.removeLast();</span>
+        }
+<span class="fc" id="L126">    }</span>
+
+    /**
+     * This method creates an indentation string.
+     *
+     * @return (4 * indent) number of space characters.
+     */
+    private String buildIndent()
+    {
+<span class="fc" id="L135">        return Strings.repeat(&quot; &quot;, indent * 4);</span>
+    }
+
+    /**
+     * This method creates a string representation of this object.
+     *
+     * &lt;p&gt;
+     * Note: Calling this method resets the internal state of this object.
+     * &lt;/p&gt;
+     *
+     * @return a pretty printable string.
+     */
+    public String buildString()
+    {
+        // Remove any leading empty-lines.
+<span class="pc bpc" id="L150" title="2 of 4 branches missed.">        while (!line_types.isEmpty() &amp;&amp; line_types.getFirst() == LineTypes.EMPTY_LINE)</span>
+        {
+<span class="nc" id="L152">            line_types.removeFirst();</span>
+<span class="nc" id="L153">            line_texts.removeFirst();</span>
+        }
+
+        // Remove any trailing empty-lines.
+<span class="pc bpc" id="L157" title="2 of 4 branches missed.">        while (!line_types.isEmpty() &amp;&amp; line_types.getLast() == LineTypes.EMPTY_LINE)</span>
+        {
+<span class="nc" id="L159">            line_types.removeLast();</span>
+<span class="nc" id="L160">            line_texts.removeLast();</span>
+        }
+
+<span class="fc" id="L163">        final StringBuilder result = new StringBuilder();</span>
+
+<span class="fc bfc" id="L165" title="All 2 branches covered.">        for (StringBuilder line : line_texts)</span>
+        {
+<span class="fc" id="L167">            result.append(line.toString());</span>
+<span class="fc" id="L168">            result.append('\n');</span>
+<span class="fc" id="L169">        }</span>
+
+        // Reset Everything
+<span class="fc" id="L172">        this.indent = 0;</span>
+<span class="fc" id="L173">        this.line_types.clear();</span>
+<span class="fc" id="L174">        this.line_texts.clear();</span>
+
+<span class="fc" id="L176">        return result.toString();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

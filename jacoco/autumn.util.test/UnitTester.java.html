@@ -1,0 +1,430 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UnitTester.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.mackenziehigh:autumn</a> &gt; <a href="index.source.html" class="el_package">autumn.util.test</a> &gt; <span class="el_source">UnitTester.java</span></div><h1>UnitTester.java</h1><pre class="source lang-java linenums">package autumn.util.test;
+
+import autumn.lang.Delegate;
+import autumn.lang.Module;
+import autumn.util.F;
+import com.mackenziehigh.autumn.util.T;
+import com.google.common.base.Preconditions;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
+import com.mackenziehigh.autumn.resources.Finished;
+import java.io.PrintStream;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.atomic.AtomicReference;
+
+/**
+ * An instance of this class runs unit-tests contained in a group of modules.
+ *
+ * @author Mackenzie High
+ */
+@Finished(&quot;2014/08/21&quot;)
+<span class="fc" id="L29">public final class UnitTester</span>
+        implements Tester
+{
+    /**
+     * These are the modules that contain test functions.
+     */
+<span class="fc" id="L35">    private Set&lt;Module&gt; modules = Sets.newHashSet();</span>
+
+    /**
+     * This method adds a module to the set of modules that will be unit-tested.
+     *
+     * &lt;p&gt;
+     * The singleton instance of the module will be retrieved via reflection.
+     * &lt;/p&gt;
+     *
+     * @param module is the class-object that represents the type of the module.
+     * @throws NullPointerException if module is null.
+     * @throws IllegalArgumentException if an instance of the module could not be obtained.
+     */
+    public void add(final Class module)
+    {
+<span class="fc" id="L50">        Preconditions.checkNotNull(module);</span>
+
+        try
+        {
+<span class="nc" id="L54">            final Method method = module.getDeclaredMethod(&quot;instance&quot;);</span>
+
+<span class="nc" id="L56">            final Module instance = (Module) method.invoke(null);</span>
+
+<span class="nc" id="L58">            add(instance);</span>
+        }
+<span class="fc" id="L60">        catch (NoSuchMethodException ex)</span>
+        {
+<span class="fc" id="L62">            throw new IllegalArgumentException(&quot;No instance() method was found.&quot;, ex);</span>
+        }
+<span class="nc" id="L64">        catch (IllegalAccessException ex)</span>
+        {
+<span class="nc" id="L66">            throw new IllegalArgumentException(&quot;The instance() method is inaccessible.&quot;, ex);</span>
+        }
+<span class="nc" id="L68">        catch (InvocationTargetException ex)</span>
+        {
+            // This should never happen in reality.
+<span class="nc" id="L71">            throw new IllegalArgumentException(&quot;Something went wrong in the instance() method.&quot;, ex);</span>
+<span class="nc" id="L72">        }</span>
+<span class="nc" id="L73">    }</span>
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void add(final Module module)
+    {
+<span class="fc" id="L81">        Preconditions.checkNotNull(module);</span>
+
+<span class="fc" id="L83">        modules.add(module);</span>
+<span class="fc" id="L84">    }</span>
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Set&lt;Module&gt; modules()
+    {
+<span class="fc" id="L92">        return Collections.unmodifiableSet(modules);</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public TestResults run()
+    {
+        // The test-results will be added to this list as the test-cases are run.
+<span class="fc" id="L102">        final List&lt;TestResult&gt; results = Lists.newLinkedList();</span>
+
+        // This will be used to count the number of failed tests.
+<span class="fc" id="L105">        final AtomicInteger failed = new AtomicInteger(0);</span>
+
+        // This will be used to sum the amount of time that the test-cases spent executing.
+<span class="fc" id="L108">        final AtomicLong time = new AtomicLong(0);</span>
+
+        /**
+         * Find and execute the test-cases.
+         */
+<span class="fc bfc" id="L113" title="All 2 branches covered.">        for (Module module : modules)</span>
+        {
+<span class="fc" id="L115">            test(results, failed, time, module);</span>
+<span class="fc" id="L116">        }</span>
+
+        /**
+         * Create the object that describes the test-results.
+         */
+<span class="fc" id="L121">        return new TestResults()</span>
+<span class="fc" id="L122">        {</span>
+            @Override
+            public boolean passed()
+            {
+<span class="pc bpc" id="L126" title="1 of 2 branches missed.">                return !failed();</span>
+            }
+
+            @Override
+            public boolean failed()
+            {
+<span class="pc bpc" id="L132" title="1 of 2 branches missed.">                return failed.get() != 0;</span>
+            }
+
+            @Override
+            public long executionTime()
+            {
+<span class="fc" id="L138">                return time.get();</span>
+            }
+
+            @Override
+            public void print(PrintStream out)
+            {
+<span class="nc bnc" id="L144" title="All 2 branches missed.">                for (TestResult result : results)</span>
+                {
+<span class="nc" id="L146">                    result.print(out);</span>
+<span class="nc" id="L147">                    out.println();</span>
+<span class="nc" id="L148">                }</span>
+
+<span class="nc" id="L150">                out.println(&quot;Execution Time = &quot; + executionTime() + &quot; Milliseconds&quot;);</span>
+<span class="nc" id="L151">                out.println();</span>
+
+                // Print the number of test-cases that passed and failed.
+<span class="nc" id="L154">                out.println(this);</span>
+<span class="nc" id="L155">                out.println();</span>
+<span class="nc" id="L156">            }</span>
+
+            @Override
+            public TestResult find(final String name)
+            {
+<span class="fc" id="L161">                Preconditions.checkNotNull(name);</span>
+
+<span class="pc bpc" id="L163" title="1 of 2 branches missed.">                for (TestResult result : results())</span>
+                {
+<span class="fc bfc" id="L165" title="All 2 branches covered.">                    if (result.name().equals(name))</span>
+                    {
+<span class="fc" id="L167">                        return result;</span>
+                    }
+<span class="fc" id="L169">                }</span>
+
+<span class="nc" id="L171">                throw new NoSuchElementException(name);</span>
+            }
+
+            @Override
+            public List&lt;TestResult&gt; results()
+            {
+<span class="fc" id="L177">                return Collections.unmodifiableList(results);</span>
+            }
+
+            @Override
+            public Iterator&lt;TestResult&gt; iterator()
+            {
+<span class="nc" id="L183">                return results().iterator();</span>
+            }
+
+            @Override
+            public String toString()
+            {
+                // This is the number of test-cases that failed.
+<span class="nc" id="L190">                final int d2 = failed.get();</span>
+
+                // This is the number of test-cases that passed.
+<span class="nc" id="L193">                final int d1 = d2 - results.size();</span>
+
+<span class="nc bnc" id="L195" title="All 2 branches missed.">                return d2 == 0</span>
+<span class="nc" id="L196">                        ? &quot;All Tests Passed!&quot;</span>
+<span class="nc" id="L197">                        : String.format(&quot;Test Results: Passed = %d, Failed = %d&quot;, d1, d2);</span>
+            }
+        };
+    }
+
+    /**
+     * This method runs the test functions in a single module.
+     *
+     * @param results is the mutable list to append the result onto.
+     * @param failed is the running tally of failed test-cases.
+     * @param time is the running sum of the execution times.
+     * @param module is the module that contains the test-cases.
+     */
+    private void test(final List&lt;TestResult&gt; results,
+                      final AtomicInteger failed,
+                      final AtomicLong time,
+                      final Module module)
+    {
+<span class="fc bfc" id="L215" title="All 2 branches covered.">        for (Delegate function : module.info().functions())</span>
+        {
+            // Get the reflective view of the function.
+<span class="fc" id="L218">            final Method method = function.method();</span>
+
+            // The function is a test-case, if the @Test annotation is applied to it.
+<span class="fc bfc" id="L221" title="All 2 branches covered.">            if (method.isAnnotationPresent(Test.class))</span>
+            {
+                // Execute the test-case.
+<span class="fc" id="L224">                test(results, failed, time, function);</span>
+            }
+<span class="fc" id="L226">        }</span>
+<span class="fc" id="L227">    }</span>
+
+    /**
+     * This method runs the a single test-case.
+     *
+     * @param results is the mutable list to append the result onto.
+     * @param failed is the running tally of failed test-cases.
+     * @param time is the running sum of the execution times.
+     * @param delegate is a delegate that refers to the test function.
+     */
+    private void test(final List&lt;TestResult&gt; results,
+                      final AtomicInteger failed,
+                      final AtomicLong time,
+                      final Delegate function)
+    {
+
+        // This will store the name of the test-case.
+<span class="fc" id="L244">        final AtomicReference&lt;String&gt; test_name = new AtomicReference&lt;String&gt;();</span>
+
+        // This will store the description of the test-case.
+<span class="fc" id="L247">        final AtomicReference&lt;String&gt; test_description = new AtomicReference&lt;String&gt;();</span>
+
+        // This will store the expected type of exception.
+<span class="fc" id="L250">        final AtomicReference&lt;Class&gt; test_exception = new AtomicReference&lt;Class&gt;();</span>
+
+        // The default name of the test-case is of the form &lt;module-class&gt;::&lt;function&gt;.
+<span class="fc" id="L253">        test_name.set(function.module().getClass().getSimpleName() + &quot;::&quot; + function.name());</span>
+
+        /**
+         * This class provides a concrete implementation of the TestCase interface.
+         */
+<span class="fc" id="L258">        final TestCase testcase = new TestCase()</span>
+<span class="fc" id="L259">        {</span>
+            @Override
+            public Delegate function()
+            {
+<span class="fc" id="L263">                return function;</span>
+            }
+
+            @Override
+            public void name(final String name)
+            {
+<span class="fc" id="L269">                Preconditions.checkNotNull(name);</span>
+
+<span class="fc" id="L271">                test_name.set(name);</span>
+<span class="fc" id="L272">            }</span>
+
+            @Override
+            public void describe(final String text)
+            {
+<span class="fc" id="L277">                test_description.set(text);</span>
+<span class="fc" id="L278">            }</span>
+
+            @Override
+            public void expect(final Class expected)
+            {
+<span class="fc" id="L283">                test_exception.set(expected);</span>
+<span class="fc" id="L284">            }</span>
+
+            @Override
+            public String toString()
+            {
+<span class="nc" id="L289">                return &quot;Test Case: &quot; + test_name.get();</span>
+            }
+        };
+
+<span class="fc" id="L293">        long start_time = 0;</span>
+<span class="fc" id="L294">        Throwable ex = null;</span>
+
+        /**
+         * Execute the test-case.
+         */
+        try
+        {
+<span class="fc" id="L301">            start_time = System.currentTimeMillis();</span>
+
+<span class="fc" id="L303">            validate(function);</span>
+
+<span class="fc" id="L305">            T.apply(function, Collections.singleton(testcase));</span>
+        }
+<span class="fc" id="L307">        catch (Throwable t)</span>
+        {
+<span class="fc" id="L309">            ex = t;</span>
+<span class="fc" id="L310">        }</span>
+
+        // Record the exception that was thrown, if any.
+<span class="fc" id="L313">        final Throwable thrown = ex;</span>
+
+        // Calculate the total time this test-case spent executing.
+<span class="fc" id="L316">        final long total_time = System.currentTimeMillis() - start_time;</span>
+
+        // Add the time this test-case spent executing to the total execution time.
+<span class="fc" id="L319">        time.addAndGet(total_time);</span>
+
+        // Determine whether the test-case passed.
+<span class="fc bfc" id="L322" title="All 6 branches covered.">        final boolean case1 = thrown != null &amp;&amp; test_exception.get() != null &amp;&amp; F.isSubtypeOf(thrown.getClass(), test_exception.get());</span>
+<span class="pc bpc" id="L323" title="1 of 4 branches missed.">        final boolean case2 = thrown == null &amp;&amp; test_exception.get() == null;</span>
+<span class="fc bfc" id="L324" title="All 4 branches covered.">        final boolean passed = case1 || case2;</span>
+
+        // If the test failed, record the failure.
+<span class="fc bfc" id="L327" title="All 2 branches covered.">        failed.set(passed ? failed.get() : failed.get() + 1);</span>
+
+        /**
+         * Create the object that represents the result of the test-case.
+         */
+<span class="fc" id="L332">        final TestResult result = new TestResult()</span>
+<span class="fc" id="L333">        {</span>
+            @Override
+            public Delegate function()
+            {
+<span class="fc" id="L337">                return function;</span>
+            }
+
+            @Override
+            public String name()
+            {
+<span class="fc" id="L343">                return test_name.get();</span>
+            }
+
+            @Override
+            public String description()
+            {
+<span class="fc" id="L349">                return test_description.get();</span>
+            }
+
+            @Override
+            public Class expected()
+            {
+<span class="fc" id="L355">                return test_exception.get();</span>
+            }
+
+            @Override
+            public Throwable thrown()
+            {
+<span class="fc" id="L361">                return thrown;</span>
+            }
+
+            @Override
+            public boolean passed()
+            {
+<span class="fc" id="L367">                return passed;</span>
+            }
+
+            @Override
+            public boolean failed()
+            {
+<span class="fc bfc" id="L373" title="All 2 branches covered.">                return !passed;</span>
+            }
+
+            @Override
+            public long executionTime()
+            {
+<span class="fc" id="L379">                return total_time;</span>
+            }
+
+            @Override
+            public void print(final PrintStream out)
+            {
+<span class="nc bnc" id="L385" title="All 2 branches missed.">                if (passed())</span>
+                {
+<span class="nc" id="L387">                    out.println(&quot;Test Passed: &quot; + name());</span>
+                }
+                else
+                {
+<span class="nc" id="L391">                    out.println(&quot;Test Failed: &quot; + name());</span>
+<span class="nc" id="L392">                    thrown().printStackTrace(out);</span>
+                }
+<span class="nc" id="L394">            }</span>
+
+            @Override
+            public String toString()
+            {
+<span class="nc bnc" id="L399" title="All 2 branches missed.">                return (passed() ? &quot;Test Passed: &quot; : &quot;Test Failed: &quot;) + name();</span>
+            }
+        };
+
+        // Record the result.
+<span class="fc" id="L404">        results.add(result);</span>
+<span class="fc" id="L405">    }</span>
+
+    /**
+     * This method ensures that a test function is acceptable.
+     *
+     * @param function is the function to validate.
+     */
+    private void validate(final Delegate function)
+    {
+<span class="pc bpc" id="L414" title="1 of 2 branches missed.">        if (function.returnType().equals(void.class) == false)</span>
+        {
+<span class="nc" id="L416">            throw new MalformedTestException(&quot;The return-type of a test function must be void.&quot;);</span>
+        }
+
+<span class="pc bpc" id="L419" title="1 of 2 branches missed.">        if (function.parameterTypes().size() != 1)</span>
+        {
+<span class="nc" id="L421">            throw new MalformedTestException(&quot;A test function must take exactly one parameter.&quot;);</span>
+        }
+
+<span class="pc bpc" id="L424" title="1 of 2 branches missed.">        if (F.isSubtypeOf(function.parameterTypes().get(0), TestCase.class) == false)</span>
+        {
+<span class="nc" id="L426">            throw new MalformedTestException(&quot;The type of a test function's only parameter must be TestCase.&quot;);</span>
+        }
+<span class="fc" id="L428">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

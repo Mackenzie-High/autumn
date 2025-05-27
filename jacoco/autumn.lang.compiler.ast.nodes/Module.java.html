@@ -1,0 +1,467 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Module.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.mackenziehigh:autumn</a> &gt; <a href="index.source.html" class="el_package">autumn.lang.compiler.ast.nodes</a> &gt; <span class="el_source">Module.java</span></div><h1>Module.java</h1><pre class="source lang-java linenums">/*
+ * Copyright 2013 Michael Mackenzie High
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+
+package autumn.lang.compiler.ast.nodes;
+
+import autumn.lang.compiler.ast.commons.ConstructList;
+import autumn.lang.compiler.ast.commons.IAnnotated;
+import autumn.lang.compiler.ast.commons.IBinaryOperation;
+import autumn.lang.compiler.ast.commons.IConstruct;
+import autumn.lang.compiler.ast.commons.IConversionOperation;
+import autumn.lang.compiler.ast.commons.IDatum;
+import autumn.lang.compiler.ast.commons.IDirective;
+import autumn.lang.compiler.ast.commons.IDocumented;
+import autumn.lang.compiler.ast.commons.IExpression;
+import autumn.lang.compiler.ast.commons.IRecord;
+import autumn.lang.compiler.ast.commons.IStatement;
+import autumn.lang.compiler.ast.commons.IUnaryOperation;
+import autumn.lang.compiler.ast.literals.BigDecimalLiteral;
+import autumn.lang.compiler.ast.literals.BigIntegerLiteral;
+import autumn.lang.compiler.ast.literals.ByteLiteral;
+import autumn.lang.compiler.ast.literals.CharLiteral;
+import autumn.lang.compiler.ast.literals.DoubleLiteral;
+import autumn.lang.compiler.ast.literals.FloatLiteral;
+import autumn.lang.compiler.ast.literals.IntLiteral;
+import autumn.lang.compiler.ast.literals.LongLiteral;
+import autumn.lang.compiler.ast.literals.ShortLiteral;
+import java.io.File;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
+import java.util.TreeSet;
+
+/**
+ * An instance of this class is an AST node that represents a single module.
+ * 
+ * &lt;p&gt; 
+ * &lt;table border=&quot;1&quot;&gt;
+ *     &lt;tr&gt; &lt;td&gt; &lt;b&gt;Property Name&lt;/b&gt; &lt;/td&gt; &lt;td&gt; &lt;b&gt;Property Description&lt;/b&gt; &lt;/td&gt; &lt;/tr&gt;
+ *     &lt;tr&gt; &lt;td&gt; &lt;code&gt;module_directives&lt;/code&gt; &lt;/td&gt; &lt;td&gt;These are the module-directives that are directly within this module.&lt;/td&gt; &lt;/tr&gt;
+ *     &lt;tr&gt; &lt;td&gt; &lt;code&gt;import_directives&lt;/code&gt; &lt;/td&gt; &lt;td&gt;These are the import-directives that are directly within this module.&lt;/td&gt; &lt;/tr&gt;
+ *     &lt;tr&gt; &lt;td&gt; &lt;code&gt;annotations&lt;/code&gt; &lt;/td&gt; &lt;td&gt;These are the annotations declared directly within this module.&lt;/td&gt; &lt;/tr&gt;
+ *     &lt;tr&gt; &lt;td&gt; &lt;code&gt;exceptions&lt;/code&gt; &lt;/td&gt; &lt;td&gt;These are the exceptions declared directly within this module.&lt;/td&gt; &lt;/tr&gt;
+ *     &lt;tr&gt; &lt;td&gt; &lt;code&gt;designs&lt;/code&gt; &lt;/td&gt; &lt;td&gt;These are the designs declared directly within this module.&lt;/td&gt; &lt;/tr&gt;
+ *     &lt;tr&gt; &lt;td&gt; &lt;code&gt;structs&lt;/code&gt; &lt;/td&gt; &lt;td&gt;These are the structs declared directly within this module.&lt;/td&gt; &lt;/tr&gt;
+ *     &lt;tr&gt; &lt;td&gt; &lt;code&gt;tuples&lt;/code&gt; &lt;/td&gt; &lt;td&gt;These are the tuples declared directly within this module.&lt;/td&gt; &lt;/tr&gt;
+ *     &lt;tr&gt; &lt;td&gt; &lt;code&gt;functors&lt;/code&gt; &lt;/td&gt; &lt;td&gt;These are the functors declared directly within this module.&lt;/td&gt; &lt;/tr&gt;
+ *     &lt;tr&gt; &lt;td&gt; &lt;code&gt;enums&lt;/code&gt; &lt;/td&gt; &lt;td&gt;These are the enums declared directly within this module.&lt;/td&gt; &lt;/tr&gt;
+ *     &lt;tr&gt; &lt;td&gt; &lt;code&gt;functions&lt;/code&gt; &lt;/td&gt; &lt;td&gt;These are the functions declared directly within this module.&lt;/td&gt; &lt;/tr&gt;
+ *     &lt;tr&gt; &lt;td&gt; &lt;code&gt;location&lt;/code&gt; &lt;/td&gt; &lt;td&gt;This is the source-location information regarding this construct.&lt;/td&gt; &lt;/tr&gt;
+ * &lt;/table&gt;
+ * &lt;/p&gt;
+ * 
+ * &lt;p&gt; This file was auto-generated on (Sun May 31 11:54:11 EDT 2015).&lt;/p&gt;
+ */
+@SuppressWarnings(&quot;unchecked&quot;)
+<span class="fc" id="L76">public final class Module extends Object implements IConstruct</span>
+{
+<span class="fc" id="L78">    private ConstructList&lt;ModuleDirective&gt; module_directives = new ConstructList();</span>
+
+<span class="fc" id="L80">    private ConstructList&lt;ImportDirective&gt; import_directives = new ConstructList();</span>
+
+<span class="fc" id="L82">    private ConstructList&lt;AnnotationDefinition&gt; annotations = new ConstructList();</span>
+
+<span class="fc" id="L84">    private ConstructList&lt;ExceptionDefinition&gt; exceptions = new ConstructList();</span>
+
+<span class="fc" id="L86">    private ConstructList&lt;DesignDefinition&gt; designs = new ConstructList();</span>
+
+<span class="fc" id="L88">    private ConstructList&lt;StructDefinition&gt; structs = new ConstructList();</span>
+
+<span class="fc" id="L90">    private ConstructList&lt;TupleDefinition&gt; tuples = new ConstructList();</span>
+
+<span class="fc" id="L92">    private ConstructList&lt;FunctorDefinition&gt; functors = new ConstructList();</span>
+
+<span class="fc" id="L94">    private ConstructList&lt;EnumDefinition&gt; enums = new ConstructList();</span>
+
+<span class="fc" id="L96">    private ConstructList&lt;FunctionDefinition&gt; functions = new ConstructList();</span>
+
+<span class="fc" id="L98">    private SourceLocation location = new SourceLocation();</span>
+
+    /**
+     * Setter.
+     * 
+     * @param value is the new value of property &lt;code&gt;module_directives&lt;/code&gt;.
+     * @return a copy of this object with property &lt;code&gt;module_directives&lt;/code&gt; set to value.
+     */
+    public Module setModuleDirectives(final ConstructList&lt;ModuleDirective&gt; value)
+    {
+<span class="fc" id="L108">        final Module result = this.copy();</span>
+<span class="fc" id="L109">        result.module_directives = value;</span>
+<span class="fc" id="L110">        return result;</span>
+    }
+
+    /**
+     * Getter.
+     * 
+     * @return the value of property &lt;code&gt;module_directives&lt;/code&gt;.
+     */
+    public ConstructList&lt;ModuleDirective&gt; getModuleDirectives()
+    {
+<span class="fc" id="L120">        final ConstructList&lt;ModuleDirective&gt; value = this.module_directives;</span>
+<span class="fc" id="L121">        return value;</span>
+    }
+
+    /**
+     * Setter.
+     * 
+     * @param value is the new value of property &lt;code&gt;import_directives&lt;/code&gt;.
+     * @return a copy of this object with property &lt;code&gt;import_directives&lt;/code&gt; set to value.
+     */
+    public Module setImportDirectives(final ConstructList&lt;ImportDirective&gt; value)
+    {
+<span class="fc" id="L132">        final Module result = this.copy();</span>
+<span class="fc" id="L133">        result.import_directives = value;</span>
+<span class="fc" id="L134">        return result;</span>
+    }
+
+    /**
+     * Getter.
+     * 
+     * @return the value of property &lt;code&gt;import_directives&lt;/code&gt;.
+     */
+    public ConstructList&lt;ImportDirective&gt; getImportDirectives()
+    {
+<span class="fc" id="L144">        final ConstructList&lt;ImportDirective&gt; value = this.import_directives;</span>
+<span class="fc" id="L145">        return value;</span>
+    }
+
+    /**
+     * Setter.
+     * 
+     * @param value is the new value of property &lt;code&gt;annotations&lt;/code&gt;.
+     * @return a copy of this object with property &lt;code&gt;annotations&lt;/code&gt; set to value.
+     */
+    public Module setAnnotations(final ConstructList&lt;AnnotationDefinition&gt; value)
+    {
+<span class="fc" id="L156">        final Module result = this.copy();</span>
+<span class="fc" id="L157">        result.annotations = value;</span>
+<span class="fc" id="L158">        return result;</span>
+    }
+
+    /**
+     * Getter.
+     * 
+     * @return the value of property &lt;code&gt;annotations&lt;/code&gt;.
+     */
+    public ConstructList&lt;AnnotationDefinition&gt; getAnnotations()
+    {
+<span class="fc" id="L168">        final ConstructList&lt;AnnotationDefinition&gt; value = this.annotations;</span>
+<span class="fc" id="L169">        return value;</span>
+    }
+
+    /**
+     * Setter.
+     * 
+     * @param value is the new value of property &lt;code&gt;exceptions&lt;/code&gt;.
+     * @return a copy of this object with property &lt;code&gt;exceptions&lt;/code&gt; set to value.
+     */
+    public Module setExceptions(final ConstructList&lt;ExceptionDefinition&gt; value)
+    {
+<span class="fc" id="L180">        final Module result = this.copy();</span>
+<span class="fc" id="L181">        result.exceptions = value;</span>
+<span class="fc" id="L182">        return result;</span>
+    }
+
+    /**
+     * Getter.
+     * 
+     * @return the value of property &lt;code&gt;exceptions&lt;/code&gt;.
+     */
+    public ConstructList&lt;ExceptionDefinition&gt; getExceptions()
+    {
+<span class="fc" id="L192">        final ConstructList&lt;ExceptionDefinition&gt; value = this.exceptions;</span>
+<span class="fc" id="L193">        return value;</span>
+    }
+
+    /**
+     * Setter.
+     * 
+     * @param value is the new value of property &lt;code&gt;designs&lt;/code&gt;.
+     * @return a copy of this object with property &lt;code&gt;designs&lt;/code&gt; set to value.
+     */
+    public Module setDesigns(final ConstructList&lt;DesignDefinition&gt; value)
+    {
+<span class="fc" id="L204">        final Module result = this.copy();</span>
+<span class="fc" id="L205">        result.designs = value;</span>
+<span class="fc" id="L206">        return result;</span>
+    }
+
+    /**
+     * Getter.
+     * 
+     * @return the value of property &lt;code&gt;designs&lt;/code&gt;.
+     */
+    public ConstructList&lt;DesignDefinition&gt; getDesigns()
+    {
+<span class="fc" id="L216">        final ConstructList&lt;DesignDefinition&gt; value = this.designs;</span>
+<span class="fc" id="L217">        return value;</span>
+    }
+
+    /**
+     * Setter.
+     * 
+     * @param value is the new value of property &lt;code&gt;structs&lt;/code&gt;.
+     * @return a copy of this object with property &lt;code&gt;structs&lt;/code&gt; set to value.
+     */
+    public Module setStructs(final ConstructList&lt;StructDefinition&gt; value)
+    {
+<span class="fc" id="L228">        final Module result = this.copy();</span>
+<span class="fc" id="L229">        result.structs = value;</span>
+<span class="fc" id="L230">        return result;</span>
+    }
+
+    /**
+     * Getter.
+     * 
+     * @return the value of property &lt;code&gt;structs&lt;/code&gt;.
+     */
+    public ConstructList&lt;StructDefinition&gt; getStructs()
+    {
+<span class="fc" id="L240">        final ConstructList&lt;StructDefinition&gt; value = this.structs;</span>
+<span class="fc" id="L241">        return value;</span>
+    }
+
+    /**
+     * Setter.
+     * 
+     * @param value is the new value of property &lt;code&gt;tuples&lt;/code&gt;.
+     * @return a copy of this object with property &lt;code&gt;tuples&lt;/code&gt; set to value.
+     */
+    public Module setTuples(final ConstructList&lt;TupleDefinition&gt; value)
+    {
+<span class="fc" id="L252">        final Module result = this.copy();</span>
+<span class="fc" id="L253">        result.tuples = value;</span>
+<span class="fc" id="L254">        return result;</span>
+    }
+
+    /**
+     * Getter.
+     * 
+     * @return the value of property &lt;code&gt;tuples&lt;/code&gt;.
+     */
+    public ConstructList&lt;TupleDefinition&gt; getTuples()
+    {
+<span class="fc" id="L264">        final ConstructList&lt;TupleDefinition&gt; value = this.tuples;</span>
+<span class="fc" id="L265">        return value;</span>
+    }
+
+    /**
+     * Setter.
+     * 
+     * @param value is the new value of property &lt;code&gt;functors&lt;/code&gt;.
+     * @return a copy of this object with property &lt;code&gt;functors&lt;/code&gt; set to value.
+     */
+    public Module setFunctors(final ConstructList&lt;FunctorDefinition&gt; value)
+    {
+<span class="fc" id="L276">        final Module result = this.copy();</span>
+<span class="fc" id="L277">        result.functors = value;</span>
+<span class="fc" id="L278">        return result;</span>
+    }
+
+    /**
+     * Getter.
+     * 
+     * @return the value of property &lt;code&gt;functors&lt;/code&gt;.
+     */
+    public ConstructList&lt;FunctorDefinition&gt; getFunctors()
+    {
+<span class="fc" id="L288">        final ConstructList&lt;FunctorDefinition&gt; value = this.functors;</span>
+<span class="fc" id="L289">        return value;</span>
+    }
+
+    /**
+     * Setter.
+     * 
+     * @param value is the new value of property &lt;code&gt;enums&lt;/code&gt;.
+     * @return a copy of this object with property &lt;code&gt;enums&lt;/code&gt; set to value.
+     */
+    public Module setEnums(final ConstructList&lt;EnumDefinition&gt; value)
+    {
+<span class="fc" id="L300">        final Module result = this.copy();</span>
+<span class="fc" id="L301">        result.enums = value;</span>
+<span class="fc" id="L302">        return result;</span>
+    }
+
+    /**
+     * Getter.
+     * 
+     * @return the value of property &lt;code&gt;enums&lt;/code&gt;.
+     */
+    public ConstructList&lt;EnumDefinition&gt; getEnums()
+    {
+<span class="fc" id="L312">        final ConstructList&lt;EnumDefinition&gt; value = this.enums;</span>
+<span class="fc" id="L313">        return value;</span>
+    }
+
+    /**
+     * Setter.
+     * 
+     * @param value is the new value of property &lt;code&gt;functions&lt;/code&gt;.
+     * @return a copy of this object with property &lt;code&gt;functions&lt;/code&gt; set to value.
+     */
+    public Module setFunctions(final ConstructList&lt;FunctionDefinition&gt; value)
+    {
+<span class="fc" id="L324">        final Module result = this.copy();</span>
+<span class="fc" id="L325">        result.functions = value;</span>
+<span class="fc" id="L326">        return result;</span>
+    }
+
+    /**
+     * Getter.
+     * 
+     * @return the value of property &lt;code&gt;functions&lt;/code&gt;.
+     */
+    public ConstructList&lt;FunctionDefinition&gt; getFunctions()
+    {
+<span class="fc" id="L336">        final ConstructList&lt;FunctionDefinition&gt; value = this.functions;</span>
+<span class="fc" id="L337">        return value;</span>
+    }
+
+    /**
+     * Setter.
+     * 
+     * @param value is the new value of property &lt;code&gt;location&lt;/code&gt;.
+     * @return a copy of this object with property &lt;code&gt;location&lt;/code&gt; set to value.
+     */
+    public Module setLocation(final SourceLocation value)
+    {
+<span class="fc" id="L348">        final Module result = this.copy();</span>
+<span class="fc" id="L349">        result.location = value;</span>
+<span class="fc" id="L350">        return result;</span>
+    }
+
+    /**
+     * Getter.
+     * 
+     * @return the value of property &lt;code&gt;location&lt;/code&gt;.
+     */
+    public SourceLocation getLocation()
+    {
+<span class="fc" id="L360">        final SourceLocation value = this.location;</span>
+<span class="fc" id="L361">        return value;</span>
+    }
+
+    /**
+     * This method creates a new instance of this class.
+     * 
+     * @param module_directives is the value for property &lt;code&gt;module_directives&lt;/code&gt;.
+     * @param import_directives is the value for property &lt;code&gt;import_directives&lt;/code&gt;.
+     * @param annotations is the value for property &lt;code&gt;annotations&lt;/code&gt;.
+     * @param exceptions is the value for property &lt;code&gt;exceptions&lt;/code&gt;.
+     * @param designs is the value for property &lt;code&gt;designs&lt;/code&gt;.
+     * @param structs is the value for property &lt;code&gt;structs&lt;/code&gt;.
+     * @param tuples is the value for property &lt;code&gt;tuples&lt;/code&gt;.
+     * @param functors is the value for property &lt;code&gt;functors&lt;/code&gt;.
+     * @param enums is the value for property &lt;code&gt;enums&lt;/code&gt;.
+     * @param functions is the value for property &lt;code&gt;functions&lt;/code&gt;.
+     * @param location is the value for property &lt;code&gt;location&lt;/code&gt;.
+     * @return a new instance of this class.
+     */
+    public static Module create(ConstructList&lt;ModuleDirective&gt; module_directives, ConstructList&lt;ImportDirective&gt; import_directives, ConstructList&lt;AnnotationDefinition&gt; annotations, ConstructList&lt;ExceptionDefinition&gt; exceptions, ConstructList&lt;DesignDefinition&gt; designs, ConstructList&lt;StructDefinition&gt; structs, ConstructList&lt;TupleDefinition&gt; tuples, ConstructList&lt;FunctorDefinition&gt; functors, ConstructList&lt;EnumDefinition&gt; enums, ConstructList&lt;FunctionDefinition&gt; functions, SourceLocation location)
+    {
+<span class="nc" id="L382">        Module object = new Module();</span>
+<span class="nc" id="L383">        object = object.setModuleDirectives(module_directives);</span>
+<span class="nc" id="L384">        object = object.setImportDirectives(import_directives);</span>
+<span class="nc" id="L385">        object = object.setAnnotations(annotations);</span>
+<span class="nc" id="L386">        object = object.setExceptions(exceptions);</span>
+<span class="nc" id="L387">        object = object.setDesigns(designs);</span>
+<span class="nc" id="L388">        object = object.setStructs(structs);</span>
+<span class="nc" id="L389">        object = object.setTuples(tuples);</span>
+<span class="nc" id="L390">        object = object.setFunctors(functors);</span>
+<span class="nc" id="L391">        object = object.setEnums(enums);</span>
+<span class="nc" id="L392">        object = object.setFunctions(functions);</span>
+<span class="nc" id="L393">        object = object.setLocation(location);</span>
+<span class="nc" id="L394">        return object;</span>
+    }
+
+    /**
+     * This method welcomes a visitor that wants to visit this object.
+     * 
+     * @param visitor is the visitor that is visiting this object.
+     */
+    public void accept(final IAstVisitor visitor)
+    {
+<span class="fc" id="L404">        visitor.visit(this);</span>
+<span class="fc" id="L405">    }</span>
+
+    /**
+     * This method creates a shallow copy of this object.
+     * 
+     * @return a shallow copy of this object.
+     */
+    public Module copy()
+    {
+<span class="fc" id="L414">        final Module result = new Module();</span>
+<span class="fc" id="L415">        result.module_directives = this.module_directives;</span>
+<span class="fc" id="L416">        result.import_directives = this.import_directives;</span>
+<span class="fc" id="L417">        result.annotations = this.annotations;</span>
+<span class="fc" id="L418">        result.exceptions = this.exceptions;</span>
+<span class="fc" id="L419">        result.designs = this.designs;</span>
+<span class="fc" id="L420">        result.structs = this.structs;</span>
+<span class="fc" id="L421">        result.tuples = this.tuples;</span>
+<span class="fc" id="L422">        result.functors = this.functors;</span>
+<span class="fc" id="L423">        result.enums = this.enums;</span>
+<span class="fc" id="L424">        result.functions = this.functions;</span>
+<span class="fc" id="L425">        result.location = this.location;</span>
+<span class="fc" id="L426">        return result;</span>
+    }
+
+    /**
+     * This method creates a map representation of this struct.
+     * 
+     * &lt;p&gt;
+     * Each key is the name of a field.
+     * Each value is the result of calling the key field's getter.
+     * &lt;/p&gt;
+     * 
+     * @return a map containing the entries in this struct.
+     */
+    public Map&lt;String, Object&gt; toMap()
+    {
+<span class="fc" id="L441">        final Map&lt;String, Object&gt; map = new TreeMap&lt;String, Object&gt;();</span>
+<span class="fc" id="L442">        map.put(&quot;module_directives&quot;, this.getModuleDirectives());</span>
+<span class="fc" id="L443">        map.put(&quot;import_directives&quot;, this.getImportDirectives());</span>
+<span class="fc" id="L444">        map.put(&quot;annotations&quot;, this.getAnnotations());</span>
+<span class="fc" id="L445">        map.put(&quot;exceptions&quot;, this.getExceptions());</span>
+<span class="fc" id="L446">        map.put(&quot;designs&quot;, this.getDesigns());</span>
+<span class="fc" id="L447">        map.put(&quot;structs&quot;, this.getStructs());</span>
+<span class="fc" id="L448">        map.put(&quot;tuples&quot;, this.getTuples());</span>
+<span class="fc" id="L449">        map.put(&quot;functors&quot;, this.getFunctors());</span>
+<span class="fc" id="L450">        map.put(&quot;enums&quot;, this.getEnums());</span>
+<span class="fc" id="L451">        map.put(&quot;functions&quot;, this.getFunctions());</span>
+<span class="fc" id="L452">        map.put(&quot;location&quot;, this.getLocation());</span>
+
+<span class="fc" id="L454">        return map;</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString()
+    {
+<span class="fc" id="L463">        return this.toMap().toString();</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

@@ -1,0 +1,583 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Autumn.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.mackenziehigh:autumn</a> &gt; <a href="index.source.html" class="el_package">autumn.lang.compiler</a> &gt; <span class="el_source">Autumn.java</span></div><h1>Autumn.java</h1><pre class="source lang-java linenums">package autumn.lang.compiler;
+
+import autumn.lang.compiler.ast.nodes.Module;
+import autumn.lang.compiler.ast.nodes.ModuleDirective;
+import autumn.lang.compiler.ast.nodes.Name;
+import autumn.lang.compiler.errors.BasicErrorReporter;
+import autumn.lang.compiler.errors.IErrorReporter;
+import autumn.util.F;
+import autumn.util.FileIO;
+import autumn.util.test.TestResults;
+import autumn.util.test.UnitTester;
+import com.google.common.base.Preconditions;
+import com.google.common.collect.Lists;
+import com.google.common.io.Files;
+import com.google.common.io.Resources;
+import java.io.File;
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.nio.charset.Charset;
+import java.util.Collections;
+import java.util.List;
+
+/**
+ * An instance of this class simplifies the use of Autumn.
+ *
+ * &lt;p&gt;
+ * &lt;b&gt;Warning: This class is still under development therefore, changes may be made in the near future. (TODO: remove)&lt;/b&gt;
+ * &lt;/p&gt;
+ *
+ * @author Mackenzie High
+ */
+public final class Autumn
+{
+    private URLClassLoader loader;
+
+    /**
+     * These are the paths that where passed to the class-loader's constructor.
+     */
+<span class="fc" id="L42">    private final List&lt;URL&gt; libraries = Lists.newLinkedList();</span>
+
+    /**
+     * This object is used to issue error-message,
+     * such as syntax errors and type-checking errors.
+     */
+<span class="fc" id="L48">    private IErrorReporter reporter = new BasicErrorReporter();</span>
+
+    /**
+     * These are the modules that will be compiled.
+     */
+<span class="fc" id="L53">    private final List&lt;Module&gt; modules = Lists.newLinkedList();</span>
+
+    /**
+     * These are additional classes to automatically import inside each module.
+     * This is a list, because order is important in Autumn imports.
+     */
+<span class="fc" id="L59">    private final List&lt;Class&gt; imported = Lists.newLinkedList();</span>
+
+    /**
+     * This flag is true, if assume-statements are turned on.
+     */
+<span class="fc" id="L64">    private static boolean assume = true;</span>
+
+    /**
+     * Sole Constructor.
+     */
+    public Autumn()
+<span class="fc" id="L70">    {</span>
+<span class="fc" id="L71">        loader = new URLClassLoader(new URL[0]);</span>
+<span class="fc" id="L72">    }</span>
+
+    /**
+     * This method turns the assume-statements on.
+     */
+    public static void enableAssume()
+    {
+<span class="fc" id="L79">        assume = true;</span>
+<span class="fc" id="L80">    }</span>
+
+    /**
+     * This method turns the assume-statements off.
+     */
+    public static void disableAssume()
+    {
+<span class="fc" id="L87">        assume = false;</span>
+<span class="fc" id="L88">    }</span>
+
+    /**
+     * This method determines whether assumptions are turned on.
+     *
+     * &lt;p&gt;
+     * By default, assume-statements and assert-statements are both on.
+     * Only assume-statements (aka assumptions) can be turned off.
+     * &lt;/p&gt;
+     *
+     * @return true, iff assumptions are turned on.
+     */
+    public static boolean isAssumeOn()
+    {
+<span class="fc" id="L102">        return assume;</span>
+    }
+
+    /**
+     * This method sets the error-reporter that is used to report compilation-errors.
+     *
+     * &lt;p&gt;
+     * The error-reporter reports parsing-errors, type-checking errors, etc.
+     * &lt;/p&gt;
+     *
+     * @param reporter is the new error-reporter.
+     * @throws NullPointerException if reporter is null.
+     */
+    public void setErrorReporter(final IErrorReporter reporter)
+    {
+<span class="fc" id="L117">        Preconditions.checkNotNull(reporter);</span>
+
+<span class="fc" id="L119">        this.reporter = reporter;</span>
+<span class="fc" id="L120">    }</span>
+
+    /**
+     * This method specifies that a particular class should be imported in every module.
+     *
+     * @param klass is the type to import in every module automatically.
+     * @throws NullPointerException if klass is null.
+     */
+    public void addImport(final Class klass)
+    {
+<span class="nc" id="L130">        Preconditions.checkNotNull(klass);</span>
+
+<span class="nc" id="L132">        imported.add(klass);</span>
+<span class="nc" id="L133">    }</span>
+
+    /**
+     * This method causes source-files to be read, parsed, and added to the list of modules.
+     *
+     * &lt;p&gt;
+     * This method skips hidden files and files with extensions
+     * other than &quot;.leaf&quot; (ignoring case).
+     * &lt;/p&gt;
+     *
+     * @param root is the path to the directory containing the source-files.
+     * @param recur is true, if this method should recurse into sub-directories.
+     * @return the modules that were successfully parsed.
+     * @throws IOException if a source-file cannot be read.
+     */
+    public List&lt;Module&gt; srcDir(final File root,
+                               final boolean recur)
+            throws IOException
+    {
+<span class="nc" id="L152">        Preconditions.checkNotNull(root);</span>
+
+<span class="nc" id="L154">        final List&lt;Module&gt; result = Lists.newLinkedList();</span>
+
+<span class="nc bnc" id="L156" title="All 2 branches missed.">        for (Object path : F.iter(FileIO.filesOf(root, recur)))</span>
+        {
+<span class="nc" id="L158">            final File file = (File) path;</span>
+
+<span class="nc" id="L160">            final String name = file.getName();</span>
+
+<span class="nc" id="L162">            final boolean is_file = file.isFile();</span>
+
+<span class="nc" id="L164">            final boolean is_hidden = file.isHidden();</span>
+
+<span class="nc bnc" id="L166" title="All 2 branches missed.">            final boolean is_leaf = name.length() &gt; 5</span>
+<span class="nc bnc" id="L167" title="All 2 branches missed.">                                    &amp;&amp; name.substring(name.length() - 5, name.length()).equalsIgnoreCase(&quot;.leaf&quot;);</span>
+
+<span class="nc bnc" id="L169" title="All 6 branches missed.">            if (is_file &amp;&amp; is_leaf &amp;&amp; !is_hidden)</span>
+            {
+<span class="nc" id="L171">                srcFile(file);</span>
+            }
+<span class="nc" id="L173">        }</span>
+
+<span class="nc" id="L175">        return Collections.unmodifiableList(result);</span>
+    }
+
+    /**
+     * This method causes source-files to be read, parsed, and added to the list of modules.
+     *
+     * &lt;p&gt;
+     * Equivalence:
+     * &lt;code&gt; srcFile(new File(file)) &lt;/code&gt;
+     * &lt;/p&gt;
+     *
+     * @param root is the path to the directory containing the source-files.
+     * @param recur is true, if this method should recurse into sub-directories.
+     * @return the modules that were successfully parsed.
+     * @throws IOException if the source-file cannot be read.
+     */
+    public List&lt;Module&gt; srcDir(final String root,
+                               final boolean recur)
+            throws IOException
+    {
+<span class="nc" id="L195">        return srcDir(new File(root), recur);</span>
+    }
+
+    /**
+     * This method causes a source-file to be read, parsed, and added to the list of modules.
+     *
+     * @param file is the path to the source-file.
+     * @throws IOException if the source-file cannot be read.
+     */
+    public Module srcFile(final File file)
+            throws IOException
+    {
+<span class="nc" id="L207">        Preconditions.checkNotNull(file);</span>
+
+<span class="nc" id="L209">        final String code = Files.toString(file, Charset.defaultCharset());</span>
+
+<span class="nc" id="L211">        final AutumnParser parser = new AutumnParser(reporter);</span>
+
+<span class="nc" id="L213">        final Module module = parser.parse(code, file);</span>
+
+<span class="nc" id="L215">        return src(module);</span>
+    }
+
+    /**
+     * This method causes a source-file to be read, parsed, and added to the list of modules.
+     *
+     * &lt;p&gt;
+     * Equivalence:
+     * &lt;code&gt; srcFile(new File(file)) &lt;/code&gt;
+     * &lt;/p&gt;
+     *
+     * @param file is the path to the source-file.
+     * @throws IOException if the source-file cannot be read.
+     */
+    public Module srcFile(final String file)
+            throws IOException
+    {
+<span class="nc" id="L232">        return srcFile(new File(file));</span>
+    }
+
+    /**
+     * This method causes a source-file to be read, parsed, and added to the list of modules.
+     *
+     * @param file is the path to the source-file.
+     * @throws IOException if the source-file cannot be read.
+     */
+    public Module srcURL(final URL file)
+            throws IOException
+    {
+<span class="fc" id="L244">        Preconditions.checkNotNull(file);</span>
+
+<span class="fc" id="L246">        final String code = Resources.toString(file, Charset.defaultCharset());</span>
+
+<span class="fc" id="L248">        final AutumnParser parser = new AutumnParser(reporter);</span>
+
+<span class="fc" id="L250">        final Module module = parser.parse(code, file);</span>
+
+<span class="fc" id="L252">        return src(module);</span>
+    }
+
+    /**
+     * This method causes a source-file to be read, parsed, and added to the list of modules.
+     *
+     * &lt;p&gt;
+     * Equivalence:
+     * &lt;code&gt; srcURL(new URL(file)) &lt;/code&gt;
+     * &lt;/p&gt;
+     *
+     * @param file is the path to the source-file.
+     * @return the Abstract-Syntax-Tree representation of the module.
+     * @throws IOException if the source-file cannot be read.
+     */
+    public Module srcURL(final String file)
+            throws MalformedURLException,
+                   IOException
+    {
+<span class="nc" id="L271">        return srcURL(new URL(file));</span>
+    }
+
+    /**
+     * This method adds the Abstract-Syntax-Tree representation of a module to the list of modules.
+     *
+     * @param node is the AST representation of the module.
+     * @return node.
+     */
+    public Module src(final Module node)
+    {
+<span class="pc bpc" id="L282" title="1 of 2 branches missed.">        if (reporter.errorCount() &gt; 0)</span>
+        {
+<span class="nc" id="L284">            return null;</span>
+        }
+
+<span class="fc" id="L287">        Preconditions.checkNotNull(node);</span>
+
+<span class="fc" id="L289">        modules.add(node);</span>
+
+<span class="fc" id="L291">        return node;</span>
+    }
+
+    /**
+     * This method adds a module to the list of modules.
+     *
+     * &lt;p&gt;
+     * This method will parse the code.
+     * &lt;/p&gt;
+     *
+     * @param code is the source-code representation of the module.
+     * @return node.
+     */
+    public Module src(final String code)
+    {
+<span class="nc bnc" id="L306" title="All 2 branches missed.">        if (reporter.errorCount() &gt; 0)</span>
+        {
+<span class="nc" id="L308">            return null;</span>
+        }
+
+<span class="nc" id="L311">        Preconditions.checkNotNull(code);</span>
+
+<span class="nc" id="L313">        final File fake = new File(&quot;&lt;script&gt;&quot;);</span>
+
+<span class="nc" id="L315">        final AutumnParser parser = new AutumnParser(reporter);</span>
+
+<span class="nc" id="L317">        final Module node = parser.parse(code, fake);</span>
+
+<span class="nc bnc" id="L319" title="All 2 branches missed.">        if (reporter.errorCount() &gt; 0)</span>
+        {
+<span class="nc" id="L321">            return null;</span>
+        }
+
+<span class="nc" id="L324">        return src(node);</span>
+    }
+
+    /**
+     * This method compiles the list of modules to bytecode.
+     *
+     * @return the bytecode representation the program.
+     */
+    public CompiledProgram compile()
+    {
+<span class="pc bpc" id="L334" title="1 of 2 branches missed.">        if (reporter.errorCount() &gt; 0)</span>
+        {
+<span class="nc" id="L336">            return null;</span>
+        }
+
+<span class="fc" id="L339">        final AutumnCompiler cmp = new AutumnCompiler(reporter, loader);</span>
+
+<span class="pc bpc" id="L341" title="1 of 2 branches missed.">        for (Class type : imported)</span>
+        {
+<span class="nc" id="L343">            cmp.addImport(type);</span>
+<span class="nc" id="L344">        }</span>
+
+<span class="fc" id="L346">        final CompiledProgram compiled = cmp.compile(modules);</span>
+
+        /**
+         * If compilation failed, then the compiler returned null.
+         */
+<span class="fc bfc" id="L351" title="All 2 branches covered.">        if (compiled == null)</span>
+        {
+<span class="fc" id="L353">            return null;</span>
+        }
+
+        /**
+         * In case dynamic loading will be performed, include the loaded libraries.
+         */
+<span class="fc" id="L359">        final CompiledProgram program = new CompiledProgram(compiled, libraries);</span>
+
+<span class="fc" id="L361">        return program;</span>
+    }
+
+    /**
+     * This method compiles the list of modules to bytecode.
+     *
+     * @param out is the path to write the jar-file to.
+     * @return the bytecode representation the program.
+     */
+    public CompiledProgram compile(final File out)
+            throws IOException
+    {
+<span class="nc bnc" id="L373" title="All 2 branches missed.">        if (reporter.errorCount() &gt; 0)</span>
+        {
+<span class="nc" id="L375">            return null;</span>
+        }
+
+<span class="nc" id="L378">        Preconditions.checkNotNull(out);</span>
+
+<span class="nc" id="L380">        final CompiledProgram program = compile();</span>
+
+<span class="nc" id="L382">        program.jar(out);</span>
+
+<span class="nc" id="L384">        return program;</span>
+    }
+
+    /**
+     * This method compiles the list of modules to bytecode.
+     *
+     * &lt;p&gt;
+     * Equivalence:
+     * &lt;code&gt; compile(new File(file)) &lt;/code&gt;
+     * &lt;/p&gt;
+     *
+     * @param out is the path to write the jar-file to.
+     * @return the bytecode representation the program.
+     */
+    public CompiledProgram compile(final String out)
+            throws IOException
+    {
+<span class="nc" id="L401">        return compile(new File(out));</span>
+    }
+
+    /**
+     * This method compiles the program, dynamically loads it, and then runs it.
+     *
+     * @param args are the command-line arguments to pass to the main(String[]) method.
+     */
+    public void run(final String[] args)
+            throws ClassNotFoundException,
+                   NoSuchMethodException,
+                   InvocationTargetException,
+                   IllegalAccessException
+    {
+<span class="nc" id="L415">        Preconditions.checkNotNull(args);</span>
+
+<span class="nc" id="L417">        final CompiledProgram program = compile();</span>
+
+<span class="nc bnc" id="L419" title="All 2 branches missed.">        if (reporter.errorCount() &gt; 0)</span>
+        {
+<span class="nc" id="L421">            return;</span>
+        }
+
+<span class="nc" id="L424">        final DynamicLoader dyn_loader = program.load(loader);</span>
+
+<span class="nc" id="L426">        dyn_loader.invokeMain(args);</span>
+<span class="nc" id="L427">    }</span>
+
+    /**
+     * This method compiles the program, dynamically loads it, and then runs it.
+     *
+     * @param args are the command-line arguments to pass to the main(String[]) method.
+     */
+    public void run(final Iterable&lt;String&gt; args)
+            throws ClassNotFoundException,
+                   NoSuchMethodException,
+                   InvocationTargetException,
+                   IllegalAccessException
+    {
+<span class="nc" id="L440">        Preconditions.checkNotNull(args);</span>
+
+<span class="nc" id="L442">        run(Lists.newArrayList(args).toArray(new String[0]));</span>
+<span class="nc" id="L443">    }</span>
+
+    /**
+     * This method compiles the program, dynamically loads it,
+     * and then executes the unit-tests contained therein.
+     *
+     * &lt;p&gt;
+     * For more information on Autumn unit-tests, see the (autumn.util.test) package.
+     * &lt;/p&gt;
+     *
+     * @return the results of running the unit-tests.
+     */
+    public TestResults test()
+    {
+<span class="nc bnc" id="L457" title="All 2 branches missed.">        if (reporter.errorCount() &gt; 0)</span>
+        {
+<span class="nc" id="L459">            return null;</span>
+        }
+
+<span class="nc" id="L462">        final UnitTester tester = new UnitTester();</span>
+
+<span class="nc" id="L464">        final CompiledProgram program = compile();</span>
+
+<span class="nc" id="L466">        final DynamicLoader dyn_loader = program.load(loader);</span>
+
+<span class="nc bnc" id="L468" title="All 2 branches missed.">        for (Module module : modules)</span>
+        {
+<span class="nc" id="L470">            final String name = nameOf(module);</span>
+
+<span class="nc bnc" id="L472" title="All 2 branches missed.">            if (name == null)</span>
+            {
+<span class="nc" id="L474">                continue;</span>
+            }
+
+            try
+            {
+<span class="nc" id="L479">                final Class clazz = Class.forName(name, false, dyn_loader);</span>
+
+<span class="nc" id="L481">                tester.add(clazz);</span>
+            }
+<span class="nc" id="L483">            catch (ClassNotFoundException ex)</span>
+            {
+                /**
+                 * Technically, this should never happen.
+                 * Compilation was successfully and the modules were successfully loaded.
+                 * As a result, the module's class must exist in the loader.
+                 */
+<span class="nc" id="L490">                throw new RuntimeException(ex);</span>
+<span class="nc" id="L491">            }</span>
+<span class="nc" id="L492">        }</span>
+
+<span class="nc" id="L494">        final TestResults results = tester.run();</span>
+
+<span class="nc" id="L496">        return results;</span>
+    }
+
+    /**
+     * This method computes the fully-qualified name of a module.
+     *
+     * @param module is the Abstract-Syntax-Tree representation of the module.
+     * @return the name of the module; or null, if the module is anonymous.
+     */
+    private String nameOf(final Module module)
+    {
+        // The name of the module is specified by its only module-directive.
+<span class="nc" id="L508">        final ModuleDirective directive = module.getModuleDirectives().asMutableList().get(0);</span>
+
+        // The name will consist of a package-part and s simple-name.
+<span class="nc" id="L511">        final StringBuilder name = new StringBuilder();</span>
+
+        // For each part of the package's name:
+<span class="nc bnc" id="L514" title="All 2 branches missed.">        for (Name part : directive.getNamespace().getNames())</span>
+        {
+<span class="nc" id="L516">            name.append(part.getName());</span>
+<span class="nc" id="L517">            name.append('.');</span>
+<span class="nc" id="L518">        }</span>
+
+        // Append the simple-name of the module.
+        // This will be a '*' character, if the module is anonymous.
+<span class="nc" id="L522">        name.append(directive.getName().getName());</span>
+
+        // Return null, if the module is anonymous.
+<span class="nc bnc" id="L525" title="All 2 branches missed.">        return name.toString().contains(&quot;*&quot;) ? null : name.toString();</span>
+    }
+
+    /**
+     * This method loads a library jar-file or class-file.
+     *
+     * @param path is the path to where the jar-file is located.
+     */
+    public void loadURL(final URL path)
+    {
+<span class="nc" id="L535">        Preconditions.checkNotNull(path);</span>
+
+<span class="nc" id="L537">        libraries.add(path);</span>
+
+<span class="nc" id="L539">        final URL[] array = libraries.toArray(new URL[0]);</span>
+
+<span class="nc" id="L541">        loader = new URLClassLoader(array);</span>
+<span class="nc" id="L542">    }</span>
+
+    /**
+     * This method loads a library jar-file or class-file.
+     *
+     * @param path is the path to where the jar-file is located.
+     */
+    public void loadURL(final String path)
+            throws MalformedURLException
+    {
+<span class="nc" id="L552">        Preconditions.checkNotNull(path);</span>
+
+<span class="nc" id="L554">        loadURL(new URL(path));</span>
+<span class="nc" id="L555">    }</span>
+
+    /**
+     * This method loads a library jar-file or class-file.
+     *
+     * @param path is the path to where the jar-file is located.
+     */
+    public void loadFile(final File path)
+            throws MalformedURLException
+    {
+<span class="nc" id="L565">        Preconditions.checkNotNull(path);</span>
+
+<span class="nc" id="L567">        loadURL(path.toURI().toURL());</span>
+<span class="nc" id="L568">    }</span>
+
+    /**
+     * This method loads a library jar-file or class-file.
+     *
+     * @param path is the path to where the jar-file is located.
+     */
+    public void loadFile(final String path)
+            throws MalformedURLException
+    {
+<span class="nc" id="L578">        Preconditions.checkNotNull(path);</span>
+
+<span class="nc" id="L580">        loadFile(path);</span>
+<span class="nc" id="L581">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>
