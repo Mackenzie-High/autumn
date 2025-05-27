@@ -15,9 +15,6 @@ import org.junit.Test;
 
 public final class Runner
 {
-
-    private static final String STDOUT = "/media/disk/Code/EclipseProjects/AutumnSpecification/autumn/out/typechecks/";
-
     private static final boolean FAILED = false;
 
     private static final boolean PASSED = true;
@@ -294,6 +291,8 @@ public final class Runner
         test("T0002", EXPECTED_CONDITION);
         test("T0001", EXPECTED_CONDITION);
 
+        Assert.assertEquals(0, failed_count);
+        
         return failed_count;
     }
 

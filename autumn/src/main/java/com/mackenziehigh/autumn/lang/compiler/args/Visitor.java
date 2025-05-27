@@ -35,11 +35,11 @@ public final class Visitor
                 throws Exception;
     }
 
-    private static final String HELP = "/com.mackenziehigh/autumn/resources/help.txt";
+    private static final String HELP = "/com/mackenziehigh/autumn/resources/help.txt";
 
-    private static final String LICENSE = "/com.mackenziehigh/autumn/resources/license.txt";
+    private static final String LICENSE = "/com/mackenziehigh/autumn/resources/license.txt";
 
-    private static final String VERSION = "/com.mackenziehigh/autumn/resources/version.txt";
+    private static final String VERSION = "/com/mackenziehigh/autumn/resources/version.txt";
 
     private String name;
 

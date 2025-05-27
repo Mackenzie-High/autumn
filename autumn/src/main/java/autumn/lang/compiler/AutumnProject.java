@@ -341,7 +341,7 @@ public final class AutumnProject
         /**
          * Create the project/src/Main.leaf file.
          */
-        url = Resources.getResource(Autumn.class, "/com.mackenziehigh/autumn/resources/default-src-main.leaf");
+        url = Resources.getResource(Autumn.class, "/com/mackenziehigh/autumn/resources/default-src-main.leaf");
         code = Resources.toString(url, Charset.defaultCharset());
 
         final File src_main = new File(src, "Main.leaf");
@@ -350,7 +350,7 @@ public final class AutumnProject
         /**
          * Create the project/test/MainTest.leaf file.
          */
-        url = Resources.getResource(Autumn.class, "/com.mackenziehigh/autumn/resources/default-test-main.leaf");
+        url = Resources.getResource(Autumn.class, "/com/mackenziehigh/autumn/resources/default-test-main.leaf");
         code = Resources.toString(url, Charset.defaultCharset());
 
         final File test_main = new File(test, "MainTest.leaf");

@@ -731,6 +731,8 @@ public final class Runner
         test("T0002");
         test("T0001");
 
+        Assert.assertEquals(0, failed_count);
+        
         return failed_count;
     }
 

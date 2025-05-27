@@ -30,7 +30,7 @@ public class CustomDeclaredTypeTest
         final IDeclaredType string = (IDeclaredType) factory.fromClass(String.class);
 
 
-        final CustomDeclaredType clazz = factory.newClassType("Lcom.mackenziehigh/MyClass;");
+        final CustomDeclaredType clazz = factory.newClassType("Lcom/mackenziehigh/MyClass;");
 
         final List annotations = Lists.newArrayList("A1", "A2", "A3");
         final int modifiers = 1234567;
