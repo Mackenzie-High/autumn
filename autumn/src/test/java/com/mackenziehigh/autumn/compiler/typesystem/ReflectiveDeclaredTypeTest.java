@@ -30,10 +30,6 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 import org.objectweb.asm.Type;
 
-/**
- *
- * @author mackenzie
- */
 public class ReflectiveDeclaredTypeTest
 {
     private int class_count = 0;

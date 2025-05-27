@@ -6,7 +6,7 @@ import java.io.File;
 defun main (args : String[]) : void
 {
     # Get the path to this file.
-    val file = new File(new File(new File(new File(new File(new File((class Local).getProtectionDomain().getCodeSource().getLocation().getPath()).getParent()).getParent()), "test"), "execution"), "T0775");
+    val file = new File("src/test/resources/execution/T0775");
 
     assert file.exists();
 

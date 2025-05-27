@@ -1,19 +1,12 @@
 package autumn.util;
 
 import java.math.BigInteger;
-import java.math.BigDecimal;
-import com.google.common.io.Files;
 import com.google.common.base.Strings;
-import java.nio.charset.Charset;
 import autumn.lang.annotations.*;
 import autumn.lang.exceptions.*;
-import autumn.lang.internals.*;
 import autumn.lang.internals.annotations.*;
-import autumn.lang.*;
-import java.lang.reflect.*;
 import java.util.*;
-import com.google.common.collect.*;
-import high.mackenzie.autumn.util.*;
+import com.mackenziehigh.autumn.util.*;
 
 
 /** 

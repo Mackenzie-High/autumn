@@ -11,6 +11,7 @@ import org.junit.Test;
 
 public final class Runner
 {
+
     private static final boolean FAILED = false;
 
     private static final boolean PASSED = true;
@@ -18,44 +19,41 @@ public final class Runner
     private static int failed_count;
 
     /**
-     * This method runs tests to determine whether the language is properly implemented.
+     * This method runs tests to determine whether the language is properly
+     * implemented.
      * The results of the tests will be printed to STDOUT.
      *
      * @param args are ignored.
      */
-    public static void main(final String[] args)
+    public static void main (final String[] args)
+    {
+        run();
+        System.out.println("Number of Failed Tests: " + failed_count);
+    }
+
+    public static int run ()
     {
         failed_count = 0;
 
-
-
+// ReflectiveDeclaredTypeTest
 //        test("T0000");
-
-
-
-
 //        test("T0284");
-
-
-
 //        test("T0255"); // covariant elements
-
-
-
         test("T0170");
-
 
         test("T0780");
         test("T0779");
         test("T0778");
         test("T0777");
         test("T0776");
-        test("T0775");
-        test("T0774");
-        test("T0773");
-        test("T0772");
-        test("T0771");
-        test("T0770");
+        test("T0775"); 
+        test("T0774"); 
+        test("T0773"); 
+        test("T0772"); 
+        test("T0771"); 
+        test("T0770"); 
+
+
         test("T0769");
         test("T0768");
         test("T0767");
@@ -733,17 +731,19 @@ public final class Runner
         test("T0002");
         test("T0001");
 
-        System.out.println("Number of Failed Tests: " + failed_count);
+        return failed_count;
     }
 
     /**
-     * This method runs a specified test multiple times and then reports the results.
+     * This method runs a specified test multiple times and then reports the
+     * results.
      *
      * @param test is the test to run.
-     * @param args are the command-line arguments to pass to the test's main function.
+     * @param args are the command-line arguments to pass to the test's main
+     * function.
      */
-    private static void test(final String test,
-                             final String... args)
+    private static void test (final String test,
+                              final String... args)
     {
         for (int i = 0; i < 10; i++)
         {
@@ -759,14 +759,15 @@ public final class Runner
     }
 
     /**
-     * This method runs a specified test one time and then returns a value indicating the result.
+     * This method runs a specified test one time and then returns a value
+     * indicating the result.
      *
      * @param test is the test to run.
      * @param args are the arguments to pass to the test's main function.
      * @return true, iff the test was successful.
      */
-    private static boolean singleTest(final String test,
-                                      final String[] args)
+    private static boolean singleTest (final String test,
+                                       final String[] args)
     {
         try
         {
@@ -823,7 +824,7 @@ public final class Runner
      * This method allows NetBeans to automatically run the tests herein.
      */
     @Test
-    public void main()
+    public void main ()
     {
         /**
          * Perform the tests.
