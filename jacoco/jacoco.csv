@@ -11,11 +11,11 @@ com.mackenziehigh:autumn,com.mackenziehigh.autumn.lang.compiler.typesystem,TypeF
 com.mackenziehigh:autumn,com.mackenziehigh.autumn.lang.compiler.typesystem,CustomMethod,5,7,0,0,2,3,2,1,2,1
 com.mackenziehigh:autumn,com.mackenziehigh.autumn.lang.compiler.typesystem,AbstractInvokableMember,11,63,0,2,1,12,1,5,1,4
 com.mackenziehigh:autumn,com.mackenziehigh.autumn.lang.compiler.typesystem,ReflectiveDeclaredType,4,262,8,24,0,40,8,23,0,15
-com.mackenziehigh:autumn,com.mackenziehigh.autumn.lang.compiler.typesystem,AbstractType,3,21,0,0,1,8,1,3,1,3
 com.mackenziehigh:autumn,com.mackenziehigh.autumn.lang.compiler.typesystem,ReflectiveFormalParameter,14,33,1,1,3,9,1,3,0,3
+com.mackenziehigh:autumn,com.mackenziehigh.autumn.lang.compiler.typesystem,AbstractType,3,21,0,0,1,8,1,3,1,3
 com.mackenziehigh:autumn,com.mackenziehigh.autumn.lang.compiler.typesystem,AbstractCustomMember,0,45,0,0,0,18,0,9,0,9
-com.mackenziehigh:autumn,com.mackenziehigh.autumn.lang.compiler.typesystem,AbstractCustomInvokableMember,0,105,0,2,0,24,0,12,0,11
 com.mackenziehigh:autumn,com.mackenziehigh.autumn.lang.compiler.typesystem,CustomAnnotation,0,55,0,2,0,16,0,6,0,5
+com.mackenziehigh:autumn,com.mackenziehigh.autumn.lang.compiler.typesystem,AbstractCustomInvokableMember,0,105,0,2,0,24,0,12,0,11
 com.mackenziehigh:autumn,com.mackenziehigh.autumn.lang.compiler.typesystem,CustomConstructor,2,7,0,0,1,3,1,1,1,1
 com.mackenziehigh:autumn,com.mackenziehigh.autumn.lang.compiler.typesystem,AbstractDeclaredType,28,233,5,23,7,62,5,25,2,14
 com.mackenziehigh:autumn,com.mackenziehigh.autumn.lang.compiler.typesystem,ReflectiveField,36,73,4,2,8,15,3,9,1,8
@@ -53,8 +53,8 @@ com.mackenziehigh:autumn,autumn.lang.compiler.ast.nodes,ExceptionDefinition,26,1
 com.mackenziehigh:autumn,autumn.lang.compiler.ast.nodes,RecurStatement,14,79,0,0,4,24,1,9,1,9
 com.mackenziehigh:autumn,autumn.lang.compiler.ast.nodes,SequenceStatement,14,79,0,0,4,24,1,9,1,9
 com.mackenziehigh:autumn,autumn.lang.compiler.ast.nodes,NewExpression,18,102,0,0,5,31,1,11,1,11
-com.mackenziehigh:autumn,autumn.lang.compiler.ast.nodes,GreaterThanOrEqualsOperation,18,97,0,0,5,30,1,11,1,11
 com.mackenziehigh:autumn,autumn.lang.compiler.ast.nodes,AssertStatement,18,100,0,0,5,31,1,11,1,11
+com.mackenziehigh:autumn,autumn.lang.compiler.ast.nodes,GreaterThanOrEqualsOperation,18,97,0,0,5,30,1,11,1,11
 com.mackenziehigh:autumn,autumn.lang.compiler.ast.nodes,LocalsExpression,10,51,0,0,3,16,1,7,1,7
 com.mackenziehigh:autumn,autumn.lang.compiler.ast.nodes,BooleanDatum,14,75,0,0,4,23,1,9,1,9
 com.mackenziehigh:autumn,autumn.lang.compiler.ast.nodes,LessThanOrEqualsOperation,18,97,0,0,5,30,1,11,1,11
@@ -70,8 +70,8 @@ com.mackenziehigh:autumn,autumn.lang.compiler.ast.nodes,GetFieldExpression,18,97
 com.mackenziehigh:autumn,autumn.lang.compiler.ast.nodes,ShortDatum,14,74,0,0,4,23,1,9,1,9
 com.mackenziehigh:autumn,autumn.lang.compiler.ast.nodes,GotoStatement,14,74,0,0,4,23,1,9,1,9
 com.mackenziehigh:autumn,autumn.lang.compiler.ast.nodes,Label,14,74,0,0,4,23,1,9,1,9
-com.mackenziehigh:autumn,autumn.lang.compiler.ast.nodes,Module,50,331,0,0,13,96,1,27,1,27
 com.mackenziehigh:autumn,autumn.lang.compiler.ast.nodes,StringDatum,18,101,0,0,5,31,1,11,1,11
+com.mackenziehigh:autumn,autumn.lang.compiler.ast.nodes,Module,50,331,0,0,13,96,1,27,1,27
 com.mackenziehigh:autumn,autumn.lang.compiler.ast.nodes,Namespace,14,74,0,0,4,23,1,9,1,9
 com.mackenziehigh:autumn,autumn.lang.compiler.ast.nodes,ForStatement,30,171,0,0,8,52,1,17,1,17
 com.mackenziehigh:autumn,autumn.lang.compiler.ast.nodes,ThrowStatement,14,74,0,0,4,23,1,9,1,9
@@ -203,8 +203,8 @@ com.mackenziehigh:autumn,com.mackenziehigh.autumn.lang.compiler.compilers,Annota
 com.mackenziehigh:autumn,com.mackenziehigh.autumn.lang.compiler.compilers,TypeSystem,21,22,4,0,4,6,3,2,1,2
 com.mackenziehigh:autumn,com.mackenziehigh.autumn.lang.compiler.compilers,ExpressionCodeGenerator.new CollectionCompiler() {...},0,36,0,0,0,6,0,3,0,3
 com.mackenziehigh:autumn,com.mackenziehigh.autumn.lang.compiler.compilers,VariableAllocator.VarTypes,0,27,0,0,0,5,0,1,0,1
-com.mackenziehigh:autumn,com.mackenziehigh.autumn.lang.compiler.compilers,ExpressionCodeGenerator.new CollectionCompiler() {...},0,83,0,0,0,13,0,3,0,3
 com.mackenziehigh:autumn,com.mackenziehigh.autumn.lang.compiler.compilers,TupleCompiler,0,6,0,0,0,2,0,1,0,1
+com.mackenziehigh:autumn,com.mackenziehigh.autumn.lang.compiler.compilers,ExpressionCodeGenerator.new CollectionCompiler() {...},0,83,0,0,0,13,0,3,0,3
 com.mackenziehigh:autumn,com.mackenziehigh.autumn.lang.compiler.compilers,AbstractStructTupleCompiler.new CollectionCompiler() {...},0,20,0,0,0,4,0,3,0,3
 com.mackenziehigh:autumn,com.mackenziehigh.autumn.lang.compiler.compilers,AbstractStructTupleCompiler.new CollectionCompiler() {...},0,21,0,0,0,4,0,3,0,3
 com.mackenziehigh:autumn,com.mackenziehigh.autumn.lang.compiler.compilers,TypeCheckFailed,0,3,0,0,0,1,0,1,0,1
