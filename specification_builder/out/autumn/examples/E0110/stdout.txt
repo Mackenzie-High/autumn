@@ -1,2 +1,0 @@
-Starship Captain = Jonathan Archer
-Science  Officer = T'Pol

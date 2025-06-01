@@ -1,7 +1,0 @@
-Warning: NO_SUCH_FIELD
-  File: file:/typechecks/T0099
-  Line: #8
-  Column: #5
-  Message: No acceptable field was found.
-  Field: List.age
-

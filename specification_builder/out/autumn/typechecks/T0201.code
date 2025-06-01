@@ -1,4 +1,0 @@
-module Main in typechecks;
-
-tuple Person (name : String,
-              name : String);

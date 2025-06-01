@@ -1,1 +1,0 @@
-public static final int java.lang.Integer.MAX_VALUE

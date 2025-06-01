@@ -1,7 +1,0 @@
-Warning: NO_SUCH_TYPE
-  File: file:/typechecks/T0175
-  Line: #3
-  Column: #23
-  Message: The specified type does not exist.
-  Type: ThisTypeDoesNotExist
-

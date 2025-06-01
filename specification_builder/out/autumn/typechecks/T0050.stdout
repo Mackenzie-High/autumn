@@ -1,8 +1,0 @@
-Warning: DUPLICATE_CONSTANT
-  File: file:/typechecks/T0050
-  Line: #3
-  Column: #20
-  Message: No two enum-constants, in the same enum, can share their name.
-  Enum Type: typechecks.City
-  Constant: Paris
-

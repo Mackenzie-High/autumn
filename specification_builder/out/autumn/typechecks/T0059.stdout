@@ -1,8 +1,0 @@
-Warning: EXPECTED_CONDITION
-  File: file:/typechecks/T0059
-  Line: #6
-  Column: #17
-  Message: A boolean condition was expected.
-  Expected: boolean OR java.lang.Boolean
-  Actual: java.lang.String
-

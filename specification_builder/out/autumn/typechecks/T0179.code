@@ -1,5 +1,0 @@
-module Main in typechecks;
-
-design Person (name : String);
-
-design Employee (name : Object) extends Person;

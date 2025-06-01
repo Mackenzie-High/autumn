@@ -1,5 +1,0 @@
-module Main in typechecks;
-
-import typechecks.inaccessible.InaccessibleClass;
-
-design Person (name : InaccessibleClass);

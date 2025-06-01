@@ -1,4 +1,0 @@
-Mercury is a planet.
-Venus is a planet.
-Earth is a planet.
-Mars is a planet.

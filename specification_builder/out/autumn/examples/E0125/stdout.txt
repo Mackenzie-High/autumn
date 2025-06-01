@@ -1,6 +1,0 @@
-Length = 5
-Value[0] = true
-Value[1] = true
-Value[2] = false
-Value[3] = true
-Value[4] = false

@@ -1,4 +1,0 @@
-Washington
-London
-Ottawa
-null

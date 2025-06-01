@@ -1,9 +1,0 @@
-module Main in typechecks;
-
-@Start
-defun main (args : String[]) : void
-{
-    val x = 3;
-
-    (field x.age);
-}

@@ -1,4 +1,0 @@
-C:\planets\Mercury.obj
-C:\planets\Venus.obj
-C:\planets\Earth.obj
-C:\planets\Mars.obj

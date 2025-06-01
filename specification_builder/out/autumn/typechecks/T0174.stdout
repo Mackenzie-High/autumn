@@ -1,7 +1,0 @@
-Warning: DUPLICATE_ELEMENT
-  File: file:/typechecks/T0174
-  Line: #4
-  Column: #16
-  Message: A record can only declare an element once per definition
-  Element: name
-

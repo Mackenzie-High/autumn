@@ -1,7 +1,0 @@
-module Main in typechecks;
-
-@Memoize
-defun recursive () : void
-{
-    recur;
-}

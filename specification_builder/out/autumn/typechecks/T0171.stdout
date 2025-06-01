@@ -1,7 +1,0 @@
-Warning: INACCESSIBLE_TYPE
-  File: file:/typechecks/T0171
-  Line: #5
-  Column: #21
-  Message: The specified type is not accessible from where it is used.
-  Type: typechecks.inaccessible.InaccessibleInterface
-

@@ -1,5 +1,0 @@
-module Main in typechecks;
-
-struct Person ();
-
-struct Person ();

@@ -1,7 +1,0 @@
-Warning: NO_SUCH_UNARY_OPERATOR
-  File: file:/typechecks/T0023
-  Line: #7
-  Column: #5
-  Message: A unary operator cannot be applied to the given operand type.
-  operand.type: java.lang.String
-

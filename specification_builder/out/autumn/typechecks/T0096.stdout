@@ -1,7 +1,0 @@
-Warning: NO_SUCH_FIELD
-  File: file:/typechecks/T0096
-  Line: #6
-  Column: #5
-  Message: No acceptable field was found.
-  Field: String::age
-

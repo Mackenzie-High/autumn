@@ -1,7 +1,0 @@
-Warning: ASSIGNMENT_TO_READONLY
-  File: file:/typechecks/T0100
-  Line: #10
-  Column: #5
-  Message: A value cannot be assigned to a final field.
-  Field: InstanceFieldTester.answer
-

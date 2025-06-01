@@ -1,9 +1,0 @@
-module Main in typechecks;
-
-@Start
-defun main (args : String[]) : void
-{
-    branch (true) () default CASE_ELSE;
-
-    marker CASE_ELSE;
-}

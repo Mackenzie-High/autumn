@@ -1,7 +1,0 @@
-Warning: MUTABLE_VARIABLE_REQUIRED
-  File: file:/typechecks/T0232
-  Line: #8
-  Column: #9
-  Message: A mutable variable is required.
-  Variable: x
-

@@ -1,9 +1,0 @@
-Home Owner: Fluffy
-Home Size:  25
-
-Home Owner: Jet
-Home Size:  100
-
-Home Owner: Moo
-Home Size:  2500
-

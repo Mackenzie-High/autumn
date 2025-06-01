@@ -1,7 +1,0 @@
-module Main in typechecks;
-
-annotation Anno;
-
-@Anno
-@Anno
-functor F () : String;

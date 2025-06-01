@@ -1,4 +1,0 @@
-module * in typechecks;
-
-annotation Anno;
-annotation Anno;

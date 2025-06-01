@@ -1,6 +1,0 @@
-module Main in typechecks;
-
-defun moo () : ThisTypeDoesNotExist
-{
-    nop;
-}

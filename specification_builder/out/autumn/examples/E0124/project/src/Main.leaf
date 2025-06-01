@@ -1,8 +1,0 @@
-module Main in execution;
-
-@Start
-defun main (args : String[]) : void
-{
-    F::println ("Goodbye Earth!");
-    F::println ("Hello Vulcan!");
-}

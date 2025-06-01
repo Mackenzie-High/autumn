@@ -1,6 +1,0 @@
-Warning: EXPECTED_VOID
-  File: file:/typechecks/T0187
-  Line: #5
-  Column: #5
-  Message: Type void was expected.
-

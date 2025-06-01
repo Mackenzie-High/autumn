@@ -1,8 +1,0 @@
-module Main in typechecks;
-
-import typechecks.inaccessible.InaccessibleClass;
-
-defun moo (message : InaccessibleClass) : void
-{
-    nop;
-}

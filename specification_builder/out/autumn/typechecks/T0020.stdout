@@ -1,7 +1,0 @@
-Warning: DUPLICATE_LABEL
-  File: file:/typechecks/T0020
-  Line: #7
-  Column: #12
-  Message: A label was declared more than once in the same scope.
-  Label: Moo
-

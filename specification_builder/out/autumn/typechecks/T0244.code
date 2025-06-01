@@ -1,6 +1,0 @@
-module Main in typechecks;
-
-defun recursive (x : String) : void
-{
-    recur 100;
-}

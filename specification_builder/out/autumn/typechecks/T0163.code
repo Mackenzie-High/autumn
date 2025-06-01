@@ -1,5 +1,0 @@
-module Main in typechecks;
-
-design P () extends Q;
-
-design Q () extends P;

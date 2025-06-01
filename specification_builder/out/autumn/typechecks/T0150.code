@@ -1,9 +1,0 @@
-module Main in typechecks;
-
-
-@Start
-@Start
-defun main (args : String) : void
-{
-    nop;
-}

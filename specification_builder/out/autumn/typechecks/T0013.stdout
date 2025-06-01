@@ -1,6 +1,0 @@
-Warning: DUPLICATE_EXCEPTION_HANDLER
-  File: file:/typechecks/T0013
-  Line: #10
-  Column: #5
-  Message: Exception handlers in a try-catch block share a type.
-

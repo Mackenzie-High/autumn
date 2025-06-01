@@ -1,4 +1,0 @@
-First = 301
-Last = 302
-Min = 301
-Max = 500

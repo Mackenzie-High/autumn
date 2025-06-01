@@ -1,3 +1,0 @@
-module Main in typechecks;
-
-tuple Person (name : void);

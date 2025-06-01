@@ -1,6 +1,0 @@
-module Main in typechecks;
-
-defun recursive () : void
-{
-    recur 100, 200, 300;
-}

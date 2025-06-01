@@ -1,4 +1,0 @@
-F -> F = true
-F -> T = true
-T -> F = false
-T -> T = true

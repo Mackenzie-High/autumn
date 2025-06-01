@@ -1,8 +1,0 @@
-Warning: NO_SUCH_BINARY_OPERATOR
-  File: file:/typechecks/T0022
-  Line: #7
-  Column: #7
-  Message: A binary operator cannot be applied to the given operand types.
-  left.type  : int
-  right.type : java.lang.String
-

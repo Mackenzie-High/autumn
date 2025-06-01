@@ -1,5 +1,0 @@
-module Main in typechecks;
-
-import typechecks.inaccessible.InaccessibleClass;
-
-functor Moo () : InaccessibleClass;

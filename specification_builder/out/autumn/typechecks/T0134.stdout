@@ -1,6 +1,0 @@
-Warning: EXPECTED_ITERABLE
-  File: file:/typechecks/T0134
-  Line: #6
-  Column: #30
-  Message: A java.lang.Iterable was expected.
-

@@ -1,6 +1,0 @@
-Length = 5
-Value[0] = Neptune
-Value[1] = 200
-Value[2] = Saturn
-Value[3] = 400
-Value[4] = Uranus

@@ -1,7 +1,0 @@
-module Main in typechecks;
-
-@Start
-defun main (args : String[]) : void
-{
-    2 !== "Venus";
-}

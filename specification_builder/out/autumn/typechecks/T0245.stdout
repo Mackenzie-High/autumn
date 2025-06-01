@@ -1,6 +1,0 @@
-Warning: OVERLOADED_METHOD
-  File: file:/typechecks/T0245
-  Line: #6
-  Column: #5
-  Message: The handler function cannot be overloaded.
-

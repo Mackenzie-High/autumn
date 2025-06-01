@@ -1,7 +1,0 @@
-Warning: CIRCULAR_INHERITANCE
-  File: file:/typechecks/T0046
-  Line: #7
-  Column: #1
-  Message: A type cannot be a subtype of itself.
-  Type: typechecks.Animal
-

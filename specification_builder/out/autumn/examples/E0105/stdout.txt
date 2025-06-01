@@ -1,9 +1,0 @@
-1 => 1
-Error - 2 is even.
-3 => 9
-Error - 4 is even.
-5 => 25
-Error - 6 is even.
-7 => 49
-Error - 8 is even.
-9 => 81

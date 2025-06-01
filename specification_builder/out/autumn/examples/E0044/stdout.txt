@@ -1,9 +1,0 @@
-Mercury is a terrestrial planet.
-Venus is a terrestrial planet.
-Earth is a terrestrial planet.
-Mars is a terrestrial planet.
-
-Jupiter is a jovian planet.
-Saturn is a jovian planet.
-Uranus is a jovian planet.
-Neptune is a jovian planet.

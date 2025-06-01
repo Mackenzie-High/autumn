@@ -1,7 +1,0 @@
-module Main in typechecks;
-
-functor Boo () : void extends Moo;
-
-functor Foo () : void extends Boo;
-
-functor Moo () : void extends Foo;

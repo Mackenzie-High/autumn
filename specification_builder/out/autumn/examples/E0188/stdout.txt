@@ -1,6 +1,0 @@
-Length = 5
-A
-B
-C
-D
-E

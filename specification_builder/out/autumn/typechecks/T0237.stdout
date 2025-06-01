@@ -1,6 +1,0 @@
-Warning: EXPECTED_VARIABLE_TYPE
-  File: file:/typechecks/T0237
-  Line: #6
-  Column: #9
-  Message: A variable-type was expected.
-

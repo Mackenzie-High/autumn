@@ -1,7 +1,0 @@
-Warning: INACCESSIBLE_TYPE
-  File: file:/typechecks/T0123
-  Line: #5
-  Column: #26
-  Message: The specified type is not accessible from where it is used.
-  Type: typechecks.inaccessible.InaccessibleClass
-

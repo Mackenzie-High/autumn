@@ -1,6 +1,0 @@
-Warning: INCOMPATIBLE_DELEGATE
-  File: file:/typechecks/T0247
-  Line: #8
-  Column: #5
-  Message: The handler function is not compatible with the delegate.
-

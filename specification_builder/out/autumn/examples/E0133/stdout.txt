@@ -1,6 +1,0 @@
-Length = 5
-Value[0] = 10
-Value[1] = 20
-Value[2] = 30
-Value[3] = 40
-Value[4] = 50

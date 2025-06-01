@@ -1,1 +1,0 @@
-class starships.Module$0

@@ -1,7 +1,0 @@
-(Chicky Sr., CHICKEN)
-(Picky Sr., CHICKEN)
-(Sikorsky, CHICKEN)
-(Lucky, CHICKEN)
-(Chicky Jr., CHICKEN)
-(Picky Jr., CHICKEN)
-(Angel, CHICKEN)

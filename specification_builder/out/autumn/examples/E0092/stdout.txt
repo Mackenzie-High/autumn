@@ -1,5 +1,0 @@
-1 is very odd.
-3 is very odd.
-5 is very odd.
-7 is very odd.
-9 is very odd.

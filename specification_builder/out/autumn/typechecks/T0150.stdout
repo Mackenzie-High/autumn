@@ -1,7 +1,0 @@
-Warning: DUPLICATE_ANNOTATION
-  File: file:/typechecks/T0150
-  Line: #4
-  Column: #1
-  Message: An annotation can only occur once in a list of annotations.
-  Type: autumn.lang.annotations.Start
-
